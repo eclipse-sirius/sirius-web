@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.DynamicDialogFolder;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.GroupDescription;
 import org.eclipse.sirius.components.view.PageDescription;
@@ -81,6 +82,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ViewPackage.Literals.VIEW__DESCRIPTIONS);
             this.childrenFeatures.add(ViewPackage.Literals.VIEW__COLOR_PALETTES);
+            this.childrenFeatures.add(ViewPackage.Literals.VIEW__DYNAMIC_DIALOG_FOLDER);
         }
         return this.childrenFeatures;
     }
@@ -142,6 +144,7 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
         switch (notification.getFeatureID(View.class)) {
             case ViewPackage.VIEW__DESCRIPTIONS:
             case ViewPackage.VIEW__COLOR_PALETTES:
+            case ViewPackage.VIEW__DYNAMIC_DIALOG_FOLDER:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -175,6 +178,9 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
         newColorPalette.setName("New Color Palette");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__COLOR_PALETTES, newColorPalette));
 
+        DynamicDialogFolder newDynamicDialogFolder = ViewFactory.eINSTANCE.createDynamicDialogFolder();
+        newDynamicDialogFolder.setName("New Dynamic Dialogs Folder");
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DYNAMIC_DIALOG_FOLDER, newDynamicDialogFolder));
     }
 
     /**

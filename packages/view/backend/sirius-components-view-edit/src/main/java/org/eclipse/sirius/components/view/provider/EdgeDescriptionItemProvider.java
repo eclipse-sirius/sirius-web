@@ -261,11 +261,11 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultEdgePalette()));
 
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-      //  newEdgeStyle.setColor("#002639");
+        // newEdgeStyle.setColor("#002639");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));
 
         ConditionalEdgeStyle conditionalEdgeStyle = ViewFactory.eINSTANCE.createConditionalEdgeStyle();
-        //  conditionalEdgeStyle.setColor("#002639");
+        // conditionalEdgeStyle.setColor("#002639");
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES, conditionalEdgeStyle));
     }
 

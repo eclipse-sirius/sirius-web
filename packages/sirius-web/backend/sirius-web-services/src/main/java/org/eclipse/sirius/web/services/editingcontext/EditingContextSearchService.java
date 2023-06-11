@@ -25,11 +25,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.core.api.IDynamicDialogDescription;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
+import org.eclipse.sirius.components.emf.services.EditingContextWithDynamicDialogDescription;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -38,6 +39,7 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
+import org.eclipse.sirius.web.services.editingcontext.api.IDynamicDialogDescriptionServices;
 import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
@@ -70,15 +72,18 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService;
 
+    private final IDynamicDialogDescriptionServices dynamicDialogDescriptionServices;
+
     private final Timer timer;
 
     public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
-            List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService, MeterRegistry meterRegistry) {
+            List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService, IDynamicDialogDescriptionServices dynamicDialogDescriptionServices, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
         this.configurers = Objects.requireNonNull(configurers);
         this.dynamicRepresentationDescriptionService = Objects.requireNonNull(dynamicRepresentationDescriptionService);
+        this.dynamicDialogDescriptionServices = Objects.requireNonNull(dynamicDialogDescriptionServices);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
@@ -125,12 +130,16 @@ public class EditingContextSearchService implements IEditingContextSearchService
         this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
         registry.getRepresentationDescriptions().forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
         this.dynamicRepresentationDescriptionService.findDynamicRepresentationDescriptions(editingContextId, editingDomain)
-                .forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
+            .forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
+
+        Map<String, IDynamicDialogDescription> dynamicDialogDescriptions = new LinkedHashMap<>();
+        this.dynamicDialogDescriptionServices.findDynamicDialogDescriptions(editingContextId, editingDomain)
+            .forEach(dynamicDialogDescription -> dynamicDialogDescriptions.put(dynamicDialogDescription.getId(), dynamicDialogDescription));
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
-        return Optional.of(new EditingContext(editingContextId, editingDomain, representationDescriptions));
+        return Optional.of(new EditingContextWithDynamicDialogDescription(editingContextId, editingDomain, representationDescriptions, dynamicDialogDescriptions));
     }
 
 }

@@ -55,6 +55,11 @@
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/column"/>
       <genEnumLiterals ecoreEnumLiteral="view.ecore#//FlexDirection/columnReverse"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="view.ecore#//DValidationMessageSeverity">
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//DValidationMessageSeverity/Info"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//DValidationMessageSeverity/Warning"/>
+      <genEnumLiterals ecoreEnumLiteral="view.ecore#//DValidationMessageSeverity/Error"/>
+    </genEnums>
     <genDataTypes ecoreDataType="view.ecore#//Identifier"/>
     <genDataTypes ecoreDataType="view.ecore#//InterpretedExpression"/>
     <genDataTypes ecoreDataType="view.ecore#//DomainType"/>
@@ -63,6 +68,7 @@
     <genClasses ecoreClass="view.ecore#//View">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/descriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/colorPalettes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//View/dynamicDialogFolder"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//ColorPalette">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//ColorPalette/name"/>
@@ -407,6 +413,46 @@
     <genClasses ecoreClass="view.ecore#//SelectionDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectionDescription/selectionCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//SelectionDescription/selectionMessage"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DynamicDialogFolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DynamicDialogFolder/subFolders"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DynamicDialogFolder/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DynamicDialogFolder/dynamicDialogs"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DynamicDialogDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DynamicDialogDescription/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DynamicDialogDescription/titleExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DynamicDialogDescription/descriptionExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DynamicDialogDescription/widgetDescriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DynamicDialogDescription/isValidExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DynamicDialogDescription/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DynamicDialogDescription/validationMessages"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="view.ecore#//DWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DWidgetDescription/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DWidgetDescription/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DWidgetDescription/initialValueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DWidgetDescription/output"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference view.ecore#//DWidgetDescription/inputs"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="view.ecore#//DWidgetOutputDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DWidgetOutputDescription/name"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DWidgetObjectOutputDescription"/>
+    <genClasses ecoreClass="view.ecore#//DWidgetStringOutputDescription"/>
+    <genClasses ecoreClass="view.ecore#//DSelectWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DSelectWidgetDescription/optionsExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DSelectWidgetDescription/optionLabelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DSelectWidgetDescription/style"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DTextFieldWidgetDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference view.ecore#//DTextFieldWidgetDescription/style"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//DValidationMessageDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DValidationMessageDescription/preCondition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DValidationMessageDescription/messageExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DValidationMessageDescription/severity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//DValidationMessageDescription/blocksApplyDialog"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

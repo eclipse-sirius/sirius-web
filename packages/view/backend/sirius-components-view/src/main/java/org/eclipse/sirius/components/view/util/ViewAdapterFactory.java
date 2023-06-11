@@ -42,6 +42,13 @@ import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.CreateView;
+import org.eclipse.sirius.components.view.DSelectWidgetDescription;
+import org.eclipse.sirius.components.view.DTextFieldWidgetDescription;
+import org.eclipse.sirius.components.view.DValidationMessageDescription;
+import org.eclipse.sirius.components.view.DWidgetDescription;
+import org.eclipse.sirius.components.view.DWidgetObjectOutputDescription;
+import org.eclipse.sirius.components.view.DWidgetOutputDescription;
+import org.eclipse.sirius.components.view.DWidgetStringOutputDescription;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DeleteView;
@@ -49,6 +56,8 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.DropTool;
+import org.eclipse.sirius.components.view.DynamicDialogDescription;
+import org.eclipse.sirius.components.view.DynamicDialogFolder;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
@@ -595,6 +604,51 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseSelectionDescription(SelectionDescription object) {
             return ViewAdapterFactory.this.createSelectionDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDynamicDialogFolder(DynamicDialogFolder object) {
+            return ViewAdapterFactory.this.createDynamicDialogFolderAdapter();
+        }
+
+        @Override
+        public Adapter caseDynamicDialogDescription(DynamicDialogDescription object) {
+            return ViewAdapterFactory.this.createDynamicDialogDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDWidgetDescription(DWidgetDescription object) {
+            return ViewAdapterFactory.this.createDWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDWidgetOutputDescription(DWidgetOutputDescription object) {
+            return ViewAdapterFactory.this.createDWidgetOutputDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDWidgetObjectOutputDescription(DWidgetObjectOutputDescription object) {
+            return ViewAdapterFactory.this.createDWidgetObjectOutputDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDWidgetStringOutputDescription(DWidgetStringOutputDescription object) {
+            return ViewAdapterFactory.this.createDWidgetStringOutputDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDSelectWidgetDescription(DSelectWidgetDescription object) {
+            return ViewAdapterFactory.this.createDSelectWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDTextFieldWidgetDescription(DTextFieldWidgetDescription object) {
+            return ViewAdapterFactory.this.createDTextFieldWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseDValidationMessageDescription(DValidationMessageDescription object) {
+            return ViewAdapterFactory.this.createDValidationMessageDescriptionAdapter();
         }
 
         @Override
@@ -1822,6 +1876,132 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSelectionDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DynamicDialogFolder
+     * <em>Dynamic Dialog Folder</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DynamicDialogFolder
+     * @generated
+     */
+    public Adapter createDynamicDialogFolderAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DynamicDialogDescription
+     * <em>Dynamic Dialog Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription
+     * @generated
+     */
+    public Adapter createDynamicDialogDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DWidgetDescription
+     * <em>DWidget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DWidgetDescription
+     * @generated
+     */
+    public Adapter createDWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DSelectWidgetDescription
+     * <em>DSelect Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DSelectWidgetDescription
+     * @generated
+     */
+    public Adapter createDSelectWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.DTextFieldWidgetDescription <em>DText Field Widget Description</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DTextFieldWidgetDescription
+     * @generated
+     */
+    public Adapter createDTextFieldWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.DValidationMessageDescription <em>DValidation Message
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DValidationMessageDescription
+     * @generated
+     */
+    public Adapter createDValidationMessageDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.DWidgetOutputDescription
+     * <em>DWidget Output Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DWidgetOutputDescription
+     * @generated
+     */
+    public Adapter createDWidgetOutputDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.DWidgetObjectOutputDescription <em>DWidget Object Output
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DWidgetObjectOutputDescription
+     * @generated
+     */
+    public Adapter createDWidgetObjectOutputDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.DWidgetStringOutputDescription <em>DWidget String Output
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.DWidgetStringOutputDescription
+     * @generated
+     */
+    public Adapter createDWidgetStringOutputDescriptionAdapter() {
         return null;
     }
 

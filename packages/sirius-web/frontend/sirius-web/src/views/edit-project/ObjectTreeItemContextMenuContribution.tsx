@@ -12,14 +12,15 @@
  *******************************************************************************/
 import { NewObjectModal, NewRepresentationModal } from '@eclipse-sirius/sirius-components';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { DynamicDialogModal } from '@eclipse-sirius/sirius-components-dynamicdialog';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
-import { forwardRef, Fragment, useState } from 'react';
+import { Fragment, forwardRef, useState } from 'react';
 
-type Modal = 'CreateNewObject' | 'CreateNewRepresentation';
+type Modal = 'CreateNewObject' | 'CreateNewRepresentation' | 'OpenDynamicDialog';
 
 export const ObjectTreeItemContextMenuContribution = forwardRef(
   (
@@ -53,6 +54,15 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
           onClose={onClose}
         />
       );
+    } else if (modal === 'OpenDynamicDialog') {
+      modalElement = (
+        <DynamicDialogModal
+          dialogDescriptionId="dialogId"
+          objectId={item.id}
+          onClose={onClose}
+          editingContextId={editingContextId}
+          onMutationDone={onClose}></DynamicDialogModal>
+      );
     }
 
     return (
@@ -79,6 +89,17 @@ export const ObjectTreeItemContextMenuContribution = forwardRef(
             <AddIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="New representation" />
+        </MenuItem>
+        <MenuItem
+          key="open-dynamic-dialog"
+          onClick={() => setModal('OpenDynamicDialog')}
+          data-testid="new-representation"
+          disabled={readOnly}
+          aria-disabled>
+          <ListItemIcon>
+            <AddIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Dynamic Dialog" />
         </MenuItem>
         {modalElement}
       </Fragment>

@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.view.emf;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.core.api.IDynamicDialogDescription;
+import org.eclipse.sirius.components.dynamicdialogs.description.DynamicDialogDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 
@@ -29,4 +31,9 @@ public interface IViewConverter {
      * Extract and convert the {@link IRepresentationDescription} from a list of {@link View} models.
      */
     List<IRepresentationDescription> convert(List<View> views, List<EPackage> visibleEPackages);
+
+    /**
+     * Extract and convert the {@link DynamicDialogDescription} from a list of {@link View} models.
+     */
+    List<IDynamicDialogDescription> convertDynamicDialog(List<View> views, List<EPackage> visibleEPackages);
 }

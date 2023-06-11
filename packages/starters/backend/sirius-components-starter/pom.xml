@@ -152,6 +152,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-dynamicdialogs-graphql</artifactId>
+			<version>2023.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
 			<version>2023.6.0</version>
 		</dependency>

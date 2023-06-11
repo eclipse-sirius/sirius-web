@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.view.emf.ViewConverter;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
+import org.eclipse.sirius.components.view.emf.dynamicdialogs.ViewDynamicDialogDescriptionConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
@@ -147,9 +148,10 @@ public class DynamicDiagramsTests {
         res.getContents().add(view);
         new ResourceSetImpl().getResources().add(res);
 
-        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of(),
-                new IDiagramIdProvider.NoOp(), new IViewToolImageProvider.NoOp(), new IFeedbackMessageService.NoOp());
-        var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext(), new IObjectService.NoOp());
+        ViewDiagramDescriptionConverter diagramDescriptionConverter = new ViewDiagramDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), List.of(), new IDiagramIdProvider.NoOp(),
+                new IViewToolImageProvider.NoOp(), new IFeedbackMessageService.NoOp());
+        var viewConverter = new ViewConverter(List.of(), List.of(diagramDescriptionConverter), new StaticApplicationContext(), new IObjectService.NoOp(),
+                new ViewDynamicDialogDescriptionConverter(new IObjectService.NoOp(), new IEditService.NoOp(), new IFeedbackMessageService.NoOp()));
         List<IRepresentationDescription> conversionResult = viewConverter.convert(List.of(view), List.of(EcorePackage.eINSTANCE));
         assertThat(conversionResult).hasSize(1);
         assertThat(conversionResult.get(0)).isInstanceOf(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class);

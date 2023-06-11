@@ -23,6 +23,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.core.api.IDynamicDialogDescription;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -31,8 +32,10 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.DynamicDialogDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.emf.dynamicdialogs.ViewDynamicDialogDescriptionConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -58,18 +61,22 @@ public class ViewConverter implements IViewConverter {
 
     private final IObjectService objectService;
 
-    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext, IObjectService objectService) {
+    private final ViewDynamicDialogDescriptionConverter viewDynamicDialogDescriptionConverter;
+
+    public ViewConverter(List<IJavaServiceProvider> javaServiceProviders, List<IRepresentationDescriptionConverter> representationDescriptionConverters, ApplicationContext applicationContext,
+            IObjectService objectService, ViewDynamicDialogDescriptionConverter viewDynamicDialogDescriptionConverter) {
         this.javaServiceProviders = new ArrayList<>();
         this.javaServiceProviders.addAll(Objects.requireNonNull(javaServiceProviders));
         this.javaServiceProviders.add((View view) -> List.of(CanonicalServices.class));
         this.representationDescriptionConverters = Objects.requireNonNull(representationDescriptionConverters);
         this.applicationContext = Objects.requireNonNull(applicationContext);
         this.objectService = Objects.requireNonNull(objectService);
+        this.viewDynamicDialogDescriptionConverter = Objects.requireNonNull(viewDynamicDialogDescriptionConverter);
     }
 
     /**
-     * Extract and convert the {@link IRepresentationDescription} from a list of {@link View} models by delegating to provided
-     * {@link IRepresentationDescriptionConverter}.
+     * Extract and convert the {@link IRepresentationDescription} from a list of {@link View} models by delegating to
+     * provided {@link IRepresentationDescriptionConverter}.
      */
     @Override
     public List<IRepresentationDescription> convert(List<View> views, List<EPackage> visibleEPackages) {
@@ -141,6 +148,37 @@ public class ViewConverter implements IViewConverter {
                 .findFirst();
     }
 
+    @Override
+    public List<IDynamicDialogDescription> convertDynamicDialog(List<View> views, List<EPackage> visibleEPackages) {
+        List<IDynamicDialogDescription> result = new ArrayList<>();
+
+        views.forEach(view -> {
+            AQLInterpreter interpreter = this.createInterpreter(view, visibleEPackages);
+            try {
+                // @formatter:off
+                view.getDynamicDialogFolder().eAllContents().forEachRemaining(eObject-> {
+                    if (eObject instanceof DynamicDialogDescription dynamicDialogDescription) {
+                        result.add(this.convert(dynamicDialogDescription, interpreter));
+                    }
+                });
+                // @formatter:on
+            } catch (NullPointerException e) {
+                // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
+                // currently being created or edited.
+            }
+        });
+        return result;
+    }
+
+
+    /**
+     * @param dynamicDialogDescription
+     * @param interpreter
+     * @return
+     */
+    private IDynamicDialogDescription convert(org.eclipse.sirius.components.view.DynamicDialogDescription dynamicDialogDescription, AQLInterpreter interpreter) {
+        return this.viewDynamicDialogDescriptionConverter.convert(dynamicDialogDescription, interpreter);
+    }
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
         // @formatter:off

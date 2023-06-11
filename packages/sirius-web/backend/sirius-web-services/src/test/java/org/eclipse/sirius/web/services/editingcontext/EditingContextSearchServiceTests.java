@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
+import org.eclipse.sirius.web.services.editingcontext.api.IDynamicDialogDescriptionServices;
 import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
@@ -97,10 +98,10 @@ public class EditingContextSearchServiceTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
-                composedAdapterFactory, ePackageRegistry, Optional.empty());
+        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory,
+                ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
+                new IDynamicRepresentationDescriptionService.NoOp(), new IDynamicDialogDescriptionServices.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -145,10 +146,10 @@ public class EditingContextSearchServiceTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
-                composedAdapterFactory, ePackageRegistry, Optional.empty());
+        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory,
+                ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
+                new IDynamicRepresentationDescriptionService.NoOp(), new IDynamicDialogDescriptionServices.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);

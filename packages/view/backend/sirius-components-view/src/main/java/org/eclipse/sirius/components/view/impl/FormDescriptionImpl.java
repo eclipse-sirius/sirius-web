@@ -42,9 +42,9 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
      * The cached value of the '{@link #getPages() <em>Pages</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getPages()
      * @generated
      * @ordered
-     * @see #getPages()
      */
     protected EList<PageDescription> pages;
 

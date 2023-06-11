@@ -11,6 +11,8 @@
         eType="#//RepresentationDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="colorPalettes" upperBound="-1"
         eType="#//ColorPalette" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dynamicDialogFolder" eType="#//DynamicDialogFolder"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColorPalette">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="#//Identifier"/>
@@ -537,5 +539,62 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionCandidatesExpression"
         eType="#//InterpretedExpression" defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionMessage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DynamicDialogFolder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subFolders" upperBound="-1"
+        eType="#//DynamicDialogFolder" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dynamicDialogs" upperBound="-1"
+        eType="#//DynamicDialogDescription" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DynamicDialogDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="titleExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="descriptionExpression"
+        eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="widgetDescriptions" upperBound="-1"
+        eType="#//DWidgetDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isValidExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//Operation"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="validationMessages" upperBound="-1"
+        eType="#//DValidationMessageDescription" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DWidgetDescription" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValueExpression"
+        eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" eType="#//DWidgetOutputDescription"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputs" upperBound="-1"
+        eType="#//DWidgetOutputDescription"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DWidgetOutputDescription" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DWidgetObjectOutputDescription" eSuperTypes="#//DWidgetOutputDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DWidgetStringOutputDescription" eSuperTypes="#//DWidgetOutputDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DSelectWidgetDescription" eSuperTypes="#//DWidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optionsExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optionLabelExpression"
+        eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//SelectDescriptionStyle"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DTextFieldWidgetDescription" eSuperTypes="#//DWidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//SelectDescriptionStyle"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DValidationMessageDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preCondition" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="messageExpression" eType="#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="severity" eType="#//DValidationMessageSeverity"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="blocksApplyDialog" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DValidationMessageSeverity">
+    <eLiterals name="Info" literal="Info"/>
+    <eLiterals name="Warning" value="1" literal="Warning"/>
+    <eLiterals name="Error" value="2" literal="Error"/>
   </eClassifiers>
 </ecore:EPackage>

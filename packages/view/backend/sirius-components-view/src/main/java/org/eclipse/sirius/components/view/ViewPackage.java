@@ -92,12 +92,21 @@ public interface ViewPackage extends EPackage {
     int VIEW__COLOR_PALETTES = 1;
 
     /**
+     * The feature id for the '<em><b>Dynamic Dialog Folder</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int VIEW__DYNAMIC_DIALOG_FOLDER = 2;
+
+    /**
      * The number of structural features of the '<em>View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int VIEW_FEATURE_COUNT = 2;
+    int VIEW_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6547,6 +6556,569 @@ public interface ViewPackage extends EPackage {
     int SELECTION_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DynamicDialogFolderImpl <em>Dynamic
+     * Dialog Folder</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DynamicDialogFolderImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDynamicDialogFolder()
+     * @generated
+     */
+    int DYNAMIC_DIALOG_FOLDER = 88;
+
+    /**
+     * The feature id for the '<em><b>Sub Folders</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_FOLDER__SUB_FOLDERS = 0;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_FOLDER__NAME = 1;
+
+    /**
+     * The feature id for the '<em><b>Dynamic Dialogs</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_FOLDER__DYNAMIC_DIALOGS = 2;
+
+    /**
+     * The number of structural features of the '<em>Dynamic Dialog Folder</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_FOLDER_FEATURE_COUNT = 3;
+
+    /**
+     * The number of operations of the '<em>Dynamic Dialog Folder</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_FOLDER_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DynamicDialogDescriptionImpl
+     * <em>Dynamic Dialog Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DynamicDialogDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDynamicDialogDescription()
+     * @generated
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION = 89;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION__ID = 0;
+
+    /**
+     * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION__TITLE_EXPRESSION = 1;
+
+    /**
+     * The feature id for the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION = 2;
+
+    /**
+     * The feature id for the '<em><b>Widget Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION__WIDGET_DESCRIPTIONS = 3;
+
+    /**
+     * The feature id for the '<em><b>Is Valid Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION__IS_VALID_EXPRESSION = 4;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION__BODY = 5;
+
+    /**
+     * The feature id for the '<em><b>Validation Messages</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION__VALIDATION_MESSAGES = 6;
+
+    /**
+     * The number of structural features of the '<em>Dynamic Dialog Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION_FEATURE_COUNT = 7;
+
+    /**
+     * The number of operations of the '<em>Dynamic Dialog Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DYNAMIC_DIALOG_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DWidgetDescriptionImpl <em>DWidget
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DWidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetDescription()
+     * @generated
+     */
+    int DWIDGET_DESCRIPTION = 90;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_DESCRIPTION__ID = 0;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_DESCRIPTION__LABEL_EXPRESSION = 1;
+
+    /**
+     * The feature id for the '<em><b>Initial Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_DESCRIPTION__INITIAL_VALUE_EXPRESSION = 2;
+
+    /**
+     * The feature id for the '<em><b>Output</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_DESCRIPTION__OUTPUT = 3;
+
+    /**
+     * The feature id for the '<em><b>Inputs</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_DESCRIPTION__INPUTS = 4;
+
+    /**
+     * The number of structural features of the '<em>DWidget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_DESCRIPTION_FEATURE_COUNT = 5;
+
+    /**
+     * The number of operations of the '<em>DWidget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DSelectWidgetDescriptionImpl
+     * <em>DSelect Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DSelectWidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDSelectWidgetDescription()
+     * @generated
+     */
+    int DSELECT_WIDGET_DESCRIPTION = 94;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DWidgetOutputDescriptionImpl
+     * <em>DWidget Output Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DWidgetOutputDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetOutputDescription()
+     * @generated
+     */
+    int DWIDGET_OUTPUT_DESCRIPTION = 91;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_OUTPUT_DESCRIPTION__NAME = 0;
+
+    /**
+     * The number of structural features of the '<em>DWidget Output Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_OUTPUT_DESCRIPTION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>DWidget Output Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_OUTPUT_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DWidgetObjectOutputDescriptionImpl
+     * <em>DWidget Object Output Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DWidgetObjectOutputDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetObjectOutputDescription()
+     * @generated
+     */
+    int DWIDGET_OBJECT_OUTPUT_DESCRIPTION = 92;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_OBJECT_OUTPUT_DESCRIPTION__NAME = DWIDGET_OUTPUT_DESCRIPTION__NAME;
+
+    /**
+     * The number of structural features of the '<em>DWidget Object Output Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_OBJECT_OUTPUT_DESCRIPTION_FEATURE_COUNT = DWIDGET_OUTPUT_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>DWidget Object Output Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_OBJECT_OUTPUT_DESCRIPTION_OPERATION_COUNT = DWIDGET_OUTPUT_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DWidgetStringOutputDescriptionImpl
+     * <em>DWidget String Output Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DWidgetStringOutputDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetStringOutputDescription()
+     * @generated
+     */
+    int DWIDGET_STRING_OUTPUT_DESCRIPTION = 93;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_STRING_OUTPUT_DESCRIPTION__NAME = DWIDGET_OUTPUT_DESCRIPTION__NAME;
+
+    /**
+     * The number of structural features of the '<em>DWidget String Output Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_STRING_OUTPUT_DESCRIPTION_FEATURE_COUNT = DWIDGET_OUTPUT_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>DWidget String Output Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DWIDGET_STRING_OUTPUT_DESCRIPTION_OPERATION_COUNT = DWIDGET_OUTPUT_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__ID = DWIDGET_DESCRIPTION__ID;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__LABEL_EXPRESSION = DWIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Initial Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__INITIAL_VALUE_EXPRESSION = DWIDGET_DESCRIPTION__INITIAL_VALUE_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Output</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__OUTPUT = DWIDGET_DESCRIPTION__OUTPUT;
+
+    /**
+     * The feature id for the '<em><b>Inputs</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__INPUTS = DWIDGET_DESCRIPTION__INPUTS;
+
+    /**
+     * The feature id for the '<em><b>Options Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__OPTIONS_EXPRESSION = DWIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Option Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__OPTION_LABEL_EXPRESSION = DWIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION__STYLE = DWIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>DSelect Widget Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION_FEATURE_COUNT = DWIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>DSelect Widget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DSELECT_WIDGET_DESCRIPTION_OPERATION_COUNT = DWIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DTextFieldWidgetDescriptionImpl
+     * <em>DText Field Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DTextFieldWidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDTextFieldWidgetDescription()
+     * @generated
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION = 95;
+
+    /**
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION__ID = DWIDGET_DESCRIPTION__ID;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION__LABEL_EXPRESSION = DWIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Initial Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION__INITIAL_VALUE_EXPRESSION = DWIDGET_DESCRIPTION__INITIAL_VALUE_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Output</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION__OUTPUT = DWIDGET_DESCRIPTION__OUTPUT;
+
+    /**
+     * The feature id for the '<em><b>Inputs</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION__INPUTS = DWIDGET_DESCRIPTION__INPUTS;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION__STYLE = DWIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>DText Field Widget Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION_FEATURE_COUNT = DWIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>DText Field Widget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DTEXT_FIELD_WIDGET_DESCRIPTION_OPERATION_COUNT = DWIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.DValidationMessageDescriptionImpl
+     * <em>DValidation Message Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.DValidationMessageDescriptionImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDValidationMessageDescription()
+     * @generated
+     */
+    int DVALIDATION_MESSAGE_DESCRIPTION = 96;
+
+    /**
+     * The feature id for the '<em><b>Pre Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DVALIDATION_MESSAGE_DESCRIPTION__PRE_CONDITION = 0;
+
+    /**
+     * The feature id for the '<em><b>Message Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DVALIDATION_MESSAGE_DESCRIPTION__MESSAGE_EXPRESSION = 1;
+
+    /**
+     * The feature id for the '<em><b>Severity</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DVALIDATION_MESSAGE_DESCRIPTION__SEVERITY = 2;
+
+    /**
+     * The feature id for the '<em><b>Blocks Apply Dialog</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DVALIDATION_MESSAGE_DESCRIPTION__BLOCKS_APPLY_DIALOG = 3;
+
+    /**
+     * The number of structural features of the '<em>DValidation Message Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DVALIDATION_MESSAGE_DESCRIPTION_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>DValidation Message Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DVALIDATION_MESSAGE_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout Direction</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6554,7 +7126,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 88;
+    int LAYOUT_DIRECTION = 97;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.ArrowStyle <em>Arrow Style</em>}' enum.
@@ -6564,7 +7136,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 89;
+    int ARROW_STYLE = 98;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.LineStyle <em>Line Style</em>}' enum. <!--
@@ -6574,7 +7146,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.LineStyle
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLineStyle()
      */
-    int LINE_STYLE = 90;
+    int LINE_STYLE = 99;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.NodeContainmentKind <em>Node Containment
@@ -6584,7 +7156,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 91;
+    int NODE_CONTAINMENT_KIND = 100;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.SynchronizationPolicy <em>Synchronization
@@ -6594,7 +7166,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 92;
+    int SYNCHRONIZATION_POLICY = 101;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.GroupDisplayMode <em>Group Display
@@ -6604,7 +7176,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDisplayMode()
      * @generated
      */
-    int GROUP_DISPLAY_MODE = 93;
+    int GROUP_DISPLAY_MODE = 102;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.FlexDirection <em>Flex Direction</em>}'
@@ -6614,7 +7186,17 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 94;
+    int FLEX_DIRECTION = 103;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.DValidationMessageSeverity <em>DValidation
+     * Message Severity</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.DValidationMessageSeverity
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDValidationMessageSeverity()
+     * @generated
+     */
+    int DVALIDATION_MESSAGE_SEVERITY = 104;
 
     /**
      * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6623,7 +7205,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 95;
+    int IDENTIFIER = 105;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -6633,7 +7215,7 @@ public interface ViewPackage extends EPackage {
      * @see java.lang.String
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      */
-    int INTERPRETED_EXPRESSION = 96;
+    int INTERPRETED_EXPRESSION = 106;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6642,7 +7224,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 97;
+    int DOMAIN_TYPE = 107;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6651,7 +7233,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 98;
+    int COLOR = 108;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6659,7 +7241,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 99;
+    int LENGTH = 109;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -6694,6 +7276,18 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EReference getView_ColorPalettes();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.View#getDynamicDialogFolder <em>Dynamic Dialog Folder</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Dynamic Dialog Folder</em>'.
+     * @see org.eclipse.sirius.components.view.View#getDynamicDialogFolder()
+     * @see #getView()
+     * @generated
+     */
+    EReference getView_DynamicDialogFolder();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.ColorPalette <em>Color
@@ -8141,8 +8735,8 @@ public interface ViewPackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Group Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.GroupDescription
+     * @generated
      */
     EClass getGroupDescription();
 
@@ -9855,6 +10449,382 @@ public interface ViewPackage extends EPackage {
     EAttribute getSelectionDescription_SelectionMessage();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DynamicDialogFolder <em>Dynamic
+     * Dialog Folder</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Dynamic Dialog Folder</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogFolder
+     * @generated
+     */
+    EClass getDynamicDialogFolder();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogFolder#getSubFolders <em>Sub Folders</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Sub Folders</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogFolder#getSubFolders()
+     * @see #getDynamicDialogFolder()
+     * @generated
+     */
+    EReference getDynamicDialogFolder_SubFolders();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.DynamicDialogFolder#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogFolder#getName()
+     * @see #getDynamicDialogFolder()
+     * @generated
+     */
+    EAttribute getDynamicDialogFolder_Name();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogFolder#getDynamicDialogs <em>Dynamic Dialogs</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Dynamic Dialogs</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogFolder#getDynamicDialogs()
+     * @see #getDynamicDialogFolder()
+     * @generated
+     */
+    EReference getDynamicDialogFolder_DynamicDialogs();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DynamicDialogDescription <em>Dynamic
+     * Dialog Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Dynamic Dialog Description</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription
+     * @generated
+     */
+    EClass getDynamicDialogDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogDescription#getId <em>Id</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription#getId()
+     * @see #getDynamicDialogDescription()
+     * @generated
+     */
+    EAttribute getDynamicDialogDescription_Id();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogDescription#getTitleExpression <em>Title
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Title Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription#getTitleExpression()
+     * @see #getDynamicDialogDescription()
+     * @generated
+     */
+    EAttribute getDynamicDialogDescription_TitleExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogDescription#getDescriptionExpression <em>Description
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Description Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription#getDescriptionExpression()
+     * @see #getDynamicDialogDescription()
+     * @generated
+     */
+    EAttribute getDynamicDialogDescription_DescriptionExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogDescription#getWidgetDescriptions <em>Widget
+     * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Widget Descriptions</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription#getWidgetDescriptions()
+     * @see #getDynamicDialogDescription()
+     * @generated
+     */
+    EReference getDynamicDialogDescription_WidgetDescriptions();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogDescription#getIsValidExpression <em>Is Valid
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Valid Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription#getIsValidExpression()
+     * @see #getDynamicDialogDescription()
+     * @generated
+     */
+    EAttribute getDynamicDialogDescription_IsValidExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogDescription#getBody <em>Body</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription#getBody()
+     * @see #getDynamicDialogDescription()
+     * @generated
+     */
+    EReference getDynamicDialogDescription_Body();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.DynamicDialogDescription#getValidationMessages <em>Validation
+     * Messages</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Validation Messages</em>'.
+     * @see org.eclipse.sirius.components.view.DynamicDialogDescription#getValidationMessages()
+     * @see #getDynamicDialogDescription()
+     * @generated
+     */
+    EReference getDynamicDialogDescription_ValidationMessages();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DWidgetDescription <em>DWidget
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>DWidget Description</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetDescription
+     * @generated
+     */
+    EClass getDWidgetDescription();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.DWidgetDescription#getId
+     * <em>Id</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetDescription#getId()
+     * @see #getDWidgetDescription()
+     * @generated
+     */
+    EAttribute getDWidgetDescription_Id();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DWidgetDescription#getLabelExpression <em>Label Expression</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetDescription#getLabelExpression()
+     * @see #getDWidgetDescription()
+     * @generated
+     */
+    EAttribute getDWidgetDescription_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DWidgetDescription#getInitialValueExpression <em>Initial Value
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Initial Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetDescription#getInitialValueExpression()
+     * @see #getDWidgetDescription()
+     * @generated
+     */
+    EAttribute getDWidgetDescription_InitialValueExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.DWidgetDescription#getOutput <em>Output</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Output</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetDescription#getOutput()
+     * @see #getDWidgetDescription()
+     * @generated
+     */
+    EReference getDWidgetDescription_Output();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.DWidgetDescription#getInputs <em>Inputs</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Inputs</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetDescription#getInputs()
+     * @see #getDWidgetDescription()
+     * @generated
+     */
+    EReference getDWidgetDescription_Inputs();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DSelectWidgetDescription <em>DSelect
+     * Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>DSelect Widget Description</em>'.
+     * @see org.eclipse.sirius.components.view.DSelectWidgetDescription
+     * @generated
+     */
+    EClass getDSelectWidgetDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DSelectWidgetDescription#getOptionsExpression <em>Options
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Options Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DSelectWidgetDescription#getOptionsExpression()
+     * @see #getDSelectWidgetDescription()
+     * @generated
+     */
+    EAttribute getDSelectWidgetDescription_OptionsExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DSelectWidgetDescription#getOptionLabelExpression <em>Option Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Option Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DSelectWidgetDescription#getOptionLabelExpression()
+     * @see #getDSelectWidgetDescription()
+     * @generated
+     */
+    EAttribute getDSelectWidgetDescription_OptionLabelExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.DSelectWidgetDescription#getStyle <em>Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.DSelectWidgetDescription#getStyle()
+     * @see #getDSelectWidgetDescription()
+     * @generated
+     */
+    EReference getDSelectWidgetDescription_Style();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DTextFieldWidgetDescription
+     * <em>DText Field Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>DText Field Widget Description</em>'.
+     * @see org.eclipse.sirius.components.view.DTextFieldWidgetDescription
+     * @generated
+     */
+    EClass getDTextFieldWidgetDescription();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.DTextFieldWidgetDescription#getStyle <em>Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.DTextFieldWidgetDescription#getStyle()
+     * @see #getDTextFieldWidgetDescription()
+     * @generated
+     */
+    EReference getDTextFieldWidgetDescription_Style();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DValidationMessageDescription
+     * <em>DValidation Message Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>DValidation Message Description</em>'.
+     * @see org.eclipse.sirius.components.view.DValidationMessageDescription
+     * @generated
+     */
+    EClass getDValidationMessageDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DValidationMessageDescription#getPreCondition <em>Pre
+     * Condition</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Pre Condition</em>'.
+     * @see org.eclipse.sirius.components.view.DValidationMessageDescription#getPreCondition()
+     * @see #getDValidationMessageDescription()
+     * @generated
+     */
+    EAttribute getDValidationMessageDescription_PreCondition();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DValidationMessageDescription#getMessageExpression <em>Message
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Message Expression</em>'.
+     * @see org.eclipse.sirius.components.view.DValidationMessageDescription#getMessageExpression()
+     * @see #getDValidationMessageDescription()
+     * @generated
+     */
+    EAttribute getDValidationMessageDescription_MessageExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DValidationMessageDescription#getSeverity <em>Severity</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Severity</em>'.
+     * @see org.eclipse.sirius.components.view.DValidationMessageDescription#getSeverity()
+     * @see #getDValidationMessageDescription()
+     * @generated
+     */
+    EAttribute getDValidationMessageDescription_Severity();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DValidationMessageDescription#isBlocksApplyDialog <em>Blocks Apply
+     * Dialog</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Blocks Apply Dialog</em>'.
+     * @see org.eclipse.sirius.components.view.DValidationMessageDescription#isBlocksApplyDialog()
+     * @see #getDValidationMessageDescription()
+     * @generated
+     */
+    EAttribute getDValidationMessageDescription_BlocksApplyDialog();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DWidgetOutputDescription <em>DWidget
+     * Output Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>DWidget Output Description</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetOutputDescription
+     * @generated
+     */
+    EClass getDWidgetOutputDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.DWidgetOutputDescription#getName <em>Name</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetOutputDescription#getName()
+     * @see #getDWidgetOutputDescription()
+     * @generated
+     */
+    EAttribute getDWidgetOutputDescription_Name();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DWidgetObjectOutputDescription
+     * <em>DWidget Object Output Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>DWidget Object Output Description</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetObjectOutputDescription
+     * @generated
+     */
+    EClass getDWidgetObjectOutputDescription();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.DWidgetStringOutputDescription
+     * <em>DWidget String Output Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>DWidget String Output Description</em>'.
+     * @see org.eclipse.sirius.components.view.DWidgetStringOutputDescription
+     * @generated
+     */
+    EClass getDWidgetStringOutputDescription();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout
      * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9923,6 +10893,16 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EEnum getFlexDirection();
+
+    /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.DValidationMessageSeverity
+     * <em>DValidation Message Severity</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>DValidation Message Severity</em>'.
+     * @see org.eclipse.sirius.components.view.DValidationMessageSeverity
+     * @generated
+     */
+    EEnum getDValidationMessageSeverity();
 
     /**
      * Returns the meta object for data type '{@link java.lang.String <em>Identifier</em>}'. <!-- begin-user-doc -->
@@ -10024,6 +11004,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EReference VIEW__COLOR_PALETTES = eINSTANCE.getView_ColorPalettes();
+
+        /**
+         * The meta object literal for the '<em><b>Dynamic Dialog Folder</b></em>' reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference VIEW__DYNAMIC_DIALOG_FOLDER = eINSTANCE.getView_DynamicDialogFolder();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl <em>Color
@@ -11149,9 +12137,9 @@ public interface ViewPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
          * <em>Group Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.impl.GroupDescriptionImpl
          * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getGroupDescription()
+         * @generated
          */
         EClass GROUP_DESCRIPTION = eINSTANCE.getGroupDescription();
 
@@ -12460,6 +13448,292 @@ public interface ViewPackage extends EPackage {
         EAttribute SELECTION_DESCRIPTION__SELECTION_MESSAGE = eINSTANCE.getSelectionDescription_SelectionMessage();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DynamicDialogFolderImpl
+         * <em>Dynamic Dialog Folder</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DynamicDialogFolderImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDynamicDialogFolder()
+         * @generated
+         */
+        EClass DYNAMIC_DIALOG_FOLDER = eINSTANCE.getDynamicDialogFolder();
+
+        /**
+         * The meta object literal for the '<em><b>Sub Folders</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DYNAMIC_DIALOG_FOLDER__SUB_FOLDERS = eINSTANCE.getDynamicDialogFolder_SubFolders();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DYNAMIC_DIALOG_FOLDER__NAME = eINSTANCE.getDynamicDialogFolder_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Dynamic Dialogs</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DYNAMIC_DIALOG_FOLDER__DYNAMIC_DIALOGS = eINSTANCE.getDynamicDialogFolder_DynamicDialogs();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DynamicDialogDescriptionImpl
+         * <em>Dynamic Dialog Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DynamicDialogDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDynamicDialogDescription()
+         * @generated
+         */
+        EClass DYNAMIC_DIALOG_DESCRIPTION = eINSTANCE.getDynamicDialogDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DYNAMIC_DIALOG_DESCRIPTION__ID = eINSTANCE.getDynamicDialogDescription_Id();
+
+        /**
+         * The meta object literal for the '<em><b>Title Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DYNAMIC_DIALOG_DESCRIPTION__TITLE_EXPRESSION = eINSTANCE.getDynamicDialogDescription_TitleExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Description Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DYNAMIC_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION = eINSTANCE.getDynamicDialogDescription_DescriptionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Widget Descriptions</b></em>' containment reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DYNAMIC_DIALOG_DESCRIPTION__WIDGET_DESCRIPTIONS = eINSTANCE.getDynamicDialogDescription_WidgetDescriptions();
+
+        /**
+         * The meta object literal for the '<em><b>Is Valid Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DYNAMIC_DIALOG_DESCRIPTION__IS_VALID_EXPRESSION = eINSTANCE.getDynamicDialogDescription_IsValidExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DYNAMIC_DIALOG_DESCRIPTION__BODY = eINSTANCE.getDynamicDialogDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Validation Messages</b></em>' containment reference list feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DYNAMIC_DIALOG_DESCRIPTION__VALIDATION_MESSAGES = eINSTANCE.getDynamicDialogDescription_ValidationMessages();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DWidgetDescriptionImpl
+         * <em>DWidget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DWidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetDescription()
+         * @generated
+         */
+        EClass DWIDGET_DESCRIPTION = eINSTANCE.getDWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DWIDGET_DESCRIPTION__ID = eINSTANCE.getDWidgetDescription_Id();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DWIDGET_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getDWidgetDescription_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Initial Value Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DWIDGET_DESCRIPTION__INITIAL_VALUE_EXPRESSION = eINSTANCE.getDWidgetDescription_InitialValueExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Output</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DWIDGET_DESCRIPTION__OUTPUT = eINSTANCE.getDWidgetDescription_Output();
+
+        /**
+         * The meta object literal for the '<em><b>Inputs</b></em>' reference list feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DWIDGET_DESCRIPTION__INPUTS = eINSTANCE.getDWidgetDescription_Inputs();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DSelectWidgetDescriptionImpl
+         * <em>DSelect Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DSelectWidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDSelectWidgetDescription()
+         * @generated
+         */
+        EClass DSELECT_WIDGET_DESCRIPTION = eINSTANCE.getDSelectWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Options Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DSELECT_WIDGET_DESCRIPTION__OPTIONS_EXPRESSION = eINSTANCE.getDSelectWidgetDescription_OptionsExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Option Label Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DSELECT_WIDGET_DESCRIPTION__OPTION_LABEL_EXPRESSION = eINSTANCE.getDSelectWidgetDescription_OptionLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DSELECT_WIDGET_DESCRIPTION__STYLE = eINSTANCE.getDSelectWidgetDescription_Style();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.DTextFieldWidgetDescriptionImpl <em>DText Field Widget
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DTextFieldWidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDTextFieldWidgetDescription()
+         * @generated
+         */
+        EClass DTEXT_FIELD_WIDGET_DESCRIPTION = eINSTANCE.getDTextFieldWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DTEXT_FIELD_WIDGET_DESCRIPTION__STYLE = eINSTANCE.getDTextFieldWidgetDescription_Style();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.DValidationMessageDescriptionImpl <em>DValidation Message
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DValidationMessageDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDValidationMessageDescription()
+         * @generated
+         */
+        EClass DVALIDATION_MESSAGE_DESCRIPTION = eINSTANCE.getDValidationMessageDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Pre Condition</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DVALIDATION_MESSAGE_DESCRIPTION__PRE_CONDITION = eINSTANCE.getDValidationMessageDescription_PreCondition();
+
+        /**
+         * The meta object literal for the '<em><b>Message Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DVALIDATION_MESSAGE_DESCRIPTION__MESSAGE_EXPRESSION = eINSTANCE.getDValidationMessageDescription_MessageExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Severity</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DVALIDATION_MESSAGE_DESCRIPTION__SEVERITY = eINSTANCE.getDValidationMessageDescription_Severity();
+
+        /**
+         * The meta object literal for the '<em><b>Blocks Apply Dialog</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DVALIDATION_MESSAGE_DESCRIPTION__BLOCKS_APPLY_DIALOG = eINSTANCE.getDValidationMessageDescription_BlocksApplyDialog();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.DWidgetOutputDescriptionImpl
+         * <em>DWidget Output Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DWidgetOutputDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetOutputDescription()
+         * @generated
+         */
+        EClass DWIDGET_OUTPUT_DESCRIPTION = eINSTANCE.getDWidgetOutputDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DWIDGET_OUTPUT_DESCRIPTION__NAME = eINSTANCE.getDWidgetOutputDescription_Name();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.DWidgetObjectOutputDescriptionImpl <em>DWidget Object Output
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DWidgetObjectOutputDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetObjectOutputDescription()
+         * @generated
+         */
+        EClass DWIDGET_OBJECT_OUTPUT_DESCRIPTION = eINSTANCE.getDWidgetObjectOutputDescription();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.impl.DWidgetStringOutputDescriptionImpl <em>DWidget String Output
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.DWidgetStringOutputDescriptionImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDWidgetStringOutputDescription()
+         * @generated
+         */
+        EClass DWIDGET_STRING_OUTPUT_DESCRIPTION = eINSTANCE.getDWidgetStringOutputDescription();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.LayoutDirection <em>Layout
          * Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -12528,6 +13802,16 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EEnum FLEX_DIRECTION = eINSTANCE.getFlexDirection();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.DValidationMessageSeverity
+         * <em>DValidation Message Severity</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.DValidationMessageSeverity
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDValidationMessageSeverity()
+         * @generated
+         */
+        EEnum DVALIDATION_MESSAGE_SEVERITY = eINSTANCE.getDValidationMessageSeverity();
 
         /**
          * The meta object literal for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc

@@ -1,0 +1,81 @@
+input Variable {
+  name: String!
+  value: String!
+}
+
+extend type EditingContext {
+  dynamicDialog(objectId: ID!, dialogDescriptionId: ID!) : DynamicDialog!
+  dynamicDialogQueryObjects(dialogDescriptionId: ID!, widgetDescriptionId: ID!, variables: [Variable]) : [Item]!
+  dynamicDialogValidationMessages(objectId: ID!, dialogDescriptionId: ID!, variables: [Variable]) : [ValidationMessage]!
+}
+
+type DynamicDialog {
+    id: ID!
+    label: String
+    widgets: [DWidget]!
+}
+
+interface DWidget {
+  id: ID!
+  descriptionId: ID!
+  parentId: ID!
+  label: String
+  outputVariableName: String
+  inputVariableNames: [String]
+  required: Boolean
+  initialValue: String
+}
+
+type DSelectWidget implements DWidget{
+  id: ID!
+  descriptionId: ID!
+  parentId: ID!
+  label: String
+  outputVariableName: String
+  inputVariableNames: [String]
+  required: Boolean
+  initialValue: String
+}
+
+type DTextFieldWidget implements DWidget{
+  id: ID!
+  descriptionId: ID!
+  parentId: ID!
+  label: String
+  outputVariableName: String
+  inputVariableNames: [String]
+  required: Boolean
+  initialValue: String
+}
+
+type Item {
+  id: ID!
+  label: String!
+}
+
+type ValidationMessage {
+  severity: MessageSeverityEnum!
+  message: String!
+  blocksApplyDialog: Boolean!
+}
+
+enum MessageSeverityEnum {
+  INFO
+  WARNING
+  ERROR
+}
+
+extend type Mutation {
+  applyDynamicDialog (input: ApplyDynamicDialogInput!): ApplyDynamicDialogPayload!
+}
+
+input ApplyDynamicDialogInput {
+  id: ID!
+  editingContextId: ID!
+  dialogDescriptionId: ID!
+  objectId: ID!
+  widgetVariables: [Variable]!
+}
+
+union ApplyDynamicDialogPayload = SuccessPayload | ErrorPayload
+

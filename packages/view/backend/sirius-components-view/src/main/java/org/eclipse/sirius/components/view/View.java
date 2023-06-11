@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.View#getDescriptions <em>Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.View#getColorPalettes <em>Color Palettes</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.View#getDynamicDialogFolder <em>Dynamic Dialog Folder</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getView()
@@ -53,5 +54,28 @@ public interface View extends EObject {
      * @generated
      */
     EList<ColorPalette> getColorPalettes();
+
+    /**
+     * Returns the value of the '<em><b>Dynamic Dialog Folder</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Dynamic Dialog Folder</em>' containment reference.
+     * @see #setDynamicDialogFolder(DynamicDialogFolder)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getView_DynamicDialogFolder()
+     * @model containment="true"
+     * @generated
+     */
+    DynamicDialogFolder getDynamicDialogFolder();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.View#getDynamicDialogFolder <em>Dynamic Dialog
+     * Folder</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Dynamic Dialog Folder</em>' containment reference.
+     * @see #getDynamicDialogFolder()
+     * @generated
+     */
+    void setDynamicDialogFolder(DynamicDialogFolder value);
 
 } // View

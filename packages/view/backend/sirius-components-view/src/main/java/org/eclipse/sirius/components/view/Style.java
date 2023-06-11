@@ -45,7 +45,8 @@ public interface Style extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.Style#getColor <em>Color</em>}' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Color</em>' reference.
+     * @param value
+     *            the new value of the '<em>Color</em>' reference.
      * @generated
      * @see #getColor()
      */

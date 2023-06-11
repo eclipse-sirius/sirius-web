@@ -182,7 +182,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         EdgeDescription edgeChild = ViewFactory.eINSTANCE.createEdgeDescription();
         edgeChild.setName("Edge");
         EdgeStyle newEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
-       // newEdgeStyle.setColor("#002639");
+        // newEdgeStyle.setColor("#002639");
         edgeChild.setStyle(newEdgeStyle);
         edgeChild.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));

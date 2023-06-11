@@ -41,6 +41,13 @@ import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.CreateView;
+import org.eclipse.sirius.components.view.DSelectWidgetDescription;
+import org.eclipse.sirius.components.view.DTextFieldWidgetDescription;
+import org.eclipse.sirius.components.view.DValidationMessageDescription;
+import org.eclipse.sirius.components.view.DWidgetDescription;
+import org.eclipse.sirius.components.view.DWidgetObjectOutputDescription;
+import org.eclipse.sirius.components.view.DWidgetOutputDescription;
+import org.eclipse.sirius.components.view.DWidgetStringOutputDescription;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DeleteView;
@@ -48,6 +55,8 @@ import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.DropTool;
+import org.eclipse.sirius.components.view.DynamicDialogDescription;
+import org.eclipse.sirius.components.view.DynamicDialogFolder;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeReconnectionTool;
@@ -1030,6 +1039,77 @@ public class ViewSwitch<T> extends Switch<T> {
             case ViewPackage.SELECTION_DESCRIPTION: {
                 SelectionDescription selectionDescription = (SelectionDescription) theEObject;
                 T result = this.caseSelectionDescription(selectionDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DYNAMIC_DIALOG_FOLDER: {
+                DynamicDialogFolder dynamicDialogFolder = (DynamicDialogFolder) theEObject;
+                T result = this.caseDynamicDialogFolder(dynamicDialogFolder);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DYNAMIC_DIALOG_DESCRIPTION: {
+                DynamicDialogDescription dynamicDialogDescription = (DynamicDialogDescription) theEObject;
+                T result = this.caseDynamicDialogDescription(dynamicDialogDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DWIDGET_DESCRIPTION: {
+                DWidgetDescription dWidgetDescription = (DWidgetDescription) theEObject;
+                T result = this.caseDWidgetDescription(dWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DWIDGET_OUTPUT_DESCRIPTION: {
+                DWidgetOutputDescription dWidgetOutputDescription = (DWidgetOutputDescription) theEObject;
+                T result = this.caseDWidgetOutputDescription(dWidgetOutputDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DWIDGET_OBJECT_OUTPUT_DESCRIPTION: {
+                DWidgetObjectOutputDescription dWidgetObjectOutputDescription = (DWidgetObjectOutputDescription) theEObject;
+                T result = this.caseDWidgetObjectOutputDescription(dWidgetObjectOutputDescription);
+                if (result == null)
+                    result = this.caseDWidgetOutputDescription(dWidgetObjectOutputDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DWIDGET_STRING_OUTPUT_DESCRIPTION: {
+                DWidgetStringOutputDescription dWidgetStringOutputDescription = (DWidgetStringOutputDescription) theEObject;
+                T result = this.caseDWidgetStringOutputDescription(dWidgetStringOutputDescription);
+                if (result == null)
+                    result = this.caseDWidgetOutputDescription(dWidgetStringOutputDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DSELECT_WIDGET_DESCRIPTION: {
+                DSelectWidgetDescription dSelectWidgetDescription = (DSelectWidgetDescription) theEObject;
+                T result = this.caseDSelectWidgetDescription(dSelectWidgetDescription);
+                if (result == null)
+                    result = this.caseDWidgetDescription(dSelectWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DTEXT_FIELD_WIDGET_DESCRIPTION: {
+                DTextFieldWidgetDescription dTextFieldWidgetDescription = (DTextFieldWidgetDescription) theEObject;
+                T result = this.caseDTextFieldWidgetDescription(dTextFieldWidgetDescription);
+                if (result == null)
+                    result = this.caseDWidgetDescription(dTextFieldWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.DVALIDATION_MESSAGE_DESCRIPTION: {
+                DValidationMessageDescription dValidationMessageDescription = (DValidationMessageDescription) theEObject;
+                T result = this.caseDValidationMessageDescription(dValidationMessageDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2341,6 +2421,141 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseSelectionDescription(SelectionDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Dynamic Dialog Folder</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Dynamic Dialog Folder</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDynamicDialogFolder(DynamicDialogFolder object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Dynamic Dialog Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Dynamic Dialog Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDynamicDialogDescription(DynamicDialogDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>DWidget Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>DWidget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDWidgetDescription(DWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>DSelect Widget Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>DSelect Widget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDSelectWidgetDescription(DSelectWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>DText Field Widget Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>DText Field Widget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDTextFieldWidgetDescription(DTextFieldWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>DValidation Message Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>DValidation Message Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDValidationMessageDescription(DValidationMessageDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>DWidget Output Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>DWidget Output Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDWidgetOutputDescription(DWidgetOutputDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>DWidget Object Output Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>DWidget Object Output Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDWidgetObjectOutputDescription(DWidgetObjectOutputDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>DWidget String Output Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>DWidget String Output Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDWidgetStringOutputDescription(DWidgetStringOutputDescription object) {
         return null;
     }
 

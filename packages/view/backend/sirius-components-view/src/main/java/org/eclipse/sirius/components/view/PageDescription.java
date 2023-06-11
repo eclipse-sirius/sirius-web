@@ -42,10 +42,10 @@ public interface PageDescription extends EObject {
      * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Name</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.Identifier"
-     * @generated
      * @see #setName(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_Name()
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
      */
     String getName();
 
@@ -53,9 +53,10 @@ public interface PageDescription extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.PageDescription#getName <em>Name</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Name</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
      * @see #getName()
+     * @generated
      */
     void setName(String value);
 
@@ -75,9 +76,10 @@ public interface PageDescription extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.PageDescription#getLabelExpression <em>Label
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Label Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Label Expression</em>' attribute.
      * @see #getLabelExpression()
+     * @generated
      */
     void setLabelExpression(String value);
 
@@ -143,9 +145,9 @@ public interface PageDescription extends EObject {
      * type {@link org.eclipse.sirius.components.view.ButtonDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Toolbar Actions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_ToolbarActions()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.ViewPackage#getPageDescription_ToolbarActions()
      */
     EList<ButtonDescription> getToolbarActions();
 

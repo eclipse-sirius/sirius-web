@@ -43,12 +43,20 @@ import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.CreateView;
+import org.eclipse.sirius.components.view.DSelectWidgetDescription;
+import org.eclipse.sirius.components.view.DTextFieldWidgetDescription;
+import org.eclipse.sirius.components.view.DValidationMessageDescription;
+import org.eclipse.sirius.components.view.DValidationMessageSeverity;
+import org.eclipse.sirius.components.view.DWidgetObjectOutputDescription;
+import org.eclipse.sirius.components.view.DWidgetStringOutputDescription;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.DeleteView;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.DropTool;
+import org.eclipse.sirius.components.view.DynamicDialogDescription;
+import org.eclipse.sirius.components.view.DynamicDialogFolder;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgePalette;
 import org.eclipse.sirius.components.view.EdgeStyle;
@@ -290,6 +298,20 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createEdgePalette();
             case ViewPackage.SELECTION_DESCRIPTION:
                 return this.createSelectionDescription();
+            case ViewPackage.DYNAMIC_DIALOG_FOLDER:
+                return this.createDynamicDialogFolder();
+            case ViewPackage.DYNAMIC_DIALOG_DESCRIPTION:
+                return this.createDynamicDialogDescription();
+            case ViewPackage.DWIDGET_OBJECT_OUTPUT_DESCRIPTION:
+                return this.createDWidgetObjectOutputDescription();
+            case ViewPackage.DWIDGET_STRING_OUTPUT_DESCRIPTION:
+                return this.createDWidgetStringOutputDescription();
+            case ViewPackage.DSELECT_WIDGET_DESCRIPTION:
+                return this.createDSelectWidgetDescription();
+            case ViewPackage.DTEXT_FIELD_WIDGET_DESCRIPTION:
+                return this.createDTextFieldWidgetDescription();
+            case ViewPackage.DVALIDATION_MESSAGE_DESCRIPTION:
+                return this.createDValidationMessageDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -317,6 +339,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createGroupDisplayModeFromString(eDataType, initialValue);
             case ViewPackage.FLEX_DIRECTION:
                 return this.createFlexDirectionFromString(eDataType, initialValue);
+            case ViewPackage.DVALIDATION_MESSAGE_SEVERITY:
+                return this.createDValidationMessageSeverityFromString(eDataType, initialValue);
             case ViewPackage.IDENTIFIER:
                 return this.createIdentifierFromString(eDataType, initialValue);
             case ViewPackage.INTERPRETED_EXPRESSION:
@@ -354,6 +378,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.convertGroupDisplayModeToString(eDataType, instanceValue);
             case ViewPackage.FLEX_DIRECTION:
                 return this.convertFlexDirectionToString(eDataType, instanceValue);
+            case ViewPackage.DVALIDATION_MESSAGE_SEVERITY:
+                return this.convertDValidationMessageSeverityToString(eDataType, instanceValue);
             case ViewPackage.IDENTIFIER:
                 return this.convertIdentifierToString(eDataType, instanceValue);
             case ViewPackage.INTERPRETED_EXPRESSION:
@@ -1188,6 +1214,83 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      *
      * @generated
      */
+    @Override
+    public DynamicDialogFolder createDynamicDialogFolder() {
+        DynamicDialogFolderImpl dynamicDialogFolder = new DynamicDialogFolderImpl();
+        return dynamicDialogFolder;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DynamicDialogDescription createDynamicDialogDescription() {
+        DynamicDialogDescriptionImpl dynamicDialogDescription = new DynamicDialogDescriptionImpl();
+        return dynamicDialogDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DSelectWidgetDescription createDSelectWidgetDescription() {
+        DSelectWidgetDescriptionImpl dSelectWidgetDescription = new DSelectWidgetDescriptionImpl();
+        return dSelectWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DTextFieldWidgetDescription createDTextFieldWidgetDescription() {
+        DTextFieldWidgetDescriptionImpl dTextFieldWidgetDescription = new DTextFieldWidgetDescriptionImpl();
+        return dTextFieldWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DValidationMessageDescription createDValidationMessageDescription() {
+        DValidationMessageDescriptionImpl dValidationMessageDescription = new DValidationMessageDescriptionImpl();
+        return dValidationMessageDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DWidgetObjectOutputDescription createDWidgetObjectOutputDescription() {
+        DWidgetObjectOutputDescriptionImpl dWidgetObjectOutputDescription = new DWidgetObjectOutputDescriptionImpl();
+        return dWidgetObjectOutputDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DWidgetStringOutputDescription createDWidgetStringOutputDescription() {
+        DWidgetStringOutputDescriptionImpl dWidgetStringOutputDescription = new DWidgetStringOutputDescriptionImpl();
+        return dWidgetStringOutputDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public LayoutDirection createLayoutDirectionFromString(EDataType eDataType, String initialValue) {
         LayoutDirection result = LayoutDirection.get(initialValue);
         if (result == null)
@@ -1327,6 +1430,27 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
      * @generated
      */
     public String convertFlexDirectionToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public DValidationMessageSeverity createDValidationMessageSeverityFromString(EDataType eDataType, String initialValue) {
+        DValidationMessageSeverity result = DValidationMessageSeverity.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertDValidationMessageSeverityToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

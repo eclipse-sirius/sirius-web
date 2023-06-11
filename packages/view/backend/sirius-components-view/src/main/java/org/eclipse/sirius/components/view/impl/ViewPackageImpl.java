@@ -19,103 +19,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.BarChartDescription;
-import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
-import org.eclipse.sirius.components.view.BorderStyle;
-import org.eclipse.sirius.components.view.ButtonDescription;
-import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
-import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.CheckboxDescription;
-import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
-import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.Conditional;
-import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
-import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
-import org.eclipse.sirius.components.view.CreateInstance;
-import org.eclipse.sirius.components.view.CreateView;
-import org.eclipse.sirius.components.view.DeleteElement;
-import org.eclipse.sirius.components.view.DeleteTool;
-import org.eclipse.sirius.components.view.DeleteView;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.DiagramPalette;
-import org.eclipse.sirius.components.view.DropTool;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgePalette;
-import org.eclipse.sirius.components.view.EdgeReconnectionTool;
-import org.eclipse.sirius.components.view.EdgeStyle;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.FlexDirection;
-import org.eclipse.sirius.components.view.FlexboxContainerDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.GroupDisplayMode;
-import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
-import org.eclipse.sirius.components.view.ImageDescription;
-import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
-import org.eclipse.sirius.components.view.LabelDescription;
-import org.eclipse.sirius.components.view.LabelDescriptionStyle;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.LabelStyle;
-import org.eclipse.sirius.components.view.LayoutDirection;
-import org.eclipse.sirius.components.view.LayoutStrategyDescription;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.LinkDescription;
-import org.eclipse.sirius.components.view.LinkDescriptionStyle;
-import org.eclipse.sirius.components.view.ListDescription;
-import org.eclipse.sirius.components.view.ListDescriptionStyle;
-import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
-import org.eclipse.sirius.components.view.MultiSelectDescription;
-import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.NodeContainmentKind;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodePalette;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.Operation;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.PieChartDescription;
-import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
-import org.eclipse.sirius.components.view.RadioDescription;
-import org.eclipse.sirius.components.view.RadioDescriptionStyle;
-import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.RichTextDescription;
-import org.eclipse.sirius.components.view.SelectDescription;
-import org.eclipse.sirius.components.view.SelectDescriptionStyle;
-import org.eclipse.sirius.components.view.SelectionDescription;
-import org.eclipse.sirius.components.view.SetValue;
-import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.Style;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.TextAreaDescription;
-import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
-import org.eclipse.sirius.components.view.TextfieldDescription;
-import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
-import org.eclipse.sirius.components.view.Tool;
-import org.eclipse.sirius.components.view.UnsetValue;
-import org.eclipse.sirius.components.view.UserColor;
-import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.WidgetDescription;
-import org.eclipse.sirius.components.view.WidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.*;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -744,6 +648,69 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      *
      * @generated
      */
+    private EClass dynamicDialogFolderEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dynamicDialogDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dSelectWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dTextFieldWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dValidationMessageDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dWidgetOutputDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dWidgetObjectOutputDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass dWidgetStringOutputDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum layoutDirectionEEnum = null;
 
     /**
@@ -787,6 +754,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EEnum flexDirectionEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum dValidationMessageSeverityEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -912,6 +886,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EReference getView_ColorPalettes() {
         return (EReference) this.viewEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getView_DynamicDialogFolder() {
+        return (EReference) this.viewEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -3720,6 +3704,336 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getDynamicDialogFolder() {
+        return this.dynamicDialogFolderEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDynamicDialogFolder_SubFolders() {
+        return (EReference) this.dynamicDialogFolderEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDynamicDialogFolder_Name() {
+        return (EAttribute) this.dynamicDialogFolderEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDynamicDialogFolder_DynamicDialogs() {
+        return (EReference) this.dynamicDialogFolderEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDynamicDialogDescription() {
+        return this.dynamicDialogDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDynamicDialogDescription_Id() {
+        return (EAttribute) this.dynamicDialogDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDynamicDialogDescription_TitleExpression() {
+        return (EAttribute) this.dynamicDialogDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDynamicDialogDescription_DescriptionExpression() {
+        return (EAttribute) this.dynamicDialogDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDynamicDialogDescription_WidgetDescriptions() {
+        return (EReference) this.dynamicDialogDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDynamicDialogDescription_IsValidExpression() {
+        return (EAttribute) this.dynamicDialogDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDynamicDialogDescription_Body() {
+        return (EReference) this.dynamicDialogDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDynamicDialogDescription_ValidationMessages() {
+        return (EReference) this.dynamicDialogDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDWidgetDescription() {
+        return this.dWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDWidgetDescription_Id() {
+        return (EAttribute) this.dWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDWidgetDescription_LabelExpression() {
+        return (EAttribute) this.dWidgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDWidgetDescription_InitialValueExpression() {
+        return (EAttribute) this.dWidgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDWidgetDescription_Output() {
+        return (EReference) this.dWidgetDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDWidgetDescription_Inputs() {
+        return (EReference) this.dWidgetDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDSelectWidgetDescription() {
+        return this.dSelectWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDSelectWidgetDescription_OptionsExpression() {
+        return (EAttribute) this.dSelectWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDSelectWidgetDescription_OptionLabelExpression() {
+        return (EAttribute) this.dSelectWidgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDSelectWidgetDescription_Style() {
+        return (EReference) this.dSelectWidgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDTextFieldWidgetDescription() {
+        return this.dTextFieldWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDTextFieldWidgetDescription_Style() {
+        return (EReference) this.dTextFieldWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDValidationMessageDescription() {
+        return this.dValidationMessageDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDValidationMessageDescription_PreCondition() {
+        return (EAttribute) this.dValidationMessageDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDValidationMessageDescription_MessageExpression() {
+        return (EAttribute) this.dValidationMessageDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDValidationMessageDescription_Severity() {
+        return (EAttribute) this.dValidationMessageDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDValidationMessageDescription_BlocksApplyDialog() {
+        return (EAttribute) this.dValidationMessageDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDWidgetOutputDescription() {
+        return this.dWidgetOutputDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDWidgetOutputDescription_Name() {
+        return (EAttribute) this.dWidgetOutputDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDWidgetObjectOutputDescription() {
+        return this.dWidgetObjectOutputDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDWidgetStringOutputDescription() {
+        return this.dWidgetStringOutputDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getLayoutDirection() {
         return this.layoutDirectionEEnum;
     }
@@ -3782,6 +4096,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EEnum getFlexDirection() {
         return this.flexDirectionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EEnum getDValidationMessageSeverity() {
+        return this.dValidationMessageSeverityEEnum;
     }
 
     /**
@@ -3866,6 +4190,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.viewEClass = this.createEClass(VIEW);
         this.createEReference(this.viewEClass, VIEW__DESCRIPTIONS);
         this.createEReference(this.viewEClass, VIEW__COLOR_PALETTES);
+        this.createEReference(this.viewEClass, VIEW__DYNAMIC_DIALOG_FOLDER);
 
         this.colorPaletteEClass = this.createEClass(COLOR_PALETTE);
         this.createEAttribute(this.colorPaletteEClass, COLOR_PALETTE__NAME);
@@ -4234,6 +4559,48 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.selectionDescriptionEClass, SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.selectionDescriptionEClass, SELECTION_DESCRIPTION__SELECTION_MESSAGE);
 
+        this.dynamicDialogFolderEClass = this.createEClass(DYNAMIC_DIALOG_FOLDER);
+        this.createEReference(this.dynamicDialogFolderEClass, DYNAMIC_DIALOG_FOLDER__SUB_FOLDERS);
+        this.createEAttribute(this.dynamicDialogFolderEClass, DYNAMIC_DIALOG_FOLDER__NAME);
+        this.createEReference(this.dynamicDialogFolderEClass, DYNAMIC_DIALOG_FOLDER__DYNAMIC_DIALOGS);
+
+        this.dynamicDialogDescriptionEClass = this.createEClass(DYNAMIC_DIALOG_DESCRIPTION);
+        this.createEAttribute(this.dynamicDialogDescriptionEClass, DYNAMIC_DIALOG_DESCRIPTION__ID);
+        this.createEAttribute(this.dynamicDialogDescriptionEClass, DYNAMIC_DIALOG_DESCRIPTION__TITLE_EXPRESSION);
+        this.createEAttribute(this.dynamicDialogDescriptionEClass, DYNAMIC_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION);
+        this.createEReference(this.dynamicDialogDescriptionEClass, DYNAMIC_DIALOG_DESCRIPTION__WIDGET_DESCRIPTIONS);
+        this.createEAttribute(this.dynamicDialogDescriptionEClass, DYNAMIC_DIALOG_DESCRIPTION__IS_VALID_EXPRESSION);
+        this.createEReference(this.dynamicDialogDescriptionEClass, DYNAMIC_DIALOG_DESCRIPTION__BODY);
+        this.createEReference(this.dynamicDialogDescriptionEClass, DYNAMIC_DIALOG_DESCRIPTION__VALIDATION_MESSAGES);
+
+        this.dWidgetDescriptionEClass = this.createEClass(DWIDGET_DESCRIPTION);
+        this.createEAttribute(this.dWidgetDescriptionEClass, DWIDGET_DESCRIPTION__ID);
+        this.createEAttribute(this.dWidgetDescriptionEClass, DWIDGET_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEAttribute(this.dWidgetDescriptionEClass, DWIDGET_DESCRIPTION__INITIAL_VALUE_EXPRESSION);
+        this.createEReference(this.dWidgetDescriptionEClass, DWIDGET_DESCRIPTION__OUTPUT);
+        this.createEReference(this.dWidgetDescriptionEClass, DWIDGET_DESCRIPTION__INPUTS);
+
+        this.dWidgetOutputDescriptionEClass = this.createEClass(DWIDGET_OUTPUT_DESCRIPTION);
+        this.createEAttribute(this.dWidgetOutputDescriptionEClass, DWIDGET_OUTPUT_DESCRIPTION__NAME);
+
+        this.dWidgetObjectOutputDescriptionEClass = this.createEClass(DWIDGET_OBJECT_OUTPUT_DESCRIPTION);
+
+        this.dWidgetStringOutputDescriptionEClass = this.createEClass(DWIDGET_STRING_OUTPUT_DESCRIPTION);
+
+        this.dSelectWidgetDescriptionEClass = this.createEClass(DSELECT_WIDGET_DESCRIPTION);
+        this.createEAttribute(this.dSelectWidgetDescriptionEClass, DSELECT_WIDGET_DESCRIPTION__OPTIONS_EXPRESSION);
+        this.createEAttribute(this.dSelectWidgetDescriptionEClass, DSELECT_WIDGET_DESCRIPTION__OPTION_LABEL_EXPRESSION);
+        this.createEReference(this.dSelectWidgetDescriptionEClass, DSELECT_WIDGET_DESCRIPTION__STYLE);
+
+        this.dTextFieldWidgetDescriptionEClass = this.createEClass(DTEXT_FIELD_WIDGET_DESCRIPTION);
+        this.createEReference(this.dTextFieldWidgetDescriptionEClass, DTEXT_FIELD_WIDGET_DESCRIPTION__STYLE);
+
+        this.dValidationMessageDescriptionEClass = this.createEClass(DVALIDATION_MESSAGE_DESCRIPTION);
+        this.createEAttribute(this.dValidationMessageDescriptionEClass, DVALIDATION_MESSAGE_DESCRIPTION__PRE_CONDITION);
+        this.createEAttribute(this.dValidationMessageDescriptionEClass, DVALIDATION_MESSAGE_DESCRIPTION__MESSAGE_EXPRESSION);
+        this.createEAttribute(this.dValidationMessageDescriptionEClass, DVALIDATION_MESSAGE_DESCRIPTION__SEVERITY);
+        this.createEAttribute(this.dValidationMessageDescriptionEClass, DVALIDATION_MESSAGE_DESCRIPTION__BLOCKS_APPLY_DIALOG);
+
         // Create enums
         this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -4242,6 +4609,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
+        this.dValidationMessageSeverityEEnum = this.createEEnum(DVALIDATION_MESSAGE_SEVERITY);
 
         // Create data types
         this.identifierEDataType = this.createEDataType(IDENTIFIER);
@@ -4374,6 +4742,10 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.listDescriptionStyleEClass.getESuperTypes().add(this.getLabelStyle());
         this.conditionalListDescriptionStyleEClass.getESuperTypes().add(this.getConditional());
         this.conditionalListDescriptionStyleEClass.getESuperTypes().add(this.getListDescriptionStyle());
+        this.dWidgetObjectOutputDescriptionEClass.getESuperTypes().add(this.getDWidgetOutputDescription());
+        this.dWidgetStringOutputDescriptionEClass.getESuperTypes().add(this.getDWidgetOutputDescription());
+        this.dSelectWidgetDescriptionEClass.getESuperTypes().add(this.getDWidgetDescription());
+        this.dTextFieldWidgetDescriptionEClass.getESuperTypes().add(this.getDWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -4381,6 +4753,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getView_ColorPalettes(), this.getColorPalette(), null, "colorPalettes", null, 0, -1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getView_DynamicDialogFolder(), this.getDynamicDialogFolder(), null, "dynamicDialogFolder", null, 0, 1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.colorPaletteEClass, ColorPalette.class, "ColorPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getColorPalette_Name(), this.getIdentifier(), "name", null, 1, 1, ColorPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -4953,6 +5327,72 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEAttribute(this.getSelectionDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.dynamicDialogFolderEClass, DynamicDialogFolder.class, "DynamicDialogFolder", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getDynamicDialogFolder_SubFolders(), this.getDynamicDialogFolder(), null, "subFolders", null, 0, -1, DynamicDialogFolder.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDynamicDialogFolder_Name(), this.ecorePackage.getEString(), "name", null, 0, 1, DynamicDialogFolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDynamicDialogFolder_DynamicDialogs(), this.getDynamicDialogDescription(), null, "dynamicDialogs", null, 0, -1, DynamicDialogFolder.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dynamicDialogDescriptionEClass, DynamicDialogDescription.class, "DynamicDialogDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDynamicDialogDescription_Id(), this.getIdentifier(), "id", null, 0, 1, DynamicDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDynamicDialogDescription_TitleExpression(), this.getInterpretedExpression(), "titleExpression", null, 0, 1, DynamicDialogDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDynamicDialogDescription_DescriptionExpression(), this.getInterpretedExpression(), "descriptionExpression", null, 0, 1, DynamicDialogDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDynamicDialogDescription_WidgetDescriptions(), this.getDWidgetDescription(), null, "widgetDescriptions", null, 0, -1, DynamicDialogDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDynamicDialogDescription_IsValidExpression(), this.getInterpretedExpression(), "isValidExpression", null, 0, 1, DynamicDialogDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDynamicDialogDescription_Body(), this.getOperation(), null, "body", null, 0, -1, DynamicDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDynamicDialogDescription_ValidationMessages(), this.getDValidationMessageDescription(), null, "validationMessages", null, 0, -1, DynamicDialogDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dWidgetDescriptionEClass, DWidgetDescription.class, "DWidgetDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDWidgetDescription_Id(), this.getIdentifier(), "id", null, 0, 1, DWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDWidgetDescription_LabelExpression(), this.getInterpretedExpression(), "labelExpression", null, 0, 1, DWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDWidgetDescription_InitialValueExpression(), this.getInterpretedExpression(), "initialValueExpression", null, 0, 1, DWidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDWidgetDescription_Output(), this.getDWidgetOutputDescription(), null, "output", null, 0, 1, DWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDWidgetDescription_Inputs(), this.getDWidgetOutputDescription(), null, "inputs", null, 0, -1, DWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dWidgetOutputDescriptionEClass, DWidgetOutputDescription.class, "DWidgetOutputDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDWidgetOutputDescription_Name(), this.ecorePackage.getEString(), "name", null, 0, 1, DWidgetOutputDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dWidgetObjectOutputDescriptionEClass, DWidgetObjectOutputDescription.class, "DWidgetObjectOutputDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.dWidgetStringOutputDescriptionEClass, DWidgetStringOutputDescription.class, "DWidgetStringOutputDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.dSelectWidgetDescriptionEClass, DSelectWidgetDescription.class, "DSelectWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDSelectWidgetDescription_OptionsExpression(), this.getInterpretedExpression(), "optionsExpression", null, 0, 1, DSelectWidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDSelectWidgetDescription_OptionLabelExpression(), this.getInterpretedExpression(), "optionLabelExpression", null, 0, 1, DSelectWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDSelectWidgetDescription_Style(), this.getSelectDescriptionStyle(), null, "style", null, 0, 1, DSelectWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dTextFieldWidgetDescriptionEClass, DTextFieldWidgetDescription.class, "DTextFieldWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getDTextFieldWidgetDescription_Style(), this.getSelectDescriptionStyle(), null, "style", null, 0, 1, DTextFieldWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.dValidationMessageDescriptionEClass, DValidationMessageDescription.class, "DValidationMessageDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDValidationMessageDescription_PreCondition(), this.getInterpretedExpression(), "preCondition", null, 0, 1, DValidationMessageDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDValidationMessageDescription_MessageExpression(), this.getInterpretedExpression(), "messageExpression", null, 0, 1, DValidationMessageDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDValidationMessageDescription_Severity(), this.getDValidationMessageSeverity(), "severity", null, 0, 1, DValidationMessageDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDValidationMessageDescription_BlocksApplyDialog(), this.ecorePackage.getEBoolean(), "blocksApplyDialog", null, 0, 1, DValidationMessageDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Initialize enums and add enum literals
         this.initEEnum(this.layoutDirectionEEnum, LayoutDirection.class, "LayoutDirection");
         this.addEEnumLiteral(this.layoutDirectionEEnum, LayoutDirection.COLUMN);
@@ -4996,6 +5436,11 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.addEEnumLiteral(this.flexDirectionEEnum, FlexDirection.ROW_REVERSE);
         this.addEEnumLiteral(this.flexDirectionEEnum, FlexDirection.COLUMN);
         this.addEEnumLiteral(this.flexDirectionEEnum, FlexDirection.COLUMN_REVERSE);
+
+        this.initEEnum(this.dValidationMessageSeverityEEnum, DValidationMessageSeverity.class, "DValidationMessageSeverity");
+        this.addEEnumLiteral(this.dValidationMessageSeverityEEnum, DValidationMessageSeverity.INFO);
+        this.addEEnumLiteral(this.dValidationMessageSeverityEEnum, DValidationMessageSeverity.WARNING);
+        this.addEEnumLiteral(this.dValidationMessageSeverityEEnum, DValidationMessageSeverity.ERROR);
 
         // Initialize data types
         this.initEDataType(this.identifierEDataType, String.class, "Identifier", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

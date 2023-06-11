@@ -1706,6 +1706,173 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DynamicDialogFolder}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DynamicDialogFolderItemProvider dynamicDialogFolderItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DynamicDialogFolder}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDynamicDialogFolderAdapter() {
+        if (this.dynamicDialogFolderItemProvider == null) {
+            this.dynamicDialogFolderItemProvider = new DynamicDialogFolderItemProvider(this);
+        }
+
+        return this.dynamicDialogFolderItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.DynamicDialogDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DynamicDialogDescriptionItemProvider dynamicDialogDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DynamicDialogDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDynamicDialogDescriptionAdapter() {
+        if (this.dynamicDialogDescriptionItemProvider == null) {
+            this.dynamicDialogDescriptionItemProvider = new DynamicDialogDescriptionItemProvider(this);
+        }
+
+        return this.dynamicDialogDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.DSelectWidgetDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DSelectWidgetDescriptionItemProvider dSelectWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DSelectWidgetDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDSelectWidgetDescriptionAdapter() {
+        if (this.dSelectWidgetDescriptionItemProvider == null) {
+            this.dSelectWidgetDescriptionItemProvider = new DSelectWidgetDescriptionItemProvider(this);
+        }
+
+        return this.dSelectWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.DTextFieldWidgetDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DTextFieldWidgetDescriptionItemProvider dTextFieldWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DTextFieldWidgetDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDTextFieldWidgetDescriptionAdapter() {
+        if (this.dTextFieldWidgetDescriptionItemProvider == null) {
+            this.dTextFieldWidgetDescriptionItemProvider = new DTextFieldWidgetDescriptionItemProvider(this);
+        }
+
+        return this.dTextFieldWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.DValidationMessageDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DValidationMessageDescriptionItemProvider dValidationMessageDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DValidationMessageDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDValidationMessageDescriptionAdapter() {
+        if (this.dValidationMessageDescriptionItemProvider == null) {
+            this.dValidationMessageDescriptionItemProvider = new DValidationMessageDescriptionItemProvider(this);
+        }
+
+        return this.dValidationMessageDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.DWidgetObjectOutputDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DWidgetObjectOutputDescriptionItemProvider dWidgetObjectOutputDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DWidgetObjectOutputDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDWidgetObjectOutputDescriptionAdapter() {
+        if (this.dWidgetObjectOutputDescriptionItemProvider == null) {
+            this.dWidgetObjectOutputDescriptionItemProvider = new DWidgetObjectOutputDescriptionItemProvider(this);
+        }
+
+        return this.dWidgetObjectOutputDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.DWidgetStringOutputDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DWidgetStringOutputDescriptionItemProvider dWidgetStringOutputDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.DWidgetStringOutputDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDWidgetStringOutputDescriptionAdapter() {
+        if (this.dWidgetStringOutputDescriptionItemProvider == null) {
+            this.dWidgetStringOutputDescriptionItemProvider = new DWidgetStringOutputDescriptionItemProvider(this);
+        }
+
+        return this.dWidgetStringOutputDescriptionItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.BarChartDescription}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2098,6 +2265,20 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.edgePaletteItemProvider.dispose();
         if (this.selectionDescriptionItemProvider != null)
             this.selectionDescriptionItemProvider.dispose();
+        if (this.dynamicDialogFolderItemProvider != null)
+            this.dynamicDialogFolderItemProvider.dispose();
+        if (this.dynamicDialogDescriptionItemProvider != null)
+            this.dynamicDialogDescriptionItemProvider.dispose();
+        if (this.dWidgetObjectOutputDescriptionItemProvider != null)
+            this.dWidgetObjectOutputDescriptionItemProvider.dispose();
+        if (this.dWidgetStringOutputDescriptionItemProvider != null)
+            this.dWidgetStringOutputDescriptionItemProvider.dispose();
+        if (this.dSelectWidgetDescriptionItemProvider != null)
+            this.dSelectWidgetDescriptionItemProvider.dispose();
+        if (this.dTextFieldWidgetDescriptionItemProvider != null)
+            this.dTextFieldWidgetDescriptionItemProvider.dispose();
+        if (this.dValidationMessageDescriptionItemProvider != null)
+            this.dValidationMessageDescriptionItemProvider.dispose();
     }
 
 }

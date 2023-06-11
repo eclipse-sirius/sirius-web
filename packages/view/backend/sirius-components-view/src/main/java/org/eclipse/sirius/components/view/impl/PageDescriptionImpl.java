@@ -134,9 +134,9 @@ public class PageDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The cached value of the '{@link #getGroups() <em>Groups</em>}' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getGroups()
      * @generated
      * @ordered
-     * @see #getGroups()
      */
     protected EList<GroupDescription> groups;
 

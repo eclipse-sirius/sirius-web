@@ -1,0 +1,9 @@
+= sirius-components-collaborative-dynamicdialogs 
+
+== Goal
+
+This project provides support for our dynamic dialogs collaborative edition layer.
+
+== Dependencies
+
+- sirius-components-dynamicdialogs

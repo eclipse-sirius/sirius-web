@@ -648,6 +648,68 @@ public interface ViewFactory extends EFactory {
     SelectionDescription createSelectionDescription();
 
     /**
+     * Returns a new object of class '<em>Dynamic Dialog Folder</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Dynamic Dialog Folder</em>'.
+     * @generated
+     */
+    DynamicDialogFolder createDynamicDialogFolder();
+
+    /**
+     * Returns a new object of class '<em>Dynamic Dialog Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Dynamic Dialog Description</em>'.
+     * @generated
+     */
+    DynamicDialogDescription createDynamicDialogDescription();
+
+    /**
+     * Returns a new object of class '<em>DSelect Widget Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>DSelect Widget Description</em>'.
+     * @generated
+     */
+    DSelectWidgetDescription createDSelectWidgetDescription();
+
+    /**
+     * Returns a new object of class '<em>DText Field Widget Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>DText Field Widget Description</em>'.
+     * @generated
+     */
+    DTextFieldWidgetDescription createDTextFieldWidgetDescription();
+
+    /**
+     * Returns a new object of class '<em>DValidation Message Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>DValidation Message Description</em>'.
+     * @generated
+     */
+    DValidationMessageDescription createDValidationMessageDescription();
+
+    /**
+     * Returns a new object of class '<em>DWidget Object Output Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>DWidget Object Output Description</em>'.
+     * @generated
+     */
+    DWidgetObjectOutputDescription createDWidgetObjectOutputDescription();
+
+    /**
+     * Returns a new object of class '<em>DWidget String Output Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>DWidget String Output Description</em>'.
+     * @generated
+     */
+    DWidgetStringOutputDescription createDWidgetStringOutputDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

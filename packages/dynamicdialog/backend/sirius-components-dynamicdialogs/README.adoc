@@ -1,0 +1,12 @@
+= sirius-components-dynamicdialogs
+
+== Goal
+
+This project is used to compute dynamicdialogs.
+
+== Dependencies
+
+- sirius-components-graphql-annotations
+- sirius-components-components
+
+This project should not depend on anything else without a good reason to do so.
