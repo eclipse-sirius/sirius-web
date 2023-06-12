@@ -7,6 +7,7 @@
 - Add disable / enable concept for widgets
 - Add new custom widget to edit single and multi-valued references
 - Add support for Help Expressions in Form widgets
+- Add border style for containers
 
 === Architectural decision records
 
