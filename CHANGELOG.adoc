@@ -6,6 +6,7 @@
 
 - Add disable / enable concept for widgets
 - Add support for Help Expressions in Form widgets
+- Add new custom widget to edit single and multi-valued references
 
 === Architectural decision records
 

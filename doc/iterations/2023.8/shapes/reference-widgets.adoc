@@ -1,0 +1,123 @@
+= (L) Add new custom widget to edit single and multi-valued references
+
+== Problem
+
+On the desktop side, Sirius (via EEF) provides rich widgets in its properties view to edit object references.
+They support both mono-valued and multi-valued references, either contained or not, with all the relevant operations directly available in the widget: value selection, re-ordering, creation of new objects to add to the reference, etc.
+
+On the web side, we only support a limited subset of this with the `Select` and `Multiselect` widgets, but by default they are only used for non-containment reference, and they do not support the richer behaviors of the EEF counterparts.
+The `Multiselect` also does not scale well when the list of possible candidates gets large.
+It is not possible to build the richer behaviors by combining these base widgets with others like `List` and `Button` as in a Sirius Web Form widgets are independant and do not have a "local" selection that other widgets could know about (for example for an "Up" button to know which element is selected in a sibling `List` widget to know on which element to operate).
+
+== Key Result
+
+Sirius Components will provide a new _custom_ widget to edit references which can be used either directly from the core APIs or via the View DSL.
+It will provide the same level of configuration and features as its EEF counterpart: the specifier simply indicates which setting (owner and reference) to edit, and the widget adapts its look and features to the characteristics of the reference.
+
+The widget will be implemented as a _custom widget_ using the extension mechanism introduced in Sirius Component v2023.6.0 via https://github.com/eclipse-sirius/sirius-components/issues/1914[#1914].
+It will be provided in new projects (Maven modules and NPM packages) in Sirius Components.
+
+The default rules used by Sirius Components to builds its _Details_ view will be updated to use the new widget.
+
+Other applications will be able to use it as-is by adding the appropriate dependency.
+If the hard-coded look and behavior of the widget does not match their need, applications will need to use it as a base to fork and create their own, more specific version.
+Later on, the widget provided by Sirius Components may evolve to become more configurable to avoid this, but this is out of scope of the initial version.
+
+== Solution
+
+We will provide a single new custom widget in Sirius Components to view and edit (EMF) references.
+
+The new widgets will provide the same level of configuration as its EEF equivalent:
+
+* _Label expression_ and _Is Enabled Expression_ (the implementation of the _Is Enabled Expression_ is actually out of scope of this shape, as it will be implemented for all widgets in a separate shape).
+* _Reference Owner Expression_ (optional): if specified, the reference edited will be search on the value of the expression, instead of the current element (`self`)
+* _Reference Name Expression_: the name of the expression to edit.
+* _Initial Operation_: if specified, the corresponding behavior will be executed when the user clicks on the/an element referenced.
+In the case of the mono-valued reference widget, if the initial operation is defined the widget will be displayed as a hyper-link (instead of a plain label) and the operation executed on a single-click.
+In the case of the multi-valued reference widget, if the initial operation is defined it will be invoked on a _double-click_ on an element in the list (single-click is needed to select the elements on which the "Delete" and "Up/Down" buttons operate.).
+
+The widget will have a different UI and behavior depending on the nature of the reference to edit.
+
+If the reference is **single-valued** it will show:
+
+1. The icon & label of the referenced element (or nothing if the reference is unset).
+The computation of the icon & label's text will be hard-coded to use the EMF Edit's item provider.
+If the widget has an `onClickExpression`, the label is not a plain text but a hyper-link which executes the expression when clicked.
+2. A "+" button if (and only if) the reference is a containment reference.
+This opens an _object creation dialog_ to i) create a new object instance, ii) set the reference's value to it.
+See below for details on this dialog/modal.
+3. A "..." (_browse_) button which opens a dialog to select the value to reference.
+The dialog provides a (sorted) list of candidates and the ability to search/filter (by label).
+The contents of the dialog is hard-coded to show all the compatible instances in the editing context (project), and to use the EMF Edit's item provider for the elements' label and icon.
+4. A "∅" button to unset the reference.
+It's behavior will be hard-coded to call `target.eUnset(reference)`.
+
+In the case of a **multi-valued reference**, the UI will display:
+
+1. A list of the currently referenced elements, in the order they are stored and with the icon & label from their EMF Edit's item provider.
+The list will have a "reasonable" maximum height (to be defined precisely) and will provide vertical scroll bars if their are more elements.
+The list will support selecting/unselecting multiple elements to control
+2. A "..." (_browse_) button to open a dialog/modal equivalent to EMF's `FeatureSelectionDialog` so that the user can edit the contents of the reference.
+3. A "+" (create) button if (and only if) the reference is a containment reference.
+This opens an _object creation dialog_ to i) create a new object instance, ii) add it to the reference (at the end).
+See below for details on this dialog/modal.
+4. A "X" (remove) button to remove the element(s) currently selected in the list from the reference.
+The behavior will be hard-coded to use `EcoreUtil.remove()`.
+5. Two "Up" and "Down" buttons to change the position of the element(s) currently selected in the list inside the reference.
+The behavior will be hard-coded to use `EList.move()`.
+
+They will be provided as optional custom widgets, that applications can decide to use or not.
+Sirius Web will use them in the default Details view in `MonoValuedNonContainmentReferenceIfDescriptionProvider` and `MultiValuedNonContainmentReferenceIfDescriptionProvider`.
+
+=== Object creation dialog
+
+The Object Creation dialog/modal will display:
+
+* A Tree with the same content as the Explorer (but only showing the semantic elements).
+The user will need to select the container element in which the new object should be created.
+This part is only displayed when editing a non-containment reference.
+For contained references, the container is implied to be the owner of the reference being edited.
+* A Select/Combo which, when a container element is selected, proposes all the references of the element's type which are type-compatible with the reference being edited.
+If the object creation dialog is used on a containment reference, only the containement references will be proposed (and vice versa for non-containement references).
+* A Select/Combo which, when a container element *and* a type-compatible reference are selected, proposes all the concrete object types that can be created.
+* A "Create" button, which is only enabled when a container element, a type-compatible reference and a concrete type are selected.
+
+Upon validation, the modal will create an instance of the chosen type, and set/add it to the chosen reference.
+If this is a multi-valued reference, the new object is added at the end.
+The newly created object will be a "default instance" of the selected type; there is no mechanism provided to initialize it further.
+
+=== Support for reference editing through DnD
+
+It should be possible to set (resp. add to) the value of a reference by dragging and dropping a (compatible) semantic element from the _Explorer_ view onto the reference widget.
+
+=== Styling
+
+TBD.
+
+=== Breadboarding
+
+TBD.
+
+The UI described above corresponds to the one in EEF desktop.
+We may decide to make different choices if they are more adapted to the Sirius Web context as long as all the same features are available.
+For example, we may want to replace the "X" button outside of the list with a "TrashCan" icon on each list item (like we do for the _Representations_ representation), or (if technically possible), replace the "Up/Down" buttons with direct DnD of list items to re-order them.
+
+=== Cutting backs
+
+Note: the whole "Object creation dialog" seems redundant if we support DnD from the explorer.
+It will never be as powerful as the actual explorer, which already has all the features needed (navigating in the tree, filtering, creating new elements).
+In Sirius Desktop, the "Model Explorer" did not support the creation of new elements, so it made sense to have a dialog for that.
+Here it seems like spending a significant amount of time for creating a worse version of the explorer.
+
+* Using the new reference widget in Sirius Components's default properties rules (replacement of `MonoValuedNonContainmentReferenceIfDescriptionProvider` and `MultiValuedNonContainmentReferenceIfDescriptionProvider`).
+* Support for drag'n'drop for direct re-ordering of elements in a multi-valued reference.
+* Making the object creation dialog "smart" enough to allow only for the creation of elements 
+
+== Rabbit holes
+
+TBD.
+
+== No-gos
+
+* Customizability (for example "target" elements of the reference computed from an expression instead of looking at the direct value of the EMF Setting).
+* Virtualizing the content of the various "list" Material widgets (in the multi-valued widget, in the dialogs) to handle very large lists.
