@@ -14,7 +14,7 @@ You will need the equivalent of all the following classes (these can found in `o
 * `Slider.java`: a concrete subclass of `AbstractWidget`, which represents a concrete instance of your custom widget.
 In the case of the slider, it contains the fields representing the state of a specific instance (min, max and current value) and the Java `Function` to be invoked to apply the slider's only edition operation (setting a new value).
 * `SliderDescription.java`: a concrete subclass of `AbstractWidgetDescription`, which represents the configuration of your widget to appear inside a `FormDescription`.
-* `SliderComponent.java` and the accompaying `IProps`: the component responsible to _render_ a `SliderDescription` into a concrete `Slider` given a specific runtime context (represented by the `VariableManager`).
+* `SliderComponent.java` and the accompanying `IProps`: the component responsible to _render_ a `SliderDescription` into a concrete `Slider` given a specific runtime context (represented by the `VariableManager`).
 * `SliderWidgetDescriptor.java`: an implementation of `IWidgetDescriptor` which tells the generic Form rendering process how to use your new component.
 Note that this `IWidgetDescriptor` implementation *must* be a Spring `@Component` so that it is correctly detected at runtime.
 
@@ -58,6 +58,12 @@ input EditSliderInput {
 
 union EditSliderPayload = SuccessPayload | ErrorPayload
 ----
+
+IMPORTANT: Make sure the type of the widget declared in the GraphQL Schema (`type Slider` above) matches the name of the Java class implementing the widget (`Slider.java`).
+Our GraphQL TypeResolver has this requirement in order to resolve the real type used for an interface easily.
+
+IMPORTANT: If your custom widget has a field with the same name as another widget but with another type, you will have to use a unique alias to perform the request.
+For example, almost all of our widgets have a `value` field and we are thus using a dedicated alias for each kind `booleaValue: value` or `stringValue: value`.
 
 == Core Widget Implementation: Frontend
 
@@ -132,6 +138,7 @@ ReactDOM.render(
 
 Note the `sliderWidgetContribution` which gives the name and GraphQL type name and fields/section for the frontend to be able to retrieve the data for your custom widgets.
 They must match the names you declared in the `graphqls` file.
+Although the `Slider` example only defines direct attributes, the `fields` can contain deeper definitions, e.g. `id label iconURL container referenceValue { id label kind iconURL }`.
 
 == View DSL Integration
 
