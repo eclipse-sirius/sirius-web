@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.Element;
-import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -29,13 +28,11 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public interface IWidgetDescriptor {
     String getWidgetType();
 
-    Class<? extends IComponent> getComponentClass();
+    Optional<Boolean> validateComponentProps(Class<?> componentType, IProps props);
 
-    Class<? extends IProps> getInstancePropsClass();
+    Optional<Boolean> validateInstanceProps(String type, IProps props);
 
-    Class<? extends IProps> getComponentPropsClass();
-
-    Optional<Object> instanciate(IProps elementProps, List<Object> children);
+    Optional<Object> instanciate(String type, IProps elementProps, List<Object> children);
 
     Optional<Element> createElement(VariableManager variableManager, AbstractWidgetDescription widgetDescription);
 }

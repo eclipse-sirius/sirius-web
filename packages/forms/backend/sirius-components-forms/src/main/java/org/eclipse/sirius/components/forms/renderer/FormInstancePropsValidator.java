@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.forms.renderer;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.charts.barchart.elements.BarChartElementProps;
 import org.eclipse.sirius.components.charts.piechart.elements.PieChartElementProps;
@@ -104,9 +105,10 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof ToolbarActionElementProps;
         } else {
             checkValidProps = this.widgetDescriptors.stream()
-                    .filter(widgetDescriptor -> Objects.equals(type,  widgetDescriptor.getWidgetType()))
+                    .map(widgetDescriptor -> widgetDescriptor.validateInstanceProps(type, props))
+                    .filter(Optional::isPresent)
                     .findFirst()
-                    .map(descriptor -> descriptor.getInstancePropsClass().isInstance(props))
+                    .map(Optional::get)
                     .orElse(false);
         }
 

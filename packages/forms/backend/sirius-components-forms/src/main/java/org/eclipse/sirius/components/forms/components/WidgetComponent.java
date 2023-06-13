@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms.components;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
@@ -30,7 +31,6 @@ import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
-import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -105,13 +105,12 @@ public class WidgetComponent implements IComponent {
             RichTextComponentProps richTextComponentProps = new RichTextComponentProps(variableManager, (RichTextDescription) widgetDescription);
             element = new Element(RichTextComponent.class, richTextComponentProps);
         } else {
-            for (IWidgetDescriptor widgetDescriptor : this.props.getWidgetDescriptors()) {
-                var optionalElement = widgetDescriptor.createElement(variableManager, widgetDescription);
-                if (optionalElement.isPresent()) {
-                    element = optionalElement.get();
-                    break;
-                }
-            }
+            element = this.props.getWidgetDescriptors().stream()
+                    .map(widgetDescriptor -> widgetDescriptor.createElement(variableManager, widgetDescription))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(null);
             if (element == null) {
                 String pattern = "Unsupported widget description: {}";
                 this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());
