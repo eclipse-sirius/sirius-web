@@ -129,15 +129,12 @@ public class FormElementFactory implements IElementFactory {
         } else if (ToolbarActionElementProps.TYPE.equals(type) && props instanceof ToolbarActionElementProps) {
             object = this.instantiateToolbarAction((ToolbarActionElementProps) props, children);
         } else {
-            for (IWidgetDescriptor widgetDescriptor : this.widgetDescriptors) {
-                if (widgetDescriptor.getWidgetType().equals(type) && widgetDescriptor.getInstancePropsClass().isInstance(props)) {
-                    Optional<Object> optionalInstance = widgetDescriptor.instanciate(props, children);
-                    if (optionalInstance.isPresent()) {
-                        object = optionalInstance.get();
-                        break;
-                    }
-                }
-            }
+            object = this.widgetDescriptors.stream()
+                         .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
+                         .filter(Optional::isPresent)
+                         .findFirst()
+                         .map(Optional::get)
+                         .orElse(null);
         }
 
         return object;
