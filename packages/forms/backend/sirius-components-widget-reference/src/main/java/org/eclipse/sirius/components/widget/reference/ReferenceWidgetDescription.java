@@ -115,13 +115,16 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider;
+        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private Function<VariableManager, Boolean> isContainerProvider;
 
@@ -157,6 +160,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -211,6 +219,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.idProvider = Objects.requireNonNull(this.idProvider);
             referenceWidgetDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             referenceWidgetDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            referenceWidgetDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             referenceWidgetDescription.isManyValuedProvider = Objects.requireNonNull(this.isManyValuedProvider);
             referenceWidgetDescription.isContainerProvider = Objects.requireNonNull(this.isContainerProvider);
             referenceWidgetDescription.itemsProvider = Objects.requireNonNull(this.itemsProvider);

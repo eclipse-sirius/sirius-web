@@ -258,7 +258,8 @@ public class FormElementFactory implements IElementFactory {
                 .label(props.getLabel())
                 .value(props.isValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
 
         if (props.getIconURL() != null) {
             checkboxBuilder.iconURL(props.getIconURL());
@@ -280,7 +281,8 @@ public class FormElementFactory implements IElementFactory {
         org.eclipse.sirius.components.forms.List.Builder listBuilder = org.eclipse.sirius.components.forms.List.newList(props.getId())
                 .label(props.getLabel())
                 .items(props.getItems())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
         // @formatter:on
         if (props.getIconURL() != null) {
             listBuilder.iconURL(props.getIconURL());
@@ -302,7 +304,8 @@ public class FormElementFactory implements IElementFactory {
                 .label(props.getLabel())
                 .options(props.getOptions())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
 
         if (props.getIconURL() != null) {
             radioBuilder.iconURL(props.getIconURL());
@@ -327,7 +330,8 @@ public class FormElementFactory implements IElementFactory {
                 .options(props.getOptions())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
 
         if (props.getIconURL() != null) {
             selectBuilder.iconURL(props.getIconURL());
@@ -351,7 +355,8 @@ public class FormElementFactory implements IElementFactory {
                 .options(props.getOptions())
                 .values(props.getValues())
                 .newValuesHandler(props.getNewValuesHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
 
         if (props.getIconURL() != null) {
             multiSelectBuilder.iconURL(props.getIconURL());
@@ -374,7 +379,8 @@ public class FormElementFactory implements IElementFactory {
                 .label(props.getLabel())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
 
         if (props.getCompletionProposalsProvider() != null) {
             textareaBuilder.completionProposalsProvider(props.getCompletionProposalsProvider());
@@ -400,7 +406,8 @@ public class FormElementFactory implements IElementFactory {
                 .label(props.getLabel())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
         // @formatter:on
 
         if (props.getCompletionProposalsProvider() != null) {
@@ -456,7 +463,8 @@ public class FormElementFactory implements IElementFactory {
         Button.Builder buttonBuilder = Button.newButton(props.getId())
                 .label(props.getLabel())
                 .pushButtonHandler(props.getPushButtonHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
         // @formatter:on
         if (props.getIconURL() != null) {
             buttonBuilder.iconURL(props.getIconURL());
@@ -500,6 +508,8 @@ public class FormElementFactory implements IElementFactory {
         if (props.getHelpTextProvider() != null) {
             buttonBuilder.helpTextProvider(props.getHelpTextProvider());
         }
+        buttonBuilder.readOnly(props.isReadOnly());
+
         return buttonBuilder.build();
     }
 
@@ -560,7 +570,8 @@ public class FormElementFactory implements IElementFactory {
                 .flexWrap("wrap")
                 .flexGrow(1)
                 .children(widgets)
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
 
         if (props.getHelpTextProvider() != null) {
             builder.helpTextProvider(props.getHelpTextProvider());
@@ -615,7 +626,8 @@ public class FormElementFactory implements IElementFactory {
                 .label(props.getLabel())
                 .value(props.getValue())
                 .newValueHandler(props.getNewValueHandler())
-                .diagnostics(diagnostics);
+                .diagnostics(diagnostics)
+                .readOnly(props.isReadOnly());
         if (props.getIconURL() != null) {
             builder.iconURL(props.getIconURL());
         }

@@ -68,6 +68,7 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
             super.getPropertyDescriptors(object);
 
             this.addFlexDirectionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -82,6 +83,19 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
                 this.getString("_UI_FlexboxContainerDescription_flexDirection_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_flexDirection_feature", "_UI_FlexboxContainerDescription_type"),
                 FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FlexboxContainerDescription_IsEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_IsEnabledExpression_feature", "_UI_FlexboxContainerDescription_type"),
+                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -161,6 +175,7 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
 
         switch (notification.getFeatureID(FlexboxContainerDescription.class)) {
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:

@@ -51,6 +51,7 @@ public class SelectComponent implements IComponent {
         String id = selectDescription.getIdProvider().apply(variableManager);
         String label = selectDescription.getLabelProvider().apply(variableManager);
         String iconURL = selectDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = selectDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = selectDescription.getOptionsProvider().apply(variableManager);
         String value = selectDescription.getValueProvider().apply(variableManager);
         var selectStyle = selectDescription.getStyleProvider().apply(variableManager);
@@ -77,11 +78,8 @@ public class SelectComponent implements IComponent {
 
             options.add(option);
         }
-        Function<String, IStatus> specializedHandler = newValue -> {
-            return selectDescription.getNewValueHandler().apply(variableManager, newValue);
-        };
+        Function<String, IStatus> specializedHandler = newValue -> selectDescription.getNewValueHandler().apply(variableManager, newValue);
 
-        // @formatter:off
         Builder selectElementPropsBuilder = SelectElementProps.newSelectElementProps(id)
                 .label(label)
                 .options(options)
@@ -98,10 +96,12 @@ public class SelectComponent implements IComponent {
         if (selectDescription.getHelpTextProvider() != null) {
             selectElementPropsBuilder.helpTextProvider(() -> selectDescription.getHelpTextProvider().apply(variableManager));
         }
+        if (readOnly != null) {
+            selectElementPropsBuilder.readOnly(readOnly);
+        }
 
         SelectElementProps selectElementProps = selectElementPropsBuilder.build();
 
         return new Element(SelectElementProps.TYPE, selectElementProps);
-        // @formatter:on
     }
 }

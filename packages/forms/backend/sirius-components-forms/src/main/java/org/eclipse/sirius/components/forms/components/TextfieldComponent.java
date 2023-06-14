@@ -49,15 +49,13 @@ public class TextfieldComponent implements IComponent {
         String id = textfieldDescription.getIdProvider().apply(variableManager);
         String label = textfieldDescription.getLabelProvider().apply(variableManager);
         String iconURL = textfieldDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = textfieldDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = textfieldDescription.getValueProvider().apply(variableManager);
-        Function<String, IStatus> specializedHandler = newValue -> {
-            return textfieldDescription.getNewValueHandler().apply(variableManager, newValue);
-        };
+        Function<String, IStatus> specializedHandler = newValue -> textfieldDescription.getNewValueHandler().apply(variableManager, newValue);
         var textfieldStyle = textfieldDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(textfieldDescription, variableManager)));
 
-        // @formatter:off
         Builder textfieldElementPropsBuilder = TextfieldElementProps.newTextfieldElementProps(id)
                 .label(label)
                 .value(value)
@@ -82,10 +80,12 @@ public class TextfieldComponent implements IComponent {
         if (textfieldDescription.getHelpTextProvider() != null) {
             textfieldElementPropsBuilder.helpTextProvider(() -> textfieldDescription.getHelpTextProvider().apply(variableManager));
         }
+        if (readOnly != null) {
+            textfieldElementPropsBuilder.readOnly(readOnly);
+        }
 
         TextfieldElementProps textfieldElementProps = textfieldElementPropsBuilder.build();
 
         return new Element(TextfieldElementProps.TYPE, textfieldElementProps);
-        // @formatter:on
     }
 }

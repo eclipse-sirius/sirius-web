@@ -4,6 +4,7 @@ type ReferenceWidget implements Widget {
   label: String!
   iconURL: String
   hasHelpText: Boolean!
+  readOnly: Boolean!
   container: Boolean!
   manyValued: Boolean!
   referenceValues: [ReferenceValue!]!

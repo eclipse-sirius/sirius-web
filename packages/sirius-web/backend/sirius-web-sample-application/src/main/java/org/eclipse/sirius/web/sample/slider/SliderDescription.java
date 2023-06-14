@@ -90,6 +90,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private Function<VariableManager, String> idProvider;
@@ -99,6 +100,8 @@ public final class SliderDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
 
         private Function<VariableManager, String> helpTextProvider;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private Function<VariableManager, Integer> minValueProvider;
 
@@ -132,6 +135,11 @@ public final class SliderDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
+            return this;
+        }
+
         public Builder minValueProvider(Function<VariableManager, Integer> minValueProvider) {
             this.minValueProvider = Objects.requireNonNull(minValueProvider);
             return this;
@@ -158,6 +166,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
             sliderDescription.idProvider = Objects.requireNonNull(this.idProvider);
             sliderDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             sliderDescription.iconURLProvider = this.iconURLProvider; // Optional on purpose
+            sliderDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             sliderDescription.minValueProvider = Objects.requireNonNull(this.minValueProvider);
             sliderDescription.maxValueProvider = Objects.requireNonNull(this.maxValueProvider);
             sliderDescription.currentValueProvider = Objects.requireNonNull(this.currentValueProvider);

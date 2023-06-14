@@ -816,6 +816,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getButtonDescription_IsEnabledExpression() {
+        return (EAttribute) this.buttonDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getCheckboxDescription() {
         return this.checkboxDescriptionEClass;
     }
@@ -866,6 +876,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getCheckboxDescription_IsEnabledExpression() {
+        return (EAttribute) this.checkboxDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getFlexboxContainerDescription() {
         return this.flexboxContainerDescriptionEClass;
     }
@@ -888,6 +908,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EAttribute getFlexboxContainerDescription_FlexDirection() {
         return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFlexboxContainerDescription_IsEnabledExpression() {
+        return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1076,6 +1106,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getListDescription_IsEnabledExpression() {
+        return (EAttribute) this.listDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getMultiSelectDescription() {
         return this.multiSelectDescriptionEClass;
     }
@@ -1138,6 +1178,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getMultiSelectDescription_ConditionalStyles() {
         return (EReference) this.multiSelectDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getMultiSelectDescription_IsEnabledExpression() {
+        return (EAttribute) this.multiSelectDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -1266,6 +1316,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getRadioDescription_IsEnabledExpression() {
+        return (EAttribute) this.radioDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getRichTextDescription() {
         return this.richTextDescriptionEClass;
     }
@@ -1288,6 +1348,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getRichTextDescription_Body() {
         return (EReference) this.richTextDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRichTextDescription_IsEnabledExpression() {
+        return (EAttribute) this.richTextDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1366,6 +1436,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getSelectDescription_IsEnabledExpression() {
+        return (EAttribute) this.selectDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTextAreaDescription() {
         return this.textAreaDescriptionEClass;
     }
@@ -1416,6 +1496,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getTextAreaDescription_IsEnabledExpression() {
+        return (EAttribute) this.textAreaDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTextfieldDescription() {
         return this.textfieldDescriptionEClass;
     }
@@ -1458,6 +1548,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getTextfieldDescription_ConditionalStyles() {
         return (EReference) this.textfieldDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTextfieldDescription_IsEnabledExpression() {
+        return (EAttribute) this.textfieldDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -2009,16 +2109,19 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__IMAGE_EXPRESSION);
         this.createEReference(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__STYLE);
         this.createEReference(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.buttonDescriptionEClass, BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.checkboxDescriptionEClass = this.createEClass(CHECKBOX_DESCRIPTION);
         this.createEAttribute(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__VALUE_EXPRESSION);
         this.createEReference(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__BODY);
         this.createEReference(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__STYLE);
         this.createEReference(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.checkboxDescriptionEClass, CHECKBOX_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.flexboxContainerDescriptionEClass = this.createEClass(FLEXBOX_CONTAINER_DESCRIPTION);
         this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
         this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION);
+        this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.imageDescriptionEClass = this.createEClass(IMAGE_DESCRIPTION);
         this.createEAttribute(this.imageDescriptionEClass, IMAGE_DESCRIPTION__URL_EXPRESSION);
@@ -2041,6 +2144,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEReference(this.listDescriptionEClass, LIST_DESCRIPTION__BODY);
         this.createEReference(this.listDescriptionEClass, LIST_DESCRIPTION__STYLE);
         this.createEReference(this.listDescriptionEClass, LIST_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.listDescriptionEClass, LIST_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.multiSelectDescriptionEClass = this.createEClass(MULTI_SELECT_DESCRIPTION);
         this.createEAttribute(this.multiSelectDescriptionEClass, MULTI_SELECT_DESCRIPTION__VALUE_EXPRESSION);
@@ -2049,6 +2153,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEReference(this.multiSelectDescriptionEClass, MULTI_SELECT_DESCRIPTION__BODY);
         this.createEReference(this.multiSelectDescriptionEClass, MULTI_SELECT_DESCRIPTION__STYLE);
         this.createEReference(this.multiSelectDescriptionEClass, MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.multiSelectDescriptionEClass, MULTI_SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.pieChartDescriptionEClass = this.createEClass(PIE_CHART_DESCRIPTION);
         this.createEAttribute(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__VALUES_EXPRESSION);
@@ -2063,10 +2168,12 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEReference(this.radioDescriptionEClass, RADIO_DESCRIPTION__BODY);
         this.createEReference(this.radioDescriptionEClass, RADIO_DESCRIPTION__STYLE);
         this.createEReference(this.radioDescriptionEClass, RADIO_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.radioDescriptionEClass, RADIO_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.richTextDescriptionEClass = this.createEClass(RICH_TEXT_DESCRIPTION);
         this.createEAttribute(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION);
         this.createEReference(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__BODY);
+        this.createEAttribute(this.richTextDescriptionEClass, RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.selectDescriptionEClass = this.createEClass(SELECT_DESCRIPTION);
         this.createEAttribute(this.selectDescriptionEClass, SELECT_DESCRIPTION__VALUE_EXPRESSION);
@@ -2075,18 +2182,21 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEReference(this.selectDescriptionEClass, SELECT_DESCRIPTION__BODY);
         this.createEReference(this.selectDescriptionEClass, SELECT_DESCRIPTION__STYLE);
         this.createEReference(this.selectDescriptionEClass, SELECT_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.selectDescriptionEClass, SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.textAreaDescriptionEClass = this.createEClass(TEXT_AREA_DESCRIPTION);
         this.createEAttribute(this.textAreaDescriptionEClass, TEXT_AREA_DESCRIPTION__VALUE_EXPRESSION);
         this.createEReference(this.textAreaDescriptionEClass, TEXT_AREA_DESCRIPTION__BODY);
         this.createEReference(this.textAreaDescriptionEClass, TEXT_AREA_DESCRIPTION__STYLE);
         this.createEReference(this.textAreaDescriptionEClass, TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.textAreaDescriptionEClass, TEXT_AREA_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.textfieldDescriptionEClass = this.createEClass(TEXTFIELD_DESCRIPTION);
         this.createEAttribute(this.textfieldDescriptionEClass, TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION);
         this.createEReference(this.textfieldDescriptionEClass, TEXTFIELD_DESCRIPTION__BODY);
         this.createEReference(this.textfieldDescriptionEClass, TEXTFIELD_DESCRIPTION__STYLE);
         this.createEReference(this.textfieldDescriptionEClass, TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.textfieldDescriptionEClass, TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.widgetDescriptionStyleEClass = this.createEClass(WIDGET_DESCRIPTION_STYLE);
 
@@ -2329,6 +2439,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getButtonDescription_ConditionalStyles(), this.getConditionalButtonDescriptionStyle(), null, "conditionalStyles", null, 0, -1, ButtonDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getButtonDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, ButtonDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.checkboxDescriptionEClass, CheckboxDescription.class, "CheckboxDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCheckboxDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, CheckboxDescription.class, !IS_TRANSIENT,
@@ -2339,12 +2451,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getCheckboxDescription_ConditionalStyles(), this.getConditionalCheckboxDescriptionStyle(), null, "conditionalStyles", null, 0, -1, CheckboxDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCheckboxDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, CheckboxDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.flexboxContainerDescriptionEClass, FlexboxContainerDescription.class, "FlexboxContainerDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getFlexboxContainerDescription_Children(), this.getWidgetDescription(), null, "children", null, 0, -1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getFlexboxContainerDescription_FlexDirection(), this.getFlexDirection(), "flexDirection", "row", 1, 1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFlexboxContainerDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, FlexboxContainerDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.imageDescriptionEClass, ImageDescription.class, "ImageDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getImageDescription_UrlExpression(), theViewPackage.getInterpretedExpression(), "urlExpression", null, 0, 1, ImageDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -2381,6 +2497,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getListDescription_ConditionalStyles(), this.getConditionalListDescriptionStyle(), null, "conditionalStyles", null, 0, -1, ListDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getListDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, ListDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.multiSelectDescriptionEClass, MultiSelectDescription.class, "MultiSelectDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getMultiSelectDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, MultiSelectDescription.class, !IS_TRANSIENT,
@@ -2395,6 +2513,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMultiSelectDescription_ConditionalStyles(), this.getConditionalMultiSelectDescriptionStyle(), null, "conditionalStyles", null, 0, -1, MultiSelectDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getMultiSelectDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, MultiSelectDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.pieChartDescriptionEClass, PieChartDescription.class, "PieChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getPieChartDescription_ValuesExpression(), theViewPackage.getInterpretedExpression(), "valuesExpression", null, 0, 1, PieChartDescription.class, !IS_TRANSIENT,
@@ -2419,12 +2539,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getRadioDescription_ConditionalStyles(), this.getConditionalRadioDescriptionStyle(), null, "conditionalStyles", null, 0, -1, RadioDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRadioDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, RadioDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.richTextDescriptionEClass, RichTextDescription.class, "RichTextDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getRichTextDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, RichTextDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getRichTextDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, RichTextDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRichTextDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, RichTextDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.selectDescriptionEClass, SelectDescription.class, "SelectDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getSelectDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, SelectDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -2439,6 +2563,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getSelectDescription_ConditionalStyles(), this.getConditionalSelectDescriptionStyle(), null, "conditionalStyles", null, 0, -1, SelectDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, SelectDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.textAreaDescriptionEClass, TextAreaDescription.class, "TextAreaDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTextAreaDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, TextAreaDescription.class, !IS_TRANSIENT,
@@ -2449,6 +2575,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTextAreaDescription_ConditionalStyles(), this.getConditionalTextareaDescriptionStyle(), null, "conditionalStyles", null, 0, -1, TextAreaDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextAreaDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, TextAreaDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.textfieldDescriptionEClass, TextfieldDescription.class, "TextfieldDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTextfieldDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, TextfieldDescription.class, !IS_TRANSIENT,
@@ -2459,6 +2587,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTextfieldDescription_ConditionalStyles(), this.getConditionalTextfieldDescriptionStyle(), null, "conditionalStyles", null, 0, -1, TextfieldDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTextfieldDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, TextfieldDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.widgetDescriptionStyleEClass, WidgetDescriptionStyle.class, "WidgetDescriptionStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

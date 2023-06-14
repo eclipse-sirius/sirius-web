@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTextfieldInput;
 import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -68,6 +69,7 @@ public class EditTextfieldEventHandlerTests {
                 .value("Previous value")
                 .newValueHandler(newValueHandler)
                 .diagnostics(List.of())
+                .readOnly(false)
                 .build();
 
         Group group = Group.newGroup("groupId")
@@ -109,5 +111,64 @@ public class EditTextfieldEventHandlerTests {
         assertThat(payload).isInstanceOf(SuccessPayload.class);
 
         assertThat(hasBeenExecuted.get()).isTrue();
+    }
+
+    @Test
+    public void testTextfieldEditionReadOnly() {
+        String id = "Textfield id";
+
+        var input = new EditTextfieldInput(UUID.randomUUID(), UUID.randomUUID().toString(), FORM_ID, id, "New value");
+
+        AtomicBoolean hasBeenExecuted = new AtomicBoolean();
+        Function<String, IStatus> newValueHandler = newValue -> {
+            hasBeenExecuted.set(true);
+            return new Success();
+        };
+
+        // @formatter:off
+        Textfield textfield = Textfield.newTextfield(id)
+                .label("label")
+                .value("Previous value")
+                .newValueHandler(newValueHandler)
+                .diagnostics(List.of())
+                .readOnly(true)
+                .build();
+
+        Group group = Group.newGroup("groupId")
+                .label("group label")
+                .widgets(List.of(textfield))
+                .build();
+
+        Page page = Page.newPage("pageId")
+                .label("page label")
+                .groups(List.of(group))
+                .build();
+
+        Form form = Form.newForm(FORM_ID)
+                .targetObjectId("targetObjectId")
+                .descriptionId(UUID.randomUUID().toString())
+                .label("form label")
+                .pages(List.of(page))
+                .build();
+        // @formatter:on
+
+        IFormQueryService formQueryService = new IFormQueryService.NoOp() {
+            @Override
+            public Optional<AbstractWidget> findWidget(Form form, String widgetId) {
+                return Optional.of(textfield);
+            }
+        };
+        EditTextfieldEventHandler handler = new EditTextfieldEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
+        assertThat(handler.canHandle(input)).isTrue();
+
+        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
+        One<IPayload> payloadSink = Sinks.one();
+
+        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), form, input);
+
+        IPayload payload = payloadSink.asMono().block();
+        assertThat(payload).isInstanceOf(ErrorPayload.class);
+        assertThat(((ErrorPayload) payload).message()).isEqualTo("Read-only widget can not be edited");
+        assertThat(hasBeenExecuted.get()).isFalse();
     }
 }

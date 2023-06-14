@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.collaborative.forms.handlers;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -81,17 +80,23 @@ public class PushButtonEventHandler implements IFormEventHandler {
 
         if (formInput instanceof PushButtonInput input) {
 
-            Optional<AbstractWidget> optionalWidget = this.formQueryService.findWidget(form, input.buttonId());
-            var handler = optionalWidget.filter(Button.class::isInstance)
-                    .map(Button.class::cast)
-                    .map(Button::getPushButtonHandler);
-            if (handler.isEmpty()) {
-                handler = optionalWidget.filter(ToolbarAction.class::isInstance)
-                        .map(ToolbarAction.class::cast)
-                        .map(ToolbarAction::getPushButtonHandler);
-            }
-            IStatus status = handler.map(Supplier::get).orElse(new Failure(""));
+            var optionalButton = this.formQueryService.findWidget(form, input.buttonId());
 
+            IStatus status;
+            if (optionalButton.map(AbstractWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+
+                var handler = optionalButton.filter(Button.class::isInstance)
+                        .map(Button.class::cast)
+                        .map(Button::getPushButtonHandler);
+                if (handler.isEmpty()) {
+                    handler = optionalButton.filter(ToolbarAction.class::isInstance)
+                            .map(ToolbarAction.class::cast)
+                            .map(ToolbarAction::getPushButtonHandler);
+                }
+                status = handler.map(Supplier::get).orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

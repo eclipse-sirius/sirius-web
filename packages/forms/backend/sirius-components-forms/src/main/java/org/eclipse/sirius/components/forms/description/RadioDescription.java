@@ -106,6 +106,7 @@ public final class RadioDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
@@ -113,6 +114,8 @@ public final class RadioDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private Function<VariableManager, List<?>> optionsProvider;
 
@@ -150,6 +153,11 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -209,6 +217,7 @@ public final class RadioDescription extends AbstractWidgetDescription {
             radioDescription.idProvider = Objects.requireNonNull(this.idProvider);
             radioDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             radioDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            radioDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             radioDescription.optionsProvider = Objects.requireNonNull(this.optionsProvider);
             radioDescription.optionIdProvider = Objects.requireNonNull(this.optionIdProvider);
             radioDescription.optionLabelProvider = Objects.requireNonNull(this.optionLabelProvider);

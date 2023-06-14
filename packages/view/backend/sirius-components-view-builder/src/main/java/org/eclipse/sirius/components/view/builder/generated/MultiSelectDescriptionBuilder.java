@@ -117,15 +117,26 @@ public class MultiSelectDescriptionBuilder {
         this.getMultiSelectDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public MultiSelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle ... values) {
+    public MultiSelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle value : values) {
             this.getMultiSelectDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public MultiSelectDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getMultiSelectDescription().setIsEnabledExpression(value);
         return this;
     }
 

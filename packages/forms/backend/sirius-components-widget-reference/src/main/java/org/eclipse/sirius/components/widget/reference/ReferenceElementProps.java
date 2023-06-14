@@ -41,6 +41,8 @@ public final class ReferenceElementProps implements IProps {
 
     private Supplier<String> helpTextProvider;
 
+    private boolean readOnly;
+
     private List<ReferenceValue> values;
 
     private boolean container;
@@ -71,6 +73,10 @@ public final class ReferenceElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public List<ReferenceValue> getValues() {
@@ -111,7 +117,7 @@ public final class ReferenceElementProps implements IProps {
         private String label;
 
         private String iconURL;
-
+        private boolean readOnly;
         private Supplier<String> helpTextProvider;
 
         private List<Diagnostic> diagnostics;
@@ -143,6 +149,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -169,17 +180,18 @@ public final class ReferenceElementProps implements IProps {
         }
 
         public ReferenceElementProps build() {
-            ReferenceElementProps multiValuedReferenceProps = new ReferenceElementProps();
-            multiValuedReferenceProps.id = Objects.requireNonNull(this.id);
-            multiValuedReferenceProps.label = Objects.requireNonNull(this.label);
-            multiValuedReferenceProps.iconURL = this.iconURL;
-            multiValuedReferenceProps.diagnostics = this.diagnostics;
-            multiValuedReferenceProps.container = this.container;
-            multiValuedReferenceProps.manyValued = this.manyValued;
-            multiValuedReferenceProps.values = Objects.requireNonNull(this.values);
-            multiValuedReferenceProps.setting = Objects.requireNonNull(this.setting);
-            multiValuedReferenceProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
-            return multiValuedReferenceProps;
+            ReferenceElementProps referenceElementProps = new ReferenceElementProps();
+            referenceElementProps.id = Objects.requireNonNull(this.id);
+            referenceElementProps.label = Objects.requireNonNull(this.label);
+            referenceElementProps.iconURL = this.iconURL;
+            referenceElementProps.diagnostics = this.diagnostics;
+            referenceElementProps.readOnly = this.readOnly;
+            referenceElementProps.container = this.container;
+            referenceElementProps.manyValued = this.manyValued;
+            referenceElementProps.values = Objects.requireNonNull(this.values);
+            referenceElementProps.setting = Objects.requireNonNull(this.setting);
+            referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            return referenceElementProps;
         }
     }
 }

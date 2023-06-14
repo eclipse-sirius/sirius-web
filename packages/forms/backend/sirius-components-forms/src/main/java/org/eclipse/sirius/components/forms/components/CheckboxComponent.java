@@ -48,6 +48,7 @@ public class CheckboxComponent implements IComponent {
         String id = checkboxDescription.getIdProvider().apply(variableManager);
         String label = checkboxDescription.getLabelProvider().apply(variableManager);
         String iconURL = checkboxDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = checkboxDescription.getIsReadOnlyProvider().apply(variableManager);
         Boolean value = checkboxDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, Boolean, IStatus> genericHandler = checkboxDescription.getNewValueHandler();
         Function<Boolean, IStatus> specializedHandler = newValue -> genericHandler.apply(variableManager, newValue);
@@ -70,6 +71,9 @@ public class CheckboxComponent implements IComponent {
         }
         if (checkboxDescription.getHelpTextProvider() != null) {
             checkboxElementPropsBuilder.helpTextProvider(() -> checkboxDescription.getHelpTextProvider().apply(variableManager));
+        }
+        if (readOnly != null) {
+            checkboxElementPropsBuilder.readOnly(readOnly);
         }
 
         CheckboxElementProps checkboxElementProps = checkboxElementPropsBuilder.build();

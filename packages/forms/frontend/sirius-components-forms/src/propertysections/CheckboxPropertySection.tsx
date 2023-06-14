@@ -177,7 +177,7 @@ export const CheckboxPropertySection = ({
           onFocus={onFocus}
           onBlur={onBlur}
           data-testid={widget.label}
-          disabled={readOnly}
+          disabled={readOnly || widget.readOnly}
           classes={{ root: classes.style, disabled: classes.disabled }}
         />
       </FormGroup>

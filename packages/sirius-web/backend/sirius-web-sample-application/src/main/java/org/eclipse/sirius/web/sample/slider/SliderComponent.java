@@ -41,6 +41,7 @@ public class SliderComponent implements IComponent {
         String id = sliderDescription.getIdProvider().apply(variableManager);
         String label = sliderDescription.getLabelProvider().apply(variableManager);
         String iconURL = sliderDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = sliderDescription.getIsReadOnlyProvider().apply(variableManager);
         int minValue = sliderDescription.getMinValueProvider().apply(variableManager);
         int maxValue = sliderDescription.getMaxValueProvider().apply(variableManager);
         int currentValue = sliderDescription.getCurrentValueProvider().apply(variableManager);
@@ -64,6 +65,9 @@ public class SliderComponent implements IComponent {
         }
         if (sliderDescription.getHelpTextProvider() != null) {
             sliderElementPropsBuilder.helpTextProvider(() -> sliderDescription.getHelpTextProvider().apply(variableManager));
+        }
+        if (readOnly != null) {
+            sliderElementPropsBuilder.readOnly(readOnly);
         }
 
         SliderElementProps sliderElementProps = sliderElementPropsBuilder.build();

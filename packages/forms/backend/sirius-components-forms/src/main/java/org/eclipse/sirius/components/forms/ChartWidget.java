@@ -55,6 +55,7 @@ public final class ChartWidget extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private String label;
@@ -66,6 +67,8 @@ public final class ChartWidget extends AbstractWidget {
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
+
+        private final boolean readOnly = true; // Read-only by nature;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -104,6 +107,7 @@ public final class ChartWidget extends AbstractWidget {
             chartWidget.chart = Objects.requireNonNull(this.chart);
             chartWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
             chartWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            chartWidget.readOnly = this.readOnly;
             return chartWidget;
         }
     }

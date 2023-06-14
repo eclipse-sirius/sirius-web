@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.List;
 import org.eclipse.sirius.components.forms.ListItem;
 import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.springframework.stereotype.Service;
 
@@ -77,24 +78,27 @@ public class ClickListItemEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof ClickListItemInput) {
-            ClickListItemInput input = (ClickListItemInput) formInput;
+        if (formInput instanceof ClickListItemInput input) {
 
-            // @formatter:off
-            var optionalListItem = this.formQueryService.findWidget(form, input.listId())
+            var optionalList = this.formQueryService.findWidget(form, input.listId())
                     .filter(List.class::isInstance)
-                    .map(List.class::cast)
-                    .stream()
-                    .map(List::getItems)
-                    .flatMap(Collection::stream)
-                    .filter(item -> item.getId().toString().equals(input.listItemId()))
-                    .findFirst();
+                    .map(List.class::cast);
 
-            var status = optionalListItem.map(ListItem::getClickHandler)
-                    .map(handler -> handler.apply(input.clickEventKind()))
-                    .orElse(new Failure(""));
-            // @formatter:on
+            IStatus status;
+            if (optionalList.map(List::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                var optionalListItem = optionalList
+                        .stream()
+                        .map(List::getItems)
+                        .flatMap(Collection::stream)
+                        .filter(item -> item.getId().equals(input.listItemId()))
+                        .findFirst();
 
+                status = optionalListItem.map(ListItem::getClickHandler)
+                        .map(handler -> handler.apply(input.clickEventKind()))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
                 payload = new SuccessPayload(formInput.id(), success.getMessages());

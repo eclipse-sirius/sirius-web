@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class ImageDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
@@ -78,6 +79,7 @@ public final class ImageDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private Function<VariableManager, String> idProvider;
@@ -85,6 +87,8 @@ public final class ImageDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
 
         private Function<VariableManager, String> urlProvider;
 
@@ -153,6 +157,7 @@ public final class ImageDescription extends AbstractWidgetDescription {
             imageDescription.idProvider = Objects.requireNonNull(this.idProvider);
             imageDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             imageDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            imageDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             imageDescription.urlProvider = Objects.requireNonNull(this.urlProvider);
             imageDescription.maxWidthProvider = Objects.requireNonNull(this.maxWidthProvider);
             imageDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

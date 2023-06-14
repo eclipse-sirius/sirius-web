@@ -98,6 +98,8 @@ public final class ToolbarAction extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -142,6 +144,11 @@ public final class ToolbarAction extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public ToolbarAction build() {
             ToolbarAction button = new ToolbarAction();
             button.id = Objects.requireNonNull(this.id);
@@ -153,6 +160,7 @@ public final class ToolbarAction extends AbstractWidget {
             button.style = this.style; // Optional on purpose
             button.diagnostics = Objects.requireNonNull(this.diagnostics);
             button.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            button.readOnly = this.readOnly;
             return button;
         }
     }

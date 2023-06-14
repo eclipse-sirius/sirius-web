@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,11 +8,12 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -131,14 +132,32 @@ public class SelectDescriptionImpl extends WidgetDescriptionImpl implements Sele
     protected SelectDescriptionStyle style;
 
     /**
+     * The default value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
+    /**
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getConditionalStyles()
      * @generated
      * @ordered
+     * @see #getConditionalStyles()
      */
     protected EList<ConditionalSelectDescriptionStyle> conditionalStyles;
+    /**
+     * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -308,6 +327,29 @@ public class SelectDescriptionImpl extends WidgetDescriptionImpl implements Sele
      * @generated
      */
     @Override
+    public String getIsEnabledExpression() {
+        return this.isEnabledExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsEnabledExpression(String newIsEnabledExpression) {
+        String oldIsEnabledExpression = this.isEnabledExpression;
+        this.isEnabledExpression = newIsEnabledExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case FormPackage.SELECT_DESCRIPTION__BODY:
@@ -340,6 +382,8 @@ public class SelectDescriptionImpl extends WidgetDescriptionImpl implements Sele
                 return this.getStyle();
             case FormPackage.SELECT_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.getConditionalStyles();
+            case FormPackage.SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return this.getIsEnabledExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -373,6 +417,9 @@ public class SelectDescriptionImpl extends WidgetDescriptionImpl implements Sele
                 this.getConditionalStyles().clear();
                 this.getConditionalStyles().addAll((Collection<? extends ConditionalSelectDescriptionStyle>) newValue);
                 return;
+            case FormPackage.SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -403,6 +450,9 @@ public class SelectDescriptionImpl extends WidgetDescriptionImpl implements Sele
             case FormPackage.SELECT_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
                 return;
+            case FormPackage.SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -427,6 +477,8 @@ public class SelectDescriptionImpl extends WidgetDescriptionImpl implements Sele
                 return this.style != null;
             case FormPackage.SELECT_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case FormPackage.SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -448,6 +500,8 @@ public class SelectDescriptionImpl extends WidgetDescriptionImpl implements Sele
         result.append(this.candidatesExpression);
         result.append(", candidateLabelExpression: ");
         result.append(this.candidateLabelExpression);
+        result.append(", IsEnabledExpression: ");
+        result.append(this.isEnabledExpression);
         result.append(')');
         return result.toString();
     }

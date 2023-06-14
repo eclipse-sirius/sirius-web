@@ -459,6 +459,149 @@ exports[`render list widget with style 1`] = `
 </div>
 `;
 
+exports[`should render a readOnly list from widget properties 1`] = `
+<div>
+  <div
+    class="MuiFormControl-root MuiFormControl-fullWidth"
+  >
+    <div
+      class="makeStyles-propertySectionLabel-38"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        myList
+      </h6>
+      <div
+        class="makeStyles-subscribers-39"
+      />
+    </div>
+    <table
+      class="MuiTable-root"
+    >
+      <tbody
+        class="MuiTableBody-root"
+      >
+        <tr
+          class="MuiTableRow-root"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-33 MuiTableCell-sizeSmall"
+          >
+            <p
+              class="MuiTypography-root  makeStyles-style-36 makeStyles-style-37 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              data-testid="representation-item1"
+            >
+              item1Label
+            </p>
+            <button
+              aria-label="deleteListItem"
+              class="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
+              data-testid="delete-representation-item1"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </td>
+        </tr>
+        <tr
+          class="MuiTableRow-root"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-33 MuiTableCell-sizeSmall"
+          >
+            <p
+              class="MuiTypography-root  makeStyles-style-36 makeStyles-style-37 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              data-testid="representation-item2"
+            >
+              item2Label
+            </p>
+            <button
+              aria-label="deleteListItem"
+              class="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
+              data-testid="delete-representation-item2"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </td>
+        </tr>
+        <tr
+          class="MuiTableRow-root"
+        >
+          <td
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-33 MuiTableCell-sizeSmall"
+          >
+            <p
+              class="MuiTypography-root  makeStyles-style-36 makeStyles-style-37 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              data-testid="representation-item3"
+            >
+              item3Label
+            </p>
+            <button
+              aria-label="deleteListItem"
+              class="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
+              data-testid="delete-representation-item3"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiIconButton-label"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p
+      class="MuiFormHelperText-root"
+    />
+  </div>
+</div>
+`;
+
 exports[`should the click event sent on item click 1`] = `
 <div>
   <div

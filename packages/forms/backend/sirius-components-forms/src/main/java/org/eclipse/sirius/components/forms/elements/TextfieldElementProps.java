@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class TextfieldElementProps implements IProps {
+
     public static final String TYPE = "Textfield";
 
     private String id;
@@ -42,6 +43,8 @@ public final class TextfieldElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private String value;
 
@@ -71,6 +74,10 @@ public final class TextfieldElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public String getValue() {
@@ -111,6 +118,7 @@ public final class TextfieldElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -118,6 +126,8 @@ public final class TextfieldElementProps implements IProps {
         private String iconURL;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private String value;
 
@@ -140,6 +150,11 @@ public final class TextfieldElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -178,6 +193,7 @@ public final class TextfieldElementProps implements IProps {
             textfieldElementProps.id = Objects.requireNonNull(this.id);
             textfieldElementProps.label = Objects.requireNonNull(this.label);
             textfieldElementProps.iconURL = this.iconURL;
+            textfieldElementProps.readOnly = this.readOnly;
             textfieldElementProps.value = Objects.requireNonNull(this.value);
             textfieldElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textfieldElementProps.style = this.style; // Optional on purpose

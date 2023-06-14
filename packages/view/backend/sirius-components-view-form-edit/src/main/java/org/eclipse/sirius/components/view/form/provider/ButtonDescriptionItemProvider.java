@@ -55,6 +55,7 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
 
             this.addButtonLabelExpressionPropertyDescriptor(object);
             this.addImageExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -82,6 +83,19 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
                 this.getString("_UI_ButtonDescription_imageExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_ButtonDescription_imageExpression_feature", "_UI_ButtonDescription_type"),
                 FormPackage.Literals.BUTTON_DESCRIPTION__IMAGE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ButtonDescription_IsEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ButtonDescription_IsEnabledExpression_feature", "_UI_ButtonDescription_type"),
+                FormPackage.Literals.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -161,6 +175,7 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
         switch (notification.getFeatureID(ButtonDescription.class)) {
             case FormPackage.BUTTON_DESCRIPTION__BUTTON_LABEL_EXPRESSION:
             case FormPackage.BUTTON_DESCRIPTION__IMAGE_EXPRESSION:
+            case FormPackage.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.BUTTON_DESCRIPTION__BODY:
@@ -193,6 +208,8 @@ public class ButtonDescriptionItemProvider extends WidgetDescriptionItemProvider
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.BUTTON_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.BUTTON_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createButtonDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.BUTTON_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createConditionalButtonDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.BUTTON_DESCRIPTION__CONDITIONAL_STYLES, FormFactory.eINSTANCE.createConditionalButtonDescriptionStyle()));
     }

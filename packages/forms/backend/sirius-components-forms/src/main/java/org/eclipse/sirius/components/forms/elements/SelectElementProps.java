@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class SelectElementProps implements IProps {
+
     public static final String TYPE = "Select";
 
     private String id;
@@ -41,6 +42,8 @@ public final class SelectElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private List<SelectOption> options;
 
@@ -70,6 +73,10 @@ public final class SelectElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public List<SelectOption> getOptions() {
@@ -119,6 +126,8 @@ public final class SelectElementProps implements IProps {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private List<SelectOption> options;
 
         private String value;
@@ -140,6 +149,11 @@ public final class SelectElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -178,6 +192,7 @@ public final class SelectElementProps implements IProps {
             selectElementProps.id = Objects.requireNonNull(this.id);
             selectElementProps.label = Objects.requireNonNull(this.label);
             selectElementProps.iconURL = this.iconURL;
+            selectElementProps.readOnly = this.readOnly;
             selectElementProps.options = Objects.requireNonNull(this.options);
             selectElementProps.value = this.value;
             selectElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);

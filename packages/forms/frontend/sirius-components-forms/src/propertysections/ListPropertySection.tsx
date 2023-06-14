@@ -263,8 +263,8 @@ export const ListPropertySection = ({
           <img className={classes.icon} width="16" height="16" alt={''} src={httpOrigin + item.imageURL} />
         ) : null}
         <Typography
-          className={`${classes.canBeSelectedItem} ${classes.style}`}
-          onClick={() => clickHandler(item)}
+          className={`${readOnly || widget.readOnly ? '' : classes.canBeSelectedItem} ${classes.style}`}
+          onClick={() => (readOnly || widget.readOnly ? {} : clickHandler(item))}
           color="textPrimary"
           data-testid={`representation-${item.id}`}>
           {item.label}
@@ -272,7 +272,7 @@ export const ListPropertySection = ({
         <IconButton
           aria-label="deleteListItem"
           onClick={(event) => onDelete(event, item)}
-          disabled={readOnly || !item.deletable}
+          disabled={readOnly || !item.deletable || widget.readOnly}
           data-testid={`delete-representation-${item.id}`}>
           <DeleteIcon />
         </IconButton>

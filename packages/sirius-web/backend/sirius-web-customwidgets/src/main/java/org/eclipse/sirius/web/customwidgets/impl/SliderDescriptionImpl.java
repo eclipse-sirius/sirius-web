@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+/*******************************************************************************
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,11 +8,12 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.web.customwidgets.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -107,14 +108,32 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected String currentValueExpression = CURRENT_VALUE_EXPRESSION_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
+    /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #getBody()
      * @generated
      * @ordered
+     * @see #getBody()
      */
     protected EList<Operation> body;
+    /**
+     * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -223,6 +242,29 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
      * @generated
      */
     @Override
+    public String getIsEnabledExpression() {
+        return this.isEnabledExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsEnabledExpression(String newIsEnabledExpression) {
+        String oldIsEnabledExpression = this.isEnabledExpression;
+        this.isEnabledExpression = newIsEnabledExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, CustomwidgetsPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__BODY:
@@ -247,6 +289,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
                 return this.getCurrentValueExpression();
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__BODY:
                 return this.getBody();
+            case CustomwidgetsPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return this.getIsEnabledExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -273,6 +317,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
                 this.getBody().clear();
                 this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
+            case CustomwidgetsPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -297,6 +344,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__BODY:
                 this.getBody().clear();
                 return;
+            case CustomwidgetsPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -317,6 +367,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
                 return CURRENT_VALUE_EXPRESSION_EDEFAULT == null ? this.currentValueExpression != null : !CURRENT_VALUE_EXPRESSION_EDEFAULT.equals(this.currentValueExpression);
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__BODY:
                 return this.body != null && !this.body.isEmpty();
+            case CustomwidgetsPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -338,6 +390,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
         result.append(this.maxValueExpression);
         result.append(", currentValueExpression: ");
         result.append(this.currentValueExpression);
+        result.append(", isEnabledExpression: ");
+        result.append(this.isEnabledExpression);
         result.append(')');
         return result.toString();
     }

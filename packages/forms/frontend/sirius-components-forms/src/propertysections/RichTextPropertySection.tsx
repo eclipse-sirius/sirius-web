@@ -165,7 +165,7 @@ export const RichTextPropertySection = ({
           placeholder={widget.label}
           onFocus={onFocus}
           onBlur={onBlur}
-          readOnly={readOnly}
+          readOnly={readOnly || widget.readOnly}
         />
       </div>
     </div>

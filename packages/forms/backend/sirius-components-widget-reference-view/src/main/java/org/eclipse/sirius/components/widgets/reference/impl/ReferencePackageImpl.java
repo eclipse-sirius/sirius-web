@@ -117,7 +117,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      */
     @Override
     public EAttribute getReferenceWidgetDescription_ReferenceOwnerExpression() {
-        return (EAttribute) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+        return (EAttribute) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -127,7 +127,17 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      */
     @Override
     public EAttribute getReferenceWidgetDescription_ReferenceNameExpression() {
-        return (EAttribute) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(1);
+        return (EAttribute) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getReferenceWidgetDescription_IsEnabledExpression() {
+        return (EAttribute) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -160,6 +170,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
         // Create classes and their features
         this.referenceWidgetDescriptionEClass = this.createEClass(REFERENCE_WIDGET_DESCRIPTION);
+        this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION);
         this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION);
         this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION);
     }
@@ -200,6 +211,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.referenceWidgetDescriptionEClass, ReferenceWidgetDescription.class, "ReferenceWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getReferenceWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1, ReferenceWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getReferenceWidgetDescription_ReferenceOwnerExpression(), theViewPackage.getInterpretedExpression(), "referenceOwnerExpression", null, 0, 1,
                 ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getReferenceWidgetDescription_ReferenceNameExpression(), theViewPackage.getInterpretedExpression(), "referenceNameExpression", null, 1, 1,

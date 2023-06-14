@@ -98,13 +98,22 @@ public interface ReferencePackage extends EPackage {
     int REFERENCE_WIDGET_DESCRIPTION__HELP_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT;
+
+    /**
      * The feature id for the '<em><b>Reference Owner Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+    int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Reference Name Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -113,7 +122,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+    int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -122,7 +131,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -167,6 +176,18 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceNameExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression <em>Is
+     * Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression()
+     * @see #getReferenceWidgetDescription()
+     */
+    EAttribute getReferenceWidgetDescription_IsEnabledExpression();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -216,6 +237,14 @@ public interface ReferencePackage extends EPackage {
          * @generated
          */
         EAttribute REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = eINSTANCE.getReferenceWidgetDescription_ReferenceNameExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getReferenceWidgetDescription_IsEnabledExpression();
 
     }
 

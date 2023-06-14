@@ -84,6 +84,8 @@ public final class Radio extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -123,6 +125,11 @@ public final class Radio extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Radio build() {
             Radio radio = new Radio();
             radio.id = Objects.requireNonNull(this.id);
@@ -133,6 +140,7 @@ public final class Radio extends AbstractWidget {
             radio.style = this.style; // Optional on purpose
             radio.diagnostics = Objects.requireNonNull(this.diagnostics);
             radio.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            radio.readOnly = this.readOnly;
             return radio;
         }
     }

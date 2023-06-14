@@ -72,21 +72,20 @@ public class EditSliderValueEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditSliderInput) {
-            EditSliderInput input = (EditSliderInput) formInput;
+        if (formInput instanceof EditSliderInput input) {
 
-            // @formatter:off
             var optionalSlider = this.formQueryService.findWidget(form, input.sliderId())
                     .filter(Slider.class::isInstance)
                     .map(Slider.class::cast);
 
-            IStatus status = optionalSlider.map(Slider::getNewValueHandler)
-                    .map(handler -> {
-                        return handler.apply(Integer.valueOf(input.newValue()));
-                    })
-                    .orElse(new Failure(""));
-            // @formatter:on
-
+            IStatus status;
+            if (optionalSlider.map(Slider::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalSlider.map(Slider::getNewValueHandler)
+                        .map(handler -> handler.apply(Integer.valueOf(input.newValue())))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

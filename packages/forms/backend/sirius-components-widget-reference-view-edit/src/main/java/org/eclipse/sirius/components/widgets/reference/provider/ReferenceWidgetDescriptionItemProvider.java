@@ -55,8 +55,9 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addReferenceOwnerExpressionPropertyDescriptor(object);
-			addReferenceNameExpressionPropertyDescriptor(object);
+			this.addIsEnabledExpressionPropertyDescriptor(object);
+			this.addReferenceOwnerExpressionPropertyDescriptor(object);
+			this.addReferenceNameExpressionPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -68,10 +69,10 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 	 * @generated
 	 */
 	protected void addReferenceOwnerExpressionPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ReferenceWidgetDescription_referenceOwnerExpression_feature"),
-				getString("_UI_PropertyDescriptor_description",
+		this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+				this.getString("_UI_ReferenceWidgetDescription_referenceOwnerExpression_feature"),
+				this.getString("_UI_PropertyDescriptor_description",
 						"_UI_ReferenceWidgetDescription_referenceOwnerExpression_feature",
 						"_UI_ReferenceWidgetDescription_type"),
 				ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, true, false, false,
@@ -85,14 +86,31 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 	 * @generated
 	 */
 	protected void addReferenceNameExpressionPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ReferenceWidgetDescription_referenceNameExpression_feature"),
-				getString("_UI_PropertyDescriptor_description",
+		this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+				this.getString("_UI_ReferenceWidgetDescription_referenceNameExpression_feature"),
+				this.getString("_UI_PropertyDescriptor_description",
 						"_UI_ReferenceWidgetDescription_referenceNameExpression_feature",
 						"_UI_ReferenceWidgetDescription_type"),
 				ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, true, false, false,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Is Enabled Expression feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+		this.itemPropertyDescriptors
+				.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+						this.getResourceLocator(), this.getString("_UI_ReferenceWidgetDescription_isEnabledExpression_feature"),
+						this.getString("_UI_PropertyDescriptor_description",
+								"_UI_ReferenceWidgetDescription_isEnabledExpression_feature",
+								"_UI_ReferenceWidgetDescription_type"),
+						ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false,
+						false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -103,7 +121,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ReferenceWidgetDescription.svg"));
+		return this.overlayImage(object,
+				this.getResourceLocator().getImage("full/obj16/ReferenceWidgetDescription.svg"));
 	}
 
 	/**
@@ -125,8 +144,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 	@Override
 	public String getText(Object object) {
 		String label = ((ReferenceWidgetDescription) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ReferenceWidgetDescription_type")
-				: getString("_UI_ReferenceWidgetDescription_type") + " " + label;
+		return label == null || label.length() == 0 ? this.getString("_UI_ReferenceWidgetDescription_type")
+				: this.getString("_UI_ReferenceWidgetDescription_type") + " " + label;
 	}
 
 	/**
@@ -138,13 +157,14 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 	 */
 	@Override
 	public void notifyChanged(Notification notification) {
-		updateChildren(notification);
+		this.updateChildren(notification);
 
 		switch (notification.getFeatureID(ReferenceWidgetDescription.class)) {
-		case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-		case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-			return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
+				this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
 		}
 		super.notifyChanged(notification);
 	}

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class ButtonElementProps implements IProps {
+
     public static final String TYPE = "Button";
 
     private String id;
@@ -37,6 +38,8 @@ public final class ButtonElementProps implements IProps {
     private String label;
 
     private String iconURL;
+
+    private boolean readOnly;
 
     private String buttonLabel;
 
@@ -64,6 +67,10 @@ public final class ButtonElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public String getButtonLabel() {
@@ -108,11 +115,14 @@ public final class ButtonElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
 
         private String iconURL;
+
+        private boolean readOnly;
 
         private String buttonLabel;
 
@@ -137,6 +147,11 @@ public final class ButtonElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -176,6 +191,7 @@ public final class ButtonElementProps implements IProps {
             buttonElementProps.label = Objects.requireNonNull(this.label);
             buttonElementProps.buttonLabel = this.buttonLabel;
             buttonElementProps.iconURL = this.iconURL;
+            buttonElementProps.readOnly = this.readOnly;
             buttonElementProps.imageURL = this.imageURL;
             buttonElementProps.pushButtonHandler = Objects.requireNonNull(this.pushButtonHandler);
             buttonElementProps.style = this.style; // Optional on purpose

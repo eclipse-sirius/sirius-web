@@ -205,7 +205,7 @@ export const RadioPropertySection = ({
               </Typography>
             }
             key={option.id}
-            disabled={readOnly}
+            disabled={readOnly || widget.readOnly}
           />
         ))}
       </RadioGroup>

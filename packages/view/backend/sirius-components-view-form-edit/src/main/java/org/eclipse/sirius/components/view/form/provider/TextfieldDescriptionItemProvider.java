@@ -54,6 +54,7 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
             super.getPropertyDescriptors(object);
 
             this.addValueExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -68,6 +69,19 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
                 this.getString("_UI_TextfieldDescription_valueExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_TextfieldDescription_valueExpression_feature", "_UI_TextfieldDescription_type"),
                 FormPackage.Literals.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TextfieldDescription_IsEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TextfieldDescription_IsEnabledExpression_feature", "_UI_TextfieldDescription_type"),
+                FormPackage.Literals.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -146,6 +160,7 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
 
         switch (notification.getFeatureID(TextfieldDescription.class)) {
             case FormPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
+            case FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.TEXTFIELD_DESCRIPTION__BODY:

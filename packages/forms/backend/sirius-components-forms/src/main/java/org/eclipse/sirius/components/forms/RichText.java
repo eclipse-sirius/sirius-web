@@ -76,6 +76,8 @@ public final class RichText extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -110,6 +112,11 @@ public final class RichText extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public RichText build() {
             RichText richtext = new RichText();
             richtext.id = Objects.requireNonNull(this.id);
@@ -119,6 +126,7 @@ public final class RichText extends AbstractWidget {
             richtext.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             richtext.diagnostics = Objects.requireNonNull(this.diagnostics);
             richtext.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            richtext.readOnly = this.readOnly;
             return richtext;
         }
     }

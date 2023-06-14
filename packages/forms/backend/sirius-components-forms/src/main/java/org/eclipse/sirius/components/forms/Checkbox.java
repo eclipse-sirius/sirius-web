@@ -84,6 +84,8 @@ public final class Checkbox extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -123,6 +125,11 @@ public final class Checkbox extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Checkbox build() {
             Checkbox checkbox = new Checkbox();
             checkbox.id = Objects.requireNonNull(this.id);
@@ -133,6 +140,7 @@ public final class Checkbox extends AbstractWidget {
             checkbox.style = this.style; // Optional on purpose
             checkbox.diagnostics = Objects.requireNonNull(this.diagnostics);
             checkbox.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            checkbox.readOnly = this.readOnly;
             return checkbox;
         }
     }

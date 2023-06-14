@@ -14,6 +14,7 @@
   <genPackages prefix="Reference" basePackage="org.eclipse.sirius.components.widgets"
       disposableProviderFactory="true" childCreationExtenders="true" ecorePackage="reference.ecore#/">
     <genClasses ecoreClass="reference.ecore#//ReferenceWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetDescription/isEnabledExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetDescription/referenceOwnerExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetDescription/referenceNameExpression"/>
     </genClasses>

@@ -75,6 +75,8 @@ public final class Image extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private final boolean readOnly = true; // Read-only by nature;;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -118,6 +120,7 @@ public final class Image extends AbstractWidget {
             image.maxWidth = this.maxWidth;
             image.diagnostics = Objects.requireNonNull(this.diagnostics);
             image.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            image.readOnly = this.readOnly;
             return image;
         }
     }

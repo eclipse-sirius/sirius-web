@@ -97,6 +97,8 @@ public final class Textarea extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -141,6 +143,11 @@ public final class Textarea extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Textarea build() {
             Textarea textarea = new Textarea();
             textarea.id = Objects.requireNonNull(this.id);
@@ -152,6 +159,7 @@ public final class Textarea extends AbstractWidget {
             textarea.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
             textarea.diagnostics = Objects.requireNonNull(this.diagnostics);
             textarea.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            textarea.readOnly = this.readOnly;
             return textarea;
         }
     }

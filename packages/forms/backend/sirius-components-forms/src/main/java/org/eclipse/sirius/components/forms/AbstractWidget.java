@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  * @author sbegaudeau
  */
 public abstract class AbstractWidget {
+
     protected String id;
 
     protected String label;
@@ -32,6 +33,8 @@ public abstract class AbstractWidget {
     protected List<Diagnostic> diagnostics;
 
     protected Supplier<String> helpTextProvider;
+
+    protected boolean readOnly;
 
     public String getId() {
         return this.id;
@@ -51,5 +54,9 @@ public abstract class AbstractWidget {
 
     public List<Diagnostic> getDiagnostics() {
         return this.diagnostics;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 }

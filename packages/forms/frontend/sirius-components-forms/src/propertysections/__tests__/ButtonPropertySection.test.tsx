@@ -69,6 +69,18 @@ const buttonWithEmptyStyle: GQLButton = {
   },
 };
 
+const readOnlyButton: GQLButton = {
+  __typename: 'Button',
+  id: 'buttonId',
+  label: 'Label',
+  iconURL: null,
+  diagnostics: [],
+  buttonLabel: 'ButtonLabel',
+  imageURL: null,
+  style: null,
+  readOnly: true,
+};
+
 const pushButtonVariables: GQLPushButtonMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -357,6 +369,25 @@ test('should render the button with help hint', () => {
             editingContextId="editingContextId"
             formId="formId"
             widget={{ ...defaultButton, hasHelpText: true }}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </ToastContext.Provider>
+      </ServerContext.Provider>
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render a readOnly button from widget properties', async () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+        <ToastContext.Provider value={toastContextMock}>
+          <ButtonPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={readOnlyButton}
             subscribers={[]}
             readOnly={false}
           />

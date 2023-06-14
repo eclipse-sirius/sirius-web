@@ -75,19 +75,20 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditCheckboxInput) {
-            EditCheckboxInput input = (EditCheckboxInput) formInput;
+        if (formInput instanceof EditCheckboxInput input) {
 
-            // @formatter:off
             var optionalCheckbox = this.formQueryService.findWidget(form, input.checkboxId())
                     .filter(Checkbox.class::isInstance)
                     .map(Checkbox.class::cast);
 
-            IStatus status = optionalCheckbox.map(Checkbox::getNewValueHandler)
-                    .map(handler -> handler.apply(input.newValue()))
-                    .orElse(new Failure(""));
-            // @formatter:on
-
+            IStatus status;
+            if (optionalCheckbox.map(Checkbox::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalCheckbox.map(Checkbox::getNewValueHandler)
+                        .map(handler -> handler.apply(input.newValue()))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

@@ -63,6 +63,7 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
         String descriptionId = this.getDescriptionId(viewSliderDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewSliderDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewSliderDescription.getIsEnabledExpression());
         Function<VariableManager, Integer> minValueProvider = this.getIntValueProvider(viewSliderDescription.getMinValueExpression());
         Function<VariableManager, Integer> maxValueProvider = this.getIntValueProvider(viewSliderDescription.getMaxValueExpression());
         Function<VariableManager, Integer> currentValueProvider = this.getIntValueProvider(viewSliderDescription.getCurrentValueExpression());
@@ -71,6 +72,7 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
         var builder = org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .minValueProvider(minValueProvider)
                 .maxValueProvider(maxValueProvider)
                 .currentValueProvider(currentValueProvider)
@@ -115,5 +117,15 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
     private String getDescriptionId(EObject description) {
         String descriptionURI = EcoreUtil.getURI(description).toString();
         return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+    }
+
+    private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {
+        return variableManager -> {
+            if (expression != null && !expression.isBlank()) {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), expression);
+                return result.asBoolean().map(value -> !value).orElse(Boolean.FALSE);
+            }
+            return Boolean.FALSE;
+        };
     }
 }

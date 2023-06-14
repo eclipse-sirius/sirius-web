@@ -90,6 +90,18 @@ const textFieldWithEmptyStyle: GQLTextfield = {
   },
 };
 
+const readOnlyTextField: GQLTextfield = {
+  __typename: 'Textfield',
+  id: 'textfieldId',
+  label: 'Name:',
+  iconURL: null,
+  stringValue: 'Composite Processor',
+  supportsCompletion: false,
+  diagnostics: [],
+  style: null,
+  readOnly: true,
+};
+
 const editTextfieldVariables: GQLEditTextfieldMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -593,6 +605,23 @@ test('should render the textfield with help hint', () => {
           widget={{ ...defaultTextField, hasHelpText: true }}
           subscribers={[]}
           readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('should render a readOnly textfield from widget properties', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <TextfieldPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={readOnlyTextField}
+          subscribers={[]}
+          readOnly
         />
       </ToastContext.Provider>
     </MockedProvider>

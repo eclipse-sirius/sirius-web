@@ -117,15 +117,26 @@ public class ListDescriptionBuilder {
         this.getListDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public ListDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle ... values) {
+    public ListDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle value : values) {
             this.getListDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public ListDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getListDescription().setIsEnabledExpression(value);
         return this;
     }
 

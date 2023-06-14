@@ -117,15 +117,26 @@ public class RadioDescriptionBuilder {
         this.getRadioDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public RadioDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle ... values) {
+    public RadioDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle value : values) {
             this.getRadioDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public RadioDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getRadioDescription().setIsEnabledExpression(value);
         return this;
     }
 

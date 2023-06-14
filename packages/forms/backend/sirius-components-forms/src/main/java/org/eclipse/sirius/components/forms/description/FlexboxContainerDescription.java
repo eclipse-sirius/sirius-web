@@ -73,11 +73,14 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> labelProvider;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private FlexDirection flexDirection;
 
@@ -102,6 +105,11 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
 
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -140,6 +148,7 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
             flexboxContainerDescription.id = Objects.requireNonNull(this.id);
             flexboxContainerDescription.idProvider = Objects.requireNonNull(this.idProvider);
             flexboxContainerDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            flexboxContainerDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             flexboxContainerDescription.flexDirection = Objects.requireNonNull(this.flexDirection);
             flexboxContainerDescription.children = Objects.requireNonNull(this.children);
             flexboxContainerDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

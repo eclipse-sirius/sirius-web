@@ -73,6 +73,8 @@ public final class List extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -107,6 +109,11 @@ public final class List extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public List build() {
             List list = new List();
             list.id = Objects.requireNonNull(this.id);
@@ -116,6 +123,7 @@ public final class List extends AbstractWidget {
             list.items = Objects.requireNonNull(this.items);
             list.diagnostics = Objects.requireNonNull(this.diagnostics);
             list.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            list.readOnly = this.readOnly;
             return list;
         }
     }

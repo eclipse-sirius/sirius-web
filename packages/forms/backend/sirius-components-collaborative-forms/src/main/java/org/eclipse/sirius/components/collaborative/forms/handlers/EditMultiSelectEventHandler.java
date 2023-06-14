@@ -76,19 +76,20 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditMultiSelectInput) {
-            EditMultiSelectInput input = (EditMultiSelectInput) formInput;
+        if (formInput instanceof EditMultiSelectInput input) {
 
-            // @formatter:off
             Optional<MultiSelect> optionalMultiSelect = this.formQueryService.findWidget(form, input.selectId())
                     .filter(MultiSelect.class::isInstance)
                     .map(MultiSelect.class::cast);
 
-            IStatus status = optionalMultiSelect.map(MultiSelect::getNewValuesHandler)
-                    .map(handler -> handler.apply(input.newValues()))
-                    .orElse(new Failure(""));
-            // @formatter:on
-
+            IStatus status;
+            if (optionalMultiSelect.map(MultiSelect::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalMultiSelect.map(MultiSelect::getNewValuesHandler)
+                        .map(handler -> handler.apply(input.newValues()))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

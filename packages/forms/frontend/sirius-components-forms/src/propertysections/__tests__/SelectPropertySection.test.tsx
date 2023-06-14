@@ -73,6 +73,18 @@ const selectWithEmptyStyle: GQLSelect = {
   },
 };
 
+const readOnlySelect: GQLSelect = {
+  __typename: 'Select',
+  id: 'selectId',
+  label: 'SelectLabel',
+  iconURL: null,
+  diagnostics: [],
+  value: '',
+  options: [],
+  style: null,
+  readOnly: true,
+};
+
 const mockEnqueue = vi.fn();
 
 const toastContextMock: ToastContextValue = {
@@ -143,6 +155,23 @@ test('should render the select with help hint', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={{ ...defaultSelect, hasHelpText: true }}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render a readOnly select from widget properties', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <SelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={readOnlySelect}
           subscribers={[]}
           readOnly={false}
         />

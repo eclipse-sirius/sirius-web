@@ -117,15 +117,26 @@ public class SelectDescriptionBuilder {
         this.getSelectDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public SelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle ... values) {
+    public SelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle value : values) {
             this.getSelectDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public SelectDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getSelectDescription().setIsEnabledExpression(value);
         return this;
     }
 

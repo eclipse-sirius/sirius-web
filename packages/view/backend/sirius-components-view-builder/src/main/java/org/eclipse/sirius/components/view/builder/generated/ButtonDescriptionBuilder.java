@@ -108,15 +108,26 @@ public class ButtonDescriptionBuilder {
         this.getButtonDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public ButtonDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle ... values) {
+    public ButtonDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle value : values) {
             this.getButtonDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public ButtonDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getButtonDescription().setIsEnabledExpression(value);
         return this;
     }
 

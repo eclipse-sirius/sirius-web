@@ -89,6 +89,8 @@ public final class RichTextDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
 
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
+
         private Function<VariableManager, String> valueProvider;
 
         private BiFunction<VariableManager, String, IStatus> newValueHandler;
@@ -117,6 +119,11 @@ public final class RichTextDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -156,6 +163,7 @@ public final class RichTextDescription extends AbstractWidgetDescription {
             richtextDescription.idProvider = Objects.requireNonNull(this.idProvider);
             richtextDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             richtextDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            richtextDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             richtextDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             richtextDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             richtextDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

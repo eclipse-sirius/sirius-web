@@ -52,6 +52,7 @@ public class RadioComponent implements IComponent {
         String id = radioDescription.getIdProvider().apply(variableManager);
         String label = radioDescription.getLabelProvider().apply(variableManager);
         String iconURL = radioDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = radioDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = radioDescription.getOptionsProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(radioDescription, variableManager)));
@@ -65,23 +66,18 @@ public class RadioComponent implements IComponent {
             String optionLabel = radioDescription.getOptionLabelProvider().apply(optionVariableManager);
             Boolean optionSelected = radioDescription.getOptionSelectedProvider().apply(optionVariableManager);
 
-            // @formatter:off
             RadioOption option = RadioOption.newRadioOption(optionId)
                     .label(optionLabel)
                     .selected(optionSelected)
                     .build();
-            // @formatter:on
 
             options.add(option);
         }
 
         BiFunction<VariableManager, String, IStatus> genericHandler = radioDescription.getNewValueHandler();
-        Function<String, IStatus> specializedHandler = newValue -> {
-            return genericHandler.apply(variableManager, newValue);
-        };
+        Function<String, IStatus> specializedHandler = newValue -> genericHandler.apply(variableManager, newValue);
         var radioStyle = radioDescription.getStyleProvider().apply(variableManager);
 
-        // @formatter:off
         Builder radioElementPropsBuilder = RadioElementProps.newRadioElementProps(id)
                 .label(label)
                 .options(options)
@@ -97,10 +93,12 @@ public class RadioComponent implements IComponent {
         if (radioDescription.getHelpTextProvider() != null) {
             radioElementPropsBuilder.helpTextProvider(() -> radioDescription.getHelpTextProvider().apply(variableManager));
         }
+        if (readOnly != null) {
+            radioElementPropsBuilder.readOnly(readOnly);
+        }
 
         RadioElementProps radioElementProps = radioElementPropsBuilder.build();
 
         return new Element(RadioElementProps.TYPE, radioElementProps);
-        // @formatter:on
     }
 }

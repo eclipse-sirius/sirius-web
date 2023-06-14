@@ -73,6 +73,7 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private Function<VariableManager, String> idProvider;
@@ -80,6 +81,8 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
 
         private IChartDescription chartDescription;
 
@@ -141,6 +144,7 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
             chartDescription.idProvider = Objects.requireNonNull(this.idProvider);
             chartDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             chartDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            chartDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             chartDescription.chartDescription = Objects.requireNonNull(this.chartDescription);
             chartDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             chartDescription.kindProvider = Objects.requireNonNull(this.kindProvider);

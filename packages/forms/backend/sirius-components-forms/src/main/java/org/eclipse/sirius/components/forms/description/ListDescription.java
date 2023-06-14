@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021, 2023 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,6 +123,7 @@ public final class ListDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
@@ -130,6 +131,8 @@ public final class ListDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private Function<VariableManager, List<?>> itemsProvider;
 
@@ -173,6 +176,11 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -247,6 +255,7 @@ public final class ListDescription extends AbstractWidgetDescription {
             listDescription.idProvider = Objects.requireNonNull(this.idProvider);
             listDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             listDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            listDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             listDescription.itemsProvider = Objects.requireNonNull(this.itemsProvider);
             listDescription.itemIdProvider = Objects.requireNonNull(this.itemIdProvider);
             listDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);

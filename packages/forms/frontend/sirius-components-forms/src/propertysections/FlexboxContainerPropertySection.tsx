@@ -56,7 +56,7 @@ export const FlexboxContainerPropertySection = ({
         widget={widget}
         widgetSubscriptions={widgetSubscriptions}
         setSelection={setSelection}
-        readOnly={readOnly}
+        readOnly={readOnly || widget.readOnly}
         key={widget.id}
       />
     </div>

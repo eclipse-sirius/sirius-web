@@ -350,6 +350,44 @@ exports[`should render a readOnly textfield 1`] = `
 </div>
 `;
 
+exports[`should render a readOnly textfield from widget properties 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-53"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Name:
+      </h6>
+      <div
+        class="makeStyles-subscribers-54"
+      />
+    </div>
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+      data-testid="Name:"
+      spellcheck="false"
+    >
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiInput-input Mui-disabled Mui-disabled MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+          disabled=""
+          name="Name:"
+          placeholder="Name:"
+          type="text"
+          value="Composite Processor"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`should render the textfield 1`] = `
 <div>
   <div>

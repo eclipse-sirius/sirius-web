@@ -56,6 +56,7 @@ public class ListDescriptionItemProvider extends WidgetDescriptionItemProvider {
             this.addValueExpressionPropertyDescriptor(object);
             this.addDisplayExpressionPropertyDescriptor(object);
             this.addIsDeletableExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -95,6 +96,19 @@ public class ListDescriptionItemProvider extends WidgetDescriptionItemProvider {
                 this.getString("_UI_ListDescription_isDeletableExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_ListDescription_isDeletableExpression_feature", "_UI_ListDescription_type"),
                 FormPackage.Literals.LIST_DESCRIPTION__IS_DELETABLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ListDescription_IsEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ListDescription_IsEnabledExpression_feature", "_UI_ListDescription_type"),
+                FormPackage.Literals.LIST_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -175,6 +189,7 @@ public class ListDescriptionItemProvider extends WidgetDescriptionItemProvider {
             case FormPackage.LIST_DESCRIPTION__VALUE_EXPRESSION:
             case FormPackage.LIST_DESCRIPTION__DISPLAY_EXPRESSION:
             case FormPackage.LIST_DESCRIPTION__IS_DELETABLE_EXPRESSION:
+            case FormPackage.LIST_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.LIST_DESCRIPTION__BODY:

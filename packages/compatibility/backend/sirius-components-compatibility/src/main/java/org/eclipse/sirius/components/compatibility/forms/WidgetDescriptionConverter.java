@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -94,6 +95,7 @@ public class WidgetDescriptionConverter {
     private TextfieldDescription convertTextfield(org.eclipse.sirius.properties.TextDescription textDescription) {
         String labelExpression = Optional.ofNullable(textDescription.getLabelExpression()).orElse("");
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, labelExpression);
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(textDescription.getIsEnabledExpression());
 
         String valueExpression = Optional.ofNullable(textDescription.getValueExpression()).orElse("");
         StringValueProvider valueProvider = new StringValueProvider(this.interpreter, valueExpression);
@@ -104,6 +106,7 @@ public class WidgetDescriptionConverter {
         return TextfieldDescription.newTextfieldDescription(this.identifierProvider.getIdentifier(textDescription))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(this.getDiagnosticsProvider())
@@ -123,6 +126,7 @@ public class WidgetDescriptionConverter {
     private TextareaDescription convertTextarea(org.eclipse.sirius.properties.TextAreaDescription textAreaDescription) {
         String labelExpression = Optional.ofNullable(textAreaDescription.getLabelExpression()).orElse("");
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, labelExpression);
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(textAreaDescription.getIsEnabledExpression());
 
         String valueExpression = Optional.ofNullable(textAreaDescription.getValueExpression()).orElse("");
         StringValueProvider valueProvider = new StringValueProvider(this.interpreter, valueExpression);
@@ -133,6 +137,7 @@ public class WidgetDescriptionConverter {
         return TextareaDescription.newTextareaDescription(this.identifierProvider.getIdentifier(textAreaDescription))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -159,6 +164,7 @@ public class WidgetDescriptionConverter {
     private RadioDescription convertRadio(org.eclipse.sirius.properties.RadioDescription radioDescription) {
         String labelExpression = Optional.ofNullable(radioDescription.getLabelExpression()).orElse("");
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, labelExpression);
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(radioDescription.getIsEnabledExpression());
 
         Function<VariableManager, String> optionIdProvider = variableManager -> {
             Object candidate = variableManager.getVariables().get(RadioComponent.CANDIDATE_VARIABLE);
@@ -205,6 +211,7 @@ public class WidgetDescriptionConverter {
         return RadioDescription.newRadioDescription(this.identifierProvider.getIdentifier(radioDescription))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
                 .optionSelectedProvider(optionSelectedProvider)
@@ -221,6 +228,7 @@ public class WidgetDescriptionConverter {
     private SelectDescription convertSelect(org.eclipse.sirius.properties.SelectDescription selectDescription) {
         // @formatter:off
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, selectDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(selectDescription.getIsEnabledExpression());
         Function<VariableManager, String> valueProvider = variableManager -> {
             String valueExpression = selectDescription.getValueExpression();
             return this.interpreter.evaluateExpression(variableManager.getVariables(), valueExpression).asObject().map(this.objectService::getId).orElse(null);
@@ -256,6 +264,7 @@ public class WidgetDescriptionConverter {
         return SelectDescription.newSelectDescription(this.identifierProvider.getIdentifier(selectDescription))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .optionsProvider(optionsProvider)
                 .optionIdProvider(optionIdProvider)
@@ -272,6 +281,7 @@ public class WidgetDescriptionConverter {
 
     private CheckboxDescription convertCheckbox(org.eclipse.sirius.properties.CheckboxDescription checkboxDescription) {
         StringValueProvider labelProvider = new StringValueProvider(this.interpreter, checkboxDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(checkboxDescription.getIsEnabledExpression());
 
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = (variableManager, newValue) -> {
             Map<String, Object> variables = variableManager.getVariables();
@@ -292,6 +302,7 @@ public class WidgetDescriptionConverter {
         return CheckboxDescription.newCheckboxDescription(this.identifierProvider.getIdentifier(checkboxDescription))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -299,5 +310,15 @@ public class WidgetDescriptionConverter {
                 .messageProvider(object -> "")
                 .build();
         // @formatter:on
+    }
+
+    private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {
+        return variableManager -> {
+            if (expression != null && !expression.isBlank()) {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), expression);
+                return result.asBoolean().map(value -> !value).orElse(Boolean.FALSE);
+            }
+            return Boolean.FALSE;
+        };
     }
 }

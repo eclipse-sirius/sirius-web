@@ -78,15 +78,26 @@ public class RichTextDescriptionBuilder {
         this.getRichTextDescription().setValueExpression(value);
         return this;
     }
+
     /**
      * Setter for Body.
      *
      * @generated
      */
-    public RichTextDescriptionBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
+    public RichTextDescriptionBuilder body(org.eclipse.sirius.components.view.Operation... values) {
         for (org.eclipse.sirius.components.view.Operation value : values) {
             this.getRichTextDescription().getBody().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public RichTextDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getRichTextDescription().setIsEnabledExpression(value);
         return this;
     }
 
