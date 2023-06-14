@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.form;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -547,13 +547,22 @@ public interface FormPackage extends EPackage {
     int BUTTON_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>Button Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int BUTTON_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int BUTTON_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Button Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -636,13 +645,22 @@ public interface FormPackage extends EPackage {
     int CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Checkbox Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CHECKBOX_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int CHECKBOX_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Checkbox Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -706,13 +724,22 @@ public interface FormPackage extends EPackage {
     int FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Flexbox Container Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+    int FLEXBOX_CONTAINER_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Flexbox Container Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1040,13 +1067,22 @@ public interface FormPackage extends EPackage {
     int LIST_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>List Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LIST_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int LIST_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>List Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1146,13 +1182,22 @@ public interface FormPackage extends EPackage {
     int MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MULTI_SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>Multi Select Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int MULTI_SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int MULTI_SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Multi Select Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1341,13 +1386,22 @@ public interface FormPackage extends EPackage {
     int RADIO_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RADIO_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>Radio Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RADIO_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int RADIO_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Radio Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1411,13 +1465,22 @@ public interface FormPackage extends EPackage {
     int RICH_TEXT_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Rich Text Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RICH_TEXT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+    int RICH_TEXT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Rich Text Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1518,13 +1581,22 @@ public interface FormPackage extends EPackage {
     int SELECT_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
      * The number of structural features of the '<em>Select Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int SELECT_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of operations of the '<em>Select Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1607,13 +1679,22 @@ public interface FormPackage extends EPackage {
     int TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXT_AREA_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Text Area Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TEXT_AREA_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int TEXT_AREA_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Text Area Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1696,13 +1777,22 @@ public interface FormPackage extends EPackage {
     int TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Textfield Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TEXTFIELD_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int TEXTFIELD_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Textfield Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4185,12 +4275,24 @@ public interface FormPackage extends EPackage {
     EReference getButtonDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ButtonDescription#getIsEnabledExpression()
+     * @see #getButtonDescription()
+     */
+    EAttribute getButtonDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.CheckboxDescription
      * <em>Checkbox Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Checkbox Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.CheckboxDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.CheckboxDescription
      */
     EClass getCheckboxDescription();
 
@@ -4243,12 +4345,24 @@ public interface FormPackage extends EPackage {
     EReference getCheckboxDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.CheckboxDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.CheckboxDescription#getIsEnabledExpression()
+     * @see #getCheckboxDescription()
+     */
+    EAttribute getCheckboxDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription
      * <em>Flexbox Container Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Flexbox Container Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription
      */
     EClass getFlexboxContainerDescription();
 
@@ -4277,12 +4391,24 @@ public interface FormPackage extends EPackage {
     EAttribute getFlexboxContainerDescription_FlexDirection();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression()
+     * @see #getFlexboxContainerDescription()
+     */
+    EAttribute getFlexboxContainerDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.ImageDescription <em>Image
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Image Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.ImageDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.ImageDescription
      */
     EClass getImageDescription();
 
@@ -4485,12 +4611,24 @@ public interface FormPackage extends EPackage {
     EReference getListDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.ListDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ListDescription#getIsEnabledExpression()
+     * @see #getListDescription()
+     */
+    EAttribute getListDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.MultiSelectDescription
      * <em>Multi Select Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Multi Select Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.MultiSelectDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.MultiSelectDescription
      */
     EClass getMultiSelectDescription();
 
@@ -4567,12 +4705,24 @@ public interface FormPackage extends EPackage {
     EReference getMultiSelectDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.MultiSelectDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.MultiSelectDescription#getIsEnabledExpression()
+     * @see #getMultiSelectDescription()
+     */
+    EAttribute getMultiSelectDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.PieChartDescription <em>Pie
      * Chart Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Pie Chart Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.PieChartDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.PieChartDescription
      */
     EClass getPieChartDescription();
 
@@ -4707,12 +4857,24 @@ public interface FormPackage extends EPackage {
     EReference getRadioDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.RadioDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.RadioDescription#getIsEnabledExpression()
+     * @see #getRadioDescription()
+     */
+    EAttribute getRadioDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.RichTextDescription <em>Rich
      * Text Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Rich Text Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.RichTextDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.RichTextDescription
      */
     EClass getRichTextDescription();
 
@@ -4741,12 +4903,24 @@ public interface FormPackage extends EPackage {
     EReference getRichTextDescription_Body();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.RichTextDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.RichTextDescription#getIsEnabledExpression()
+     * @see #getRichTextDescription()
+     */
+    EAttribute getRichTextDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.SelectDescription <em>Select
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Select Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.SelectDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.SelectDescription
      */
     EClass getSelectDescription();
 
@@ -4823,12 +4997,24 @@ public interface FormPackage extends EPackage {
     EReference getSelectDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.SelectDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.SelectDescription#getIsEnabledExpression()
+     * @see #getSelectDescription()
+     */
+    EAttribute getSelectDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.TextAreaDescription <em>Text
      * Area Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Text Area Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.TextAreaDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.TextAreaDescription
      */
     EClass getTextAreaDescription();
 
@@ -4881,12 +5067,24 @@ public interface FormPackage extends EPackage {
     EReference getTextAreaDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.TextAreaDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.TextAreaDescription#getIsEnabledExpression()
+     * @see #getTextAreaDescription()
+     */
+    EAttribute getTextAreaDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.TextfieldDescription
      * <em>Textfield Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Textfield Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.TextfieldDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.TextfieldDescription
      */
     EClass getTextfieldDescription();
 
@@ -4939,12 +5137,24 @@ public interface FormPackage extends EPackage {
     EReference getTextfieldDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.TextfieldDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.TextfieldDescription#getIsEnabledExpression()
+     * @see #getTextfieldDescription()
+     */
+    EAttribute getTextfieldDescription_IsEnabledExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.WidgetDescriptionStyle
      * <em>Widget Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description Style</em>'.
-     * @see org.eclipse.sirius.components.view.form.WidgetDescriptionStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.form.WidgetDescriptionStyle
      */
     EClass getWidgetDescriptionStyle();
 
@@ -5785,12 +5995,20 @@ public interface FormPackage extends EPackage {
         EReference BUTTON_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getButtonDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getButtonDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.CheckboxDescriptionImpl
          * <em>Checkbox Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.CheckboxDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getCheckboxDescription()
-         * @generated
          */
         EClass CHECKBOX_DESCRIPTION = eINSTANCE.getCheckboxDescription();
 
@@ -5827,13 +6045,21 @@ public interface FormPackage extends EPackage {
         EReference CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getCheckboxDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CHECKBOX_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getCheckboxDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.form.impl.FlexboxContainerDescriptionImpl <em>Flexbox Container
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.FlexboxContainerDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexboxContainerDescription()
-         * @generated
          */
         EClass FLEXBOX_CONTAINER_DESCRIPTION = eINSTANCE.getFlexboxContainerDescription();
 
@@ -5854,12 +6080,20 @@ public interface FormPackage extends EPackage {
         EAttribute FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION = eINSTANCE.getFlexboxContainerDescription_FlexDirection();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getFlexboxContainerDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.ImageDescriptionImpl
          * <em>Image Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.ImageDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getImageDescription()
-         * @generated
          */
         EClass IMAGE_DESCRIPTION = eINSTANCE.getImageDescription();
 
@@ -6006,13 +6240,21 @@ public interface FormPackage extends EPackage {
         EReference LIST_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getListDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LIST_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getListDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.form.impl.MultiSelectDescriptionImpl <em>Multi Select
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.MultiSelectDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getMultiSelectDescription()
-         * @generated
          */
         EClass MULTI_SELECT_DESCRIPTION = eINSTANCE.getMultiSelectDescription();
 
@@ -6065,12 +6307,20 @@ public interface FormPackage extends EPackage {
         EReference MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getMultiSelectDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute MULTI_SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getMultiSelectDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.PieChartDescriptionImpl
          * <em>Pie Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.PieChartDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getPieChartDescription()
-         * @generated
          */
         EClass PIE_CHART_DESCRIPTION = eINSTANCE.getPieChartDescription();
 
@@ -6165,12 +6415,20 @@ public interface FormPackage extends EPackage {
         EReference RADIO_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getRadioDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute RADIO_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getRadioDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl
          * <em>Rich Text Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getRichTextDescription()
-         * @generated
          */
         EClass RICH_TEXT_DESCRIPTION = eINSTANCE.getRichTextDescription();
 
@@ -6191,12 +6449,20 @@ public interface FormPackage extends EPackage {
         EReference RICH_TEXT_DESCRIPTION__BODY = eINSTANCE.getRichTextDescription_Body();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getRichTextDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionImpl
          * <em>Select Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.SelectDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSelectDescription()
-         * @generated
          */
         EClass SELECT_DESCRIPTION = eINSTANCE.getSelectDescription();
 
@@ -6249,12 +6515,20 @@ public interface FormPackage extends EPackage {
         EReference SELECT_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getSelectDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getSelectDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.TextAreaDescriptionImpl
          * <em>Text Area Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.TextAreaDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextAreaDescription()
-         * @generated
          */
         EClass TEXT_AREA_DESCRIPTION = eINSTANCE.getTextAreaDescription();
 
@@ -6291,12 +6565,20 @@ public interface FormPackage extends EPackage {
         EReference TEXT_AREA_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getTextAreaDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXT_AREA_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getTextAreaDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionImpl
          * <em>Textfield Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextfieldDescription()
-         * @generated
          */
         EClass TEXTFIELD_DESCRIPTION = eINSTANCE.getTextfieldDescription();
 
@@ -6333,13 +6615,21 @@ public interface FormPackage extends EPackage {
         EReference TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getTextfieldDescription_ConditionalStyles();
 
         /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getTextfieldDescription_IsEnabledExpression();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionStyleImpl <em>Widget Description
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.WidgetDescriptionStyleImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescriptionStyle()
-         * @generated
          */
         EClass WIDGET_DESCRIPTION_STYLE = eINSTANCE.getWidgetDescriptionStyle();
 

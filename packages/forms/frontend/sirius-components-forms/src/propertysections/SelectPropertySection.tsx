@@ -199,7 +199,7 @@ export const SelectPropertySection = ({
         onBlur={onBlur}
         fullWidth
         data-testid={widget.label}
-        disabled={readOnly}
+        disabled={readOnly || widget.readOnly}
         inputProps={
           widget.style
             ? {

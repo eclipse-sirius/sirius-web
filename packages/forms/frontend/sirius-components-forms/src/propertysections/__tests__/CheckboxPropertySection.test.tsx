@@ -68,6 +68,17 @@ const checkboxWithEmptyStyle: GQLCheckbox = {
   },
 };
 
+const readOnlyCheckbox: GQLCheckbox = {
+  __typename: 'Checkbox',
+  id: 'checkboxId',
+  label: 'CheckboxLabel',
+  iconURL: null,
+  diagnostics: [],
+  booleanValue: false,
+  style: null,
+  readOnly: true,
+};
+
 const editCheckboxVariables: GQLEditCheckboxMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -345,6 +356,23 @@ test('should render a checkbox with help hint', () => {
           widget={{ ...defaultCheckbox, hasHelpText: true }}
           subscribers={[]}
           readOnly
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('should render a readOnly checkbox from widget properties', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <CheckboxPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={readOnlyCheckbox}
+          subscribers={[]}
+          readOnly={false}
         />
       </ToastContext.Provider>
     </MockedProvider>

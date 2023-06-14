@@ -209,4 +209,28 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.get('[data-testid^="FlexboxContainer-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
     cy.get('[title="ReferenceWidget"]').should('be.visible');
   });
+
+
+  function checkWidgetIsEnabledExpression(widgetName, should) {
+    cy.getByTestId("GroupDescription-more").click();
+    cy.getByTestId("treeitem-contextmenu").findByTestId("new-object").click();
+    cy.getByTestId("childCreationDescription").children("[role=\"button\"]").invoke("text").should("have.length.gt", 1);
+    cy.getByTestId("childCreationDescription").click().get("[data-value=\"" + widgetName + " Description\"]").should("exist").click();
+    cy.getByTestId("create-object").click();
+    cy.getByTestId('Is Enabled Expression').should(should);
+  }
+
+  it('is enabled expression is available only for the editable widgets', () => {
+    cy.getByTestId('PageDescription').dblclick();
+    // Not editable widgets shouldn't have isEnabledExpression
+    checkWidgetIsEnabledExpression('Widgets Link', 'not.exist');
+    checkWidgetIsEnabledExpression('Widgets Pie Chart', 'not.exist');
+    checkWidgetIsEnabledExpression('Widgets Label', 'not.exist');
+
+    // Editable widgets should have isEnabledExpression
+    checkWidgetIsEnabledExpression('Widgets Button', 'exist');
+    checkWidgetIsEnabledExpression('Widgets Flexbox Container', 'exist');
+    checkWidgetIsEnabledExpression('Toolbar Actions Button', 'exist');
+    checkWidgetIsEnabledExpression('Widgets Slider', 'exist');
+  });
 });

@@ -103,6 +103,8 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
 
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
+
         private Function<VariableManager, String> valueProvider;
 
         private BiFunction<VariableManager, String, IStatus> newValueHandler;
@@ -135,6 +137,11 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -184,6 +191,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
             textareaDescription.idProvider = Objects.requireNonNull(this.idProvider);
             textareaDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             textareaDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            textareaDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             textareaDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             textareaDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textareaDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

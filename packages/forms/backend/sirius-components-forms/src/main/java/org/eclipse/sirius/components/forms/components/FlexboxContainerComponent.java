@@ -47,6 +47,7 @@ public class FlexboxContainerComponent implements IComponent {
 
         String id = flexboxContainerDescription.getIdProvider().apply(variableManager);
         String label = flexboxContainerDescription.getLabelProvider().apply(variableManager);
+        Boolean readOnly = flexboxContainerDescription.getIsReadOnlyProvider().apply(variableManager);
         FlexDirection flexdirection = flexboxContainerDescription.getFlexDirection();
 
         List<Element> children = new ArrayList<>();
@@ -63,12 +64,14 @@ public class FlexboxContainerComponent implements IComponent {
             }
         });
 
-        // @formatter:off
+
         var flexboxContainerElementPropsBuilder = FlexboxContainerElementProps.newFlexboxContainerElementProps(id)
                 .label(label)
                 .flexDirection(flexdirection)
                 .children(childrenWidgets);
-        // @formatter:on
+        if (readOnly != null) {
+            flexboxContainerElementPropsBuilder.readOnly(readOnly);
+        }
 
         if (flexboxContainerDescription.getHelpTextProvider() != null) {
             flexboxContainerElementPropsBuilder.helpTextProvider(() -> flexboxContainerDescription.getHelpTextProvider().apply(variableManager));

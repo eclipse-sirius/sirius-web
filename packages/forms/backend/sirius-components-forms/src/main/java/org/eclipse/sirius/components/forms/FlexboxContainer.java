@@ -90,6 +90,8 @@ public final class FlexboxContainer extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -134,6 +136,11 @@ public final class FlexboxContainer extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public FlexboxContainer build() {
             FlexboxContainer flexboxContainer = new FlexboxContainer();
             flexboxContainer.id = Objects.requireNonNull(this.id);
@@ -145,6 +152,7 @@ public final class FlexboxContainer extends AbstractWidget {
             flexboxContainer.children = Objects.requireNonNull(this.children);
             flexboxContainer.diagnostics = Objects.requireNonNull(this.diagnostics);
             flexboxContainer.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            flexboxContainer.readOnly = this.readOnly;
             return flexboxContainer;
         }
     }

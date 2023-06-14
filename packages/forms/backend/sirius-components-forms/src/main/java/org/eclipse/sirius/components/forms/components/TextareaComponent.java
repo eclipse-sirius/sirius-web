@@ -49,15 +49,13 @@ public class TextareaComponent implements IComponent {
         String id = textareaDescription.getIdProvider().apply(variableManager);
         String label = textareaDescription.getLabelProvider().apply(variableManager);
         String iconURL = textareaDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = textareaDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = textareaDescription.getValueProvider().apply(variableManager);
-        Function<String, IStatus> specializedHandler = newValue -> {
-            return textareaDescription.getNewValueHandler().apply(variableManager, newValue);
-        };
+        Function<String, IStatus> specializedHandler = newValue -> textareaDescription.getNewValueHandler().apply(variableManager, newValue);
         var textareaStyle = textareaDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(textareaDescription, variableManager)));
 
-        // @formatter:off
         Builder textareaElementPropsBuilder = TextareaElementProps.newTextareaElementProps(id)
                 .label(label)
                 .value(value)
@@ -82,10 +80,12 @@ public class TextareaComponent implements IComponent {
         if (textareaDescription.getHelpTextProvider() != null) {
             textareaElementPropsBuilder.helpTextProvider(() -> textareaDescription.getHelpTextProvider().apply(variableManager));
         }
+        if (readOnly != null) {
+            textareaElementPropsBuilder.readOnly(readOnly);
+        }
 
         TextareaElementProps textareaElementProps = textareaElementPropsBuilder.build();
 
         return new Element(TextareaElementProps.TYPE, textareaElementProps);
-        // @formatter:on
     }
 }

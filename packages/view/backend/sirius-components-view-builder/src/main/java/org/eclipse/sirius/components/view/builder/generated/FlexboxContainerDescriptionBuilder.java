@@ -91,5 +91,15 @@ public class FlexboxContainerDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public FlexboxContainerDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getFlexboxContainerDescription().setIsEnabledExpression(value);
+        return this;
+    }
+
 }
 

@@ -99,15 +99,26 @@ public class CheckboxDescriptionBuilder {
         this.getCheckboxDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public CheckboxDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle ... values) {
+    public CheckboxDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle value : values) {
             this.getCheckboxDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getCheckboxDescription().setIsEnabledExpression(value);
         return this;
     }
 

@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,11 +8,12 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -109,14 +110,32 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
     protected ButtonDescriptionStyle style;
 
     /**
+     * The default value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
+    /**
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getConditionalStyles()
      * @generated
      * @ordered
+     * @see #getConditionalStyles()
      */
     protected EList<ConditionalButtonDescriptionStyle> conditionalStyles;
+    /**
+     * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -263,6 +282,29 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
      * @generated
      */
     @Override
+    public String getIsEnabledExpression() {
+        return this.isEnabledExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsEnabledExpression(String newIsEnabledExpression) {
+        String oldIsEnabledExpression = this.isEnabledExpression;
+        this.isEnabledExpression = newIsEnabledExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case FormPackage.BUTTON_DESCRIPTION__BODY:
@@ -293,6 +335,8 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
                 return this.getStyle();
             case FormPackage.BUTTON_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.getConditionalStyles();
+            case FormPackage.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return this.getIsEnabledExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -323,6 +367,9 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
                 this.getConditionalStyles().clear();
                 this.getConditionalStyles().addAll((Collection<? extends ConditionalButtonDescriptionStyle>) newValue);
                 return;
+            case FormPackage.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -350,6 +397,9 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
             case FormPackage.BUTTON_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
                 return;
+            case FormPackage.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -372,6 +422,8 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
                 return this.style != null;
             case FormPackage.BUTTON_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case FormPackage.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -391,6 +443,8 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
         result.append(this.buttonLabelExpression);
         result.append(", imageExpression: ");
         result.append(this.imageExpression);
+        result.append(", IsEnabledExpression: ");
+        result.append(this.isEnabledExpression);
         result.append(')');
         return result.toString();
     }

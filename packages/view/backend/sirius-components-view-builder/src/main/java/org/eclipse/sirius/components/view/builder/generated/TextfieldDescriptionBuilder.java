@@ -99,15 +99,26 @@ public class TextfieldDescriptionBuilder {
         this.getTextfieldDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public TextfieldDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle ... values) {
+    public TextfieldDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle value : values) {
             this.getTextfieldDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public TextfieldDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getTextfieldDescription().setIsEnabledExpression(value);
         return this;
     }
 

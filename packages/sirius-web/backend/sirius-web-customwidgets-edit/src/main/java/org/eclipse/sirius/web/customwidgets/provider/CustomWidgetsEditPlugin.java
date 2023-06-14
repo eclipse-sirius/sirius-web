@@ -70,7 +70,7 @@ public final class CustomWidgetsEditPlugin extends EMFPlugin {
     public static Implementation getPlugin() {
         return plugin;
     }
-    
+
     @Override
     protected Object doGetImage(String key) throws IOException {
         URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
@@ -78,7 +78,7 @@ public final class CustomWidgetsEditPlugin extends EMFPlugin {
         inputStream.close();
         return url;
     }
-    
+
     /**
      * Computes the file extension to be used with the key to specify an image resource.
      *
@@ -91,15 +91,8 @@ public final class CustomWidgetsEditPlugin extends EMFPlugin {
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension) ||
-                "gif".equalsIgnoreCase(extension) ||
-                "bmp".equalsIgnoreCase(extension) ||
-                "ico".equalsIgnoreCase(extension) ||
-                "jpg".equalsIgnoreCase(extension) ||
-                "jpeg".equalsIgnoreCase(extension) ||
-                "tif".equalsIgnoreCase(extension) ||
-                "tiff".equalsIgnoreCase(extension) ||
-                "svg".equalsIgnoreCase(extension)) {
+            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
+                    || "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
         }

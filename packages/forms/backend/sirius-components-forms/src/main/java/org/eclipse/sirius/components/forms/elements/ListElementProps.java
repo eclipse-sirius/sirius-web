@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021, 2023 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class ListElementProps implements IProps {
+
     public static final String TYPE = "List";
 
     private String id;
@@ -39,6 +40,8 @@ public final class ListElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private ListStyle style;
 
@@ -64,6 +67,10 @@ public final class ListElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public ListStyle getStyle() {
@@ -105,6 +112,8 @@ public final class ListElementProps implements IProps {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private ListStyle style;
 
         private List<ListItem> items;
@@ -122,6 +131,11 @@ public final class ListElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -150,6 +164,7 @@ public final class ListElementProps implements IProps {
             listElementProps.id = Objects.requireNonNull(this.id);
             listElementProps.label = Objects.requireNonNull(this.label);
             listElementProps.iconURL = this.iconURL;
+            listElementProps.readOnly = this.readOnly;
             listElementProps.style = this.style; // Optional on purpose
             listElementProps.items = Objects.requireNonNull(this.items);
             listElementProps.children = Objects.requireNonNull(this.children);

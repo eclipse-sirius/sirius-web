@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * @generated
  */
 public interface ReferenceWidgetDescription extends WidgetDescription {
+
     /**
      * Returns the value of the '<em><b>Reference Owner Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -80,5 +81,28 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setReferenceNameExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setIsEnabledExpression(String)
+     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_IsEnabledExpression()
+     */
+    String getIsEnabledExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression <em>Is
+     * Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
+     * @generated
+     * @see #getIsEnabledExpression()
+     */
+    void setIsEnabledExpression(String value);
 
 } // ReferenceWidgetDescription

@@ -79,6 +79,17 @@ const defaultListWithStyle: GQLList = {
   id: 'listId',
 };
 
+const readOnlyList: GQLList = {
+  label: 'myList',
+  iconURL: null,
+  items: defaultListItems,
+  style: null,
+  __typename: 'List',
+  diagnostics: [],
+  id: 'listId',
+  readOnly: true,
+};
+
 const clickListItemVariables: GQLClickListItemMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -192,6 +203,24 @@ test('render list widget with help hint', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={{ ...defaultList, hasHelpText: true }}
+          subscribers={[]}
+          readOnly={false}
+          setSelection={() => {}}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('should render a readOnly list from widget properties', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <ListPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={readOnlyList}
           subscribers={[]}
           readOnly={false}
           setSelection={() => {}}

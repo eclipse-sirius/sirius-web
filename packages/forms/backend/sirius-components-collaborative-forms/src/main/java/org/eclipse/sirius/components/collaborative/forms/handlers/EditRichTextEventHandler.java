@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.collaborative.forms.handlers;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -76,22 +75,21 @@ public class EditRichTextEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditRichTextInput) {
-            EditRichTextInput input = (EditRichTextInput) formInput;
+        if (formInput instanceof EditRichTextInput input) {
 
-            // @formatter:off
-            IStatus status = this.formQueryService.findWidget(form, input.richTextId())
-                    .map(widget -> {
-                        Function<String, IStatus> handlerFunction = null;
-                        if (widget instanceof RichText) {
-                            handlerFunction = ((RichText) widget).getNewValueHandler();
-                        }
-                        return handlerFunction;
-                    })
-                    .map(handler -> handler.apply(input.newValue()))
-                    .orElse(new Failure(""));
-            // @formatter:on
+            var optionalRichText = this.formQueryService.findWidget(form, input.richTextId())
+                    .filter(RichText.class::isInstance)
+                    .map(RichText.class::cast);
 
+            IStatus status;
+            if (optionalRichText.map(RichText::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalRichText
+                        .map(RichText::getNewValueHandler)
+                        .map(handler -> handler.apply(input.newValue()))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

@@ -99,15 +99,26 @@ public class TextAreaDescriptionBuilder {
         this.getTextAreaDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public TextAreaDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle ... values) {
+    public TextAreaDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle value : values) {
             this.getTextAreaDescription().getConditionalStyles().add(value);
         }
+        return this;
+    }
+
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public TextAreaDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getTextAreaDescription().setIsEnabledExpression(value);
         return this;
     }
 

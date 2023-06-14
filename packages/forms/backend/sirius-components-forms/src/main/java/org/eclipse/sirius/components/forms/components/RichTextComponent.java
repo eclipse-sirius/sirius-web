@@ -48,14 +48,12 @@ public class RichTextComponent implements IComponent {
         String id = richTextDescription.getIdProvider().apply(variableManager);
         String label = richTextDescription.getLabelProvider().apply(variableManager);
         String iconURL = richTextDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = richTextDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = richTextDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, String, IStatus> genericHandler = richTextDescription.getNewValueHandler();
-        Function<String, IStatus> specializedHandler = newValue -> {
-            return genericHandler.apply(variableManager, newValue);
-        };
+        Function<String, IStatus> specializedHandler = newValue -> genericHandler.apply(variableManager, newValue);
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(richTextDescription, variableManager)));
 
-        // @formatter:off
         Builder richTextElementPropsBuilder = RichTextElementProps.newRichTextElementProps(id)
                 .label(label)
                 .value(value)
@@ -68,9 +66,11 @@ public class RichTextComponent implements IComponent {
         if (richTextDescription.getHelpTextProvider() != null) {
             richTextElementPropsBuilder.helpTextProvider(() -> richTextDescription.getHelpTextProvider().apply(variableManager));
         }
+        if (readOnly != null) {
+            richTextElementPropsBuilder.readOnly(readOnly);
+        }
         RichTextElementProps richTextElementProps = richTextElementPropsBuilder.build();
 
         return new Element(RichTextElementProps.TYPE, richTextElementProps);
-        // @formatter:on
     }
 }

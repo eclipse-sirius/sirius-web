@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -55,6 +56,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager))
                 .iconURLProvider(variableManager -> "")
+                .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))
                 .isManyValuedProvider(variableManager -> this.getReferenceIsMany(referenceDescription, variableManager))
                 .isContainerProvider(variableManager -> this.getReferenceIsContainer(referenceDescription, variableManager))
                 .itemsProvider(variableManager -> this.getReferenceValue(referenceDescription, variableManager))
@@ -124,6 +126,16 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
     private StringValueProvider getStringValueProvider(String valueExpression) {
         String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return new StringValueProvider(this.interpreter, safeValueExpression);
+    }
+
+    private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {
+        return variableManager -> {
+            if (expression != null && !expression.isBlank()) {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), expression);
+                return result.asBoolean().map(value -> !value).orElse(Boolean.FALSE);
+            }
+            return Boolean.FALSE;
+        };
     }
 
     private Optional<Object> getItem(VariableManager variableManager) {

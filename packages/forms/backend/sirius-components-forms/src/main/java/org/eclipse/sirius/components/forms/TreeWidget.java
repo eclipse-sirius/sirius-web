@@ -81,6 +81,8 @@ public final class TreeWidget extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private final boolean readOnly = true; // Read-only by nature;;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -124,6 +126,7 @@ public final class TreeWidget extends AbstractWidget {
             treeWidget.expandedNodesIds = Objects.requireNonNull(this.expandedNodesIds);
             treeWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
             treeWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            treeWidget.readOnly = this.readOnly;
             return treeWidget;
         }
     }

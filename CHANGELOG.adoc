@@ -42,6 +42,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 +
 image:doc/screenshots/ShowIconOptionSelectWidget.jpg[Icons on select widget option,70%,30%]
 - https://github.com/eclipse-sirius/sirius-components/issues/2055[#2055] [form] Added initial version of a custom widget to view & edit EMF references (both single and multi-valued).
+- https://github.com/eclipse-sirius/sirius-components/issues/2056[#2056] [form] Add the possibility to control read-only mode for widgets with an expression.
 
 === Improvements
 

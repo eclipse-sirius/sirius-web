@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+/*******************************************************************************
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.web.customwidgets;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -134,13 +134,22 @@ public interface CustomwidgetsPackage extends EPackage {
     int SLIDER_DESCRIPTION__BODY = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Slider Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SLIDER_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int SLIDER_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Slider Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -210,6 +219,18 @@ public interface CustomwidgetsPackage extends EPackage {
     EReference getSliderDescription_Body();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.web.customwidgets.SliderDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @generated
+     * @see org.eclipse.sirius.web.customwidgets.SliderDescription#getIsEnabledExpression()
+     * @see #getSliderDescription()
+     */
+    EAttribute getSliderDescription_IsEnabledExpression();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -272,6 +293,14 @@ public interface CustomwidgetsPackage extends EPackage {
          * @generated
          */
         EReference SLIDER_DESCRIPTION__BODY = eINSTANCE.getSliderDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getSliderDescription_IsEnabledExpression();
 
     }
 

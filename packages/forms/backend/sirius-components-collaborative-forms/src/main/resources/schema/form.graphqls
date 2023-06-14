@@ -77,6 +77,7 @@ interface Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
 }
 
 type Checkbox implements Widget {
@@ -85,6 +86,7 @@ type Checkbox implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   value: Boolean!
   style: CheckboxStyle
 }
@@ -99,6 +101,7 @@ type List implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   items: [ListItem!]!
   style: ListStyle
 }
@@ -126,6 +129,7 @@ type MultiSelect implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   options: [SelectOption!]!
   values: [String]
   style: MultiSelectStyle
@@ -147,6 +151,7 @@ type Radio implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   options: [RadioOption!]!
   style: RadioStyle
 }
@@ -172,6 +177,7 @@ type Select implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   options: [SelectOption!]!
   value: String
   style: SelectStyle
@@ -199,6 +205,7 @@ type Textarea implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   value: String!
   style: TextareaStyle
   supportsCompletion: Boolean
@@ -220,6 +227,7 @@ type Textfield implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   value: String!
   style: TextfieldStyle
   supportsCompletion: Boolean
@@ -241,6 +249,7 @@ type LabelWidget implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   value: String!
   style: LabelWidgetStyle
 }
@@ -260,6 +269,7 @@ type Link implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   url: String!
   style: LinkStyle
 }
@@ -281,6 +291,7 @@ type Button implements Widget {
   hasHelpText: Boolean!
   buttonLabel: String
   imageURL: String
+  readOnly: Boolean!
   style: ButtonStyle
 }
 
@@ -302,6 +313,7 @@ type ToolbarAction implements Widget {
   hasHelpText: Boolean!
   buttonLabel: String
   imageURL: String
+  readOnly: Boolean!
   style: ButtonStyle
 }
 
@@ -313,6 +325,7 @@ type ChartWidget implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   chart: Chart!
 }
 
@@ -322,6 +335,7 @@ type FlexboxContainer implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   flexDirection: String!
   flexWrap: String!
   flexGrow: Int!
@@ -334,6 +348,7 @@ type TreeWidget implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   nodes: [TreeNode!]!
   expandedNodesIds: [ID!]!
 }
@@ -353,6 +368,7 @@ type Image implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   url: String!
   maxWidth: String
 }
@@ -363,6 +379,7 @@ type RichText implements Widget {
   iconURL: String
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
+  readOnly: Boolean!
   value: String!
 }
 

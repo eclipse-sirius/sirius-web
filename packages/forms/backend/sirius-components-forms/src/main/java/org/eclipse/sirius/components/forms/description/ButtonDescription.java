@@ -92,6 +92,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
@@ -99,6 +100,8 @@ public final class ButtonDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private Function<VariableManager, String> buttonLabelProvider;
 
@@ -132,6 +135,11 @@ public final class ButtonDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -181,6 +189,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
             buttonDescription.idProvider = Objects.requireNonNull(this.idProvider);
             buttonDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             buttonDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            buttonDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             buttonDescription.buttonLabelProvider = Objects.requireNonNull(this.buttonLabelProvider);
             buttonDescription.imageURLProvider = Objects.requireNonNull(this.imageURLProvider);
             buttonDescription.pushButtonHandler = Objects.requireNonNull(this.pushButtonHandler);

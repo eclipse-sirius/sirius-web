@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,11 +8,12 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -41,6 +42,8 @@ import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
  * <li>{@link org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionImpl#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionImpl#getConditionalStyles <em>Conditional
  * Styles</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionImpl#getIsEnabledExpression <em>Is
+ * Enabled Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -70,9 +73,9 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #getBody()
      * @generated
      * @ordered
+     * @see #getBody()
      */
     protected EList<Operation> body;
 
@@ -80,9 +83,9 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getStyle()
      * @generated
      * @ordered
+     * @see #getStyle()
      */
     protected TextfieldDescriptionStyle style;
 
@@ -90,11 +93,31 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getConditionalStyles()
      * @generated
      * @ordered
+     * @see #getConditionalStyles()
      */
     protected EList<ConditionalTextfieldDescriptionStyle> conditionalStyles;
+
+    /**
+     * The default value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsEnabledExpression()
+     */
+    protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -219,6 +242,29 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
      * @generated
      */
     @Override
+    public String getIsEnabledExpression() {
+        return this.isEnabledExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsEnabledExpression(String newIsEnabledExpression) {
+        String oldIsEnabledExpression = this.isEnabledExpression;
+        this.isEnabledExpression = newIsEnabledExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case FormPackage.TEXTFIELD_DESCRIPTION__BODY:
@@ -247,6 +293,8 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
                 return this.getStyle();
             case FormPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.getConditionalStyles();
+            case FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return this.getIsEnabledExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -274,6 +322,9 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
                 this.getConditionalStyles().clear();
                 this.getConditionalStyles().addAll((Collection<? extends ConditionalTextfieldDescriptionStyle>) newValue);
                 return;
+            case FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -298,6 +349,9 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
             case FormPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
                 return;
+            case FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -318,6 +372,8 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
                 return this.style != null;
             case FormPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -335,6 +391,8 @@ public class TextfieldDescriptionImpl extends WidgetDescriptionImpl implements T
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (valueExpression: ");
         result.append(this.valueExpression);
+        result.append(", IsEnabledExpression: ");
+        result.append(this.isEnabledExpression);
         result.append(')');
         return result.toString();
     }

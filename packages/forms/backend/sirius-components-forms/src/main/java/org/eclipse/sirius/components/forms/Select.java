@@ -92,6 +92,8 @@ public final class Select extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -136,6 +138,11 @@ public final class Select extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Select build() {
             Select select = new Select();
             select.id = Objects.requireNonNull(this.id);
@@ -147,6 +154,7 @@ public final class Select extends AbstractWidget {
             select.style = this.style; // Optional on purpose
             select.diagnostics = Objects.requireNonNull(this.diagnostics);
             select.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            select.readOnly = this.readOnly;
             return select;
         }
     }

@@ -72,6 +72,7 @@ public final class ReferenceWidget extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -81,6 +82,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private List<ReferenceValue> referenceValues;
 
@@ -106,6 +109,11 @@ public final class ReferenceWidget extends AbstractWidget {
 
         public Builder helpTextProvider(Supplier<String> helpTextProvider) {
             this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -135,17 +143,18 @@ public final class ReferenceWidget extends AbstractWidget {
         }
 
         public ReferenceWidget build() {
-            ReferenceWidget multiValuedReferenceWidget = new ReferenceWidget();
-            multiValuedReferenceWidget.id = Objects.requireNonNull(this.id);
-            multiValuedReferenceWidget.label = Objects.requireNonNull(this.label);
-            multiValuedReferenceWidget.iconURL = this.iconURL;
-            multiValuedReferenceWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
-            multiValuedReferenceWidget.container = this.container;
-            multiValuedReferenceWidget.manyValued = this.manyValued;
-            multiValuedReferenceWidget.referenceValues = Objects.requireNonNull(this.referenceValues);
-            multiValuedReferenceWidget.setting = Objects.requireNonNull(this.setting);
-            multiValuedReferenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
-            return multiValuedReferenceWidget;
+            ReferenceWidget referenceWidget = new ReferenceWidget();
+            referenceWidget.id = Objects.requireNonNull(this.id);
+            referenceWidget.label = Objects.requireNonNull(this.label);
+            referenceWidget.iconURL = this.iconURL;
+            referenceWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
+            referenceWidget.container = this.container;
+            referenceWidget.manyValued = this.manyValued;
+            referenceWidget.referenceValues = Objects.requireNonNull(this.referenceValues);
+            referenceWidget.setting = Objects.requireNonNull(this.setting);
+            referenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            referenceWidget.readOnly = this.readOnly;
+            return referenceWidget;
         }
     }
 

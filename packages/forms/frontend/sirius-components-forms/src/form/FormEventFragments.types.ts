@@ -123,6 +123,7 @@ export interface GQLWidget {
   __typename: string;
   diagnostics: GQLDiagnostic[];
   hasHelpText: boolean;
+  readOnly: boolean;
 }
 
 export interface GQLDiagnostic {

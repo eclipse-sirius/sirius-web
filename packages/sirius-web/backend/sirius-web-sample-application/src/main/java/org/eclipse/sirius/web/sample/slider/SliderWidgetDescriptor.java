@@ -64,6 +64,7 @@ public class SliderWidgetDescriptor implements IWidgetDescriptor {
                     .maxValue(props.getMaxValue())
                     .currentValue(props.getCurrentValue())
                     .diagnostics(List.of())
+                    .readOnly(props.isReadOnly())
                     .newValueHandler(props.getNewValueHandler());
             if (props.getIconURL() != null) {
                 sliderBuilder.iconURL(props.getIconURL());

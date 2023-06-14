@@ -120,6 +120,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(viewTextfieldDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewTextfieldDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewTextfieldDescription.getIsEnabledExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(viewTextfieldDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(viewTextfieldDescription.getBody());
         Function<VariableManager, TextfieldStyle> styleProvider = variableManager -> {
@@ -137,6 +138,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         TextfieldDescription.Builder builder = TextfieldDescription.newTextfieldDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -155,6 +157,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(viewCheckboxDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewCheckboxDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewCheckboxDescription.getIsEnabledExpression());
         String valueExpression = Optional.ofNullable(viewCheckboxDescription.getValueExpression()).orElse("");
         BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(viewCheckboxDescription.getBody());
@@ -173,6 +176,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         CheckboxDescription.Builder builder = CheckboxDescription.newCheckboxDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -191,6 +195,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewSelectDescription.getLabelExpression());
         Function<VariableManager, String> optionIconURLProvider = this.getOptionIconURLProvider();
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewSelectDescription.getIsEnabledExpression());
         Function<VariableManager, String> valueProvider = this.getSelectValueProvider(viewSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
         StringValueProvider optionLabelProvider = this.getStringValueProvider(viewSelectDescription.getCandidateLabelExpression());
@@ -212,6 +217,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         SelectDescription.Builder builder = SelectDescription.newSelectDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
@@ -233,6 +239,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(textAreaDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(textAreaDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(textAreaDescription.getIsEnabledExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(textAreaDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(textAreaDescription.getBody());
         Function<VariableManager, TextareaStyle> styleProvider = variableManager -> {
@@ -250,6 +257,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         TextareaDescription.Builder builder = TextareaDescription.newTextareaDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -267,12 +275,14 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(richTextDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(richTextDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(richTextDescription.getIsEnabledExpression());
         StringValueProvider valueProvider = this.getStringValueProvider(richTextDescription.getValueExpression());
         BiFunction<VariableManager, String, IStatus> newValueHandler = this.getNewValueHandler(richTextDescription.getBody());
 
         org.eclipse.sirius.components.forms.description.RichTextDescription.Builder builder = org.eclipse.sirius.components.forms.description.RichTextDescription.newRichTextDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -290,6 +300,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(multiSelectDescription.getLabelExpression());
         Function<VariableManager, String> optionIconURLProvider = this.getOptionIconURLProvider();
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(multiSelectDescription.getIsEnabledExpression());
         Function<VariableManager, List<String>> valuesProvider = this.getMultiSelectValuesProvider(multiSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
         StringValueProvider optionLabelProvider = this.getStringValueProvider(multiSelectDescription.getCandidateLabelExpression());
@@ -311,6 +322,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         MultiSelectDescription.Builder builder = MultiSelectDescription.newMultiSelectDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .valuesProvider(valuesProvider)
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
@@ -332,6 +344,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(radioDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(radioDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(radioDescription.getIsEnabledExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
         StringValueProvider optionLabelProvider = this.getStringValueProvider(radioDescription.getCandidateLabelExpression());
 
@@ -360,6 +373,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         RadioDescription.Builder builder = RadioDescription.newRadioDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
                 .optionSelectedProvider(optionSelectedProvider)
@@ -414,6 +428,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(flexboxContainerDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(flexboxContainerDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(flexboxContainerDescription.getIsEnabledExpression());
         FlexDirection flexDirection = FlexDirection.valueOf(flexboxContainerDescription.getFlexDirection().getName());
         List<AbstractWidgetDescription> children = new ArrayList<>();
         flexboxContainerDescription.getChildren().forEach(widget -> children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget)));
@@ -421,6 +436,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         FlexboxContainerDescription.Builder builder = FlexboxContainerDescription.newFlexboxContainerDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .flexDirection(flexDirection)
                 .children(children)
                 .diagnosticsProvider(variableManager -> List.of())
@@ -437,6 +453,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(viewButtonDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewButtonDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewButtonDescription.getIsEnabledExpression());
         StringValueProvider buttonLabelProvider = this.getStringValueProvider(viewButtonDescription.getButtonLabelExpression());
         StringValueProvider imageURLProvider = this.getStringValueProvider(viewButtonDescription.getImageExpression());
         Function<VariableManager, IStatus> pushButtonHandler = this.getOperationsHandler(viewButtonDescription.getBody());
@@ -455,6 +472,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         ButtonDescription.Builder builder = ButtonDescription.newButtonDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .buttonLabelProvider(buttonLabelProvider)
                 .imageURLProvider(imageURLProvider)
                 .pushButtonHandler(pushButtonHandler)
@@ -537,6 +555,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         String descriptionId = this.getDescriptionId(viewListDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewListDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewListDescription.getIsEnabledExpression());
         Function<VariableManager, List<?>> valueProvider = this.getMultiValueProvider(viewListDescription.getValueExpression());
         StringValueProvider displayProvider = this.getStringValueProvider(viewListDescription.getDisplayExpression());
         BooleanValueProvider isDeletableProvider = this.getBooleanValueProvider(viewListDescription.getIsDeletableExpression());
@@ -561,6 +580,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         ListDescription.Builder builder = ListDescription.newListDescription(descriptionId)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
                 .itemsProvider(valueProvider)
                 .itemKindProvider(itemKindProvider)
                 .itemDeleteHandlerProvider(itemDeleteHandlerProvider)
@@ -789,6 +809,16 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
 
     private Function<VariableManager, String> getOptionIconURLProvider() {
         return variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse("");
+    }
+
+    private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {
+        return variableManager -> {
+            if (expression != null && !expression.isBlank()) {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), expression);
+                return result.asBoolean().map(value -> !value).orElse(Boolean.FALSE);
+            }
+            return Boolean.FALSE;
+        };
     }
 
     private String getDescriptionId(EObject description) {

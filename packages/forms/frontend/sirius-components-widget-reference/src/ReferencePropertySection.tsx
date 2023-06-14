@@ -213,18 +213,21 @@ export const ReferencePropertySection = ({
         <ListItemText data-testid={`reference-value-${item.id}`}>{item.label}</ListItemText>
         {widget.manyValued ? (
           <>
-            <IconButton aria-label="up" disabled={readOnly || index === 0} onClick={() => onMoveUp(item.id)}>
+            <IconButton
+              aria-label="up"
+              disabled={readOnly || widget.readOnly || index === 0}
+              onClick={() => onMoveUp(item.id)}>
               <ArrowUpwardIcon />
             </IconButton>
             <IconButton
               aria-label="down"
-              disabled={readOnly || index === widget.referenceValues.length - 1}
+              disabled={readOnly || widget.readOnly || index === widget.referenceValues.length - 1}
               onClick={() => onMoveDown(item.id)}>
               <ArrowDownwardIcon />
             </IconButton>
           </>
         ) : null}
-        <IconButton aria-label="delete" disabled={readOnly} onClick={() => onDelete(item.id)}>
+        <IconButton aria-label="delete" disabled={readOnly || widget.readOnly} onClick={() => onDelete(item.id)}>
           <DeleteIcon />
         </IconButton>
       </ListItem>
@@ -241,9 +244,13 @@ export const ReferencePropertySection = ({
         data-testid={widget.label}
       />
 
-      <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDrop={handleDrop}>
+      {readOnly || widget.readOnly ? (
         <List dense>{items}</List>
-      </div>
+      ) : (
+        <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDrop={handleDrop}>
+          <List dense>{items}</List>
+        </div>
+      )}
     </div>
   );
 };

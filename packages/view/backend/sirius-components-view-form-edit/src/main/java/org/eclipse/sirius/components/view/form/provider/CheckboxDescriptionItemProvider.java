@@ -54,6 +54,7 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
             super.getPropertyDescriptors(object);
 
             this.addValueExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -68,6 +69,19 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
                 this.getString("_UI_CheckboxDescription_valueExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescription_valueExpression_feature", "_UI_CheckboxDescription_type"),
                 FormPackage.Literals.CHECKBOX_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CheckboxDescription_IsEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescription_IsEnabledExpression_feature", "_UI_CheckboxDescription_type"),
+                FormPackage.Literals.CHECKBOX_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -146,6 +160,7 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
 
         switch (notification.getFeatureID(CheckboxDescription.class)) {
             case FormPackage.CHECKBOX_DESCRIPTION__VALUE_EXPRESSION:
+            case FormPackage.CHECKBOX_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.CHECKBOX_DESCRIPTION__BODY:
@@ -178,6 +193,8 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createCheckboxDescriptionStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES, FormFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle()));
     }

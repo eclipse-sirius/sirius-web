@@ -163,7 +163,7 @@ export const SliderPropertySection = ({
       />
       <Slider
         data-testid={widget.label}
-        disabled={readOnly}
+        disabled={readOnly || widget.readOnly}
         onFocus={onFocus}
         onBlur={onBlur}
         min={widget.minValue}

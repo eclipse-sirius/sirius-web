@@ -45,7 +45,7 @@ public class RenderTextfieldTest {
 
     private static final String TEXTFIELD_DESCRIPTION_ID = "textfieldDescriptionId";
 
-    private static final String TESTFIELD_ID = "testfieldId";
+    private static final String TEXTFIELD_ID = "textfieldId";
 
     private static final String LABEL = "label";
 
@@ -75,7 +75,7 @@ public class RenderTextfieldTest {
     public void testRenderTextfieldWithoutProposalProvider() {
         // @formatter:off
         TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
-                .idProvider(this.constantProvider(TESTFIELD_ID))
+                .idProvider(this.constantProvider(TEXTFIELD_ID))
                 .labelProvider(this.constantProvider(LABEL))
                 .valueProvider(this.constantProvider(VALUE))
                 .newValueHandler((v, s) -> new Success())
@@ -105,7 +105,7 @@ public class RenderTextfieldTest {
 
         // @formatter:off
         TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
-                .idProvider(this.constantProvider(TESTFIELD_ID))
+                .idProvider(this.constantProvider(TEXTFIELD_ID))
                 .labelProvider(this.constantProvider(LABEL))
                 .valueProvider(this.constantProvider(VALUE))
                 .completionProposalsProvider(this.constantProvider(proposals))
@@ -134,7 +134,7 @@ public class RenderTextfieldTest {
     public void testRenderTextfieldWithHelpTextProvider() {
         // @formatter:off
         TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
-                .idProvider(this.constantProvider(TESTFIELD_ID))
+                .idProvider(this.constantProvider(TEXTFIELD_ID))
                 .labelProvider(this.constantProvider(LABEL))
                 .valueProvider(this.constantProvider(VALUE))
                 .helpTextProvider((variableManager) -> {
@@ -162,6 +162,39 @@ public class RenderTextfieldTest {
         Textfield renderedTextField = (Textfield) form.getPages().get(0).getGroups().get(0).getWidgets().get(0);
         assertThat(renderedTextField.getHelpTextProvider()).isNotNull();
         assertThat(renderedTextField.getHelpTextProvider().get()).isEqualTo("help");
+    }
+
+    @Test
+    public void testRenderTextfieldWithReadOnlyProvider() {
+        // @formatter:off
+        TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .idProvider(this.constantProvider(TEXTFIELD_ID))
+                .labelProvider(this.constantProvider(LABEL))
+                .valueProvider(this.constantProvider(VALUE))
+                .isReadOnlyProvider((variableManager) -> {
+                    // Check that the isReadOnlyProvider is given access to "self"
+                    var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+                    assertThat(optionalSelf).isPresent();
+                    assertThat(optionalSelf.get()).isSameAs(this.self);
+                    return true;
+                })
+                .newValueHandler((v, s) -> new Success())
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "")
+                .styleProvider(this.constantProvider(this.style)).build();
+        // @formatter:on
+
+        FormDescription formDescription = this.createSingleWidgetForm(textDescription);
+        Form form = this.renderForm(formDescription);
+
+        assertThat(form).isNotNull();
+        assertThat(form.getPages()).hasSize(1);
+        assertThat(form.getPages().get(0).getGroups()).hasSize(1);
+        assertThat(form.getPages().get(0).getGroups().get(0).getWidgets()).hasSize(1);
+        assertThat(form.getPages().get(0).getGroups().get(0).getWidgets().get(0)).isInstanceOf(Textfield.class);
+        Textfield renderedTextField = (Textfield) form.getPages().get(0).getGroups().get(0).getWidgets().get(0);
+        assertThat(renderedTextField.isReadOnly()).isTrue();
     }
 
     private Form renderForm(FormDescription formDescription) {

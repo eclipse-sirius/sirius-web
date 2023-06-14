@@ -81,6 +81,8 @@ public final class LabelWidget extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private final boolean readOnly = true; // Read-only by nature;;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -124,6 +126,7 @@ public final class LabelWidget extends AbstractWidget {
             labelWidget.style = this.style; // Optional on purpose
             labelWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
             labelWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            labelWidget.readOnly = this.readOnly;
             return labelWidget;
         }
     }

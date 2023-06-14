@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class TextareaElementProps implements IProps {
+
     public static final String TYPE = "Textarea";
 
     private String id;
@@ -42,6 +43,8 @@ public final class TextareaElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private String value;
 
@@ -71,6 +74,10 @@ public final class TextareaElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public String getValue() {
@@ -111,6 +118,7 @@ public final class TextareaElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -118,6 +126,8 @@ public final class TextareaElementProps implements IProps {
         private String iconURL;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private String value;
 
@@ -140,6 +150,11 @@ public final class TextareaElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -178,6 +193,7 @@ public final class TextareaElementProps implements IProps {
             textareaElementProps.id = Objects.requireNonNull(this.id);
             textareaElementProps.label = Objects.requireNonNull(this.label);
             textareaElementProps.iconURL = this.iconURL;
+            textareaElementProps.readOnly = this.readOnly;
             textareaElementProps.value = Objects.requireNonNull(this.value);
             textareaElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textareaElementProps.style = this.style; // Optional on purpose

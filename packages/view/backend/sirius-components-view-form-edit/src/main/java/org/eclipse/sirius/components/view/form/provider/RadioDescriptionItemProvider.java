@@ -56,6 +56,7 @@ public class RadioDescriptionItemProvider extends WidgetDescriptionItemProvider 
             this.addValueExpressionPropertyDescriptor(object);
             this.addCandidatesExpressionPropertyDescriptor(object);
             this.addCandidateLabelExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -96,6 +97,19 @@ public class RadioDescriptionItemProvider extends WidgetDescriptionItemProvider 
                 this.getString("_UI_RadioDescription_candidateLabelExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_RadioDescription_candidateLabelExpression_feature", "_UI_RadioDescription_type"),
                 FormPackage.Literals.RADIO_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RadioDescription_IsEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RadioDescription_IsEnabledExpression_feature", "_UI_RadioDescription_type"),
+                FormPackage.Literals.RADIO_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -176,6 +190,7 @@ public class RadioDescriptionItemProvider extends WidgetDescriptionItemProvider 
             case FormPackage.RADIO_DESCRIPTION__VALUE_EXPRESSION:
             case FormPackage.RADIO_DESCRIPTION__CANDIDATES_EXPRESSION:
             case FormPackage.RADIO_DESCRIPTION__CANDIDATE_LABEL_EXPRESSION:
+            case FormPackage.RADIO_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.RADIO_DESCRIPTION__BODY:

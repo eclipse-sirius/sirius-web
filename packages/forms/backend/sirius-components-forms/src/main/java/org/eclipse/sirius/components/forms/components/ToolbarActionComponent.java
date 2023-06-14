@@ -48,23 +48,20 @@ public class ToolbarActionComponent implements IComponent {
         String id = buttonDescription.getIdProvider().apply(variableManager);
         String label = buttonDescription.getLabelProvider().apply(variableManager);
         String iconURL = buttonDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = buttonDescription.getIsReadOnlyProvider().apply(variableManager);
         String toolbarActionLabel = buttonDescription.getButtonLabelProvider().apply(variableManager);
         String imageURL = buttonDescription.getImageURLProvider().apply(variableManager);
         Function<VariableManager, IStatus> pushButtonHandler = buttonDescription.getPushButtonHandler();
-        Supplier<IStatus> specializedHandler = () -> {
-            return pushButtonHandler.apply(variableManager);
-        };
+        Supplier<IStatus> specializedHandler = () -> pushButtonHandler.apply(variableManager);
 
         var toolbarActionStyle = buttonDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(buttonDescription, variableManager)));
 
-        // @formatter:off
         Builder toolbarActionElementPropsBuilder = ToolbarActionElementProps.newToolbarActionElementProps(id)
                 .label(label)
                 .pushButtonHandler(specializedHandler)
                 .children(children);
-        // @formatter:on
         if (iconURL != null) {
             toolbarActionElementPropsBuilder.iconURL(iconURL);
         }
@@ -79,6 +76,9 @@ public class ToolbarActionComponent implements IComponent {
         }
         if (buttonDescription.getHelpTextProvider() != null) {
             toolbarActionElementPropsBuilder.helpTextProvider(() -> buttonDescription.getHelpTextProvider().apply(variableManager));
+        }
+        if (readOnly != null) {
+            toolbarActionElementPropsBuilder.readOnly(readOnly);
         }
 
         ToolbarActionElementProps toolbarActionElementProps = toolbarActionElementPropsBuilder.build();

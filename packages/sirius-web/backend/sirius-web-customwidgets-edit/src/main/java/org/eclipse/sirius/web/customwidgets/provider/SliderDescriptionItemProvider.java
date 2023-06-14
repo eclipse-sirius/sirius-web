@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+/*******************************************************************************
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.web.customwidgets.provider;
 
 import java.util.Collection;
@@ -57,6 +57,7 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
             this.addMinValueExpressionPropertyDescriptor(object);
             this.addMaxValueExpressionPropertyDescriptor(object);
             this.addCurrentValueExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -98,6 +99,19 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
                 this.getString("_UI_SliderDescription_currentValueExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_currentValueExpression_feature", "_UI_SliderDescription_type"),
                 CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(
+                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_SliderDescription_isEnabledExpression_feature"),
+                        this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_isEnabledExpression_feature", "_UI_SliderDescription_type"),
+                        CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -166,6 +180,7 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
+            case CustomwidgetsPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__BODY:

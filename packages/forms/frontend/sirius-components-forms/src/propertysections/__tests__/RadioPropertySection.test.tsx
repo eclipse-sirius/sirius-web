@@ -115,6 +115,28 @@ const radioWithEmptyStyle: GQLRadio = {
   },
 };
 
+const readOnlyRadio: GQLRadio = {
+  __typename: 'Radio',
+  id: 'radioId',
+  label: 'Status:',
+  iconURL: null,
+  diagnostics: [],
+  options: [
+    {
+      id: '0',
+      label: 'inactive',
+      selected: true,
+    },
+    {
+      id: '1',
+      label: 'active',
+      selected: false,
+    },
+  ],
+  style: null,
+  readOnly: true,
+};
+
 const editRadioVariables: GQLEditRadioMutationVariables = {
   input: {
     id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
@@ -403,4 +425,21 @@ test('should render the radio with help hint', async () => {
     </MockedProvider>
   );
   expect(baseElement).toMatchSnapshot();
+});
+
+test('should render a readOnly radio from widget properties', () => {
+  const { container } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <RadioPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={readOnlyRadio}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(container).toMatchSnapshot();
 });

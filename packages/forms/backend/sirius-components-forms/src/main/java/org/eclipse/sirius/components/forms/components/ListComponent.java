@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021, 2023 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,6 +55,7 @@ public class ListComponent implements IComponent {
         String id = listDescription.getIdProvider().apply(variableManager);
         String label = listDescription.getLabelProvider().apply(variableManager);
         String iconURL = listDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = listDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> itemCandidates = listDescription.getItemsProvider().apply(variableManager);
         ListStyle style = listDescription.getStyleProvider().apply(variableManager);
 
@@ -72,16 +73,13 @@ public class ListComponent implements IComponent {
             boolean isItemDeletable = listDescription.getItemDeletableProvider().apply(itemVariableManager);
             Function<VariableManager, IStatus> clickHandlerProvider = listDescription.getItemClickHandlerProvider();
             Function<VariableManager, IStatus> deleteHandlerProvider = listDescription.getItemDeleteHandlerProvider();
-            Supplier<IStatus> deleteHandler = () -> {
-                return deleteHandlerProvider.apply(itemVariableManager);
-            };
+            Supplier<IStatus> deleteHandler = () -> deleteHandlerProvider.apply(itemVariableManager);
             Function<ClickEventKind, IStatus> clickHandler = (clickEventKind) -> {
                 VariableManager clickHandlerVariableManager = itemVariableManager.createChild();
                 clickHandlerVariableManager.put(CLICK_EVENT_KIND_VARIABLE, clickEventKind.toString());
                 return clickHandlerProvider.apply(clickHandlerVariableManager);
             };
 
-            // @formatter:off
             ListItem item = ListItem.newListItem(itemId)
                     .label(itemLabel)
                     .kind(itemKind)
@@ -90,17 +88,15 @@ public class ListComponent implements IComponent {
                     .clickHandler(clickHandler)
                     .deleteHandler(deleteHandler)
                     .build();
-            // @formatter:on
 
             items.add(item);
         }
 
-        // @formatter:off
+
         ListElementProps.Builder listElementPropsBuilder = ListElementProps.newListElementProps(id)
                 .label(label)
                 .items(items)
                 .children(children);
-        // @formatter:on
         if (iconURL != null) {
             listElementPropsBuilder.iconURL(iconURL);
         }
@@ -109,6 +105,10 @@ public class ListComponent implements IComponent {
         }
         if (listDescription.getHelpTextProvider() != null) {
             listElementPropsBuilder.helpTextProvider(() -> listDescription.getHelpTextProvider().apply(variableManager));
+        }
+
+        if (readOnly != null) {
+            listElementPropsBuilder.readOnly(readOnly);
         }
 
         return new Element(ListElementProps.TYPE, listElementPropsBuilder.build());

@@ -73,6 +73,7 @@ public final class Slider extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -82,6 +83,8 @@ public final class Slider extends AbstractWidget {
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private int minValue;
 
@@ -103,10 +106,17 @@ public final class Slider extends AbstractWidget {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
         }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Builder minValue(int minValue) {
             this.minValue = Objects.requireNonNull(minValue);
             return this;
@@ -137,6 +147,7 @@ public final class Slider extends AbstractWidget {
             slider.id = Objects.requireNonNull(this.id);
             slider.label = Objects.requireNonNull(this.label);
             slider.iconURL = this.iconURL;
+            slider.readOnly = this.readOnly;
             slider.minValue = Objects.requireNonNull(this.minValue);
             slider.maxValue = Objects.requireNonNull(this.maxValue);
             slider.currentValue = Objects.requireNonNull(this.currentValue);

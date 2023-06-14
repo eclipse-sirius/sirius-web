@@ -73,6 +73,18 @@ const multiSelectWithEmptyStyle: GQLMultiSelect = {
   },
 };
 
+const readOnlyMultiSelect: GQLMultiSelect = {
+  __typename: 'MultiSelect',
+  id: 'multiSelectId',
+  label: 'MultiSelectLabel',
+  iconURL: null,
+  diagnostics: [],
+  values: [],
+  options: [],
+  style: null,
+  readOnly: true,
+};
+
 const mockEnqueue = vi.fn();
 
 const toastContextMock: ToastContextValue = {
@@ -143,6 +155,23 @@ test('should render the multiSelect help hint', () => {
           editingContextId="editingContextId"
           formId="formId"
           widget={{ ...defaultMultiSelect, hasHelpText: true }}
+          subscribers={[]}
+          readOnly={false}
+        />
+      </ToastContext.Provider>
+    </MockedProvider>
+  );
+  expect(baseElement).toMatchSnapshot();
+});
+
+test('should render a readOnly multiselect from widget properties', () => {
+  const { baseElement } = render(
+    <MockedProvider>
+      <ToastContext.Provider value={toastContextMock}>
+        <MultiSelectPropertySection
+          editingContextId="editingContextId"
+          formId="formId"
+          widget={readOnlyMultiSelect}
           subscribers={[]}
           readOnly={false}
         />

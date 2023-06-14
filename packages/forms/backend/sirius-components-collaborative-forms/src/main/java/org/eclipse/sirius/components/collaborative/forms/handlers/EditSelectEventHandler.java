@@ -76,19 +76,20 @@ public class EditSelectEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditSelectInput) {
-            EditSelectInput input = (EditSelectInput) formInput;
+        if (formInput instanceof EditSelectInput input) {
 
-            // @formatter:off
             Optional<Select> optionalSelect = this.formQueryService.findWidget(form, input.selectId())
                     .filter(Select.class::isInstance)
                     .map(Select.class::cast);
 
-            IStatus status = optionalSelect.map(Select::getNewValueHandler)
-                    .map(handler -> handler.apply(input.newValue()))
-                    .orElse(new Failure(""));
-            // @formatter:on
-
+            IStatus status;
+            if (optionalSelect.map(Select::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalSelect.map(Select::getNewValueHandler)
+                        .map(handler -> handler.apply(input.newValue()))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

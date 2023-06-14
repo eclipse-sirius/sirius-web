@@ -32,6 +32,8 @@ public abstract class AbstractWidgetDescription extends AbstractControlDescripti
 
     protected Function<VariableManager, String> helpTextProvider;
 
+    protected Function<VariableManager, Boolean> isReadOnlyProvider;
+
     public Function<VariableManager, List<?>> getDiagnosticsProvider() {
         return this.diagnosticsProvider;
     }
@@ -46,5 +48,9 @@ public abstract class AbstractWidgetDescription extends AbstractControlDescripti
 
     public Function<VariableManager, String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public Function<VariableManager, Boolean> getIsReadOnlyProvider() {
+        return this.isReadOnlyProvider;
     }
 }

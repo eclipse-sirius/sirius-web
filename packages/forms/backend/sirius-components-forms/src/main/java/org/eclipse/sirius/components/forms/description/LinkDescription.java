@@ -80,6 +80,7 @@ public final class LinkDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private Function<VariableManager, String> idProvider;
@@ -87,6 +88,8 @@ public final class LinkDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
 
         private Function<VariableManager, String> urlProvider;
 
@@ -155,6 +158,7 @@ public final class LinkDescription extends AbstractWidgetDescription {
             linkDescription.idProvider = Objects.requireNonNull(this.idProvider);
             linkDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             linkDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            linkDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             linkDescription.urlProvider = Objects.requireNonNull(this.urlProvider);
             linkDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             linkDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

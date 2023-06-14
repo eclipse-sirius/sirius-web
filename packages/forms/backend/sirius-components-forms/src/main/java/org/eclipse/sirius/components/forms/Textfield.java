@@ -97,6 +97,8 @@ public final class Textfield extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -141,6 +143,11 @@ public final class Textfield extends AbstractWidget {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Textfield build() {
             Textfield textfield = new Textfield();
             textfield.id = Objects.requireNonNull(this.id);
@@ -152,6 +159,7 @@ public final class Textfield extends AbstractWidget {
             textfield.completionProposalsProvider = this.completionProposalsProvider; // Optional on purpose
             textfield.helpTextProvider = this.helpTextProvider; // Optional on purpose
             textfield.diagnostics = Objects.requireNonNull(this.diagnostics);
+            textfield.readOnly = this.readOnly;
             return textfield;
         }
     }

@@ -206,7 +206,7 @@ export const MultiSelectPropertySection = ({
         onBlur={onBlur}
         fullWidth
         data-testid={widget.label}
-        disabled={readOnly}
+        disabled={readOnly || widget.readOnly}
         renderValue={(selected) =>
           widget.options
             .filter((option) => (selected as string[]).includes(option.id))

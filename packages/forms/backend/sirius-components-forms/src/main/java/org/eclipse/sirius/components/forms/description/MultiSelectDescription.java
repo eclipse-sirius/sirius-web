@@ -114,6 +114,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
@@ -121,6 +122,8 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private Function<VariableManager, List<?>> optionsProvider;
 
@@ -160,6 +163,11 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -224,6 +232,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             multiSelectDescription.idProvider = Objects.requireNonNull(this.idProvider);
             multiSelectDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             multiSelectDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            multiSelectDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             multiSelectDescription.optionsProvider = Objects.requireNonNull(this.optionsProvider);
             multiSelectDescription.optionIdProvider = Objects.requireNonNull(this.optionIdProvider);
             multiSelectDescription.optionLabelProvider = Objects.requireNonNull(this.optionLabelProvider);

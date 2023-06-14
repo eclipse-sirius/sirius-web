@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+/*******************************************************************************
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.web.customwidgets;
 
 import org.eclipse.emf.common.util.EList;
@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * @generated
  */
 public interface SliderDescription extends WidgetDescription {
+
     /**
      * Returns the value of the '<em><b>Min Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -112,10 +113,32 @@ public interface SliderDescription extends WidgetDescription {
      * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Body</em>' containment reference list.
-     * @see org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage#getSliderDescription_Body()
      * @model containment="true"
      * @generated
+     * @see org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage#getSliderDescription_Body()
      */
     EList<Operation> getBody();
+
+    /**
+     * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setIsEnabledExpression(String)
+     * @see org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage#getSliderDescription_IsEnabledExpression()
+     */
+    String getIsEnabledExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.web.customwidgets.SliderDescription#getIsEnabledExpression
+     * <em>Is Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
+     * @generated
+     * @see #getIsEnabledExpression()
+     */
+    void setIsEnabledExpression(String value);
 
 } // SliderDescription

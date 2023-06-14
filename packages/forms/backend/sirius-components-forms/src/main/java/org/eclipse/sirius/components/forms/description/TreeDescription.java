@@ -109,6 +109,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
@@ -116,6 +117,8 @@ public final class TreeDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
 
         private Function<VariableManager, List<?>> childrenProvider;
 
@@ -219,6 +222,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
             treeDescription.idProvider = Objects.requireNonNull(this.idProvider);
             treeDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             treeDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            treeDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             treeDescription.childrenProvider = Objects.requireNonNull(this.childrenProvider);
             treeDescription.nodeIdProvider = Objects.requireNonNull(this.nodeIdProvider);
             treeDescription.nodeLabelProvider = Objects.requireNonNull(this.nodeLabelProvider);

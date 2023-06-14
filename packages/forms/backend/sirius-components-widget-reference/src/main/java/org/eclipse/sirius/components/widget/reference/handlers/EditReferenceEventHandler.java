@@ -80,7 +80,14 @@ public class EditReferenceEventHandler implements IFormEventHandler {
 
             var optionalWidget = this.formQueryService.findWidget(form, input.referenceWidgetId()).filter(ReferenceWidget.class::isInstance).map(ReferenceWidget.class::cast);
 
-            IStatus status = optionalWidget.map(ReferenceWidget::getSetting).map(setting -> this.editSetting(editingContext, setting, input.newValueIds())).orElse(new Failure(""));
+            IStatus status;
+            if (optionalWidget.isPresent() && optionalWidget.get().isReadOnly()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalWidget.map(ReferenceWidget::getSetting)
+                        .map(setting -> this.editSetting(editingContext, setting, input.newValueIds()))
+                        .orElse(new Failure(""));
+            }
 
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());

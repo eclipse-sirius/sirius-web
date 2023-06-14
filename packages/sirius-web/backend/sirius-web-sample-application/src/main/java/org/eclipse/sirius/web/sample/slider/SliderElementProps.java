@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class SliderElementProps implements IProps {
+
     public static final String TYPE = "Slider";
 
     private String id;
@@ -37,6 +38,8 @@ public final class SliderElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private int minValue;
 
@@ -64,6 +67,10 @@ public final class SliderElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public int getMinValue() {
@@ -99,6 +106,7 @@ public final class SliderElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -106,6 +114,8 @@ public final class SliderElementProps implements IProps {
         private String iconURL;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private int minValue;
 
@@ -126,6 +136,11 @@ public final class SliderElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -159,6 +174,7 @@ public final class SliderElementProps implements IProps {
             sliderElementProps.id = Objects.requireNonNull(this.id);
             sliderElementProps.label = Objects.requireNonNull(this.label);
             sliderElementProps.iconURL = this.iconURL;
+            sliderElementProps.readOnly = this.readOnly;
             sliderElementProps.minValue = this.minValue;
             sliderElementProps.maxValue = this.maxValue;
             sliderElementProps.currentValue = this.currentValue;

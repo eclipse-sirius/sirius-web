@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class FlexboxContainerElementProps implements IProps {
+
     public static final String TYPE = "FlexboxContainer";
 
     private String id;
@@ -36,6 +37,8 @@ public final class FlexboxContainerElementProps implements IProps {
     private String label;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private FlexDirection flexDirection;
 
@@ -55,6 +58,10 @@ public final class FlexboxContainerElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public FlexDirection getFlexDirection() {
@@ -83,11 +90,14 @@ public final class FlexboxContainerElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private FlexDirection flexDirection;
 
@@ -99,6 +109,11 @@ public final class FlexboxContainerElementProps implements IProps {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -121,6 +136,7 @@ public final class FlexboxContainerElementProps implements IProps {
             FlexboxContainerElementProps flexboxContainerElementProps = new FlexboxContainerElementProps();
             flexboxContainerElementProps.id = Objects.requireNonNull(this.id);
             flexboxContainerElementProps.label = Objects.requireNonNull(this.label);
+            flexboxContainerElementProps.readOnly = this.readOnly;
             flexboxContainerElementProps.flexDirection = Objects.requireNonNull(this.flexDirection);
             flexboxContainerElementProps.children = Objects.requireNonNull(this.children);
             flexboxContainerElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose

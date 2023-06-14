@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class RadioElementProps implements IProps {
+
     public static final String TYPE = "Radio";
 
     private String id;
@@ -41,6 +42,8 @@ public final class RadioElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private List<RadioOption> options;
 
@@ -68,6 +71,10 @@ public final class RadioElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public List<RadioOption> getOptions() {
@@ -104,6 +111,7 @@ public final class RadioElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -111,6 +119,8 @@ public final class RadioElementProps implements IProps {
         private String iconURL;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private List<RadioOption> options;
 
@@ -131,6 +141,11 @@ public final class RadioElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -164,6 +179,7 @@ public final class RadioElementProps implements IProps {
             radioElementProps.id = Objects.requireNonNull(this.id);
             radioElementProps.label = Objects.requireNonNull(this.label);
             radioElementProps.iconURL = this.iconURL;
+            radioElementProps.readOnly = this.readOnly;
             radioElementProps.options = Objects.requireNonNull(this.options);
             radioElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             radioElementProps.style = this.style; // Optional on purpose

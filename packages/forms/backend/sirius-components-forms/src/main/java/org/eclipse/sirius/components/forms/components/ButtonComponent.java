@@ -48,23 +48,21 @@ public class ButtonComponent implements IComponent {
         String id = buttonDescription.getIdProvider().apply(variableManager);
         String label = buttonDescription.getLabelProvider().apply(variableManager);
         String iconURL = buttonDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = buttonDescription.getIsReadOnlyProvider().apply(variableManager);
         String buttonLabel = buttonDescription.getButtonLabelProvider().apply(variableManager);
         String imageURL = buttonDescription.getImageURLProvider().apply(variableManager);
         Function<VariableManager, IStatus> pushButtonHandler = buttonDescription.getPushButtonHandler();
-        Supplier<IStatus> specializedHandler = () -> {
-            return pushButtonHandler.apply(variableManager);
-        };
+        Supplier<IStatus> specializedHandler = () -> pushButtonHandler.apply(variableManager);
 
         var buttonStyle = buttonDescription.getStyleProvider().apply(variableManager);
 
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(buttonDescription, variableManager)));
 
-        // @formatter:off
         Builder buttonElementPropsBuilder = ButtonElementProps.newButtonElementProps(id)
                 .label(label)
                 .pushButtonHandler(specializedHandler)
                 .children(children);
-        // @formatter:on
+
         if (iconURL != null) {
             buttonElementPropsBuilder.iconURL(iconURL);
         }
@@ -80,6 +78,9 @@ public class ButtonComponent implements IComponent {
         }
         if (buttonDescription.getHelpTextProvider() != null) {
             buttonElementPropsBuilder.helpTextProvider(() -> buttonDescription.getHelpTextProvider().apply(variableManager));
+        }
+        if (readOnly != null) {
+            buttonElementPropsBuilder.readOnly(readOnly);
         }
 
         ButtonElementProps buttonElementProps = buttonElementPropsBuilder.build();

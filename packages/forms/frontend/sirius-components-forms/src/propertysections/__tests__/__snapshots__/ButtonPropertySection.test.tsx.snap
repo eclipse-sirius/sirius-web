@@ -104,6 +104,40 @@ exports[`should render a readOnly button 1`] = `
 </div>
 `;
 
+exports[`should render a readOnly button from widget properties 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-61"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-62"
+        />
+      </div>
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-57 makeStyles-style-59 MuiButton-contained MuiButton-containedPrimary Mui-disabled Mui-disabled"
+        data-testid="ButtonLabel"
+        disabled=""
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`should render the button 1`] = `
 <div>
   <div>

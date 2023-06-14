@@ -75,19 +75,20 @@ public class EditRadioEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditRadioInput) {
-            EditRadioInput input = (EditRadioInput) formInput;
+        if (formInput instanceof EditRadioInput input) {
 
-            // @formatter:off
             var optionalRadio = this.formQueryService.findWidget(form, input.radioId())
                     .filter(Radio.class::isInstance)
                     .map(Radio.class::cast);
 
-            IStatus status = optionalRadio.map(Radio::getNewValueHandler)
-                    .map(handler -> handler.apply(input.newValue()))
-                    .orElse(new Failure(""));
-            // @formatter:on
-
+            IStatus status;
+            if (optionalRadio.map(Radio::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalRadio.map(Radio::getNewValueHandler)
+                        .map(handler -> handler.apply(input.newValue()))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

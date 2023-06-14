@@ -1,4 +1,4 @@
-/**
+/*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *      Obeo - initial API and implementation
- */
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.sirius.components.view.form;
 
 import org.eclipse.emf.common.util.EList;
@@ -33,6 +33,8 @@ import org.eclipse.sirius.components.view.Operation;
  * <li>{@link org.eclipse.sirius.components.view.form.MultiSelectDescription#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.MultiSelectDescription#getConditionalStyles <em>Conditional
  * Styles</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.MultiSelectDescription#getIsEnabledExpression <em>Is Enabled
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getMultiSelectDescription()
@@ -40,6 +42,7 @@ import org.eclipse.sirius.components.view.Operation;
  * @generated
  */
 public interface MultiSelectDescription extends WidgetDescription {
+
     /**
      * Returns the value of the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -156,5 +159,28 @@ public interface MultiSelectDescription extends WidgetDescription {
      * @generated
      */
     EList<ConditionalMultiSelectDescriptionStyle> getConditionalStyles();
+
+    /**
+     * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setIsEnabledExpression(String)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getMultiSelectDescription_IsEnabledExpression()
+     */
+    String getIsEnabledExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.form.MultiSelectDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
+     * @generated
+     * @see #getIsEnabledExpression()
+     */
+    void setIsEnabledExpression(String value);
 
 } // MultiSelectDescription

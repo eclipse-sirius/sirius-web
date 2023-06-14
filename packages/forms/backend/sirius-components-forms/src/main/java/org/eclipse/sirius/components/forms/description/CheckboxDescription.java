@@ -88,6 +88,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
@@ -95,6 +96,8 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private Function<VariableManager, Boolean> valueProvider;
 
@@ -126,6 +129,11 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
+            return this;
+        }
+
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
             return this;
         }
 
@@ -170,6 +178,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
             checkboxDescription.idProvider = Objects.requireNonNull(this.idProvider);
             checkboxDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             checkboxDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
+            checkboxDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             checkboxDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             checkboxDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             checkboxDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

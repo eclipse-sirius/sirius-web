@@ -158,6 +158,16 @@ public class CustomwidgetsPackageImpl extends EPackageImpl implements Customwidg
      * @generated
      */
     @Override
+    public EAttribute getSliderDescription_IsEnabledExpression() {
+        return (EAttribute) this.sliderDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public CustomwidgetsFactory getCustomwidgetsFactory() {
         return (CustomwidgetsFactory) this.getEFactoryInstance();
     }
@@ -186,6 +196,7 @@ public class CustomwidgetsPackageImpl extends EPackageImpl implements Customwidg
         this.createEAttribute(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION);
         this.createEAttribute(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION);
         this.createEReference(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__BODY);
+        this.createEAttribute(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION);
     }
 
     /**
@@ -232,6 +243,8 @@ public class CustomwidgetsPackageImpl extends EPackageImpl implements Customwidg
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getSliderDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, SliderDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSliderDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1, SliderDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

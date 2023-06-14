@@ -204,7 +204,7 @@ export const ButtonPropertySection = ({
         onClick={onClick}
         onBlur={onBlur}
         onFocus={onFocus}
-        disabled={readOnly}
+        disabled={readOnly || widget.readOnly}
         classes={{ root: classes.style }}>
         {widget.imageURL?.length > 0 ? (
           <img className={classes.icon} width="16" height="16" alt={widget.label} src={httpOrigin + widget.imageURL} />

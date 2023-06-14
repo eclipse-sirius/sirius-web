@@ -1,5 +1,62 @@
 // Vitest Snapshot v1
 
+exports[`should render a readOnly select from widget properties 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiFormControl-root"
+    >
+      <div
+        class="makeStyles-propertySectionLabel-33"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          SelectLabel
+        </h6>
+        <div
+          class="makeStyles-subscribers-34"
+        />
+      </div>
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline Mui-disabled Mui-disabled MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
+        data-testid="SelectLabel"
+      >
+        <div
+          aria-disabled="true"
+          aria-haspopup="listbox"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input Mui-disabled Mui-disabled Mui-disabled"
+          role="button"
+        >
+          <em>
+            None
+          </em>
+        </div>
+        <input
+          aria-hidden="true"
+          class="MuiSelect-nativeInput"
+          tabindex="-1"
+          value=""
+        />
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSelect-icon Mui-disabled"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7 10l5 5 5-5z"
+          />
+        </svg>
+      </div>
+      <p
+        class="MuiFormHelperText-root"
+      />
+    </div>
+  </div>
+</body>
+`;
+
 exports[`should render the select with empty style 1`] = `
 <body>
   <div>

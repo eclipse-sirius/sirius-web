@@ -52,6 +52,7 @@ public class MultiSelectComponent implements IComponent {
         String id = multiSelectDescription.getIdProvider().apply(variableManager);
         String label = multiSelectDescription.getLabelProvider().apply(variableManager);
         String iconURL = multiSelectDescription.getIconURLProvider().apply(variableManager);
+        Boolean readOnly = multiSelectDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = multiSelectDescription.getOptionsProvider().apply(variableManager);
         List<String> values = multiSelectDescription.getValuesProvider().apply(variableManager);
         var multiSelectStyle = multiSelectDescription.getStyleProvider().apply(variableManager);
@@ -78,11 +79,9 @@ public class MultiSelectComponent implements IComponent {
 
             options.add(option);
         }
-        Function<List<String>, IStatus> newValuesHandler = newValues -> {
-            return multiSelectDescription.getNewValuesHandler().apply(variableManager, newValues);
-        };
+        Function<List<String>, IStatus> newValuesHandler = newValues -> multiSelectDescription.getNewValuesHandler().apply(variableManager, newValues);
 
-        // @formatter:off
+
         Builder multiSelectElementPropsBuilder = MultiSelectElementProps.newMultiSelectElementProps(id)
                 .label(label)
                 .options(options)
@@ -100,10 +99,12 @@ public class MultiSelectComponent implements IComponent {
         if (multiSelectDescription.getHelpTextProvider() != null) {
             multiSelectElementPropsBuilder.helpTextProvider(() -> multiSelectDescription.getHelpTextProvider().apply(variableManager));
         }
+        if (readOnly != null) {
+            multiSelectElementPropsBuilder.readOnly(readOnly);
+        }
 
         MultiSelectElementProps multiSelectElementProps = multiSelectElementPropsBuilder.build();
 
         return new Element(MultiSelectElementProps.TYPE, multiSelectElementProps);
-        // @formatter:on
     }
 }

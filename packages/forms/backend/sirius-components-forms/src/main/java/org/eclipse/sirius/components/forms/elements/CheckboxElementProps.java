@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class CheckboxElementProps implements IProps {
+
     public static final String TYPE = "Checkbox";
 
     private String id;
@@ -40,6 +41,8 @@ public final class CheckboxElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private boolean value;
 
@@ -67,6 +70,10 @@ public final class CheckboxElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public boolean isValue() {
@@ -103,6 +110,7 @@ public final class CheckboxElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -110,6 +118,8 @@ public final class CheckboxElementProps implements IProps {
         private String iconURL;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private boolean value;
 
@@ -130,6 +140,11 @@ public final class CheckboxElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -163,6 +178,7 @@ public final class CheckboxElementProps implements IProps {
             checkboxElementProps.id = Objects.requireNonNull(this.id);
             checkboxElementProps.label = Objects.requireNonNull(this.label);
             checkboxElementProps.iconURL = this.iconURL;
+            checkboxElementProps.readOnly = this.readOnly;
             checkboxElementProps.value = Objects.requireNonNull(this.value);
             checkboxElementProps.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             checkboxElementProps.style = this.style; // Optional on purpose

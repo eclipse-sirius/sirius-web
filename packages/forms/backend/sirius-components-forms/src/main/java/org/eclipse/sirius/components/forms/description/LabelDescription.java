@@ -74,11 +74,14 @@ public final class LabelDescription extends AbstractWidgetDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> labelProvider;
+
+        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
 
         private Function<VariableManager, String> valueProvider;
 
@@ -141,6 +144,7 @@ public final class LabelDescription extends AbstractWidgetDescription {
             textfieldDescription.id = Objects.requireNonNull(this.id);
             textfieldDescription.idProvider = Objects.requireNonNull(this.idProvider);
             textfieldDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            textfieldDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             textfieldDescription.valueProvider = Objects.requireNonNull(this.valueProvider);
             textfieldDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             textfieldDescription.kindProvider = Objects.requireNonNull(this.kindProvider);

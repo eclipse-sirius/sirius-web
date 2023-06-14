@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
@@ -77,24 +78,27 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditTextfieldInput) {
-            EditTextfieldInput input = (EditTextfieldInput) formInput;
+        if (formInput instanceof EditTextfieldInput input) {
 
-            // @formatter:off
-            IStatus status = this.formQueryService.findWidget(form, input.textfieldId())
-                    .map(widget -> {
-                        Function<String, IStatus> handlerFunction = null;
-                        if (widget instanceof Textfield) {
-                            handlerFunction = ((Textfield) widget).getNewValueHandler();
-                        } else if (widget instanceof Textarea) {
-                            handlerFunction = ((Textarea) widget).getNewValueHandler();
-                        }
-                        return handlerFunction;
-                    })
-                    .map(handler -> handler.apply(input.newValue()))
-                    .orElse(new Failure(""));
-            // @formatter:on
+            var optionalText = this.formQueryService.findWidget(form, input.textfieldId());
 
+            IStatus status;
+            if (optionalText.map(AbstractWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure("Read-only widget can not be edited");
+            } else {
+                status = optionalText
+                        .map(widget -> {
+                            Function<String, IStatus> handlerFunction = null;
+                            if (widget instanceof Textfield) {
+                                handlerFunction = ((Textfield) widget).getNewValueHandler();
+                            } else if (widget instanceof Textarea) {
+                                handlerFunction = ((Textarea) widget).getNewValueHandler();
+                            }
+                            return handlerFunction;
+                        })
+                        .map(handler -> handler.apply(input.newValue()))
+                        .orElse(new Failure(""));
+            }
             if (status instanceof Success success) {
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);

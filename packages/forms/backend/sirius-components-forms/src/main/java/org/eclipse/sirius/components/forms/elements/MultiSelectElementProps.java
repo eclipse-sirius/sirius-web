@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class MultiSelectElementProps implements IProps {
+
     public static final String TYPE = "MultiSelect";
 
     private String id;
@@ -42,6 +43,8 @@ public final class MultiSelectElementProps implements IProps {
     private String iconURL;
 
     private Supplier<String> helpTextProvider;
+
+    private boolean readOnly;
 
     private List<SelectOption> options;
 
@@ -71,6 +74,10 @@ public final class MultiSelectElementProps implements IProps {
 
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
+    }
+
+    public boolean isReadOnly() {
+        return this.readOnly;
     }
 
     public List<SelectOption> getOptions() {
@@ -120,6 +127,8 @@ public final class MultiSelectElementProps implements IProps {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private List<SelectOption> options;
 
         private List<String> values;
@@ -141,6 +150,11 @@ public final class MultiSelectElementProps implements IProps {
 
         public Builder iconURL(String iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 
@@ -179,6 +193,7 @@ public final class MultiSelectElementProps implements IProps {
             multiSelectElementProps.id = Objects.requireNonNull(this.id);
             multiSelectElementProps.label = Objects.requireNonNull(this.label);
             multiSelectElementProps.iconURL = this.iconURL;
+            multiSelectElementProps.readOnly = this.readOnly;
             multiSelectElementProps.options = Objects.requireNonNull(this.options);
             multiSelectElementProps.values = List.copyOf(this.values);
             multiSelectElementProps.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);
