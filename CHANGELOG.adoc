@@ -30,6 +30,8 @@ Change for `IPropertiesDescriptionRegistry` which now handles `PageDescription` 
 Add of the `selection` variable available in some context.
 - https://github.com/eclipse-sirius/sirius-components/issues/2072[#2072] [view] Fix an NPE when trying to instanciate List/Select/MultiSelect widgets with no candidates expression specified (which is the initial state on creation).
 An absent/empty candidates expression now simply means the widget is empty.
+- https://github.com/eclipse-sirius/sirius-components/issues/2067[#2064] [view] Enable completion support and other text field customizations for custom widgets
+
 
 === New Features
 
@@ -88,7 +90,7 @@ All the colors are now defined in a new palette object _ColorPalette_ with the p
 A view can define as many _ColorPalette_ as desired.
 In the _styleDescription_, the definition of a color are now a select list of all the colors contained in the _ColorPalette_ of the view
 - https://github.com/eclipse-sirius/sirius-components/issues/1970[#1970] [diagram] Simplify the lifecycle of the diagram creation and refresh.
-For that, the `DiagramCreationService` will have less responsabilities.
+For that, the `DiagramCreationService` will have less responsibilities.
 Starting now, it will stop persisting the diagram after its creation.
 It will start by improving a bit performances since diagrams were persisted twice in some use cases.
 - https://github.com/eclipse-sirius/sirius-components/issues/1915[#1915] [view] Add the page support in the view DSL.
@@ -121,7 +123,7 @@ This work will start by adding the ability to filter the project's domains.
 A large set of features will have to be updated in order to stop considering the list of metamodels available in an editing context as a certainty.
 - https://github.com/eclipse-sirius/sirius-components/issues/1946[#1946] Enabled child extenders in the View DSL implementation.
 This allows downstream projects and applications to provide their own sub-types of the DSL types (e.g. new WidgetDescriptions).
-In addition to registering the extension metadmodel itself, users must provide a `ChildExtenderProvider` bean for their extensions to be properly integrated.
+In addition to registering the extension metamodel itself, users must provide a `ChildExtenderProvider` bean for their extensions to be properly integrated.
 - https://github.com/eclipse-sirius/sirius-components/issues/1918[#1918] [tree] Its is now possible to filter tree items in trees.
 After selected a tree item, hit Ctrl+f (or Cmd+f on macOS) to enable the filter bar.
 +
@@ -132,7 +134,7 @@ The filter button inside the filter bar allows to filter (hide) all visible tree
 +
 image:doc/screenshots/filterBarFilterButton.png[Filter Bar Filter Button,30%,30%]
 - https://github.com/eclipse-sirius/sirius-components/issues/1914[#1914] [form] It is now possible for applications to provide their own custom widgets without forking Sirius Components.
-See link:how-to/contribute-custom-widget.adoc[the documentation] for more details.
+See link:doc/how-to/contribute-custom-widget.adoc[the documentation] for more details.
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name. The new algorithm does the minimum possible to place node without overlap.
 - https://github.com/eclipse-sirius/sirius-components/issues/1985[|#1985] [sirius-web] It is now possible to use in-memory View-based representations by registering them in the new `InMemoryViewRegistry`.
@@ -226,7 +228,7 @@ Removing dependencies from sirius-components-compatibility-emf in the canHandle 
 - https://github.com/eclipse-sirius/sirius-components/issues/1833[#1833] [explorer] Fix Explorer toolbar and selected item background color width
 - https://github.com/eclipse-sirius/sirius-components/issues/840[#840] [view] Add the ability to create multiple nested views for unsynchronized node descriptions.
 For that, specifiers will be able to use properly the variable name property of the create view model operation.
-The result returned and captured in this variable name will not be the real node since it will be rendered later but it is a placeholder which contains some properties of the real node such as its id which can be used to created the nested views.
+The result returned and captured in this variable name will not be the real node since it will be rendered later but it is a placeholder which contains some properties of the real node such as its id which can be used to create the nested views.
 - https://github.com/eclipse-sirius/sirius-components/issues/1838[#1838] [diagram] Collapsing and expanding a node with unsynchronized child nodes will now properly restore the child nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1775[#1775] [core] Handle representation/document/project label length in UI (by adding ellipsis) and in sirius-web SQL schema (up to 1024 characters)
 - https://github.com/eclipse-sirius/sirius-components/issues/1829[#1829] [diagram] Node descriptions from the view DSL can now reference concepts outside of their containing diagram description
@@ -343,7 +345,7 @@ A node can be collapsed or expanded if its view description is collapsible or if
 As a result, it is possible to create a conditional style which will use the collapsing state quite easily.
 Using the view DSL, one can use the expression `aql:collapsingState.toString() = 'COLLAPSED'` as a condition to create a style which will be used when the node is collapsed.
 - https://github.com/eclipse-sirius/sirius-components/issues/1584[#1584] [diagram] Studio makers can indicate whether or not a node type can be resized by the end-user or not.
-Nodes which can not be resized (or have not been resized yet) haver their actual size computed from the NodeDescription's sizeProvider in a uniform way for all node types.
+Nodes which can not be resized (or have not been resized yet) have their actual size computed from the NodeDescription's sizeProvider in a uniform way for all node types.
 Nodes which can and *have* been resized keep their user-chosen size across both incremental and full layout (as long as the requested size is compatible with other constraints).
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1583[#1583] [diagram] Add support for diagram nodes labels' auto-wrap
@@ -715,7 +717,7 @@ When closed, clicking on any of the views' icon will re-open the panel to make t
 - https://github.com/eclipse-sirius/sirius-components/issues/1068[#1068] [workbench] The integration of the details view in the workbench is not limited to semantic objects with a kind starting with `siriusComponents://semantic`. Any object can be used as the input of the details view and we will now provide the identifier of all the objects in the selection. This may include graphical elements such as nodes, edges, representations or anything selected in the explorer for example
 - https://github.com/eclipse-sirius/sirius-components/issues/693[#693] [workbench] The workbench non longer hard-codes the views which are visible in the left and right side-panels. Instead, each application must explicitly configure its workbench using the new `WorkbenchViewContribution` element. See ADR-046 for more details. As part of this change, the `ExplorerWebSocketContainerProps`, `PropertiesWebSocketContainerProps`, `RepresentationsWebSocketContainerProps` and `ValidationWebSocketContainer` types have been removed and replaced with the single `WorkbenchViewComponentProps` type which is structurally equivalent.
 - https://github.com/eclipse-sirius/sirius-components/issues/779[#779] [diagram] Change the signature of the GraphQL API used to retrieve the tools of the diagram's contextual palette in order to include the identifier of the diagram element
-- https://github.com/eclipse-sirius/sirius-components/issues/1022[#1022] [diagram] The `NodeCreationEvent` and the `EdgeCreationEvent` have been renamed to `SinglePositionEvent` and `DoublePositionEvent` to distinguish from from any imagined behavior. Additional tests of the incremental layout should be added in the future to test its behavior in use cases that we did not consider in the past. The `CreateNodeTool` and `CreateEdgeTool` have also been renamed in order to describe how the user interact with them instead of the behavior that we imagine they have. Their associated mutations have also been renamed. See the ADR for additional details
+- https://github.com/eclipse-sirius/sirius-components/issues/1022[#1022] [diagram] The `NodeCreationEvent` and the `EdgeCreationEvent` have been renamed to `SinglePositionEvent` and `DoublePositionEvent` to distinguish from any imagined behavior. Additional tests of the incremental layout should be added in the future to test its behavior in use cases that we did not consider in the past. The `CreateNodeTool` and `CreateEdgeTool` have also been renamed in order to describe how the user interact with them instead of the behavior that we imagine they have. Their associated mutations have also been renamed. See the ADR for additional details
 
 === Dependency update
 

@@ -22,7 +22,6 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -147,14 +146,17 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
         boolean isViewElement = selectedElement
-                .map(EObject::eClass)
-                .map(EClassifier::getEPackage)
-                .filter(ViewPackage.eINSTANCE::equals)
-                .isPresent();
+                .map(this::isViewElement)
+                .orElse(false);
         boolean hasCustomProperties = selectedElement.map(EObject::eClass).filter(TYPES_WITH_CUSTOM_PROPERTIES::contains).isPresent();
         // @formatter:on
         return isViewElement && !hasCustomProperties;
+    }
 
+    private boolean isViewElement(EObject element) {
+        return element.eClass().getEPackage() == ViewPackage.eINSTANCE ||
+               element.eClass().getEAllSuperTypes().stream()
+                      .anyMatch(eClass -> eClass.getEPackage() == ViewPackage.eINSTANCE);
     }
 
     private GroupDescription getGroupDescription() {
