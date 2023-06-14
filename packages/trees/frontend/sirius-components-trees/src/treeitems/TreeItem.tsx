@@ -10,10 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation } from '@apollo/client';
 import { DRAG_SOURCES_TYPE, Selection, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
@@ -22,18 +20,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
+import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { isFilterCandidate } from './filterTreeItem';
-
-const renameTreeItemMutation = gql`
-  mutation renameTreeItem($input: RenameTreeItemInput!) {
-    renameTreeItem(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -137,40 +125,13 @@ export const TreeItem = ({
     editingMode: false,
     label: item.label,
     prevSelectionId: null,
+    editingkey: '',
   };
+
   const [state, setState] = useState(initialState);
-  const { showContextMenu, menuAnchor, editingMode, label } = state;
+  const { showContextMenu, menuAnchor, editingMode } = state;
 
   const refDom = useRef() as any;
-
-  const [renameTreeItem, { loading: renameTreeItemLoading, data: renameTreeItemData, error: renameTreeItemError }] =
-    useMutation(renameTreeItemMutation);
-  useEffect(() => {
-    if (!renameTreeItemLoading && !renameTreeItemError && renameTreeItemData?.renameTreeItem) {
-      const { renameTreeItem } = renameTreeItemData;
-      if (renameTreeItem.__typename === 'SuccessPayload') {
-        setState((prevState) => {
-          return { ...prevState, editingMode: false };
-        });
-      }
-    }
-  }, [renameTreeItemData, renameTreeItemError, renameTreeItemLoading]);
-
-  // custom hook for getting previous value
-  const usePrevious = (value) => {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  };
-
-  const prevEditingMode = usePrevious(editingMode);
-  useEffect(() => {
-    if (prevEditingMode && !editingMode) {
-      refDom.current.focus();
-    }
-  }, [editingMode, prevEditingMode]);
 
   // Context menu handling
   const openContextMenu = (event) => {
@@ -181,6 +142,7 @@ export const TreeItem = ({
           showContextMenu: true,
           menuAnchor: currentTarget,
           editingMode: false,
+          editingkey: prevState.editingkey,
           label: item.label,
           prevSelectionId: prevState.prevSelectionId,
         };
@@ -197,6 +159,7 @@ export const TreeItem = ({
           showContextMenu: false,
           menuAnchor: null,
           editingMode: false,
+          editingkey: prevState.editingkey,
           label: item.label,
           prevSelectionId: prevState.prevSelectionId,
         };
@@ -209,6 +172,7 @@ export const TreeItem = ({
           showContextMenu: false,
           menuAnchor: null,
           editingMode: true,
+          editingkey: prevState.editingkey,
           label: item.label,
           prevSelectionId: prevState.prevSelectionId,
         };
@@ -286,61 +250,20 @@ export const TreeItem = ({
   }
   const highlightRegExp = new RegExp(`(${textToHighlight})`, 'gi');
   let text;
+  const onCloseEditingMode = () => {
+    setState((prevState) => {
+      return { ...prevState, editingMode: false };
+    });
+    refDom.current.focus();
+  };
   if (editingMode) {
-    const handleChange = (event) => {
-      const newLabel = event.target.value;
-      setState((prevState) => {
-        return { ...prevState, editingMode: true, label: newLabel };
-      });
-    };
-
-    const doRename = () => {
-      const isNameValid = label.length >= 1;
-      if (isNameValid && item) {
-        renameTreeItem({
-          variables: {
-            input: {
-              id: crypto.randomUUID(),
-              editingContextId,
-              representationId: treeId,
-              treeItemId: item.id,
-              newLabel: label,
-            },
-          },
-        });
-      } else {
-        setState((prevState) => {
-          return { ...prevState, editingMode: false, label: item.label };
-        });
-      }
-    };
-    const onFinishEditing = (event) => {
-      const { key } = event;
-      if (key === 'Enter') {
-        doRename();
-      } else if (key === 'Escape') {
-        setState((prevState) => {
-          return { ...prevState, editingMode: false, label: item.label };
-        });
-      }
-    };
-    const onFocusIn = (event) => {
-      event.target.select();
-    };
-    const onFocusOut = () => doRename();
     text = (
-      <TextField
-        name="name"
-        size="small"
-        placeholder={'Enter the new name'}
-        value={label}
-        onChange={handleChange}
-        onKeyDown={onFinishEditing}
-        onFocus={onFocusIn}
-        onBlur={onFocusOut}
-        autoFocus
-        data-testid="name-edit"
-      />
+      <TreeItemDirectEditInput
+        editingContextId={editingContextId}
+        treeId={treeId}
+        treeItemId={item.id}
+        editingkey={state.editingkey}
+        onClose={onCloseEditingMode}></TreeItemDirectEditInput>
     );
   } else {
     let itemLabel: JSX.Element;
@@ -373,23 +296,25 @@ export const TreeItem = ({
   }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    refDom.current.focus();
+    if (!state.editingMode) {
+      refDom.current.focus();
 
-    if (event.ctrlKey || event.metaKey) {
-      event.stopPropagation();
-      const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
-      if (isItemInSelection) {
-        const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
-        setSelection(newSelection);
+      if (event.ctrlKey || event.metaKey) {
+        event.stopPropagation();
+        const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
+        if (isItemInSelection) {
+          const newSelection: Selection = { entries: selection.entries.filter((entry) => entry.id !== item.id) };
+          setSelection(newSelection);
+        } else {
+          const { id, label, kind } = item;
+          const newEntry = { id, label, kind };
+          const newSelection: Selection = { entries: [...selection.entries, newEntry] };
+          setSelection(newSelection);
+        }
       } else {
         const { id, label, kind } = item;
-        const newEntry = { id, label, kind };
-        const newSelection: Selection = { entries: [...selection.entries, newEntry] };
-        setSelection(newSelection);
+        setSelection({ entries: [{ id, label, kind }] });
       }
-    } else {
-      const { id, label, kind } = item;
-      setSelection({ entries: [{ id, label, kind }] });
     }
   };
 
@@ -406,7 +331,7 @@ export const TreeItem = ({
       !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
     if (validFirstInputChar) {
       setState((prevState) => {
-        return { ...prevState, editingMode: true, label: key };
+        return { ...prevState, editingMode: true, editingkey: key };
       });
     }
   };

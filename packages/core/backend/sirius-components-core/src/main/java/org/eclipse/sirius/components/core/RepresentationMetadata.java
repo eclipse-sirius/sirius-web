@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,14 +29,11 @@ public class RepresentationMetadata {
 
     private final String descriptionId;
 
-    private final String targetObjectId;
-
-    public RepresentationMetadata(String id, String kind, String label, String descriptionId, String targetObjectId) {
+    public RepresentationMetadata(String id, String kind, String label, String descriptionId) {
         this.id = Objects.requireNonNull(id);
         this.kind = Objects.requireNonNull(kind);
         this.label = Objects.requireNonNull(label);
         this.descriptionId = Objects.requireNonNull(descriptionId);
-        this.targetObjectId = targetObjectId;
     }
 
     public String getId() {
@@ -55,13 +52,9 @@ public class RepresentationMetadata {
         return this.descriptionId;
     }
 
-    public String getTargetObjectId() {
-        return this.targetObjectId;
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, descriptionId: {4}, targetObjectId: {5}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.descriptionId, this.targetObjectId);
+        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, descriptionId: {4}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.descriptionId);
     }
 }

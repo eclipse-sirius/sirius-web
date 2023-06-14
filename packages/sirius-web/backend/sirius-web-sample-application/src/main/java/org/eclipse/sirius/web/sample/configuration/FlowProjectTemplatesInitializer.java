@@ -19,12 +19,14 @@ import fr.obeo.dsl.designer.sample.flow.FlowElementUsage;
 import fr.obeo.dsl.designer.sample.flow.FlowFactory;
 import fr.obeo.dsl.designer.sample.flow.Processor;
 import fr.obeo.dsl.designer.sample.flow.System;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
@@ -133,7 +135,7 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
                         Diagram diagram = this.diagramCreationService.create(topographyDiagram.getLabel(), semanticTarget, topographyDiagram, editingContext);
                         this.representationPersistenceService.save(editingContext, diagram);
 
-                        result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId(), diagram.getTargetObjectId()));
+                        result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
                     }
                 } catch (IOException exception) {
                     this.logger.warn(exception.getMessage(), exception);

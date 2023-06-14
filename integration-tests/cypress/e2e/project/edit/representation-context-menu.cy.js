@@ -50,6 +50,8 @@ describe('/projects/:projectId/edit - Representation Context Menu', () => {
     cy.getByTestId('representation-tab-B01').should('not.exist');
     cy.getByTestId('A01-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').should('exist');
+    cy.getByTestId('name-edit').get('input').should('have.value', 'A01');
     cy.getByTestId('name-edit').type('A02{enter}');
 
     /*    
@@ -68,6 +70,8 @@ describe('/projects/:projectId/edit - Representation Context Menu', () => {
     cy.getByTestId('representation-tab-B01').should('not.exist');
     cy.getByTestId('A01-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').should('exist');
+    cy.getByTestId('name-edit').get('input').should('have.value', 'A01');
     cy.getByTestId('name-edit').type('A02{enter}');
 
     /*    

@@ -14,6 +14,7 @@ type TreePath {
 
 input TreeEventInput {
   id: ID!
+  treeId: String!
   editingContextId: ID!
   expanded: [String!]!
 }
@@ -46,6 +47,7 @@ type TreeItem {
 type TreeDescription implements RepresentationDescription {
   id: ID!
   label: String!
+  initialDirectEditTreeItemLabel(treeItemId: ID!): String!
 }
 
 extend type Mutation {
@@ -63,11 +65,11 @@ input DeleteTreeItemInput {
 union DeleteTreeItemPayload = SuccessPayload | ErrorPayload
 
 input RenameTreeItemInput {
-    id: ID!
-    editingContextId: ID!
-    representationId: ID!
-    treeItemId: ID!
-    newLabel: String!
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  treeItemId: ID!
+  newLabel: String!
 }
 
 union RenameTreeItemPayload = SuccessPayload | ErrorPayload

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.trees;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
@@ -40,6 +41,8 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 @Service
 public class TreeEventProcessorFactory implements IRepresentationEventProcessorFactory {
+
+    public static final String TREE_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
     private final IExplorerDescriptionProvider explorerDescriptionProvider;
 

@@ -170,6 +170,7 @@ export const ExplorerView = ({ editingContextId, selection, setSelection, readOn
       variables: {
         input: {
           id,
+          treeId: 'explorer',
           editingContextId,
           expanded,
         },

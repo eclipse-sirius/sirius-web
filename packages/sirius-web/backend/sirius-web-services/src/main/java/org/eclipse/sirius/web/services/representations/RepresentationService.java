@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.services.representations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +36,7 @@ import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
+import org.eclipse.sirius.web.services.explorer.ExplorerInitialDirectEditTreeItemLabelProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -182,25 +184,21 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
+        if (representationId.startsWith("explorer://")) {
+            return Optional.of(new RepresentationMetadata(ExplorerInitialDirectEditTreeItemLabelProvider.EXPLORER_DESCRIPTION_ID, ExplorerInitialDirectEditTreeItemLabelProvider.EXPLORER_DOCUMENT_KIND, ExplorerInitialDirectEditTreeItemLabelProvider.EXPLORER_NAME, representationId));
+        }
         return new IDParser().parse(representationId)
                 .flatMap(this.representationRepository::findById)
                 .map(new RepresentationMapper(this.objectMapper)::toDTO)
                 .map(RepresentationDescriptor::getRepresentation)
-                .filter(ISemanticRepresentation.class::isInstance)
-                .map(ISemanticRepresentation.class::cast)
-                .map(representation -> new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId(), representation.getTargetObjectId()));
+                .filter(IRepresentation.class::isInstance)
+                .map(IRepresentation.class::cast)
+                .map(representation -> new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()));
     }
 
     @Override
     public Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation) {
-        // @formatter:off
-        String targetObjectId = Optional.of(representation)
-                .filter(ISemanticRepresentation.class::isInstance)
-                .map(ISemanticRepresentation.class::cast)
-                .map(ISemanticRepresentation::getTargetObjectId)
-                .orElse(null);
-        // @formatter:on
-        return Optional.of(new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId(), targetObjectId));
+        return Optional.of(new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId()));
     }
 
     @Override

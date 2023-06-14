@@ -160,7 +160,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
                         Diagram diagram = this.diagramCreationService.create(topographyDiagram.getLabel(), semanticTarget, topographyDiagram, editingContext);
                         this.representationPersistenceService.save(editingContext, diagram);
 
-                        result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId(), diagram.getTargetObjectId()));
+                        result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
                     }
                 } catch (IOException exception) {
                     this.logger.warn(exception.getMessage(), exception);

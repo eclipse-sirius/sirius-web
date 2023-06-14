@@ -87,6 +87,7 @@ describe('/projects/:projectId/edit - Explorer', () => {
     cy.getByTestId('selected').contains('robot');
     cy.getByTestId('robot').click();
     cy.getByTestId('robot').type('renamed-robot{esc}');
+    cy.getByTestId('name-edit').should('not.exist');
     cy.getByTestId('robot').should('exist');
   });
 
@@ -167,21 +168,31 @@ describe('/projects/:projectId/edit - Explorer', () => {
     cy.getByTestId('tree-root-elements').children().last().contains('robot').should('exist');
     cy.getByTestId('tree-root-elements').children().first().contains('robot').should('not.exist');
     cy.getByTestId('tree-root-elements').children().last().contains('Flow').should('not.exist');
+
     // Rename Flow Model to sFlow
     cy.getByTestId('Flow').click();
     cy.getByTestId('Flow-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').should('exist');
+    cy.getByTestId('name-edit').get('input').should('have.value', 'Flow');
     cy.getByTestId('name-edit').type('sFlow{enter}');
+    cy.getByTestId('sFlow').should('exist');
+
     // Check documents order
     cy.getByTestId('tree-root-elements').children().first().contains('robot').should('exist');
     cy.getByTestId('tree-root-elements').children().last().contains('sFlow').should('exist');
     cy.getByTestId('tree-root-elements').children().first().contains('sFlow').should('not.exist');
     cy.getByTestId('tree-root-elements').children().last().contains('robot').should('not.exist');
+
     // Rename sFlow Model to ROBOT
     cy.getByTestId('sFlow').click();
     cy.getByTestId('sFlow-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').should('exist');
+    cy.getByTestId('name-edit').get('input').should('have.value', 'sFlow');
     cy.getByTestId('name-edit').type('ROBOT{enter}');
+    cy.getByTestId('ROBOT').should('exist');
+
     // Check documents order
     cy.getByTestId('tree-root-elements').children().first().contains('robot').should('exist');
     cy.getByTestId('tree-root-elements').children().last().contains('ROBOT').should('exist');

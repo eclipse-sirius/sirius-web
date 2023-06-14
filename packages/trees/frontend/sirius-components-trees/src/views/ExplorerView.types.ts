@@ -17,6 +17,7 @@ export interface GQLExplorerEventVariables {
 
 export interface GQLExplorerEventInput {
   id: string;
+  treeId: string;
   editingContextId: string;
   expanded: string[];
 }
