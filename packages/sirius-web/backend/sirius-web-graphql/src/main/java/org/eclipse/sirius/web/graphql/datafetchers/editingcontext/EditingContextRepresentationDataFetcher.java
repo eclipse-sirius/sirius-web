@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.graphql.datafetchers.editingcontext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
@@ -23,8 +22,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.components.representations.IRepresentation;
-import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 
@@ -66,7 +63,6 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
 
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);
-
         // Search among the active representations first. They are already loaded in memory and include transient
         // representations.
         // @formatter:off
@@ -74,14 +70,11 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
                     .flatMap(editingContextEventProcessor -> editingContextEventProcessor.getRepresentationEventProcessors().stream())
                     .filter(editingContextEventProcessor -> editingContextEventProcessor.getRepresentation().getId().equals(representationId))
                     .map(IRepresentationEventProcessor::getRepresentation)
-                    .filter(ISemanticRepresentation.class::isInstance)
-                    .map(ISemanticRepresentation.class::cast)
-                    .map((ISemanticRepresentation representation) -> {
+                    .map(representation -> {
                         return new RepresentationMetadata(representation.getId(),
                                                           representation.getKind(),
                                                           representation.getLabel(),
-                                                          representation.getDescriptionId(),
-                                                          representation.getTargetObjectId());
+                                                          representation.getDescriptionId());
                     })
                     .findFirst();
         // @formatter:on
@@ -90,7 +83,10 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
         if (representationMetadata.isEmpty()) {
             representationMetadata = this.representationService.getRepresentationDescriptorForProjectId(editingContextId, representationId)
                     .map(RepresentationDescriptor::getRepresentation)
-                    .map(this::toRepresentationMetadata);
+                    .map(representation -> new RepresentationMetadata(representation.getId(),
+                                                                      representation.getKind(),
+                                                                      representation.getLabel(),
+                                                                      representation.getDescriptionId()));
         }
 
         return DataFetcherResult.<RepresentationMetadata>newResult()
@@ -99,16 +95,4 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
                 .build();
         // @formatter:on
     }
-
-    private RepresentationMetadata toRepresentationMetadata(IRepresentation representation) {
-        // @formatter:off
-        String targetObjectId = Optional.of(representation)
-                .filter(ISemanticRepresentation.class::isInstance)
-                .map(ISemanticRepresentation.class::cast)
-                .map(ISemanticRepresentation::getTargetObjectId)
-                .orElse(null);
-        // @formatter:on
-        return new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId(), targetObjectId);
-    }
-
 }

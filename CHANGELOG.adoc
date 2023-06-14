@@ -17,6 +17,10 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] EditingContextRepresentationDataFetcher will filter on IRepresentation unstead of ISemanticRepresentation to be able to support TreeDescription.
++
+As such targetObjectId is removed from RepresentationMetadata.
+
 === Dependency update
 
 - [releng] Switch to Jacoco 0.8.10
@@ -24,7 +28,8 @@
 
 === Bug fixes
 
-- https://github.com/eclipse-sirius/sirius-components/issues/2058[#2058] [view] Fix an issue where the default icon for List widget candidates was missing when the candidates were not EObjects.
+- https://github.com/eclipse-sirius/sirius-components/issues/2058[#2058] [view] Fix an issue where the default icon for List widget candidates was missing when the candidates wer
+e not EObjects.
 - https://github.com/eclipse-sirius/sirius-components/issues/2060[#2060] [form] Fix an issue where the list widget was displayed on a single line inside a flexbox container, no matter the length of the labels of its items.
 - https://github.com/eclipse-sirius/sirius-components/issues/2076[#2076] [sirius-web] Fix `EditingDomainFactoryService` declaration to use an interface.
 - https://github.com/eclipse-sirius/sirius-components/issues/2032[#2032] [form] Add domainType on PageDescription in the view DSL and takes into account the impacts for the FormDescriptionAggregator.
@@ -47,6 +52,7 @@ image:doc/screenshots/ShowIconOptionSelectWidget.jpg[Icons on select widget opti
 - https://github.com/eclipse-sirius/sirius-components/issues/2055[#2055] [form] Added initial version of a custom widget to view & edit EMF references (both single and multi-valued).
 - https://github.com/eclipse-sirius/sirius-components/issues/2056[#2056] [form] Add the possibility to control read-only mode for widgets with an expression.
 - https://github.com/eclipse-sirius/sirius-components/issues/2077[#2077] [form] Add the ability to define a border style for groups and flexbox containers.
+- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] Add an inital label value when editing tree items label.
 
 === Improvements
 

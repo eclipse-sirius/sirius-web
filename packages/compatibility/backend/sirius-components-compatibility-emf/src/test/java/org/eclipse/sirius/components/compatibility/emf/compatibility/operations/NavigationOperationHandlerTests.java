@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,9 +62,9 @@ public class NavigationOperationHandlerTests {
     private final IRepresentationMetadataSearchService representationMetadataSearchService = new IRepresentationMetadataSearchService.NoOp() {
         @Override
         public List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId) {
-            var firstRepresentationMetadata = new RepresentationMetadata(FIRST_DIAGRAM_ID, Diagram.KIND, FIRST_DIAGRAM_LABEL, FIRST_DIAGRAM_DESCRIPTION_ID, targetObjectId);
-            var secondRepresentationMetadata = new RepresentationMetadata(SECOND_DIAGRAM_ID, Diagram.KIND, SECOND_DIAGRAM_LABEL, FIRST_DIAGRAM_DESCRIPTION_ID, targetObjectId);
-            var thirdRepresentationMetadata = new RepresentationMetadata(THIRD_DIAGRAM_ID, Diagram.KIND, THIRD_DIAGRAM_LABEL, SECOND_DIAGRAM_DESCRIPTION_ID, targetObjectId);
+            var firstRepresentationMetadata = new RepresentationMetadata(FIRST_DIAGRAM_ID, Diagram.KIND, FIRST_DIAGRAM_LABEL, FIRST_DIAGRAM_DESCRIPTION_ID);
+            var secondRepresentationMetadata = new RepresentationMetadata(SECOND_DIAGRAM_ID, Diagram.KIND, SECOND_DIAGRAM_LABEL, FIRST_DIAGRAM_DESCRIPTION_ID);
+            var thirdRepresentationMetadata = new RepresentationMetadata(THIRD_DIAGRAM_ID, Diagram.KIND, THIRD_DIAGRAM_LABEL, SECOND_DIAGRAM_DESCRIPTION_ID);
             return List.of(firstRepresentationMetadata, secondRepresentationMetadata, thirdRepresentationMetadata);
         }
     };
