@@ -794,7 +794,7 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private String getListItemImageURL(VariableManager variablemanager) {
         // @formatter:off
-        return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, EObject.class)
+        return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, Object.class)
                 .map(this.objectService::getImagePath)
                 .orElse("");
         // @formatter:on

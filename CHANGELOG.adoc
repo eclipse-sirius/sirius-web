@@ -14,6 +14,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/2058[#2058] [view] Fix an issue where the default icon for List widget candidates was missing when the candidates were not EObjects.
+
 === New Features
 
 === Improvements
