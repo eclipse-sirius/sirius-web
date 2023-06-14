@@ -6,7 +6,7 @@ exports[`render list widget 1`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-7"
+      class="makeStyles-propertySectionLabel-6"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -14,11 +14,11 @@ exports[`render list widget 1`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-8"
+        class="makeStyles-subscribers-7"
       />
     </div>
     <table
-      class="MuiTable-root makeStyles-table-1"
+      class="MuiTable-root"
     >
       <tbody
         class="MuiTableBody-root"
@@ -27,10 +27,10 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-2 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-1 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-4 makeStyles-style-5 makeStyles-style-6 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
@@ -66,10 +66,10 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-2 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-1 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-4 makeStyles-style-5 makeStyles-style-6 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
@@ -105,10 +105,10 @@ exports[`render list widget 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-2 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-1 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-4 makeStyles-style-5 makeStyles-style-6 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
@@ -155,7 +155,7 @@ exports[`render list widget with style 1`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-16"
+      class="makeStyles-propertySectionLabel-14"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -163,11 +163,11 @@ exports[`render list widget with style 1`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-17"
+        class="makeStyles-subscribers-15"
       />
     </div>
     <table
-      class="MuiTable-root makeStyles-table-10"
+      class="MuiTable-root"
     >
       <tbody
         class="MuiTableBody-root"
@@ -176,10 +176,10 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-11 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-9 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-13 makeStyles-style-14 makeStyles-style-15 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
@@ -215,10 +215,10 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-11 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-9 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-13 makeStyles-style-14 makeStyles-style-15 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
@@ -254,10 +254,10 @@ exports[`render list widget with style 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-11 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-9 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-13 makeStyles-style-14 makeStyles-style-15 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
@@ -304,7 +304,7 @@ exports[`should the click event sent on item click 1`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-25"
+      class="makeStyles-propertySectionLabel-22"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -312,11 +312,11 @@ exports[`should the click event sent on item click 1`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-26"
+        class="makeStyles-subscribers-23"
       />
     </div>
     <table
-      class="MuiTable-root makeStyles-table-19"
+      class="MuiTable-root"
     >
       <tbody
         class="MuiTableBody-root"
@@ -325,10 +325,10 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-17 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
@@ -364,10 +364,10 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-17 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
@@ -403,10 +403,10 @@ exports[`should the click event sent on item click 1`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-17 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
@@ -453,7 +453,7 @@ exports[`should the click event sent on item click 2`] = `
     class="MuiFormControl-root MuiFormControl-fullWidth"
   >
     <div
-      class="makeStyles-propertySectionLabel-25"
+      class="makeStyles-propertySectionLabel-22"
     >
       <h6
         class="MuiTypography-root MuiTypography-subtitle2"
@@ -461,11 +461,11 @@ exports[`should the click event sent on item click 2`] = `
         myList
       </h6>
       <div
-        class="makeStyles-subscribers-26"
+        class="makeStyles-subscribers-23"
       />
     </div>
     <table
-      class="MuiTable-root makeStyles-table-19"
+      class="MuiTable-root"
     >
       <tbody
         class="MuiTableBody-root"
@@ -474,10 +474,10 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-17 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item1"
             >
               item1Label
@@ -513,10 +513,10 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-17 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item2"
             >
               item2Label
@@ -552,10 +552,10 @@ exports[`should the click event sent on item click 2`] = `
           class="MuiTableRow-root"
         >
           <td
-            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-20 MuiTableCell-sizeSmall"
+            class="MuiTableCell-root MuiTableCell-body makeStyles-cell-17 MuiTableCell-sizeSmall"
           >
             <p
-              class="MuiTypography-root makeStyles-canBeSelectedItem-22 makeStyles-style-23 makeStyles-style-24 MuiTypography-body1 MuiTypography-colorTextPrimary"
+              class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
               data-testid="representation-item3"
             >
               item3Label
