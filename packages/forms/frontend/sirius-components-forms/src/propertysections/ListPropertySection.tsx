@@ -15,16 +15,15 @@ import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { MouseEvent, useContext, useEffect, useRef, useState } from 'react';
 import { GQLListItem } from '../form/FormEventFragments.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -35,6 +34,7 @@ import {
   ListStyleProps,
 } from './ListPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 export const deleteListItemMutation = gql`
   mutation deleteListItem($input: DeleteListItemInput!) {
@@ -59,10 +59,6 @@ export const clickListItemMutation = gql`
 `;
 
 const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
-  table: {
-    tableLayout: 'fixed',
-    width: '100%',
-  },
   cell: {
     display: 'flex',
     flexDirection: 'row',
@@ -265,7 +261,7 @@ export const ListPropertySection = ({
   return (
     <FormControl error={widget.diagnostics.length > 0} fullWidth>
       <PropertySectionLabel label={widget.label} subscribers={subscribers} />
-      <Table size="small" className={classes.table}>
+      <Table size="small">
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.id}>

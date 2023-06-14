@@ -17,6 +17,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/2058[#2058] [view] Fix an issue where the default icon for List widget candidates was missing when the candidates were not EObjects.
+- https://github.com/eclipse-sirius/sirius-components/issues/2060[#2060] [form] Fix an issue where the list widget was displayed on a single line inside a flexbox container, no matter the length of the labels of its items.
 
 === New Features
 
