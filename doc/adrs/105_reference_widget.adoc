@@ -1,0 +1,131 @@
+= ADR-104 - Add support for Help Expressions in Form widgets
+
+== Context
+
+On the desktop side, Sirius (via EEF) provides rich widgets in its properties view to edit object references.
+They support both mono-valued and multi-valued references, either contained or not, with all the relevant operations directly available in the widget: value selection, re-ordering, creation of new objects to add to the reference, etc.
+
+== Decision
+
+We will use the recently added mechanism to contribute custom widget to provide a new optional _Reference Widget_.
+It will be made available to the Sirius Web Sample Application for studio makers who define their own forms, but not used by default otherwise (at least at the moment).
+
+The _Reference_ widget contributed to Sirius Components will have a hard-coded behavior similar to its EEF counter part.
+The specifier only needs to specify which reference of which target object (both through expressions) to edit, and the widget does the rest.
+In particular this means the behavior when setting/adding/removing/unsetting values in the edited reference are hard-coded and match the "canonical" EMF behavior.
+
+The widget will be able to handle all kinds of EMF _EReferences_: contains or not, single or multi-valued.
+
+Other applications can either reuse the widget as-is, or use it as an inspiration to create their own varian with specific UI or behavior.
+
+Later iterations on this component may open things a little more and provide some customization capabilities.
+
+== Solution
+
+We will extend the View DSL (in a separate project/module) to define a single `ReferenceWidgetDescription` type.
+It extends the default `WidgetDescription` with only two attributes:
+
+* `ownerExpression: InterpretedExpression`: used to specify the owner of the reference to edit.
+May be empty, in which case it is equivalent to `aql:self` (i.e. the reference to be edited is on the current object)
+* `referenceNameExpression: InterpretedExpression`: this one is mandatory and should return the name of the owner's reference to edit (as a string).
+
+This simple View-level description is converted into a more detailed `ReferenceWidgetDescription`:
+
+```java
+public final class ReferenceWidgetDescription extends AbstractWidgetDescription {
+    // Common widget fields
+    private Function<VariableManager, String> idProvider;
+    private Function<VariableManager, String> labelProvider;
+    private Function<VariableManager, String> iconURLProvider;
+
+    // Reference/Setting metadata
+    private Function<VariableManager, Setting> settingProvider;
+    private Function<VariableManager, Boolean> isContainerProvider;
+    private Function<VariableManager, Boolean> isManyValuedProvider;
+
+    // Reference content/value providers and display functions
+    private Function<VariableManager, List<?>> itemsProvider;
+    private Function<VariableManager, String> itemIdProvider;
+    private Function<VariableManager, String> itemLabelProvider;
+    private Function<VariableManager, String> itemKindProvider;
+    private Function<VariableManager, String> itemImageURLProvider;
+
+    // Accessors & builder code ommitted
+}
+```
+
+A concrete `ReferenceWidget` has two flags (`container` and `manyValued`) to tell the frontend about the characteristics of the reference edited so it can adapt its UI.
+A single-valued reference widget is implemented as a special case where the `referenceValues` attribute is expected to have 0 or 1 elements.
+
+```
+type ReferenceWidget implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: String
+  hasHelpText: Boolean!
+  container: Boolean!
+  manyValued: Boolean!
+  referenceValues: [ReferenceValue!]!
+}
+
+type ReferenceValue {
+  id: ID!
+  label: String!
+  kind: String!
+  iconURL: String
+}
+```
+
+There will be a single mutation for all editing operations, for all variants (single or multi-valued):
+
+```
+extend type Mutation {
+  editReference(input: EditReferenceInput): EditReferencePayload!
+}
+
+input EditReferenceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  newValueIds: [ID!]!
+}
+
+union EditReferencePayload = SuccessPayload | ErrorPayload
+```
+
+* To clear/unset a single or multi-valued reference, use `newValueIds = []`
+* To set the value of a single-valued reference, use `newValueIds = [ semanticIdOfTheNewValue ]`
+* To add, remove or re-order elements in a multi-valued reference, simply perform the addition/removal/reorder on the frontend using the ids of the current `ReferenceValue`, and invoke the mutation with the resulting ids, in the expected order, as `newValueIds`.
+
+The `EditReferenceEventHandler` (which implements `IFormEventHandler`) on the backend will be responsible to interpret and validate the `newValueIds` it receives in light of the characteristics of the actual _EReference_, and return any meaningful error message.
+This includes making sur the actual objects referenced by the `newValueIds` are type-compatible with the reference.
+
+On the frontend, the `ReferenceWidget` will be provided in a separate package.
+As was the case for the Slider custom widget, the Sirius Web Sample application will depend on it and declare its metadata in the top-level `propertySectionsRegistry`.
+
+When displaying a single-valued reference, the frontend component will display a single `ListItem`, with the referenced value's icon and label.
+A "Delete" icon (disabled if read-only) will all the user to unset/cleat the reference.
+
+When displaying a multi-valued reference, the frontend component will display a list of all the values (with their icon and label).
+For each item, buttons will be available to move the value up or down inside the list, and to remove it (withouth clearing the whole list).
+In this first iteration of the widget, *all* values of the reference are displayed in a plain list, with no scrolling/filtering.
+This may come in later iterations.
+
+It will also be possible to drag semantic elements from the _Explorer_ onto a reference widget.
+For multi-valued widgets, they will all be added to the reference (assuming the backend validates the request, in particular taking the element's type compatibility into consideration).
+For single-valued widgets, only the dropping of a single, type-compatible value will trigger the setting of the reference to the new value.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Later iterations on this widget will add more features:
+
+* styling support
+* the possibility to trigger an action when clicking on an element in the list (as is the case for the plain _List_ widget)
+* more advanced edition capabilities with modals to select existing values in the project to add to the reference, or to create & add new elements in a single step.
+* better support for lists with many elements.

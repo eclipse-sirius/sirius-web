@@ -36,5 +36,8 @@
 		<module>sirius-components-collaborative-forms</module>
 		<module>sirius-components-forms-graphql</module>
 		<module>sirius-components-forms-tests</module>
+		<module>sirius-components-widget-reference</module>
+		<module>sirius-components-widget-reference-view</module>
+		<module>sirius-components-widget-reference-view-edit</module>
 	</modules>
 </project>

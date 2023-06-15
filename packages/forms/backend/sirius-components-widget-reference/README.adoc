@@ -1,0 +1,3 @@
+= sirius-components-widget-reference
+
+This project provides a custom widget to edit EMF references inside a Form.

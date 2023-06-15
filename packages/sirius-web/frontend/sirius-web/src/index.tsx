@@ -28,6 +28,11 @@ import {
   PropertySectionContext,
   WidgetContribution,
 } from '@eclipse-sirius/sirius-components-forms';
+import {
+  ReferenceIcon,
+  ReferencePreview,
+  ReferencePropertySection,
+} from '@eclipse-sirius/sirius-components-widget-reference';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -136,11 +141,15 @@ const propertySectionsRegistry = {
   getComponent: (widget: GQLWidget) => {
     if (widget.__typename === 'Slider') {
       return SliderPropertySection;
+    } else if (widget.__typename === 'ReferenceWidget') {
+      return ReferencePropertySection;
     }
   },
   getPreviewComponent: (widget: GQLWidget) => {
     if (widget.__typename === 'Slider') {
       return SliderPreview;
+    } else if (widget.__typename === 'ReferenceWidget') {
+      return ReferencePreview;
     }
   },
   getWidgetContributions: () => {
@@ -149,7 +158,12 @@ const propertySectionsRegistry = {
       fields: `label iconURL minValue maxValue currentValue`,
       icon: <LinearScaleOutlinedIcon />,
     };
-    return [sliderWidgetContribution];
+    const referenceWidget: WidgetContribution = {
+      name: 'ReferenceWidget',
+      fields: 'id label iconURL container manyValued referenceValues { id label kind iconURL }',
+      icon: <ReferenceIcon />,
+    };
+    return [sliderWidgetContribution, referenceWidget];
   },
 };
 

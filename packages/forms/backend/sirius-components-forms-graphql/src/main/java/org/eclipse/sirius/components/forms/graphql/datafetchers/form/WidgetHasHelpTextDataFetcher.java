@@ -60,7 +60,7 @@ public class WidgetHasHelpTextDataFetcher  implements IDataFetcherWithFieldCoord
             .map(widgetType -> FieldCoordinates.coordinates(widgetType, HAS_HELP_TEXT_FIELD))
             .forEach(this.allFieldCoordinates::add);
         customWidgetDescriptors.stream()
-            .map(IWidgetDescriptor::getWidgetType)
+            .flatMap(descriptor -> descriptor.getWidgetTypes().stream())
             .map(widgetType -> FieldCoordinates.coordinates(widgetType, HAS_HELP_TEXT_FIELD))
             .forEach(this.allFieldCoordinates::add);
     }

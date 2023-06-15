@@ -63,7 +63,7 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
             .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
             .forEach(this.allFieldCoordinates::add);
         customWidgetDescriptors.stream()
-            .map(IWidgetDescriptor::getWidgetType)
+            .flatMap(descriptor -> descriptor.getWidgetTypes().stream())
             .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
             .forEach(this.allFieldCoordinates::add);
     }

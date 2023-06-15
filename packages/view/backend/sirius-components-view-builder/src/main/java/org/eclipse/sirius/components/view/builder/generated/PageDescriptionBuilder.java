@@ -96,7 +96,7 @@ public class PageDescriptionBuilder {
      *
      * @generated
      */
-    public PageDescriptionBuilder groups(org.eclipse.sirius.components.view.GroupDescription... values) {
+    public PageDescriptionBuilder groups(org.eclipse.sirius.components.view.GroupDescription ... values) {
         for (org.eclipse.sirius.components.view.GroupDescription value : values) {
             this.getPageDescription().getGroups().add(value);
         }
@@ -108,7 +108,7 @@ public class PageDescriptionBuilder {
      *
      * @generated
      */
-    public PageDescriptionBuilder toolbarActions(org.eclipse.sirius.components.view.ButtonDescription... values) {
+    public PageDescriptionBuilder toolbarActions(org.eclipse.sirius.components.view.ButtonDescription ... values) {
         for (org.eclipse.sirius.components.view.ButtonDescription value : values) {
             this.getPageDescription().getToolbarActions().add(value);
         }

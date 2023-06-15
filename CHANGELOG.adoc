@@ -12,6 +12,7 @@
 
 - [ADR-103] Improves the existing feedback messages capability
 - [ADR-104] Add support for Help Expressions in Form widgets
+- [ADR-105] Add custom widget to edit EMF references
 
 === Breaking changes
 
@@ -40,6 +41,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2004[#2004] [form] Add the possibility to show select options' icons.
 +
 image:doc/screenshots/ShowIconOptionSelectWidget.jpg[Icons on select widget option,70%,30%]
+- https://github.com/eclipse-sirius/sirius-components/issues/2055[#2055] [form] Added initial version of a custom widget to view & edit EMF references (both single and multi-valued).
 
 === Improvements
 
