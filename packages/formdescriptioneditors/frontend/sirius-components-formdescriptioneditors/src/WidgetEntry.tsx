@@ -31,8 +31,8 @@ import {
   GQLWidget,
   PropertySectionContext,
 } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
@@ -503,6 +503,7 @@ export const WidgetEntry = ({
         <div
           className={classes.widgetElement}
           onClick={handleClick}
+          tabIndex={0}
           onKeyDown={handleDelete}
           draggable="true"
           onDragStart={handleDragStart}>

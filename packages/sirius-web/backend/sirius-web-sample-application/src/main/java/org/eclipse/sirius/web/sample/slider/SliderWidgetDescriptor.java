@@ -33,8 +33,8 @@ public class SliderWidgetDescriptor implements IWidgetDescriptor {
     public static final String TYPE = "Slider";
 
     @Override
-    public String getWidgetType() {
-        return TYPE;
+    public List<String> getWidgetTypes() {
+        return List.of(TYPE);
     }
 
     @Override

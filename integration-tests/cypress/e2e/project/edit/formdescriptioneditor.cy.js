@@ -141,14 +141,22 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('GroupDescription-more').eq(0).click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get('[data-value="Widgets Pie Chart Description"]').should('exist').click();
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="Widgets Pie Chart Description"]')
+      .should('exist')
+      .click();
     cy.getByTestId('create-object').click();
     // Adds a widget to the second page
     cy.getByTestId('PageDescription').eq(1).dblclick();
     cy.getByTestId('GroupDescription-more').eq(1).click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get('[data-value="Widgets Bar Chart Description"]').should('exist').click();
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="Widgets Bar Chart Description"]')
+      .should('exist')
+      .click();
     cy.getByTestId('create-object').click();
     // Select the widget from the first page must display it on the editor, and the first page must be selected
     cy.getByTestId('PieChartDescription').click();
@@ -175,5 +183,30 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('PageDescription').eq(1).click();
     cy.get('[data-testid^="Page-"]').eq(0).should('have.attr', 'aria-selected', 'false');
     cy.get('[data-testid^="Page-"]').eq(1).should('have.attr', 'aria-selected', 'true');
+  });
+
+  it('can create a reference widget in a Group', () => {
+    // Check that the "Reference" widget is available in the list
+    cy.getByTestId('FormDescriptionEditor-ReferenceWidget').should('exist');
+    // Create a reference inside the Group
+    const dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-ReferenceWidget').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
+    cy.get('[title="ReferenceWidget"]').should('be.visible');
+  });
+
+  it('can create a reference widget in a Flexbox Container', () => {
+    // Check that the "Reference" widget is available in the list
+    cy.getByTestId('FormDescriptionEditor-ReferenceWidget').should('exist');
+    // Create a Flexbox inside the Group
+    var dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-FlexboxContainer').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
+    cy.get('[title="FlexboxContainer"]').should('be.visible');
+    // Create a Reference inside the Flexbox
+    dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-ReferenceWidget').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="FlexboxContainer-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
+    cy.get('[title="ReferenceWidget"]').should('be.visible');
   });
 });

@@ -20,6 +20,7 @@
     "@eclipse-sirius/sirius-components-diagrams-reactflow": "~2023.6.0",
     "@eclipse-sirius/sirius-components-formdescriptioneditors": "~2023.6.0",
     "@eclipse-sirius/sirius-components-forms": "~2023.6.0",
+    "@eclipse-sirius/sirius-components-widget-reference": "~2023.6.0",
     "@eclipse-sirius/sirius-components-selection": "~2023.6.0",
     "@eclipse-sirius/sirius-components-trees": "~2023.6.0",
     "@eclipse-sirius/sirius-components-validation": "~2023.6.0",

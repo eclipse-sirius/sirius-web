@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author pcdavid
  */
 public interface IWidgetDescriptor {
-    String getWidgetType();
+    List<String> getWidgetTypes();
 
     Optional<Boolean> validateComponentProps(Class<?> componentType, IProps props);
 
