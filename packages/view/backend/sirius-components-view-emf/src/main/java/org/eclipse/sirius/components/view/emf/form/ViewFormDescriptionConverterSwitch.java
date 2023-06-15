@@ -628,13 +628,24 @@ public class ViewFormDescriptionConverterSwitch extends ViewSwitch<AbstractWidge
 
     private Function<VariableManager, List<?>> getMultiValueProvider(String expression) {
         String safeExpression = Optional.ofNullable(expression).orElse("");
-        return variableManager -> this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
+        return variableManager -> {
+            if (safeExpression.isBlank()) {
+                return List.of();
+            } else {
+                return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of());
+            }
+        };
     }
 
     private <T> Function<VariableManager, List<T>> getMultiValueProvider(String expression, Class<T> type) {
         String safeExpression = Optional.ofNullable(expression).orElse("");
-        return variableManager -> this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast)
-                .toList();
+        return variableManager -> {
+            if (safeExpression.isBlank()) {
+                return List.of();
+            } else {
+                return this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects().orElse(List.of()).stream().map(type::cast).toList();
+            }
+        };
     }
 
     private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, IChartDescription chartDescription) {
