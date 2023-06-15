@@ -17,6 +17,7 @@
 === Dependency update
 
 - [releng] Switch to Jacoco 0.8.10
+- [releng] Switch to Guava 32.0.0-jre
 
 === Bug fixes
 
