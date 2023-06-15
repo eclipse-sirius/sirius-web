@@ -1,10 +1,40 @@
 version: 1
 updates:
   - package-ecosystem: "npm"
-    directory: "/frontend"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "maven"
-    directory: "/backend"
+    directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    labels:
+      - "pr: to review later"
+      - "priority: low"
+    commit-message:
+      - prefix: "[releng] "
+    assignees:
+      - "sbegaudeau"
+
+  - package-ecosystem: "maven"
+    directory: "/packages"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "pr: to review later"
+      - "priority: low"
+    commit-message:
+      prefix: "[releng] "
+    assignees:
+      - "sbegaudeau"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/workflows"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+    labels:
+      - "pr: to review later"
+      - "priority: low"
+    commit-message:
+      prefix: "[releng] "
+    assignees:
+      - "sbegaudeau"
