@@ -39,6 +39,7 @@ import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
+import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +64,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final IDocumentRepository documentRepository;
 
-    private final EditingDomainFactoryService editingDomainFactoryService;
+    private final IEditingDomainFactoryService editingDomainFactoryService;
 
     private final List<IRepresentationDescriptionRegistryConfigurer> configurers;
 
@@ -71,7 +72,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final Timer timer;
 
-    public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, EditingDomainFactoryService editingDomainFactoryService,
+    public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
             List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);

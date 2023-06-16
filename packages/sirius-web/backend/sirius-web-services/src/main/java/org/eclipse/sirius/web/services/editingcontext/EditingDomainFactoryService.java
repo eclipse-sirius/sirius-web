@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.web.services.api.projects.Nature;
+import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ import org.springframework.stereotype.Service;
  * @author lfasani
  */
 @Service
-public class EditingDomainFactoryService {
+public class EditingDomainFactoryService implements IEditingDomainFactoryService {
 
     private final IEditingContextEPackageService editingContextEPackageService;
 
@@ -50,6 +51,7 @@ public class EditingDomainFactoryService {
 
     private final Optional<Registry> optionalResourceFactoryRegistry;
 
+
     public EditingDomainFactoryService(IEditingContextEPackageService editingContextEPackageService, IEditingContextMetadataProvider editingContextMetadataProvider,
             ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry, Optional<Resource.Factory.Registry> optionalResourceFactoryRegistry) {
         this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
@@ -59,6 +61,7 @@ public class EditingDomainFactoryService {
         this.optionalResourceFactoryRegistry = optionalResourceFactoryRegistry;
     }
 
+    @Override
     public AdapterFactoryEditingDomain createEditingDomain(String editingContextId) {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
@@ -68,7 +71,7 @@ public class EditingDomainFactoryService {
 
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
-        Stream.concat(findGlobalEPackages(), additionalEPackages.stream())
+        Stream.concat(this.findGlobalEPackages(), additionalEPackages.stream())
                 .filter(ePackage -> isStudioProjectNature || !List.of(DomainPackage.eNS_URI, ViewPackage.eNS_URI).contains(ePackage.getNsURI()))
                 .forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         resourceSet.setPackageRegistry(ePackageRegistry);
