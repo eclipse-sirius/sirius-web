@@ -36,6 +36,7 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
+import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.junit.jupiter.api.Test;
@@ -96,7 +97,8 @@ public class EditingContextSearchServiceTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory, ePackageRegistry, Optional.empty());
+        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
+                composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
                 new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
@@ -143,7 +145,8 @@ public class EditingContextSearchServiceTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory, ePackageRegistry, Optional.empty());
+        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
+                composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
                 new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();

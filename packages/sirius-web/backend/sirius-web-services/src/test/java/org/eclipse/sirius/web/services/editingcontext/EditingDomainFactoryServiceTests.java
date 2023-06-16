@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.web.services.api.projects.Nature;
+import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,8 @@ public class EditingDomainFactoryServiceTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory,
+        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
+                composedAdapterFactory,
                 ePackageRegistry, Optional.empty());
 
         AdapterFactoryEditingDomain adapterFactoryEditingDomain = editingDomainFactoryService.createEditingDomain(projectId);
@@ -78,7 +80,8 @@ public class EditingDomainFactoryServiceTests {
         var editingContextMetadata = new EditingContextMetadata(List.of(new Nature("siriusComponents://nature?kind=studio")));
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory,
+        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
+                composedAdapterFactory,
                 ePackageRegistry, Optional.empty());
 
         AdapterFactoryEditingDomain adapterFactoryEditingDomain = editingDomainFactoryService.createEditingDomain(projectId);
