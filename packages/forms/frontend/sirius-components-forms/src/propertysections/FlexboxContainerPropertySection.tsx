@@ -20,6 +20,14 @@ import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useFlexboxContainerPropertySectionStyles = makeStyles<Theme, FlexboxContainerPropertySectionStyleProps>(
   (theme) => ({
+    containerAndLabel: {
+      margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
+      padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
+      borderWidth: ({ borderStyle }) => borderStyle?.size || 0,
+      borderColor: ({ borderStyle }) => borderStyle?.color || 'transparent',
+      borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
+      borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
+    },
     container: {
       display: 'flex',
       flexWrap: ({ flexWrap }) => flexWrap,
@@ -46,6 +54,7 @@ export const FlexboxContainerPropertySection = ({
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
     flexGrow: widget.flexGrow,
+    borderStyle: widget.borderStyle,
   });
 
   let children = widget.children.map((widget) => (
@@ -63,7 +72,7 @@ export const FlexboxContainerPropertySection = ({
   ));
 
   return (
-    <div>
+    <div className={classes.containerAndLabel}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} subscribers={[]} />
       <div className={classes.container}>{children}</div>
     </div>

@@ -101,5 +101,28 @@ public class FlexboxContainerDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for BorderStyle.
+     *
+     * @generated
+     */
+    public FlexboxContainerDescriptionBuilder borderStyle(org.eclipse.sirius.components.view.form.ContainerBorderStyle value) {
+        this.getFlexboxContainerDescription().setBorderStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalBorderStyles.
+     *
+     * @generated
+     */
+    public FlexboxContainerDescriptionBuilder conditionalBorderStyles(org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle value : values) {
+            this.getFlexboxContainerDescription().getConditionalBorderStyles().add(value);
+        }
+        return this;
+    }
+
+
 }
 

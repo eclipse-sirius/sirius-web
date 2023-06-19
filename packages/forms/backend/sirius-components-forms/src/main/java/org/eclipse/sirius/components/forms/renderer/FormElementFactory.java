@@ -229,7 +229,6 @@ public class FormElementFactory implements IElementFactory {
     }
 
     private Group instantiateGroup(GroupElementProps props, List<Object> children) {
-        // @formatter:off
         List<ToolbarAction> toolbarActions = children.stream()
                 .filter(ToolbarAction.class::isInstance)
                 .map(ToolbarAction.class::cast)
@@ -240,14 +239,17 @@ public class FormElementFactory implements IElementFactory {
                 .map(AbstractWidget.class::cast)
                 .toList();
 
-
-        return Group.newGroup(props.getId())
+        var groupBuilder = Group.newGroup(props.getId())
                 .label(props.getLabel())
                 .displayMode(props.getDisplayMode())
                 .toolbarActions(toolbarActions)
-                .widgets(widgets)
-                .build();
-        // @formatter:on
+                .widgets(widgets);
+
+        if (props.getBorderStyle() != null) {
+            groupBuilder.borderStyle(props.getBorderStyle());
+        }
+
+        return groupBuilder.build();
     }
 
     private Checkbox instantiateCheckbox(CheckboxElementProps props, List<Object> children) {
@@ -558,7 +560,6 @@ public class FormElementFactory implements IElementFactory {
     private FlexboxContainer instantiateFlexboxContainer(FlexboxContainerElementProps props, List<Object> children) {
         List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
 
-        // @formatter:off
         List<AbstractWidget> widgets = children.stream()
                 .filter(AbstractWidget.class::isInstance)
                 .map(AbstractWidget.class::cast)
@@ -576,6 +577,11 @@ public class FormElementFactory implements IElementFactory {
         if (props.getHelpTextProvider() != null) {
             builder.helpTextProvider(props.getHelpTextProvider());
         }
+
+        if (props.getBorderStyle() != null) {
+            builder.borderStyle(props.getBorderStyle());
+        }
+
         return builder.build();
     }
 

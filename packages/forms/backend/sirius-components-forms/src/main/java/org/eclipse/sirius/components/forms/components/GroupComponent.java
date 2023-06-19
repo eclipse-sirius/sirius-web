@@ -46,6 +46,7 @@ public class GroupComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         GroupDescription groupDescription = this.props.getGroupDescription();
+        var borderStyle = groupDescription.getBorderStyleProvider().apply(variableManager);
 
         List<?> semanticElements = groupDescription.getSemanticElementsProvider().apply(variableManager);
 
@@ -64,7 +65,6 @@ public class GroupComponent implements IComponent {
                 groupChildren.add(new Element(ToolbarActionComponent.class, new ToolbarActionComponentProps(groupVariableManager, toolbarActionDescription)));
             }
 
-            // @formatter:off
             List<AbstractControlDescription> controlDescriptions = groupDescription.getControlDescriptions();
             for (AbstractControlDescription controlDescription : controlDescriptions) {
                 if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
@@ -76,13 +76,17 @@ public class GroupComponent implements IComponent {
                 }
             }
 
-            GroupElementProps groupElementProps = GroupElementProps.newGroupElementProps(id)
+            GroupElementProps.Builder groupElementPropsBuilder = GroupElementProps.newGroupElementProps(id)
                     .label(label)
                     .displayMode(displayMode)
-                    .children(groupChildren)
-                    .build();
+                    .children(groupChildren);
+
+            if (borderStyle != null) {
+                groupElementPropsBuilder.borderStyle(borderStyle);
+            }
+
+            GroupElementProps groupElementProps = groupElementPropsBuilder.build();
             Element groupElement = new Element(GroupElementProps.TYPE, groupElementProps);
-            // @formatter:on
 
             children.add(groupElement);
         }

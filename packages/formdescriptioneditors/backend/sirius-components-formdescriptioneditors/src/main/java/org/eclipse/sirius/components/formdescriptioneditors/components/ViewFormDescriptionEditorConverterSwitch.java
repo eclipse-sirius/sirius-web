@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
+import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
@@ -287,6 +288,13 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
             children.add(ViewFormDescriptionEditorConverterSwitch.this.doSwitch(viewWidgetDescription));
 
         });
+        Function<VariableManager, ContainerBorderStyle> borderStyleProvider = vm -> {
+            org.eclipse.sirius.components.view.form.ContainerBorderStyle style = viewFlexboxContainerDescription.getBorderStyle();
+            if (style == null) {
+                return null;
+            }
+            return new ContainerBorderStyleProvider(style).build();
+        };
 
         FlexboxContainerDescription.Builder builder = FlexboxContainerDescription.newFlexboxContainerDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
@@ -295,7 +303,8 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
                 .children(children)
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "");
+                .messageProvider(object -> "")
+                .borderStyleProvider(borderStyleProvider);
         if (viewFlexboxContainerDescription.getHelpExpression() != null && !viewFlexboxContainerDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(vm -> this.getWidgetHelpText(viewFlexboxContainerDescription));
         }

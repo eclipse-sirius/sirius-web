@@ -439,5 +439,25 @@ public class FormBuilders {
         return new ConditionalTextfieldDescriptionStyleBuilder();
     }
 
+    /**
+     * Instantiate a ContainerBorderStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ContainerBorderStyleBuilder newContainerBorderStyle() {
+        return new ContainerBorderStyleBuilder();
+    }
+
+    /**
+     * Instantiate a ConditionalContainerBorderStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ConditionalContainerBorderStyleBuilder newConditionalContainerBorderStyle() {
+        return new ConditionalContainerBorderStyleBuilder();
+    }
+
 
 }

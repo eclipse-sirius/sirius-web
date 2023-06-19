@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class FlexboxContainer extends AbstractWidget {
+
     private String flexDirection;
 
     private String flexWrap;
@@ -34,6 +35,8 @@ public final class FlexboxContainer extends AbstractWidget {
     private int flexGrow;
 
     private List<AbstractWidget> children;
+
+    private ContainerBorderStyle borderStyle;
 
     private FlexboxContainer() {
         // Prevent instantiation
@@ -53,6 +56,10 @@ public final class FlexboxContainer extends AbstractWidget {
 
     public List<AbstractWidget> getChildren() {
         return this.children;
+    }
+
+    public ContainerBorderStyle getBorderStyle() {
+        return this.borderStyle;
     }
 
     public static Builder newFlexboxContainer(String id) {
@@ -91,6 +98,8 @@ public final class FlexboxContainer extends AbstractWidget {
         private Supplier<String> helpTextProvider;
 
         private boolean readOnly;
+
+        private ContainerBorderStyle borderStyle;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -141,6 +150,11 @@ public final class FlexboxContainer extends AbstractWidget {
             return this;
         }
 
+        public Builder borderStyle(ContainerBorderStyle borderStyle) {
+            this.borderStyle = Objects.requireNonNull(borderStyle);
+            return this;
+        }
+
         public FlexboxContainer build() {
             FlexboxContainer flexboxContainer = new FlexboxContainer();
             flexboxContainer.id = Objects.requireNonNull(this.id);
@@ -153,6 +167,7 @@ public final class FlexboxContainer extends AbstractWidget {
             flexboxContainer.diagnostics = Objects.requireNonNull(this.diagnostics);
             flexboxContainer.helpTextProvider = this.helpTextProvider; // Optional on purpose
             flexboxContainer.readOnly = this.readOnly;
+            flexboxContainer.borderStyle = this.borderStyle; // Optional on purpose
             return flexboxContainer;
         }
     }

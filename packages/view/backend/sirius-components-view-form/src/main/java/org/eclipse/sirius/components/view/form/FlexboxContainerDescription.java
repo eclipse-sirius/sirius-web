@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view.form;
 
 import org.eclipse.emf.common.util.EList;
@@ -27,6 +27,10 @@ import org.eclipse.emf.common.util.EList;
  * Direction</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression <em>Is Enabled
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle <em>Border
+ * Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getConditionalBorderStyles
+ * <em>Conditional Border Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription()
@@ -95,5 +99,39 @@ public interface FlexboxContainerDescription extends WidgetDescription {
      * @see #getIsEnabledExpression()
      */
     void setIsEnabledExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Border Style</em>' containment reference.
+     * @model containment="true"
+     * @generated
+     * @see #setBorderStyle(ContainerBorderStyle)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_BorderStyle()
+     */
+    ContainerBorderStyle getBorderStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle
+     * <em>Border Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value the new value of the '<em>Border Style</em>' containment reference.
+     * @generated
+     * @see #getBorderStyle()
+     */
+    void setBorderStyle(ContainerBorderStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Border Styles</b></em>' containment reference list. The list
+     * contents are of type {@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Border Styles</em>' containment reference list.
+     * @model containment="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_ConditionalBorderStyles()
+     */
+    EList<ConditionalContainerBorderStyle> getConditionalBorderStyles();
 
 } // FlexboxContainerDescription

@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class FlexboxContainerDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
@@ -35,6 +37,8 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
     private FlexDirection flexDirection;
 
     private List<AbstractWidgetDescription> children;
+
+    private Function<VariableManager, ContainerBorderStyle> borderStyleProvider;
 
     private FlexboxContainerDescription() {
         // Prevent instantiation
@@ -54,6 +58,10 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
 
     public List<AbstractWidgetDescription> getChildren() {
         return this.children;
+    }
+
+    public Function<VariableManager, ContainerBorderStyle> getBorderStyleProvider() {
+        return this.borderStyleProvider;
     }
 
     public static Builder newFlexboxContainerDescription(String id) {
@@ -93,6 +101,8 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
         private Function<Object, String> messageProvider;
 
         private Function<VariableManager, String> helpTextProvider;
+
+        private Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> null;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -143,6 +153,11 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
             return this;
         }
 
+        public Builder borderStyleProvider(Function<VariableManager, ContainerBorderStyle> borderStyleProvider) {
+            this.borderStyleProvider = Objects.requireNonNull(borderStyleProvider);
+            return this;
+        }
+
         public FlexboxContainerDescription build() {
             FlexboxContainerDescription flexboxContainerDescription = new FlexboxContainerDescription();
             flexboxContainerDescription.id = Objects.requireNonNull(this.id);
@@ -155,6 +170,7 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
             flexboxContainerDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             flexboxContainerDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             flexboxContainerDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            flexboxContainerDescription.borderStyleProvider = Objects.requireNonNull(this.borderStyleProvider);
             return flexboxContainerDescription;
         }
 

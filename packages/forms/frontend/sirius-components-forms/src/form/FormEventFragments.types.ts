@@ -111,7 +111,15 @@ export interface GQLGroup {
   displayMode: GQLGroupDisplayMode;
   toolbarActions: GQLToolbarAction[];
   widgets: GQLWidget[];
+  borderStyle: GQLContainerBorderStyle;
   __typename: string;
+}
+
+export interface GQLContainerBorderStyle {
+  color: string | null;
+  lineStyle: string;
+  size: number;
+  radius: number;
 }
 
 export type GQLGroupDisplayMode = 'LIST' | 'TOGGLEABLE_AREAS';
@@ -359,6 +367,7 @@ export interface GQLFlexboxContainer extends GQLWidget {
   flexWrap: GQLFlexWrap;
   flexGrow: number;
   children: GQLWidget[];
+  borderStyle: GQLContainerBorderStyle;
 }
 
 export type GQLFlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';

@@ -233,4 +233,50 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     checkWidgetIsEnabledExpression('Toolbar Actions Button', 'exist');
     checkWidgetIsEnabledExpression('Widgets Slider', 'exist');
   });
+
+  function createBorderStyleAndCheckProperties(styleName) {
+    cy.getByTestId("treeitem-contextmenu").findByTestId("new-object").click();
+    cy.getByTestId("childCreationDescription").children("[role=\"button\"]").invoke("text").should("have.length.gt", 1);
+    cy.getByTestId("childCreationDescription")
+      .click()
+      .get("[data-value=\"" + styleName + "\"]")
+      .should("exist")
+      .click();
+    cy.getByTestId("create-object").click();
+    cy.getByTestId("Border Color").should("exist");
+    cy.getByTestId("Border Radius").should("exist");
+    cy.getByTestId("Border Size").should("exist");
+    cy.getByTestId("Solid").should("exist");
+    cy.getByTestId("Dashed").should("exist");
+    cy.getByTestId("Dotted").should("exist");
+  }
+
+  it('can create border style in a Group', () => {
+    cy.getByTestId('PageDescription').dblclick();
+    cy.getByTestId('GroupDescription-more').click();
+    createBorderStyleAndCheckProperties('Border Style Container Border Style');
+
+    cy.getByTestId('GroupDescription-more').click();
+    createBorderStyleAndCheckProperties('Conditional Border Styles Conditional Container Border Style');
+    cy.getByTestId('Condition').should('exist');
+  });
+
+  it('can create border style in a Flexbox Container', () => {
+    cy.getByTestId('PageDescription').dblclick();
+
+    // Create a Flexbox inside the Group
+    var dataTransfer = new DataTransfer();
+    cy.getByTestId('FormDescriptionEditor-FlexboxContainer').trigger('dragstart', { dataTransfer });
+    cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
+    cy.get('[title="FlexboxContainer"]').should('be.visible');
+
+    cy.getByTestId('GroupDescription').dblclick();
+    cy.getByTestId('FlexboxContainerDescription-more').click();
+    createBorderStyleAndCheckProperties('Border Style Container Border Style');
+
+    cy.getByTestId('FlexboxContainerDescription-more').click();
+    createBorderStyleAndCheckProperties('Conditional Border Styles Conditional Container Border Style');
+    cy.getByTestId('Condition').should('exist');
+
+  });
 });

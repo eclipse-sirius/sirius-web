@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,20 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ServerContext } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { useContext, useEffect, useState } from 'react';
 import { PropertySection } from '../propertysections/PropertySection';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
-import { GroupProps } from './Group.types';
+import { GroupProps, GroupStyleProps } from './Group.types';
 
-const useGroupStyles = makeStyles((theme) => ({
+const useGroupStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
   group: {
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: theme.spacing(1),
+    margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
+    padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
+    borderWidth: ({ borderStyle }) => borderStyle?.size || 0,
+    borderColor: ({ borderStyle }) => borderStyle?.color || 'transparent',
+    borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
+    borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
   },
   groupLabelAndToolbar: {
     display: 'flex',
@@ -70,7 +75,11 @@ const useGroupStyles = makeStyles((theme) => ({
 }));
 
 export const Group = ({ editingContextId, formId, group, widgetSubscriptions, setSelection, readOnly }: GroupProps) => {
-  const classes = useGroupStyles();
+  const props: GroupStyleProps = {
+    borderStyle: group.borderStyle,
+  };
+
+  const classes = useGroupStyles(props);
   const [visibleWidgetIds, setVisibleWidgetIds] = useState<string[]>([]);
   const { httpOrigin } = useContext(ServerContext);
 

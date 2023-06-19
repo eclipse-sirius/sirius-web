@@ -385,6 +385,23 @@ public interface FormFactory extends EFactory {
     ConditionalTextfieldDescriptionStyle createConditionalTextfieldDescriptionStyle();
 
     /**
+     * Returns a new object of class '<em>Container Border Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Container Border Style</em>'.
+     * @generated
+     */
+    ContainerBorderStyle createContainerBorderStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Container Border Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Container Border Style</em>'.
+     * @generated
+     */
+    ConditionalContainerBorderStyle createConditionalContainerBorderStyle();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

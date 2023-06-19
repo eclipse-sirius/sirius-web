@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -36,6 +37,8 @@ import org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
+import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -190,6 +193,10 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createTextfieldDescriptionStyle();
             case FormPackage.CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE:
                 return this.createConditionalTextfieldDescriptionStyle();
+            case FormPackage.CONTAINER_BORDER_STYLE:
+                return this.createContainerBorderStyle();
+            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE:
+                return this.createConditionalContainerBorderStyle();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -209,6 +216,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createGroupDisplayModeFromString(eDataType, initialValue);
             case FormPackage.LABEL_PLACEMENT:
                 return this.createLabelPlacementFromString(eDataType, initialValue);
+            case FormPackage.CONTAINER_BORDER_LINE_STYLE:
+                return this.createContainerBorderLineStyleFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -228,6 +237,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.convertGroupDisplayModeToString(eDataType, instanceValue);
             case FormPackage.LABEL_PLACEMENT:
                 return this.convertLabelPlacementToString(eDataType, instanceValue);
+            case FormPackage.CONTAINER_BORDER_LINE_STYLE:
+                return this.convertContainerBorderLineStyleToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -700,6 +711,28 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
      *
      * @generated
      */
+    @Override
+    public ContainerBorderStyle createContainerBorderStyle() {
+        ContainerBorderStyleImpl containerBorderStyle = new ContainerBorderStyleImpl();
+        return containerBorderStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalContainerBorderStyle createConditionalContainerBorderStyle() {
+        ConditionalContainerBorderStyleImpl conditionalContainerBorderStyle = new ConditionalContainerBorderStyleImpl();
+        return conditionalContainerBorderStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public FlexDirection createFlexDirectionFromString(EDataType eDataType, String initialValue) {
         FlexDirection result = FlexDirection.get(initialValue);
         if (result == null)
@@ -755,6 +788,27 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
      * @generated
      */
     public String convertLabelPlacementToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public ContainerBorderLineStyle createContainerBorderLineStyleFromString(EDataType eDataType, String initialValue) {
+        ContainerBorderLineStyle result = ContainerBorderLineStyle.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertContainerBorderLineStyleToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

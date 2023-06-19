@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormPackage;
@@ -334,6 +336,16 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalTextfieldDescriptionStyle(ConditionalTextfieldDescriptionStyle object) {
             return FormAdapterFactory.this.createConditionalTextfieldDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseContainerBorderStyle(ContainerBorderStyle object) {
+            return FormAdapterFactory.this.createContainerBorderStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalContainerBorderStyle(ConditionalContainerBorderStyle object) {
+            return FormAdapterFactory.this.createConditionalContainerBorderStyleAdapter();
         }
 
         @Override
@@ -993,6 +1005,34 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalTextfieldDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle
+     * <em>Container Border Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle
+     */
+    public Adapter createContainerBorderStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle <em>Conditional Container Border
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle
+     */
+    public Adapter createConditionalContainerBorderStyleAdapter() {
         return null;
     }
 

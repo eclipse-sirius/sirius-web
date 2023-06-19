@@ -284,13 +284,31 @@ public interface FormPackage extends EPackage {
     int GROUP_DESCRIPTION__WIDGETS = 5;
 
     /**
+     * The feature id for the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__BORDER_STYLE = 6;
+
+    /**
+     * The feature id for the '<em><b>Conditional Border Styles</b></em>' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES = 7;
+
+    /**
      * The number of structural features of the '<em>Group Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int GROUP_DESCRIPTION_FEATURE_COUNT = 6;
+    int GROUP_DESCRIPTION_FEATURE_COUNT = 8;
 
     /**
      * The number of operations of the '<em>Group Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -733,13 +751,31 @@ public interface FormPackage extends EPackage {
     int FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Conditional Border Styles</b></em>' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Flexbox Container Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+    int FLEXBOX_CONTAINER_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Flexbox Container Description</em>' class. <!-- begin-user-doc --> <!--
@@ -3864,14 +3900,145 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
+     * <em>Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderStyle()
+     */
+    int CONTAINER_BORDER_STYLE = 44;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_BORDER_STYLE__BORDER_COLOR = 0;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_BORDER_STYLE__BORDER_RADIUS = 1;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_BORDER_STYLE__BORDER_SIZE = 2;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE = 3;
+
+    /**
+     * The number of structural features of the '<em>Container Border Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_BORDER_STYLE_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>Container Border Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONTAINER_BORDER_STYLE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl <em>Conditional
+     * Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalContainerBorderStyle()
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE = 45;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
+     * The number of structural features of the '<em>Conditional Container Border Style</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
+
+    /**
+     * The number of operations of the '<em>Conditional Container Border Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CONTAINER_BORDER_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.FlexDirection <em>Flex
      * Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.sirius.components.view.form.FlexDirection
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexDirection()
-     * @generated
      */
-    int FLEX_DIRECTION = 44;
+    int FLEX_DIRECTION = 46;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.GroupDisplayMode <em>Group Display
@@ -3881,7 +4048,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getGroupDisplayMode()
      */
-    int GROUP_DISPLAY_MODE = 45;
+    int GROUP_DISPLAY_MODE = 47;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
@@ -3891,7 +4058,17 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.LabelPlacement
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
      */
-    int LABEL_PLACEMENT = 46;
+    int LABEL_PLACEMENT = 48;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.ContainerBorderLineStyle <em>Container
+     * Border Line Style</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderLineStyle()
+     */
+    int CONTAINER_BORDER_LINE_STYLE = 49;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormDescription
@@ -4091,12 +4268,36 @@ public interface FormPackage extends EPackage {
     EReference getGroupDescription_Widgets();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.form.GroupDescription#getBorderStyle <em>Border Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Border Style</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.GroupDescription#getBorderStyle()
+     * @see #getGroupDescription()
+     */
+    EReference getGroupDescription_BorderStyle();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.form.GroupDescription#getConditionalBorderStyles <em>Conditional
+     * Border Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Border Styles</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.GroupDescription#getConditionalBorderStyles()
+     * @see #getGroupDescription()
+     */
+    EReference getGroupDescription_ConditionalBorderStyles();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.WidgetDescription <em>Widget
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.WidgetDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.WidgetDescription
      */
     EClass getWidgetDescription();
 
@@ -4427,6 +4628,30 @@ public interface FormPackage extends EPackage {
      * @see #getFlexboxContainerDescription()
      */
     EAttribute getFlexboxContainerDescription_IsEnabledExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle <em>Border
+     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Border Style</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle()
+     * @see #getFlexboxContainerDescription()
+     */
+    EReference getFlexboxContainerDescription_BorderStyle();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getConditionalBorderStyles
+     * <em>Conditional Border Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Border Styles</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getConditionalBorderStyles()
+     * @see #getFlexboxContainerDescription()
+     */
+    EReference getFlexboxContainerDescription_ConditionalBorderStyles();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.ImageDescription <em>Image
@@ -5699,12 +5924,80 @@ public interface FormPackage extends EPackage {
     EClass getConditionalTextfieldDescriptionStyle();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle
+     * <em>Container Border Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Container Border Style</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle
+     */
+    EClass getContainerBorderStyle();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderColor <em>Border Color</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Border Color</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderColor()
+     * @see #getContainerBorderStyle()
+     */
+    EReference getContainerBorderStyle_BorderColor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderRadius <em>Border Radius</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Radius</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderRadius()
+     * @see #getContainerBorderStyle()
+     */
+    EAttribute getContainerBorderStyle_BorderRadius();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderSize <em>Border Size</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Size</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderSize()
+     * @see #getContainerBorderStyle()
+     */
+    EAttribute getContainerBorderStyle_BorderSize();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderLineStyle <em>Border Line
+     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Border Line Style</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderLineStyle()
+     * @see #getContainerBorderStyle()
+     */
+    EAttribute getContainerBorderStyle_BorderLineStyle();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle
+     * <em>Conditional Container Border Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Container Border Style</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle
+     */
+    EClass getConditionalContainerBorderStyle();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.form.FlexDirection <em>Flex
      * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Flex Direction</em>'.
-     * @see org.eclipse.sirius.components.view.form.FlexDirection
      * @generated
+     * @see org.eclipse.sirius.components.view.form.FlexDirection
      */
     EEnum getFlexDirection();
 
@@ -5727,6 +6020,16 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.LabelPlacement
      */
     EEnum getLabelPlacement();
+
+    /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
+     * <em>Container Border Line Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Container Border Line Style</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
+     */
+    EEnum getContainerBorderLineStyle();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5893,12 +6196,28 @@ public interface FormPackage extends EPackage {
         EReference GROUP_DESCRIPTION__WIDGETS = eINSTANCE.getGroupDescription_Widgets();
 
         /**
+         * The meta object literal for the '<em><b>Border Style</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference GROUP_DESCRIPTION__BORDER_STYLE = eINSTANCE.getGroupDescription_BorderStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Border Styles</b></em>' containment reference list
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES = eINSTANCE.getGroupDescription_ConditionalBorderStyles();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
          * <em>Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescription()
-         * @generated
          */
         EClass WIDGET_DESCRIPTION = eINSTANCE.getWidgetDescription();
 
@@ -6134,6 +6453,22 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EAttribute FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getFlexboxContainerDescription_IsEnabledExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Border Style</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE = eINSTANCE.getFlexboxContainerDescription_BorderStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Border Styles</b></em>' containment reference list
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES = eINSTANCE.getFlexboxContainerDescription_ConditionalBorderStyles();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.ImageDescriptionImpl
@@ -7120,12 +7455,65 @@ public interface FormPackage extends EPackage {
         EClass CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = eINSTANCE.getConditionalTextfieldDescriptionStyle();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
+         * <em>Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderStyle()
+         */
+        EClass CONTAINER_BORDER_STYLE = eINSTANCE.getContainerBorderStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Border Color</b></em>' reference feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CONTAINER_BORDER_STYLE__BORDER_COLOR = eINSTANCE.getContainerBorderStyle_BorderColor();
+
+        /**
+         * The meta object literal for the '<em><b>Border Radius</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CONTAINER_BORDER_STYLE__BORDER_RADIUS = eINSTANCE.getContainerBorderStyle_BorderRadius();
+
+        /**
+         * The meta object literal for the '<em><b>Border Size</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CONTAINER_BORDER_STYLE__BORDER_SIZE = eINSTANCE.getContainerBorderStyle_BorderSize();
+
+        /**
+         * The meta object literal for the '<em><b>Border Line Style</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE = eINSTANCE.getContainerBorderStyle_BorderLineStyle();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl <em>Conditional
+         * Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalContainerBorderStyle()
+         */
+        EClass CONDITIONAL_CONTAINER_BORDER_STYLE = eINSTANCE.getConditionalContainerBorderStyle();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.FlexDirection <em>Flex
          * Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.FlexDirection
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexDirection()
-         * @generated
          */
         EEnum FLEX_DIRECTION = eINSTANCE.getFlexDirection();
 
@@ -7148,6 +7536,16 @@ public interface FormPackage extends EPackage {
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
          */
         EEnum LABEL_PLACEMENT = eINSTANCE.getLabelPlacement();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
+         * <em>Container Border Line Style</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderLineStyle()
+         */
+        EEnum CONTAINER_BORDER_LINE_STYLE = eINSTANCE.getContainerBorderLineStyle();
 
     }
 

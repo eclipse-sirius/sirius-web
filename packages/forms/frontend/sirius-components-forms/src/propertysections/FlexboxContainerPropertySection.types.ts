@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import {
+  GQLContainerBorderStyle,
   GQLFlexboxContainer,
   GQLFlexDirection,
   GQLFlexWrap,
@@ -31,4 +32,5 @@ export interface FlexboxContainerPropertySectionStyleProps {
   flexDirection: GQLFlexDirection;
   flexWrap: GQLFlexWrap;
   flexGrow: number;
+  borderStyle: GQLContainerBorderStyle | null;
 }

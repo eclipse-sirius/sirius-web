@@ -13,6 +13,7 @@
 import { useMutation } from '@apollo/client';
 import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
+import { GroupStyleProps } from '@eclipse-sirius/sirius-components-forms/src/groups/Group.types';
 import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -53,13 +54,15 @@ import { ToolbarActions } from './ToolbarActions';
 import { WidgetEntry } from './WidgetEntry';
 import { isKind } from './WidgetOperations';
 
-const useGroupEntryStyles = makeStyles<Theme>((theme) => ({
+const useGroupEntryStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
   group: {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    border: '1px solid gray',
-    borderRadius: '10px',
+    borderWidth: ({ borderStyle }) => (borderStyle ? borderStyle.size : 1),
+    borderColor: ({ borderStyle }) => (borderStyle ? borderStyle?.color || 'transparent' : 'gray'),
+    borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
+    borderRadius: ({ borderStyle }) => (borderStyle ? borderStyle.radius : 10),
     paddingTop: '1px',
     '&:hover': {
       borderColor: theme.palette.primary.main,
@@ -145,7 +148,9 @@ export const Group = ({
   selection,
   setSelection,
 }: GroupProps) => {
-  const classes = useGroupEntryStyles();
+  const classes = useGroupEntryStyles({
+    borderStyle: group.borderStyle,
+  });
 
   const initialState: GroupState = { message: null, selected: false };
   const [state, setState] = useState<GroupState>(initialState);

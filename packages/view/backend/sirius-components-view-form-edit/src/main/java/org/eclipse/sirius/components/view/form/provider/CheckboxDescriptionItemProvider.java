@@ -176,7 +176,7 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -193,8 +193,6 @@ public class CheckboxDescriptionItemProvider extends WidgetDescriptionItemProvid
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createCheckboxDescriptionStyle()));
-
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES, FormFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle()));
     }

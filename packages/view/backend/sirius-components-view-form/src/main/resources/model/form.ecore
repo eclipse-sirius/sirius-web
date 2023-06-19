@@ -17,6 +17,11 @@
     <eLiterals name="start" value="2"/>
     <eLiterals name="bottom" value="3"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ContainerBorderLineStyle">
+    <eLiterals name="Solid"/>
+    <eLiterals name="Dashed" value="1"/>
+    <eLiterals name="Dotted" value="2"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pages" upperBound="-1"
         eType="#//PageDescription" containment="true"/>
@@ -49,6 +54,10 @@
         eType="#//ButtonDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="widgets" upperBound="-1"
         eType="#//WidgetDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="borderStyle" eType="#//ContainerBorderStyle"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalBorderStyles"
+        upperBound="-1" eType="#//ConditionalContainerBorderStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WidgetDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
@@ -97,6 +106,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexDirection" lowerBound="1"
         eType="#//FlexDirection" defaultValueLiteral="row"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="borderStyle" eType="#//ContainerBorderStyle"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalBorderStyles"
+        upperBound="-1" eType="#//ConditionalContainerBorderStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ImageDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="urlExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
@@ -268,4 +281,16 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalTextfieldDescriptionStyle"
       eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//TextfieldDescriptionStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ContainerBorderStyle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="borderColor" lowerBound="1"
+        eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderRadius" lowerBound="1"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Length"
+        defaultValueLiteral="3"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderSize" lowerBound="1"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Length"
+        defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderLineStyle" eType="#//ContainerBorderLineStyle"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalContainerBorderStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//ContainerBorderStyle"/>
 </ecore:EPackage>

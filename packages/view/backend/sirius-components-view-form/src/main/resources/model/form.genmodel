@@ -30,6 +30,11 @@
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/start"/>
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/bottom"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="form.ecore#//ContainerBorderLineStyle">
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Solid"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Dashed"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Dotted"/>
+    </genEnums>
     <genClasses ecoreClass="form.ecore#//FormDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormDescription/pages"/>
     </genClasses>
@@ -49,6 +54,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//GroupDescription/semanticCandidatesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/toolbarActions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/widgets"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/borderStyle"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/conditionalBorderStyles"/>
     </genClasses>
     <genClasses image="false" ecoreClass="form.ecore#//WidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetDescription/name"/>
@@ -83,6 +90,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FlexboxContainerDescription/children"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/flexDirection"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/IsEnabledExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FlexboxContainerDescription/borderStyle"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FlexboxContainerDescription/conditionalBorderStyles"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ImageDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//ImageDescription/urlExpression"/>
@@ -218,5 +227,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EReference form.ecore#//TextfieldDescriptionStyle/foregroundColor"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ConditionalTextfieldDescriptionStyle"/>
+    <genClasses ecoreClass="form.ecore#//ContainerBorderStyle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference form.ecore#//ContainerBorderStyle/borderColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//ContainerBorderStyle/borderRadius"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//ContainerBorderStyle/borderSize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//ContainerBorderStyle/borderLineStyle"/>
+    </genClasses>
+    <genClasses ecoreClass="form.ecore#//ConditionalContainerBorderStyle"/>
   </genPackages>
 </genmodel:GenModel>

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { WidgetContribution, flexboxContainerFields, widgetFields } from '@eclipse-sirius/sirius-components-forms';
+import { flexboxContainerFields, WidgetContribution, widgetFields } from '@eclipse-sirius/sirius-components-forms';
 
 export const formDescriptionEditorEventSubscription = (contributions: Array<WidgetContribution>) => `
   ${widgetFields(contributions)}
@@ -53,6 +53,12 @@ export const formDescriptionEditorEventSubscription = (contributions: Array<Widg
                 ... on FlexboxContainer {
                   ...flexboxContainerFields
                 }
+              }
+              borderStyle {
+                color
+                lineStyle
+                size
+                radius
               }
             }
           }

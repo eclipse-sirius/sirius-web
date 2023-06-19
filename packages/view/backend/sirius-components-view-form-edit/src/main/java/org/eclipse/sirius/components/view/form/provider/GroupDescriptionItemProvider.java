@@ -131,6 +131,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS);
             this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS);
+            this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__BORDER_STYLE);
+            this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -199,6 +201,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
                 return;
             case FormPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
             case FormPackage.GROUP_DESCRIPTION__WIDGETS:
+            case FormPackage.GROUP_DESCRIPTION__BORDER_STYLE:
+            case FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -209,7 +213,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -246,6 +250,10 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createTextAreaDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createTextfieldDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__BORDER_STYLE, FormFactory.eINSTANCE.createContainerBorderStyle()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES, FormFactory.eINSTANCE.createConditionalContainerBorderStyle()));
     }
 
     /**
@@ -259,10 +267,11 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == FormPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS;
+        boolean qualify = childFeature == FormPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS
+                || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__BORDER_STYLE || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

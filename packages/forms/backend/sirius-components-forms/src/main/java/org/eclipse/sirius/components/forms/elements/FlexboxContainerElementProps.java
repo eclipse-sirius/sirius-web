@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -43,6 +44,8 @@ public final class FlexboxContainerElementProps implements IProps {
     private FlexDirection flexDirection;
 
     private List<Element> children;
+
+    private ContainerBorderStyle borderStyle;
 
     private FlexboxContainerElementProps() {
         // Prevent instantiation
@@ -71,6 +74,10 @@ public final class FlexboxContainerElementProps implements IProps {
     @Override
     public List<Element> getChildren() {
         return this.children;
+    }
+
+    public ContainerBorderStyle getBorderStyle() {
+        return this.borderStyle;
     }
 
     public static Builder newFlexboxContainerElementProps(String id) {
@@ -103,6 +110,8 @@ public final class FlexboxContainerElementProps implements IProps {
 
         private List<Element> children;
 
+        private ContainerBorderStyle borderStyle;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -132,6 +141,11 @@ public final class FlexboxContainerElementProps implements IProps {
             return this;
         }
 
+        public Builder borderStyle(ContainerBorderStyle borderStyle) {
+            this.borderStyle = Objects.requireNonNull(borderStyle);
+            return this;
+        }
+
         public FlexboxContainerElementProps build() {
             FlexboxContainerElementProps flexboxContainerElementProps = new FlexboxContainerElementProps();
             flexboxContainerElementProps.id = Objects.requireNonNull(this.id);
@@ -140,6 +154,7 @@ public final class FlexboxContainerElementProps implements IProps {
             flexboxContainerElementProps.flexDirection = Objects.requireNonNull(this.flexDirection);
             flexboxContainerElementProps.children = Objects.requireNonNull(this.children);
             flexboxContainerElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            flexboxContainerElementProps.borderStyle = this.borderStyle; // Optional on purpose
             return flexboxContainerElementProps;
         }
     }

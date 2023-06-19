@@ -399,9 +399,27 @@ export const flexboxContainerFields = (contributions: Array<WidgetContribution>)
             children {
               ...widgetFields
             }
+            borderStyle {
+              color
+              lineStyle
+              size
+              radius
+            }
           }
         }
+        borderStyle {
+          color
+          lineStyle
+          size
+          radius
+        }
       }
+    }
+    borderStyle {
+      color
+      lineStyle
+      size
+      radius
     }
   }
 `;
@@ -426,6 +444,12 @@ export const formRefreshedEventPayloadFragment = (contributions: Array<WidgetCon
           toolbarActions {
             ...commonFields
             ...toolbarActionFields
+          }
+          borderStyle {
+            color
+            lineStyle
+            size
+            radius
           }
           widgets {
             ...widgetFields

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -41,6 +42,8 @@ public final class GroupDescription {
     private List<ButtonDescription> toolbarActionDescriptions;
 
     private List<AbstractControlDescription> controlDescriptions;
+
+    private Function<VariableManager, ContainerBorderStyle> borderStyleProvider;
 
     private GroupDescription() {
         // Prevent instantiation
@@ -74,6 +77,10 @@ public final class GroupDescription {
         return this.controlDescriptions;
     }
 
+    public Function<VariableManager, ContainerBorderStyle> getBorderStyleProvider() {
+        return this.borderStyleProvider;
+    }
+
     public static Builder newGroupDescription(String id) {
         return new Builder(id);
     }
@@ -104,6 +111,8 @@ public final class GroupDescription {
         private List<ButtonDescription> toolbarActionDescriptions = List.of();
 
         private List<AbstractControlDescription> controlDescriptions;
+
+        private Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> null;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -139,6 +148,11 @@ public final class GroupDescription {
             return this;
         }
 
+        public Builder borderStyleProvider(Function<VariableManager, ContainerBorderStyle> borderStyleProvider) {
+            this.borderStyleProvider = Objects.requireNonNull(borderStyleProvider);
+            return this;
+        }
+
         public GroupDescription build() {
             GroupDescription groupDescription = new GroupDescription();
             groupDescription.id = Objects.requireNonNull(this.id);
@@ -148,6 +162,7 @@ public final class GroupDescription {
             groupDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             groupDescription.controlDescriptions = Objects.requireNonNull(this.controlDescriptions);
             groupDescription.toolbarActionDescriptions = Objects.requireNonNull(this.toolbarActionDescriptions);
+            groupDescription.borderStyleProvider = Objects.requireNonNull(this.borderStyleProvider);
             return groupDescription;
         }
     }
