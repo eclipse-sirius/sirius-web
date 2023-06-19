@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface GroupDescription extends EObject {
+
     /**
      * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -155,5 +156,39 @@ public interface GroupDescription extends EObject {
      * @generated
      */
     EList<WidgetDescription> getWidgets();
+
+    /**
+     * Returns the value of the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Border Style</em>' containment reference.
+     * @model containment="true"
+     * @generated
+     * @see #setBorderStyle(ContainerBorderStyle)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_BorderStyle()
+     */
+    ContainerBorderStyle getBorderStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getBorderStyle <em>Border
+     * Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value the new value of the '<em>Border Style</em>' containment reference.
+     * @generated
+     * @see #getBorderStyle()
+     */
+    void setBorderStyle(ContainerBorderStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Border Styles</b></em>' containment reference list. The list
+     * contents are of type {@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Border Styles</em>' containment reference list.
+     * @model containment="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_ConditionalBorderStyles()
+     */
+    EList<ConditionalContainerBorderStyle> getConditionalBorderStyles();
 
 } // GroupDescription

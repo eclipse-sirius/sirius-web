@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class GroupElementProps implements IProps {
+
     public static final String TYPE = "Group";
 
     private String id;
@@ -37,6 +39,8 @@ public final class GroupElementProps implements IProps {
     private GroupDisplayMode displayMode;
 
     private List<Element> children;
+
+    private ContainerBorderStyle borderStyle;
 
     private GroupElementProps() {
         // Prevent instantiation
@@ -59,6 +63,10 @@ public final class GroupElementProps implements IProps {
         return this.children;
     }
 
+    public ContainerBorderStyle getBorderStyle() {
+        return this.borderStyle;
+    }
+
     public static Builder newGroupElementProps(String id) {
         return new Builder(id);
     }
@@ -76,6 +84,7 @@ public final class GroupElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -83,6 +92,8 @@ public final class GroupElementProps implements IProps {
         private GroupDisplayMode displayMode = GroupDisplayMode.LIST;
 
         private List<Element> children;
+
+        private ContainerBorderStyle borderStyle;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -103,12 +114,18 @@ public final class GroupElementProps implements IProps {
             return this;
         }
 
+        public Builder borderStyle(ContainerBorderStyle borderStyle) {
+            this.borderStyle = Objects.requireNonNull(borderStyle);
+            return this;
+        }
+
         public GroupElementProps build() {
             GroupElementProps groupElementProps = new GroupElementProps();
             groupElementProps.id = Objects.requireNonNull(this.id);
             groupElementProps.label = Objects.requireNonNull(this.label);
             groupElementProps.displayMode = Objects.requireNonNull(this.displayMode);
             groupElementProps.children = Objects.requireNonNull(this.children);
+            groupElementProps.borderStyle = this.borderStyle; // Optional on purpose
             return groupElementProps;
         }
     }

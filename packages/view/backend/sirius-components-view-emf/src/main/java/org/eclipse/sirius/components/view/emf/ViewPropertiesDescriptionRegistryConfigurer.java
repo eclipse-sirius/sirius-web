@@ -222,7 +222,8 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
                 EcorePackage.Literals.ELONG,
                 EcorePackage.Literals.ELONG_OBJECT,
                 EcorePackage.Literals.ESHORT,
-                EcorePackage.Literals.ESHORT_OBJECT
+                EcorePackage.Literals.ESHORT_OBJECT,
+                ViewPackage.Literals.LENGTH
                 );
         // @formatter:on
         for (var dataType : numericDataTypes) {

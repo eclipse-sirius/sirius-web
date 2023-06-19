@@ -95,9 +95,31 @@ public class GroupDescriptionBuilder {
      *
      * @generated
      */
-    public GroupDescriptionBuilder widgets(org.eclipse.sirius.components.view.form.WidgetDescription ... values) {
+    public GroupDescriptionBuilder widgets(org.eclipse.sirius.components.view.form.WidgetDescription... values) {
         for (org.eclipse.sirius.components.view.form.WidgetDescription value : values) {
             this.getGroupDescription().getWidgets().add(value);
+        }
+        return this;
+    }
+
+    /**
+     * Setter for BorderStyle.
+     *
+     * @generated
+     */
+    public GroupDescriptionBuilder borderStyle(org.eclipse.sirius.components.view.form.ContainerBorderStyle value) {
+        this.getGroupDescription().setBorderStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalBorderStyles.
+     *
+     * @generated
+     */
+    public GroupDescriptionBuilder conditionalBorderStyles(org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle value : values) {
+            this.getGroupDescription().getConditionalBorderStyles().add(value);
         }
         return this;
     }

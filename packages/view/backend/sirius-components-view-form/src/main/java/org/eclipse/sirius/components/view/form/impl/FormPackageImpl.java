@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -37,6 +38,8 @@ import org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
+import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -388,6 +391,20 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      *
      * @generated
      */
+    private EClass containerBorderStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalContainerBorderStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum flexDirectionEEnum = null;
 
     /**
@@ -403,6 +420,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EEnum labelPlacementEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum containerBorderLineStyleEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -636,6 +660,26 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getGroupDescription_Widgets() {
         return (EReference) this.groupDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupDescription_BorderStyle() {
+        return (EReference) this.groupDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getGroupDescription_ConditionalBorderStyles() {
+        return (EReference) this.groupDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
     /**
@@ -926,6 +970,26 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EAttribute getFlexboxContainerDescription_IsEnabledExpression() {
         return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFlexboxContainerDescription_BorderStyle() {
+        return (EReference) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFlexboxContainerDescription_ConditionalBorderStyles() {
+        return (EReference) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -2044,6 +2108,66 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getContainerBorderStyle() {
+        return this.containerBorderStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getContainerBorderStyle_BorderColor() {
+        return (EReference) this.containerBorderStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getContainerBorderStyle_BorderRadius() {
+        return (EAttribute) this.containerBorderStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getContainerBorderStyle_BorderSize() {
+        return (EAttribute) this.containerBorderStyleEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getContainerBorderStyle_BorderLineStyle() {
+        return (EAttribute) this.containerBorderStyleEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalContainerBorderStyle() {
+        return this.conditionalContainerBorderStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getFlexDirection() {
         return this.flexDirectionEEnum;
     }
@@ -2066,6 +2190,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EEnum getLabelPlacement() {
         return this.labelPlacementEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EEnum getContainerBorderLineStyle() {
+        return this.containerBorderLineStyleEEnum;
     }
 
     /**
@@ -2116,6 +2250,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__TOOLBAR_ACTIONS);
         this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__WIDGETS);
+        this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__BORDER_STYLE);
+        this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
 
         this.widgetDescriptionEClass = this.createEClass(WIDGET_DESCRIPTION);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__NAME);
@@ -2150,6 +2286,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
         this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION);
         this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION);
+        this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE);
+        this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
 
         this.imageDescriptionEClass = this.createEClass(IMAGE_DESCRIPTION);
         this.createEAttribute(this.imageDescriptionEClass, IMAGE_DESCRIPTION__URL_EXPRESSION);
@@ -2298,10 +2436,19 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.conditionalTextfieldDescriptionStyleEClass = this.createEClass(CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE);
 
+        this.containerBorderStyleEClass = this.createEClass(CONTAINER_BORDER_STYLE);
+        this.createEReference(this.containerBorderStyleEClass, CONTAINER_BORDER_STYLE__BORDER_COLOR);
+        this.createEAttribute(this.containerBorderStyleEClass, CONTAINER_BORDER_STYLE__BORDER_RADIUS);
+        this.createEAttribute(this.containerBorderStyleEClass, CONTAINER_BORDER_STYLE__BORDER_SIZE);
+        this.createEAttribute(this.containerBorderStyleEClass, CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE);
+
+        this.conditionalContainerBorderStyleEClass = this.createEClass(CONDITIONAL_CONTAINER_BORDER_STYLE);
+
         // Create enums
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
         this.labelPlacementEEnum = this.createEEnum(LABEL_PLACEMENT);
+        this.containerBorderLineStyleEEnum = this.createEEnum(CONTAINER_BORDER_LINE_STYLE);
     }
 
     /**
@@ -2398,6 +2545,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.textfieldDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(this.getTextfieldDescriptionStyle());
+        this.conditionalContainerBorderStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+        this.conditionalContainerBorderStyleEClass.getESuperTypes().add(this.getContainerBorderStyle());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.formDescriptionEClass, FormDescription.class, "FormDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2433,6 +2582,10 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGroupDescription_Widgets(), this.getWidgetDescription(), null, "widgets", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getGroupDescription_BorderStyle(), this.getContainerBorderStyle(), null, "borderStyle", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getGroupDescription_ConditionalBorderStyles(), this.getConditionalContainerBorderStyle(), null, "conditionalBorderStyles", null, 0, -1, GroupDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.widgetDescriptionEClass, WidgetDescription.class, "WidgetDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getWidgetDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
@@ -2491,6 +2644,10 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getFlexboxContainerDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, FlexboxContainerDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFlexboxContainerDescription_BorderStyle(), this.getContainerBorderStyle(), null, "borderStyle", null, 0, 1, FlexboxContainerDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFlexboxContainerDescription_ConditionalBorderStyles(), this.getConditionalContainerBorderStyle(), null, "conditionalBorderStyles", null, 0, -1,
+                FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.imageDescriptionEClass, ImageDescription.class, "ImageDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getImageDescription_UrlExpression(), theViewPackage.getInterpretedExpression(), "urlExpression", null, 0, 1, ImageDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -2724,6 +2881,18 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.conditionalTextfieldDescriptionStyleEClass, ConditionalTextfieldDescriptionStyle.class, "ConditionalTextfieldDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
+        this.initEClass(this.containerBorderStyleEClass, ContainerBorderStyle.class, "ContainerBorderStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getContainerBorderStyle_BorderColor(), theViewPackage.getUserColor(), null, "borderColor", null, 1, 1, ContainerBorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getContainerBorderStyle_BorderRadius(), theViewPackage.getLength(), "borderRadius", "3", 1, 1, ContainerBorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getContainerBorderStyle_BorderSize(), theViewPackage.getLength(), "borderSize", "1", 1, 1, ContainerBorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getContainerBorderStyle_BorderLineStyle(), this.getContainerBorderLineStyle(), "borderLineStyle", null, 0, 1, ContainerBorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalContainerBorderStyleEClass, ConditionalContainerBorderStyle.class, "ConditionalContainerBorderStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
         // Initialize enums and add enum literals
         this.initEEnum(this.flexDirectionEEnum, FlexDirection.class, "FlexDirection");
         this.addEEnumLiteral(this.flexDirectionEEnum, FlexDirection.ROW);
@@ -2740,6 +2909,11 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.TOP);
         this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.START);
         this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.BOTTOM);
+
+        this.initEEnum(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.class, "ContainerBorderLineStyle");
+        this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.SOLID);
+        this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.DASHED);
+        this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.DOTTED);
 
         // Create resource
         this.createResource(eNS_URI);

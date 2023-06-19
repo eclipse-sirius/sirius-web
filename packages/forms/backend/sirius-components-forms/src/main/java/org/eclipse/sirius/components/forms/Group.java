@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class Group {
+
     private String id;
 
     private String label;
@@ -34,6 +35,8 @@ public final class Group {
     private List<ToolbarAction> toolbarActions;
 
     private List<AbstractWidget> widgets;
+
+    private ContainerBorderStyle borderStyle;
 
     private Group() {
         // Prevent instantiation
@@ -59,6 +62,10 @@ public final class Group {
         return this.displayMode;
     }
 
+    public ContainerBorderStyle getBorderStyle() {
+        return this.borderStyle;
+    }
+
     public static Builder newGroup(String id) {
         return new Builder(id);
     }
@@ -76,6 +83,7 @@ public final class Group {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String id;
 
         private String label;
@@ -85,6 +93,8 @@ public final class Group {
         private List<ToolbarAction> toolbarActions = List.of();
 
         private List<AbstractWidget> widgets;
+
+        private ContainerBorderStyle borderStyle;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -110,6 +120,11 @@ public final class Group {
             return this;
         }
 
+        public Builder borderStyle(ContainerBorderStyle borderStyle) {
+            this.borderStyle = Objects.requireNonNull(borderStyle);
+            return this;
+        }
+
         public Group build() {
             Group group = new Group();
             group.id = Objects.requireNonNull(this.id);
@@ -117,6 +132,7 @@ public final class Group {
             group.displayMode = Objects.requireNonNull(this.displayMode);
             group.widgets = Objects.requireNonNull(this.widgets);
             group.toolbarActions = Objects.requireNonNull(this.toolbarActions);
+            group.borderStyle = this.borderStyle; // Optional on purpose
             return group;
         }
     }

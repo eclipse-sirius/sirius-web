@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -147,6 +148,18 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
 
         String descriptionId = this.getDescriptionId(viewGroupDescription);
 
+        Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> {
+            var effectiveStyle = viewGroupDescription.getConditionalBorderStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), variableManager, interpreter))
+                    .map(org.eclipse.sirius.components.view.form.ContainerBorderStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewGroupDescription::getBorderStyle);
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new ContainerBorderStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
         return GroupDescription.newGroupDescription(descriptionId)
                 .idProvider(this.getIdProvider(descriptionId))
                 .labelProvider(variableManager -> this.computeGroupLabel(viewGroupDescription, variableManager, interpreter))
@@ -154,6 +167,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .controlDescriptions(controlDescriptions)
                 .toolbarActionDescriptions(toolbarActionDescriptions)
                 .displayModeProvider(variableManager -> this.getGroupDisplayMode(viewGroupDescription))
+                .borderStyleProvider(borderStyleProvider)
                 .build();
     }
 
@@ -225,5 +239,9 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     private GroupDisplayMode getGroupDisplayMode(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription) {
         org.eclipse.sirius.components.view.form.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
         return GroupDisplayMode.valueOf(viewDisplayMode.getLiteral());
+    }
+
+    private boolean matches(String condition, VariableManager variableManager, AQLInterpreter interpreter) {
+        return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 }

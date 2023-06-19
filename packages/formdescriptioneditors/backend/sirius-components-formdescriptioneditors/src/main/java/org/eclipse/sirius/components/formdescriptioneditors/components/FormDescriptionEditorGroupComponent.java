@@ -81,13 +81,15 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
             childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
         });
 
-        GroupElementProps groupElementProps = GroupElementProps.newGroupElementProps(id)
+        GroupElementProps.Builder groupElementPropsBuilder = GroupElementProps.newGroupElementProps(id)
                 .label(label)
                 .displayMode(this.getGroupDisplayMode(groupDescription))
-                .children(childrenWidgets)
-                .build();
+                .children(childrenWidgets);
+        if (groupDescription.getBorderStyle() != null) {
+            groupElementPropsBuilder.borderStyle(new ContainerBorderStyleProvider(groupDescription.getBorderStyle()).build());
+        }
 
-        return new Element(GroupElementProps.TYPE, groupElementProps);
+        return new Element(GroupElementProps.TYPE, groupElementPropsBuilder.build());
     }
 
     public String getGroupLabel(org.eclipse.sirius.components.view.form.GroupDescription groupDescription, String defaultLabel) {
@@ -106,4 +108,5 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
         org.eclipse.sirius.components.view.form.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
         return GroupDisplayMode.valueOf(viewDisplayMode.getLiteral());
     }
+
 }

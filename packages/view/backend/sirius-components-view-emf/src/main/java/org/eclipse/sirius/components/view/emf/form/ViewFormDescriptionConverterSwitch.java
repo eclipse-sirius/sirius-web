@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
+import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
@@ -430,6 +431,17 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
         StringValueProvider labelProvider = this.getStringValueProvider(flexboxContainerDescription.getLabelExpression());
         Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(flexboxContainerDescription.getIsEnabledExpression());
         FlexDirection flexDirection = FlexDirection.valueOf(flexboxContainerDescription.getFlexDirection().getName());
+        Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> {
+            var effectiveStyle = flexboxContainerDescription.getConditionalBorderStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .map(org.eclipse.sirius.components.view.form.ContainerBorderStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(flexboxContainerDescription::getBorderStyle);
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new ContainerBorderStyleProvider(effectiveStyle).apply(variableManager);
+        };
         List<AbstractWidgetDescription> children = new ArrayList<>();
         flexboxContainerDescription.getChildren().forEach(widget -> children.add(ViewFormDescriptionConverterSwitch.this.doSwitch(widget)));
 
@@ -441,7 +453,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractWidge
                 .children(children)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "");
+                .messageProvider(object -> "")
+                .borderStyleProvider(borderStyleProvider);
         if (flexboxContainerDescription.getHelpExpression() != null && !flexboxContainerDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(flexboxContainerDescription.getHelpExpression()));
         }

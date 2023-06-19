@@ -1106,6 +1106,53 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.form.ContainerBorderStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected ContainerBorderStyleItemProvider containerBorderStyleItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalContainerBorderStyleItemProvider conditionalContainerBorderStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.ContainerBorderStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createContainerBorderStyleAdapter() {
+        if (this.containerBorderStyleItemProvider == null) {
+            this.containerBorderStyleItemProvider = new ContainerBorderStyleItemProvider(this);
+        }
+
+        return this.containerBorderStyleItemProvider;
+    }
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalContainerBorderStyleAdapter() {
+        if (this.conditionalContainerBorderStyleItemProvider == null) {
+            this.conditionalContainerBorderStyleItemProvider = new ConditionalContainerBorderStyleItemProvider(this);
+        }
+
+        return this.conditionalContainerBorderStyleItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1318,6 +1365,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.textfieldDescriptionStyleItemProvider.dispose();
         if (this.conditionalTextfieldDescriptionStyleItemProvider != null)
             this.conditionalTextfieldDescriptionStyleItemProvider.dispose();
+        if (this.containerBorderStyleItemProvider != null)
+            this.containerBorderStyleItemProvider.dispose();
+        if (this.conditionalContainerBorderStyleItemProvider != null)
+            this.conditionalContainerBorderStyleItemProvider.dispose();
     }
 
     /**

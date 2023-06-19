@@ -31,8 +31,8 @@ import {
   GQLWidget,
   PropertySectionContext,
 } from '@eclipse-sirius/sirius-components-forms';
+import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
@@ -77,7 +77,7 @@ const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>((theme) =>
   },
   widgetElement: {
     flexGrow: ({ flexGrow }) => flexGrow,
-    border: ({ kind }) => (kind === 'FlexboxContainer' ? '1px solid gray' : '1px solid transparent'),
+    border: '1px solid transparent',
     '&:hover': {
       borderColor: theme.palette.primary.main,
     },

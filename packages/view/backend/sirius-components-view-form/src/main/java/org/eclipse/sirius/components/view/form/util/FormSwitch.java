@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormPackage;
@@ -591,6 +593,24 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescriptionStyle(conditionalTextfieldDescriptionStyle);
                 if (result == null)
                     result = this.caseLabelStyle(conditionalTextfieldDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.CONTAINER_BORDER_STYLE: {
+                ContainerBorderStyle containerBorderStyle = (ContainerBorderStyle) theEObject;
+                T result = this.caseContainerBorderStyle(containerBorderStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE: {
+                ConditionalContainerBorderStyle conditionalContainerBorderStyle = (ConditionalContainerBorderStyle) theEObject;
+                T result = this.caseConditionalContainerBorderStyle(conditionalContainerBorderStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalContainerBorderStyle);
+                if (result == null)
+                    result = this.caseContainerBorderStyle(conditionalContainerBorderStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1262,6 +1282,34 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalTextfieldDescriptionStyle(ConditionalTextfieldDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Container Border Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Container Border Style</em>'.
+     * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     */
+    public T caseContainerBorderStyle(ContainerBorderStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Container Border Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Container Border Style</em>'.
+     * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     */
+    public T caseConditionalContainerBorderStyle(ConditionalContainerBorderStyle object) {
         return null;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.forms;
 
-import { GQLFlexDirection, GQLFlexWrap } from '@eclipse-sirius/sirius-components-forms';
-import { GQLContainerBorderStyle } from '@eclipse-sirius/sirius-components-forms/src';
-
-export interface FlexboxContainerWidgetState {
-  message: string | null;
-  selected: boolean;
-}
-
-export interface FlexboxContainerWidgetStyleProps {
-  flexDirection: GQLFlexDirection;
-  flexWrap: GQLFlexWrap;
-  borderStyle: GQLContainerBorderStyle | null;
+/**
+ * Line style possibility for the border of a container.
+ *
+ * @author frouene
+ */
+public enum ContainerBorderLineStyle {
+    Solid, Dashed, Dotted
 }

@@ -49,6 +49,7 @@ public class FlexboxContainerComponent implements IComponent {
         String label = flexboxContainerDescription.getLabelProvider().apply(variableManager);
         Boolean readOnly = flexboxContainerDescription.getIsReadOnlyProvider().apply(variableManager);
         FlexDirection flexdirection = flexboxContainerDescription.getFlexDirection();
+        var borderStyle = flexboxContainerDescription.getBorderStyleProvider().apply(variableManager);
 
         List<Element> children = new ArrayList<>();
 
@@ -71,6 +72,10 @@ public class FlexboxContainerComponent implements IComponent {
                 .children(childrenWidgets);
         if (readOnly != null) {
             flexboxContainerElementPropsBuilder.readOnly(readOnly);
+        }
+
+        if (borderStyle != null) {
+            flexboxContainerElementPropsBuilder.borderStyle(borderStyle);
         }
 
         if (flexboxContainerDescription.getHelpTextProvider() != null) {

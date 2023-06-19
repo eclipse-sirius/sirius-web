@@ -13,8 +13,8 @@
 import { useMutation } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
@@ -41,8 +41,13 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
   selected: {
     color: theme.palette.primary.main,
   },
-  widget: {
-    width: '100%',
+  containerAndLabel: {
+    margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
+    padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
+    borderWidth: ({ borderStyle }) => borderStyle?.size || 1,
+    borderColor: ({ borderStyle }) => borderStyle?.color || 'gray',
+    borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
+    borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
   },
   container: {
     display: 'flex',
@@ -88,6 +93,7 @@ export const FlexboxContainerWidget = ({
   const classes = useStyles({
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
+    borderStyle: widget.borderStyle,
   });
 
   const initialState: FlexboxContainerWidgetState = { message: null, selected: false };
@@ -226,7 +232,7 @@ export const FlexboxContainerWidget = ({
   });
 
   return (
-    <div className={classes.widget} tabIndex={0} ref={ref}>
+    <div className={classes.containerAndLabel} tabIndex={0} ref={ref}>
       <div className={classes.propertySectionLabel}>
         <Typography
           variant="subtitle2"

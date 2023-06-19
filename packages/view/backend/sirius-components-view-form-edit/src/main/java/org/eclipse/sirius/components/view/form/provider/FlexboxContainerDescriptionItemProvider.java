@@ -111,6 +111,8 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
+            this.childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE);
+            this.childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -179,6 +181,8 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -251,6 +255,31 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         TextfieldDescription textfieldDescription = FormFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setStyle(FormFactory.eINSTANCE.createTextfieldDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textfieldDescription));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE, FormFactory.eINSTANCE.createContainerBorderStyle()));
+
+        newChildDescriptors
+                .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES, FormFactory.eINSTANCE.createConditionalContainerBorderStyle()));
+    }
+
+    /**
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE
+                || childFeature == FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
 }
