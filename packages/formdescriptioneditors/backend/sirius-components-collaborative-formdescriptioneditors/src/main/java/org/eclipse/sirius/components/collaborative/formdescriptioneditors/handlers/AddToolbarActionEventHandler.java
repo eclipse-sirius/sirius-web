@@ -28,9 +28,9 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -98,9 +98,9 @@ public class AddToolbarActionEventHandler implements IFormDescriptionEditorEvent
         }
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
-            var toolbarActionDescription = ViewFactory.eINSTANCE.createButtonDescription();
+            var toolbarActionDescription = FormFactory.eINSTANCE.createButtonDescription();
             toolbarActionDescription.setName("ToolbarAction");
-            var toolbarActionDescriptionStyle = ViewFactory.eINSTANCE.createButtonDescriptionStyle();
+            var toolbarActionDescriptionStyle = FormFactory.eINSTANCE.createButtonDescriptionStyle();
             toolbarActionDescription.setStyle(toolbarActionDescriptionStyle);
             if (container instanceof GroupDescription groupDescription) {
                 groupDescription.getToolbarActions().add(toolbarActionDescription);

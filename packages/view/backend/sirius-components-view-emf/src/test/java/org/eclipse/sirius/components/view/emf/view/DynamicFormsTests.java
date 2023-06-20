@@ -68,50 +68,9 @@ import org.eclipse.sirius.components.forms.renderer.FormRenderer;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.BarChartDescription;
-import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
-import org.eclipse.sirius.components.view.ButtonDescription;
-import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.CheckboxDescription;
-import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalListDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle;
-import org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle;
-import org.eclipse.sirius.components.view.FlexboxContainerDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.ImageDescription;
-import org.eclipse.sirius.components.view.LabelDescription;
-import org.eclipse.sirius.components.view.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
-import org.eclipse.sirius.components.view.LinkDescription;
-import org.eclipse.sirius.components.view.LinkDescriptionStyle;
-import org.eclipse.sirius.components.view.ListDescription;
-import org.eclipse.sirius.components.view.ListDescriptionStyle;
-import org.eclipse.sirius.components.view.MultiSelectDescription;
-import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.PieChartDescription;
-import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
-import org.eclipse.sirius.components.view.RadioDescription;
-import org.eclipse.sirius.components.view.RadioDescriptionStyle;
-import org.eclipse.sirius.components.view.SelectDescription;
-import org.eclipse.sirius.components.view.SelectDescriptionStyle;
 import org.eclipse.sirius.components.view.SetValue;
-import org.eclipse.sirius.components.view.TextAreaDescription;
-import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
-import org.eclipse.sirius.components.view.TextfieldDescription;
-import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
@@ -119,6 +78,48 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
+import org.eclipse.sirius.components.view.form.BarChartDescription;
+import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ButtonDescription;
+import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
+import org.eclipse.sirius.components.view.form.CheckboxDescription;
+import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.ImageDescription;
+import org.eclipse.sirius.components.view.form.LabelDescription;
+import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
+import org.eclipse.sirius.components.view.form.LinkDescription;
+import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ListDescription;
+import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.form.MultiSelectDescription;
+import org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.PieChartDescription;
+import org.eclipse.sirius.components.view.form.PieChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.RadioDescription;
+import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SelectDescription;
+import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TextAreaDescription;
+import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TextfieldDescription;
+import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
 
@@ -603,12 +604,12 @@ public class DynamicFormsTests {
     }
 
     private FormDescription createClassFormDescription(boolean withStyle, boolean withConditionalStyle) {
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
         formDescription.setName("Simple Ecore Form");
         formDescription.setTitleExpression("aql:self.name");
         formDescription.setDomainType("ecore::EClass");
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
-        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
+        GroupDescription groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         groupDescription.setLabelExpression("aql:self.name");
         pageDescription.getGroups().add(groupDescription);
         formDescription.getPages().add(pageDescription);
@@ -644,20 +645,20 @@ public class DynamicFormsTests {
     }
 
     private BarChartDescription createBarChart(boolean withStyle, boolean withConditionalStyle) {
-        BarChartDescription barChartDescription = ViewFactory.eINSTANCE.createBarChartDescription();
+        BarChartDescription barChartDescription = FormFactory.eINSTANCE.createBarChartDescription();
         barChartDescription.setName("barChart");
         barChartDescription.setLabelExpression("aql:'The Chart Widget label'");
         barChartDescription.setYAxisLabelExpression("aql:'the values'");
         barChartDescription.setKeysExpression("aql:Sequence{'a','b','c','d'}");
         barChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}");
         if (withStyle) {
-            BarChartDescriptionStyle style = ViewFactory.eINSTANCE.createBarChartDescriptionStyle();
+            BarChartDescriptionStyle style = FormFactory.eINSTANCE.createBarChartDescriptionStyle();
             style.setBarsColor("Orchid");
             this.setFontStyle(style);
             barChartDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalBarChartDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalBarChartDescriptionStyle();
+            ConditionalBarChartDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalBarChartDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setBarsColor("PaleGoldenRod");
             this.setConditionalFontStyle(conditionalStyle);
@@ -668,7 +669,7 @@ public class DynamicFormsTests {
     }
 
     private PieChartDescription createPieChart(boolean withStyle, boolean withConditionalStyle) {
-        PieChartDescription pieChartDescription = ViewFactory.eINSTANCE.createPieChartDescription();
+        PieChartDescription pieChartDescription = FormFactory.eINSTANCE.createPieChartDescription();
         pieChartDescription.setName("chartWidget");
         pieChartDescription.setLabelExpression("aql:'The Chart Widget label'");
         pieChartDescription.setName("pieChart");
@@ -676,7 +677,7 @@ public class DynamicFormsTests {
         pieChartDescription.setValuesExpression("aql:Sequence{1,3,5,7}");
 
         if (withStyle) {
-            PieChartDescriptionStyle style = ViewFactory.eINSTANCE.createPieChartDescriptionStyle();
+            PieChartDescriptionStyle style = FormFactory.eINSTANCE.createPieChartDescriptionStyle();
             style.setColors("aql:Sequence{'AliceBlue','AntiqueWhite','DarkMagenta','DarkGreen'}");
             style.setStrokeColor(this.generateUserColor("Orchid"));
             style.setStrokeWidth(3);
@@ -684,7 +685,7 @@ public class DynamicFormsTests {
             pieChartDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalPieChartDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalPieChartDescriptionStyle();
+            ConditionalPieChartDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalPieChartDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setColors("aql:Sequence{'CadetBlue','AntiqueWhite','DarkMagenta','Coral'}");
             conditionalStyle.setStrokeColor(this.generateUserColor("PaleGoldenRod"));
@@ -696,7 +697,7 @@ public class DynamicFormsTests {
     }
 
     private FlexboxContainerDescription createFlexboxContainer(boolean withStyle, boolean withConditionalStyle) {
-        FlexboxContainerDescription flexboxContainerDescription = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
+        FlexboxContainerDescription flexboxContainerDescription = FormFactory.eINSTANCE.createFlexboxContainerDescription();
         flexboxContainerDescription.setLabelExpression("aql:'A Widget Container'");
         TextfieldDescription textfieldDescription = this.createTextfield(withStyle, withConditionalStyle);
         flexboxContainerDescription.getChildren().add(textfieldDescription);
@@ -706,19 +707,19 @@ public class DynamicFormsTests {
     }
 
     private RadioDescription createRadio(boolean withStyle, boolean withConditionalStyle) {
-        RadioDescription radioDescription = ViewFactory.eINSTANCE.createRadioDescription();
+        RadioDescription radioDescription = FormFactory.eINSTANCE.createRadioDescription();
         radioDescription.setLabelExpression("aql:'ESuperTypes'");
         radioDescription.setValueExpression("aql:self.eSuperTypes->first()");
         radioDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
         radioDescription.setCandidateLabelExpression("aql:candidate.name");
         if (withStyle) {
-            RadioDescriptionStyle style = ViewFactory.eINSTANCE.createRadioDescriptionStyle();
+            RadioDescriptionStyle style = FormFactory.eINSTANCE.createRadioDescriptionStyle();
             style.setColor(this.generateUserColor("#de1000"));
             this.setFontStyle(style);
             radioDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalRadioDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalRadioDescriptionStyle();
+            ConditionalRadioDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalRadioDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setColor(this.generateUserColor("#fbb800"));
             this.setConditionalFontStyle(conditionalStyle);
@@ -733,20 +734,20 @@ public class DynamicFormsTests {
     }
 
     private SelectDescription createSelect(boolean withStyle, boolean withConditionalStyle) {
-        SelectDescription selectDescription = ViewFactory.eINSTANCE.createSelectDescription();
+        SelectDescription selectDescription = FormFactory.eINSTANCE.createSelectDescription();
         selectDescription.setLabelExpression("aql:'eSuper Types'");
         selectDescription.setValueExpression("aql:self.eSuperTypes->first()");
         selectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
         selectDescription.setCandidateLabelExpression("aql:candidate.name");
         if (withStyle) {
-            SelectDescriptionStyle style = ViewFactory.eINSTANCE.createSelectDescriptionStyle();
+            SelectDescriptionStyle style = FormFactory.eINSTANCE.createSelectDescriptionStyle();
             style.setBackgroundColor(this.generateUserColor("#de1000"));
             style.setForegroundColor(this.generateUserColor("#777777"));
             this.setFontStyle(style);
             selectDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalSelectDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalSelectDescriptionStyle();
+            ConditionalSelectDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalSelectDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setBackgroundColor(this.generateUserColor("#fbb800"));
             conditionalStyle.setForegroundColor(this.generateUserColor("#134cba"));
@@ -767,16 +768,16 @@ public class DynamicFormsTests {
     }
 
     private CheckboxDescription createCheckbox(boolean withStyle, boolean withConditionalStyle) {
-        CheckboxDescription checkboxDescription = ViewFactory.eINSTANCE.createCheckboxDescription();
+        CheckboxDescription checkboxDescription = FormFactory.eINSTANCE.createCheckboxDescription();
         checkboxDescription.setLabelExpression("is Abstract");
         checkboxDescription.setValueExpression("aql:self.abstract");
         if (withStyle) {
-            CheckboxDescriptionStyle style = ViewFactory.eINSTANCE.createCheckboxDescriptionStyle();
+            CheckboxDescriptionStyle style = FormFactory.eINSTANCE.createCheckboxDescriptionStyle();
             style.setColor(this.generateUserColor("#de1000"));
             checkboxDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalCheckboxDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle();
+            ConditionalCheckboxDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setColor(this.generateUserColor("#fbb800"));
             checkboxDescription.getConditionalStyles().add(conditionalStyle);
@@ -790,20 +791,20 @@ public class DynamicFormsTests {
     }
 
     private MultiSelectDescription createMultiSelect(boolean withStyle, boolean withConditionalStyle) {
-        MultiSelectDescription multiSelectDescription = ViewFactory.eINSTANCE.createMultiSelectDescription();
+        MultiSelectDescription multiSelectDescription = FormFactory.eINSTANCE.createMultiSelectDescription();
         multiSelectDescription.setLabelExpression("aql:'ESuperTypes'");
         multiSelectDescription.setValueExpression("aql:self.eSuperTypes");
         multiSelectDescription.setCandidatesExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
         multiSelectDescription.setCandidateLabelExpression("aql:candidate.name");
         if (withStyle) {
-            MultiSelectDescriptionStyle style = ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle();
+            MultiSelectDescriptionStyle style = FormFactory.eINSTANCE.createMultiSelectDescriptionStyle();
             style.setBackgroundColor(this.generateUserColor("#de1000"));
             style.setForegroundColor(this.generateUserColor("#777777"));
             this.setFontStyle(style);
             multiSelectDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalMultiSelectDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalMultiSelectDescriptionStyle();
+            ConditionalMultiSelectDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalMultiSelectDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setBackgroundColor(this.generateUserColor("#fbb800"));
             conditionalStyle.setForegroundColor(this.generateUserColor("#134cba"));
@@ -824,18 +825,18 @@ public class DynamicFormsTests {
     }
 
     private TextAreaDescription createTextArea(boolean withStyle, boolean withConditionalStyle) {
-        TextAreaDescription textareaDescription = ViewFactory.eINSTANCE.createTextAreaDescription();
+        TextAreaDescription textareaDescription = FormFactory.eINSTANCE.createTextAreaDescription();
         textareaDescription.setLabelExpression("aql:'Instance Class Name'");
         textareaDescription.setValueExpression("aql:self.instanceClassName");
         if (withStyle) {
-            TextareaDescriptionStyle style = ViewFactory.eINSTANCE.createTextareaDescriptionStyle();
+            TextareaDescriptionStyle style = FormFactory.eINSTANCE.createTextareaDescriptionStyle();
             style.setBackgroundColor(this.generateUserColor("#de1000"));
             style.setForegroundColor(this.generateUserColor("#777777"));
             this.setFontStyle(style);
             textareaDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalTextareaDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle();
+            ConditionalTextareaDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalTextareaDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setBackgroundColor(this.generateUserColor("#fbb800"));
             conditionalStyle.setForegroundColor(this.generateUserColor("#134cba"));
@@ -851,19 +852,19 @@ public class DynamicFormsTests {
     }
 
     private TextfieldDescription createTextfield(boolean withStyle, boolean withConditionalStyle) {
-        TextfieldDescription textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
+        TextfieldDescription textfieldDescription = FormFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setLabelExpression("aql:'EClass name'");
         textfieldDescription.setValueExpression("aql:self.name");
         textfieldDescription.setName("Class Name");
         if (withStyle) {
-            TextfieldDescriptionStyle style = ViewFactory.eINSTANCE.createTextfieldDescriptionStyle();
+            TextfieldDescriptionStyle style = FormFactory.eINSTANCE.createTextfieldDescriptionStyle();
             style.setBackgroundColor(this.generateUserColor("#de1000"));
             style.setForegroundColor(this.generateUserColor("#777777"));
             this.setFontStyle(style);
             textfieldDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalTextfieldDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalTextfieldDescriptionStyle();
+            ConditionalTextfieldDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalTextfieldDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setBackgroundColor(this.generateUserColor("#fbb800"));
             conditionalStyle.setForegroundColor(this.generateUserColor("#134cba"));
@@ -879,19 +880,19 @@ public class DynamicFormsTests {
     }
 
     private ButtonDescription createButton(boolean withStyle, boolean withConditionalStyle) {
-        ButtonDescription buttonDescription = ViewFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription buttonDescription = FormFactory.eINSTANCE.createButtonDescription();
         buttonDescription.setLabelExpression("aql:'EClass name'");
         buttonDescription.setButtonLabelExpression("aql:self.name");
         buttonDescription.setName("Class Name");
         if (withStyle) {
-            ButtonDescriptionStyle style = ViewFactory.eINSTANCE.createButtonDescriptionStyle();
+            ButtonDescriptionStyle style = FormFactory.eINSTANCE.createButtonDescriptionStyle();
             style.setBackgroundColor(this.generateUserColor("#de1000"));
             style.setForegroundColor(this.generateUserColor("#777777"));
             this.setFontStyle(style);
             buttonDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalButtonDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalButtonDescriptionStyle();
+            ConditionalButtonDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalButtonDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setBackgroundColor(this.generateUserColor("#fbb800"));
             conditionalStyle.setForegroundColor(this.generateUserColor("#134cba"));
@@ -907,18 +908,18 @@ public class DynamicFormsTests {
     }
 
     private LabelDescription createLabel(boolean withStyle, boolean withConditionalStyle) {
-        LabelDescription labelDescription = ViewFactory.eINSTANCE.createLabelDescription();
+        LabelDescription labelDescription = FormFactory.eINSTANCE.createLabelDescription();
         labelDescription.setLabelExpression("aql:'Label EClass name'");
         labelDescription.setValueExpression("aql:self.name");
         labelDescription.setName("Class Name");
         if (withStyle) {
-            LabelDescriptionStyle style = ViewFactory.eINSTANCE.createLabelDescriptionStyle();
+            LabelDescriptionStyle style = FormFactory.eINSTANCE.createLabelDescriptionStyle();
             style.setColor(this.generateUserColor("#de1000"));
             this.setFontStyle(style);
             labelDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalLabelDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalLabelDescriptionStyle();
+            ConditionalLabelDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalLabelDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setColor(this.generateUserColor("#fbb800"));
             this.setConditionalFontStyle(conditionalStyle);
@@ -929,18 +930,18 @@ public class DynamicFormsTests {
     }
 
     private LinkDescription createLink(boolean withStyle, boolean withConditionalStyle) {
-        LinkDescription linkDescription = ViewFactory.eINSTANCE.createLinkDescription();
+        LinkDescription linkDescription = FormFactory.eINSTANCE.createLinkDescription();
         linkDescription.setLabelExpression("aql:'Label EClass link'");
         linkDescription.setValueExpression("myHyperLink");
         linkDescription.setName("Class Name");
         if (withStyle) {
-            LinkDescriptionStyle style = ViewFactory.eINSTANCE.createLinkDescriptionStyle();
+            LinkDescriptionStyle style = FormFactory.eINSTANCE.createLinkDescriptionStyle();
             style.setColor(this.generateUserColor("#de1000"));
             this.setFontStyle(style);
             linkDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalLinkDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalLinkDescriptionStyle();
+            ConditionalLinkDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalLinkDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setColor(this.generateUserColor("#fbb800"));
             this.setConditionalFontStyle(conditionalStyle);
@@ -951,7 +952,7 @@ public class DynamicFormsTests {
     }
 
     private ListDescription createList(boolean withStyle, boolean withConditionalStyle) {
-        ListDescription listDescription = ViewFactory.eINSTANCE.createListDescription();
+        ListDescription listDescription = FormFactory.eINSTANCE.createListDescription();
         listDescription.setLabelExpression("aql:'Label EClass List'");
         listDescription.setName("Classes list");
         listDescription.setValueExpression("aql:self.eContainer().eAllContents(ecore::EClass)");
@@ -967,13 +968,13 @@ public class DynamicFormsTests {
         listDescription.getBody().add(changeContext);
 
         if (withStyle) {
-            ListDescriptionStyle style = ViewFactory.eINSTANCE.createListDescriptionStyle();
+            ListDescriptionStyle style = FormFactory.eINSTANCE.createListDescriptionStyle();
             style.setColor(this.generateUserColor("lightBlue"));
             this.setFontStyle(style);
             listDescription.setStyle(style);
         }
         if (withConditionalStyle) {
-            ConditionalListDescriptionStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalListDescriptionStyle();
+            ConditionalListDescriptionStyle conditionalStyle = FormFactory.eINSTANCE.createConditionalListDescriptionStyle();
             conditionalStyle.setCondition("aql:true");
             conditionalStyle.setColor(this.generateUserColor("orange"));
             this.setConditionalFontStyle(conditionalStyle);
@@ -984,7 +985,7 @@ public class DynamicFormsTests {
     }
 
     private ImageDescription createImage() {
-        ImageDescription imageDescription = ViewFactory.eINSTANCE.createImageDescription();
+        ImageDescription imageDescription = FormFactory.eINSTANCE.createImageDescription();
         imageDescription.setName("EClass Icon");
         imageDescription.setLabelExpression("aql:'Icon for EClass ' + self.name");
         imageDescription.setUrlExpression("aql:'icons/' + self.name + '.svg'");

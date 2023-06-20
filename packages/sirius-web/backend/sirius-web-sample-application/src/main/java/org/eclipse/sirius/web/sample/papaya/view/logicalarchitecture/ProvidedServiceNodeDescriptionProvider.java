@@ -14,13 +14,14 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 
@@ -39,7 +40,7 @@ public class ProvidedServiceNodeDescriptionProvider implements INodeDescriptionP
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createImageNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         nodeStyle.setShape("f13acf89-e0bc-3b42-a0f6-c39e459e311e");
         nodeStyle.setColor(this.colorProvider.getColor("color_white"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
@@ -51,10 +52,10 @@ public class ProvidedServiceNodeDescriptionProvider implements INodeDescriptionP
         nodeDescription.setLabelExpression("aql:if self.contract = null then 'undefined' else self.contract.name endif");
         nodeDescription.setStyle(nodeStyle);
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
 
-        var fulfillsContractEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        var fulfillsContractEdgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
         fulfillsContractEdgeTool.setName("Fulfills contract");
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:semanticEdgeSource");

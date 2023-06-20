@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 
@@ -39,7 +39,7 @@ public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvide
 
     @Override
     public EdgeDescription create() {
-        var dependsOnEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        var dependsOnEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         dependsOnEdgeStyle.setColor(this.colorProvider.getColor("color_green_2"));
         dependsOnEdgeStyle.setEdgeWidth(1);
         dependsOnEdgeStyle.setSourceArrowStyle(ArrowStyle.OUTPUT_FILL_CLOSED_ARROW);
@@ -47,7 +47,7 @@ public class DependsOnEdgeDescriptionProvider implements IEdgeDescriptionProvide
 
         var builder = new PapayaViewBuilder();
 
-        var dependsOnEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        var dependsOnEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         dependsOnEdgeDescription.setName("Edge Depends on");
         dependsOnEdgeDescription.setStyle(dependsOnEdgeStyle);
         dependsOnEdgeDescription.setSourceNodesExpression("aql:self");

@@ -14,13 +14,14 @@ package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -40,7 +41,7 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_orange"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_orange"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
@@ -48,9 +49,9 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalActivity");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalActivities");
         nodeDescription.setStyle(nodeStyle);
-        nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
         nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
@@ -62,7 +63,7 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
     }
 
     private EdgeTool createInteractionEdgeTool(NodeDescription nodeDescription) {
-        var interactionEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        var interactionEdgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
         interactionEdgeTool.setName("Interacts with");
         interactionEdgeTool.getTargetElementDescriptions().add(nodeDescription);
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
@@ -84,7 +85,7 @@ public class OperationalActivityNodeDescriptionProvider implements INodeDescript
     }
 
     private EdgeTool createRealizedByEdgeTool() {
-        var realizedByEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        var realizedByEdgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
         realizedByEdgeTool.setName("Realized by");
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:semanticEdgeSource");

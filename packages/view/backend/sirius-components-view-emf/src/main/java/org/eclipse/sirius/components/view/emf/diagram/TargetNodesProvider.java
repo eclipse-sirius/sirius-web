@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 
 /**
  * Finds the target nodes for an edge. A target node is an already existing graphical node which:

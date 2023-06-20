@@ -38,12 +38,13 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
@@ -79,7 +80,7 @@ public class DynamicDiagramsTests {
     }
 
     private void setBasicNodeStyle(NodeDescription nodeDescription, String color) {
-        NodeStyleDescription eClassNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        NodeStyleDescription eClassNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         var userColor = ViewFactory.eINSTANCE.createFixedColor();
         userColor.setName("color");
         userColor.setValue(color);
@@ -90,13 +91,13 @@ public class DynamicDiagramsTests {
 
     @Test
     void testRenderSynchronizedEcoreDiagram() throws Exception {
-        DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("Simple Ecore Diagram");
         diagramDescription.setTitleExpression(NAME_EXPRESSION);
         diagramDescription.setAutoLayout(false);
         diagramDescription.setDomainType("ecore::EPackage");
 
-        NodeDescription eClassNode = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription eClassNode = DiagramFactory.eINSTANCE.createNodeDescription();
         eClassNode.setName("EClass Node");
         eClassNode.setDomainType("ecore::EClass");
         eClassNode.setLabelExpression(NAME_EXPRESSION);
@@ -116,13 +117,13 @@ public class DynamicDiagramsTests {
 
     @Test
     void testRenderUnsynchronizedEcoreDiagram() throws Exception {
-        DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("Simple Ecore Diagram");
         diagramDescription.setTitleExpression(NAME_EXPRESSION);
         diagramDescription.setAutoLayout(false);
         diagramDescription.setDomainType("ecore::EPackage");
 
-        NodeDescription eClassNode = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription eClassNode = DiagramFactory.eINSTANCE.createNodeDescription();
         eClassNode.setName("EClass Node");
         eClassNode.setDomainType("ecore::EClass");
         eClassNode.setLabelExpression(NAME_EXPRESSION);

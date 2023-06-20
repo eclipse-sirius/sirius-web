@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.RadioStyle.Builder;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 
 /**
  * The style provider for the Radio Description widget of the View DSL.
@@ -44,7 +44,7 @@ public class RadioStyleProvider implements Function<VariableManager, RadioStyle>
                 radioStyleBuilder.color(color);
             }
         }
-        
+
         int fontSize = this.viewStyle.getFontSize();
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();

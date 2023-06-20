@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class FlexboxContainerDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.FlexboxContainerDescription.
+     * Create instance org.eclipse.sirius.components.view.form.FlexboxContainerDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.FlexboxContainerDescription flexboxContainerDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createFlexboxContainerDescription();
+    private org.eclipse.sirius.components.view.form.FlexboxContainerDescription flexboxContainerDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createFlexboxContainerDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.FlexboxContainerDescription.
+     * Return instance org.eclipse.sirius.components.view.form.FlexboxContainerDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.FlexboxContainerDescription getFlexboxContainerDescription() {
+    protected org.eclipse.sirius.components.view.form.FlexboxContainerDescription getFlexboxContainerDescription() {
         return this.flexboxContainerDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.FlexboxContainerDescription.
+     * Return instance org.eclipse.sirius.components.view.form.FlexboxContainerDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.FlexboxContainerDescription build() {
+    public org.eclipse.sirius.components.view.form.FlexboxContainerDescription build() {
         return this.getFlexboxContainerDescription();
     }
 
@@ -69,14 +69,13 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for Children.
      *
      * @generated
      */
-    public FlexboxContainerDescriptionBuilder children(org.eclipse.sirius.components.view.WidgetDescription ... values) {
-        for (org.eclipse.sirius.components.view.WidgetDescription value : values) {
+    public FlexboxContainerDescriptionBuilder children(org.eclipse.sirius.components.view.form.WidgetDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.WidgetDescription value : values) {
             this.getFlexboxContainerDescription().getChildren().add(value);
         }
         return this;
@@ -87,7 +86,7 @@ public class FlexboxContainerDescriptionBuilder {
      *
      * @generated
      */
-    public FlexboxContainerDescriptionBuilder flexDirection(org.eclipse.sirius.components.view.FlexDirection value) {
+    public FlexboxContainerDescriptionBuilder flexDirection(org.eclipse.sirius.components.view.form.FlexDirection value) {
         this.getFlexboxContainerDescription().setFlexDirection(value);
         return this;
     }

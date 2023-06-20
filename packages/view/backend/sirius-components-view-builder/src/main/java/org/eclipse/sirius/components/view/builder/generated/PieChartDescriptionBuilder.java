@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class PieChartDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.PieChartDescription.
+     * Create instance org.eclipse.sirius.components.view.form.PieChartDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.PieChartDescription pieChartDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createPieChartDescription();
+    private org.eclipse.sirius.components.view.form.PieChartDescription pieChartDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createPieChartDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.PieChartDescription.
+     * Return instance org.eclipse.sirius.components.view.form.PieChartDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.PieChartDescription getPieChartDescription() {
+    protected org.eclipse.sirius.components.view.form.PieChartDescription getPieChartDescription() {
         return this.pieChartDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.PieChartDescription.
+     * Return instance org.eclipse.sirius.components.view.form.PieChartDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.PieChartDescription build() {
+    public org.eclipse.sirius.components.view.form.PieChartDescription build() {
         return this.getPieChartDescription();
     }
 
@@ -69,7 +69,6 @@ public class PieChartDescriptionBuilder {
         this.getPieChartDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValuesExpression.
      *
@@ -93,7 +92,7 @@ public class PieChartDescriptionBuilder {
      *
      * @generated
      */
-    public PieChartDescriptionBuilder style(org.eclipse.sirius.components.view.PieChartDescriptionStyle value) {
+    public PieChartDescriptionBuilder style(org.eclipse.sirius.components.view.form.PieChartDescriptionStyle value) {
         this.getPieChartDescription().setStyle(value);
         return this;
     }
@@ -102,8 +101,8 @@ public class PieChartDescriptionBuilder {
      *
      * @generated
      */
-    public PieChartDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle value : values) {
+    public PieChartDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle value : values) {
             this.getPieChartDescription().getConditionalStyles().add(value);
         }
         return this;

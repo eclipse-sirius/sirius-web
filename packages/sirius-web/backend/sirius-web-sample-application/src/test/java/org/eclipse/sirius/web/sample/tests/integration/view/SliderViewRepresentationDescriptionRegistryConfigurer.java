@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.IViewConverter;
+import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -60,7 +61,7 @@ public class SliderViewRepresentationDescriptionRegistryConfigurer implements IR
 
     @Override
     public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        Optional<View> optionalView = this.load(new ClassPathResource("Slider_Test_Form.view"), List.of(ViewPackage.eINSTANCE), View.class);
+        Optional<View> optionalView = this.load(new ClassPathResource("Slider_Test_Form.view"), List.of(ViewPackage.eINSTANCE, FormPackage.eINSTANCE), View.class);
 
         if (optionalView.isPresent()) {
             var view = optionalView.get();

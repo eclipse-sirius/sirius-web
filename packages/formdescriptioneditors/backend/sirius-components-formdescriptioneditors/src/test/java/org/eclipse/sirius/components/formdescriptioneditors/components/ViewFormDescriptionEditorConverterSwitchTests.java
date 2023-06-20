@@ -16,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 
-import org.eclipse.sirius.components.view.ImageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.ImageDescription;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -94,7 +94,7 @@ public class ViewFormDescriptionEditorConverterSwitchTests {
     }
 
     private String callGetWidgetLabel(String name, String labelExpression) {
-        ImageDescription viewWidgetDescription = ViewFactory.eINSTANCE.createImageDescription();
+        ImageDescription viewWidgetDescription = FormFactory.eINSTANCE.createImageDescription();
         viewWidgetDescription.setName(name);
         viewWidgetDescription.setLabelExpression(labelExpression);
         ViewFormDescriptionEditorConverterSwitch converter = new ViewFormDescriptionEditorConverterSwitch(null, null, null);

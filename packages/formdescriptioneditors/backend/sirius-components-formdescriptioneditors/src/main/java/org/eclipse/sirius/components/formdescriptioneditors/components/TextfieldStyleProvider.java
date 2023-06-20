@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.TextfieldStyle;
 import org.eclipse.sirius.components.forms.TextfieldStyle.Builder;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 
 /**
  * The style provider for the Textfield Description widget of the View DSL. This only handles "static" or "preview"

@@ -15,14 +15,15 @@ package org.eclipse.sirius.web.sample.papaya.view;
 import java.util.List;
 
 import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramPalette;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.web.sample.papaya.view.classdiagram.ClassDiagramDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ClassNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ComponentNodeDescriptionProvider;
@@ -58,18 +59,18 @@ public class PapayaViewProvider {
     public View getView() {
         View view = ViewFactory.eINSTANCE.createView();
 
-        this.diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        this.diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         this.diagramDescription.setDomainType("papaya_core::Root");
         this.diagramDescription.setName("Diagram");
         this.diagramDescription.setTitleExpression("Papaya Diagram");
         this.diagramDescription.setAutoLayout(false);
 
-        var dropTool = ViewFactory.eINSTANCE.createDropTool();
+        var dropTool = DiagramFactory.eINSTANCE.createDropTool();
         dropTool.setName("Drop Tool");
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:self.drop(selectedNode, diagramContext, convertedNodes)");
         dropTool.getBody().add(changeContext);
-        DiagramPalette palette = ViewFactory.eINSTANCE.createDiagramPalette();
+        DiagramPalette palette = DiagramFactory.eINSTANCE.createDiagramPalette();
         palette.setDropTool(dropTool);
         this.diagramDescription.setPalette(palette);
 
@@ -187,7 +188,7 @@ public class PapayaViewProvider {
     }
 
     private NodeTool createNewOperationalEntityTool(PapayaViewBuilder builder, NodeDescription nodeDescription) {
-        var defaultNodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        var defaultNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         defaultNodeTool.setName("New Operational Entity");
 
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
@@ -198,7 +199,7 @@ public class PapayaViewProvider {
         createInstance.setTypeName(builder.domainType(builder.entity("OperationalEntity")));
         createInstance.setVariableName("self");
 
-        var createView = ViewFactory.eINSTANCE.createCreateView();
+        var createView = DiagramFactory.eINSTANCE.createCreateView();
         createView.setElementDescription(nodeDescription);
         createView.setSemanticElementExpression("aql:self");
         createView.setParentViewExpression("aql:false");
@@ -215,7 +216,7 @@ public class PapayaViewProvider {
     }
 
     private NodeTool getInitializeNodeTool() {
-        var initializeNodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        var initializeNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         initializeNodeTool.setName("Initialize Data");
 
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();

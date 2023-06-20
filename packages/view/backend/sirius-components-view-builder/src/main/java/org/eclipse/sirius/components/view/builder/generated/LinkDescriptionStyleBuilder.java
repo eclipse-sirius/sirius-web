@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class LinkDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.LinkDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.LinkDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.LinkDescriptionStyle linkDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createLinkDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.LinkDescriptionStyle linkDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createLinkDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LinkDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.LinkDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.LinkDescriptionStyle getLinkDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.LinkDescriptionStyle getLinkDescriptionStyle() {
         return this.linkDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LinkDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.LinkDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.LinkDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.LinkDescriptionStyle build() {
         return this.getLinkDescriptionStyle();
     }
 

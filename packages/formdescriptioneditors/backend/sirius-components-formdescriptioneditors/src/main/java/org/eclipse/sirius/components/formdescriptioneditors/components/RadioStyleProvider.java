@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.RadioStyle.Builder;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 
 /**
  * The style provider for the Radio Description widget of the View DSL. This only handles "static" or "preview" styles

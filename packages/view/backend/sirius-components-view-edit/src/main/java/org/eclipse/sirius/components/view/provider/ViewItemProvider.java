@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view.provider;
 
 import java.util.Collection;
@@ -29,10 +29,6 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.PageDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -157,19 +153,6 @@ public class ViewItemProvider extends ItemProviderAdapter implements IEditingDom
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-
-        DiagramDescription newDiagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
-        newDiagramDescription.setName("New Diagram Description");
-        newDiagramDescription.setPalette(new DefaultToolsFactory().createDefaultDiagramPalette());
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newDiagramDescription));
-
-        FormDescription newFormDescription = ViewFactory.eINSTANCE.createFormDescription();
-        newFormDescription.setName("New Form Description");
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
-        newFormDescription.getPages().add(pageDescription);
-        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
-        pageDescription.getGroups().add(groupDescription);
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newFormDescription));
 
         ColorPalette newColorPalette = ViewFactory.eINSTANCE.createColorPalette();
         newColorPalette.setName("New Color Palette");

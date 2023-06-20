@@ -16,8 +16,8 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle.Builder;
-import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 
 /**
  * The style provider for the Checkbox Description widget of the View DSL. This only handles "static" or "preview"

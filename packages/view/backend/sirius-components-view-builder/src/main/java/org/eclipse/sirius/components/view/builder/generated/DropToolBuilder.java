@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class DropToolBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.DropTool.
+     * Create instance org.eclipse.sirius.components.view.diagram.DropTool.
      * @generated
      */
-    private org.eclipse.sirius.components.view.DropTool dropTool = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createDropTool();
+    private org.eclipse.sirius.components.view.diagram.DropTool dropTool = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createDropTool();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DropTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.DropTool.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.DropTool getDropTool() {
+    protected org.eclipse.sirius.components.view.diagram.DropTool getDropTool() {
         return this.dropTool;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DropTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.DropTool.
      * @generated
      */
-    public org.eclipse.sirius.components.view.DropTool build() {
+    public org.eclipse.sirius.components.view.diagram.DropTool build() {
         return this.getDropTool();
     }
 

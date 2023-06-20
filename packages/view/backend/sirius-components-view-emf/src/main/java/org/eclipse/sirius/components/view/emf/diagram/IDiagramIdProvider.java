@@ -13,8 +13,8 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 
 /**

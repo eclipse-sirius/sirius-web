@@ -30,12 +30,13 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.domain.Entity;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.diagram.DiagramDescriptionValidator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleDefaultValuesAreValid() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeStyleDescription nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        NodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(nodeStyle.eClass(), nodeStyle, diagnosticChain, defaultContext);
@@ -69,9 +70,9 @@ public class ViewValidatorTests {
     @Test
     public void testConditionalConditionIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        ConditionalNodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        ConditionalNodeStyle conditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         conditionalNodeStyle.setCondition("");
-        conditionalNodeStyle.setStyle(ViewFactory.eINSTANCE.createRectangularNodeStyleDescription());
+        conditionalNodeStyle.setStyle(DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription());
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         // @formatter:off
@@ -94,7 +95,7 @@ public class ViewValidatorTests {
     @Test
     public void testConditionalStyleIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        ConditionalNodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        ConditionalNodeStyle conditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         // @formatter:off
@@ -104,7 +105,7 @@ public class ViewValidatorTests {
                 "The style should not be empty",
                 new Object [] {
                     conditionalNodeStyle,
-                    ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                    DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                 }));
         // @formatter:on
 
@@ -117,7 +118,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleColorIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        RectangularNodeStyleDescription conditionalNodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        RectangularNodeStyleDescription conditionalNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
         // @formatter:off
@@ -127,7 +128,7 @@ public class ViewValidatorTests {
                 "The color should not be empty",
                 new Object [] {
                     conditionalNodeStyle,
-                    ViewPackage.Literals.STYLE__COLOR,
+                    DiagramPackage.Literals.STYLE__COLOR,
                 }));
         // @formatter:on
 
@@ -140,7 +141,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeDescriptionInvalidDomain() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();
         XMIResourceImpl xmiResource = new XMIResourceImpl();
@@ -155,7 +156,7 @@ public class ViewValidatorTests {
                 String.format(DiagramDescriptionValidator.DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, Optional.ofNullable(nodeDescription.getDomainType()).orElse("")),
                 new Object [] {
                     nodeDescription,
-                    ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
+                    DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
                 }));
 
         // @formatter:on
@@ -169,7 +170,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleDescriptionValidDomainInResourceSet() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeDescription.setDomainType(SAMPLE_ENTITY_NAME);
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();
@@ -195,7 +196,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleDescriptionValidQualifiedDomainInResourceSet() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME);
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();
@@ -221,7 +222,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleDescriptionValidDomainInPackageRegistry() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeDescription.setDomainType(SAMPLE_ENTITY_NAME);
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();
@@ -251,7 +252,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleDescriptionValidQualifiedDomainInPackageRegistry() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        NodeDescription nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeDescription.setDomainType(SAMPLE_DOMAIN_NAME + "::" + SAMPLE_ENTITY_NAME);
 
         ResourceSetImpl resourceSet = new ResourceSetImpl();

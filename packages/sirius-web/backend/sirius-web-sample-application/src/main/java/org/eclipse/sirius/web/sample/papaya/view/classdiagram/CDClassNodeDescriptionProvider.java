@@ -14,16 +14,17 @@ package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodePalette;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -40,6 +41,8 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
+    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
     public CDClassNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
@@ -49,22 +52,22 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
         var builder = new PapayaViewBuilder();
         var domainType = builder.domainType(builder.entity("Class"));
 
-        var nodeDescription = this.viewBuilderHelper.newNodeDescription()
+        var nodeDescription = this.diagramBuilderHelper.newNodeDescription()
                 .name(NAME)
                 .domainType(domainType)
                 .semanticCandidatesExpression("aql:self.types")
-                .childrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())
+                .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())
                 .labelExpression("aql:self.name")
-                .style(this.viewBuilderHelper.newRectangularNodeStyleDescription()
+                .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                         .color(this.colorProvider.getColor("color_blue"))
                         .borderColor(this.colorProvider.getColor("border_blue"))
                         .labelColor(this.colorProvider.getColor("label_white"))
                         .withHeader(false)
                         .build())
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .conditionalStyles(this.viewBuilderHelper.newConditionalNodeStyle()
+                .conditionalStyles(this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition("aql:self.abstract")
-                        .style(this.viewBuilderHelper.newRectangularNodeStyleDescription()
+                        .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                                 .color(this.colorProvider.getColor("color_green"))
                                 .borderColor(this.colorProvider.getColor("border_green"))
                                 .labelColor(this.colorProvider.getColor("label_white"))
@@ -90,7 +93,7 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
         var optionalClassNodeDescription = cache.getNodeDescription(NAME);
         var optionalInterfaceNodeDescription = cache.getNodeDescription(CDInterfaceNodeDescriptionProvider.NAME);
 
-        var nodePaletteBuilder = this.viewBuilderHelper.newNodePalette();
+        var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette();
         if (optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
             var nodePalette = nodePaletteBuilder.edgeTools(this.createExtendsClassEdgeTool(optionalClassNodeDescription.get()),
                     this.createImplementsInterfaceEdgeTool(optionalInterfaceNodeDescription.get()))
@@ -104,7 +107,7 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
     }
 
     private EdgeTool createExtendsClassEdgeTool(NodeDescription classNodeDescription) {
-        return this.viewBuilderHelper.newEdgeTool()
+        return this.diagramBuilderHelper.newEdgeTool()
                 .name("Extends Class")
                 .targetElementDescriptions(classNodeDescription)
                 .body(this.viewBuilderHelper.newChangeContext()
@@ -118,7 +121,7 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
     }
 
     private EdgeTool createImplementsInterfaceEdgeTool(NodeDescription interfaceNodeDescription) {
-        return this.viewBuilderHelper.newEdgeTool()
+        return this.diagramBuilderHelper.newEdgeTool()
                 .name("Implements")
                 .targetElementDescriptions(interfaceNodeDescription)
                 .body(this.viewBuilderHelper.newChangeContext()

@@ -22,9 +22,10 @@ import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRe
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
-import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -114,7 +115,7 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private String getEmptyViewContent() {
         View newView = ViewFactory.eINSTANCE.createView();
-        DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("New Diagram Description");
         newView.getDescriptions().add(diagramDescription);
         return this.stereotypeBuilder.getStereotypeBody(List.of(newView));

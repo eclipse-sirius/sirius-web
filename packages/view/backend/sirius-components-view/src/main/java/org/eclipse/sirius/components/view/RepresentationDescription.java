@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.components.view;
 
 import org.eclipse.emf.ecore.EObject;
@@ -65,7 +65,7 @@ public interface RepresentationDescription extends EObject {
      * @return the value of the '<em>Domain Type</em>' attribute.
      * @see #setDomainType(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_DomainType()
-     * @model default=""
+     * @model default="" dataType="org.eclipse.sirius.components.view.DomainType"
      * @generated
      */
     String getDomainType();
@@ -106,13 +106,13 @@ public interface RepresentationDescription extends EObject {
     void setPreconditionExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * Returns the value of the '<em><b>Title Expression</b></em>' attribute. The default value is
+     * <code>"aql:\'New Representation\'"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Title Expression</em>' attribute.
      * @see #setTitleExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_TitleExpression()
-     * @model
+     * @model default="aql:\'New Representation\'" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getTitleExpression();

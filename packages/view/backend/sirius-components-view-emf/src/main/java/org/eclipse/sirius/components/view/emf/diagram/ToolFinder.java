@@ -19,21 +19,21 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
-import org.eclipse.sirius.components.view.DeleteTool;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.DiagramPalette;
-import org.eclipse.sirius.components.view.DropTool;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgePalette;
-import org.eclipse.sirius.components.view.EdgeReconnectionTool;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodePalette;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DropTool;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgePalette;
+import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 
 /**
  * Helper to locate tools inside View model elements.

@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class DiagramDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.DiagramDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.DiagramDescription diagramDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createDiagramDescription();
+    private org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createDiagramDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DiagramDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.DiagramDescription getDiagramDescription() {
+    protected org.eclipse.sirius.components.view.diagram.DiagramDescription getDiagramDescription() {
         return this.diagramDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DiagramDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.DiagramDescription build() {
+    public org.eclipse.sirius.components.view.diagram.DiagramDescription build() {
         return this.getDiagramDescription();
     }
 
@@ -92,7 +92,7 @@ public class DiagramDescriptionBuilder {
      *
      * @generated
      */
-    public DiagramDescriptionBuilder palette(org.eclipse.sirius.components.view.DiagramPalette value) {
+    public DiagramDescriptionBuilder palette(org.eclipse.sirius.components.view.diagram.DiagramPalette value) {
         this.getDiagramDescription().setPalette(value);
         return this;
     }
@@ -101,8 +101,8 @@ public class DiagramDescriptionBuilder {
      *
      * @generated
      */
-    public DiagramDescriptionBuilder nodeDescriptions(org.eclipse.sirius.components.view.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.NodeDescription value : values) {
+    public DiagramDescriptionBuilder nodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getDiagramDescription().getNodeDescriptions().add(value);
         }
         return this;
@@ -113,8 +113,8 @@ public class DiagramDescriptionBuilder {
      *
      * @generated
      */
-    public DiagramDescriptionBuilder edgeDescriptions(org.eclipse.sirius.components.view.EdgeDescription ... values) {
-        for (org.eclipse.sirius.components.view.EdgeDescription value : values) {
+    public DiagramDescriptionBuilder edgeDescriptions(org.eclipse.sirius.components.view.diagram.EdgeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.EdgeDescription value : values) {
             this.getDiagramDescription().getEdgeDescriptions().add(value);
         }
         return this;

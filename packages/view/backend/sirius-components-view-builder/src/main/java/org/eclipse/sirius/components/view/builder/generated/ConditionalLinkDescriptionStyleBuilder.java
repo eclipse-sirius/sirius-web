@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalLinkDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle conditionalLinkDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalLinkDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle conditionalLinkDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalLinkDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle getConditionalLinkDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle getConditionalLinkDescriptionStyle() {
         return this.conditionalLinkDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle build() {
         return this.getConditionalLinkDescriptionStyle();
     }
 

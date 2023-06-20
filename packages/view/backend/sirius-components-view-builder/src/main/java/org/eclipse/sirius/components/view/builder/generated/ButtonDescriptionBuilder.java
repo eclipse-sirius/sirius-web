@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ButtonDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ButtonDescription.
+     * Create instance org.eclipse.sirius.components.view.form.ButtonDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ButtonDescription buttonDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createButtonDescription();
+    private org.eclipse.sirius.components.view.form.ButtonDescription buttonDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createButtonDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ButtonDescription.
+     * Return instance org.eclipse.sirius.components.view.form.ButtonDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ButtonDescription getButtonDescription() {
+    protected org.eclipse.sirius.components.view.form.ButtonDescription getButtonDescription() {
         return this.buttonDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ButtonDescription.
+     * Return instance org.eclipse.sirius.components.view.form.ButtonDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ButtonDescription build() {
+    public org.eclipse.sirius.components.view.form.ButtonDescription build() {
         return this.getButtonDescription();
     }
 
@@ -69,7 +69,6 @@ public class ButtonDescriptionBuilder {
         this.getButtonDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ButtonLabelExpression.
      *
@@ -105,7 +104,7 @@ public class ButtonDescriptionBuilder {
      *
      * @generated
      */
-    public ButtonDescriptionBuilder style(org.eclipse.sirius.components.view.ButtonDescriptionStyle value) {
+    public ButtonDescriptionBuilder style(org.eclipse.sirius.components.view.form.ButtonDescriptionStyle value) {
         this.getButtonDescription().setStyle(value);
         return this;
     }
@@ -114,8 +113,8 @@ public class ButtonDescriptionBuilder {
      *
      * @generated
      */
-    public ButtonDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle value : values) {
+    public ButtonDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle value : values) {
             this.getButtonDescription().getConditionalStyles().add(value);
         }
         return this;

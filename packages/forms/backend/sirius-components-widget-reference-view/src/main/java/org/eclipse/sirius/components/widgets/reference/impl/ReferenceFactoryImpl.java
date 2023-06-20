@@ -22,35 +22,31 @@ import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ *
  * @generated
  */
 public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFactory {
     /**
-     * Creates the default factory implementation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static ReferenceFactory init() {
         try {
-            ReferenceFactory theReferenceFactory = (ReferenceFactory)EPackage.Registry.INSTANCE.getEFactory(ReferencePackage.eNS_URI);
+            ReferenceFactory theReferenceFactory = (ReferenceFactory) EPackage.Registry.INSTANCE.getEFactory(ReferencePackage.eNS_URI);
             if (theReferenceFactory != null) {
                 return theReferenceFactory;
             }
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             EcorePlugin.INSTANCE.log(exception);
         }
         return new ReferenceFactoryImpl();
     }
 
     /**
-     * Creates an instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ReferenceFactoryImpl() {
@@ -58,22 +54,23 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION: return createReferenceWidgetDescription();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION:
+                return this.createReferenceWidgetDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -83,18 +80,18 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ReferencePackage getReferencePackage() {
-        return (ReferencePackage)getEPackage();
+        return (ReferencePackage) this.getEPackage();
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @deprecated
      * @generated
      */
@@ -103,4 +100,4 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
         return ReferencePackage.eINSTANCE;
     }
 
-} //ReferenceFactoryImpl
+} // ReferenceFactoryImpl

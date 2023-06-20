@@ -12,19 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.widgets.reference;
 
-import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Widget Description</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Widget Description</b></em>'. <!-- end-user-doc
+ * -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression <em>Reference Owner Expression</em>}</li>
- *   <li>{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression <em>Reference Name Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
+ * <em>Reference Owner Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression
+ * <em>Reference Name Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription()
@@ -33,9 +34,9 @@ import org.eclipse.sirius.components.view.WidgetDescription;
  */
 public interface ReferenceWidgetDescription extends WidgetDescription {
     /**
-     * Returns the value of the '<em><b>Reference Owner Expression</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Reference Owner Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @return the value of the '<em>Reference Owner Expression</em>' attribute.
      * @see #setReferenceOwnerExpression(String)
      * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceOwnerExpression()
@@ -45,19 +46,21 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
     String getReferenceOwnerExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression <em>Reference Owner Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Reference Owner Expression</em>' attribute.
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
+     * <em>Reference Owner Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Reference Owner Expression</em>' attribute.
      * @see #getReferenceOwnerExpression()
      * @generated
      */
     void setReferenceOwnerExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Reference Name Expression</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Reference Name Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @return the value of the '<em>Reference Name Expression</em>' attribute.
      * @see #setReferenceNameExpression(String)
      * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceNameExpression()
@@ -67,10 +70,12 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
     String getReferenceNameExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression <em>Reference Name Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Reference Name Expression</em>' attribute.
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression
+     * <em>Reference Name Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Reference Name Expression</em>' attribute.
      * @see #getReferenceNameExpression()
      * @generated
      */

@@ -40,7 +40,7 @@ public class CanonicalServices {
     /**
      * Invoke as aql:self.defaultCreateNode(nodeDescription).
      */
-    public EObject defaultCreateNode(EObject self, org.eclipse.sirius.components.view.NodeDescription nodeDescription) {
+    public EObject defaultCreateNode(EObject self, org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription) {
         String domainType = nodeDescription.getDomainType();
         var optionalSemanticElement = this.createSemanticInstance(self, domainType);
         optionalSemanticElement.ifPresent(instance -> this.addInParent(self, instance));
@@ -50,7 +50,7 @@ public class CanonicalServices {
     /**
      * Invoke as aql:semanticEdgeSource.defaultCreateEdge(edgeDescription, semanticEdgeTarget).
      */
-    public EObject defaultCreateEdge(EObject semanticEdgeSource, org.eclipse.sirius.components.view.EdgeDescription edgeDescription, EObject semanticEdgeTarget) {
+    public EObject defaultCreateEdge(EObject semanticEdgeSource, org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription, EObject semanticEdgeTarget) {
         if (edgeDescription.isIsDomainBasedEdge()) {
             this.createSemanticInstance(semanticEdgeSource, edgeDescription.getDomainType()).ifPresent(instance -> {
                 this.addInParent(semanticEdgeSource.eContainer(), instance);

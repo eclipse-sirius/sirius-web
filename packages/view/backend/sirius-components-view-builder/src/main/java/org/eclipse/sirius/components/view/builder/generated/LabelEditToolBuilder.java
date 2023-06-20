@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class LabelEditToolBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.LabelEditTool.
+     * Create instance org.eclipse.sirius.components.view.diagram.LabelEditTool.
      * @generated
      */
-    private org.eclipse.sirius.components.view.LabelEditTool labelEditTool = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createLabelEditTool();
+    private org.eclipse.sirius.components.view.diagram.LabelEditTool labelEditTool = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createLabelEditTool();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LabelEditTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.LabelEditTool.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.LabelEditTool getLabelEditTool() {
+    protected org.eclipse.sirius.components.view.diagram.LabelEditTool getLabelEditTool() {
         return this.labelEditTool;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LabelEditTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.LabelEditTool.
      * @generated
      */
-    public org.eclipse.sirius.components.view.LabelEditTool build() {
+    public org.eclipse.sirius.components.view.diagram.LabelEditTool build() {
         return this.getLabelEditTool();
     }
 

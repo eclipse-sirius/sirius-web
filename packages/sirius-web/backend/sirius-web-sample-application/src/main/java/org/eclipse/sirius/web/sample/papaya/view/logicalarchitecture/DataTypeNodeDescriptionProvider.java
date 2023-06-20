@@ -14,10 +14,10 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -36,7 +36,7 @@ public class DataTypeNodeDescriptionProvider implements INodeDescriptionProvider
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_5"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("bordre_green"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
@@ -47,7 +47,7 @@ public class DataTypeNodeDescriptionProvider implements INodeDescriptionProvider
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
         nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());

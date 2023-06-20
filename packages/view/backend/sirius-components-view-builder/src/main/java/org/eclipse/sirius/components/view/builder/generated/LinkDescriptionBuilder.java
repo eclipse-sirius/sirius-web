@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class LinkDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.LinkDescription.
+     * Create instance org.eclipse.sirius.components.view.form.LinkDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.LinkDescription linkDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createLinkDescription();
+    private org.eclipse.sirius.components.view.form.LinkDescription linkDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createLinkDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LinkDescription.
+     * Return instance org.eclipse.sirius.components.view.form.LinkDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.LinkDescription getLinkDescription() {
+    protected org.eclipse.sirius.components.view.form.LinkDescription getLinkDescription() {
         return this.linkDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LinkDescription.
+     * Return instance org.eclipse.sirius.components.view.form.LinkDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.LinkDescription build() {
+    public org.eclipse.sirius.components.view.form.LinkDescription build() {
         return this.getLinkDescription();
     }
 
@@ -69,7 +69,6 @@ public class LinkDescriptionBuilder {
         this.getLinkDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -84,7 +83,7 @@ public class LinkDescriptionBuilder {
      *
      * @generated
      */
-    public LinkDescriptionBuilder style(org.eclipse.sirius.components.view.LinkDescriptionStyle value) {
+    public LinkDescriptionBuilder style(org.eclipse.sirius.components.view.form.LinkDescriptionStyle value) {
         this.getLinkDescription().setStyle(value);
         return this;
     }
@@ -93,8 +92,8 @@ public class LinkDescriptionBuilder {
      *
      * @generated
      */
-    public LinkDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalLinkDescriptionStyle value : values) {
+    public LinkDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle value : values) {
             this.getLinkDescription().getConditionalStyles().add(value);
         }
         return this;

@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalButtonDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle conditionalButtonDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalButtonDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle conditionalButtonDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalButtonDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle getConditionalButtonDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle getConditionalButtonDescriptionStyle() {
         return this.conditionalButtonDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalButtonDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle build() {
         return this.getConditionalButtonDescriptionStyle();
     }
 

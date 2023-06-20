@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
-import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -97,13 +97,13 @@ public class ViewConverter implements IViewConverter {
     private List<IRepresentationDescription> convertSelectionsDialogs(View view, AQLInterpreter interpreter) {
         return view.getDescriptions().stream().filter(DiagramDescription.class::isInstance)
             .flatMap(this::getAllContent)
-            .filter(org.eclipse.sirius.components.view.SelectionDescription.class::isInstance)
-            .map(org.eclipse.sirius.components.view.SelectionDescription.class::cast)
+            .filter(org.eclipse.sirius.components.view.diagram.SelectionDescription.class::isInstance)
+            .map(org.eclipse.sirius.components.view.diagram.SelectionDescription.class::cast)
             .map(selectionDescription -> this.convertSelectionDialog(selectionDescription, interpreter))
             .toList();
     }
 
-    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.SelectionDescription selectionDescription, AQLInterpreter interpreter) {
+    private IRepresentationDescription convertSelectionDialog(org.eclipse.sirius.components.view.diagram.SelectionDescription selectionDescription, AQLInterpreter interpreter) {
         String selectionDescriptionId = this.objectService.getId(selectionDescription);
 
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)

@@ -14,14 +14,14 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
  * Description of extends interface.
@@ -38,14 +38,14 @@ public class ExtendsInterfaceEdgeDescriptionProvider implements IEdgeDescription
 
     @Override
     public EdgeDescription create() {
-        var extendsInterfaceEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        var extendsInterfaceEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         extendsInterfaceEdgeStyle.setColor(this.colorProvider.getColor("color_blue_2"));
         extendsInterfaceEdgeStyle.setEdgeWidth(1);
         extendsInterfaceEdgeStyle.setLineStyle(LineStyle.SOLID);
         extendsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         extendsInterfaceEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
 
-        var extendsInterfaceEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        var extendsInterfaceEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsInterfaceEdgeDescription.setName("Edge Extends interface");
         extendsInterfaceEdgeDescription.setLabelExpression("aql:'Extends'");
         extendsInterfaceEdgeDescription.setStyle(extendsInterfaceEdgeStyle);

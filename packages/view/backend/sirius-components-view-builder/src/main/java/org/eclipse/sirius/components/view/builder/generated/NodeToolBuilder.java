@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class NodeToolBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.NodeTool.
+     * Create instance org.eclipse.sirius.components.view.diagram.NodeTool.
      * @generated
      */
-    private org.eclipse.sirius.components.view.NodeTool nodeTool = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createNodeTool();
+    private org.eclipse.sirius.components.view.diagram.NodeTool nodeTool = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodeTool();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.NodeTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.NodeTool.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.NodeTool getNodeTool() {
+    protected org.eclipse.sirius.components.view.diagram.NodeTool getNodeTool() {
         return this.nodeTool;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.NodeTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.NodeTool.
      * @generated
      */
-    public org.eclipse.sirius.components.view.NodeTool build() {
+    public org.eclipse.sirius.components.view.diagram.NodeTool build() {
         return this.getNodeTool();
     }
 
@@ -68,7 +68,7 @@ public class NodeToolBuilder {
      *
      * @generated
      */
-    public NodeToolBuilder selectionDescription(org.eclipse.sirius.components.view.SelectionDescription value) {
+    public NodeToolBuilder selectionDescription(org.eclipse.sirius.components.view.diagram.SelectionDescription value) {
         this.getNodeTool().setSelectionDescription(value);
         return this;
     }

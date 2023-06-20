@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalLabelDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle conditionalLabelDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalLabelDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle conditionalLabelDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalLabelDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle getConditionalLabelDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle getConditionalLabelDescriptionStyle() {
         return this.conditionalLabelDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle build() {
         return this.getConditionalLabelDescriptionStyle();
     }
 

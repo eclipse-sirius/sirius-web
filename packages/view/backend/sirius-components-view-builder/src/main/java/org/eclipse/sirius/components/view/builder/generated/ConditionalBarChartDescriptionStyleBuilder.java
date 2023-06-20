@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalBarChartDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle conditionalBarChartDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalBarChartDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle conditionalBarChartDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalBarChartDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle getConditionalBarChartDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle getConditionalBarChartDescriptionStyle() {
         return this.conditionalBarChartDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle build() {
         return this.getConditionalBarChartDescriptionStyle();
     }
 

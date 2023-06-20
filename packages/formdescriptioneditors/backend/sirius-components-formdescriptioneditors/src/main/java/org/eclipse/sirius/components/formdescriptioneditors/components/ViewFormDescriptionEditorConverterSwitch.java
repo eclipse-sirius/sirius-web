@@ -53,27 +53,27 @@ import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
-import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
-import org.eclipse.sirius.components.view.CheckboxDescriptionStyle;
-import org.eclipse.sirius.components.view.LabelDescriptionStyle;
-import org.eclipse.sirius.components.view.LinkDescriptionStyle;
-import org.eclipse.sirius.components.view.ListDescriptionStyle;
-import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
-import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
-import org.eclipse.sirius.components.view.RadioDescriptionStyle;
-import org.eclipse.sirius.components.view.SelectDescriptionStyle;
-import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
-import org.eclipse.sirius.components.view.TextfieldDescriptionStyle;
-import org.eclipse.sirius.components.view.WidgetDescription;
-import org.eclipse.sirius.components.view.util.ViewSwitch;
+import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
+import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
+import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.PieChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
+import org.eclipse.sirius.components.view.form.util.FormSwitch;
 
 /**
  * A switch to dispatch View Form Description Editor Widget Descriptions conversion.
  *
  * @author arichard
  */
-public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<AbstractWidgetDescription> {
+public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<AbstractWidgetDescription> {
 
     private static final String AQL_PREFIX = "aql:";
 
@@ -90,7 +90,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseTextfieldDescription(org.eclipse.sirius.components.view.TextfieldDescription viewTextfieldDescription) {
+    public AbstractWidgetDescription caseTextfieldDescription(org.eclipse.sirius.components.view.form.TextfieldDescription viewTextfieldDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewTextfieldDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -119,7 +119,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseCheckboxDescription(org.eclipse.sirius.components.view.CheckboxDescription viewCheckboxDescription) {
+    public AbstractWidgetDescription caseCheckboxDescription(org.eclipse.sirius.components.view.form.CheckboxDescription viewCheckboxDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewCheckboxDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -148,7 +148,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseSelectDescription(org.eclipse.sirius.components.view.SelectDescription viewSelectDescription) {
+    public AbstractWidgetDescription caseSelectDescription(org.eclipse.sirius.components.view.form.SelectDescription viewSelectDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewSelectDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -181,7 +181,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseTextAreaDescription(org.eclipse.sirius.components.view.TextAreaDescription viewTextareaDescription) {
+    public AbstractWidgetDescription caseTextAreaDescription(org.eclipse.sirius.components.view.form.TextAreaDescription viewTextareaDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewTextareaDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -210,7 +210,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseMultiSelectDescription(org.eclipse.sirius.components.view.MultiSelectDescription viewMultiSelectDescription) {
+    public AbstractWidgetDescription caseMultiSelectDescription(org.eclipse.sirius.components.view.form.MultiSelectDescription viewMultiSelectDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewMultiSelectDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -243,7 +243,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseRadioDescription(org.eclipse.sirius.components.view.RadioDescription viewRadioDescription) {
+    public AbstractWidgetDescription caseRadioDescription(org.eclipse.sirius.components.view.form.RadioDescription viewRadioDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewRadioDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -276,7 +276,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseFlexboxContainerDescription(org.eclipse.sirius.components.view.FlexboxContainerDescription viewFlexboxContainerDescription) {
+    public AbstractWidgetDescription caseFlexboxContainerDescription(org.eclipse.sirius.components.view.form.FlexboxContainerDescription viewFlexboxContainerDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewFlexboxContainerDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -303,7 +303,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseButtonDescription(org.eclipse.sirius.components.view.ButtonDescription viewButtonDescription) {
+    public AbstractWidgetDescription caseButtonDescription(org.eclipse.sirius.components.view.form.ButtonDescription viewButtonDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewButtonDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -333,7 +333,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseLabelDescription(org.eclipse.sirius.components.view.LabelDescription viewLabelDescription) {
+    public AbstractWidgetDescription caseLabelDescription(org.eclipse.sirius.components.view.form.LabelDescription viewLabelDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewLabelDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -361,7 +361,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseLinkDescription(org.eclipse.sirius.components.view.LinkDescription viewLinkDescription) {
+    public AbstractWidgetDescription caseLinkDescription(org.eclipse.sirius.components.view.form.LinkDescription viewLinkDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewLinkDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -389,7 +389,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseListDescription(org.eclipse.sirius.components.view.ListDescription viewListDescription) {
+    public AbstractWidgetDescription caseListDescription(org.eclipse.sirius.components.view.form.ListDescription viewListDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewListDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -424,7 +424,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseImageDescription(org.eclipse.sirius.components.view.ImageDescription viewImageDescription) {
+    public AbstractWidgetDescription caseImageDescription(org.eclipse.sirius.components.view.form.ImageDescription viewImageDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewImageDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -443,7 +443,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseRichTextDescription(org.eclipse.sirius.components.view.RichTextDescription viewRichTextDescription) {
+    public AbstractWidgetDescription caseRichTextDescription(org.eclipse.sirius.components.view.form.RichTextDescription viewRichTextDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewRichTextDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -463,7 +463,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription caseBarChartDescription(org.eclipse.sirius.components.view.BarChartDescription viewBarChartDescription) {
+    public AbstractWidgetDescription caseBarChartDescription(org.eclipse.sirius.components.view.form.BarChartDescription viewBarChartDescription) {
         Function<VariableManager, BarChartStyle> styleProvider = vm -> {
             BarChartDescriptionStyle style = viewBarChartDescription.getStyle();
             if (style == null) {
@@ -487,7 +487,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription casePieChartDescription(org.eclipse.sirius.components.view.PieChartDescription viewPieChartDescription) {
+    public AbstractWidgetDescription casePieChartDescription(org.eclipse.sirius.components.view.form.PieChartDescription viewPieChartDescription) {
         Function<VariableManager, PieChartStyle> styleProvider = vm -> {
             PieChartDescriptionStyle style = viewPieChartDescription.getStyle();
             if (style == null) {
@@ -507,7 +507,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         return this.createChartWidgetDescription(viewPieChartDescription, chartDescription);
     }
 
-    private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, IChartDescription chartDescription) {
+    private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, IChartDescription chartDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, widgetDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
@@ -530,7 +530,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         return ViewFormDescriptionEditorConverterSwitch.this.customWidgetConverter.doSwitch(widgetDescription);
     }
 
-    public String getWidgetLabel(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, String defaultLabel) {
+    public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {
         String widgetLabel = defaultLabel;
         String name = widgetDescription.getName();
         String labelExpression = widgetDescription.getLabelExpression();
@@ -542,7 +542,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends ViewSwitch<Abstrac
         return widgetLabel;
     }
 
-    public String getWidgetHelpText(org.eclipse.sirius.components.view.WidgetDescription widgetDescription) {
+    public String getWidgetHelpText(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription) {
         String helpText = "Help";
         String helpExpression = widgetDescription.getHelpExpression();
         if (helpExpression != null && !helpExpression.isBlank() && !helpExpression.startsWith(AQL_PREFIX)) {

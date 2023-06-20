@@ -30,10 +30,10 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -49,15 +49,15 @@ public class MoveGroupEventHandlerTests {
     @Test
     public void testMoveGroupAction() {
 
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
         formDescription.getPages().add(pageDescription);
 
-        GroupDescription groupDescription1 = ViewFactory.eINSTANCE.createGroupDescription();
+        GroupDescription groupDescription1 = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription1);
-        GroupDescription groupDescription2 = ViewFactory.eINSTANCE.createGroupDescription();
+        GroupDescription groupDescription2 = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription2);
-        GroupDescription groupDescription3 = ViewFactory.eINSTANCE.createGroupDescription();
+        GroupDescription groupDescription3 = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription3);
 
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());

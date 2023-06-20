@@ -14,10 +14,10 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -36,20 +36,20 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_green_3"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_green_2"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Enum");
-        nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
+        nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.enumLiteralNodeDescription());
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
         var newEnumLiteralNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::EnumLiteral", "enumLiterals", "EnumLiteral");
         newEnumLiteralNodeTool.setName("New Enum Literal");
@@ -62,7 +62,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeDescription enumLiteralNodeDescription() {
-        var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_green_3"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_green_2"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
@@ -72,7 +72,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
 
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());

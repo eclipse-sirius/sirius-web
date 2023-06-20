@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalNodeStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalNodeStyle.
+     * Create instance org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalNodeStyle conditionalNodeStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalNodeStyle();
+    private org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle conditionalNodeStyle = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createConditionalNodeStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalNodeStyle.
+     * Return instance org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalNodeStyle getConditionalNodeStyle() {
+    protected org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle getConditionalNodeStyle() {
         return this.conditionalNodeStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalNodeStyle.
+     * Return instance org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalNodeStyle build() {
+    public org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle build() {
         return this.getConditionalNodeStyle();
     }
 
@@ -56,7 +56,7 @@ public class ConditionalNodeStyleBuilder {
      *
      * @generated
      */
-    public ConditionalNodeStyleBuilder style(org.eclipse.sirius.components.view.NodeStyleDescription value) {
+    public ConditionalNodeStyleBuilder style(org.eclipse.sirius.components.view.diagram.NodeStyleDescription value) {
         this.getConditionalNodeStyle().setStyle(value);
         return this;
     }

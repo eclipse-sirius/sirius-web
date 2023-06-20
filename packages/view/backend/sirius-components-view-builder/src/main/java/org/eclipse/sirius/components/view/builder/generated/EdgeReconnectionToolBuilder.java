@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.EdgeReconnectionTool.
+ * Builder for org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class EdgeReconnectionToolBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.EdgeReconnectionTool.
+     * Builder for org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.EdgeReconnectionTool getEdgeReconnectionTool();
+    protected abstract org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool getEdgeReconnectionTool();
 
     /**
      * Setter for Name.

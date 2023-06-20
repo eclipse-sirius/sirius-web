@@ -33,13 +33,13 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgePalette;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgePalette;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
@@ -158,8 +158,8 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
         return initialDirectEditElementLabel;
     }
 
-    private Optional<LabelEditTool> getLabelEditTool(org.eclipse.sirius.components.view.EdgeDescription edgeDescription, EdgeLabelKind labelKind) {
-        return Optional.ofNullable(edgeDescription).map(org.eclipse.sirius.components.view.EdgeDescription::getPalette).map(switch (labelKind) {
+    private Optional<LabelEditTool> getLabelEditTool(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription, EdgeLabelKind labelKind) {
+        return Optional.ofNullable(edgeDescription).map(org.eclipse.sirius.components.view.diagram.EdgeDescription::getPalette).map(switch (labelKind) {
             case BEGIN_LABEL -> EdgePalette::getBeginLabelEditTool;
             case CENTER_LABEL -> EdgePalette::getCenterLabelEditTool;
             case END_LABEL -> EdgePalette::getEndLabelEditTool;

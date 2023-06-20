@@ -31,11 +31,11 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
-import org.eclipse.sirius.components.view.ButtonDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.ButtonDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -56,12 +56,12 @@ public class DeleteToolbarActionEventHandlerTests {
     public void testDeleteToolbarActionFromGroup() {
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
-        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
+        GroupDescription groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription);
         formDescription.getPages().add(pageDescription);
-        ButtonDescription toolbarButton = ViewFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription toolbarButton = FormFactory.eINSTANCE.createButtonDescription();
         groupDescription.getToolbarActions().add(toolbarButton);
         var objectService = new IObjectService.NoOp() {
             @Override
@@ -107,10 +107,10 @@ public class DeleteToolbarActionEventHandlerTests {
     public void testDeleteToolbarActionFromPage() {
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
         formDescription.getPages().add(pageDescription);
-        ButtonDescription toolbarButton = ViewFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription toolbarButton = FormFactory.eINSTANCE.createButtonDescription();
         pageDescription.getToolbarActions().add(toolbarButton);
         var objectService = new IObjectService.NoOp() {
             @Override

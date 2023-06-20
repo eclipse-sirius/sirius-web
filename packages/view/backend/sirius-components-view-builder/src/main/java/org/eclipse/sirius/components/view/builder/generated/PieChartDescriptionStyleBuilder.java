@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class PieChartDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.PieChartDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.PieChartDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.PieChartDescriptionStyle pieChartDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createPieChartDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.PieChartDescriptionStyle pieChartDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createPieChartDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.PieChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.PieChartDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.PieChartDescriptionStyle getPieChartDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.PieChartDescriptionStyle getPieChartDescriptionStyle() {
         return this.pieChartDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.PieChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.PieChartDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.PieChartDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.PieChartDescriptionStyle build() {
         return this.getPieChartDescriptionStyle();
     }
 

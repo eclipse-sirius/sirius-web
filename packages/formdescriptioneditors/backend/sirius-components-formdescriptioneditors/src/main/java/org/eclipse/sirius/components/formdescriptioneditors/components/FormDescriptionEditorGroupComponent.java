@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.forms.elements.GroupElementProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.form.GroupDescription;
 
 /**
  * The component used to render the form description editor group.
@@ -90,7 +90,7 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
         return new Element(GroupElementProps.TYPE, groupElementProps);
     }
 
-    public String getGroupLabel(org.eclipse.sirius.components.view.GroupDescription groupDescription, String defaultLabel) {
+    public String getGroupLabel(org.eclipse.sirius.components.view.form.GroupDescription groupDescription, String defaultLabel) {
         String widgetLabel = defaultLabel;
         String name = groupDescription.getName();
         String labelExpression = groupDescription.getLabelExpression();
@@ -103,7 +103,7 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
     }
 
     private GroupDisplayMode getGroupDisplayMode(GroupDescription viewGroupDescription) {
-        org.eclipse.sirius.components.view.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
+        org.eclipse.sirius.components.view.form.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
         return GroupDisplayMode.valueOf(viewDisplayMode.getLiteral());
     }
 }

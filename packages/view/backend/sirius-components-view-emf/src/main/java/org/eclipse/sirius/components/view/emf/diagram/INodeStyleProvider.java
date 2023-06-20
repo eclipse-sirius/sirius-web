@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.INodeStyle;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
  * Interface that allows to provide custom node styles.

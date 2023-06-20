@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.forms.MultiSelectStyle;
 import org.eclipse.sirius.components.forms.MultiSelectStyle.Builder;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.MultiSelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle;
 
 /**
  * The style provider for the MultiSelect Description widget of the View DSL.

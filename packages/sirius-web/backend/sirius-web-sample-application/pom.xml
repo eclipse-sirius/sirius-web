@@ -126,7 +126,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-edit</artifactId>
+			<artifactId>sirius-components-view-diagram-edit</artifactId>
 			<version>2023.6.1</version>
 		</dependency>
 		<dependency>

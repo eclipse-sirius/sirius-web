@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.LayoutStrategyDescription.
+ * Builder for org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class LayoutStrategyDescriptionBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.LayoutStrategyDescription.
+     * Builder for org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.LayoutStrategyDescription getLayoutStrategyDescription();
+    protected abstract org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription getLayoutStrategyDescription();
 
 
 }

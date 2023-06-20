@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class DeleteToolBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.DeleteTool.
+     * Create instance org.eclipse.sirius.components.view.diagram.DeleteTool.
      * @generated
      */
-    private org.eclipse.sirius.components.view.DeleteTool deleteTool = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createDeleteTool();
+    private org.eclipse.sirius.components.view.diagram.DeleteTool deleteTool = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createDeleteTool();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DeleteTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.DeleteTool.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.DeleteTool getDeleteTool() {
+    protected org.eclipse.sirius.components.view.diagram.DeleteTool getDeleteTool() {
         return this.deleteTool;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DeleteTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.DeleteTool.
      * @generated
      */
-    public org.eclipse.sirius.components.view.DeleteTool build() {
+    public org.eclipse.sirius.components.view.diagram.DeleteTool build() {
         return this.getDeleteTool();
     }
 

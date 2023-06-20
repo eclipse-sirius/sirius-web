@@ -79,12 +79,12 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
 
     @Override
     public boolean canConvert(RepresentationDescription representationDescription) {
-        return representationDescription instanceof org.eclipse.sirius.components.view.FormDescription;
+        return representationDescription instanceof org.eclipse.sirius.components.view.form.FormDescription;
     }
 
     @Override
     public IRepresentationDescription convert(RepresentationDescription representationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
-        org.eclipse.sirius.components.view.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.FormDescription) representationDescription;
+        org.eclipse.sirius.components.view.form.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.form.FormDescription) representationDescription;
         List<Switch<AbstractWidgetDescription>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter,
                 this.editService, this.objectService, this.feedbackMessageService)).toList();
         Switch<AbstractWidgetDescription> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters), this.feedbackMessageService);
@@ -108,7 +108,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .build();
     }
 
-    private PageDescription instantiatePage(org.eclipse.sirius.components.view.PageDescription viewPageDescription, Switch<AbstractWidgetDescription> dispatcher,
+    private PageDescription instantiatePage(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, Switch<AbstractWidgetDescription> dispatcher,
             AQLInterpreter interpreter) {
 
         List<GroupDescription> groupDescriptions = viewPageDescription.getGroups().stream()
@@ -132,7 +132,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .build();
     }
 
-    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, Switch<AbstractWidgetDescription> dispatcher, AQLInterpreter interpreter) {
+    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, Switch<AbstractWidgetDescription> dispatcher, AQLInterpreter interpreter) {
         List<AbstractControlDescription> controlDescriptions = viewGroupDescription.getWidgets().stream()
                 .map(dispatcher::doSwitch)
                 .filter(Objects::nonNull)
@@ -164,19 +164,19 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         };
     }
 
-    private String computeFormLabel(org.eclipse.sirius.components.view.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private String computeFormLabel(org.eclipse.sirius.components.view.form.FormDescription viewFormDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         return this.evaluateString(interpreter, variableManager, viewFormDescription.getTitleExpression()).orElse(DEFAULT_FORM_LABEL);
     }
 
-    private String computePageLabel(org.eclipse.sirius.components.view.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private String computePageLabel(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         return this.evaluateString(interpreter, variableManager, viewPageDescription.getLabelExpression()).orElse(DEFAULT_PAGE_LABEL);
     }
 
-    private String computeGroupLabel(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private String computeGroupLabel(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         return this.evaluateString(interpreter, variableManager, viewGroupDescription.getLabelExpression()).orElse(DEFAULT_GROUP_LABEL);
     }
 
-    private List<?> getSemanticElementsProvider(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private List<?> getSemanticElementsProvider(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewGroupDescription.getSemanticCandidatesExpression());
         List<Object> candidates = result.asObjects().orElse(List.of());
         return candidates.stream()
@@ -185,7 +185,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .toList();
     }
 
-    private List<?> getSemanticElementsProvider(org.eclipse.sirius.components.view.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private List<?> getSemanticElementsProvider(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewPageDescription.getSemanticCandidatesExpression());
         List<Object> candidates = result.asObjects().orElse(List.of());
         return candidates.stream()
@@ -222,8 +222,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
     }
 
-    private GroupDisplayMode getGroupDisplayMode(org.eclipse.sirius.components.view.GroupDescription viewGroupDescription) {
-        org.eclipse.sirius.components.view.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
+    private GroupDisplayMode getGroupDisplayMode(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription) {
+        org.eclipse.sirius.components.view.form.GroupDisplayMode viewDisplayMode = viewGroupDescription.getDisplayMode();
         return GroupDisplayMode.valueOf(viewDisplayMode.getLiteral());
     }
 }

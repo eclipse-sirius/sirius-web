@@ -27,9 +27,9 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 
 /**
@@ -75,7 +75,7 @@ public final class StylesFactory {
         // @formatter:on
     }
 
-    public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.EdgeStyle edgeStyle) {
+    public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
         // @formatter:off
         return LabelStyleDescription.newLabelStyleDescription()
                                     .colorProvider(variableManager -> Optional.ofNullable(edgeStyle.getColor())
@@ -99,7 +99,7 @@ public final class StylesFactory {
         // @formatter:on
     }
 
-    public EdgeStyle createEdgeStyle(org.eclipse.sirius.components.view.EdgeStyle edgeStyle) {
+    public EdgeStyle createEdgeStyle(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
         // @formatter:off
         return EdgeStyle.newEdgeStyle()
                         .color(Optional.ofNullable(edgeStyle.getColor())

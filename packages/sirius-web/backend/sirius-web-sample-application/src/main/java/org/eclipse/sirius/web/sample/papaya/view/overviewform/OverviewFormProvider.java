@@ -13,9 +13,9 @@
 package org.eclipse.sirius.web.sample.papaya.view.overviewform;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.view.form.FormFactory;
 
 /**
  * Used to create the description of the overview form.
@@ -25,20 +25,20 @@ import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescr
 public class OverviewFormProvider implements IRepresentationDescriptionProvider {
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
-        var formDescription = ViewFactory.eINSTANCE.createFormDescription();
+        var formDescription = FormFactory.eINSTANCE.createFormDescription();
         formDescription.setDomainType("papaya_core::Root");
         formDescription.setName("Overview Form");
 
-        var pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        var pageDescription = FormFactory.eINSTANCE.createPageDescription();
         pageDescription.setName("Page");
         pageDescription.setSemanticCandidatesExpression("aql:self");
 
-        var groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        var groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         groupDescription.setName("Group");
         groupDescription.setSemanticCandidatesExpression("aql:self");
         groupDescription.setLabelExpression("Root");
 
-        var textfieldDescription = ViewFactory.eINSTANCE.createTextfieldDescription();
+        var textfieldDescription = FormFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setName("Textfield");
         textfieldDescription.setLabelExpression("Root");
         textfieldDescription.setValueExpression("root element");

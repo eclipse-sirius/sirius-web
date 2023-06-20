@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view;
 
-import org.eclipse.sirius.components.view.DeleteTool;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 
 /**
  * Used to create the default papaya tools.
@@ -25,7 +26,7 @@ import org.eclipse.sirius.components.view.ViewFactory;
  */
 public class PapayaToolsFactory {
     public NodeTool createNamedElement(String typeName, String containinedFeatureName, String initialName) {
-        var nodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        var nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
 
         var createInstance = ViewFactory.eINSTANCE.createCreateInstance();
         createInstance.setTypeName(typeName);
@@ -47,7 +48,7 @@ public class PapayaToolsFactory {
     }
 
     public EdgeTool setReference(String featureName, String valueExpression) {
-        var edgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        var edgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
 
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression("aql:semanticEdgeSource");
@@ -63,7 +64,7 @@ public class PapayaToolsFactory {
     }
 
     public LabelEditTool editName() {
-        var editLabelTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        var editLabelTool = DiagramFactory.eINSTANCE.createLabelEditTool();
         editLabelTool.setName("Edit Label");
         editLabelTool.setInitialDirectEditLabelExpression("aql:self.name");
 
@@ -77,7 +78,7 @@ public class PapayaToolsFactory {
     }
 
     public DeleteTool deleteTool() {
-        var deleteTool = ViewFactory.eINSTANCE.createDeleteTool();
+        var deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
         deleteTool.setName("Delete");
 
         var deleteElement = ViewFactory.eINSTANCE.createDeleteElement();

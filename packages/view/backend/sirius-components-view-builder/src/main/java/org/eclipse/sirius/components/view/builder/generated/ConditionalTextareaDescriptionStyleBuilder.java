@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalTextareaDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle conditionalTextareaDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalTextareaDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle conditionalTextareaDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalTextareaDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle getConditionalTextareaDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle getConditionalTextareaDescriptionStyle() {
         return this.conditionalTextareaDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle build() {
         return this.getConditionalTextareaDescriptionStyle();
     }
 

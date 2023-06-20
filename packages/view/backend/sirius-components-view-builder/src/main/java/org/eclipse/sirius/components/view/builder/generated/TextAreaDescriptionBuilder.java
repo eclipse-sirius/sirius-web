@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class TextAreaDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.TextAreaDescription.
+     * Create instance org.eclipse.sirius.components.view.form.TextAreaDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.TextAreaDescription textAreaDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createTextAreaDescription();
+    private org.eclipse.sirius.components.view.form.TextAreaDescription textAreaDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createTextAreaDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextAreaDescription.
+     * Return instance org.eclipse.sirius.components.view.form.TextAreaDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.TextAreaDescription getTextAreaDescription() {
+    protected org.eclipse.sirius.components.view.form.TextAreaDescription getTextAreaDescription() {
         return this.textAreaDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextAreaDescription.
+     * Return instance org.eclipse.sirius.components.view.form.TextAreaDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.TextAreaDescription build() {
+    public org.eclipse.sirius.components.view.form.TextAreaDescription build() {
         return this.getTextAreaDescription();
     }
 
@@ -69,7 +69,6 @@ public class TextAreaDescriptionBuilder {
         this.getTextAreaDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -96,7 +95,7 @@ public class TextAreaDescriptionBuilder {
      *
      * @generated
      */
-    public TextAreaDescriptionBuilder style(org.eclipse.sirius.components.view.TextareaDescriptionStyle value) {
+    public TextAreaDescriptionBuilder style(org.eclipse.sirius.components.view.form.TextareaDescriptionStyle value) {
         this.getTextAreaDescription().setStyle(value);
         return this;
     }
@@ -105,8 +104,8 @@ public class TextAreaDescriptionBuilder {
      *
      * @generated
      */
-    public TextAreaDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalTextareaDescriptionStyle value : values) {
+    public TextAreaDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle value : values) {
             this.getTextAreaDescription().getConditionalStyles().add(value);
         }
         return this;

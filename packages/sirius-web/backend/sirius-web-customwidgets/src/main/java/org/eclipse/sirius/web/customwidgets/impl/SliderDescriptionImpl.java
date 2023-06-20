@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.web.customwidgets.impl;
 
 import java.util.Collection;
@@ -23,31 +23,33 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.Operation;
-import org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl;
+import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
 import org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage;
 import org.eclipse.sirius.web.customwidgets.SliderDescription;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Slider Description</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Slider Description</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getMinValueExpression <em>Min Value Expression</em>}</li>
- *   <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getMaxValueExpression <em>Max Value Expression</em>}</li>
- *   <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getCurrentValueExpression <em>Current Value Expression</em>}</li>
- *   <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getMinValueExpression <em>Min Value
+ * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getMaxValueExpression <em>Max Value
+ * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getCurrentValueExpression <em>Current
+ * Value Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.web.customwidgets.impl.SliderDescriptionImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class SliderDescriptionImpl extends WidgetDescriptionImpl implements SliderDescription {
     /**
-     * The default value of the '{@link #getMinValueExpression() <em>Min Value Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getMinValueExpression() <em>Min Value Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMinValueExpression()
      * @generated
      * @ordered
@@ -55,9 +57,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected static final String MIN_VALUE_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getMinValueExpression() <em>Min Value Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getMinValueExpression() <em>Min Value Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMinValueExpression()
      * @generated
      * @ordered
@@ -65,9 +67,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected String minValueExpression = MIN_VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getMaxValueExpression() <em>Max Value Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getMaxValueExpression() <em>Max Value Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMaxValueExpression()
      * @generated
      * @ordered
@@ -75,9 +77,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected static final String MAX_VALUE_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getMaxValueExpression() <em>Max Value Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getMaxValueExpression() <em>Max Value Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMaxValueExpression()
      * @generated
      * @ordered
@@ -85,9 +87,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected String maxValueExpression = MAX_VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getCurrentValueExpression() <em>Current Value Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getCurrentValueExpression() <em>Current Value Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getCurrentValueExpression()
      * @generated
      * @ordered
@@ -95,9 +97,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected static final String CURRENT_VALUE_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCurrentValueExpression() <em>Current Value Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getCurrentValueExpression() <em>Current Value Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getCurrentValueExpression()
      * @generated
      * @ordered
@@ -105,9 +107,9 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected String currentValueExpression = CURRENT_VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getBody()
      * @generated
      * @ordered
@@ -115,8 +117,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected EList<Operation> body;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected SliderDescriptionImpl() {
@@ -124,8 +126,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -134,8 +136,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -144,8 +146,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -157,8 +159,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -167,8 +169,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -180,8 +182,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -190,8 +192,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -203,8 +205,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -216,22 +218,22 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__BODY:
-                return ((InternalEList<?>)this.getBody()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -250,8 +252,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -259,25 +261,25 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
-                this.setMinValueExpression((String)newValue);
+                this.setMinValueExpression((String) newValue);
                 return;
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
-                this.setMaxValueExpression((String)newValue);
+                this.setMaxValueExpression((String) newValue);
                 return;
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
-                this.setCurrentValueExpression((String)newValue);
+                this.setCurrentValueExpression((String) newValue);
                 return;
             case CustomwidgetsPackage.SLIDER_DESCRIPTION__BODY:
                 this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>)newValue);
+                this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -300,8 +302,8 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -320,13 +322,14 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (minValueExpression: ");
@@ -339,4 +342,4 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
         return result.toString();
     }
 
-} //SliderDescriptionImpl
+} // SliderDescriptionImpl

@@ -14,15 +14,13 @@ package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -43,7 +41,7 @@ public class CDPackageNodeDescriptionProvider implements INodeDescriptionProvide
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_7"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_3"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
@@ -51,11 +49,11 @@ public class CDPackageNodeDescriptionProvider implements INodeDescriptionProvide
         var builder = new PapayaViewBuilder();
         var domainType = builder.domainType(builder.entity("Package"));
 
-        var nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        var nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeDescription.setName(NAME);
         nodeDescription.setDomainType(domainType);
         nodeDescription.setSemanticCandidatesExpression("aql:self.eContents()");
-        nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getReusedChildNodeDescriptions().add(nodeDescription);
@@ -74,7 +72,7 @@ public class CDPackageNodeDescriptionProvider implements INodeDescriptionProvide
         if (optionalPackageNodeDescription.isPresent() && optionalClassNodeDescription.isPresent() && optionalInterfaceNodeDescription.isPresent()) {
             diagramDescription.getNodeDescriptions().add(optionalPackageNodeDescription.get());
 
-            var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+            var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
             optionalPackageNodeDescription.get().setPalette(nodePalette);
 
             nodePalette.getNodeTools().add(new CDCreateClassNodeToolProvider().create(cache));
@@ -85,35 +83,5 @@ public class CDPackageNodeDescriptionProvider implements INodeDescriptionProvide
             nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
         }
     }
-
-    private NodeTool createNamedElement(String typeName, String containinedFeatureName, String initialName, DiagramElementDescription diagramElementDescription) {
-        var nodeTool = ViewFactory.eINSTANCE.createNodeTool();
-        nodeTool.setName("New " + initialName);
-
-        var createInstance = ViewFactory.eINSTANCE.createCreateInstance();
-        createInstance.setTypeName(typeName);
-        createInstance.setVariableName("newInstance");
-        createInstance.setReferenceName(containinedFeatureName);
-
-        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression("aql:newInstance");
-
-        var setValue = ViewFactory.eINSTANCE.createSetValue();
-        setValue.setFeatureName("name");
-        setValue.setValueExpression("aql:'" + initialName + "'");
-
-        var createView = ViewFactory.eINSTANCE.createCreateView();
-        createView.setParentViewExpression("aql:selectedNode");
-        createView.setSemanticElementExpression("aql:newInstance");
-        createView.setElementDescription(diagramElementDescription);
-
-        nodeTool.getBody().add(createInstance);
-        createInstance.getChildren().add(changeContext);
-        changeContext.getChildren().add(setValue);
-        setValue.getChildren().add(createView);
-
-        return nodeTool;
-    }
-
 
 }

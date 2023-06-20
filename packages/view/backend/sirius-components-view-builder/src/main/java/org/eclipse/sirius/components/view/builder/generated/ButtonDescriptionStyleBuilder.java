@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ButtonDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ButtonDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ButtonDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ButtonDescriptionStyle buttonDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createButtonDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ButtonDescriptionStyle buttonDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createButtonDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ButtonDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ButtonDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ButtonDescriptionStyle getButtonDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ButtonDescriptionStyle getButtonDescriptionStyle() {
         return this.buttonDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ButtonDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ButtonDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ButtonDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ButtonDescriptionStyle build() {
         return this.getButtonDescriptionStyle();
     }
 

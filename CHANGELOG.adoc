@@ -62,6 +62,7 @@ The help text can include multiple lines (separated by `\n`), but no text format
 :image:doc/images/Widget_Help_Tooltip.png[Example of a help tooltip on a widget]
 - https://github.com/eclipse-sirius/sirius-components/issues/2048[#2048] [diagram] Add a basic support for the resize. It is possible to reduce the size of a node less than the space needed to display all children.
 - https://github.com/eclipse-sirius/sirius-components/issues/2064[#2064] [forms] Make the `IWidgetDescriptor` API more flexible.
+- https://github.com/eclipse-sirius/sirius-components/issues/1618[#1618] [view] Split the view metamodel into dedicated subpackages.
 
 == v2023.6.0
 

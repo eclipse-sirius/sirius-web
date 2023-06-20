@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
 import org.springframework.stereotype.Service;
 
 /**

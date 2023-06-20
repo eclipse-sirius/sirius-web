@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.WidgetDescriptionStyle.
+ * Builder for org.eclipse.sirius.components.view.form.WidgetDescriptionStyle.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class WidgetDescriptionStyleBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.WidgetDescriptionStyle.
+     * Builder for org.eclipse.sirius.components.view.form.WidgetDescriptionStyle.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.WidgetDescriptionStyle getWidgetDescriptionStyle();
+    protected abstract org.eclipse.sirius.components.view.form.WidgetDescriptionStyle getWidgetDescriptionStyle();
 
 
 }

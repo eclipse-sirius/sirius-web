@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalCheckboxDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle conditionalCheckboxDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle conditionalCheckboxDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalCheckboxDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle getConditionalCheckboxDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle getConditionalCheckboxDescriptionStyle() {
         return this.conditionalCheckboxDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle build() {
         return this.getConditionalCheckboxDescriptionStyle();
     }
 

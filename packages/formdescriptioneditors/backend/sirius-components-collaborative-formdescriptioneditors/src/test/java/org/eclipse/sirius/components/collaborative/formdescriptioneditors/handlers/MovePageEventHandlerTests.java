@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -48,12 +48,12 @@ public class MovePageEventHandlerTests {
     @Test
     public void testMovePageAction() {
 
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        PageDescription pageDescription1 = ViewFactory.eINSTANCE.createPageDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription1 = FormFactory.eINSTANCE.createPageDescription();
         formDescription.getPages().add(pageDescription1);
-        PageDescription pageDescription2 = ViewFactory.eINSTANCE.createPageDescription();
+        PageDescription pageDescription2 = FormFactory.eINSTANCE.createPageDescription();
         formDescription.getPages().add(pageDescription2);
-        PageDescription pageDescription3 = ViewFactory.eINSTANCE.createPageDescription();
+        PageDescription pageDescription3 = FormFactory.eINSTANCE.createPageDescription();
         formDescription.getPages().add(pageDescription3);
 
 

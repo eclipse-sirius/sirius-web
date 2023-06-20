@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class FormDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.FormDescription.
+     * Create instance org.eclipse.sirius.components.view.form.FormDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.FormDescription formDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createFormDescription();
+    private org.eclipse.sirius.components.view.form.FormDescription formDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createFormDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.FormDescription.
+     * Return instance org.eclipse.sirius.components.view.form.FormDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.FormDescription getFormDescription() {
+    protected org.eclipse.sirius.components.view.form.FormDescription getFormDescription() {
         return this.formDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.FormDescription.
+     * Return instance org.eclipse.sirius.components.view.form.FormDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.FormDescription build() {
+    public org.eclipse.sirius.components.view.form.FormDescription build() {
         return this.getFormDescription();
     }
 
@@ -83,8 +83,8 @@ public class FormDescriptionBuilder {
      *
      * @generated
      */
-    public FormDescriptionBuilder pages(org.eclipse.sirius.components.view.PageDescription ... values) {
-        for (org.eclipse.sirius.components.view.PageDescription value : values) {
+    public FormDescriptionBuilder pages(org.eclipse.sirius.components.view.form.PageDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.PageDescription value : values) {
             this.getFormDescription().getPages().add(value);
         }
         return this;

@@ -14,14 +14,14 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 
 /**
@@ -39,14 +39,14 @@ public class FulfillsContractEdgeDescriptionProvider implements IEdgeDescription
 
     @Override
     public EdgeDescription create() {
-        var fulfillsContractEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        var fulfillsContractEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         fulfillsContractEdgeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
         fulfillsContractEdgeStyle.setEdgeWidth(1);
         fulfillsContractEdgeStyle.setLineStyle(LineStyle.DOT);
         fulfillsContractEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         fulfillsContractEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
 
-        var fulfillsContractEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        var fulfillsContractEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         fulfillsContractEdgeDescription.setName("Edge Fulfills contract");
         fulfillsContractEdgeDescription.setLabelExpression("aql:'fulfills'");
         fulfillsContractEdgeDescription.setStyle(fulfillsContractEdgeStyle);

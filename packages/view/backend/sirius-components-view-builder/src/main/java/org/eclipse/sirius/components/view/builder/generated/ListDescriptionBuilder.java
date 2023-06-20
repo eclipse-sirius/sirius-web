@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ListDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ListDescription.
+     * Create instance org.eclipse.sirius.components.view.form.ListDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ListDescription listDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createListDescription();
+    private org.eclipse.sirius.components.view.form.ListDescription listDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createListDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ListDescription.
+     * Return instance org.eclipse.sirius.components.view.form.ListDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ListDescription getListDescription() {
+    protected org.eclipse.sirius.components.view.form.ListDescription getListDescription() {
         return this.listDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ListDescription.
+     * Return instance org.eclipse.sirius.components.view.form.ListDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ListDescription build() {
+    public org.eclipse.sirius.components.view.form.ListDescription build() {
         return this.getListDescription();
     }
 
@@ -69,7 +69,6 @@ public class ListDescriptionBuilder {
         this.getListDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -114,7 +113,7 @@ public class ListDescriptionBuilder {
      *
      * @generated
      */
-    public ListDescriptionBuilder style(org.eclipse.sirius.components.view.ListDescriptionStyle value) {
+    public ListDescriptionBuilder style(org.eclipse.sirius.components.view.form.ListDescriptionStyle value) {
         this.getListDescription().setStyle(value);
         return this;
     }
@@ -123,8 +122,8 @@ public class ListDescriptionBuilder {
      *
      * @generated
      */
-    public ListDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalListDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalListDescriptionStyle value : values) {
+    public ListDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle value : values) {
             this.getListDescription().getConditionalStyles().add(value);
         }
         return this;

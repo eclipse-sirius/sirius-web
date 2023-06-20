@@ -12,10 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.classdiagram;
 
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
@@ -26,7 +27,7 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 public class CDCreateClassNodeToolProvider implements INodeToolProvider {
     @Override
     public NodeTool create(IViewDiagramElementFinder cache) {
-        var nodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        var nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName("Create Class ");
 
         var builder = new PapayaViewBuilder();
@@ -46,7 +47,7 @@ public class CDCreateClassNodeToolProvider implements INodeToolProvider {
 
         var optionalClassNodeDescription = cache.getNodeDescription(CDClassNodeDescriptionProvider.NAME);
         if (optionalClassNodeDescription.isPresent()) {
-            var createView = ViewFactory.eINSTANCE.createCreateView();
+            var createView = DiagramFactory.eINSTANCE.createCreateView();
             createView.setParentViewExpression("aql:selectedNode");
             createView.setSemanticElementExpression("aql:newInstance");
             createView.setElementDescription(optionalClassNodeDescription.get());

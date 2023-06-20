@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.BorderStyle.
+ * Builder for org.eclipse.sirius.components.view.diagram.BorderStyle.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class BorderStyleBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.BorderStyle.
+     * Builder for org.eclipse.sirius.components.view.diagram.BorderStyle.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.BorderStyle getBorderStyle();
+    protected abstract org.eclipse.sirius.components.view.diagram.BorderStyle getBorderStyle();
 
     /**
      * Setter for BorderColor.
@@ -58,7 +58,7 @@ public abstract class BorderStyleBuilder {
      *
      * @generated
      */
-    public BorderStyleBuilder borderLineStyle(org.eclipse.sirius.components.view.LineStyle value) {
+    public BorderStyleBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getBorderStyle().setBorderLineStyle(value);
         return this;
     }

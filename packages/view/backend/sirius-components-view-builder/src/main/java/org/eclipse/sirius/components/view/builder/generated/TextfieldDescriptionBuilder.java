@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class TextfieldDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.TextfieldDescription.
+     * Create instance org.eclipse.sirius.components.view.form.TextfieldDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.TextfieldDescription textfieldDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createTextfieldDescription();
+    private org.eclipse.sirius.components.view.form.TextfieldDescription textfieldDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createTextfieldDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextfieldDescription.
+     * Return instance org.eclipse.sirius.components.view.form.TextfieldDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.TextfieldDescription getTextfieldDescription() {
+    protected org.eclipse.sirius.components.view.form.TextfieldDescription getTextfieldDescription() {
         return this.textfieldDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextfieldDescription.
+     * Return instance org.eclipse.sirius.components.view.form.TextfieldDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.TextfieldDescription build() {
+    public org.eclipse.sirius.components.view.form.TextfieldDescription build() {
         return this.getTextfieldDescription();
     }
 
@@ -69,7 +69,6 @@ public class TextfieldDescriptionBuilder {
         this.getTextfieldDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -96,7 +95,7 @@ public class TextfieldDescriptionBuilder {
      *
      * @generated
      */
-    public TextfieldDescriptionBuilder style(org.eclipse.sirius.components.view.TextfieldDescriptionStyle value) {
+    public TextfieldDescriptionBuilder style(org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle value) {
         this.getTextfieldDescription().setStyle(value);
         return this;
     }
@@ -105,8 +104,8 @@ public class TextfieldDescriptionBuilder {
      *
      * @generated
      */
-    public TextfieldDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalTextfieldDescriptionStyle value : values) {
+    public TextfieldDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle value : values) {
             this.getTextfieldDescription().getConditionalStyles().add(value);
         }
         return this;

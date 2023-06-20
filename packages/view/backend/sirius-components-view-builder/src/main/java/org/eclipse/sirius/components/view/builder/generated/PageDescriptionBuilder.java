@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class PageDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.PageDescription.
+     * Create instance org.eclipse.sirius.components.view.form.PageDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.PageDescription pageDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createPageDescription();
+    private org.eclipse.sirius.components.view.form.PageDescription pageDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createPageDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.PageDescription.
+     * Return instance org.eclipse.sirius.components.view.form.PageDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.PageDescription getPageDescription() {
+    protected org.eclipse.sirius.components.view.form.PageDescription getPageDescription() {
         return this.pageDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.PageDescription.
+     * Return instance org.eclipse.sirius.components.view.form.PageDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.PageDescription build() {
+    public org.eclipse.sirius.components.view.form.PageDescription build() {
         return this.getPageDescription();
     }
 
@@ -51,7 +51,6 @@ public class PageDescriptionBuilder {
         this.getPageDescription().setName(value);
         return this;
     }
-
     /**
      * Setter for LabelExpression.
      *
@@ -61,7 +60,6 @@ public class PageDescriptionBuilder {
         this.getPageDescription().setLabelExpression(value);
         return this;
     }
-
     /**
      * Setter for DomainType.
      *
@@ -71,7 +69,6 @@ public class PageDescriptionBuilder {
         this.getPageDescription().setDomainType(value);
         return this;
     }
-
     /**
      * Setter for SemanticCandidatesExpression.
      *
@@ -90,14 +87,13 @@ public class PageDescriptionBuilder {
         this.getPageDescription().setPreconditionExpression(value);
         return this;
     }
-
     /**
      * Setter for Groups.
      *
      * @generated
      */
-    public PageDescriptionBuilder groups(org.eclipse.sirius.components.view.GroupDescription ... values) {
-        for (org.eclipse.sirius.components.view.GroupDescription value : values) {
+    public PageDescriptionBuilder groups(org.eclipse.sirius.components.view.form.GroupDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.GroupDescription value : values) {
             this.getPageDescription().getGroups().add(value);
         }
         return this;
@@ -108,8 +104,8 @@ public class PageDescriptionBuilder {
      *
      * @generated
      */
-    public PageDescriptionBuilder toolbarActions(org.eclipse.sirius.components.view.ButtonDescription ... values) {
-        for (org.eclipse.sirius.components.view.ButtonDescription value : values) {
+    public PageDescriptionBuilder toolbarActions(org.eclipse.sirius.components.view.form.ButtonDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.ButtonDescription value : values) {
             this.getPageDescription().getToolbarActions().add(value);
         }
         return this;

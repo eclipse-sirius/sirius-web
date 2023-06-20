@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.TextareaStyle.Builder;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.TextareaDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 
 /**
  * The style provider for the Textarea Description widget of the View DSL. This only handles "static" or "preview"

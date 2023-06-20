@@ -14,12 +14,12 @@ package org.eclipse.sirius.components.view.emf.configuration;
 
 import java.util.Objects;
 
-import jakarta.annotation.PostConstruct;
-
 import org.eclipse.emf.ecore.EValidator.Registry;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.emf.diagram.DiagramDescriptionValidator;
 import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Configuration of the EMF beans.
@@ -37,6 +37,6 @@ public class ViewEMFConfiguration {
 
     @PostConstruct
     public void registerViewValidator() {
-        this.eValidatorRegistry.put(ViewPackage.eINSTANCE, new DiagramDescriptionValidator());
+        this.eValidatorRegistry.put(DiagramPackage.eINSTANCE, new DiagramDescriptionValidator());
     }
 }

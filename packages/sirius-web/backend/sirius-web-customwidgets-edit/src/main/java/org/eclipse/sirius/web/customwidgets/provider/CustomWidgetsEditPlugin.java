@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.web.customwidgets.provider;
 
 import java.io.IOException;
@@ -18,43 +18,41 @@ import java.net.URL;
 
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.sirius.components.view.form.provider.FormEditPlugin;
 import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
 
 /**
- * This is the central singleton for the Customwidgets edit plugin.
- * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * This is the central singleton for the Customwidgets edit plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
+ *
  * @generated
  */
 public final class CustomWidgetsEditPlugin extends EMFPlugin {
     /**
-     * Keep track of the singleton.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static final CustomWidgetsEditPlugin INSTANCE = new CustomWidgetsEditPlugin();
 
     /**
-     * Keep track of the singleton.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private static Implementation plugin;
 
     /**
-     * Create the instance.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public CustomWidgetsEditPlugin() {
-        super
-        (new ResourceLocator [] {
-                ViewEditPlugin.INSTANCE,
-        });
+        super(new ResourceLocator[] { FormEditPlugin.INSTANCE, ViewEditPlugin.INSTANCE, });
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @return the singleton instance.
      * @generated
      */
@@ -64,15 +62,15 @@ public final class CustomWidgetsEditPlugin extends EMFPlugin {
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @return the singleton instance.
      * @generated
      */
     public static Implementation getPlugin() {
         return plugin;
     }
-
+    
     @Override
     protected Object doGetImage(String key) throws IOException {
         URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
@@ -80,7 +78,7 @@ public final class CustomWidgetsEditPlugin extends EMFPlugin {
         inputStream.close();
         return url;
     }
-
+    
     /**
      * Computes the file extension to be used with the key to specify an image resource.
      *
@@ -93,32 +91,30 @@ public final class CustomWidgetsEditPlugin extends EMFPlugin {
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
-            // @formatter:off
             if ("png".equalsIgnoreCase(extension) ||
-                    "gif".equalsIgnoreCase(extension) ||
-                    "bmp".equalsIgnoreCase(extension) ||
-                    "ico".equalsIgnoreCase(extension) ||
-                    "jpg".equalsIgnoreCase(extension) ||
-                    "jpeg".equalsIgnoreCase(extension) ||
-                    "tif".equalsIgnoreCase(extension) ||
-                    "tiff".equalsIgnoreCase(extension) ||
-                    "svg".equalsIgnoreCase(extension)) {
+                "gif".equalsIgnoreCase(extension) ||
+                "bmp".equalsIgnoreCase(extension) ||
+                "ico".equalsIgnoreCase(extension) ||
+                "jpg".equalsIgnoreCase(extension) ||
+                "jpeg".equalsIgnoreCase(extension) ||
+                "tif".equalsIgnoreCase(extension) ||
+                "tiff".equalsIgnoreCase(extension) ||
+                "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
-            // @formatter:on
         }
         return result;
     }
 
     /**
-     * The actual implementation of the Eclipse <b>Plugin</b>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static class Implementation extends EclipsePlugin {
         /**
-         * Creates an instance.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
          * @generated
          */
         public Implementation() {

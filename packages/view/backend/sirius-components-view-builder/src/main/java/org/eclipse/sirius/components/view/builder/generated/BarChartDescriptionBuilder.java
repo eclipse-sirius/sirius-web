@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class BarChartDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.BarChartDescription.
+     * Create instance org.eclipse.sirius.components.view.form.BarChartDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.BarChartDescription barChartDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createBarChartDescription();
+    private org.eclipse.sirius.components.view.form.BarChartDescription barChartDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createBarChartDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.BarChartDescription.
+     * Return instance org.eclipse.sirius.components.view.form.BarChartDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.BarChartDescription getBarChartDescription() {
+    protected org.eclipse.sirius.components.view.form.BarChartDescription getBarChartDescription() {
         return this.barChartDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.BarChartDescription.
+     * Return instance org.eclipse.sirius.components.view.form.BarChartDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.BarChartDescription build() {
+    public org.eclipse.sirius.components.view.form.BarChartDescription build() {
         return this.getBarChartDescription();
     }
 
@@ -69,7 +69,6 @@ public class BarChartDescriptionBuilder {
         this.getBarChartDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValuesExpression.
      *
@@ -102,7 +101,7 @@ public class BarChartDescriptionBuilder {
      *
      * @generated
      */
-    public BarChartDescriptionBuilder style(org.eclipse.sirius.components.view.BarChartDescriptionStyle value) {
+    public BarChartDescriptionBuilder style(org.eclipse.sirius.components.view.form.BarChartDescriptionStyle value) {
         this.getBarChartDescription().setStyle(value);
         return this;
     }
@@ -111,8 +110,8 @@ public class BarChartDescriptionBuilder {
      *
      * @generated
      */
-    public BarChartDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalBarChartDescriptionStyle value : values) {
+    public BarChartDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle value : values) {
             this.getBarChartDescription().getConditionalStyles().add(value);
         }
         return this;

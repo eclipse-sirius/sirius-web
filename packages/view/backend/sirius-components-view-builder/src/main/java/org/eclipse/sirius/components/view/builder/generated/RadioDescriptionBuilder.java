@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class RadioDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.RadioDescription.
+     * Create instance org.eclipse.sirius.components.view.form.RadioDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.RadioDescription radioDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createRadioDescription();
+    private org.eclipse.sirius.components.view.form.RadioDescription radioDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createRadioDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RadioDescription.
+     * Return instance org.eclipse.sirius.components.view.form.RadioDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.RadioDescription getRadioDescription() {
+    protected org.eclipse.sirius.components.view.form.RadioDescription getRadioDescription() {
         return this.radioDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RadioDescription.
+     * Return instance org.eclipse.sirius.components.view.form.RadioDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.RadioDescription build() {
+    public org.eclipse.sirius.components.view.form.RadioDescription build() {
         return this.getRadioDescription();
     }
 
@@ -69,7 +69,6 @@ public class RadioDescriptionBuilder {
         this.getRadioDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -114,7 +113,7 @@ public class RadioDescriptionBuilder {
      *
      * @generated
      */
-    public RadioDescriptionBuilder style(org.eclipse.sirius.components.view.RadioDescriptionStyle value) {
+    public RadioDescriptionBuilder style(org.eclipse.sirius.components.view.form.RadioDescriptionStyle value) {
         this.getRadioDescription().setStyle(value);
         return this;
     }
@@ -123,8 +122,8 @@ public class RadioDescriptionBuilder {
      *
      * @generated
      */
-    public RadioDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle value : values) {
+    public RadioDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle value : values) {
             this.getRadioDescription().getConditionalStyles().add(value);
         }
         return this;

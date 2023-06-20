@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalEdgeStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalEdgeStyle.
+     * Create instance org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalEdgeStyle conditionalEdgeStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalEdgeStyle();
+    private org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle conditionalEdgeStyle = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalEdgeStyle.
+     * Return instance org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalEdgeStyle getConditionalEdgeStyle() {
+    protected org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle getConditionalEdgeStyle() {
         return this.conditionalEdgeStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalEdgeStyle.
+     * Return instance org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalEdgeStyle build() {
+    public org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle build() {
         return this.getConditionalEdgeStyle();
     }
 
@@ -110,7 +110,7 @@ public class ConditionalEdgeStyleBuilder {
      *
      * @generated
      */
-    public ConditionalEdgeStyleBuilder lineStyle(org.eclipse.sirius.components.view.LineStyle value) {
+    public ConditionalEdgeStyleBuilder lineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getConditionalEdgeStyle().setLineStyle(value);
         return this;
     }
@@ -119,7 +119,7 @@ public class ConditionalEdgeStyleBuilder {
      *
      * @generated
      */
-    public ConditionalEdgeStyleBuilder sourceArrowStyle(org.eclipse.sirius.components.view.ArrowStyle value) {
+    public ConditionalEdgeStyleBuilder sourceArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
         this.getConditionalEdgeStyle().setSourceArrowStyle(value);
         return this;
     }
@@ -128,7 +128,7 @@ public class ConditionalEdgeStyleBuilder {
      *
      * @generated
      */
-    public ConditionalEdgeStyleBuilder targetArrowStyle(org.eclipse.sirius.components.view.ArrowStyle value) {
+    public ConditionalEdgeStyleBuilder targetArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
         this.getConditionalEdgeStyle().setTargetArrowStyle(value);
         return this;
     }

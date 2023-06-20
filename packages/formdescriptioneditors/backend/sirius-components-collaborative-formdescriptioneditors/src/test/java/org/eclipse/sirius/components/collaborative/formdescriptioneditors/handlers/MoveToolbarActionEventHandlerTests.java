@@ -31,11 +31,11 @@ import org.eclipse.sirius.components.core.api.IObjectService.NoOp;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
-import org.eclipse.sirius.components.view.ButtonDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.ButtonDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -55,15 +55,15 @@ public class MoveToolbarActionEventHandlerTests {
 
         FormDescriptionEditor formDescriptionEditor = new TestFormDescriptionEditorBuilder().getFormDescriptionEditor(UUID.randomUUID().toString());
 
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
-        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
+        GroupDescription groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription);
         formDescription.getPages().add(pageDescription);
-        ButtonDescription toolbarButton1 = ViewFactory.eINSTANCE.createButtonDescription();
-        ButtonDescription toolbarButton2 = ViewFactory.eINSTANCE.createButtonDescription();
-        ButtonDescription toolbarButton3 = ViewFactory.eINSTANCE.createButtonDescription();
-        ButtonDescription toolbarButton4 = ViewFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription toolbarButton1 = FormFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription toolbarButton2 = FormFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription toolbarButton3 = FormFactory.eINSTANCE.createButtonDescription();
+        ButtonDescription toolbarButton4 = FormFactory.eINSTANCE.createButtonDescription();
         groupDescription.getToolbarActions().add(toolbarButton1);
         groupDescription.getToolbarActions().add(toolbarButton2);
         groupDescription.getToolbarActions().add(toolbarButton3);

@@ -60,16 +60,16 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.DropTool;
-import org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.LayoutStrategyDescription;
-import org.eclipse.sirius.components.view.ListLayoutStrategyDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.DropTool;
+import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.springframework.stereotype.Service;
@@ -118,12 +118,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     @Override
     public boolean canConvert(RepresentationDescription representationDescription) {
-        return representationDescription instanceof org.eclipse.sirius.components.view.DiagramDescription;
+        return representationDescription instanceof org.eclipse.sirius.components.view.diagram.DiagramDescription;
     }
 
     @Override
     public IRepresentationDescription convert(RepresentationDescription viewRepresentationDescription, List<RepresentationDescription> allRepresentationDescriptions, AQLInterpreter interpreter) {
-        final org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.DiagramDescription) viewRepresentationDescription;
+        final org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = (org.eclipse.sirius.components.view.diagram.DiagramDescription) viewRepresentationDescription;
         ViewDiagramDescriptionConverterContext converterContext = new ViewDiagramDescriptionConverterContext(interpreter);
         // Nodes must be fully converted first.
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).toList();
@@ -141,7 +141,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     }
 
                     @Override
-                    public org.eclipse.sirius.components.view.DiagramDescription getSourceDiagramDescription() {
+                    public org.eclipse.sirius.components.view.diagram.DiagramDescription getSourceDiagramDescription() {
                         return viewDiagramDescription;
                     }
                 })
@@ -155,9 +155,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         // @formatter:on
     }
 
-    private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription,
+    private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription,
             ViewDiagramDescriptionConverterContext converterContext) {
-        Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions = Map.copyOf(converterContext.getConvertedNodes());
+        Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions = Map.copyOf(converterContext.getConvertedNodes());
         return variableManager -> {
             Optional<DropTool> optionalDropTool = new ToolFinder().findDropTool(viewDiagramDescription);
             if (optionalDropTool.isPresent()) {
@@ -172,7 +172,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
     }
 
-    private String computeDiagramLabel(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private String computeDiagramLabel(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String title = variableManager.get(DiagramDescription.LABEL, String.class).orElseGet(() -> this.evaluateString(interpreter, variableManager, viewDiagramDescription.getTitleExpression()));
         if (title == null || title.isBlank()) {
             return DEFAULT_DIAGRAM_LABEL;
@@ -181,7 +181,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         }
     }
 
-    private boolean canCreateDiagram(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private boolean canCreateDiagram(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         boolean result = false;
         // @formatter:off
         Optional<EClass> optionalEClass = variableManager.get(IRepresentationDescription.CLASS, EClass.class)
@@ -198,7 +198,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return result;
     }
 
-    private NodeDescription convert(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+    private NodeDescription convert(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
         // @formatter:off
         // Convert our children first, we need their converted values to build our NodeDescription
         var childNodeDescriptions = viewNodeDescription.getChildrenDescriptions().stream()
@@ -276,22 +276,22 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return result;
     }
 
-    private NodeStyleDescription findEffectiveStyle(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
+    private NodeStyleDescription findEffectiveStyle(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
         return viewNodeDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager)).map(ConditionalNodeStyle::getStyle).findFirst()
                 .orElseGet(viewNodeDescription::getStyle);
     }
 
-    private Size computeSize(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
+    private Size computeSize(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
         var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
         double computedWidth = Size.UNDEFINED.getWidth();
-        if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION) && !effectiveStyle.getWidthComputationExpression().isBlank()) {
+        if (effectiveStyle.eIsSet(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION) && !effectiveStyle.getWidthComputationExpression().isBlank()) {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getWidthComputationExpression());
             if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
                 computedWidth = result.asInt().getAsInt();
             }
         }
         double computedHeight = Size.UNDEFINED.getHeight();
-        if (effectiveStyle.eIsSet(ViewPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION) && !effectiveStyle.getHeightComputationExpression().isBlank()) {
+        if (effectiveStyle.eIsSet(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION) && !effectiveStyle.getHeightComputationExpression().isBlank()) {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getHeightComputationExpression());
             if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
                 computedHeight = result.asInt().getAsInt();
@@ -304,7 +304,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 
-    private LabelDescription getLabelDescription(org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
+    private LabelDescription getLabelDescription(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
             return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
@@ -324,7 +324,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         // @formatter:on
     }
 
-    private Optional<LabelDescription> getSpecificEdgeLabelDescription(org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription, String labelExpression, String labelSuffix,
+    private Optional<LabelDescription> getSpecificEdgeLabelDescription(org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription, String labelExpression, String labelSuffix,
             AQLInterpreter interpreter) {
         if (labelExpression == null || labelExpression.isBlank()) {
             return Optional.empty();
@@ -339,7 +339,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             // @formatter:off
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(org.eclipse.sirius.components.view.EdgeStyle.class::cast)
+                    .map(org.eclipse.sirius.components.view.diagram.EdgeStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewEdgeDescription::getStyle);
             // @formatter:on
@@ -356,7 +356,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         // @formatter:on
     }
 
-    private Function<VariableManager, List<?>> getSemanticElementsProvider(org.eclipse.sirius.components.view.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
+    private Function<VariableManager, List<?>> getSemanticElementsProvider(org.eclipse.sirius.components.view.diagram.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());
@@ -370,7 +370,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
     }
 
-    private EdgeDescription convert(org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+    private EdgeDescription convert(org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
         Function<VariableManager, List<?>> semanticElementsProvider;
         AQLInterpreter interpreter = converterContext.getInterpreter();
         if (viewEdgeDescription.isIsDomainBasedEdge()) {
@@ -434,7 +434,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             // @formatter:off
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(org.eclipse.sirius.components.view.EdgeStyle.class::cast)
+                    .map(org.eclipse.sirius.components.view.diagram.EdgeStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewEdgeDescription::getStyle);
             // @formatter:on
@@ -522,7 +522,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         }
     }
 
-    private BiFunction<VariableManager, String, IStatus> createNodeLabelEditHandler(org.eclipse.sirius.components.view.NodeDescription nodeDescription,
+    private BiFunction<VariableManager, String, IStatus> createNodeLabelEditHandler(org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription,
             ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         BiFunction<VariableManager, String, IStatus> handler = (variableManager, newLabel) -> {
@@ -554,7 +554,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
     }
 
-    private IEdgeEditLabelHandler createEdgeLabelEditHandler(org.eclipse.sirius.components.view.EdgeDescription edgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+    private IEdgeEditLabelHandler createEdgeLabelEditHandler(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
         IEdgeEditLabelHandler handler = (variableManager, edgeLabelKind, newLabel) -> {
             IStatus result;
             VariableManager childVariableManager = variableManager.createChild();
@@ -586,7 +586,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
     }
 
-    private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.components.view.EdgeDescription edgeDescription) {
+    private Predicate<Element> isFromCompatibleSourceMapping(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription) {
         return nodeElement -> edgeDescription.getSourceNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription));
     }
 

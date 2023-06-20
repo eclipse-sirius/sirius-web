@@ -14,9 +14,9 @@ package org.eclipse.sirius.components.view.emf;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * Get a View representation description from its representation description Id.

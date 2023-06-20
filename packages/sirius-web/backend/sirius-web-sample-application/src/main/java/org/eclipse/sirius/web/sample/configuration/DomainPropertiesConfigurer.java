@@ -27,19 +27,20 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.CheckboxDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.GroupDisplayMode;
-import org.eclipse.sirius.components.view.LabelDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.SelectDescription;
 import org.eclipse.sirius.components.view.SetValue;
-import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.WidgetDescription;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
+import org.eclipse.sirius.components.view.form.CheckboxDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.GroupDisplayMode;
+import org.eclipse.sirius.components.view.form.LabelDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.SelectDescription;
+import org.eclipse.sirius.components.view.form.TextfieldDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.web.sample.services.DomainAttributeServices;
 import org.springframework.context.annotation.Configuration;
 
@@ -81,12 +82,12 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     }
 
     private FormDescription getAttributeDetails() {
-        FormDescription form = ViewFactory.eINSTANCE.createFormDescription();
+        FormDescription form = FormFactory.eINSTANCE.createFormDescription();
         form.setName("Attribute Details");
         form.setDomainType("domain::Attribute");
         form.setTitleExpression("Attribute Details");
 
-        PageDescription page = ViewFactory.eINSTANCE.createPageDescription();
+        PageDescription page = FormFactory.eINSTANCE.createPageDescription();
         page.setDomainType("domain::Attribute");
         page.setPreconditionExpression("");
         page.setLabelExpression("aql:self.name + ': ' + self.getDataType().capitalize()");
@@ -96,7 +97,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     }
 
     private GroupDescription createGroup() {
-        GroupDescription group = ViewFactory.eINSTANCE.createGroupDescription();
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName("Core Properties");
         group.setLabelExpression("Core Properties");
@@ -110,7 +111,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     }
 
     private WidgetDescription createStringAttributeEditWidget(String title, String attributeName) {
-        TextfieldDescription textfield = ViewFactory.eINSTANCE.createTextfieldDescription();
+        TextfieldDescription textfield = FormFactory.eINSTANCE.createTextfieldDescription();
         textfield.setName(title);
         textfield.setLabelExpression(title);
         textfield.setValueExpression("aql:self.%s".formatted(attributeName));
@@ -122,7 +123,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     }
 
     private WidgetDescription createBooleanAttributeEditWidget(String title, String attributeName) {
-        CheckboxDescription checkbox = ViewFactory.eINSTANCE.createCheckboxDescription();
+        CheckboxDescription checkbox = FormFactory.eINSTANCE.createCheckboxDescription();
         checkbox.setName(title);
         checkbox.setLabelExpression(title);
         checkbox.setValueExpression("aql:self.%s".formatted(attributeName));
@@ -134,7 +135,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     }
 
     private WidgetDescription createTypeSelectorWidget() {
-        SelectDescription selectWidget = ViewFactory.eINSTANCE.createSelectDescription();
+        SelectDescription selectWidget = FormFactory.eINSTANCE.createSelectDescription();
         selectWidget.setName("Type");
         selectWidget.setLabelExpression("Type");
         selectWidget.setCandidatesExpression("aql:self.getAvailableDataTypes()");
@@ -147,7 +148,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
     }
 
     private WidgetDescription createCardinalityLabel() {
-        LabelDescription cardinalityLabel = ViewFactory.eINSTANCE.createLabelDescription();
+        LabelDescription cardinalityLabel = FormFactory.eINSTANCE.createLabelDescription();
         cardinalityLabel.setName("Cardinality");
         cardinalityLabel.setLabelExpression("Cardinality");
         cardinalityLabel.setValueExpression("aql:(if self.optional then '0' else '1' endif) + '..' + (if self.many then '*' else '1' endif)");

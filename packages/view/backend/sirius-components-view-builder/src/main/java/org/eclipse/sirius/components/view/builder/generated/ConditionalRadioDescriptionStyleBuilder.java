@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalRadioDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle conditionalRadioDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalRadioDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle conditionalRadioDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalRadioDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle getConditionalRadioDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle getConditionalRadioDescriptionStyle() {
         return this.conditionalRadioDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalRadioDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle build() {
         return this.getConditionalRadioDescriptionStyle();
     }
 

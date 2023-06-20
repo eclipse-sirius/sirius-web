@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.NodeStyleDescription.
+ * Builder for org.eclipse.sirius.components.view.diagram.NodeStyleDescription.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class NodeStyleDescriptionBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.NodeStyleDescription.
+     * Builder for org.eclipse.sirius.components.view.diagram.NodeStyleDescription.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.NodeStyleDescription getNodeStyleDescription();
+    protected abstract org.eclipse.sirius.components.view.diagram.NodeStyleDescription getNodeStyleDescription();
 
     /**
      * Setter for Color.
@@ -112,7 +112,7 @@ public abstract class NodeStyleDescriptionBuilder {
      *
      * @generated
      */
-    public NodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.LineStyle value) {
+    public NodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }

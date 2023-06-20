@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class CheckboxDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.CheckboxDescription.
+     * Create instance org.eclipse.sirius.components.view.form.CheckboxDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.CheckboxDescription checkboxDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createCheckboxDescription();
+    private org.eclipse.sirius.components.view.form.CheckboxDescription checkboxDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createCheckboxDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.CheckboxDescription.
+     * Return instance org.eclipse.sirius.components.view.form.CheckboxDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.CheckboxDescription getCheckboxDescription() {
+    protected org.eclipse.sirius.components.view.form.CheckboxDescription getCheckboxDescription() {
         return this.checkboxDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.CheckboxDescription.
+     * Return instance org.eclipse.sirius.components.view.form.CheckboxDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.CheckboxDescription build() {
+    public org.eclipse.sirius.components.view.form.CheckboxDescription build() {
         return this.getCheckboxDescription();
     }
 
@@ -69,7 +69,6 @@ public class CheckboxDescriptionBuilder {
         this.getCheckboxDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -96,7 +95,7 @@ public class CheckboxDescriptionBuilder {
      *
      * @generated
      */
-    public CheckboxDescriptionBuilder style(org.eclipse.sirius.components.view.CheckboxDescriptionStyle value) {
+    public CheckboxDescriptionBuilder style(org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle value) {
         this.getCheckboxDescription().setStyle(value);
         return this;
     }
@@ -105,8 +104,8 @@ public class CheckboxDescriptionBuilder {
      *
      * @generated
      */
-    public CheckboxDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalCheckboxDescriptionStyle value : values) {
+    public CheckboxDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle value : values) {
             this.getCheckboxDescription().getConditionalStyles().add(value);
         }
         return this;

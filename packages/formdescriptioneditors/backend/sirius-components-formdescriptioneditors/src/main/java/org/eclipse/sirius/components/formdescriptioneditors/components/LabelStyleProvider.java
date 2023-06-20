@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle.Builder;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.LabelDescriptionStyle;
+import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
 
 /**
  * The style provider for the Label Description widget of the View DSL. This only handles "static" or "preview" styles

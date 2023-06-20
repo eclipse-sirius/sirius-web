@@ -18,8 +18,8 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 
 /**
@@ -57,7 +57,7 @@ public class PapayaViewBuilder {
 
     public NodeDescription createNodeDescription(String entityName) {
         var domainType = this.domainType(this.entity(entityName));
-        var nodeDescription = ViewFactory.eINSTANCE.createNodeDescription();
+        var nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeDescription.setName("Node " + domainType);
         nodeDescription.setDomainType(domainType);
         return nodeDescription;

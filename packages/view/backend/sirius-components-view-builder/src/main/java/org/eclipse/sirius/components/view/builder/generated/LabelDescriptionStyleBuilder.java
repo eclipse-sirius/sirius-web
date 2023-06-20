@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class LabelDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.LabelDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.LabelDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.LabelDescriptionStyle labelDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createLabelDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.LabelDescriptionStyle labelDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createLabelDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LabelDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.LabelDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.LabelDescriptionStyle getLabelDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.LabelDescriptionStyle getLabelDescriptionStyle() {
         return this.labelDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LabelDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.LabelDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.LabelDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.LabelDescriptionStyle build() {
         return this.getLabelDescriptionStyle();
     }
 

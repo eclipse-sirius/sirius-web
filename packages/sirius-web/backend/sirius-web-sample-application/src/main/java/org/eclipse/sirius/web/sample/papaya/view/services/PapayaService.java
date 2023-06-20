@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * Java Service for the test view.
@@ -321,7 +321,7 @@ public class PapayaService {
     }
 
     public EObject initialize(EObject eObject, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
+            Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
         this.ePackageRegistry = eObject.eResource().getResourceSet().getPackageRegistry();
 
         this.createStandardLibraries();
@@ -839,7 +839,7 @@ public class PapayaService {
     }
 
     public EObject drop(EObject self, Node selectedNode, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
+            Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes) {
         // @formatter:off
         var parentElementId = Optional.ofNullable(selectedNode)
                 .map(Node::getTargetObjectId)
