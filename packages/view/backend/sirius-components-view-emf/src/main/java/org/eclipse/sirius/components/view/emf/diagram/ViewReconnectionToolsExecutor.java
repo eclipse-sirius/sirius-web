@@ -92,17 +92,17 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
         IStatus status = new Failure("");
 
         var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescription.getId())
-                .filter(org.eclipse.sirius.components.view.DiagramDescription.class::isInstance)
-                .map(org.eclipse.sirius.components.view.DiagramDescription.class::cast);
+                .filter(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::isInstance)
+                .map(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::cast);
         if (optionalDiagramDescription.isPresent()) {
-            org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
+            org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
 
             var optionalViewEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescription.getId());
             if (optionalViewEdgeDescription.isPresent()) {
                 var viewEdgeDescription = optionalViewEdgeDescription.get();
 
-                List<org.eclipse.sirius.components.view.EdgeReconnectionTool> edgeReconnectionTools = new ToolFinder().findReconnectionTools(viewEdgeDescription, toolInterpreterData.getKind());
-                for (org.eclipse.sirius.components.view.EdgeReconnectionTool edgeReconnectionTool : edgeReconnectionTools) {
+                List<org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool> edgeReconnectionTools = new ToolFinder().findReconnectionTools(viewEdgeDescription, toolInterpreterData.getKind());
+                for (org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool edgeReconnectionTool : edgeReconnectionTools) {
                     VariableManager variableManager = this.createVariableManager(toolInterpreterData, editingContext);
 
                     AQLInterpreter interpreter = this.createInterpreter((View) viewDiagramDescription.eContainer(), this.getAccessibleEPackages(editingContext));

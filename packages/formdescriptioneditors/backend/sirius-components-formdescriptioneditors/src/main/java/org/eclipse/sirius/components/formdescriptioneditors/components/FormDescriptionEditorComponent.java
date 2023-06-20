@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescrip
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
 
 /**
  * The component used to render the form description editor.

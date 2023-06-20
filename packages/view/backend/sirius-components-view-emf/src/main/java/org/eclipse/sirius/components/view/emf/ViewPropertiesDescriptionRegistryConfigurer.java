@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.emf.diagram.NodeStylePropertiesConfigurer;
 import org.springframework.stereotype.Service;
 
@@ -72,9 +73,9 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
      */
     // @formatter:off
     private static final List<EClass> TYPES_WITH_CUSTOM_PROPERTIES = List.of(
-            ViewPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION,
-            ViewPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION,
-            ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION
+            DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION,
+            DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION,
+            DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION
     );
     // @formatter:on
     private final IObjectService objectService;

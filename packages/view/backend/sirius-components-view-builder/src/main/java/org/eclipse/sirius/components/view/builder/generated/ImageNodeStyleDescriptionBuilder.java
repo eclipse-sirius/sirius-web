@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ImageNodeStyleDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ImageNodeStyleDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ImageNodeStyleDescription imageNodeStyleDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createImageNodeStyleDescription();
+    private org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription imageNodeStyleDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ImageNodeStyleDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ImageNodeStyleDescription getImageNodeStyleDescription() {
+    protected org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription getImageNodeStyleDescription() {
         return this.imageNodeStyleDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ImageNodeStyleDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ImageNodeStyleDescription build() {
+    public org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription build() {
         return this.getImageNodeStyleDescription();
     }
 
@@ -128,7 +128,7 @@ public class ImageNodeStyleDescriptionBuilder {
      *
      * @generated
      */
-    public ImageNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.LineStyle value) {
+    public ImageNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getImageNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }

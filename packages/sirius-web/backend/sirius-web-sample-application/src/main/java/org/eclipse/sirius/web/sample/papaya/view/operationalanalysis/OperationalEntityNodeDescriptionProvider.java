@@ -14,12 +14,12 @@ package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -38,7 +38,7 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_gray"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
@@ -48,9 +48,9 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
         var nodeDescription = builder.createNodeDescription("OperationalEntity");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalEntities");
         nodeDescription.setStyle(nodeStyle);
-        nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
         nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());

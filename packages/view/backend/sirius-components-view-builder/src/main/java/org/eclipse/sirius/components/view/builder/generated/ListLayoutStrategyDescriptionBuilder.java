@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ListLayoutStrategyDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ListLayoutStrategyDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ListLayoutStrategyDescription listLayoutStrategyDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createListLayoutStrategyDescription();
+    private org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription listLayoutStrategyDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ListLayoutStrategyDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ListLayoutStrategyDescription getListLayoutStrategyDescription() {
+    protected org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription getListLayoutStrategyDescription() {
         return this.listLayoutStrategyDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ListLayoutStrategyDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ListLayoutStrategyDescription build() {
+    public org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription build() {
         return this.getListLayoutStrategyDescription();
     }
 

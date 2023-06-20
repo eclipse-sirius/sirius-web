@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class NodeDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.NodeDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.NodeDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.NodeDescription nodeDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createNodeDescription();
+    private org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodeDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.NodeDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.NodeDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.NodeDescription getNodeDescription() {
+    protected org.eclipse.sirius.components.view.diagram.NodeDescription getNodeDescription() {
         return this.nodeDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.NodeDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.NodeDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.NodeDescription build() {
+    public org.eclipse.sirius.components.view.diagram.NodeDescription build() {
         return this.getNodeDescription();
     }
 
@@ -83,7 +83,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.SynchronizationPolicy value) {
+    public NodeDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.diagram.SynchronizationPolicy value) {
         this.getNodeDescription().setSynchronizationPolicy(value);
         return this;
     }
@@ -110,7 +110,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder palette(org.eclipse.sirius.components.view.NodePalette value) {
+    public NodeDescriptionBuilder palette(org.eclipse.sirius.components.view.diagram.NodePalette value) {
         this.getNodeDescription().setPalette(value);
         return this;
     }
@@ -119,7 +119,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.LayoutStrategyDescription value) {
+    public NodeDescriptionBuilder childrenLayoutStrategy(org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription value) {
         this.getNodeDescription().setChildrenLayoutStrategy(value);
         return this;
     }
@@ -128,7 +128,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder style(org.eclipse.sirius.components.view.NodeStyleDescription value) {
+    public NodeDescriptionBuilder style(org.eclipse.sirius.components.view.diagram.NodeStyleDescription value) {
         this.getNodeDescription().setStyle(value);
         return this;
     }
@@ -137,8 +137,8 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalNodeStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalNodeStyle value : values) {
+    public NodeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle ... values) {
+        for (org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle value : values) {
             this.getNodeDescription().getConditionalStyles().add(value);
         }
         return this;
@@ -149,8 +149,8 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder childrenDescriptions(org.eclipse.sirius.components.view.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.NodeDescription value : values) {
+    public NodeDescriptionBuilder childrenDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getChildrenDescriptions().add(value);
         }
         return this;
@@ -161,8 +161,8 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder borderNodesDescriptions(org.eclipse.sirius.components.view.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.NodeDescription value : values) {
+    public NodeDescriptionBuilder borderNodesDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getBorderNodesDescriptions().add(value);
         }
         return this;
@@ -173,8 +173,8 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder reusedChildNodeDescriptions(org.eclipse.sirius.components.view.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.NodeDescription value : values) {
+    public NodeDescriptionBuilder reusedChildNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getReusedChildNodeDescriptions().add(value);
         }
         return this;
@@ -185,8 +185,8 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder reusedBorderNodeDescriptions(org.eclipse.sirius.components.view.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.NodeDescription value : values) {
+    public NodeDescriptionBuilder reusedBorderNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getReusedBorderNodeDescriptions().add(value);
         }
         return this;

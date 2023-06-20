@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class RadioDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.RadioDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.RadioDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.RadioDescriptionStyle radioDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createRadioDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.RadioDescriptionStyle radioDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createRadioDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RadioDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.RadioDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.RadioDescriptionStyle getRadioDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.RadioDescriptionStyle getRadioDescriptionStyle() {
         return this.radioDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RadioDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.RadioDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.RadioDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.RadioDescriptionStyle build() {
         return this.getRadioDescriptionStyle();
     }
 

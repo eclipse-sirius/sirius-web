@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.view.emf.diagram;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 
 /**
  * UGLY HACK.

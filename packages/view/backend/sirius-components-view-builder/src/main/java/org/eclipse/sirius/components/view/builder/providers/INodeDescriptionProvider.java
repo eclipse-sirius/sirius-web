@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * Used to create node descriptions.

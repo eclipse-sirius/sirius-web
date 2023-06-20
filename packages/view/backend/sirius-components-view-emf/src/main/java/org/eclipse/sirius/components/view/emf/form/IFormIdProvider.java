@@ -13,8 +13,8 @@
 package org.eclipse.sirius.components.view.emf.form;
 
 
-import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
+import org.eclipse.sirius.components.view.form.FormDescription;
 
 /**
  * Interface to provide ids for FormDescription.

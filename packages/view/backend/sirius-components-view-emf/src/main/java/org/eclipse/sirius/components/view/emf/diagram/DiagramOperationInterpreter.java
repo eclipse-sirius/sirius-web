@@ -31,9 +31,9 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
-import org.eclipse.sirius.components.view.Tool;
+import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.diagram.util.DiagramSwitch;
 import org.eclipse.sirius.components.view.emf.IOperationInterpreter;
-import org.eclipse.sirius.components.view.util.ViewSwitch;
 
 /**
  * Executes the body of a diagram tool as defined by a set of {@link Operation}s.
@@ -52,10 +52,10 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes;
+    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
 
     public DiagramOperationInterpreter(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes, IFeedbackMessageService feedbackMessageService) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
@@ -92,7 +92,7 @@ public class DiagramOperationInterpreter implements IOperationInterpreter {
     }
 
     private Optional<VariableManager> executeOperation(Operation operation, VariableManager variableManager) {
-        ViewSwitch<Optional<VariableManager>> dispatcher = new DiagramOperationInterpreterViewSwitch(variableManager, this.interpreter, this.objectService, this.editService, this.diagramContext,
+        DiagramSwitch<Optional<VariableManager>> dispatcher = new DiagramOperationInterpreterViewSwitch(variableManager, this.interpreter, this.objectService, this.editService, this.diagramContext,
                 this.convertedNodes, this);
         return dispatcher.doSwitch(operation);
     }

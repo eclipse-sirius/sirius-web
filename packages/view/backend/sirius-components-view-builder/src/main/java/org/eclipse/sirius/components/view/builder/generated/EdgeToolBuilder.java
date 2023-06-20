@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class EdgeToolBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.EdgeTool.
+     * Create instance org.eclipse.sirius.components.view.diagram.EdgeTool.
      * @generated
      */
-    private org.eclipse.sirius.components.view.EdgeTool edgeTool = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createEdgeTool();
+    private org.eclipse.sirius.components.view.diagram.EdgeTool edgeTool = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createEdgeTool();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgeTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgeTool.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.EdgeTool getEdgeTool() {
+    protected org.eclipse.sirius.components.view.diagram.EdgeTool getEdgeTool() {
         return this.edgeTool;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgeTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgeTool.
      * @generated
      */
-    public org.eclipse.sirius.components.view.EdgeTool build() {
+    public org.eclipse.sirius.components.view.diagram.EdgeTool build() {
         return this.getEdgeTool();
     }
 
@@ -68,8 +68,8 @@ public class EdgeToolBuilder {
      *
      * @generated
      */
-    public EdgeToolBuilder targetElementDescriptions(org.eclipse.sirius.components.view.DiagramElementDescription ... values) {
-        for (org.eclipse.sirius.components.view.DiagramElementDescription value : values) {
+    public EdgeToolBuilder targetElementDescriptions(org.eclipse.sirius.components.view.diagram.DiagramElementDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.DiagramElementDescription value : values) {
             this.getEdgeTool().getTargetElementDescriptions().add(value);
         }
         return this;

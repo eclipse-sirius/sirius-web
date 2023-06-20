@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class TargetEdgeEndReconnectionToolBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool.
+     * Create instance org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool.
      * @generated
      */
-    private org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool targetEdgeEndReconnectionTool = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createTargetEdgeEndReconnectionTool();
+    private org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool targetEdgeEndReconnectionTool = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createTargetEdgeEndReconnectionTool();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool getTargetEdgeEndReconnectionTool() {
+    protected org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool getTargetEdgeEndReconnectionTool() {
         return this.targetEdgeEndReconnectionTool;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool.
+     * Return instance org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool.
      * @generated
      */
-    public org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool build() {
+    public org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool build() {
         return this.getTargetEdgeEndReconnectionTool();
     }
 

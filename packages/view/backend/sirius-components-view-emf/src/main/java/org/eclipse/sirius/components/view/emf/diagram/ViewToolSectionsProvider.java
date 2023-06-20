@@ -40,9 +40,9 @@ import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.springframework.stereotype.Service;
@@ -117,11 +117,11 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         if (sourceElementId.isPresent()) {
             String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + sourceElementId.get();
             var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescription.getId())
-                    .filter(org.eclipse.sirius.components.view.DiagramDescription.class::isInstance)
-                    .map(org.eclipse.sirius.components.view.DiagramDescription.class::cast);
+                    .filter(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::isInstance)
+                    .map(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::cast);
 
             if (optionalDiagramDescription.isPresent()) {
-                org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
+                org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
                 viewDiagramDescription.getPalette();
 
                 var diagramPalette = ToolSection.newToolSection(diagramPaletteId)
@@ -135,7 +135,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return allToolSections;
     }
 
-    private List<ITool> createDiagramPaletteTools(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription) {
+    private List<ITool> createDiagramPaletteTools(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription) {
         List<ITool> diagramTools = new ArrayList<>();
         for (NodeTool nodeTool : viewDiagramDescription.getPalette().getNodeTools()) {
             String toolId = this.idProvider.apply(nodeTool).toString();
@@ -162,7 +162,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
             String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId.get();
             var optionalNodeDescription = this.viewRepresentationDescriptionSearchService.findViewNodeDescriptionById(nodeDescription.getId());
             if (optionalNodeDescription.isPresent()) {
-                org.eclipse.sirius.components.view.NodeDescription viewNodeDescription = optionalNodeDescription.get();
+                org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
                 var nodePalette = ToolSection.newToolSection(nodePaletteId)
                         .label(viewNodeDescription.getName())
                         .tools(this.createNodePaletteTools(diagramDescription, viewNodeDescription, nodeDescription))
@@ -174,7 +174,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return allToolSections;
     }
 
-    private List<ITool> createNodePaletteTools(DiagramDescription diagramDescription, org.eclipse.sirius.components.view.NodeDescription viewNodeDescription, NodeDescription nodeDescription) {
+    private List<ITool> createNodePaletteTools(DiagramDescription diagramDescription, org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, NodeDescription nodeDescription) {
         List<ITool> tools = new ArrayList<>();
 
         for (NodeTool nodeTool : new ToolFinder().findNodeTools(viewNodeDescription)) {
@@ -196,7 +196,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         for (EdgeTool edgeTool : new ToolFinder().findEdgeTools(viewNodeDescription)) {
             List<NodeDescription> targetNodeDescriptionCandidates = new ArrayList<>();
             for (DiagramElementDescription viewDiagramElementDescription : edgeTool.getTargetElementDescriptions()) {
-                if (viewDiagramElementDescription instanceof org.eclipse.sirius.components.view.NodeDescription) {
+                if (viewDiagramElementDescription instanceof org.eclipse.sirius.components.view.diagram.NodeDescription) {
                     Optional<NodeDescription> nodeDescriptionTargetCandidate = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, this.diagramIdProvider.getId(viewDiagramElementDescription));
                     nodeDescriptionTargetCandidate.ifPresent(targetNodeDescriptionCandidates::add);
                 }
@@ -216,7 +216,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
         return tools;
     }
 
-    private List<ITool> createEdgePaletteTools(org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription) {
+    private List<ITool> createEdgePaletteTools(org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription) {
         List<ITool> tools = new ArrayList<>();
         List<NodeTool> paletteSingleTargetTools = new ToolFinder().findNodeTools(viewEdgeDescription);
         for (NodeTool nodeTool : paletteSingleTargetTools) {
@@ -246,7 +246,7 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
             var optionalEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
-                org.eclipse.sirius.components.view.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
+                org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
 
                 String nodePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
                 var nodePalette = ToolSection.newToolSection(nodePaletteId)

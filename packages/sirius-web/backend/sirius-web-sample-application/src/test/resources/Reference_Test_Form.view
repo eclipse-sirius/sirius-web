@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:reference="https://www.eclipse.org/sirius/widgets/reference" xmlns:view="http://www.eclipse.org/sirius-web/view">
-  <descriptions xmi:type="view:FormDescription" name="Reference Widget Test" domainType="flow::System" titleExpression="Reference Test">
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:reference="https://www.eclipse.org/sirius/widgets/reference" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:view="http://www.eclipse.org/sirius-web/view">
+  <descriptions xmi:type="form:FormDescription" name="Reference Widget Test" domainType="flow::System" titleExpression="Reference Test">
     <pages>
       <groups>
         <widgets xmi:type="reference:ReferenceWidgetDescription" name="elements" labelExpression="elements" referenceNameExpression="elements"/>
-        <widgets xmi:type="view:FlexboxContainerDescription">
+        <widgets xmi:type="form:FlexboxContainerDescription">
           <children xmi:type="reference:ReferenceWidgetDescription" name="outgoingFlows" labelExpression="outgoingFlows" referenceNameExpression="outgoingFlows"/>
         </widgets>
       </groups>

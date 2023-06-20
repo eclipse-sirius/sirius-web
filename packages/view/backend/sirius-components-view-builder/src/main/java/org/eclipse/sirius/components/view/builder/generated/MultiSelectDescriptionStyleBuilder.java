@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class MultiSelectDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.MultiSelectDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.MultiSelectDescriptionStyle multiSelectDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createMultiSelectDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle multiSelectDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createMultiSelectDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.MultiSelectDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.MultiSelectDescriptionStyle getMultiSelectDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle getMultiSelectDescriptionStyle() {
         return this.multiSelectDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.MultiSelectDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.MultiSelectDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle build() {
         return this.getMultiSelectDescriptionStyle();
     }
 

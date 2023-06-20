@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class EdgePaletteBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.EdgePalette.
+     * Create instance org.eclipse.sirius.components.view.diagram.EdgePalette.
      * @generated
      */
-    private org.eclipse.sirius.components.view.EdgePalette edgePalette = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createEdgePalette();
+    private org.eclipse.sirius.components.view.diagram.EdgePalette edgePalette = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createEdgePalette();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgePalette.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgePalette.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.EdgePalette getEdgePalette() {
+    protected org.eclipse.sirius.components.view.diagram.EdgePalette getEdgePalette() {
         return this.edgePalette;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgePalette.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgePalette.
      * @generated
      */
-    public org.eclipse.sirius.components.view.EdgePalette build() {
+    public org.eclipse.sirius.components.view.diagram.EdgePalette build() {
         return this.getEdgePalette();
     }
 
@@ -47,7 +47,7 @@ public class EdgePaletteBuilder {
      *
      * @generated
      */
-    public EdgePaletteBuilder deleteTool(org.eclipse.sirius.components.view.DeleteTool value) {
+    public EdgePaletteBuilder deleteTool(org.eclipse.sirius.components.view.diagram.DeleteTool value) {
         this.getEdgePalette().setDeleteTool(value);
         return this;
     }
@@ -56,7 +56,7 @@ public class EdgePaletteBuilder {
      *
      * @generated
      */
-    public EdgePaletteBuilder centerLabelEditTool(org.eclipse.sirius.components.view.LabelEditTool value) {
+    public EdgePaletteBuilder centerLabelEditTool(org.eclipse.sirius.components.view.diagram.LabelEditTool value) {
         this.getEdgePalette().setCenterLabelEditTool(value);
         return this;
     }
@@ -65,7 +65,7 @@ public class EdgePaletteBuilder {
      *
      * @generated
      */
-    public EdgePaletteBuilder beginLabelEditTool(org.eclipse.sirius.components.view.LabelEditTool value) {
+    public EdgePaletteBuilder beginLabelEditTool(org.eclipse.sirius.components.view.diagram.LabelEditTool value) {
         this.getEdgePalette().setBeginLabelEditTool(value);
         return this;
     }
@@ -74,7 +74,7 @@ public class EdgePaletteBuilder {
      *
      * @generated
      */
-    public EdgePaletteBuilder endLabelEditTool(org.eclipse.sirius.components.view.LabelEditTool value) {
+    public EdgePaletteBuilder endLabelEditTool(org.eclipse.sirius.components.view.diagram.LabelEditTool value) {
         this.getEdgePalette().setEndLabelEditTool(value);
         return this;
     }
@@ -83,8 +83,8 @@ public class EdgePaletteBuilder {
      *
      * @generated
      */
-    public EdgePaletteBuilder nodeTools(org.eclipse.sirius.components.view.NodeTool ... values) {
-        for (org.eclipse.sirius.components.view.NodeTool value : values) {
+    public EdgePaletteBuilder nodeTools(org.eclipse.sirius.components.view.diagram.NodeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeTool value : values) {
             this.getEdgePalette().getNodeTools().add(value);
         }
         return this;
@@ -95,8 +95,8 @@ public class EdgePaletteBuilder {
      *
      * @generated
      */
-    public EdgePaletteBuilder edgeReconnectionTools(org.eclipse.sirius.components.view.EdgeReconnectionTool ... values) {
-        for (org.eclipse.sirius.components.view.EdgeReconnectionTool value : values) {
+    public EdgePaletteBuilder edgeReconnectionTools(org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool value : values) {
             this.getEdgePalette().getEdgeReconnectionTools().add(value);
         }
         return this;

@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class MultiSelectDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.MultiSelectDescription.
+     * Create instance org.eclipse.sirius.components.view.form.MultiSelectDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.MultiSelectDescription multiSelectDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createMultiSelectDescription();
+    private org.eclipse.sirius.components.view.form.MultiSelectDescription multiSelectDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createMultiSelectDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.MultiSelectDescription.
+     * Return instance org.eclipse.sirius.components.view.form.MultiSelectDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.MultiSelectDescription getMultiSelectDescription() {
+    protected org.eclipse.sirius.components.view.form.MultiSelectDescription getMultiSelectDescription() {
         return this.multiSelectDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.MultiSelectDescription.
+     * Return instance org.eclipse.sirius.components.view.form.MultiSelectDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.MultiSelectDescription build() {
+    public org.eclipse.sirius.components.view.form.MultiSelectDescription build() {
         return this.getMultiSelectDescription();
     }
 
@@ -69,7 +69,6 @@ public class MultiSelectDescriptionBuilder {
         this.getMultiSelectDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -114,7 +113,7 @@ public class MultiSelectDescriptionBuilder {
      *
      * @generated
      */
-    public MultiSelectDescriptionBuilder style(org.eclipse.sirius.components.view.MultiSelectDescriptionStyle value) {
+    public MultiSelectDescriptionBuilder style(org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle value) {
         this.getMultiSelectDescription().setStyle(value);
         return this;
     }
@@ -123,8 +122,8 @@ public class MultiSelectDescriptionBuilder {
      *
      * @generated
      */
-    public MultiSelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalMultiSelectDescriptionStyle value : values) {
+    public MultiSelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle value : values) {
             this.getMultiSelectDescription().getConditionalStyles().add(value);
         }
         return this;

@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 
 /**
  * Used to provide a diagram element description.

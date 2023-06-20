@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.IViewObjectCache;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * Store and retrieve created element.

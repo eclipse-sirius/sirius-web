@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.Style.
+ * Builder for org.eclipse.sirius.components.view.diagram.Style.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class StyleBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.Style.
+     * Builder for org.eclipse.sirius.components.view.diagram.Style.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.Style getStyle();
+    protected abstract org.eclipse.sirius.components.view.diagram.Style getStyle();
 
     /**
      * Setter for Color.

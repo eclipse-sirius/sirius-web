@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class CreateViewBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.CreateView.
+     * Create instance org.eclipse.sirius.components.view.diagram.CreateView.
      * @generated
      */
-    private org.eclipse.sirius.components.view.CreateView createView = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createCreateView();
+    private org.eclipse.sirius.components.view.diagram.CreateView createView = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createCreateView();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.CreateView.
+     * Return instance org.eclipse.sirius.components.view.diagram.CreateView.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.CreateView getCreateView() {
+    protected org.eclipse.sirius.components.view.diagram.CreateView getCreateView() {
         return this.createView;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.CreateView.
+     * Return instance org.eclipse.sirius.components.view.diagram.CreateView.
      * @generated
      */
-    public org.eclipse.sirius.components.view.CreateView build() {
+    public org.eclipse.sirius.components.view.diagram.CreateView build() {
         return this.getCreateView();
     }
 
@@ -68,7 +68,7 @@ public class CreateViewBuilder {
      *
      * @generated
      */
-    public CreateViewBuilder elementDescription(org.eclipse.sirius.components.view.DiagramElementDescription value) {
+    public CreateViewBuilder elementDescription(org.eclipse.sirius.components.view.diagram.DiagramElementDescription value) {
         this.getCreateView().setElementDescription(value);
         return this;
     }
@@ -95,7 +95,7 @@ public class CreateViewBuilder {
      *
      * @generated
      */
-    public CreateViewBuilder containmentKind(org.eclipse.sirius.components.view.NodeContainmentKind value) {
+    public CreateViewBuilder containmentKind(org.eclipse.sirius.components.view.diagram.NodeContainmentKind value) {
         this.getCreateView().setContainmentKind(value);
         return this;
     }

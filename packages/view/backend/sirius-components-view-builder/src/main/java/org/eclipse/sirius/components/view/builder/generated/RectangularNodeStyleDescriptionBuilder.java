@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class RectangularNodeStyleDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.RectangularNodeStyleDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.RectangularNodeStyleDescription rectangularNodeStyleDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+    private org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription rectangularNodeStyleDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RectangularNodeStyleDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.RectangularNodeStyleDescription getRectangularNodeStyleDescription() {
+    protected org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription getRectangularNodeStyleDescription() {
         return this.rectangularNodeStyleDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RectangularNodeStyleDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.RectangularNodeStyleDescription build() {
+    public org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription build() {
         return this.getRectangularNodeStyleDescription();
     }
 
@@ -128,7 +128,7 @@ public class RectangularNodeStyleDescriptionBuilder {
      *
      * @generated
      */
-    public RectangularNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.LineStyle value) {
+    public RectangularNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getRectangularNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }

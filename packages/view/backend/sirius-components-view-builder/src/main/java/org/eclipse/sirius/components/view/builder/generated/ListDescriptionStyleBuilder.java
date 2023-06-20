@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ListDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ListDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ListDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ListDescriptionStyle listDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createListDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ListDescriptionStyle listDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createListDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ListDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ListDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ListDescriptionStyle getListDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ListDescriptionStyle getListDescriptionStyle() {
         return this.listDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ListDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ListDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ListDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ListDescriptionStyle build() {
         return this.getListDescriptionStyle();
     }
 

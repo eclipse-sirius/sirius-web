@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.WidgetDescription.
+ * Builder for org.eclipse.sirius.components.view.form.WidgetDescription.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class WidgetDescriptionBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.WidgetDescription.
+     * Builder for org.eclipse.sirius.components.view.form.WidgetDescription.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.WidgetDescription getWidgetDescription();
+    protected abstract org.eclipse.sirius.components.view.form.WidgetDescription getWidgetDescription();
 
     /**
      * Setter for Name.
@@ -44,7 +44,6 @@ public abstract class WidgetDescriptionBuilder {
         this.getWidgetDescription().setLabelExpression(value);
         return this;
     }
-
     /**
      * Setter for HelpExpression.
      *

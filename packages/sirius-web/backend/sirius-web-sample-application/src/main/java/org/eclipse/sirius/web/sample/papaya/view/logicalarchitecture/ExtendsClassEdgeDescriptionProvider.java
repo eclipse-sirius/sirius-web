@@ -14,14 +14,14 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
  * Description of extends class.
@@ -38,14 +38,14 @@ public class ExtendsClassEdgeDescriptionProvider implements IEdgeDescriptionProv
 
     @Override
     public EdgeDescription create() {
-        var extendsClassEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        var extendsClassEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         extendsClassEdgeStyle.setColor(this.colorProvider.getColor("color_blue_6"));
         extendsClassEdgeStyle.setEdgeWidth(1);
         extendsClassEdgeStyle.setLineStyle(LineStyle.SOLID);
         extendsClassEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         extendsClassEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);
 
-        var extendsClassEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        var extendsClassEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsClassEdgeDescription.setName("Edge Extends class");
         extendsClassEdgeDescription.setLabelExpression("");
         extendsClassEdgeDescription.setStyle(extendsClassEdgeStyle);

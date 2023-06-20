@@ -14,8 +14,8 @@ package org.eclipse.sirius.components.view.builder;
 
 import java.util.Optional;
 
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * Used to retrieve diagram description elements created by providers.

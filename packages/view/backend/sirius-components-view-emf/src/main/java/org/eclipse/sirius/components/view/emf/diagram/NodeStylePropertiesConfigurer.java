@@ -50,17 +50,18 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.BorderStyle;
 import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
-import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LabelStyle;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.BorderStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
@@ -108,7 +109,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         String id = UUID.nameUUIDFromBytes("nodestyle".getBytes()).toString();
 
         List<AbstractControlDescription> controls = new ArrayList<>();
-        controls.add(this.createShapeSelectionField(ViewPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
+        controls.add(this.createShapeSelectionField(DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
         controls.add(this.createShapePreviewField());
         controls.addAll(this.getGeneralControlDescription());
 
@@ -144,7 +145,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(this.createCheckbox("nodestyle.isWithHeader", "With Header",
                 style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
                 (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
-                ViewPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
+                DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
         controls.addAll(this.getGeneralControlDescription());
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
@@ -161,26 +162,26 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 this.createExpressionField("nodestyle.widthExpression", "Width Expression",
                         style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
                         (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
-                        ViewPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION),
+                        DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION),
                 this.createExpressionField("nodestyle.heightExpression", "Height Expression",
                                            style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
                                            (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
-                                           ViewPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION),
+                                           DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION),
                 this.createCheckbox("nodestyle.showIcon", "Show Icon",
                                     style -> ((NodeStyleDescription) style).isShowIcon(),
                                     (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
-                                    ViewPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
-                this.createUserColorSelectionField("nodestyle.labelColor", "Label Color", ViewPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR
+                                    DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
+                this.createUserColorSelectionField("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR
                         , NodeStyleDescription.class
                         , NodeStyleDescription::getLabelColor
                         , NodeStyleDescription::setLabelColor),
-                this.createUserColorSelectionField("nodestyle.color", "Color", ViewPackage.Literals.STYLE__COLOR
+                this.createUserColorSelectionField("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR
                         , NodeStyleDescription.class
                         , NodeStyleDescription::getColor
                         , NodeStyleDescription::setColor),
                 this.createUserColorSelectionField("nodestyle.borderColor"
                         , "Border Color"
-                        , ViewPackage.Literals.BORDER_STYLE__BORDER_COLOR
+                        , DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR
                         , BorderStyle.class
                         , BorderStyle::getBorderColor
                         , BorderStyle::setBorderColor),
@@ -193,7 +194,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                              // Ignore.
                                          }
                                      },
-                                     ViewPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
+                                     DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
                 this.createTextField("nodestyle.borderSize", "Border Size",
                                      style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
                                      (style, newBorderSize) -> {
@@ -203,8 +204,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                              // Ignore.
                                          }
                                      },
-                                     ViewPackage.Literals.BORDER_STYLE__BORDER_SIZE),
-                this.createBorderLineStyleSelectionField("nodestyle.borderstyle", ViewPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE),
+                                     DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE),
+                this.createBorderLineStyleSelectionField("nodestyle.borderstyle", DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE),
                 this.createTextField("nodestyle.fontSize", "Font Size",
                                      style -> String.valueOf(((LabelStyle) style).getFontSize()),
                                      (style, newColor) -> {

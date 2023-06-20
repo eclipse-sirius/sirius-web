@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.Tool.
+ * Builder for org.eclipse.sirius.components.view.diagram.Tool.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class ToolBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.Tool.
+     * Builder for org.eclipse.sirius.components.view.diagram.Tool.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.Tool getTool();
+    protected abstract org.eclipse.sirius.components.view.diagram.Tool getTool();
 
     /**
      * Setter for Name.

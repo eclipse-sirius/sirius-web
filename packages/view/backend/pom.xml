@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-parent</artifactId>
-	<version>2023.6.1</version>
+	<version>2023.4.0</version>
 
 	<name>sirius-components-view-parent</name>
 	<description>Sirius Components View Parent</description>
@@ -36,5 +36,9 @@
 		<module>sirius-components-view-edit</module>
 		<module>sirius-components-view-emf</module>
 		<module>sirius-components-view-builder</module>
+		<module>sirius-components-view-diagram</module>
+		<module>sirius-components-view-diagram-edit</module>
+		<module>sirius-components-view-form</module>
+		<module>sirius-components-view-form-edit</module>
 	</modules>
 </project>

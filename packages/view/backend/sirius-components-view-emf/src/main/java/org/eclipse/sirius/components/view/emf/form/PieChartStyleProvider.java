@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle.Bu
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.PieChartDescription;
-import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.PieChartDescription;
+import org.eclipse.sirius.components.view.form.PieChartDescriptionStyle;
 
 /**
  * The style provider for the PieChart Description widget of the View DSL.

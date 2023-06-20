@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class SelectDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.SelectDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.SelectDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.SelectDescriptionStyle selectDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createSelectDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.SelectDescriptionStyle selectDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createSelectDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.SelectDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.SelectDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.SelectDescriptionStyle getSelectDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.SelectDescriptionStyle getSelectDescriptionStyle() {
         return this.selectDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.SelectDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.SelectDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.SelectDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.SelectDescriptionStyle build() {
         return this.getSelectDescriptionStyle();
     }
 

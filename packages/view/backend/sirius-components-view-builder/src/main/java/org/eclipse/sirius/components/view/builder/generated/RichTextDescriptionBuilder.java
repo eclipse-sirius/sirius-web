@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class RichTextDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.RichTextDescription.
+     * Create instance org.eclipse.sirius.components.view.form.RichTextDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.RichTextDescription richTextDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createRichTextDescription();
+    private org.eclipse.sirius.components.view.form.RichTextDescription richTextDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createRichTextDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RichTextDescription.
+     * Return instance org.eclipse.sirius.components.view.form.RichTextDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.RichTextDescription getRichTextDescription() {
+    protected org.eclipse.sirius.components.view.form.RichTextDescription getRichTextDescription() {
         return this.richTextDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.RichTextDescription.
+     * Return instance org.eclipse.sirius.components.view.form.RichTextDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.RichTextDescription build() {
+    public org.eclipse.sirius.components.view.form.RichTextDescription build() {
         return this.getRichTextDescription();
     }
 
@@ -69,7 +69,6 @@ public class RichTextDescriptionBuilder {
         this.getRichTextDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *

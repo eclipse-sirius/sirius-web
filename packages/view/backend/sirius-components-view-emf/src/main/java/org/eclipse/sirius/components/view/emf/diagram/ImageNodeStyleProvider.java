@@ -26,8 +26,8 @@ import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.springframework.stereotype.Service;
 
 /**

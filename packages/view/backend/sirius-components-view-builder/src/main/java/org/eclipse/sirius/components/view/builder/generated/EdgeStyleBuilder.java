@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class EdgeStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.EdgeStyle.
+     * Create instance org.eclipse.sirius.components.view.diagram.EdgeStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.EdgeStyle edgeStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createEdgeStyle();
+    private org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createEdgeStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgeStyle.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgeStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.EdgeStyle getEdgeStyle() {
+    protected org.eclipse.sirius.components.view.diagram.EdgeStyle getEdgeStyle() {
         return this.edgeStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgeStyle.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgeStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.EdgeStyle build() {
+    public org.eclipse.sirius.components.view.diagram.EdgeStyle build() {
         return this.getEdgeStyle();
     }
 
@@ -101,7 +101,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder lineStyle(org.eclipse.sirius.components.view.LineStyle value) {
+    public EdgeStyleBuilder lineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getEdgeStyle().setLineStyle(value);
         return this;
     }
@@ -110,7 +110,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder sourceArrowStyle(org.eclipse.sirius.components.view.ArrowStyle value) {
+    public EdgeStyleBuilder sourceArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
         this.getEdgeStyle().setSourceArrowStyle(value);
         return this;
     }
@@ -119,7 +119,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder targetArrowStyle(org.eclipse.sirius.components.view.ArrowStyle value) {
+    public EdgeStyleBuilder targetArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
         this.getEdgeStyle().setTargetArrowStyle(value);
         return this;
     }

@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class DeleteViewBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.DeleteView.
+     * Create instance org.eclipse.sirius.components.view.diagram.DeleteView.
      * @generated
      */
-    private org.eclipse.sirius.components.view.DeleteView deleteView = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createDeleteView();
+    private org.eclipse.sirius.components.view.diagram.DeleteView deleteView = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createDeleteView();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DeleteView.
+     * Return instance org.eclipse.sirius.components.view.diagram.DeleteView.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.DeleteView getDeleteView() {
+    protected org.eclipse.sirius.components.view.diagram.DeleteView getDeleteView() {
         return this.deleteView;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DeleteView.
+     * Return instance org.eclipse.sirius.components.view.diagram.DeleteView.
      * @generated
      */
-    public org.eclipse.sirius.components.view.DeleteView build() {
+    public org.eclipse.sirius.components.view.diagram.DeleteView build() {
         return this.getDeleteView();
     }
 

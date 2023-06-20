@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 
 /**
  * Used to provide edge descriptions.

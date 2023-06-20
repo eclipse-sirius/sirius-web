@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DataType;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
 
 /**
  * Java services needed to execute the AQL expressions used in the {@link FormDescription} created.

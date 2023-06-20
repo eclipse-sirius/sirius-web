@@ -15,20 +15,21 @@ package org.eclipse.sirius.components.widgets.reference.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.sirius.components.view.impl.WidgetDescriptionImpl;
+import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Widget Description</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Widget Description</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceOwnerExpression <em>Reference Owner Expression</em>}</li>
- *   <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceNameExpression <em>Reference Name Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceOwnerExpression
+ * <em>Reference Owner Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl#getReferenceNameExpression
+ * <em>Reference Name Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -36,8 +37,8 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
 public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implements ReferenceWidgetDescription {
     /**
      * The default value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getReferenceOwnerExpression()
      * @generated
      * @ordered
@@ -46,8 +47,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
 
     /**
      * The cached value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getReferenceOwnerExpression()
      * @generated
      * @ordered
@@ -56,8 +57,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
 
     /**
      * The default value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getReferenceNameExpression()
      * @generated
      * @ordered
@@ -66,8 +67,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
 
     /**
      * The cached value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getReferenceNameExpression()
      * @generated
      * @ordered
@@ -75,8 +76,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     protected String referenceNameExpression = REFERENCE_NAME_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ReferenceWidgetDescriptionImpl() {
@@ -84,8 +85,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -94,135 +95,137 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getReferenceOwnerExpression() {
-        return referenceOwnerExpression;
+        return this.referenceOwnerExpression;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setReferenceOwnerExpression(String newReferenceOwnerExpression) {
-        String oldReferenceOwnerExpression = referenceOwnerExpression;
-        referenceOwnerExpression = newReferenceOwnerExpression;
+        String oldReferenceOwnerExpression = this.referenceOwnerExpression;
+        this.referenceOwnerExpression = newReferenceOwnerExpression;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, oldReferenceOwnerExpression, referenceOwnerExpression));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, oldReferenceOwnerExpression,
+                    this.referenceOwnerExpression));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getReferenceNameExpression() {
-        return referenceNameExpression;
+        return this.referenceNameExpression;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setReferenceNameExpression(String newReferenceNameExpression) {
-        String oldReferenceNameExpression = referenceNameExpression;
-        referenceNameExpression = newReferenceNameExpression;
+        String oldReferenceNameExpression = this.referenceNameExpression;
+        this.referenceNameExpression = newReferenceNameExpression;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, oldReferenceNameExpression, referenceNameExpression));
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, oldReferenceNameExpression, this.referenceNameExpression));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                return getReferenceOwnerExpression();
+                return this.getReferenceOwnerExpression();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                return getReferenceNameExpression();
+                return this.getReferenceNameExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                setReferenceOwnerExpression((String)newValue);
+                this.setReferenceOwnerExpression((String) newValue);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                setReferenceNameExpression((String)newValue);
+                this.setReferenceNameExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                setReferenceOwnerExpression(REFERENCE_OWNER_EXPRESSION_EDEFAULT);
+                this.setReferenceOwnerExpression(REFERENCE_OWNER_EXPRESSION_EDEFAULT);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                setReferenceNameExpression(REFERENCE_NAME_EXPRESSION_EDEFAULT);
+                this.setReferenceNameExpression(REFERENCE_NAME_EXPRESSION_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                return REFERENCE_OWNER_EXPRESSION_EDEFAULT == null ? referenceOwnerExpression != null : !REFERENCE_OWNER_EXPRESSION_EDEFAULT.equals(referenceOwnerExpression);
+                return REFERENCE_OWNER_EXPRESSION_EDEFAULT == null ? this.referenceOwnerExpression != null : !REFERENCE_OWNER_EXPRESSION_EDEFAULT.equals(this.referenceOwnerExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(referenceNameExpression);
+                return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? this.referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(this.referenceNameExpression);
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (referenceOwnerExpression: ");
-        result.append(referenceOwnerExpression);
+        result.append(this.referenceOwnerExpression);
         result.append(", referenceNameExpression: ");
-        result.append(referenceNameExpression);
+        result.append(this.referenceNameExpression);
         result.append(')');
         return result.toString();
     }
 
-} //ReferenceWidgetDescriptionImpl
+} // ReferenceWidgetDescriptionImpl

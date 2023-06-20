@@ -36,12 +36,13 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.view.Conditional;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.CreateInstance;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
  * The validator for {@link DiagramDescription}.
@@ -130,7 +131,7 @@ public class DiagramDescriptionValidator implements EValidator {
                     "The style should not be empty",
                     new Object [] {
                         conditionalNodeStyle,
-                        ViewPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                     });
             // @formatter:on
 
@@ -151,7 +152,7 @@ public class DiagramDescriptionValidator implements EValidator {
                     "The color should not be empty",
                     new Object [] {
                         nodeStyle,
-                        ViewPackage.Literals.STYLE__COLOR,
+                        DiagramPackage.Literals.STYLE__COLOR,
                     });
             // @formatter:on
 
@@ -227,7 +228,7 @@ public class DiagramDescriptionValidator implements EValidator {
                     String.format(DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
                         diagramElementDescription,
-                        ViewPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
+                        DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
                     });
             // @formatter:on
 

@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ImageDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ImageDescription.
+     * Create instance org.eclipse.sirius.components.view.form.ImageDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ImageDescription imageDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createImageDescription();
+    private org.eclipse.sirius.components.view.form.ImageDescription imageDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createImageDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ImageDescription.
+     * Return instance org.eclipse.sirius.components.view.form.ImageDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ImageDescription getImageDescription() {
+    protected org.eclipse.sirius.components.view.form.ImageDescription getImageDescription() {
         return this.imageDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ImageDescription.
+     * Return instance org.eclipse.sirius.components.view.form.ImageDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ImageDescription build() {
+    public org.eclipse.sirius.components.view.form.ImageDescription build() {
         return this.getImageDescription();
     }
 
@@ -69,7 +69,6 @@ public class ImageDescriptionBuilder {
         this.getImageDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for UrlExpression.
      *

@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class SelectDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.SelectDescription.
+     * Create instance org.eclipse.sirius.components.view.form.SelectDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.SelectDescription selectDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createSelectDescription();
+    private org.eclipse.sirius.components.view.form.SelectDescription selectDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createSelectDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.SelectDescription.
+     * Return instance org.eclipse.sirius.components.view.form.SelectDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.SelectDescription getSelectDescription() {
+    protected org.eclipse.sirius.components.view.form.SelectDescription getSelectDescription() {
         return this.selectDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.SelectDescription.
+     * Return instance org.eclipse.sirius.components.view.form.SelectDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.SelectDescription build() {
+    public org.eclipse.sirius.components.view.form.SelectDescription build() {
         return this.getSelectDescription();
     }
 
@@ -69,7 +69,6 @@ public class SelectDescriptionBuilder {
         this.getSelectDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -114,7 +113,7 @@ public class SelectDescriptionBuilder {
      *
      * @generated
      */
-    public SelectDescriptionBuilder style(org.eclipse.sirius.components.view.SelectDescriptionStyle value) {
+    public SelectDescriptionBuilder style(org.eclipse.sirius.components.view.form.SelectDescriptionStyle value) {
         this.getSelectDescription().setStyle(value);
         return this;
     }
@@ -123,8 +122,8 @@ public class SelectDescriptionBuilder {
      *
      * @generated
      */
-    public SelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle value : values) {
+    public SelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle value : values) {
             this.getSelectDescription().getConditionalStyles().add(value);
         }
         return this;

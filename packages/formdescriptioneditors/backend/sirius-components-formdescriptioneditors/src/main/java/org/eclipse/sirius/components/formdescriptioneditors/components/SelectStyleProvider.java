@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.SelectStyle.Builder;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
 
 /**
  * The style provider for the Select Description widget of the View DSL. This only handles "static" or "preview" styles

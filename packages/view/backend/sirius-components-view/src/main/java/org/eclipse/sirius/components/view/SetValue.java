@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ package org.eclipse.sirius.components.view;
  * @generated
  */
 public interface SetValue extends Operation {
-
     /**
      * Returns the value of the '<em><b>Feature Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -58,7 +57,7 @@ public interface SetValue extends Operation {
      * @return the value of the '<em>Value Expression</em>' attribute.
      * @see #setValueExpression(String)
      * @see org.eclipse.sirius.components.view.ViewPackage#getSetValue_ValueExpression()
-     * @model required="true"
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @generated
      */
     String getValueExpression();
@@ -73,4 +72,5 @@ public interface SetValue extends Operation {
      * @generated
      */
     void setValueExpression(String value);
+
 } // SetValue

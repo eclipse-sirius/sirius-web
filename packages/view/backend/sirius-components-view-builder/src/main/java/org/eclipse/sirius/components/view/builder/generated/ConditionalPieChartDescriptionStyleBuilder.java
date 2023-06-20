@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalPieChartDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle conditionalPieChartDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalPieChartDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle conditionalPieChartDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalPieChartDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle getConditionalPieChartDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle getConditionalPieChartDescriptionStyle() {
         return this.conditionalPieChartDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalPieChartDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle build() {
         return this.getConditionalPieChartDescriptionStyle();
     }
 

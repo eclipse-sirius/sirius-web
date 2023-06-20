@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class SelectionDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.SelectionDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.SelectionDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.SelectionDescription selectionDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createSelectionDescription();
+    private org.eclipse.sirius.components.view.diagram.SelectionDescription selectionDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createSelectionDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.SelectionDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.SelectionDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.SelectionDescription getSelectionDescription() {
+    protected org.eclipse.sirius.components.view.diagram.SelectionDescription getSelectionDescription() {
         return this.selectionDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.SelectionDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.SelectionDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.SelectionDescription build() {
+    public org.eclipse.sirius.components.view.diagram.SelectionDescription build() {
         return this.getSelectionDescription();
     }
 

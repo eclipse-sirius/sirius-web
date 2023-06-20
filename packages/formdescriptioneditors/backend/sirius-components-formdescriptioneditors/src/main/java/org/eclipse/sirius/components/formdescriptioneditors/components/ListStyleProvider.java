@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
 
 /**
  * The style provider for the List Description widget of the View DSL. This only handles "static" or "preview" styles

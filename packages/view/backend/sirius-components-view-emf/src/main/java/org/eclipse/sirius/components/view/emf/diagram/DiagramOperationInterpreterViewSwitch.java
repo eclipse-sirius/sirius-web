@@ -40,20 +40,20 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.CreateView;
-import org.eclipse.sirius.components.view.DeleteView;
 import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.diagram.CreateView;
+import org.eclipse.sirius.components.view.diagram.DeleteView;
+import org.eclipse.sirius.components.view.diagram.util.DiagramSwitch;
 import org.eclipse.sirius.components.view.emf.IOperationInterpreter;
 import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
-import org.eclipse.sirius.components.view.util.ViewSwitch;
 
 /**
  * A specific OperationInterpreterViewSwitch for diagram {@link Operation}s.
  *
  * @author fbarbin
  */
-public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<VariableManager>> {
-    private final Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes;
+public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optional<VariableManager>> {
+    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
 
     private final IDiagramContext diagramContext;
 
@@ -86,7 +86,7 @@ public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<V
      *            appropriate switch according to the concrete representation.
      */
     public DiagramOperationInterpreterViewSwitch(VariableManager variableManager, AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes, IOperationInterpreter operationInterpreter) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IOperationInterpreter operationInterpreter) {
         this.operationInterpreterViewSwitch = new OperationInterpreterViewSwitch(variableManager, interpreter, editService, operationInterpreter);
         this.variableManager = Objects.requireNonNull(variableManager);
         this.convertedNodes = Objects.requireNonNull(convertedNodes);
@@ -143,11 +143,11 @@ public class DiagramOperationInterpreterViewSwitch extends ViewSwitch<Optional<V
         return this.operationInterpreterViewSwitch.doSwitch(object);
     }
 
-    private Node createView(Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement, org.eclipse.sirius.components.view.NodeContainmentKind containmentKind) {
+    private Node createView(Optional<Node> optionalParentNode, NodeDescription nodeDescription, EObject semanticElement, org.eclipse.sirius.components.view.diagram.NodeContainmentKind containmentKind) {
         String parentElementId = optionalParentNode.map(Node::getId).orElse(this.diagramContext.getDiagram().getId());
 
         NodeContainmentKind nodeContainmentKind = NodeContainmentKind.CHILD_NODE;
-        if (containmentKind == org.eclipse.sirius.components.view.NodeContainmentKind.BORDER_NODE) {
+        if (containmentKind == org.eclipse.sirius.components.view.diagram.NodeContainmentKind.BORDER_NODE) {
             nodeContainmentKind = NodeContainmentKind.BORDER_NODE;
         }
 

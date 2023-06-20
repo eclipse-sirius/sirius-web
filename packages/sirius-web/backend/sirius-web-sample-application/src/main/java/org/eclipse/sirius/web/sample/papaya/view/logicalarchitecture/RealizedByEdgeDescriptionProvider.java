@@ -14,14 +14,14 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 
 /**
@@ -39,14 +39,14 @@ public class RealizedByEdgeDescriptionProvider implements IEdgeDescriptionProvid
 
     @Override
     public EdgeDescription create() {
-        var realizedByEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        var realizedByEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         realizedByEdgeStyle.setColor(this.colorProvider.getColor("color_red"));
         realizedByEdgeStyle.setEdgeWidth(1);
         realizedByEdgeStyle.setLineStyle(LineStyle.SOLID);
         realizedByEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         realizedByEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
 
-        var realizedByEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        var realizedByEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         realizedByEdgeDescription.setName("Edge Realized by");
         realizedByEdgeDescription.setLabelExpression("aql:self.name + ' is realized by ' + self.realizedBy.name");
         realizedByEdgeDescription.setStyle(realizedByEdgeStyle);

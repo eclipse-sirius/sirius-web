@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.providers;
 
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 
 /**
  * Used to provide a node tool.

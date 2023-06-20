@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.forms.LinkStyle.Builder;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.LinkDescriptionStyle;
+import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
 
 /**
  * The style provider for the Link Description widget of the View DSL. This only handles "static" or "preview" styles

@@ -32,12 +32,12 @@ import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramEleme
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.Tool;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 
 /**
@@ -74,7 +74,7 @@ public class ToolConverter {
      * {@link ViewToolSectionsProvider} can then find all the applicable tools, and is free to reorganize them in proper
      * user-facing sections and add the appropriate "extra tools".
      */
-    public List<ToolSection> createPaletteBasedToolSections(org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription, ViewDiagramDescriptionConverterContext converterContext) {
+    public List<ToolSection> createPaletteBasedToolSections(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, ViewDiagramDescriptionConverterContext converterContext) {
         var allToolSections = new ArrayList<ToolSection>();
 
         // Palette for the diagram itself

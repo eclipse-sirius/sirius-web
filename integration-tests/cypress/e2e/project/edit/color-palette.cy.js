@@ -37,7 +37,7 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('create-object').click();
     cy.getByTestId('FixedColor').should('exist').click();
     cy.getByTestId('Name').type('color_test{enter}');
-    cy.getByTestId('Value').type('#e5f5f8{enter}');
+    cy.get('[data-testid="Value"] > div > textarea').first().type('#e5f5f8{enter}');
     cy.getByTestId('color_test').should('exist');
   });
 
@@ -58,22 +58,21 @@ describe('/projects/:projectId/edit - Color Palette', () => {
   it('can select color from color palette in node style properties', () => {
     cy.getByTestId('ViewNewModel-toggle').click();
     cy.getByTestId('View-toggle').click();
-    cy.get('[title="view::DiagramDescription"]').dblclick();
+    cy.get('[title="diagram::DiagramDescription"]').dblclick();
     cy.getByTestId('Entity1 Node-toggle').click();
-    cy.get('[title="view::RectangularNodeStyleDescription"]').click();
+    cy.get('[title="diagram::RectangularNodeStyleDescription"]').click();
     cy.getByTestId('Label Color').click().get('[data-value="color_dark"]').should('exist').click();
     cy.getByTestId('Color').click().get('[data-value="color_dark"]').should('exist').click();
     cy.getByTestId('Border Color').click().get('[data-value="border_blue"]').should('exist').click();
   });
-  
+
   it('can select color from color palette in edge style properties', () => {
     cy.getByTestId('ViewNewModel-toggle').click();
     cy.getByTestId('View-toggle').click();
-    cy.get('[title="view::DiagramDescription"]').dblclick();
+    cy.get('[title="diagram::DiagramDescription"]').dblclick();
     cy.getByTestId('LinkedTo Edge-toggle').click();
-    cy.get('[title="view::EdgeStyle"]').click();
+    cy.get('[title="diagram::EdgeStyle"]').click();
     cy.getByTestId('Color').click();
     cy.contains('FixedColor color_blue').click();
   });
-
 });

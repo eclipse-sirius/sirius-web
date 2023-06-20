@@ -49,9 +49,10 @@ import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
-import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewProvider;
@@ -95,14 +96,14 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private IStatus performActionOnResourceSet(ResourceSet resourceSet, String actionId) {
         return switch (actionId) {
-            case EMPTY_ACTION_ID -> createResourceAndReturnSuccess(resourceSet, this::createEmptyResource);
-            case EMPTY_FLOW_ID -> createResourceAndReturnSuccess(resourceSet, this::createEmptyFlowResource);
-            case ROBOT_FLOW_ID -> createResourceAndReturnSuccess(resourceSet, this::createRobotFlowResource);
-            case BIG_GUY_FLOW_ID -> createResourceAndReturnSuccess(resourceSet, this::createBigGuyFlowResource);
-            case EMPTY_DOMAIN_ID -> createResourceAndReturnSuccess(resourceSet, this::createEmptyDomainResource);
-            case PAPAYA_DOMAIN_ID -> createResourceAndReturnSuccess(resourceSet, this::createPapayaDomainResource);
-            case EMPTY_VIEW_ID -> createResourceAndReturnSuccess(resourceSet, this::createEmptyViewResource);
-            case PAPAYA_VIEW_ID -> createResourceAndReturnSuccess(resourceSet, this::createPapayaViewResource);
+            case EMPTY_ACTION_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptyResource);
+            case EMPTY_FLOW_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptyFlowResource);
+            case ROBOT_FLOW_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createRobotFlowResource);
+            case BIG_GUY_FLOW_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createBigGuyFlowResource);
+            case EMPTY_DOMAIN_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptyDomainResource);
+            case PAPAYA_DOMAIN_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createPapayaDomainResource);
+            case EMPTY_VIEW_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptyViewResource);
+            case PAPAYA_VIEW_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createPapayaViewResource);
             default -> new Failure("Unknown action.");
         };
 
@@ -142,7 +143,7 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private void createEmptyViewResource(ResourceSet resourceSet) {
         View newView = ViewFactory.eINSTANCE.createView();
-        DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("New Diagram Description");
         newView.getDescriptions().add(diagramDescription);
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
@@ -161,14 +162,14 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
 
     private void createRobotFlowResource(ResourceSet resourceSet) {
-        getResourceFromClassPathResource(new ClassPathResource("robot.flow")).ifPresent(resource -> {
+        this.getResourceFromClassPathResource(new ClassPathResource("robot.flow")).ifPresent(resource -> {
             resource.eAdapters().add(new DocumentMetadataAdapter("Robot Flow"));
             resourceSet.getResources().add(resource);
         });
     }
 
     private void createBigGuyFlowResource(ResourceSet resourceSet) {
-        getResourceFromClassPathResource(new ClassPathResource("Big_Guy.flow")).ifPresent(resource -> {
+        this.getResourceFromClassPathResource(new ClassPathResource("Big_Guy.flow")).ifPresent(resource -> {
             resource.eAdapters().add(new DocumentMetadataAdapter("Big Guy Flow (17k elements)"));
             resourceSet.getResources().add(resource);
         });
@@ -189,7 +190,7 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
         Resource inputResource = new XMIResourceImpl(uri);
         Map<String, Object> xmiLoadOptions = new EMFResourceUtils().getXMILoadOptions(PARSER_POOL);
         inputResource.load(inputStream, xmiLoadOptions);
-        return transformToJSON(uri, inputResource);
+        return this.transformToJSON(uri, inputResource);
     }
 
     private JsonResource transformToJSON(URI uri, Resource inputResource) throws IOException {

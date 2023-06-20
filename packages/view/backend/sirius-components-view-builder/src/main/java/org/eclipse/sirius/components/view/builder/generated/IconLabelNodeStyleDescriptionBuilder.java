@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class IconLabelNodeStyleDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.IconLabelNodeStyleDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.IconLabelNodeStyleDescription iconLabelNodeStyleDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
+    private org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription iconLabelNodeStyleDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.IconLabelNodeStyleDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.IconLabelNodeStyleDescription getIconLabelNodeStyleDescription() {
+    protected org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription getIconLabelNodeStyleDescription() {
         return this.iconLabelNodeStyleDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.IconLabelNodeStyleDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.IconLabelNodeStyleDescription build() {
+    public org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription build() {
         return this.getIconLabelNodeStyleDescription();
     }
 
@@ -128,7 +128,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
      *
      * @generated
      */
-    public IconLabelNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.LineStyle value) {
+    public IconLabelNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getIconLabelNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }

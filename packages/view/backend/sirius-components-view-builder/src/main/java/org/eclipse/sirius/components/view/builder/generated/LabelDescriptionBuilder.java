@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class LabelDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.LabelDescription.
+     * Create instance org.eclipse.sirius.components.view.form.LabelDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.LabelDescription labelDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createLabelDescription();
+    private org.eclipse.sirius.components.view.form.LabelDescription labelDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createLabelDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LabelDescription.
+     * Return instance org.eclipse.sirius.components.view.form.LabelDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.LabelDescription getLabelDescription() {
+    protected org.eclipse.sirius.components.view.form.LabelDescription getLabelDescription() {
         return this.labelDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.LabelDescription.
+     * Return instance org.eclipse.sirius.components.view.form.LabelDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.LabelDescription build() {
+    public org.eclipse.sirius.components.view.form.LabelDescription build() {
         return this.getLabelDescription();
     }
 
@@ -69,7 +69,6 @@ public class LabelDescriptionBuilder {
         this.getLabelDescription().setHelpExpression(value);
         return this;
     }
-
     /**
      * Setter for ValueExpression.
      *
@@ -84,7 +83,7 @@ public class LabelDescriptionBuilder {
      *
      * @generated
      */
-    public LabelDescriptionBuilder style(org.eclipse.sirius.components.view.LabelDescriptionStyle value) {
+    public LabelDescriptionBuilder style(org.eclipse.sirius.components.view.form.LabelDescriptionStyle value) {
         this.getLabelDescription().setStyle(value);
         return this;
     }
@@ -93,8 +92,8 @@ public class LabelDescriptionBuilder {
      *
      * @generated
      */
-    public LabelDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalLabelDescriptionStyle value : values) {
+    public LabelDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle value : values) {
             this.getLabelDescription().getConditionalStyles().add(value);
         }
         return this;

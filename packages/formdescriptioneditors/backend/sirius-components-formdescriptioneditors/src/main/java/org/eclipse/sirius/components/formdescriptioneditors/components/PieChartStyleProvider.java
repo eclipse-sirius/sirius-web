@@ -19,7 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle.Builder;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.PieChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.PieChartDescriptionStyle;
 
 /**
  * The style provider for the PieChart Description widget of the View DSL. This only handles "static" or "preview"

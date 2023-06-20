@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class CheckboxDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.CheckboxDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.CheckboxDescriptionStyle checkboxDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createCheckboxDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle checkboxDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createCheckboxDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.CheckboxDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.CheckboxDescriptionStyle getCheckboxDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle getCheckboxDescriptionStyle() {
         return this.checkboxDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.CheckboxDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.CheckboxDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle build() {
         return this.getCheckboxDescriptionStyle();
     }
 

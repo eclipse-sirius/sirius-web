@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class NodePaletteBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.NodePalette.
+     * Create instance org.eclipse.sirius.components.view.diagram.NodePalette.
      * @generated
      */
-    private org.eclipse.sirius.components.view.NodePalette nodePalette = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createNodePalette();
+    private org.eclipse.sirius.components.view.diagram.NodePalette nodePalette = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodePalette();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.NodePalette.
+     * Return instance org.eclipse.sirius.components.view.diagram.NodePalette.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.NodePalette getNodePalette() {
+    protected org.eclipse.sirius.components.view.diagram.NodePalette getNodePalette() {
         return this.nodePalette;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.NodePalette.
+     * Return instance org.eclipse.sirius.components.view.diagram.NodePalette.
      * @generated
      */
-    public org.eclipse.sirius.components.view.NodePalette build() {
+    public org.eclipse.sirius.components.view.diagram.NodePalette build() {
         return this.getNodePalette();
     }
 
@@ -47,7 +47,7 @@ public class NodePaletteBuilder {
      *
      * @generated
      */
-    public NodePaletteBuilder deleteTool(org.eclipse.sirius.components.view.DeleteTool value) {
+    public NodePaletteBuilder deleteTool(org.eclipse.sirius.components.view.diagram.DeleteTool value) {
         this.getNodePalette().setDeleteTool(value);
         return this;
     }
@@ -56,7 +56,7 @@ public class NodePaletteBuilder {
      *
      * @generated
      */
-    public NodePaletteBuilder labelEditTool(org.eclipse.sirius.components.view.LabelEditTool value) {
+    public NodePaletteBuilder labelEditTool(org.eclipse.sirius.components.view.diagram.LabelEditTool value) {
         this.getNodePalette().setLabelEditTool(value);
         return this;
     }
@@ -65,8 +65,8 @@ public class NodePaletteBuilder {
      *
      * @generated
      */
-    public NodePaletteBuilder nodeTools(org.eclipse.sirius.components.view.NodeTool ... values) {
-        for (org.eclipse.sirius.components.view.NodeTool value : values) {
+    public NodePaletteBuilder nodeTools(org.eclipse.sirius.components.view.diagram.NodeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeTool value : values) {
             this.getNodePalette().getNodeTools().add(value);
         }
         return this;
@@ -77,8 +77,8 @@ public class NodePaletteBuilder {
      *
      * @generated
      */
-    public NodePaletteBuilder edgeTools(org.eclipse.sirius.components.view.EdgeTool ... values) {
-        for (org.eclipse.sirius.components.view.EdgeTool value : values) {
+    public NodePaletteBuilder edgeTools(org.eclipse.sirius.components.view.diagram.EdgeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.EdgeTool value : values) {
             this.getNodePalette().getEdgeTools().add(value);
         }
         return this;

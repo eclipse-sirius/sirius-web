@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.view.builder.generated;
 
 /**
- * Builder for org.eclipse.sirius.components.view.DiagramElementDescription.
+ * Builder for org.eclipse.sirius.components.view.diagram.DiagramElementDescription.
  *
  * @author BuilderGenerator
  * @generated
@@ -21,10 +21,10 @@ package org.eclipse.sirius.components.view.builder.generated;
 public abstract class DiagramElementDescriptionBuilder {
 
     /**
-     * Builder for org.eclipse.sirius.components.view.DiagramElementDescription.
+     * Builder for org.eclipse.sirius.components.view.diagram.DiagramElementDescription.
      * @generated
      */
-    protected abstract org.eclipse.sirius.components.view.DiagramElementDescription getDiagramElementDescription();
+    protected abstract org.eclipse.sirius.components.view.diagram.DiagramElementDescription getDiagramElementDescription();
 
     /**
      * Setter for Name.
@@ -67,7 +67,7 @@ public abstract class DiagramElementDescriptionBuilder {
      *
      * @generated
      */
-    public DiagramElementDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.SynchronizationPolicy value) {
+    public DiagramElementDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.diagram.SynchronizationPolicy value) {
         this.getDiagramElementDescription().setSynchronizationPolicy(value);
         return this;
     }

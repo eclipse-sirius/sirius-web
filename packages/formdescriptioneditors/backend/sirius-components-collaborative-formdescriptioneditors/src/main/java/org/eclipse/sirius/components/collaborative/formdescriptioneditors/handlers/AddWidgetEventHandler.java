@@ -34,12 +34,12 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
-import org.eclipse.sirius.components.view.FlexDirection;
-import org.eclipse.sirius.components.view.FlexboxContainerDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.form.FlexDirection;
+import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -138,7 +138,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 return optionalType.get();
             }
         }
-        return ViewPackage.eINSTANCE.getEClassifier(kind + "Description");
+        return FormPackage.eINSTANCE.getEClassifier(kind + "Description");
     }
 
     private void createStyle(WidgetDescription widgetDescription) {
@@ -146,7 +146,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         if (styleFeature instanceof EReference) {
             EClassifier eClassifier = styleFeature.getEType();
             if (eClassifier instanceof EClass) {
-                var widgetDescriptionStyle = ViewFactory.eINSTANCE.create((EClass) eClassifier);
+                var widgetDescriptionStyle = FormFactory.eINSTANCE.create((EClass) eClassifier);
                 if (eClassifier.isInstance(widgetDescriptionStyle)) {
                     widgetDescription.eSet(styleFeature, widgetDescriptionStyle);
                 }

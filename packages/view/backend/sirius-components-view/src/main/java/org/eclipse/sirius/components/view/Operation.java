@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Operation extends EObject {
-
     /**
      * Returns the value of the '<em><b>Children</b></em>' containment reference list. The list contents are of type
      * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -41,4 +40,5 @@ public interface Operation extends EObject {
      * @generated
      */
     EList<Operation> getChildren();
+
 } // Operation

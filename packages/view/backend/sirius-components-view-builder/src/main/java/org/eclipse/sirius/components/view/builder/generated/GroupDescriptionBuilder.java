@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class GroupDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.GroupDescription.
+     * Create instance org.eclipse.sirius.components.view.form.GroupDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.GroupDescription groupDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createGroupDescription();
+    private org.eclipse.sirius.components.view.form.GroupDescription groupDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createGroupDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.GroupDescription.
+     * Return instance org.eclipse.sirius.components.view.form.GroupDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.GroupDescription getGroupDescription() {
+    protected org.eclipse.sirius.components.view.form.GroupDescription getGroupDescription() {
         return this.groupDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.GroupDescription.
+     * Return instance org.eclipse.sirius.components.view.form.GroupDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.GroupDescription build() {
+    public org.eclipse.sirius.components.view.form.GroupDescription build() {
         return this.getGroupDescription();
     }
 
@@ -65,7 +65,7 @@ public class GroupDescriptionBuilder {
      *
      * @generated
      */
-    public GroupDescriptionBuilder displayMode(org.eclipse.sirius.components.view.GroupDisplayMode value) {
+    public GroupDescriptionBuilder displayMode(org.eclipse.sirius.components.view.form.GroupDisplayMode value) {
         this.getGroupDescription().setDisplayMode(value);
         return this;
     }
@@ -83,8 +83,8 @@ public class GroupDescriptionBuilder {
      *
      * @generated
      */
-    public GroupDescriptionBuilder toolbarActions(org.eclipse.sirius.components.view.ButtonDescription ... values) {
-        for (org.eclipse.sirius.components.view.ButtonDescription value : values) {
+    public GroupDescriptionBuilder toolbarActions(org.eclipse.sirius.components.view.form.ButtonDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.ButtonDescription value : values) {
             this.getGroupDescription().getToolbarActions().add(value);
         }
         return this;
@@ -95,8 +95,8 @@ public class GroupDescriptionBuilder {
      *
      * @generated
      */
-    public GroupDescriptionBuilder widgets(org.eclipse.sirius.components.view.WidgetDescription ... values) {
-        for (org.eclipse.sirius.components.view.WidgetDescription value : values) {
+    public GroupDescriptionBuilder widgets(org.eclipse.sirius.components.view.form.WidgetDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.WidgetDescription value : values) {
             this.getGroupDescription().getWidgets().add(value);
         }
         return this;

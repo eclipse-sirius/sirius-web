@@ -28,8 +28,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -100,7 +100,7 @@ public class AddGroupEventHandler implements IFormDescriptionEditorEventHandler 
     }
 
     private void createNewGroupInPageDescription(PageDescription pageDescription, int index) {
-        var groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        var groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(index, groupDescription);
     }
 }

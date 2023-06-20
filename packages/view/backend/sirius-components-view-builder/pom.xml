@@ -63,7 +63,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view</artifactId>
+			<artifactId>sirius-components-view-diagram</artifactId>
+			<version>2023.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-form</artifactId>
 			<version>2023.6.1</version>
 		</dependency>
 		<dependency>
@@ -109,7 +114,7 @@
 					<arguments>
 						<argument>${project.basedir}/src/main/resources/emf-merge.xml</argument>
 						<argument>
-							${project.basedir}/../sirius-components-view/src/main/resources/model/view.genmodel</argument>
+							${project.basedir}</argument>
 						<argument>
 							${project.basedir}/src/main/java/org/eclipse/sirius/components/view/builder/generated</argument>
 						<argument>org.eclipse.sirius.components.view.builder.generated</argument>

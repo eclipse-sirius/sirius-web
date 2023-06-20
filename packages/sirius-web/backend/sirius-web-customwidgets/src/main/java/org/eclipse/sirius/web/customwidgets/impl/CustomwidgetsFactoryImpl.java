@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,8 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.web.customwidgets.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -22,35 +22,31 @@ import org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage;
 import org.eclipse.sirius.web.customwidgets.SliderDescription;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ *
  * @generated
  */
 public class CustomwidgetsFactoryImpl extends EFactoryImpl implements CustomwidgetsFactory {
     /**
-     * Creates the default factory implementation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static CustomwidgetsFactory init() {
         try {
-            CustomwidgetsFactory theCustomwidgetsFactory = (CustomwidgetsFactory)EPackage.Registry.INSTANCE.getEFactory(CustomwidgetsPackage.eNS_URI);
+            CustomwidgetsFactory theCustomwidgetsFactory = (CustomwidgetsFactory) EPackage.Registry.INSTANCE.getEFactory(CustomwidgetsPackage.eNS_URI);
             if (theCustomwidgetsFactory != null) {
                 return theCustomwidgetsFactory;
             }
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             EcorePlugin.INSTANCE.log(exception);
         }
         return new CustomwidgetsFactoryImpl();
     }
 
     /**
-     * Creates an instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public CustomwidgetsFactoryImpl() {
@@ -58,22 +54,23 @@ public class CustomwidgetsFactoryImpl extends EFactoryImpl implements Customwidg
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case CustomwidgetsPackage.SLIDER_DESCRIPTION: return this.createSliderDescription();
+            case CustomwidgetsPackage.SLIDER_DESCRIPTION:
+                return this.createSliderDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -83,18 +80,18 @@ public class CustomwidgetsFactoryImpl extends EFactoryImpl implements Customwidg
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public CustomwidgetsPackage getCustomwidgetsPackage() {
-        return (CustomwidgetsPackage)this.getEPackage();
+        return (CustomwidgetsPackage) this.getEPackage();
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @deprecated
      * @generated
      */
@@ -103,4 +100,4 @@ public class CustomwidgetsFactoryImpl extends EFactoryImpl implements Customwidg
         return CustomwidgetsPackage.eINSTANCE;
     }
 
-} //CustomwidgetsFactoryImpl
+} // CustomwidgetsFactoryImpl

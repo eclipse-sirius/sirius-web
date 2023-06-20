@@ -18,7 +18,7 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
 
 /**
  * The style provider for the List Description widget of the View DSL.
@@ -43,7 +43,7 @@ public class ListStyleProvider implements Function<VariableManager, ListStyle> {
                 listStyleBuilder.color(color);
             }
         }
-        
+
         int fontSize = this.viewStyle.getFontSize();
         boolean italic = this.viewStyle.isItalic();
         boolean bold = this.viewStyle.isBold();

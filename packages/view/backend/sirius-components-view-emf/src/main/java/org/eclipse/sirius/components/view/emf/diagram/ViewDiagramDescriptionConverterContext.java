@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,9 +27,9 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
  */
 public class ViewDiagramDescriptionConverterContext {
 
-    private final Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes;
+    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
 
-    private final Map<org.eclipse.sirius.components.view.EdgeDescription, EdgeDescription> convertedEdges;
+    private final Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> convertedEdges;
 
     private final AQLInterpreter interpreter;
 
@@ -39,11 +39,11 @@ public class ViewDiagramDescriptionConverterContext {
         this.convertedEdges = new LinkedHashMap<>();
     }
 
-    public Map<org.eclipse.sirius.components.view.EdgeDescription, EdgeDescription> getConvertedEdges() {
+    public Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> getConvertedEdges() {
         return this.convertedEdges;
     }
 
-    public Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> getConvertedNodes() {
+    public Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> getConvertedNodes() {
         return this.convertedNodes;
     }
 

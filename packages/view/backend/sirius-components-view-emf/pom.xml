@@ -63,7 +63,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view</artifactId>
+			<artifactId>sirius-components-view-diagram</artifactId>
+			<version>2023.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-form</artifactId>
 			<version>2023.6.1</version>
 		</dependency>
 		<dependency>

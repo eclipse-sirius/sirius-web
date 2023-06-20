@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormFactory;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -48,7 +48,7 @@ public class AddWidgetEventHandlerTests {
         var objectService = new IObjectService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-                return Optional.of(ViewFactory.eINSTANCE.createFlexboxContainerDescription());
+                return Optional.of(FormFactory.eINSTANCE.createFlexboxContainerDescription());
             }
         };
         var handler = new AddWidgetEventHandler(objectService, new ICollaborativeFormDescriptionEditorMessageService.NoOp(), List.of(), new SimpleMeterRegistry());

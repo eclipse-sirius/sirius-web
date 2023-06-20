@@ -14,10 +14,11 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
@@ -36,7 +37,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
 
     @Override
     public NodeDescription create() {
-        var nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
@@ -44,12 +45,12 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Interface");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
-        nodeDescription.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription());
+        nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
         nodeDescription.setLabelExpression("aql:self.name");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.operationNodeDescription());
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());
         nodePalette.setDeleteTool(new PapayaToolsFactory().deleteTool());
@@ -57,7 +58,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         newOperationNodeTool.setName("New Operation");
         nodePalette.getNodeTools().add(newOperationNodeTool);
 
-        var extendsInterfaceEdgeTool = ViewFactory.eINSTANCE.createEdgeTool();
+        var extendsInterfaceEdgeTool = DiagramFactory.eINSTANCE.createEdgeTool();
         extendsInterfaceEdgeTool.setName("Extends");
         extendsInterfaceEdgeTool.getTargetElementDescriptions().add(nodeDescription);
         var changeContext = ViewFactory.eINSTANCE.createChangeContext();
@@ -74,7 +75,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
     }
 
     private NodeDescription operationNodeDescription() {
-        var nodeStyle = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
+        var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
@@ -84,7 +85,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         nodeDescription.setSemanticCandidatesExpression("aql:self.operations");
         nodeDescription.setLabelExpression("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif");
 
-        var nodePalette = ViewFactory.eINSTANCE.createNodePalette();
+        var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);
 
         nodePalette.setLabelEditTool(new PapayaToolsFactory().editName());

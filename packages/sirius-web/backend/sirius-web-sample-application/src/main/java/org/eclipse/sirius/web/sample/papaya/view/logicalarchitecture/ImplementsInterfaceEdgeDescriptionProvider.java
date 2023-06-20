@@ -14,15 +14,16 @@ package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
  * Description implements interface.
@@ -39,14 +40,14 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
 
     @Override
     public EdgeDescription create() {
-        var implementsInterfaceEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        var implementsInterfaceEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         implementsInterfaceEdgeStyle.setColor(this.colorProvider.getColor("color_blue_2"));
         implementsInterfaceEdgeStyle.setEdgeWidth(1);
         implementsInterfaceEdgeStyle.setLineStyle(LineStyle.DASH);
         implementsInterfaceEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
         implementsInterfaceEdgeStyle.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
 
-        var implementsInterfaceEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        var implementsInterfaceEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         implementsInterfaceEdgeDescription.setName("Edge Implements interface");
         implementsInterfaceEdgeDescription.setLabelExpression("");
         implementsInterfaceEdgeDescription.setBeginLabelExpression("aql:'implements ' + semanticEdgeTarget.name");
@@ -57,7 +58,7 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
         implementsInterfaceEdgeDescription.setTargetNodesExpression("aql:self.implements");
         implementsInterfaceEdgeDescription.setIsDomainBasedEdge(false);
 
-        var edgePalette = ViewFactory.eINSTANCE.createEdgePalette();
+        var edgePalette = DiagramFactory.eINSTANCE.createEdgePalette();
         implementsInterfaceEdgeDescription.setPalette(edgePalette);
         edgePalette.setBeginLabelEditTool(this.editImplementsInterfaceEdgeBeginLabel());
         edgePalette.setEndLabelEditTool(this.editImplementsInterfaceEdgeEndLabel());
@@ -66,7 +67,7 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
     }
 
     private LabelEditTool editImplementsInterfaceEdgeBeginLabel() {
-        var editLabelTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        var editLabelTool = DiagramFactory.eINSTANCE.createLabelEditTool();
         editLabelTool.setName("Edit Begin Label");
         editLabelTool.setInitialDirectEditLabelExpression("aql:semanticEdgeTarget.name");
 
@@ -84,7 +85,7 @@ public class ImplementsInterfaceEdgeDescriptionProvider implements IEdgeDescript
     }
 
     private LabelEditTool editImplementsInterfaceEdgeEndLabel() {
-        var editLabelTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        var editLabelTool = DiagramFactory.eINSTANCE.createLabelEditTool();
 
         editLabelTool.setName("Edit End Label");
         editLabelTool.setInitialDirectEditLabelExpression("aql:semanticEdgeSource.name");

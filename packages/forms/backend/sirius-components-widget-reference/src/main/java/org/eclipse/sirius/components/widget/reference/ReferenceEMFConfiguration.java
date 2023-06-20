@@ -40,6 +40,6 @@ public class ReferenceEMFConfiguration {
 
     @Bean
     public ChildExtenderProvider referenceWidgetChildExtenderProvider() {
-        return new ChildExtenderProvider(ViewPackage.eNS_URI, ReferenceItemProviderAdapterFactory.ViewChildCreationExtender::new);
+        return new ChildExtenderProvider(ViewPackage.eNS_URI, ReferenceItemProviderAdapterFactory.FormChildCreationExtender::new);
     }
 }

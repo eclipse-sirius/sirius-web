@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class BarChartDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.BarChartDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.BarChartDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.BarChartDescriptionStyle barChartDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createBarChartDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.BarChartDescriptionStyle barChartDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createBarChartDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.BarChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.BarChartDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.BarChartDescriptionStyle getBarChartDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.BarChartDescriptionStyle getBarChartDescriptionStyle() {
         return this.barChartDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.BarChartDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.BarChartDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.BarChartDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.BarChartDescriptionStyle build() {
         return this.getBarChartDescriptionStyle();
     }
 

@@ -40,19 +40,20 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.CreateInstance;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeStyle;
-import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.SetValue;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.provider.DefaultToolsFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -256,7 +257,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         View view = ViewFactory.eINSTANCE.createView();
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
-        org.eclipse.sirius.components.view.DiagramDescription viewDiagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         viewDiagramDescription.setName(domainName + " Diagram Description");
         viewDiagramDescription.setDomainType(domainName + "::Root");
         viewDiagramDescription.setTitleExpression(domainName + " diagram");
@@ -265,7 +266,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
         view.getColorPalettes().add(this.createColorPalette());
 
-        NodeDescription entity1Node = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription entity1Node = DiagramFactory.eINSTANCE.createNodeDescription();
         entity1Node.setName("Entity1 Node");
         entity1Node.setDomainType(domainName + "::Entity1");
         entity1Node.setSemanticCandidatesExpression("aql:self.eContents()");
@@ -277,7 +278,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         viewDiagramDescription.getNodeDescriptions().add(entity1Node);
         viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity1", "entity1s"));
 
-        NodeDescription entity2Node = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription entity2Node = DiagramFactory.eINSTANCE.createNodeDescription();
         entity2Node.setName("Entity2 Node");
         entity2Node.setDomainType(domainName + "::Entity2");
         entity2Node.setSemanticCandidatesExpression("aql:self.eContents()");
@@ -289,7 +290,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         viewDiagramDescription.getNodeDescriptions().add(entity2Node);
         viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity2", "entity2s"));
 
-        EdgeTool createLinkTo = ViewFactory.eINSTANCE.createEdgeTool();
+        EdgeTool createLinkTo = DiagramFactory.eINSTANCE.createEdgeTool();
         createLinkTo.setName("Link to");
         createLinkTo.getTargetElementDescriptions().add(entity2Node);
         ChangeContext gotoSemanticSource = ViewFactory.eINSTANCE.createChangeContext();
@@ -301,7 +302,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         gotoSemanticSource.getChildren().add(setLink);
         entity1Node.getPalette().getEdgeTools().add(createLinkTo);
 
-        EdgeDescription linkedToEdge = ViewFactory.eINSTANCE.createEdgeDescription();
+        EdgeDescription linkedToEdge = DiagramFactory.eINSTANCE.createEdgeDescription();
         linkedToEdge.setName("LinkedTo Edge");
         linkedToEdge.setSemanticCandidatesExpression("");
         linkedToEdge.setLabelExpression("");
@@ -312,7 +313,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         linkedToEdge.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         viewDiagramDescription.getEdgeDescriptions().add(linkedToEdge);
 
-        EdgeStyle edgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        EdgeStyle edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         edgeStyle.setColor(this.getColorFromPalette(view, "color_dark"));
         linkedToEdge.setStyle(edgeStyle);
 
@@ -320,7 +321,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
     }
 
     private RectangularNodeStyleDescription createRectangularNodeStyle(View view, String color, String borderColor) {
-        RectangularNodeStyleDescription entity2Style = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        RectangularNodeStyleDescription entity2Style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         entity2Style.setWidthComputationExpression("1");
         entity2Style.setHeightComputationExpression("1");
         entity2Style.setColor(this.getColorFromPalette(view, color));
@@ -331,7 +332,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private NodeTool createNewInstanceTool(String typeName, String referenceName) {
         String simpleName = typeName.split("::")[1];
-        NodeTool tool = ViewFactory.eINSTANCE.createNodeTool();
+        NodeTool tool = DiagramFactory.eINSTANCE.createNodeTool();
         tool.setName("New " + simpleName);
 
         CreateInstance createInstance = ViewFactory.eINSTANCE.createCreateInstance();

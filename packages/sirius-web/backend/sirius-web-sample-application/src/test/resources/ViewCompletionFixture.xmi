@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:view="http://www.eclipse.org/sirius-web/view">
-  <descriptions xmi:type="view:DiagramDescription" name="Diagram Completion Fixture" domainType="flow::DataFlow" titleExpression="aql:'Diagram Completion Fixture'">
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://www.eclipse.org/sirius-web/diagram" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:view="http://www.eclipse.org/sirius-web/view">
+  <descriptions xmi:type="diagram:DiagramDescription" name="Diagram Completion Fixture" domainType="flow::DataFlow" titleExpression="aql:'Diagram Completion Fixture'">
     <nodeDescriptions name="Node">
-      <style xmi:type="view:RectangularNodeStyleDescription"/>
+      <style xmi:type="diagram:RectangularNodeStyleDescription"/>
       <conditionalStyles>
-        <style xmi:type="view:ImageNodeStyleDescription"/>
+        <style xmi:type="diagram:ImageNodeStyleDescription"/>
       </conditionalStyles>
       <conditionalStyles>
-        <style xmi:type="view:IconLabelNodeStyleDescription"/>
+        <style xmi:type="diagram:IconLabelNodeStyleDescription"/>
       </conditionalStyles>
-      <childrenLayoutStrategy xmi:type="view:FreeFormLayoutStrategyDescription"/>
+      <childrenLayoutStrategy xmi:type="diagram:FreeFormLayoutStrategyDescription"/>
     </nodeDescriptions>
     <nodeDescriptions name="Node">
-      <style xmi:type="view:RectangularNodeStyleDescription"/>
-      <childrenLayoutStrategy xmi:type="view:ListLayoutStrategyDescription"/>
+      <style xmi:type="diagram:RectangularNodeStyleDescription"/>
+      <childrenLayoutStrategy xmi:type="diagram:ListLayoutStrategyDescription"/>
     </nodeDescriptions>
     <edgeDescriptions name="Edge">
       <style>
@@ -30,56 +30,56 @@
           <children xmi:type="view:SetValue"/>
           <children xmi:type="view:UnsetValue"/>
           <children xmi:type="view:DeleteElement"/>
-          <children xmi:type="view:CreateView"/>
-          <children xmi:type="view:DeleteView"/>
+          <children xmi:type="diagram:CreateView"/>
+          <children xmi:type="diagram:DeleteView"/>
         </body>
       </dropTool>
     </palette>
   </descriptions>
-  <descriptions xmi:type="view:FormDescription" name="Form Completion Fixture" titleExpression="aql:'Form Completion Fixture'">
-    <pages xmi:type="view:PageDescription">
-        <groups xmi:type="view:GroupDescription">
+  <descriptions xmi:type="form:FormDescription" name="Form Completion Fixture" titleExpression="aql:'Form Completion Fixture'">
+    <pages xmi:type="form:PageDescription">
+        <groups xmi:type="form:GroupDescription">
             <toolbarActions name="ToolbarAction">
               <style/>
               <conditionalStyles/>
             </toolbarActions>
-            <widgets xmi:type="view:TextfieldDescription">
+            <widgets xmi:type="form:TextfieldDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:TextAreaDescription">
+            <widgets xmi:type="form:TextAreaDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:RichTextDescription"/>
-            <widgets xmi:type="view:CheckboxDescription">
+            <widgets xmi:type="form:RichTextDescription"/>
+            <widgets xmi:type="form:CheckboxDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:RadioDescription">
+            <widgets xmi:type="form:RadioDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:SelectDescription">
+            <widgets xmi:type="form:SelectDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:MultiSelectDescription">
+            <widgets xmi:type="form:MultiSelectDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:LabelDescription">
+            <widgets xmi:type="form:LabelDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:ButtonDescription">
+            <widgets xmi:type="form:ButtonDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:ImageDescription"/>
-            <widgets xmi:type="view:LinkDescription">
+            <widgets xmi:type="form:ImageDescription"/>
+            <widgets xmi:type="form:LinkDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:ListDescription">
+            <widgets xmi:type="form:ListDescription">
               <style/>
             </widgets>
-            <widgets xmi:type="view:FlexboxContainerDescription">
-              <children xmi:type="view:PieChartDescription">
+            <widgets xmi:type="form:FlexboxContainerDescription">
+              <children xmi:type="form:PieChartDescription">
                 <style/>
               </children>
-              <children xmi:type="view:BarChartDescription">
+              <children xmi:type="form:BarChartDescription">
                 <style/>
               </children>
             </widgets>

@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class DiagramPaletteBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.DiagramPalette.
+     * Create instance org.eclipse.sirius.components.view.diagram.DiagramPalette.
      * @generated
      */
-    private org.eclipse.sirius.components.view.DiagramPalette diagramPalette = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createDiagramPalette();
+    private org.eclipse.sirius.components.view.diagram.DiagramPalette diagramPalette = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createDiagramPalette();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DiagramPalette.
+     * Return instance org.eclipse.sirius.components.view.diagram.DiagramPalette.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.DiagramPalette getDiagramPalette() {
+    protected org.eclipse.sirius.components.view.diagram.DiagramPalette getDiagramPalette() {
         return this.diagramPalette;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.DiagramPalette.
+     * Return instance org.eclipse.sirius.components.view.diagram.DiagramPalette.
      * @generated
      */
-    public org.eclipse.sirius.components.view.DiagramPalette build() {
+    public org.eclipse.sirius.components.view.diagram.DiagramPalette build() {
         return this.getDiagramPalette();
     }
 
@@ -47,7 +47,7 @@ public class DiagramPaletteBuilder {
      *
      * @generated
      */
-    public DiagramPaletteBuilder dropTool(org.eclipse.sirius.components.view.DropTool value) {
+    public DiagramPaletteBuilder dropTool(org.eclipse.sirius.components.view.diagram.DropTool value) {
         this.getDiagramPalette().setDropTool(value);
         return this;
     }
@@ -56,8 +56,8 @@ public class DiagramPaletteBuilder {
      *
      * @generated
      */
-    public DiagramPaletteBuilder nodeTools(org.eclipse.sirius.components.view.NodeTool ... values) {
-        for (org.eclipse.sirius.components.view.NodeTool value : values) {
+    public DiagramPaletteBuilder nodeTools(org.eclipse.sirius.components.view.diagram.NodeTool ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeTool value : values) {
             this.getDiagramPalette().getNodeTools().add(value);
         }
         return this;

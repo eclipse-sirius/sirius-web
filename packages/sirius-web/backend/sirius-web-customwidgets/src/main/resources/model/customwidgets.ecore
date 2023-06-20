@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="customwidgets" nsURI="http://www.eclipse.org/sirius-web/customwidgets"
     nsPrefix="customwidgets">
-  <eClassifiers xsi:type="ecore:EClass" name="SliderDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//WidgetDescription">
+  <eClassifiers xsi:type="ecore:EClass" name="SliderDescription" eSuperTypes="../../../../../sirius-components-view-form/src/main/resources/model/form.ecore#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="minValueExpression" lowerBound="1"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxValueExpression" lowerBound="1"

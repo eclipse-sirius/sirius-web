@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ public interface LabelStyle extends EObject {
      * @return the value of the '<em>Font Size</em>' attribute.
      * @see #setFontSize(int)
      * @see org.eclipse.sirius.components.view.ViewPackage#getLabelStyle_FontSize()
-     * @model default="14" required="true"
+     * @model default="14" dataType="org.eclipse.sirius.components.view.Length" required="true"
      * @generated
      */
     int getFontSize();

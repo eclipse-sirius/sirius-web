@@ -17,6 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
@@ -30,6 +32,7 @@ import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -51,6 +54,8 @@ public class BuilderGenerator {
     private static final String BUILDER_CLASSNAME = "#builderClassName";
 
     private static final String BUILDER_EOBJECT_NAME = "#eObjName";
+
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BuilderGenerator.class);
 
@@ -82,11 +87,23 @@ public class BuilderGenerator {
         resourceSet.getResources().add(EcorePackage.eINSTANCE.eResource());
         resourceSet.getURIConverter().getURIMap().put(URI.createURI("platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore"), URI.createURI("http://www.eclipse.org/emf/2002/Ecore"));
 
-        URI uri = URI.createURI("file://" + args[1]);
-        Resource g = resourceSet.getResource(uri, true);
+        List<EObject> allViewContent = new ArrayList<>();
+
+        URI viewURI = URI.createFileURI(args[1] + "/../sirius-components-view/src/main/resources/model/view.genmodel");
+        Resource viewResource = resourceSet.getResource(viewURI, true);
+        allViewContent.addAll(viewResource.getContents());
+
+        URI diagramURI = URI.createFileURI(args[1] + "/../sirius-components-view-diagram/src/main/resources/model/diagram.genmodel");
+        Resource diagramResource = resourceSet.getResource(diagramURI, true);
+        allViewContent.addAll(diagramResource.getContents());
+
+        URI formURI = URI.createFileURI(args[1] + "/../sirius-components-view-form/src/main/resources/model/form.genmodel");
+        Resource formResource = resourceSet.getResource(formURI, true);
+        allViewContent.addAll(formResource.getContents());
+
         BuilderGenerator gen = new BuilderGenerator(args[0], args[2], args[3]);
 
-        StreamSupport.stream(Spliterators.spliterator(g.getContents(), Spliterator.ORDERED), false).filter(GenModel.class::isInstance).map(GenModel.class::cast).forEach(model -> {
+        StreamSupport.stream(Spliterators.spliterator(allViewContent, Spliterator.ORDERED), false).filter(GenModel.class::isInstance).map(GenModel.class::cast).forEach(model -> {
             try {
                 gen.doGen(model);
             } catch (IOException e1) {

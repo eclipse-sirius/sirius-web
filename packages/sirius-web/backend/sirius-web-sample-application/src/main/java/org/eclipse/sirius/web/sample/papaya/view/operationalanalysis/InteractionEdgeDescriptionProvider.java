@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.sample.papaya.view.operationalanalysis;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
 
 /**
@@ -39,7 +39,7 @@ public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
     @Override
     public EdgeDescription create() {
-        var interactionEdgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        var interactionEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         interactionEdgeStyle.setColor(this.colorProvider.getColor("color_black"));
         interactionEdgeStyle.setEdgeWidth(1);
         interactionEdgeStyle.setSourceArrowStyle(ArrowStyle.NONE);
@@ -47,7 +47,7 @@ public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
         var builder = new PapayaViewBuilder();
 
-        var interactionEdgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        var interactionEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         interactionEdgeDescription.setName("Edge Interaction");
         interactionEdgeDescription.setLabelExpression("aql:'interacts with'");
         interactionEdgeDescription.setSemanticCandidatesExpression("aql:self.eAllContents()");

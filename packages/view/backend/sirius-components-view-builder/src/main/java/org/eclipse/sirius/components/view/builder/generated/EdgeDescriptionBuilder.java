@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class EdgeDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.EdgeDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.EdgeDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.EdgeDescription edgeDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createEdgeDescription();
+    private org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createEdgeDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgeDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgeDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.EdgeDescription getEdgeDescription() {
+    protected org.eclipse.sirius.components.view.diagram.EdgeDescription getEdgeDescription() {
         return this.edgeDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.EdgeDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.EdgeDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.EdgeDescription build() {
+    public org.eclipse.sirius.components.view.diagram.EdgeDescription build() {
         return this.getEdgeDescription();
     }
 
@@ -83,7 +83,7 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.SynchronizationPolicy value) {
+    public EdgeDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.diagram.SynchronizationPolicy value) {
         this.getEdgeDescription().setSynchronizationPolicy(value);
         return this;
     }
@@ -128,7 +128,7 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder palette(org.eclipse.sirius.components.view.EdgePalette value) {
+    public EdgeDescriptionBuilder palette(org.eclipse.sirius.components.view.diagram.EdgePalette value) {
         this.getEdgeDescription().setPalette(value);
         return this;
     }
@@ -137,8 +137,8 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder sourceNodeDescriptions(org.eclipse.sirius.components.view.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.NodeDescription value : values) {
+    public EdgeDescriptionBuilder sourceNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getEdgeDescription().getSourceNodeDescriptions().add(value);
         }
         return this;
@@ -149,8 +149,8 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder targetNodeDescriptions(org.eclipse.sirius.components.view.NodeDescription ... values) {
-        for (org.eclipse.sirius.components.view.NodeDescription value : values) {
+    public EdgeDescriptionBuilder targetNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getEdgeDescription().getTargetNodeDescriptions().add(value);
         }
         return this;
@@ -179,7 +179,7 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder style(org.eclipse.sirius.components.view.EdgeStyle value) {
+    public EdgeDescriptionBuilder style(org.eclipse.sirius.components.view.diagram.EdgeStyle value) {
         this.getEdgeDescription().setStyle(value);
         return this;
     }
@@ -188,8 +188,8 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.ConditionalEdgeStyle ... values) {
-        for (org.eclipse.sirius.components.view.ConditionalEdgeStyle value : values) {
+    public EdgeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle ... values) {
+        for (org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle value : values) {
             this.getEdgeDescription().getConditionalStyles().add(value);
         }
         return this;

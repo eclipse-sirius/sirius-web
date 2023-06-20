@@ -56,7 +56,7 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
         };
     }
 
-    public String getWidgetLabel(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, String defaultLabel) {
+    public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {
         String widgetLabel = defaultLabel;
         String name = widgetDescription.getName();
         String labelExpression = widgetDescription.getLabelExpression();
@@ -68,7 +68,7 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
         return widgetLabel;
     }
 
-    public String getWidgetHelpText(org.eclipse.sirius.components.view.WidgetDescription widgetDescription) {
+    public String getWidgetHelpText(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription) {
         String helpText = "Help";
         String helpExpression = widgetDescription.getHelpExpression();
         if (helpExpression != null && !helpExpression.isBlank() && !helpExpression.startsWith("aql:")) {

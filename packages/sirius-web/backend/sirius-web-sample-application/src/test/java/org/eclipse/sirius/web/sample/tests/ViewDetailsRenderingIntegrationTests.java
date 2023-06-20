@@ -60,10 +60,12 @@ import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.diagram.util.DiagramAdapterFactory;
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.DomainTypeTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.ITextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.ViewPropertiesDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.view.form.util.FormAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewAdapterFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,6 +93,8 @@ public class ViewDetailsRenderingIntegrationTests {
 
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
         composedAdapterFactory.addAdapterFactory(new ViewAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new DiagramAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new FormAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 

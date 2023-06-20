@@ -16,8 +16,8 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.ButtonStyle.Builder;
-import org.eclipse.sirius.components.view.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
 
 /**
  * The style provider for the Button Description widget of the View DSL. This only handles "static" or "preview" styles

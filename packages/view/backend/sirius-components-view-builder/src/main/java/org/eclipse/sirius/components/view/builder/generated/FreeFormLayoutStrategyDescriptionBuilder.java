@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class FreeFormLayoutStrategyDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription.
      * @generated
      */
-    private org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription freeFormLayoutStrategyDescription = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription();
+    private org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription freeFormLayoutStrategyDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription getFreeFormLayoutStrategyDescription() {
+    protected org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription getFreeFormLayoutStrategyDescription() {
         return this.freeFormLayoutStrategyDescription;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription.
      * @generated
      */
-    public org.eclipse.sirius.components.view.FreeFormLayoutStrategyDescription build() {
+    public org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription build() {
         return this.getFreeFormLayoutStrategyDescription();
     }
 

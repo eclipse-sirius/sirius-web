@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class TextfieldDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.TextfieldDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.TextfieldDescriptionStyle textfieldDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createTextfieldDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle textfieldDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createTextfieldDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextfieldDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.TextfieldDescriptionStyle getTextfieldDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle getTextfieldDescriptionStyle() {
         return this.textfieldDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextfieldDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.TextfieldDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle build() {
         return this.getTextfieldDescriptionStyle();
     }
 

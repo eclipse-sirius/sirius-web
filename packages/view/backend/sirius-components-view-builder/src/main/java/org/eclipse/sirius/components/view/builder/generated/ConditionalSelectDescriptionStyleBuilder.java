@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class ConditionalSelectDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle conditionalSelectDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createConditionalSelectDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle conditionalSelectDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalSelectDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle getConditionalSelectDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle getConditionalSelectDescriptionStyle() {
         return this.conditionalSelectDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.ConditionalSelectDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle build() {
         return this.getConditionalSelectDescriptionStyle();
     }
 

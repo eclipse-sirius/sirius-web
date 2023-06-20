@@ -19,8 +19,8 @@ import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle.Builder;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.BarChartDescription;
-import org.eclipse.sirius.components.view.BarChartDescriptionStyle;
+import org.eclipse.sirius.components.view.form.BarChartDescription;
+import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
 
 /**
  * The style provider for the BarChart Description widget of the View DSL.

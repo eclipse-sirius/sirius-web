@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -8,10 +8,9 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *      Obeo - initial API and implementation
+ */
 package org.eclipse.sirius.web.customwidgets.provider;
-
 
 import java.util.Collection;
 import java.util.List;
@@ -25,21 +24,20 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.provider.WidgetDescriptionItemProvider;
+import org.eclipse.sirius.components.view.form.provider.WidgetDescriptionItemProvider;
 import org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage;
 import org.eclipse.sirius.web.customwidgets.SliderDescription;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.web.customwidgets.SliderDescription} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.web.customwidgets.SliderDescription} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
+ *
  * @generated
  */
 public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public SliderDescriptionItemProvider(AdapterFactory adapterFactory) {
@@ -47,9 +45,8 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
     }
 
     /**
-     * This returns the property descriptors for the adapted class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -65,77 +62,50 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
     }
 
     /**
-     * This adds a property descriptor for the Min Value Expression feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Min Value Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @generated
      */
     protected void addMinValueExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add
-        (this.createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(),
-                        this.getString("_UI_SliderDescription_minValueExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_minValueExpression_feature", "_UI_SliderDescription_type"),
-                        CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION,
-                        true,
-                        false,
-                        false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-                        null,
-                        null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SliderDescription_minValueExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_minValueExpression_feature", "_UI_SliderDescription_type"),
+                CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Max Value Expression feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Max Value Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @generated
      */
     protected void addMaxValueExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add
-        (this.createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(),
-                        this.getString("_UI_SliderDescription_maxValueExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_maxValueExpression_feature", "_UI_SliderDescription_type"),
-                        CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION,
-                        true,
-                        false,
-                        false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-                        null,
-                        null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SliderDescription_maxValueExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_maxValueExpression_feature", "_UI_SliderDescription_type"),
+                CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Current Value Expression feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Current Value Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @generated
      */
     protected void addCurrentValueExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add
-        (this.createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(),
-                        this.getString("_UI_SliderDescription_currentValueExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_currentValueExpression_feature", "_UI_SliderDescription_type"),
-                        CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION,
-                        true,
-                        false,
-                        false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-                        null,
-                        null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SliderDescription_currentValueExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_currentValueExpression_feature", "_UI_SliderDescription_type"),
+                CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -148,8 +118,8 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -161,36 +131,31 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
     }
 
     /**
-     * This returns SliderDescription.gif.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated NOT
+     * This returns SliderDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SliderDescription.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SliderDescription"));
     }
 
     /**
-     * This returns the label text for the adapted class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getText(Object object) {
-        String label = ((SliderDescription)object).getName();
-        return label == null || label.length() == 0 ?
-                this.getString("_UI_SliderDescription_type") :
-                    this.getString("_UI_SliderDescription_type") + " " + label;
+        String label = ((SliderDescription) object).getName();
+        return label == null || label.length() == 0 ? this.getString("_UI_SliderDescription_type") : this.getString("_UI_SliderDescription_type") + " " + label;
     }
 
-
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update any cached
-     * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @generated
      */
     @Override
@@ -211,56 +176,29 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-     * that can be created under this object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add
-        (this.createChildParameter
-                (CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY,
-                        ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors.add(this.createChildParameter(CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add
-        (this.createChildParameter
-                (CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY,
-                        ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors.add(this.createChildParameter(CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add
-        (this.createChildParameter
-                (CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY,
-                        ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors.add(this.createChildParameter(CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add
-        (this.createChildParameter
-                (CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY,
-                        ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors.add(this.createChildParameter(CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add
-        (this.createChildParameter
-                (CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY,
-                        ViewFactory.eINSTANCE.createDeleteElement()));
-
-        newChildDescriptors.add
-        (this.createChildParameter
-                (CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY,
-                        ViewFactory.eINSTANCE.createCreateView()));
-
-        newChildDescriptors.add
-        (this.createChildParameter
-                (CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY,
-                        ViewFactory.eINSTANCE.createDeleteView()));
+        newChildDescriptors.add(this.createChildParameter(CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
     }
 
     /**
-     * Return the resource locator for this item provider's resources.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override

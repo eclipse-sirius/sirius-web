@@ -28,10 +28,10 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -48,9 +48,9 @@ public class AddToolbarActionEventHandlerTests {
 
     @Test
     public void testAddToolbarActionToGroup() {
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
-        GroupDescription groupDescription = ViewFactory.eINSTANCE.createGroupDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
+        GroupDescription groupDescription = FormFactory.eINSTANCE.createGroupDescription();
         pageDescription.getGroups().add(groupDescription);
         formDescription.getPages().add(pageDescription);
         var objectService = new IObjectService.NoOp() {
@@ -81,8 +81,8 @@ public class AddToolbarActionEventHandlerTests {
 
     @Test
     public void testAddToolbarActionToPage() {
-        FormDescription formDescription = ViewFactory.eINSTANCE.createFormDescription();
-        PageDescription pageDescription = ViewFactory.eINSTANCE.createPageDescription();
+        FormDescription formDescription = FormFactory.eINSTANCE.createFormDescription();
+        PageDescription pageDescription = FormFactory.eINSTANCE.createPageDescription();
         formDescription.getPages().add(pageDescription);
         var objectService = new IObjectService.NoOp() {
             @Override

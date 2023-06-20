@@ -21,24 +21,24 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class TextareaDescriptionStyleBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.TextareaDescriptionStyle.
+     * Create instance org.eclipse.sirius.components.view.form.TextareaDescriptionStyle.
      * @generated
      */
-    private org.eclipse.sirius.components.view.TextareaDescriptionStyle textareaDescriptionStyle = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createTextareaDescriptionStyle();
+    private org.eclipse.sirius.components.view.form.TextareaDescriptionStyle textareaDescriptionStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createTextareaDescriptionStyle();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextareaDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.TextareaDescriptionStyle.
      * @generated
      */
-    protected org.eclipse.sirius.components.view.TextareaDescriptionStyle getTextareaDescriptionStyle() {
+    protected org.eclipse.sirius.components.view.form.TextareaDescriptionStyle getTextareaDescriptionStyle() {
         return this.textareaDescriptionStyle;
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.TextareaDescriptionStyle.
+     * Return instance org.eclipse.sirius.components.view.form.TextareaDescriptionStyle.
      * @generated
      */
-    public org.eclipse.sirius.components.view.TextareaDescriptionStyle build() {
+    public org.eclipse.sirius.components.view.form.TextareaDescriptionStyle build() {
         return this.getTextareaDescriptionStyle();
     }
 

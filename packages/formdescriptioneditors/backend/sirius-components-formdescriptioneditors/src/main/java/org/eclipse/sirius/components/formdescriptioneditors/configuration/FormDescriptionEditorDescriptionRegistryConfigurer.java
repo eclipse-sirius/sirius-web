@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.core.configuration.IRepresentationDescripti
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.form.FormPackage;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -47,7 +47,7 @@ public class FormDescriptionEditorDescriptionRegistryConfigurer implements IRepr
 
         //@// @formatter:off
         Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get(IRepresentationDescription.CLASS, Object.class)
-                .filter(ViewPackage.eINSTANCE.getFormDescription()::equals)
+                .filter(FormPackage.eINSTANCE.getFormDescription()::equals)
                 .isPresent();
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getId)
