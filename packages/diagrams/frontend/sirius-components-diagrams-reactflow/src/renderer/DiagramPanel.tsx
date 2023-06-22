@@ -16,6 +16,8 @@ import Paper from '@material-ui/core/Paper';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+import GridOffIcon from '@material-ui/icons/GridOff';
+import GridOnIcon from '@material-ui/icons/GridOn';
 import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
@@ -24,7 +26,15 @@ import { Panel } from 'reactflow';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { ShareDiagramDialog } from './ShareDiagramDialog';
 
-export const DiagramPanel = ({ fullscreen, onFullscreen, onFitToScreen, onZoomIn, onZoomOut }: DiagramPanelProps) => {
+export const DiagramPanel = ({
+  fullscreen,
+  onFullscreen,
+  onFitToScreen,
+  onZoomIn,
+  onZoomOut,
+  snapToGrid,
+  onSnapToGrid,
+}: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
   });
@@ -57,6 +67,15 @@ export const DiagramPanel = ({ fullscreen, onFullscreen, onFitToScreen, onZoomIn
           <IconButton size="small" onClick={() => onShare()}>
             <ShareIcon />
           </IconButton>
+          {snapToGrid ? (
+            <IconButton size="small" onClick={() => onSnapToGrid(false)}>
+              <GridOffIcon />
+            </IconButton>
+          ) : (
+            <IconButton size="small" onClick={() => onSnapToGrid(true)}>
+              <GridOnIcon />
+            </IconButton>
+          )}
         </Paper>
       </Panel>
       {state.dialogOpen === 'Share' ? <ShareDiagramDialog onClose={onCloseDialog} /> : null}

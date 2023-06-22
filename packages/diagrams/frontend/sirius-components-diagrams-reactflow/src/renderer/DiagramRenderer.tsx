@@ -15,6 +15,7 @@ import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-cor
 import { useEffect, useRef, useState } from 'react';
 import {
   Background,
+  BackgroundVariant,
   EdgeChange,
   NodeChange,
   NodeSelectionChange,
@@ -49,6 +50,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
     fullscreen: false,
+    snapToGrid: false,
   });
   const [nodes, setNodes, onNodesChange] = useNodesState(diagram.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(diagram.edges);
@@ -134,6 +136,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
   const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
   const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
+  const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
 
   return (
     <ReactFlow
@@ -145,14 +148,31 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       onPaneClick={handlePaneClick}
       maxZoom={40}
       minZoom={0.1}
+      snapToGrid={state.snapToGrid}
+      snapGrid={[10, 10]}
       ref={ref}>
-      <Background style={{ backgroundColor: '#ffffff' }} color="#ffffff" />
+      {state.snapToGrid ? (
+        <>
+          <Background
+            id="small-grid"
+            style={{ backgroundColor: '#ffffff' }}
+            variant={BackgroundVariant.Lines}
+            gap={10}
+            color="#f1f1f1"
+          />
+          <Background id="large-grid" variant={BackgroundVariant.Lines} gap={100} offset={1} color="#cccccc" />
+        </>
+      ) : (
+        <Background style={{ backgroundColor: '#ffffff' }} variant={BackgroundVariant.Lines} color="#ffffff" />
+      )}
       <DiagramPanel
         fullscreen={state.fullscreen}
         onFullscreen={handleFullscreen}
         onFitToScreen={handleFitToScreen}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
+        snapToGrid={state.snapToGrid}
+        onSnapToGrid={handleSnapToGrid}
       />
     </ReactFlow>
   );
