@@ -274,7 +274,12 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       type: 'step',
       source: gqlEdge.sourceId,
       target: gqlEdge.targetId,
+      markerEnd: `open-arrow--${gqlEdge.id}--markerEnd`,
       zIndex,
+      style: {
+        stroke: gqlEdge.style.color,
+        strokeWidth: gqlEdge.style.size,
+      },
     };
   });
 

@@ -24,6 +24,7 @@ import {
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { Diagram } from '../renderer/DiagramRenderer.types';
+import { MarkerDefinitions } from '../renderer/MarkerDefinitions';
 import {
   DiagramRepresentationState,
   GQLDiagramEventData,
@@ -94,7 +95,10 @@ export const DiagramRepresentation = ({
   return (
     <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
       <ReactFlowProvider>
-        <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+        <div style={{ display: 'inline-block', position: 'relative' }}>
+          <MarkerDefinitions />
+          <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+        </div>
       </ReactFlowProvider>
     </DiagramContext.Provider>
   );
