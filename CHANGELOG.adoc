@@ -64,6 +64,7 @@ The help text can include multiple lines (separated by `\n`), but no text format
 - https://github.com/eclipse-sirius/sirius-components/issues/2064[#2064] [forms] Make the `IWidgetDescriptor` API more flexible.
 - https://github.com/eclipse-sirius/sirius-components/issues/1618[#1618] [view] Split the view metamodel into dedicated subpackages.
 - https://github.com/eclipse-sirius/sirius-components/issues/2083[#2083] [diagram] Add support for edge markers
+- https://github.com/eclipse-sirius/sirius-components/issues/2086[#2086] [diagram] Add a panel with the default diagram actions
 
 == v2023.6.0
 
