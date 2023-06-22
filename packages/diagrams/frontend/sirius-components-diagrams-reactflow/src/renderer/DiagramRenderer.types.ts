@@ -20,6 +20,10 @@ export interface DiagramRendererProps {
   setSelection: (selection: Selection) => void;
 }
 
+export interface DiagramRendererState {
+  fullscreen: boolean;
+}
+
 export interface Diagram {
   metadata: DiagramMetadata;
   nodes: Node[];

@@ -12,8 +12,9 @@
  *******************************************************************************/
 
 import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
+  Background,
   EdgeChange,
   NodeChange,
   NodeSelectionChange,
@@ -23,14 +24,16 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
+  useReactFlow,
   useStoreApi,
 } from 'reactflow';
-import { DiagramRendererProps, NodeData } from './DiagramRenderer.types';
+import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
 import { ImageNode } from './ImageNode';
 import { ListNode } from './ListNode';
 import { RectangularNode } from './RectangularNode';
 
 import 'reactflow/dist/style.css';
+import { DiagramPanel } from './DiagramPanel';
 
 const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
@@ -41,7 +44,12 @@ const nodeTypes: NodeTypes = {
 const isSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 
 export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRendererProps) => {
+  const reactFlow = useReactFlow();
   const store = useStoreApi();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [state, setState] = useState<DiagramRendererState>({
+    fullscreen: false,
+  });
   const [nodes, setNodes, onNodesChange] = useNodesState(diagram.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(diagram.edges);
 
@@ -104,6 +112,29 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     setSelection(selection);
   };
 
+  useEffect(() => {
+    const onFullscreenChange = () =>
+      setState((prevState) => ({ ...prevState, fullscreen: Boolean(document.fullscreenElement) }));
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, []);
+
+  const handleFullscreen = (fullscreen: boolean) => {
+    if (ref.current) {
+      if (fullscreen) {
+        ref.current.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
+  const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
+  const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -112,6 +143,17 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       edges={edges}
       onEdgesChange={handleEdgesChange}
       onPaneClick={handlePaneClick}
-    />
+      maxZoom={40}
+      minZoom={0.1}
+      ref={ref}>
+      <Background style={{ backgroundColor: '#ffffff' }} color="#ffffff" />
+      <DiagramPanel
+        fullscreen={state.fullscreen}
+        onFullscreen={handleFullscreen}
+        onFitToScreen={handleFitToScreen}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+      />
+    </ReactFlow>
   );
 };
