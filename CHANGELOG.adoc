@@ -63,6 +63,7 @@ The help text can include multiple lines (separated by `\n`), but no text format
 - https://github.com/eclipse-sirius/sirius-components/issues/2048[#2048] [diagram] Add a basic support for the resize. It is possible to reduce the size of a node less than the space needed to display all children.
 - https://github.com/eclipse-sirius/sirius-components/issues/2064[#2064] [forms] Make the `IWidgetDescriptor` API more flexible.
 - https://github.com/eclipse-sirius/sirius-components/issues/1618[#1618] [view] Split the view metamodel into dedicated subpackages.
+- https://github.com/eclipse-sirius/sirius-components/issues/2083[#2083] [diagram] Add support for edge markers
 
 == v2023.6.0
 
