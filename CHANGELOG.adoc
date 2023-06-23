@@ -31,6 +31,7 @@ Add of the `selection` variable available in some context.
 - https://github.com/eclipse-sirius/sirius-components/issues/2072[#2072] [view] Fix an NPE when trying to instanciate List/Select/MultiSelect widgets with no candidates expression specified (which is the initial state on creation).
 An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2067[#2064] [view] Enable completion support and other text field customizations for custom widgets
+- https://github.com/eclipse-sirius/sirius-components/issues/2092[#2092] [form] Fix support for help expressions on the _FlexboxContainer_ widget
 
 
 === New Features
