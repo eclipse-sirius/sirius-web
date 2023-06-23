@@ -14,9 +14,9 @@ import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
 import Avatar from '@material-ui/core/Avatar';
-import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -42,15 +42,15 @@ import {
 import {
   FormDescriptionEditorRepresentationContext,
   FormDescriptionEditorRepresentationEvent,
-  formDescriptionEditorRepresentationMachine,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   InitializeRepresentationEvent,
   SchemaValue,
   ShowToastEvent,
+  formDescriptionEditorRepresentationMachine,
 } from './FormDescriptionEditorRepresentationMachine';
-import { Button } from './icons/Button';
 import { PageList } from './PageList';
+import { Button } from './icons/Button';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   formDescriptionEditor: {
@@ -72,6 +72,7 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     height: '100%',
     borderTop: '1px solid grey',
+    overflowY: 'auto',
   },
   widgets: {
     display: 'flex',
