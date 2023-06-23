@@ -64,14 +64,17 @@ public class FlexboxContainerComponent implements IComponent {
         });
 
         // @formatter:off
-        FlexboxContainerElementProps flexboxContainerElementProps = FlexboxContainerElementProps.newFlexboxContainerElementProps(id)
+        var flexboxContainerElementPropsBuilder = FlexboxContainerElementProps.newFlexboxContainerElementProps(id)
                 .label(label)
                 .flexDirection(flexdirection)
-                .children(childrenWidgets)
-                .build();
+                .children(childrenWidgets);
         // @formatter:on
 
-        Element flexboxContainerElement = new Element(FlexboxContainerElementProps.TYPE, flexboxContainerElementProps);
+        if (flexboxContainerDescription.getHelpTextProvider() != null) {
+            flexboxContainerElementPropsBuilder.helpTextProvider(() -> flexboxContainerDescription.getHelpTextProvider().apply(variableManager));
+        }
+
+        Element flexboxContainerElement = new Element(FlexboxContainerElementProps.TYPE, flexboxContainerElementPropsBuilder.build());
         children.add(flexboxContainerElement);
 
         children.add(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(flexboxContainerDescription, variableManager)));

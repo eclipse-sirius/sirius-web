@@ -62,10 +62,9 @@ public class FormQueryService implements IFormQueryService {
         List<AbstractWidget> widgets = new ArrayList<>();
         group.getToolbarActions().forEach(widgets::add);
         group.getWidgets().forEach(widget -> {
-            if (widget instanceof FlexboxContainer) {
-                widgets.addAll(this.getAllWidgets((FlexboxContainer) widget));
-            } else {
-                widgets.add(widget);
+            widgets.add(widget);
+            if (widget instanceof FlexboxContainer flexboxContainer) {
+                widgets.addAll(this.getAllWidgets(flexboxContainer));
             }
         });
         return widgets;
@@ -74,10 +73,9 @@ public class FormQueryService implements IFormQueryService {
     private List<AbstractWidget> getAllWidgets(FlexboxContainer flexboxContainer) {
         List<AbstractWidget> widgets = new ArrayList<>();
         flexboxContainer.getChildren().forEach(widget -> {
-            if (widget instanceof FlexboxContainer) {
-                widgets.addAll(this.getAllWidgets((FlexboxContainer) widget));
-            } else {
-                widgets.add(widget);
+            widgets.add(widget);
+            if (widget instanceof FlexboxContainer subFlexboxContainer) {
+                widgets.addAll(this.getAllWidgets(subFlexboxContainer));
             }
         });
         return widgets;
