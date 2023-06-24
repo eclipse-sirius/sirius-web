@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
@@ -166,11 +167,11 @@ public class AQLInterpreter {
         diagnostic.getChildren().forEach(childDiagnostic -> this.log(expression, childDiagnostic));
     }
 
-    public ICompletionResult getProposals(String expression, int offset) {
+    public ICompletionResult getProposals(String expression, int offset, Optional<EClass> selfType) {
         IQueryCompletionEngine engine = QueryCompletion.newEngine(this.queryEnvironment);
         Map<String, Set<IType>> variableTypes = new LinkedHashMap<>();
         final Set<IType> potentialTypes = new LinkedHashSet<>(1);
-        potentialTypes.add(new EClassifierType(this.queryEnvironment, EcorePackage.Literals.EOBJECT));
+        potentialTypes.add(new EClassifierType(this.queryEnvironment, selfType.orElse(EcorePackage.Literals.EOBJECT)));
         variableTypes.put("self", potentialTypes);
 
         return engine.getCompletion(expression, offset, variableTypes);
