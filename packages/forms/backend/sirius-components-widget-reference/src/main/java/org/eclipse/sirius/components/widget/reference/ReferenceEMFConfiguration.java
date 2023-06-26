@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.widget.reference;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.emf.configuration.ChildExtenderProvider;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.provider.ReferenceItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +40,6 @@ public class ReferenceEMFConfiguration {
 
     @Bean
     public ChildExtenderProvider referenceWidgetChildExtenderProvider() {
-        return new ChildExtenderProvider(ViewPackage.eNS_URI, ReferenceItemProviderAdapterFactory.FormChildCreationExtender::new);
+        return new ChildExtenderProvider(FormPackage.eNS_URI, ReferenceItemProviderAdapterFactory.FormChildCreationExtender::new);
     }
 }
