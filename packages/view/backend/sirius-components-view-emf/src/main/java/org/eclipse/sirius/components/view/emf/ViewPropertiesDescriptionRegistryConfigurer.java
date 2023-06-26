@@ -23,6 +23,7 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -48,6 +49,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.emf.diagram.NodeStylePropertiesConfigurer;
+import org.eclipse.sirius.components.view.form.FormPackage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -67,6 +69,12 @@ import org.springframework.stereotype.Service;
 public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
+
+    private static final List<EPackage> VIEW_PACKAGES = List.of(
+            ViewPackage.eINSTANCE,
+            DiagramPackage.eINSTANCE,
+            FormPackage.eINSTANCE
+    );
 
     /**
      * These types have even more specific properties definition, see {@link NodeStylePropertiesConfigurer}.
@@ -155,9 +163,9 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
     }
 
     private boolean isViewElement(EObject element) {
-        return element.eClass().getEPackage() == ViewPackage.eINSTANCE ||
+        return VIEW_PACKAGES.contains(element.eClass().getEPackage()) ||
                element.eClass().getEAllSuperTypes().stream()
-                      .anyMatch(eClass -> eClass.getEPackage() == ViewPackage.eINSTANCE);
+                      .anyMatch(eClass -> VIEW_PACKAGES.contains(eClass.getEPackage()));
     }
 
     private GroupDescription getGroupDescription() {
