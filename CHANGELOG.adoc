@@ -85,6 +85,7 @@ image:doc/images/Diagram_closed_arrow_with_vertical_bar.png[closed arrow with ve
 image:doc/images/Diagram_closed_arrow_with_dots.png[closed arrow with dots]
 +
 
+- https://github.com/eclipse-sirius/sirius-components/issues/2098[#2098] [forms] Enable vertical scrolling on the Reference widget's when showing more than a few values.
 
 == v2023.6.0
 
