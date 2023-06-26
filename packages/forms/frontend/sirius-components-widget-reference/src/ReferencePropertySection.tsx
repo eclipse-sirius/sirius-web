@@ -23,6 +23,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -35,6 +36,13 @@ import {
   GQLReferenceWidget,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
+
+const useStyles = makeStyles((_) => ({
+  root: {
+    overflow: 'auto',
+    maxHeight: 300,
+  },
+}));
 
 export const editReferenceMutation = gql`
   mutation editReference($input: EditReferenceInput!) {
@@ -55,6 +63,7 @@ export const editReferenceMutation = gql`
     }
   }
 `;
+
 const isErrorPayload = (payload: GQLEditReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLEditReferencePayload): payload is GQLSuccessPayload =>
@@ -234,6 +243,8 @@ export const ReferencePropertySection = ({
     ));
   }
 
+  const classes = useStyles();
+
   return (
     <div>
       <PropertySectionLabel
@@ -245,10 +256,14 @@ export const ReferencePropertySection = ({
       />
 
       {readOnly || widget.readOnly ? (
-        <List dense>{items}</List>
+        <List dense className={classes.root}>
+          {items}
+        </List>
       ) : (
         <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDrop={handleDrop}>
-          <List dense>{items}</List>
+          <List dense className={classes.root}>
+            {items}
+          </List>
         </div>
       )}
     </div>
