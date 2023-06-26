@@ -34,14 +34,16 @@ import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramR
 import { ImageNode } from './ImageNode';
 import { ListNode } from './ListNode';
 import { RectangularNode } from './RectangularNode';
+import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
+import { useConnector } from './connector/useConnector';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { CustomEdge } from './edge/CustomEdge';
 import { performLayout } from './layout';
 import { DiagramPalette } from './palette/DiagramPalette';
-
-import 'reactflow/dist/style.css';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
+
+import 'reactflow/dist/style.css';
 
 const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
@@ -64,7 +66,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     snapToGrid: false,
   });
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
-
+  const { onConnect } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
 
   const [nodes, setNodes, onNodesChange] = useNodesState(diagram.nodes);
@@ -182,6 +184,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       edges={edges}
       edgeTypes={edgeTypes}
       onKeyDown={onKeyDown}
+      onConnect={onConnect}
       onEdgesChange={handleEdgesChange}
       onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
@@ -213,6 +216,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
         onArrangeAll={handleArrangeAll}
       />
       <DiagramPalette targetObjectId={diagram.metadata.id} />
+      <ConnectorContextualMenu />
     </ReactFlow>
   );
 };

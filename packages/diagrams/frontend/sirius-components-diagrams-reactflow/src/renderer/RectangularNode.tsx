@@ -43,8 +43,8 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
       <div style={rectangularNodeStyle(data.style, selected, data.faded)}>
         {data.label ? <Label label={data.label} faded={data.faded} /> : null}
         {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id} /> : null}
-        <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
-        <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
+        <Handle id="source" type="source" position={Position.Left} isConnectable={isConnectable} />
+        <Handle id="target" type="target" position={Position.Right} isConnectable={isConnectable} />
       </div>
     </>
   );
