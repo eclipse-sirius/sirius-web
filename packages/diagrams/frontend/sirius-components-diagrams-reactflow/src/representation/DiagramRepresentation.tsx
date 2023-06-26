@@ -25,6 +25,7 @@ import {
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { Diagram } from '../renderer/DiagramRenderer.types';
 import { MarkerDefinitions } from '../renderer/MarkerDefinitions';
+import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
 import {
@@ -99,10 +100,12 @@ export const DiagramRepresentation = ({
       <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
         <DiagramDirectEditContextProvider>
           <DiagramPaletteContextProvider>
-            <div style={{ display: 'inline-block', position: 'relative' }}>
-              <MarkerDefinitions />
-              <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
-            </div>
+            <ConnectorContextProvider>
+              <div style={{ display: 'inline-block', position: 'relative' }}>
+                <MarkerDefinitions />
+                <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+              </div>
+            </ConnectorContextProvider>
           </DiagramPaletteContextProvider>
         </DiagramDirectEditContextProvider>
       </DiagramContext.Provider>

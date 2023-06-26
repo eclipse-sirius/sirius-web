@@ -143,6 +143,7 @@ image:doc/images/DiagramPanelUnhideUnfade.png[Unhide all and Unfade all]
 The node palette with hide and fade:
 +
 image:doc/images/NodePaletteWithHideFade.png[Hide and Fade on node palette]
+- https://github.com/eclipse-sirius/sirius-components/issues/2095[#2095] [diagram] Add support for the creation of new edges in the alternate diagram rendering solution
 
 == v2023.6.0
 
