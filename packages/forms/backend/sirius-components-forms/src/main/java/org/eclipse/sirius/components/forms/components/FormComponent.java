@@ -65,16 +65,23 @@ public class FormComponent implements IComponent {
             }
         }
 
-        // @formatter:off
-        List<Element> children = candidates.stream().map(candidate -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, candidate);
-            childVariableManager.put(WIDGET_ID_PROVIDER_COUNTER, widgetIdCounter);
-            return childVariableManager;
-        }).flatMap(childVariableManager -> pageDescriptions.stream().map(pageDescription -> {
-            PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription, this.props.getWidgetDescriptors());
-            return new Element(PageComponent.class, pageComponentProps);
-        })).toList();
+        List<Element> children = candidates
+                .stream()
+                .map(candidate -> {
+                    VariableManager childVariableManager = variableManager.createChild();
+                    childVariableManager.put(VariableManager.SELF, candidate);
+                    childVariableManager.put(WIDGET_ID_PROVIDER_COUNTER, widgetIdCounter);
+                    return childVariableManager;
+                })
+                .flatMap(childVariableManager -> pageDescriptions
+                        .stream()
+                        .filter(pageDescription -> pageDescription.getCanCreatePredicate().test(childVariableManager))
+                        .map(pageDescription -> {
+                            PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription, this.props.getWidgetDescriptors());
+                            return new Element(PageComponent.class, pageComponentProps);
+                        })
+                )
+                .toList();
 
         FormElementProps formElementProps = FormElementProps.newFormElementProps(id)
                 .label(label)
@@ -84,6 +91,5 @@ public class FormComponent implements IComponent {
                 .build();
 
         return new Element(FormElementProps.TYPE, formElementProps);
-        // @formatter:on
     }
 }

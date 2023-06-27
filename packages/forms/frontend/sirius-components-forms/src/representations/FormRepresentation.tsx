@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useContext, useEffect } from 'react';
 import { Form } from '../form/Form';
@@ -30,13 +30,13 @@ import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
-  formRepresentationMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SwitchFormEvent,
+  formRepresentationMachine,
 } from './FormRepresentationMachine';
 
 const formEventSubscription = (contributions: Array<WidgetContribution>) =>
@@ -151,7 +151,7 @@ export const FormRepresentation = ({
     }
   }, [error, dispatch]);
 
-  let content = null;
+  let content: JSX.Element | null = null;
   if (formRepresentation === 'ready') {
     if (form.pages.length > 1) {
       content = (
@@ -163,7 +163,7 @@ export const FormRepresentation = ({
           readOnly={readOnly}
         />
       );
-    } else {
+    } else if (form.pages.length === 1) {
       let selectedPageToolbar = null;
       if (form.pages[0].toolbarActions?.length > 0) {
         selectedPageToolbar = (
