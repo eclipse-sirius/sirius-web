@@ -22,7 +22,7 @@ export interface FormProps {
 }
 
 export interface FormState {
-  selectedPage: GQLPage;
+  selectedPage: GQLPage | null;
   pages: GQLPage[];
 }
 

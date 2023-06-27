@@ -36,6 +36,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2092[#2092] [form] Fix support for help expressions on the _FlexboxContainer_ widget
 - https://github.com/eclipse-sirius/sirius-components/issues/2088[#2088] [tree] Fix initial value of the tree filter bar
 - https://github.com/eclipse-sirius/sirius-components/issues/2133[#2133] [workbench] Fix NPE in Related Elements view
+- https://github.com/eclipse-sirius/sirius-components/issues/2112[#2112] [form] Fix the pages filtering in form editor.
 
 === New Features
 

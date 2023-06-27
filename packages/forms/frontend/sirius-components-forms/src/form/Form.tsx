@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
@@ -79,7 +79,7 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
 
   useEffect(() => {
     setState(() => {
-      const selectedPage = pages.find((page) => page.id === state.selectedPage.id);
+      const selectedPage = pages.find((page) => page.id === state.selectedPage?.id);
       if (selectedPage) {
         return { selectedPage, pages };
       }
@@ -94,8 +94,8 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
     });
   };
 
-  let selectedPageToolbar = null;
-  if (state.selectedPage.toolbarActions?.length > 0) {
+  let selectedPageToolbar: JSX.Element | null = null;
+  if (state.selectedPage?.toolbarActions?.length > 0) {
     selectedPageToolbar = (
       <div className={classes.toolbar}>
         {state.selectedPage.toolbarActions.map((toolbarAction) => (
@@ -107,6 +107,19 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
     );
   }
 
+  let page: JSX.Element | null = null;
+  if (state.selectedPage) {
+    page = (
+      <Page
+        editingContextId={editingContextId}
+        formId={id}
+        page={state.selectedPage}
+        widgetSubscriptions={widgetSubscriptions}
+        setSelection={setSelection}
+        readOnly={readOnly}
+      />
+    );
+  }
   return (
     <div data-testid="form" className={classes.form}>
       <div className={classes.pagesListAndToolbar}>
@@ -136,14 +149,7 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
         </Tabs>
         {selectedPageToolbar}
       </div>
-      <Page
-        editingContextId={editingContextId}
-        formId={id}
-        page={state.selectedPage}
-        widgetSubscriptions={widgetSubscriptions}
-        setSelection={setSelection}
-        readOnly={readOnly}
-      />
+      {page}
     </div>
   );
 };
