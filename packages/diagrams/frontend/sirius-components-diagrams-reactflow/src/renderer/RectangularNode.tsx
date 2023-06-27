@@ -44,7 +44,9 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
       <div style={rectangularNodeStyle(data.style, selected)}>
-        <div style={labelStyle(data.label.style)}>{data.label.text}</div>
+        <div data-id={data.label.id} style={labelStyle(data.label.style)}>
+          {data.label.text}
+        </div>
         {selected ? <Palette diagramElementId={id} /> : null}
         <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle type="target" position={Position.Right} isConnectable={isConnectable} />

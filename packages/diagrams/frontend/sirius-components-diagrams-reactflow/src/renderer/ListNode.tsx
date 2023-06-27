@@ -61,7 +61,9 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
       <div style={listNodeStyle(data.style, selected)}>
-        <div style={listNodeHeaderStyle(data.label.style)}>{data.label.text}</div>
+        <div data-id={data.label.id} style={listNodeHeaderStyle(data.label.style)}>
+          {data.label.text}
+        </div>
         <div>
           {data.listItems.map((listItem) => {
             return (

@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 export interface Label {
+  id: string;
   text: string;
   style: React.CSSProperties;
 }

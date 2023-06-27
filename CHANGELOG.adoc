@@ -55,6 +55,8 @@ image:doc/screenshots/ShowIconOptionSelectWidget.jpg[Icons on select widget opti
 - https://github.com/eclipse-sirius/sirius-components/issues/2056[#2056] [form] Add the possibility to control read-only mode for widgets with an expression.
 - https://github.com/eclipse-sirius/sirius-components/issues/2077[#2077] [form] Add the ability to define a border style for groups and flexbox containers.
 - https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] Add an initial label value when editing tree items label.
+- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] Add an inital label value when editing tree items label.
+- https://github.com/eclipse-sirius/sirius-components/issues/2090[#2090] [diagram] Add the support for the arrange all on react flow diagram. The arrange all is made with elkjs.
 
 === Improvements
 

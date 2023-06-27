@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+import { LayoutOptions } from 'elkjs/lib/elk.bundled.js';
 import { useEffect, useRef, useState } from 'react';
 import {
   Background,
@@ -35,6 +36,7 @@ import { RectangularNode } from './RectangularNode';
 
 import 'reactflow/dist/style.css';
 import { DiagramPanel } from './DiagramPanel';
+import { performLayout } from './layout';
 
 const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
@@ -137,6 +139,20 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
   const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
+  const handleArrangeAll = () => {
+    const layoutOptions: LayoutOptions = {
+      'elk.algorithm': 'layered',
+      'elk.layered.spacing.nodeNodeBetweenLayers': '100',
+      'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
+      'layering.strategy': 'NETWORK_SIMPLEX',
+      'elk.spacing.nodeNode': '80',
+      'elk.direction': 'DOWN',
+      'elk.layered.spacing.edgeNodeBetweenLayers': '30',
+    };
+    performLayout(nodes, edges, layoutOptions).then(({ nodes }) => {
+      setNodes(nodes);
+    });
+  };
 
   return (
     <ReactFlow
@@ -173,6 +189,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
         onZoomOut={handleZoomOut}
         snapToGrid={state.snapToGrid}
         onSnapToGrid={handleSnapToGrid}
+        onArrangeAll={handleArrangeAll}
       />
     </ReactFlow>
   );
