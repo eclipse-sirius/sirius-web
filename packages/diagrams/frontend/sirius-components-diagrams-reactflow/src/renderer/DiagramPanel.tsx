@@ -13,6 +13,7 @@
 
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
@@ -34,6 +35,7 @@ export const DiagramPanel = ({
   onZoomOut,
   snapToGrid,
   onSnapToGrid,
+  onArrangeAll,
 }: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
@@ -76,6 +78,9 @@ export const DiagramPanel = ({
               <GridOnIcon />
             </IconButton>
           )}
+          <IconButton size="small" onClick={() => onArrangeAll()}>
+            <AccountTreeIcon />
+          </IconButton>
         </Paper>
       </Panel>
       {state.dialogOpen === 'Share' ? <ShareDiagramDialog onClose={onCloseDialog} /> : null}

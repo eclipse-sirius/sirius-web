@@ -19,6 +19,7 @@ export interface DiagramPanelProps {
   onZoomOut: () => void;
   snapToGrid: boolean;
   onSnapToGrid: (snapToGrid: boolean) => void;
+  onArrangeAll: () => void;
 }
 
 export interface DiagramPanelState {

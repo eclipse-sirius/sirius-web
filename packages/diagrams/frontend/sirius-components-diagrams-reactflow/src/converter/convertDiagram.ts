@@ -36,6 +36,7 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
       borderStyle: style.borderStyle,
     },
     label: {
+      id: gqlNode.label.id,
       text: gqlNode.label.text,
       style: {
         fontSize: labelStyle.fontSize,
@@ -104,6 +105,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
     return {
       id,
       label: {
+        id: gqlChildNode.label.id,
         text: gqlChildNode.label.text,
         style: {},
       },
@@ -129,6 +131,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
       borderStyle: style.borderStyle,
     },
     label: {
+      id: gqlNode.label.id,
       text: gqlNode.label.text,
       style: {
         fontSize: labelStyle.fontSize,
