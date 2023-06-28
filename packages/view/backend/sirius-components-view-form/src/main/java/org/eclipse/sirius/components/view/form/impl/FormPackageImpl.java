@@ -47,6 +47,7 @@ import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.ImageDescription;
 import org.eclipse.sirius.components.view.form.LabelDescription;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
+import org.eclipse.sirius.components.view.form.LabelPlacement;
 import org.eclipse.sirius.components.view.form.LinkDescription;
 import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ListDescription;
@@ -395,6 +396,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EEnum groupDisplayModeEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum labelPlacementEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -1666,6 +1674,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getCheckboxDescriptionStyle_LabelPlacement() {
+        return (EAttribute) this.checkboxDescriptionStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getConditionalCheckboxDescriptionStyle() {
         return this.conditionalCheckboxDescriptionStyleEClass;
     }
@@ -2046,6 +2064,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EEnum getLabelPlacement() {
+        return this.labelPlacementEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public FormFactory getFormFactory() {
         return (FormFactory) this.getEFactoryInstance();
     }
@@ -2213,6 +2241,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.checkboxDescriptionStyleEClass = this.createEClass(CHECKBOX_DESCRIPTION_STYLE);
         this.createEReference(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__COLOR);
+        this.createEAttribute(this.checkboxDescriptionStyleEClass, CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT);
 
         this.conditionalCheckboxDescriptionStyleEClass = this.createEClass(CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE);
 
@@ -2272,6 +2301,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         // Create enums
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
+        this.labelPlacementEEnum = this.createEEnum(LABEL_PLACEMENT);
     }
 
     /**
@@ -2611,6 +2641,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEClass(this.checkboxDescriptionStyleEClass, CheckboxDescriptionStyle.class, "CheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getCheckboxDescriptionStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCheckboxDescriptionStyle_LabelPlacement(), this.getLabelPlacement(), "labelPlacement", "end", 1, 1, CheckboxDescriptionStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalCheckboxDescriptionStyleEClass, ConditionalCheckboxDescriptionStyle.class, "ConditionalCheckboxDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
@@ -2702,6 +2734,12 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEEnum(this.groupDisplayModeEEnum, GroupDisplayMode.class, "GroupDisplayMode");
         this.addEEnumLiteral(this.groupDisplayModeEEnum, GroupDisplayMode.LIST);
         this.addEEnumLiteral(this.groupDisplayModeEEnum, GroupDisplayMode.TOGGLEABLE_AREAS);
+
+        this.initEEnum(this.labelPlacementEEnum, LabelPlacement.class, "LabelPlacement");
+        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.END);
+        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.TOP);
+        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.START);
+        this.addEEnumLiteral(this.labelPlacementEEnum, LabelPlacement.BOTTOM);
 
         // Create resource
         this.createResource(eNS_URI);

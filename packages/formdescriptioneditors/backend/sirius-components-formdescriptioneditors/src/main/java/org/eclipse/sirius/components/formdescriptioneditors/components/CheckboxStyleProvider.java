@@ -34,7 +34,8 @@ public class CheckboxStyleProvider {
     }
 
     public CheckboxStyle build() {
-        Builder checkboxStyleBuilder = CheckboxStyle.newCheckboxStyle();
+        Builder checkboxStyleBuilder = CheckboxStyle.newCheckboxStyle()
+                .labelPlacement(this.viewStyle.getLabelPlacement().getLiteral());
 
         if (this.viewStyle.getColor() instanceof FixedColor fixedColor) {
             String color = fixedColor.getValue();

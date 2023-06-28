@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { CheckboxStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
@@ -55,21 +56,28 @@ export const CheckboxWidget = ({ widget, selection }: CheckboxWidgetProps) => {
   }, [selection, widget]);
 
   return (
-    <div>
-      <div className={classes.propertySectionLabel}>
-        <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
-          {widget.label}
-        </Typography>
-        {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
-      </div>
-      <Checkbox
-        data-testid={widget.label}
-        checked
-        inputRef={ref}
-        onFocus={() => setSelected(true)}
-        onBlur={() => setSelected(false)}
-        classes={widget.style ? { root: classes.style } : {}}
-      />
-    </div>
+    <FormControlLabel
+      labelPlacement={widget.style?.labelPlacement ?? 'end'}
+      label={
+        <div className={classes.propertySectionLabel}>
+          <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
+            {widget.label}
+          </Typography>
+          {widget.hasHelpText ? (
+            <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} />
+          ) : null}
+        </div>
+      }
+      control={
+        <Checkbox
+          data-testid={widget.label}
+          checked
+          inputRef={ref}
+          onFocus={() => setSelected(true)}
+          onBlur={() => setSelected(false)}
+          classes={{ root: classes.style }}
+        />
+      }
+    />
   );
 };

@@ -89,6 +89,7 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     booleanValue: value
     style {
       color
+      labelPlacement
     }
   }
 

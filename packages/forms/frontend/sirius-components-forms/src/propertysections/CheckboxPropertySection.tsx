@@ -14,9 +14,9 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import {
   CheckboxPropertySectionProps,
@@ -35,6 +35,9 @@ import {
 import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useStyle = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
+  formControl: {
+    alignItems: 'flex-start',
+  },
   style: {
     color: ({ color }) => (color ? color : theme.palette.primary.light),
   },
@@ -161,26 +164,31 @@ export const CheckboxPropertySection = ({
   const onBlur = () => sendUpdateWidgetFocus(false);
 
   return (
-    <FormControl error={widget.diagnostics.length > 0}>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
+    <FormControl classes={{ root: classes.formControl }} error={widget.diagnostics.length > 0}>
+      <FormControlLabel
+        labelPlacement={widget.style?.labelPlacement ?? 'end'}
+        label={
+          <PropertySectionLabel
+            editingContextId={editingContextId}
+            formId={formId}
+            widget={widget}
+            subscribers={subscribers}
+          />
+        }
+        control={
+          <Checkbox
+            name={widget.label}
+            color="default"
+            checked={widget.booleanValue}
+            onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            data-testid={widget.label}
+            disabled={readOnly || widget.readOnly}
+            classes={{ root: classes.style, disabled: classes.disabled }}
+          />
+        }
       />
-      <FormGroup row>
-        <Checkbox
-          name={widget.label}
-          color="default"
-          checked={widget.booleanValue}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          data-testid={widget.label}
-          disabled={readOnly || widget.readOnly}
-          classes={{ root: classes.style, disabled: classes.disabled }}
-        />
-      </FormGroup>
       <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
     </FormControl>
   );

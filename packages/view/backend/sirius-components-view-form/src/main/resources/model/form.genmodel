@@ -24,6 +24,12 @@
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//GroupDisplayMode/LIST"/>
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//GroupDisplayMode/TOGGLEABLE_AREAS"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="form.ecore#//LabelPlacement">
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/end"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/top"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/start"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//LabelPlacement/bottom"/>
+    </genEnums>
     <genClasses ecoreClass="form.ecore#//FormDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormDescription/pages"/>
     </genClasses>
@@ -165,6 +171,7 @@
     <genClasses ecoreClass="form.ecore#//ConditionalButtonDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//CheckboxDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference form.ecore#//CheckboxDescriptionStyle/color"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//CheckboxDescriptionStyle/labelPlacement"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ConditionalCheckboxDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//LabelDescriptionStyle">

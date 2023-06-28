@@ -171,6 +171,7 @@ export interface GQLCheckbox extends GQLWidget {
 
 export interface GQLCheckboxStyle {
   color: string | null;
+  labelPlacement: 'end' | 'start' | 'top' | 'bottom';
 }
 
 export interface GQLSelect extends GQLWidget {

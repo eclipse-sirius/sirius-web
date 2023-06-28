@@ -36,7 +36,8 @@ public class CheckboxStyleProvider implements Function<VariableManager, Checkbox
 
     @Override
     public CheckboxStyle apply(VariableManager variableManager) {
-        Builder checkboxStyleBuilder = CheckboxStyle.newCheckboxStyle();
+        Builder checkboxStyleBuilder = CheckboxStyle.newCheckboxStyle()
+                .labelPlacement(this.viewStyle.getLabelPlacement().getLiteral());
 
         if (this.viewStyle.getColor() instanceof FixedColor fixedColor) {
             String color = fixedColor.getValue();
