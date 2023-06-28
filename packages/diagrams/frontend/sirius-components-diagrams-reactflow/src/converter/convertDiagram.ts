@@ -292,6 +292,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       id: gqlDiagram.id,
       label: gqlDiagram.metadata.label,
       kind: gqlDiagram.metadata.kind,
+      targetObjectId: gqlDiagram.targetObjectId,
     },
     nodes,
     edges,

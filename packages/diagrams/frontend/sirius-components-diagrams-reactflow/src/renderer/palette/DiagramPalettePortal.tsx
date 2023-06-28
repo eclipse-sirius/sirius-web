@@ -11,9 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool } from './palette/Palette.types';
+import { createPortal } from 'react-dom';
+import { ReactFlowState, useStore } from 'reactflow';
+import { DiagramPalettePortalProps } from './DiagramPalette.types';
 
-export interface ToolProps {
-  tool: GQLTool;
-  onClick: (tool: GQLTool) => void;
-}
+const selector = (state: ReactFlowState) => state.domNode?.querySelector('.react-flow__renderer');
+
+export const DiagramPalettePortal = ({ children }: DiagramPalettePortalProps) => {
+  const wrapperRef = useStore(selector);
+
+  if (!wrapperRef) {
+    return null;
+  }
+
+  return createPortal(children, wrapperRef);
+};

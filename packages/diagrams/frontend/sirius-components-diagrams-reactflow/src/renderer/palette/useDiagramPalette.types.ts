@@ -11,9 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool } from './palette/Palette.types';
-
-export interface ToolProps {
-  tool: GQLTool;
-  onClick: (tool: GQLTool) => void;
+export interface UseDiagramPaletteValue {
+  x: number | null;
+  y: number | null;
+  isOpened: boolean;
+  hideDiagramPalette: () => void;
+  showDiagramPalette: (x: number, y: number) => void;
+  onDiagramBackgroundClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
 }

@@ -17,8 +17,7 @@ import { RectangularNodeData } from './RectangularNode.types';
 
 import React from 'react';
 import { Label } from './Label';
-import { Palette } from './Palette';
-import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
+import { NodePalette } from './palette/NodePalette';
 
 const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
   const rectangularNodeStyle: React.CSSProperties = {
@@ -37,20 +36,12 @@ const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): Re
 };
 
 export const RectangularNode = memo(({ data, isConnectable, id, selected }: NodeProps<RectangularNodeData>) => {
-  const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
-
-  const handleDirectEditClick = () => {
-    if (data.label) {
-      setCurrentlyEditedLabelId('palette', data.label.id, null);
-    }
-  };
-
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
       <div style={rectangularNodeStyle(data.style, selected)}>
-        <Label label={data.label} />
-        {selected ? <Palette diagramElementId={id} onDirectEditClick={handleDirectEditClick} /> : null}
+        {data.label ? <Label label={data.label} /> : null}
+        {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id} /> : null}
         <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
       </div>

@@ -25,6 +25,12 @@ export interface DiagramRendererState {
   snapToGrid: boolean;
 }
 
+export interface DiagramPaletteState {
+  opened: boolean;
+  x: number;
+  y: number;
+}
+
 export interface Diagram {
   metadata: DiagramMetadata;
   nodes: Node[];
@@ -35,6 +41,7 @@ export interface DiagramMetadata {
   id: string;
   kind: string;
   label: string;
+  targetObjectId: string;
 }
 
 export interface NodeData {

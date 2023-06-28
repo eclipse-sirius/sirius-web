@@ -35,8 +35,10 @@ import { ListNode } from './ListNode';
 import { RectangularNode } from './RectangularNode';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { performLayout } from './layout';
+import { DiagramPalette } from './palette/DiagramPalette';
 
 import 'reactflow/dist/style.css';
+import { useDiagramPalette } from './palette/useDiagramPalette';
 
 const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
@@ -54,22 +56,27 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     fullscreen: false,
     snapToGrid: false,
   });
+  const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const [nodes, setNodes, onNodesChange] = useNodesState(diagram.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(diagram.edges);
 
   useEffect(() => {
     setNodes(diagram.nodes);
     setEdges(diagram.edges);
+    hideDiagramPalette();
   }, [diagram]);
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
-    const nodesIds = diagram.nodes
+    const firstSelectedNodeId = diagram.nodes
       .filter((node) => selectionEntryIds.includes((node.data as NodeData).targetObjectId))
       .map((node) => node.id);
     const reactFlowState = store.getState();
     reactFlowState.unselectNodesAndEdges();
-    reactFlowState.addSelectedNodes(nodesIds);
+    if (firstSelectedNodeId.length > 0) {
+      // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
+      reactFlowState.addSelectedNodes([firstSelectedNodeId[0]]);
+    }
   }, [selection, diagram]);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
@@ -97,13 +104,17 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     if (selectionEntries.length > 0 && shouldUpdateSelection) {
       setSelection({ entries: selectionEntries });
     }
+
+    if (selectionEntries.length > 0) {
+      hideDiagramPalette();
+    }
   };
 
   const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
     onEdgesChange(changes);
   };
 
-  const handlePaneClick = () => {
+  const handlePaneClick = (event: React.MouseEvent<Element, MouseEvent>) => {
     const selection: Selection = {
       entries: [
         {
@@ -113,7 +124,9 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
         },
       ],
     };
+
     setSelection(selection);
+    onDiagramBackgroundClick(event);
   };
 
   useEffect(() => {
@@ -160,6 +173,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       onKeyDown={onKeyDown}
       onEdgesChange={handleEdgesChange}
       onPaneClick={handlePaneClick}
+      onMove={() => hideDiagramPalette()}
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={state.snapToGrid}
@@ -186,6 +200,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
         onSnapToGrid={handleSnapToGrid}
         onArrangeAll={handleArrangeAll}
       />
+      <DiagramPalette targetObjectId={diagram.metadata.id} />
     </ReactFlow>
   );
 };

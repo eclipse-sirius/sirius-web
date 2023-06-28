@@ -14,9 +14,9 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { NodeToolbar, Position } from 'reactflow';
-import { DiagramContext } from '../contexts/DiagramContext';
-import { DiagramContextValue } from '../contexts/DiagramContext.types';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { Tool } from '../Tool';
 import {
   ContextualPaletteStyleProps,
   GQLCollapsingState,
@@ -38,19 +38,8 @@ import {
   GQLUpdateCollapsingStateVariables,
   PaletteProps,
 } from './Palette.types';
-import { Tool } from './Tool';
 
-const useContextualPaletteStyle = makeStyles((theme) => ({
-  toolbar: {
-    background: theme.palette.background.paper,
-    border: '1px solid #d1dadb',
-    boxShadow: '0px 2px 5px #002b3c40',
-    borderRadius: '2px',
-    zIndex: 2,
-    position: 'fixed',
-    display: 'flex',
-    alignItems: 'center',
-  },
+const usePaletteStyle = makeStyles((_theme) => ({
   toolEntries: {
     display: 'grid',
     gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
@@ -149,7 +138,7 @@ export const Palette = ({ diagramElementId, onDirectEditClick }: PaletteProps) =
   const [tools, setTools] = useState<GQLTool[]>([]);
 
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const classes = useContextualPaletteStyle({ toolCount: tools.length });
+  const classes = usePaletteStyle({ toolCount: tools.length });
 
   const [getTools, { loading: toolSectionsLoading, data: toolSectionsData, error: toolSectionsError }] = useLazyQuery<
     GQLGetToolSectionsData,
@@ -283,12 +272,10 @@ export const Palette = ({ diagramElementId, onDirectEditClick }: PaletteProps) =
   };
 
   return (
-    <NodeToolbar className={classes.toolbar} position={Position.Top}>
-      <div className={classes.toolEntries}>
-        {tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-          <Tool tool={tool} onClick={handleToolClick} key={tool.id} />
-        ))}
-      </div>
-    </NodeToolbar>
+    <div className={classes.toolEntries}>
+      {tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
+        <Tool tool={tool} onClick={handleToolClick} key={tool.id} />
+      ))}
+    </div>
   );
 };
