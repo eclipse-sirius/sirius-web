@@ -1,4 +1,4 @@
-= ADR-104 - Add support for Help Expressions in Form widgets
+= ADR-105 - Add custom widget to edit EMF references
 
 == Context
 
