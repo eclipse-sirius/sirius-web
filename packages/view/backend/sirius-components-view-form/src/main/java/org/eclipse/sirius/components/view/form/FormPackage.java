@@ -2192,13 +2192,21 @@ public interface FormPackage extends EPackage {
     int CHECKBOX_DESCRIPTION_STYLE__COLOR = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Label Placement</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Checkbox Description Style</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+    int CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Checkbox Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2237,13 +2245,21 @@ public interface FormPackage extends EPackage {
     int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Label Placement</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Conditional Checkbox Description Style</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Conditional Checkbox Description Style</em>' class. <!-- begin-user-doc -->
@@ -3861,19 +3877,29 @@ public interface FormPackage extends EPackage {
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.GroupDisplayMode <em>Group Display
      * Mode</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getGroupDisplayMode()
-     * @generated
      */
     int GROUP_DISPLAY_MODE = 45;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
+     * Placement</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.LabelPlacement
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
+     */
+    int LABEL_PLACEMENT = 46;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Description</em>'.
-     * @see org.eclipse.sirius.components.view.form.FormDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.form.FormDescription
      */
     EClass getFormDescription();
 
@@ -5259,13 +5285,25 @@ public interface FormPackage extends EPackage {
     EReference getCheckboxDescriptionStyle_Color();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement <em>Label
+     * Placement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Placement</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement()
+     * @see #getCheckboxDescriptionStyle()
+     */
+    EAttribute getCheckboxDescriptionStyle_LabelPlacement();
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle <em>Conditional Checkbox
      * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Checkbox Description Style</em>'.
-     * @see org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle
      */
     EClass getConditionalCheckboxDescriptionStyle();
 
@@ -5675,10 +5713,20 @@ public interface FormPackage extends EPackage {
      * Display Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Group Display Mode</em>'.
-     * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
      * @generated
+     * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
      */
     EEnum getGroupDisplayMode();
+
+    /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
+     * Placement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Label Placement</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.form.LabelPlacement
+     */
+    EEnum getLabelPlacement();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6721,13 +6769,21 @@ public interface FormPackage extends EPackage {
         EReference CHECKBOX_DESCRIPTION_STYLE__COLOR = eINSTANCE.getCheckboxDescriptionStyle_Color();
 
         /**
+         * The meta object literal for the '<em><b>Label Placement</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT = eINSTANCE.getCheckboxDescriptionStyle_LabelPlacement();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl <em>Conditional
          * Checkbox Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalCheckboxDescriptionStyle()
-         * @generated
          */
         EClass CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = eINSTANCE.getConditionalCheckboxDescriptionStyle();
 
@@ -7077,11 +7133,21 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.GroupDisplayMode <em>Group
          * Display Mode</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getGroupDisplayMode()
-         * @generated
          */
         EEnum GROUP_DISPLAY_MODE = eINSTANCE.getGroupDisplayMode();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
+         * Placement</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.form.LabelPlacement
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
+         */
+        EEnum LABEL_PLACEMENT = eINSTANCE.getLabelPlacement();
 
     }
 

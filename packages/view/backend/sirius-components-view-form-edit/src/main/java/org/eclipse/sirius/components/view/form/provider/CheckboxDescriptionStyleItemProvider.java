@@ -19,9 +19,11 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.LabelPlacement;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle}
@@ -50,6 +52,7 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
             super.getPropertyDescriptors(object);
 
             this.addColorPropertyDescriptor(object);
+            this.addLabelPlacementPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -64,6 +67,18 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
                 this.getString("_UI_CheckboxDescriptionStyle_color_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_color_feature", "_UI_CheckboxDescriptionStyle_type"),
                 FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__COLOR, true, false, false, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Placement feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelPlacementPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CheckboxDescriptionStyle_labelPlacement_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_labelPlacement_feature", "_UI_CheckboxDescriptionStyle_type"),
+                FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -93,7 +108,9 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_CheckboxDescriptionStyle_type");
+        LabelPlacement labelValue = ((CheckboxDescriptionStyle) object).getLabelPlacement();
+        String label = labelValue == null ? null : labelValue.toString();
+        return label == null || label.length() == 0 ? this.getString("_UI_CheckboxDescriptionStyle_type") : this.getString("_UI_CheckboxDescriptionStyle_type") + " " + label;
     }
 
     /**
@@ -109,6 +126,7 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
 
         switch (notification.getFeatureID(CheckboxDescriptionStyle.class)) {
             case FormPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
+            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

@@ -11,6 +11,12 @@
     <eLiterals name="LIST"/>
     <eLiterals name="TOGGLEABLE_AREAS" value="1"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LabelPlacement">
+    <eLiterals name="end"/>
+    <eLiterals name="top" value="1"/>
+    <eLiterals name="start" value="2"/>
+    <eLiterals name="bottom" value="3"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pages" upperBound="-1"
         eType="#//PageDescription" containment="true"/>
@@ -209,6 +215,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalButtonDescriptionStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//ButtonDescriptionStyle"/>
   <eClassifiers xsi:type="ecore:EClass" name="CheckboxDescriptionStyle" eSuperTypes="#//WidgetDescriptionStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelPlacement" lowerBound="1"
+        eType="#//LabelPlacement" defaultValueLiteral="end"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalCheckboxDescriptionStyle"
       eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//CheckboxDescriptionStyle"/>

@@ -93,6 +93,7 @@ type Checkbox implements Widget {
 
 type CheckboxStyle {
   color: String
+  labelPlacement: String!
 }
 
 type List implements Widget {

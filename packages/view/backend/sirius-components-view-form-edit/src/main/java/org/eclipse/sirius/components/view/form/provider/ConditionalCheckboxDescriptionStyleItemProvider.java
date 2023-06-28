@@ -19,6 +19,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormPackage;
@@ -52,6 +53,7 @@ public class ConditionalCheckboxDescriptionStyleItemProvider extends Conditional
             super.getPropertyDescriptors(object);
 
             this.addColorPropertyDescriptor(object);
+            this.addLabelPlacementPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -66,6 +68,18 @@ public class ConditionalCheckboxDescriptionStyleItemProvider extends Conditional
                 this.getString("_UI_CheckboxDescriptionStyle_color_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_color_feature", "_UI_CheckboxDescriptionStyle_type"),
                 FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__COLOR, true, false, false, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Placement feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelPlacementPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CheckboxDescriptionStyle_labelPlacement_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_labelPlacement_feature", "_UI_CheckboxDescriptionStyle_type"),
+                FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -112,6 +126,7 @@ public class ConditionalCheckboxDescriptionStyleItemProvider extends Conditional
 
         switch (notification.getFeatureID(ConditionalCheckboxDescriptionStyle.class)) {
             case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__COLOR:
+            case FormPackage.CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE__LABEL_PLACEMENT:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

@@ -52,6 +52,7 @@ const checkboxWithStyle: GQLCheckbox = {
   booleanValue: false,
   style: {
     color: '#de1000',
+    labelPlacement: 'top',
   },
 };
 
@@ -65,6 +66,7 @@ const checkboxWithEmptyStyle: GQLCheckbox = {
   booleanValue: false,
   style: {
     color: '',
+    labelPlacement: 'end',
   },
 };
 
