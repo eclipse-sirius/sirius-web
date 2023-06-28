@@ -14,6 +14,7 @@
 - [ADR-103] Improves the existing feedback messages capability
 - [ADR-104] Add support for Help Expressions in Form widgets
 - [ADR-105] Add custom widget to edit EMF references
+- [ADR-106] Add the support for the palette with react flow
 
 === Breaking changes
 
@@ -58,8 +59,8 @@ image:doc/screenshots/ShowIconOptionSelectWidget.jpg[Icons on select widget opti
 - https://github.com/eclipse-sirius/sirius-components/issues/2056[#2056] [form] Add the possibility to control read-only mode for widgets with an expression.
 - https://github.com/eclipse-sirius/sirius-components/issues/2077[#2077] [form] Add the ability to define a border style for groups and flexbox containers.
 - https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] Add an initial label value when editing tree items label.
-- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] Add an inital label value when editing tree items label.
 - https://github.com/eclipse-sirius/sirius-components/issues/2090[#2090] [diagram] Add the support for the arrange all on react flow diagram. The arrange all is made with elkjs.
+- https://github.com/eclipse-sirius/sirius-components/issues/2094[#2094] [diagram] Add the support for the palette on the diagram background
 
 === Improvements
 

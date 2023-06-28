@@ -11,9 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool } from './palette/Palette.types';
+import { ReactNode } from 'react';
 
-export interface ToolProps {
-  tool: GQLTool;
-  onClick: (tool: GQLTool) => void;
+export interface DiagramPaletteProps {
+  targetObjectId: string;
+}
+
+export interface DiagramPalettePortalProps {
+  children: ReactNode;
 }

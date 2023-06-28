@@ -1,0 +1,25 @@
+= [ADR-106] Add the support for the palette with reactflow
+
+== Context
+
+We have chosen to use reactflow to do the layout of diagram.
+In the early use, the layout will be done in the frontend.
+We need to support features like a palette.
+The palette will be displayed on top of the selected node and at the position of the click on the diagram pane.
+
+== Decision
+
+We will rely on the https://reactflow.dev/docs/api/nodes/node-toolbar/[reactflow NodeToolbar] for node and our implementation for the diagram palette.
+
+In the first version, when a node is selected, its palette will be displayed.
+Once opened, the diagram palette will be displayed until the selection is changed.
+The palette will be closed when the diagram pane is dragged.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+Once opened the palette will almost always be opened.
+We may add a way to close the palette manually later.

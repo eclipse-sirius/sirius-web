@@ -15,8 +15,7 @@ import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { memo, useContext } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { ImageNodeData } from './ImageNode.types';
-import { Palette } from './Palette';
-import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
+import { NodePalette } from './palette/NodePalette';
 
 const imageNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
   const imageNodeStyle: React.CSSProperties = { width: '100%', height: '100%', ...style };
@@ -30,19 +29,12 @@ const imageNodeStyle = (style: React.CSSProperties, selected: boolean): React.CS
 
 export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<ImageNodeData>) => {
   const { httpOrigin } = useContext(ServerContext);
-  const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
-
-  const handleDirectEditClick = () => {
-    if (data.label) {
-      setCurrentlyEditedLabelId('palette', data.label.id, null);
-    }
-  };
 
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
       <img src={httpOrigin + data.imageURL} style={imageNodeStyle(data.style, selected)} />
-      {selected ? <Palette diagramElementId={id} onDirectEditClick={handleDirectEditClick} /> : null}
+      {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id} /> : null}
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
     </>
