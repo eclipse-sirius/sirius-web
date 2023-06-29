@@ -92,7 +92,6 @@ public class GeneralPurposeTests {
 
     private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';";
 
-    //// @formatter:off
     private static final List<Pattern> COPYRIGHT_HEADER = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")),
             Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* (.*)\\.$"),
@@ -106,7 +105,13 @@ public class GeneralPurposeTests {
             Pattern.compile(Pattern.quote(" * Contributors:")),
             Pattern.compile(Pattern.quote(" *     Obeo - initial API and implementation")),
             Pattern.compile(Pattern.quote(" *******************************************************************************/")));
-    // @formatter:on
+
+    private static final List<String> GENERATED_MODULE_PATHS = List.of(
+            "/sirius-components-domain",
+            "/sirius-components-view",
+            "/sirius-web-customwidgets",
+            "/sirius-components-widget-reference-view"
+    );
 
     /**
      * Finds the folder containing the Git repository.
@@ -128,15 +133,16 @@ public class GeneralPurposeTests {
     /**
      * Finds all the files located under the given source folder path with the given extension.
      *
-     * @param sourceFolderPath
-     *            The path of the source folder
+     * @param sourceFolderPath The path of the source folder
+     *
+     * @param includesGeneratedCodePaths Used to indicate if we want to consider generated code
+     *
      * @return The path of the files
      */
-    private List<Path> findFilePaths(Path sourceFolderPath, String extension) {
+    private List<Path> findFilePaths(Path sourceFolderPath, String extension, boolean includesGeneratedCodePaths) {
         List<Path> filesPaths = new ArrayList<>();
 
-        try (Stream<Path> paths = Files.walk(sourceFolderPath);) {
-            // @formatter:off
+        try (Stream<Path> paths = Files.walk(sourceFolderPath)) {
             List<Path> filePaths = paths.filter(Files::isRegularFile)
                     .filter(filePath -> filePath.toFile().getName().endsWith(extension))
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/node_modules/"))
@@ -152,13 +158,9 @@ public class GeneralPurposeTests {
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.vscode/"))
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(".d.ts"))
                     .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/.mvn/wrapper/"))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-domain"))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-view"))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-web-customwidgets"))
-                    .filter(filePath -> !filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains("/sirius-components-widget-reference-view"))
+                    .filter(filePath -> !includesGeneratedCodePaths || GENERATED_MODULE_PATHS.stream()
+                            .noneMatch(modulePath -> filePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(modulePath)))
                     .toList();
-            // @formatter:on
-
             filesPaths.addAll(filePaths);
         } catch (IOException exception) {
             fail(exception.getMessage());
@@ -171,18 +173,22 @@ public class GeneralPurposeTests {
     public void checkJavaCode() {
         File rootFolder = this.getRootFolder();
         Path backendFolderPath = Paths.get(rootFolder.getAbsolutePath(), BACKEND_FOLDER_PATH);
-        List<Path> javaFilePaths = this.findFilePaths(backendFolderPath, JAVA_FILE_EXTENSION);
-        for (Path javaFilePath : javaFilePaths) {
+        List<Path> javaFilePathsWithGenerated = this.findFilePaths(backendFolderPath, JAVA_FILE_EXTENSION, false);
+        for (Path javaFilePath : javaFilePathsWithGenerated) {
             if (!javaFilePath.endsWith(GeneralPurposeTests.class.getSimpleName() + "." + JAVA_FILE_EXTENSION)) {
                 try {
                     List<String> lines = Files.readAllLines(javaFilePath);
-                    for (int index = 0; index < lines.size(); index++) {
-                        String line = lines.get(index);
-                        this.testNoSuppressWarnings(index, line, javaFilePath, lines);
-                        this.testNoCheckstyleOff(index, line, javaFilePath);
-                        this.testNoThrowNewException(index, line, javaFilePath, lines);
-                        this.testNoNonNls(index, line, javaFilePath);
+                    if (GENERATED_MODULE_PATHS.stream()
+                            .noneMatch(modulePath -> javaFilePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(modulePath))) {
+                        for (int index = 0; index < lines.size(); index++) {
+                            String line = lines.get(index);
+                            this.testNoSuppressWarnings(index, line, javaFilePath, lines);
+                            this.testNoCheckstyleOff(index, line, javaFilePath);
+                            this.testNoThrowNewException(index, line, javaFilePath, lines);
+                            this.testNoNonNls(index, line, javaFilePath);
+                        }
                     }
+
                     this.testCopyrightHeader(javaFilePath, lines);
                 } catch (IOException exception) {
                     fail(exception.getMessage());
@@ -254,8 +260,8 @@ public class GeneralPurposeTests {
     public void checkJavaScriptCode() {
         File rootFolder = this.getRootFolder();
         Path frontendFolderPath = Paths.get(rootFolder.getAbsolutePath(), FRONTEND_SRC_FOLDER_PATH);
-        List<Path> typescriptFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_FILE_EXTENSION);
-        List<Path> typescriptJsxFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_JSX_FILE_EXTENSION);
+        List<Path> typescriptFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_FILE_EXTENSION, true);
+        List<Path> typescriptJsxFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_JSX_FILE_EXTENSION, true);
 
         List<Path> filePaths = new ArrayList<>();
         filePaths.addAll(typescriptFilePaths);
@@ -327,7 +333,7 @@ public class GeneralPurposeTests {
     public void checkCSSCode() {
         File rootFolder = this.getRootFolder();
         Path frontendFolderPath = Paths.get(rootFolder.getAbsolutePath(), FRONTEND_SRC_FOLDER_PATH);
-        List<Path> cssFilePaths = this.findFilePaths(frontendFolderPath, CSS_FILE_EXTENSION);
+        List<Path> cssFilePaths = this.findFilePaths(frontendFolderPath, CSS_FILE_EXTENSION, true);
 
         for (Path cssFilePath : cssFilePaths) {
             try {
@@ -356,12 +362,9 @@ public class GeneralPurposeTests {
      * highly unlikely. We are in the process of removing such usage, not adding new ones.
      * </p>
      *
-     * @param index
-     *            The number of the line
-     * @param line
-     *            The line to check
-     * @param cssFilePath
-     *            The path of the CSS file
+     * @param index       The number of the line
+     * @param line        The line to check
+     * @param cssFilePath The path of the CSS file
      */
     private void testHeight100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
@@ -390,12 +393,9 @@ public class GeneralPurposeTests {
      * highly unlikely. We are in the process of removing such usage, not adding new ones.
      * </p>
      *
-     * @param index
-     *            The number of the line
-     * @param line
-     *            The line to check
-     * @param cssFilePath
-     *            The path of the CSS file
+     * @param index       The number of the line
+     * @param line        The line to check
+     * @param cssFilePath The path of the CSS file
      */
     private void testWidth100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
