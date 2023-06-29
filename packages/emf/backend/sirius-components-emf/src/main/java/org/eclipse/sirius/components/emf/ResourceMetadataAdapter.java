@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.documents;
+package org.eclipse.sirius.components.emf;
 
 import java.util.Objects;
 
@@ -19,23 +19,23 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 
 /**
- * An EMF adapter used to store some metadata related to the documents.
+ * An EMF adapter used to store some metadata related to EMF Resources.
  *
  * <p>
  * This adapter is currently used to store the following metadata:
  * </p>
  * <ul>
- * <li>name: The name of the document which can be modified</li>
+ * <li>name: The user-friendly name of the resource if presented in the UI</li>
  * </ul>
  *
  * @author sbegaudeau
  */
-public class DocumentMetadataAdapter implements Adapter {
+public class ResourceMetadataAdapter implements Adapter {
     private String name;
 
     private Notifier notifier;
 
-    public DocumentMetadataAdapter(String name) {
+    public ResourceMetadataAdapter(String name) {
         this.name = Objects.requireNonNull(name);
     }
 

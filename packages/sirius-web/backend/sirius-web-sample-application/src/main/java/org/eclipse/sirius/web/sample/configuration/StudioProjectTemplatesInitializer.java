@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.domain.Relation;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.ChangeContext;
@@ -60,7 +61,6 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -166,7 +166,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
                     this.logger.warn(exception.getMessage(), exception);
                 }
 
-                resource.eAdapters().add(new DocumentMetadataAdapter(DOMAIN_DOCUMENT_NAME));
+                resource.eAdapters().add(new ResourceMetadataAdapter(DOMAIN_DOCUMENT_NAME));
 
                 resourceSet.getResources().add(resource);
             }
@@ -184,7 +184,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
             if (optionalViewDocumentEntity.isPresent()) {
                 DocumentEntity documentEntity = optionalViewDocumentEntity.get();
                 JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
-                resource.eAdapters().add(new DocumentMetadataAdapter(VIEW_DOCUMENT_NAME));
+                resource.eAdapters().add(new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME));
                 try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
                     resource.load(inputStream, null);
                 } catch (IOException exception) {

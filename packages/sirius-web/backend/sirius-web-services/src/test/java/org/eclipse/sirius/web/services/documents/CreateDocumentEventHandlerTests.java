@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
@@ -116,7 +117,7 @@ public class CreateDocumentEventHandlerTests {
         assertThat(payload).isInstanceOf(CreateDocumentSuccessPayload.class);
 
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
-        Condition<Object> condition = new Condition<>(adapter -> adapter instanceof DocumentMetadataAdapter, "has an DocumentMetadataAdapter");
+        Condition<Object> condition = new Condition<>(adapter -> adapter instanceof ResourceMetadataAdapter, "has an DocumentMetadataAdapter");
         assertThat(editingDomain.getResourceSet().getResources().get(0).eAdapters()).areAtLeastOne(condition);
     }
 

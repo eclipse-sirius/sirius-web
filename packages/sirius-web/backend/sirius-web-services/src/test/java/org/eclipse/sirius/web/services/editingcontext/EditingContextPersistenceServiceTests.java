@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -32,7 +33,6 @@ import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.documents.EditingDomainFactory;
 import org.junit.jupiter.api.Test;
 
@@ -144,7 +144,7 @@ public class EditingContextPersistenceServiceTests {
 
     private DocumentEntity createFakeDocument(String documentName, UUID documentId, ProjectEntity projectEntity, AdapterFactoryEditingDomain editingDomain) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentId.toString());
-        resource.eAdapters().add(new DocumentMetadataAdapter(documentName));
+        resource.eAdapters().add(new ResourceMetadataAdapter(documentName));
 
         EClass eClass = EcoreFactory.eINSTANCE.createEClass();
         eClass.setName("Concept");

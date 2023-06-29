@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
@@ -101,8 +102,8 @@ public class RenameDocumentEventHandler implements IEditingContextEventHandler {
                         .findFirst()
                         .ifPresent(resource -> {
                             resource.eAdapters().stream()
-                                .filter(DocumentMetadataAdapter.class::isInstance)
-                                .map(DocumentMetadataAdapter.class::cast)
+                                .filter(ResourceMetadataAdapter.class::isInstance)
+                                .map(ResourceMetadataAdapter.class::cast)
                                 .findFirst()
                                 .ifPresent(adapter -> adapter.setName(newName));
                         });

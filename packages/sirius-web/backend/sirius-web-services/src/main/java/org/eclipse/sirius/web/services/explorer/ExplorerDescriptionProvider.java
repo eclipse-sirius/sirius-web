@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -41,7 +42,6 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.explorer.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.web.services.explorer.api.IRenameTreeItemHandler;
 import org.springframework.stereotype.Service;
@@ -159,10 +159,10 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     private String getResourceLabel(Resource resource) {
         // @formatter:off
         return resource.eAdapters().stream()
-                .filter(DocumentMetadataAdapter.class::isInstance)
-                .map(DocumentMetadataAdapter.class::cast)
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
                 .findFirst()
-                .map(DocumentMetadataAdapter::getName)
+                .map(ResourceMetadataAdapter::getName)
                 .orElse(resource.getURI().lastSegment());
         // @formatter:on
     }

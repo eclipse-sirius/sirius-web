@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -35,7 +36,6 @@ import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.events.DocumentsModifiedEvent;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.documents.DocumentMapper;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -151,9 +151,9 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                              .flatMap(this.projectRepository::findById)
                              .map(projectEntity -> {
                                  var name = resource.eAdapters().stream()
-                                         .filter(DocumentMetadataAdapter.class::isInstance)
-                                         .map(DocumentMetadataAdapter.class::cast)
-                                         .findFirst().map(DocumentMetadataAdapter::getName)
+                                         .filter(ResourceMetadataAdapter.class::isInstance)
+                                         .map(ResourceMetadataAdapter.class::cast)
+                                         .findFirst().map(ResourceMetadataAdapter::getName)
                                          .orElse("");
 
                                  DocumentEntity documentEntity = new DocumentEntity();

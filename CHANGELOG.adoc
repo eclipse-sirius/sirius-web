@@ -17,9 +17,11 @@
 
 === Breaking changes
 
-- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] EditingContextRepresentationDataFetcher will filter on IRepresentation unstead of ISemanticRepresentation to be able to support TreeDescription.
+- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] EditingContextRepresentationDataFetcher will filter on IRepresentation instead of ISemanticRepresentation to be able to support TreeDescription.
 +
 As such targetObjectId is removed from RepresentationMetadata.
+- https://github.com/eclipse-sirius/sirius-components/issues/2124[#2124] [sirius-web,emf] The `org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter` has been renamed `ResourceMetadataAdapter` and moved to the `org.eclipse.sirius.components.emf` package (in `sirius-components-emf`).
+This allows for code which does not depend on Sirius Web and the Document notion to properly display the top-level elements of a project in the UI.
 
 === Dependency update
 
@@ -35,7 +37,7 @@ e not EObjects.
 - https://github.com/eclipse-sirius/sirius-components/issues/2032[#2032] [form] Add domainType on PageDescription in the view DSL and takes into account the impacts for the FormDescriptionAggregator.
 Change for `IPropertiesDescriptionRegistry` which now handles `PageDescription` directly instead of `FormDescription`.
 Add of the `selection` variable available in some context.
-- https://github.com/eclipse-sirius/sirius-components/issues/2072[#2072] [view] Fix an NPE when trying to instanciate List/Select/MultiSelect widgets with no candidates expression specified (which is the initial state on creation).
+- https://github.com/eclipse-sirius/sirius-components/issues/2072[#2072] [view] Fix an NPE when trying to instantiate List/Select/MultiSelect widgets with no candidates expression specified (which is the initial state on creation).
 An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2067[#2064] [view] Enable completion support and other text field customizations for custom widgets
 - https://github.com/eclipse-sirius/sirius-components/issues/2092[#2092] [form] Fix support for help expressions on the _FlexboxContainer_ widget
@@ -52,7 +54,7 @@ image:doc/screenshots/ShowIconOptionSelectWidget.jpg[Icons on select widget opti
 - https://github.com/eclipse-sirius/sirius-components/issues/2055[#2055] [form] Added initial version of a custom widget to view & edit EMF references (both single and multi-valued).
 - https://github.com/eclipse-sirius/sirius-components/issues/2056[#2056] [form] Add the possibility to control read-only mode for widgets with an expression.
 - https://github.com/eclipse-sirius/sirius-components/issues/2077[#2077] [form] Add the ability to define a border style for groups and flexbox containers.
-- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] Add an inital label value when editing tree items label.
+- https://github.com/eclipse-sirius/sirius-components/issues/2080[#2080] [tree] Add an initial label value when editing tree items label.
 
 === Improvements
 
@@ -540,7 +542,7 @@ This allows representation precondition expressions to be more precise as they k
 - https://github.com/eclipse-sirius/sirius-components/issues/1281[#1281] [form] The `LinkDescription` now requires a `displayProvider` and a `styleProvider`. The `displayProvider` is used to display the text of the hyperLink.
 The GraphQL API has also been changed with two additional fields on the type `Link`: `display` and `style` (optional). The front-end use the `display` value instead of the `label` value to display the hyperlink text.
 The `label` value is displayed before the widget to be consistent with other properties sections.
-- https://github.com/eclipse-sirius/sirius-components/issues/1320[#1320] [diagram] The `selectedNode` variable is now always _defined_ in the context of drop hanlders and single-click tools. Previously, if the target of the drop or single-click tool was the diagram itself (instead of a node), the variable was not defined at all. Now it is defined but `null` in these cases.
+- https://github.com/eclipse-sirius/sirius-components/issues/1320[#1320] [diagram] The `selectedNode` variable is now always _defined_ in the context of drop handlers and single-click tools. Previously, if the target of the drop or single-click tool was the diagram itself (instead of a node), the variable was not defined at all. Now it is defined but `null` in these cases.
 - https://github.com/eclipse-sirius/sirius-components/issues/1289[#1289] [core] The `representationDescriptions` GraphQL query now returns a new attribute named `defaultName` in addition to the `label` and `id`. For view-based representations and , the `defaultName` is computed from the `RepresentationDescription`'s `titleExpression`.
 
 === Dependency update
@@ -836,7 +838,7 @@ When closed, clicking on any of the views' icon will re-open the panel to make t
 - [frontend] Switch to typescript 4.5.4
 - [frontend] Switch to @typescript-eslint/parser 5.7.0
 - [frontend] Switch to xstate 4.26.1
-- [frontend] Update various development dependencies such as Rollup, ESLint, Pretier and Jest
+- [frontend] Update various development dependencies such as Rollup, ESLint, Prettier and Jest
 
 === New features
 
@@ -975,7 +977,7 @@ In addition to members of the Sirius core team, this release includes contributi
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/673[#673] [graphql] Rename namespace to domain in the GraphQL API
-- [core] Remove the need to give a looger to the `BaseRender`
+- [core] Remove the need to give a logger to the `BaseRender`
 - [properties] Remove useless fields from the properties payloads
 - [graphql] Use pagination for the fields used by the onboarding such as `EditingContext#stereotypeDescriptions` or `EditingContext#representations`
 - https://github.com/eclipse-sirius/sirius-components/issues/563[#563] [core] Update the support for custom images by referencing images by their identifiers instead of their file name

@@ -28,6 +28,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -37,7 +38,6 @@ import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
@@ -107,7 +107,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
                 resourceSet.getResources().add(resource);
                 resource.load(inputStream, null);
 
-                resource.eAdapters().add(new DocumentMetadataAdapter(documentEntity.getName()));
+                resource.eAdapters().add(new ResourceMetadataAdapter(documentEntity.getName()));
             } catch (IOException | IllegalArgumentException exception) {
                 this.logger.warn("An error occured while loading document {}: {}.", documentEntity.getId(), exception.getMessage());
                 resourceSet.getResources().remove(resource);

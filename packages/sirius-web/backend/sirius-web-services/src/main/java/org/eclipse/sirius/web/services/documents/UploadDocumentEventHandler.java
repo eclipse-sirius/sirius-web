@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
@@ -141,7 +142,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                             this.logger.warn(exception.getMessage(), exception);
                         }
 
-                        resource.eAdapters().add(new DocumentMetadataAdapter(name));
+                        resource.eAdapters().add(new ResourceMetadataAdapter(name));
                         resourceSet.getResources().add(resource);
 
                         payload = new UploadDocumentSuccessPayload(input.id(), document);
