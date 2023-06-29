@@ -195,6 +195,8 @@ export class EdgeView extends PolylineEdgeView {
         p2,
         styleObjectCopy
       );
+    } else if (arrowStyle === 'ClosedArrowWithDots') {
+      arrow = this.buildClosedArrowWithDots(basicArrowPath + 'z', p1, p2, styleObjectCopy, strokeWidth);
     }
 
     return [arrow];
@@ -344,6 +346,45 @@ export class EdgeView extends PolylineEdgeView {
         />
       </g>
     );
+  }
+
+  buildClosedArrowWithDots(path: string, p1: Point, p2: Point, styleObject, strokeWidth: number) {
+    const pathStyle = { ...styleObject };
+    pathStyle.fill = '#ffffff';
+    const translateX = p2.x;
+    const translateY = p2.y;
+    const rotationAngle = toDegrees(angle(p1, p2));
+    const rotationX = p2.x;
+    const rotationY = p2.y;
+    let rotation = '';
+    if (rotationAngle !== undefined) {
+      if (rotationX !== undefined && rotationY !== undefined) {
+        rotation = `rotate(${rotationAngle} ${rotationX} ${rotationY})`;
+      } else {
+        rotation = `rotate(${rotationAngle})`;
+      }
+
+      const transform = `${rotation} translate(${translateX} ${translateY})`;
+      return (
+        <g>
+          <path class-edge={true} class-arrow={true} d={path} transform={transform} style={pathStyle} />
+          <circle
+            transform={transform}
+            cx={-7.5 - strokeWidth * 2}
+            cy={-2.5 - strokeWidth}
+            r={strokeWidth * 0.75}
+            style={styleObject}
+          />
+          <circle
+            transform={transform}
+            cx={-7.5 - strokeWidth * 2}
+            cy={2.5 + strokeWidth}
+            r={strokeWidth * 0.75}
+            style={styleObject}
+          />
+        </g>
+      );
+    }
   }
 
   buildArrowPath(

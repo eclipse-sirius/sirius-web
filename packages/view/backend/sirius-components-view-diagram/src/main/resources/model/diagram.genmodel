@@ -30,6 +30,7 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrowStyle/FillCircle"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrowStyle/CrossedCircle"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrowStyle/ClosedArrowWithVerticalBar"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrowStyle/ClosedArrowWithDots"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//LayoutDirection">
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LayoutDirection/Column"/>

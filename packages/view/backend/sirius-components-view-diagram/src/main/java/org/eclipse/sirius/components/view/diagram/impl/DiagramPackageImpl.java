@@ -1914,6 +1914,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.FILL_CIRCLE);
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CROSSED_CIRCLE);
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_VERTICAL_BAR);
+        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_DOTS);
 
         this.initEEnum(this.layoutDirectionEEnum, LayoutDirection.class, "LayoutDirection");
         this.addEEnumLiteral(this.layoutDirectionEEnum, LayoutDirection.COLUMN);
