@@ -50,6 +50,7 @@ export interface GQLTreeItem {
   expanded: boolean;
   editable: boolean;
   deletable: boolean;
+  selectable: boolean;
 }
 
 export interface GQLGetTreePathVariables {

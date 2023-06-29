@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ public final class TreeDescription implements IRepresentationDescription {
     private Function<VariableManager, Boolean> editableProvider;
 
     private Function<VariableManager, Boolean> deletableProvider;
+
+    private Function<VariableManager, Boolean> selectableProvider;
 
     private Function<VariableManager, List<?>> elementsProvider;
 
@@ -102,6 +104,11 @@ public final class TreeDescription implements IRepresentationDescription {
     public Function<VariableManager, Boolean> getDeletableProvider() {
         return this.deletableProvider;
     }
+
+    public Function<VariableManager, Boolean> getSelectableProvider() {
+        return this.selectableProvider;
+    }
+
 
     public Function<VariableManager, List<?>> getElementsProvider() {
         return this.elementsProvider;
@@ -163,6 +170,8 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, Boolean> deletableProvider;
 
+        private Function<VariableManager, Boolean> selectableProvider = (variableManager) -> true;
+
         private Function<VariableManager, List<?>> elementsProvider;
 
         private Function<VariableManager, List<?>> childrenProvider;
@@ -219,6 +228,11 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder selectableProvider(Function<VariableManager, Boolean> selectableProvider) {
+            this.selectableProvider = Objects.requireNonNull(selectableProvider);
+            return this;
+        }
+
         public Builder elementsProvider(Function<VariableManager, List<?>> elementsProvider) {
             this.elementsProvider = Objects.requireNonNull(elementsProvider);
             return this;
@@ -260,6 +274,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.imageURLProvider = Objects.requireNonNull(this.imageURLProvider);
             treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
             treeDescription.deletableProvider = Objects.requireNonNull(this.deletableProvider);
+            treeDescription.selectableProvider = Objects.requireNonNull(this.selectableProvider);
             treeDescription.elementsProvider = Objects.requireNonNull(this.elementsProvider);
             treeDescription.childrenProvider = Objects.requireNonNull(this.childrenProvider);
             treeDescription.hasChildrenProvider = Objects.requireNonNull(this.hasChildrenProvider);

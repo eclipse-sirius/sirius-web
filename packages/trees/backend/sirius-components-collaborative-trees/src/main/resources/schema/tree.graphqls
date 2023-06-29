@@ -39,6 +39,7 @@ type TreeItem {
   imageURL: String!
   editable: Boolean!
   deletable: Boolean!
+  selectable: Boolean!
   expanded: Boolean!
   hasChildren: Boolean!
   children: [TreeItem]!

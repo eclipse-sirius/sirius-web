@@ -48,6 +48,10 @@ const useTreeItemStyle = makeStyles((theme) => ({
       backgroundColor: 'var(--blue-lagoon-lighten-90)',
     },
   },
+  nonSelectable: {
+    fontStyle: 'italic',
+    opacity: 0.6,
+  },
   arrow: {
     cursor: 'pointer',
   },
@@ -297,6 +301,9 @@ export const TreeItem = ({
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     if (!state.editingMode) {
       refDom.current.focus();
+      if (!item.selectable) {
+        return;
+      }
 
       if (event.ctrlKey || event.metaKey) {
         event.stopPropagation();
@@ -391,7 +398,7 @@ export const TreeItem = ({
             data-depth={depth}
             data-expanded={item.expanded.toString()}
             data-testid={dataTestid}>
-            <div className={classes.content}>
+            <div className={`${classes.content} ${item.selectable ? '' : classes.nonSelectable}`}>
               <div
                 className={classes.imageAndLabel}
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
