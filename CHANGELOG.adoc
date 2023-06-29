@@ -8,6 +8,7 @@
 - Add new custom widget to edit single and multi-valued references
 - Add support for Help Expressions in Form widgets
 - Add border style for containers
+- Add an API for filtering and ordering form pages
 
 === Architectural decision records
 
