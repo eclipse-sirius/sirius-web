@@ -258,6 +258,7 @@ export enum GQLArrowStyle {
   Circle = 'Circle',
   FillCircle = 'FillCircle',
   CrossedCircle = 'CrossedCircle',
+  ClosedArrowWithVerticalBar = 'ClosedArrowWithVerticalBar',
 }
 
 export interface GQLDeleteFromDiagramVariables {

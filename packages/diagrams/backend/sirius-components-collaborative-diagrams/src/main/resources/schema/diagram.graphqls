@@ -140,6 +140,7 @@ enum ArrowStyle {
   Circle
   FillCircle
   CrossedCircle
+  ClosedArrowWithVerticalBar
 }
 
 type Ratio {

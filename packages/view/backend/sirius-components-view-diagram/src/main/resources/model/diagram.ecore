@@ -16,6 +16,7 @@
     <eLiterals name="Circle" value="11" literal="Circle"/>
     <eLiterals name="FillCircle" value="12" literal="FillCircle"/>
     <eLiterals name="CrossedCircle" value="13" literal="CrossedCircle"/>
+    <eLiterals name="ClosedArrowWithVerticalBar" value="14" literal="ClosedArrowWithVerticalBar"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="LayoutDirection">
     <eLiterals name="Column" literal="Column"/>

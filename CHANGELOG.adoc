@@ -60,16 +60,26 @@ Note that in the end, the message list will be the only way to return info in pa
 Widgets which define such a help text have a new "?" icon next to their labels; the actual help text is accessible as a tooltip on this icon.
 For View-based widgets, this materializes as an AQL `helpExpression`.
 The help text can include multiple lines (separated by `\n`), but no text formatting.
-:image:doc/images/Widget_Help_Tooltip.png[Example of a help tooltip on a widget]
++
+image:doc/images/Widget_Help_Tooltip.png[Example of a help tooltip on a widget]
++
 - https://github.com/eclipse-sirius/sirius-components/issues/2048[#2048] [diagram] Add a basic support for the resize. It is possible to reduce the size of a node less than the space needed to display all children.
 - https://github.com/eclipse-sirius/sirius-components/issues/2064[#2064] [forms] Make the `IWidgetDescriptor` API more flexible.
 - https://github.com/eclipse-sirius/sirius-components/issues/1618[#1618] [view] Split the view metamodel into dedicated subpackages.
 - https://github.com/eclipse-sirius/sirius-components/issues/2083[#2083] [diagram] Add support for edge markers
 - https://github.com/eclipse-sirius/sirius-components/issues/2086[#2086] [diagram] Add a panel with the default diagram actions
 - https://github.com/eclipse-sirius/sirius-components/issues/2087[#2087] [diagram] Add support for snap to grid
+<<<<<<< Upstream, based on origin/master
 - https://github.com/eclipse-sirius/sirius-components/issues/2115[#2115] [form] Add the possibility to choose the label position on checkbox widget.
 Note that the default position changes from top to end. +
 before : image:doc/screenshots/checkboxLabelPlacementBefore.png[checkboxLabelPlacementTop] after : image:doc/screenshots/checkboxLabelPlacementAfter.png[checkboxLabelPlacementEnd]
+=======
+- https://github.com/eclipse-sirius/sirius-components/issues/2121[#2121] [diagram] Add new closed arrow with vertical bar to diagram arrow styles
++
+image:doc/images/Diagram_closed_arrow_with_vertical_bar.png[closed arrow with vertical bar]
++
+
+>>>>>>> e98d973 [2121] Add new closed arrow with vertical bar to diagram arrow styles
 
 == v2023.6.0
 
