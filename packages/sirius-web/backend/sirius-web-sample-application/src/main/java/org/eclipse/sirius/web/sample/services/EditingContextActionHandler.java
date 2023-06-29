@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextActionHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.domain.DomainFactory;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
@@ -56,7 +57,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewProvider;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -116,28 +116,28 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private void createEmptyResource(ResourceSet resourceSet) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
-        resource.eAdapters().add(new DocumentMetadataAdapter("Others..."));
+        resource.eAdapters().add(new ResourceMetadataAdapter("Others..."));
         resourceSet.getResources().add(resource);
     }
 
     private void createEmptyFlowResource(ResourceSet resourceSet) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         resource.getContents().add(FlowFactory.eINSTANCE.createSystem());
-        resource.eAdapters().add(new DocumentMetadataAdapter("Flow"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("Flow"));
         resourceSet.getResources().add(resource);
     }
 
     private void createEmptyDomainResource(ResourceSet resourceSet) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         resource.getContents().add(DomainFactory.eINSTANCE.createDomain());
-        resource.eAdapters().add(new DocumentMetadataAdapter("Domain"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("Domain"));
         resourceSet.getResources().add(resource);
     }
 
     private void createPapayaDomainResource(ResourceSet resourceSet) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         new PapayaDomainProvider().getDomains().forEach(resource.getContents()::add);
-        resource.eAdapters().add(new DocumentMetadataAdapter("Papaya Domain"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("Papaya Domain"));
         resourceSet.getResources().add(resource);
     }
 
@@ -148,7 +148,7 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
         newView.getDescriptions().add(diagramDescription);
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         resource.getContents().add(newView);
-        resource.eAdapters().add(new DocumentMetadataAdapter("View"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("View"));
         resourceSet.getResources().add(resource);
     }
 
@@ -156,21 +156,21 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         resource.getContents().add(new PapayaViewProvider().getView());
-        resource.eAdapters().add(new DocumentMetadataAdapter("Papaya View"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("Papaya View"));
         resourceSet.getResources().add(resource);
     }
 
 
     private void createRobotFlowResource(ResourceSet resourceSet) {
         this.getResourceFromClassPathResource(new ClassPathResource("robot.flow")).ifPresent(resource -> {
-            resource.eAdapters().add(new DocumentMetadataAdapter("Robot Flow"));
+            resource.eAdapters().add(new ResourceMetadataAdapter("Robot Flow"));
             resourceSet.getResources().add(resource);
         });
     }
 
     private void createBigGuyFlowResource(ResourceSet resourceSet) {
         this.getResourceFromClassPathResource(new ClassPathResource("Big_Guy.flow")).ifPresent(resource -> {
-            resource.eAdapters().add(new DocumentMetadataAdapter("Big Guy Flow (17k elements)"));
+            resource.eAdapters().add(new ResourceMetadataAdapter("Big Guy Flow (17k elements)"));
             resourceSet.getResources().add(resource);
         });
     }

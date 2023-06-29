@@ -27,6 +27,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -34,7 +35,6 @@ import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
@@ -167,8 +167,8 @@ public class EditingContextSearchServiceTests {
         assertThat(resource.eAdapters()).hasSize(2);
         // @formatter:off
         var optionalDocumentMetadataAdapter = resource.eAdapters().stream()
-                .filter(DocumentMetadataAdapter.class::isInstance)
-                .map(DocumentMetadataAdapter.class::cast)
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
                 .findFirst();
         // @formatter:on
         assertThat(optionalDocumentMetadataAdapter).isPresent();

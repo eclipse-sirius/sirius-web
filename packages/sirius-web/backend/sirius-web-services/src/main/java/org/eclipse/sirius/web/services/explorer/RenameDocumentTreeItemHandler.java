@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -28,7 +29,6 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.explorer.api.IRenameTreeItemHandler;
 import org.springframework.stereotype.Service;
 
@@ -75,8 +75,8 @@ public class RenameDocumentTreeItemHandler implements IRenameTreeItemHandler {
                     .findFirst()
                     .ifPresent(resource -> {
                         resource.eAdapters().stream()
-                            .filter(DocumentMetadataAdapter.class::isInstance)
-                            .map(DocumentMetadataAdapter.class::cast)
+                            .filter(ResourceMetadataAdapter.class::isInstance)
+                            .map(ResourceMetadataAdapter.class::cast)
                             .findFirst()
                             .ifPresent(adapter -> adapter.setName(documentEntity.getName()));
                     });

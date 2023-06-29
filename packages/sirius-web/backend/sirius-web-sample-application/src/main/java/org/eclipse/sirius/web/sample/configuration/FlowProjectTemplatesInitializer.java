@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -44,7 +45,6 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -141,7 +141,7 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
                     this.logger.warn(exception.getMessage(), exception);
                 }
 
-                resource.eAdapters().add(new DocumentMetadataAdapter(DOCUMENT_TITLE));
+                resource.eAdapters().add(new ResourceMetadataAdapter(DOCUMENT_TITLE));
 
                 resourceSet.getResources().add(resource);
             }
