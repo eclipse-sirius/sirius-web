@@ -15,6 +15,7 @@ import { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { ListNodeData } from './ListNode.types';
 import { Palette } from './Palette';
+import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 
 const listNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
   const listNodeStyle: React.CSSProperties = {
@@ -57,6 +58,13 @@ const listItemStyle = (style: React.CSSProperties): React.CSSProperties => {
 };
 
 export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<ListNodeData>) => {
+  const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
+
+  const handleDirectEditClick = () => {
+    if (data.label) {
+      setCurrentlyEditedLabelId('palette', data.label.id, null);
+    }
+  };
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
@@ -73,7 +81,7 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
             );
           })}
         </div>
-        {selected ? <Palette diagramElementId={id} /> : null}
+        {selected ? <Palette diagramElementId={id} onDirectEditClick={handleDirectEditClick} /> : null}
         <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
       </div>

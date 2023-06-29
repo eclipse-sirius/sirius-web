@@ -28,14 +28,15 @@ import {
   useNodesState,
   useStoreApi,
 } from 'reactflow';
+import { DiagramPanel } from './DiagramPanel';
 import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
 import { ImageNode } from './ImageNode';
 import { ListNode } from './ListNode';
 import { RectangularNode } from './RectangularNode';
+import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
+import { performLayout } from './layout';
 
 import 'reactflow/dist/style.css';
-import { DiagramPanel } from './DiagramPanel';
-import { performLayout } from './layout';
 
 const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
@@ -47,6 +48,7 @@ const isSelectChange = (change: NodeChange): change is NodeSelectionChange => ch
 
 export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRendererProps) => {
   const store = useStoreApi();
+  const { onKeyDown } = useDiagramDirectEdit();
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
     fullscreen: false,
@@ -68,7 +70,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     const reactFlowState = store.getState();
     reactFlowState.unselectNodesAndEdges();
     reactFlowState.addSelectedNodes(nodesIds);
-  }, [selection]);
+  }, [selection, diagram]);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
     onNodesChange(changes);
@@ -155,6 +157,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       nodeTypes={nodeTypes}
       onNodesChange={handleNodesChange}
       edges={edges}
+      onKeyDown={onKeyDown}
       onEdgesChange={handleEdgesChange}
       onPaneClick={handlePaneClick}
       maxZoom={40}

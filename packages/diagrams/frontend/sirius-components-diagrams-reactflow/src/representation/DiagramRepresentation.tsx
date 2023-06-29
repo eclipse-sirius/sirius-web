@@ -25,6 +25,7 @@ import {
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { Diagram } from '../renderer/DiagramRenderer.types';
 import { MarkerDefinitions } from '../renderer/MarkerDefinitions';
+import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import {
   DiagramRepresentationState,
   GQLDiagramEventData,
@@ -93,13 +94,15 @@ export const DiagramRepresentation = ({
   }
 
   return (
-    <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
-      <ReactFlowProvider>
-        <div style={{ display: 'inline-block', position: 'relative' }}>
-          <MarkerDefinitions />
-          <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
-        </div>
-      </ReactFlowProvider>
-    </DiagramContext.Provider>
+    <ReactFlowProvider>
+      <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
+        <DiagramDirectEditContextProvider>
+          <div style={{ display: 'inline-block', position: 'relative' }}>
+            <MarkerDefinitions />
+            <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+          </div>
+        </DiagramDirectEditContextProvider>
+      </DiagramContext.Provider>
+    </ReactFlowProvider>
   );
 };

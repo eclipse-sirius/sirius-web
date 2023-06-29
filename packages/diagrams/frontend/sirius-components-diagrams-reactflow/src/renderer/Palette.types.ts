@@ -17,6 +17,7 @@ export interface ContextualPaletteStyleProps {
 
 export interface PaletteProps {
   diagramElementId: string;
+  onDirectEditClick: () => void;
 }
 
 export interface GQLErrorPayload

@@ -12,9 +12,7 @@
  *******************************************************************************/
 
 import { NodeData } from './DiagramRenderer.types';
-import { Label } from './Label.types';
 
 export interface RectangularNodeData extends NodeData {
-  label: Label;
   style: React.CSSProperties;
 }
