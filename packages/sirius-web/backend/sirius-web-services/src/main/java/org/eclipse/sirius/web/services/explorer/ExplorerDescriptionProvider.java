@@ -29,8 +29,8 @@ import org.eclipse.sirius.components.collaborative.trees.api.IExplorerDescriptio
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
@@ -96,6 +96,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 .imageURLProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
+                .selectableProvider(this::isSelectable)
                 .elementsProvider(this::getElements)
                 .hasChildrenProvider(this::hasChildren)
                 .childrenProvider(this::getChildren)
@@ -183,6 +184,10 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     }
 
     private boolean isDeletable(VariableManager variableManager) {
+        return true;
+    }
+
+    private boolean isSelectable(VariableManager variableManager) {
         return true;
     }
 

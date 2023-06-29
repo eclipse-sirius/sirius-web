@@ -117,6 +117,7 @@ The existing context menu contributions now only apply to the _Explorer_ view.
 - https://github.com/eclipse-sirius/sirius-components/issues/2091[#2091] [diagram] Add support for the direct edit in the diagram with nodes.
 - https://github.com/eclipse-sirius/sirius-components/issues/2142[#2142] [diagram] Add support for Edge labels (begin, center, end) in sirius-components-diagrams-reactflow.
 - https://github.com/eclipse-sirius/sirius-components/issues/2097[#2097] [forms] Add click handler support on the reference value of a reference widget.
+- https://github.com/eclipse-sirius/sirius-components/issues/2123[#2123] [tree] Add support for non-selectable tree items
 
 == v2023.6.0
 

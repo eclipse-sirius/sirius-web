@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,7 @@ public class TreeRenderer {
         String label = this.treeDescription.getLabelProvider().apply(treeItemVariableManager);
         boolean editable = this.treeDescription.getEditableProvider().apply(treeItemVariableManager);
         boolean deletable = this.treeDescription.getDeletableProvider().apply(treeItemVariableManager);
+        boolean selectable = this.treeDescription.getSelectableProvider().apply(treeItemVariableManager);
         String imageURL = this.treeDescription.getImageURLProvider().apply(treeItemVariableManager);
         Boolean hasChildren = this.treeDescription.getHasChildrenProvider().apply(treeItemVariableManager);
 
@@ -85,6 +86,7 @@ public class TreeRenderer {
                 .label(label)
                 .editable(editable)
                 .deletable(deletable)
+                .selectable(selectable)
                 .imageURL(imageURL)
                 .children(childrenTreeItems)
                 .hasChildren(hasChildren)

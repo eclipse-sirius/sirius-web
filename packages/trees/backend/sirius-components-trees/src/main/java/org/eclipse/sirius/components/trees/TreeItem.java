@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@ public final class TreeItem {
 
     private boolean deletable;
 
+    private boolean selectable;
+
     private boolean hasChildren;
 
     private boolean expanded;
@@ -68,6 +70,10 @@ public final class TreeItem {
 
     public boolean isDeletable() {
         return this.deletable;
+    }
+
+    public boolean isSelectable() {
+        return this.selectable;
     }
 
     public String getImageURL() {
@@ -116,6 +122,8 @@ public final class TreeItem {
 
         private boolean deletable;
 
+        private boolean selectable;
+
         private boolean hasChildren;
 
         private boolean expanded;
@@ -142,12 +150,17 @@ public final class TreeItem {
         }
 
         public Builder editable(boolean editable) {
-            this.editable = Objects.requireNonNull(editable);
+            this.editable = editable;
             return this;
         }
 
         public Builder deletable(boolean deletable) {
-            this.deletable = Objects.requireNonNull(deletable);
+            this.deletable = deletable;
+            return this;
+        }
+
+        public Builder selectable(boolean selectable) {
+            this.selectable = selectable;
             return this;
         }
 
@@ -172,10 +185,11 @@ public final class TreeItem {
             treeItem.kind = Objects.requireNonNull(this.kind);
             treeItem.label = Objects.requireNonNull(this.label);
             treeItem.imageURL = Objects.requireNonNull(this.imageURL);
-            treeItem.editable = Objects.requireNonNull(this.editable);
-            treeItem.deletable = Objects.requireNonNull(this.deletable);
-            treeItem.expanded = Objects.requireNonNull(this.expanded);
-            treeItem.hasChildren = Objects.requireNonNull(this.hasChildren);
+            treeItem.editable = this.editable;
+            treeItem.deletable = this.deletable;
+            treeItem.selectable = this.selectable;
+            treeItem.expanded = this.expanded;
+            treeItem.hasChildren = this.hasChildren;
             treeItem.children = Objects.requireNonNull(this.children);
             return treeItem;
         }
