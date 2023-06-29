@@ -1,0 +1,38 @@
+= (S) Add an API for filtering and ordering form pages
+
+== Problem
+
+A form can be composed of several pages from various contributions.
+Application integrators should be able to order and filter these pages to control the form representation in their applications.
+
+== Key Result
+
+Offer to developers the ability to programmatically order and filter the pages of a form.
+
+== Solution
+
+Add a new API with in entry the form and its variableManager.
+
+[source,java]
+----
+public interface IFormProcessor {
+    Form process(Form form, VariableManager variableManager);
+}
+----
+
+The API must return the form modified according to the integrator's wishes.
+
+=== Scenario
+
+* Contributors add a list of pages matching an element.
+* Developer declares through the API a new filter and changes pages order in the form.
+* On the form representation, only the pages filtered by the API are displayed and in the specified order.
+
+=== Cutting backs
+
+== Rabbit holes
+
+* This filter is available for all the form based view.
+* This API offers greater liberty than just filtering or sorting pages: the application integrator has complete control over the form that will be displayed.
+
+== No-gos

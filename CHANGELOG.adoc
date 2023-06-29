@@ -8,6 +8,7 @@
 - Add new custom widget to edit single and multi-valued references
 - Add support for Help Expressions in Form widgets
 - Add border style for containers
+- Add an API for filtering and ordering form pages
 
 === Architectural decision records
 
@@ -79,7 +80,8 @@ The help text can include multiple lines (separated by `\n`), but no text format
 +
 image:doc/images/Widget_Help_Tooltip.png[Example of a help tooltip on a widget]
 +
-- https://github.com/eclipse-sirius/sirius-components/issues/2048[#2048] [diagram] Add a basic support for the resize. It is possible to reduce the size of a node less than the space needed to display all children.
+- https://github.com/eclipse-sirius/sirius-components/issues/2048[#2048] [diagram] Add a basic support for the resize.
+It is possible to reduce the size of a node less than the space needed to display all children.
 - https://github.com/eclipse-sirius/sirius-components/issues/2064[#2064] [forms] Make the `IWidgetDescriptor` API more flexible.
 - https://github.com/eclipse-sirius/sirius-components/issues/1618[#1618] [view] Split the view metamodel into dedicated subpackages.
 - https://github.com/eclipse-sirius/sirius-components/issues/2083[#2083] [diagram] Add support for edge markers
@@ -182,14 +184,15 @@ image:doc/screenshots/filterBarFilterButton.png[Filter Bar Filter Button,30%,30%
 - https://github.com/eclipse-sirius/sirius-components/issues/1914[#1914] [form] It is now possible for applications to provide their own custom widgets without forking Sirius Components.
 See link:doc/how-to/contribute-custom-widget.adoc[the documentation] for more details.
 
-- https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name. The new algorithm does the minimum possible to place node without overlap.
+- https://github.com/eclipse-sirius/sirius-components/issues/1830[#1830] [layout] This feature is experimental and can be activated on a diagram by adding "__EXPERIMENTAL" to its name.
+The new algorithm does the minimum possible to place node without overlap.
 - https://github.com/eclipse-sirius/sirius-components/issues/1985[|#1985] [sirius-web] It is now possible to use in-memory View-based representations by registering them in the new `InMemoryViewRegistry`.
 These representations can be created programmatically or loaded from `.view` EMF models on startup, and do not need to be stored as documents inside a project in the database.
 - https://github.com/eclipse-sirius/sirius-components/issues/1921[#1921] [view] Added a project sirius-components-view-builder.
 +
 Introducing providers interfaces to help creating view programmatically.
 +
-Introducing a generator of builders aimed to help creating view programmatically, the generation makes use of emf-merge and modifications to these builders can be annotated to live during future regeneration. 
+Introducing a generator of builders aimed to help creating view programmatically, the generation makes use of emf-merge and modifications to these builders can be annotated to live during future regeneration.
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1912[#1912] [core] Add the possibility to send feedback messages to the frontend after an action.
 - https://github.com/eclipse-sirius/sirius-components/issues/1989[#1989] [diagram] Contribute a new way to render diagrams to evaluate an alternate layouting strategy
@@ -246,7 +249,6 @@ Such calls will not work anymore since `null` will not be an acceptable value an
 - https://github.com/eclipse-sirius/sirius-components/issues/1890[#1890]  [view] Tools are now retrieved from their corresponding View Description
 +
 Removing dependencies from sirius-components-compatibility-emf in the canHandle methods of sirius-components-view-emf services
-
 
 === Dependency update
 
