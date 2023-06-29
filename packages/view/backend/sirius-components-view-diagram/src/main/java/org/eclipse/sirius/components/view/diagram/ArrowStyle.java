@@ -160,7 +160,15 @@ public enum ArrowStyle implements Enumerator {
      * @generated
      * @ordered
      */
-    CLOSED_ARROW_WITH_VERTICAL_BAR(14, "ClosedArrowWithVerticalBar", "ClosedArrowWithVerticalBar");
+    CLOSED_ARROW_WITH_VERTICAL_BAR(14, "ClosedArrowWithVerticalBar", "ClosedArrowWithVerticalBar"),
+    /**
+     * The '<em><b>Closed Arrow With Dots</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #CLOSED_ARROW_WITH_DOTS_VALUE
+     * @generated
+     * @ordered
+     */
+    CLOSED_ARROW_WITH_DOTS(15, "ClosedArrowWithDots", "ClosedArrowWithDots");
 
     /**
      * The '<em><b>None</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -313,12 +321,22 @@ public enum ArrowStyle implements Enumerator {
     public static final int CLOSED_ARROW_WITH_VERTICAL_BAR_VALUE = 14;
 
     /**
+     * The '<em><b>Closed Arrow With Dots</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #CLOSED_ARROW_WITH_DOTS
+     * @model name="ClosedArrowWithDots"
+     * @generated
+     * @ordered
+     */
+    public static final int CLOSED_ARROW_WITH_DOTS_VALUE = 15;
+
+    /**
      * An array of all the '<em><b>Arrow Style</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private static final ArrowStyle[] VALUES_ARRAY = new ArrowStyle[] { NONE, OUTPUT_ARROW, INPUT_ARROW, OUTPUT_CLOSED_ARROW, INPUT_CLOSED_ARROW, OUTPUT_FILL_CLOSED_ARROW, INPUT_FILL_CLOSED_ARROW,
-            DIAMOND, FILL_DIAMOND, INPUT_ARROW_WITH_DIAMOND, INPUT_ARROW_WITH_FILL_DIAMOND, CIRCLE, FILL_CIRCLE, CROSSED_CIRCLE, CLOSED_ARROW_WITH_VERTICAL_BAR, };
+            DIAMOND, FILL_DIAMOND, INPUT_ARROW_WITH_DIAMOND, INPUT_ARROW_WITH_FILL_DIAMOND, CIRCLE, FILL_CIRCLE, CROSSED_CIRCLE, CLOSED_ARROW_WITH_VERTICAL_BAR, CLOSED_ARROW_WITH_DOTS, };
 
     /**
      * A public read-only list of all the '<em><b>Arrow Style</b></em>' enumerators. <!-- begin-user-doc --> <!--
@@ -407,6 +425,8 @@ public enum ArrowStyle implements Enumerator {
                 return CROSSED_CIRCLE;
             case CLOSED_ARROW_WITH_VERTICAL_BAR_VALUE:
                 return CLOSED_ARROW_WITH_VERTICAL_BAR;
+            case CLOSED_ARROW_WITH_DOTS_VALUE:
+                return CLOSED_ARROW_WITH_DOTS;
         }
         return null;
     }
