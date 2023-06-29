@@ -15,7 +15,10 @@ import { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { RectangularNodeData } from './RectangularNode.types';
 
+import React from 'react';
+import { Label } from './Label';
 import { Palette } from './Palette';
+import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 
 const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
   const rectangularNodeStyle: React.CSSProperties = {
@@ -33,21 +36,21 @@ const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): Re
   return rectangularNodeStyle;
 };
 
-const labelStyle = (style: React.CSSProperties): React.CSSProperties => {
-  return {
-    ...style,
-  };
-};
-
 export const RectangularNode = memo(({ data, isConnectable, id, selected }: NodeProps<RectangularNodeData>) => {
+  const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
+
+  const handleDirectEditClick = () => {
+    if (data.label) {
+      setCurrentlyEditedLabelId('palette', data.label.id, null);
+    }
+  };
+
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
       <div style={rectangularNodeStyle(data.style, selected)}>
-        <div data-id={data.label.id} style={labelStyle(data.label.style)}>
-          {data.label.text}
-        </div>
-        {selected ? <Palette diagramElementId={id} /> : null}
+        <Label label={data.label} />
+        {selected ? <Palette diagramElementId={id} onDirectEditClick={handleDirectEditClick} /> : null}
         <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
       </div>

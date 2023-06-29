@@ -200,6 +200,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
     targetObjectId,
     targetObjectKind,
     targetObjectLabel,
+    label: null,
     imageURL: style.imageURL,
     style: {},
   };

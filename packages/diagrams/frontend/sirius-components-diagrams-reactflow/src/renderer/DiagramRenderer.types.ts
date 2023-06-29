@@ -41,4 +41,11 @@ export interface NodeData {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
+  label: Label | null;
+}
+
+export interface Label {
+  id: string;
+  text: string;
+  style: React.CSSProperties;
 }

@@ -145,7 +145,7 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const Palette = ({ diagramElementId }: PaletteProps) => {
+export const Palette = ({ diagramElementId, onDirectEditClick }: PaletteProps) => {
   const [tools, setTools] = useState<GQLTool[]>([]);
 
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
@@ -262,7 +262,7 @@ export const Palette = ({ diagramElementId }: PaletteProps) => {
   const handleToolClick = (tool: GQLTool) => {
     switch (tool.id) {
       case 'edit':
-        console.warn('not Implemented yet');
+        onDirectEditClick();
         break;
       case 'semantic-delete':
         invokeDelete([diagramElementId], GQLDeletionPolicy.SEMANTIC);
