@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -151,6 +151,7 @@ export class EdgeView extends PolylineEdgeView {
     const offsetArrowPath = `m ${(5 + strokeWidth) * 2} 0 L ${(5 + strokeWidth) * 2 + (5 + strokeWidth)} ${
       -3.5 - strokeWidth
     } M ${(5 + strokeWidth) * 2} 0 L ${(5 + strokeWidth) * 2 + (5 + strokeWidth)} ${3.5 + strokeWidth}`;
+    const basicParallelLinePath = `m 0 0 m ${-1.5 - strokeWidth * 2}  ${0 - strokeWidth} V ${3.5 + strokeWidth * 2}`;
 
     let styleObjectCopy = { ...styleObject };
 
@@ -187,6 +188,13 @@ export class EdgeView extends PolylineEdgeView {
       arrow = this.buildFillCircleArrow(p1, p2, styleObjectCopy, strokeWidth);
     } else if (arrowStyle === 'CrossedCircle') {
       arrow = this.buildCrossedCircleArrow(p1, p2, styleObjectCopy, strokeWidth);
+    } else if (arrowStyle === 'ClosedArrowWithVerticalBar') {
+      arrow = this.buildClosedArrowWithVerticalBar(
+        basicArrowPath + 'z ' + basicParallelLinePath,
+        p1,
+        p2,
+        styleObjectCopy
+      );
     }
 
     return [arrow];
@@ -274,6 +282,16 @@ export class EdgeView extends PolylineEdgeView {
     const offsetX = p2.x + strokeWidth;
     const offsetY = p2.y;
     const rotationAngle = toDegrees(angle(p2, p1));
+    const rotationX = p2.x;
+    const rotationY = p2.y;
+    return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);
+  }
+
+  buildClosedArrowWithVerticalBar(path: string, p1: Point, p2: Point, styleObject) {
+    styleObject.fill = '#ffffff';
+    const offsetX = p2.x;
+    const offsetY = p2.y;
+    const rotationAngle = toDegrees(angle(p1, p2));
     const rotationX = p2.x;
     const rotationY = p2.y;
     return this.buildArrowPath(path, offsetX, offsetY, styleObject, rotationAngle, rotationX, rotationY);

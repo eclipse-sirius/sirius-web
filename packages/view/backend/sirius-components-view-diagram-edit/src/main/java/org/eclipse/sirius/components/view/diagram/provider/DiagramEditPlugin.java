@@ -69,7 +69,7 @@ public final class DiagramEditPlugin extends EMFPlugin {
     public static Implementation getPlugin() {
         return plugin;
     }
-    
+
     @Override
     protected Object doGetImage(String key) throws IOException {
         URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
@@ -77,7 +77,7 @@ public final class DiagramEditPlugin extends EMFPlugin {
         inputStream.close();
         return url;
     }
-    
+
     /**
      * Computes the file extension to be used with the key to specify an image resource.
      *
