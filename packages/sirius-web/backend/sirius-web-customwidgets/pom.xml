@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-customwidgets</artifactId>
-	<version>2023.6.3</version>
+	<version>2023.6.4</version>
 	<name>sirius-web-customwidgets</name>
 	<description>Support for additional widgets</description>
 
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2023.6.3</version>
+			<version>2023.6.4</version>
 		</dependency>
 	</dependencies>
 
