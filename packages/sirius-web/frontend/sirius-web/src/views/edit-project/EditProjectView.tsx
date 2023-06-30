@@ -21,8 +21,8 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import Filter from '@material-ui/icons/Filter';
 import LinkIcon from '@material-ui/icons/Link';
@@ -40,12 +40,12 @@ import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariab
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
-  editProjectViewMachine,
   HandleFetchedProjectEvent,
   HideToastEvent,
   SchemaValue,
   SelectRepresentationEvent,
   ShowToastEvent,
+  editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 
@@ -134,15 +134,21 @@ export const EditProjectView = () => {
 
     const treeItemContextMenuContributions = [
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => item.kind.startsWith('siriusWeb://document')}
+        canHandle={(treeId: string, item: GQLTreeItem) =>
+          treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')
+        }
         component={DocumentTreeItemContextMenuContribution}
       />,
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => item.kind.startsWith('siriusComponents://semantic')}
+        canHandle={(treeId: string, item: GQLTreeItem) =>
+          treeId.startsWith('explorer://') && item.kind.startsWith('siriusComponents://semantic')
+        }
         component={ObjectTreeItemContextMenuContribution}
       />,
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => item.kind === 'siriusComponents://representation?type=Diagram'}
+        canHandle={(treeId: string, item: GQLTreeItem) =>
+          treeId.startsWith('explorer://') && item.kind === 'siriusComponents://representation?type=Diagram'
+        }
         component={DiagramTreeItemContextMenuContribution}
       />,
     ];

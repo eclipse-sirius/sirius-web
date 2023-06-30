@@ -116,7 +116,7 @@ export const TreeItem = ({
   const { httpOrigin } = useContext(ServerContext);
 
   const treeItemMenuContributionComponents = useContext(TreeItemContextMenuContext)
-    .filter((contribution) => contribution.props.canHandle(item))
+    .filter((contribution) => contribution.props.canHandle(treeId, item))
     .map((contribution) => contribution.props.component);
 
   const initialState = {
