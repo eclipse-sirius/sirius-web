@@ -13,11 +13,13 @@
 
 import { Edge, Node } from 'reactflow';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
+import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLRectangularNodeStyle } from '../graphql/subscription/nodeFragment.types';
-import { Diagram } from '../renderer/DiagramRenderer.types';
+import { Diagram, Label } from '../renderer/DiagramRenderer.types';
 import { ImageNodeData } from '../renderer/ImageNode.types';
 import { ListItemData, ListNodeData } from '../renderer/ListNode.types';
 import { RectangularNodeData } from '../renderer/RectangularNode.types';
+import { CustomEdgeData } from '../renderer/edge/CustomEdge.types';
 
 const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<RectangularNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
@@ -39,11 +41,10 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
       id: gqlNode.label.id,
       text: gqlNode.label.text,
       style: {
-        fontSize: labelStyle.fontSize,
-        color: labelStyle.color,
-        fontWeight: labelStyle.bold ? 700 : 400,
         textAlign: 'center',
+        ...convertLabelStyle(labelStyle),
       },
+      iconURL: labelStyle.iconURL,
     },
   };
 
@@ -101,19 +102,18 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
   const labelStyle = gqlNode.label.style;
 
   const listItems: ListItemData[] = (gqlNode.childNodes ?? []).map((gqlChildNode) => {
-    const { id } = gqlChildNode;
+    const { id, label } = gqlChildNode;
     return {
       id,
       label: {
-        id: gqlChildNode.label.id,
-        text: gqlChildNode.label.text,
+        id: label.id,
+        text: label.text,
         style: {},
+        iconURL: null,
       },
       style: {
-        fontSize: gqlChildNode.label.style.fontSize,
-        color: gqlChildNode.label.style.color,
-        fontWeight: gqlChildNode.label.style.bold ? 700 : 400,
         textAlign: 'left',
+        ...convertLabelStyle(label.style),
       },
     };
   });
@@ -133,11 +133,10 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
     label: {
       id: gqlNode.label.id,
       text: gqlNode.label.text,
+      iconURL: labelStyle.iconURL,
       style: {
-        fontSize: labelStyle.fontSize,
-        color: labelStyle.color,
-        fontWeight: labelStyle.bold ? 700 : 400,
         textAlign: 'center',
+        ...convertLabelStyle(labelStyle),
       },
     },
     listItems,
@@ -260,6 +259,54 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   return depth;
 };
 
+const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): Label => {
+  return {
+    id: gqlEdgeLabel.id,
+    text: gqlEdgeLabel.text,
+    iconURL: gqlEdgeLabel.style.iconURL,
+    style: {
+      position: 'absolute',
+      background: 'transparent',
+      padding: 10,
+      zIndex: 999,
+      ...convertLabelStyle(gqlEdgeLabel.style),
+    },
+  };
+};
+
+const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties => {
+  const style: React.CSSProperties = {};
+
+  if (gqlLabelStyle.bold) {
+    style.fontWeight = 'bold';
+  }
+
+  if (gqlLabelStyle.italic) {
+    style.fontStyle = 'italic';
+  }
+
+  if (gqlLabelStyle.fontSize) {
+    style.fontSize = gqlLabelStyle.fontSize;
+  }
+  if (gqlLabelStyle.color) {
+    style.color = gqlLabelStyle.color;
+  }
+
+  let decoration: string = '';
+  if (gqlLabelStyle.strikeThrough) {
+    decoration = decoration + 'line-through';
+  }
+  if (gqlLabelStyle.underline) {
+    const separator: string = decoration.length > 0 ? ' ' : '';
+    decoration = decoration + separator + 'underline';
+  }
+  if (decoration.length > 0) {
+    style.textDecoration = decoration;
+  }
+
+  return style;
+};
+
 export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   const nodes: Node[] = [];
   gqlDiagram.nodes.forEach((gqlNode) => convertNode(gqlNode, null, nodes));
@@ -273,9 +320,20 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
     const zIndex = Math.max(nodeId2Depth.get(gqlEdge.sourceId), nodeId2Depth.get(gqlEdge.targetId));
 
+    const data: CustomEdgeData = {};
+    if (gqlEdge.beginLabel) {
+      data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
+    }
+    if (gqlEdge.centerLabel) {
+      data.centerLabel = convertEdgeLabel(gqlEdge.centerLabel);
+    }
+    if (gqlEdge.endLabel) {
+      data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
+    }
+
     return {
       id: gqlEdge.id,
-      type: 'step',
+      type: 'customEdge',
       source: gqlEdge.sourceId,
       target: gqlEdge.targetId,
       markerEnd: `open-arrow--${gqlEdge.id}--markerEnd`,
@@ -284,6 +342,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
         stroke: gqlEdge.style.color,
         strokeWidth: gqlEdge.style.size,
       },
+      data,
     };
   });
 
