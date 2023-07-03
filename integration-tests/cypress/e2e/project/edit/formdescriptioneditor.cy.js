@@ -193,6 +193,23 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('FormDescriptionEditor-ReferenceWidget').trigger('dragstart', { dataTransfer });
     cy.get('[data-testid^="Group-Widgets-DropArea-"]').trigger('drop', { dataTransfer });
     cy.get('[title="ReferenceWidget"]').should('be.visible');
+    cy.getByTestId('PageDescription').dblclick();
+    cy.getByTestId('GroupDescription').dblclick();
+    cy.getByTestId('ReferenceWidgetDescription-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="Conditional Styles Conditional Reference Widget Description Style"]')
+      .should('exist');
+    cy.get('[data-value="Style Widget Description Style"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Font Size').should('exist');
+    cy.getByTestId('Italic').should('exist');
+    cy.getByTestId('Bold').should('exist');
+    cy.getByTestId('Underline').should('exist');
+    cy.getByTestId('Strike Through').should('exist');
+    cy.getByTestId('Color').should('exist');
   });
 
   it('can create a reference widget in a Flexbox Container', () => {
@@ -210,13 +227,16 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.get('[title="ReferenceWidget"]').should('be.visible');
   });
 
-
   function checkWidgetIsEnabledExpression(widgetName, should) {
-    cy.getByTestId("GroupDescription-more").click();
-    cy.getByTestId("treeitem-contextmenu").findByTestId("new-object").click();
-    cy.getByTestId("childCreationDescription").children("[role=\"button\"]").invoke("text").should("have.length.gt", 1);
-    cy.getByTestId("childCreationDescription").click().get("[data-value=\"" + widgetName + " Description\"]").should("exist").click();
-    cy.getByTestId("create-object").click();
+    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="' + widgetName + ' Description"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-object').click();
     cy.getByTestId('Is Enabled Expression').should(should);
   }
 
@@ -235,20 +255,20 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   });
 
   function createBorderStyleAndCheckProperties(styleName) {
-    cy.getByTestId("treeitem-contextmenu").findByTestId("new-object").click();
-    cy.getByTestId("childCreationDescription").children("[role=\"button\"]").invoke("text").should("have.length.gt", 1);
-    cy.getByTestId("childCreationDescription")
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
       .click()
-      .get("[data-value=\"" + styleName + "\"]")
-      .should("exist")
+      .get('[data-value="' + styleName + '"]')
+      .should('exist')
       .click();
-    cy.getByTestId("create-object").click();
-    cy.getByTestId("Border Color").should("exist");
-    cy.getByTestId("Border Radius").should("exist");
-    cy.getByTestId("Border Size").should("exist");
-    cy.getByTestId("Solid").should("exist");
-    cy.getByTestId("Dashed").should("exist");
-    cy.getByTestId("Dotted").should("exist");
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Border Color').should('exist');
+    cy.getByTestId('Border Radius').should('exist');
+    cy.getByTestId('Border Size').should('exist');
+    cy.getByTestId('Solid').should('exist');
+    cy.getByTestId('Dashed').should('exist');
+    cy.getByTestId('Dotted').should('exist');
   }
 
   it('can create border style in a Group', () => {
@@ -277,6 +297,5 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('FlexboxContainerDescription-more').click();
     createBorderStyleAndCheckProperties('Conditional Border Styles Conditional Container Border Style');
     cy.getByTestId('Condition').should('exist');
-
   });
 });

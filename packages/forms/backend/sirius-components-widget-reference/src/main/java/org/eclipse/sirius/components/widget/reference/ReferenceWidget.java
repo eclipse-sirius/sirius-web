@@ -38,6 +38,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private Setting setting;
 
+    private ReferenceWidgetStyle style;
+
     private ReferenceWidget() {
         // Prevent instantiation
     }
@@ -60,6 +62,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public Setting getSetting() {
         return this.setting;
+    }
+
+    public ReferenceWidgetStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -93,6 +99,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private boolean manyValued;
 
         private Setting setting;
+
+        private ReferenceWidgetStyle style;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -143,6 +151,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder style(ReferenceWidgetStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public ReferenceWidget build() {
             ReferenceWidget referenceWidget = new ReferenceWidget();
             referenceWidget.id = Objects.requireNonNull(this.id);
@@ -155,6 +168,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.setting = Objects.requireNonNull(this.setting);
             referenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidget.readOnly = this.readOnly;
+            referenceWidget.style = this.style; // Optional on purpose
             return referenceWidget;
         }
     }

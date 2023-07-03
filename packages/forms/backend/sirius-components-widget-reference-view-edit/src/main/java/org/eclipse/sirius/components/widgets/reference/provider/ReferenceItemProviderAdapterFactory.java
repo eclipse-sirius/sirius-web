@@ -53,278 +53,333 @@ import org.eclipse.sirius.components.widgets.reference.util.ReferenceAdapterFact
  * @generated
  */
 public class ReferenceItemProviderAdapterFactory extends ReferenceAdapterFactory
-		implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
-	/**
-	 * This keeps track of the root adapter factory that delegates to this adapter
-	 * factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	protected ComposedAdapterFactory parentAdapterFactory;
+        implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
 
-	/**
-	 * This is used to implement
-	 * {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	protected IChangeNotifier changeNotifier = new ChangeNotifier();
+    /**
+     * This keeps track of the root adapter factory that delegates to this adapter
+     * factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ComposedAdapterFactory parentAdapterFactory;
 
-	/**
-	 * This keeps track of all the supported types checked by
-	 * {@link #isFactoryForType isFactoryForType}. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 *
-	 * @generated
-	 */
-	protected Collection<Object> supportedTypes = new ArrayList<>();
+    /**
+     * This is used to implement
+     * {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected IChangeNotifier changeNotifier = new ChangeNotifier();
 
-	/**
-	 * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	public ReferenceItemProviderAdapterFactory() {
-		supportedTypes.add(IEditingDomainItemProvider.class);
-		supportedTypes.add(IStructuredItemContentProvider.class);
-		supportedTypes.add(ITreeItemContentProvider.class);
-		supportedTypes.add(IItemLabelProvider.class);
-		supportedTypes.add(IItemPropertySource.class);
-	}
+    /**
+     * This keeps track of all the supported types checked by
+     * {@link #isFactoryForType isFactoryForType}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected Collection<Object> supportedTypes = new ArrayList<>();
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ReferenceWidgetDescriptionItemProvider referenceWidgetDescriptionItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ReferenceWidgetDescriptionStyleItemProvider referenceWidgetDescriptionStyleItemProvider;
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalReferenceWidgetDescriptionStyleItemProvider conditionalReferenceWidgetDescriptionStyleItemProvider;
 
-	/**
-	 * This keeps track of the one adapter used for all
-	 * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription}
-	 * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	protected ReferenceWidgetDescriptionItemProvider referenceWidgetDescriptionItemProvider;
+    /**
+     * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public ReferenceItemProviderAdapterFactory() {
+        this.supportedTypes.add(IEditingDomainItemProvider.class);
+        this.supportedTypes.add(IStructuredItemContentProvider.class);
+        this.supportedTypes.add(ITreeItemContentProvider.class);
+        this.supportedTypes.add(IItemLabelProvider.class);
+        this.supportedTypes.add(IItemPropertySource.class);
+    }
 
-	/**
-	 * This creates an adapter for a
-	 * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription}.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public Adapter createReferenceWidgetDescriptionAdapter() {
-		if (referenceWidgetDescriptionItemProvider == null) {
-			referenceWidgetDescriptionItemProvider = new ReferenceWidgetDescriptionItemProvider(this);
-		}
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createReferenceWidgetDescriptionAdapter() {
+        if (this.referenceWidgetDescriptionItemProvider == null) {
+            this.referenceWidgetDescriptionItemProvider = new ReferenceWidgetDescriptionItemProvider(this);
+        }
 
-		return referenceWidgetDescriptionItemProvider;
-	}
+        return this.referenceWidgetDescriptionItemProvider;
+    }
 
-	/**
-	 * This returns the root adapter factory that contains this factory. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public ComposeableAdapterFactory getRootAdapterFactory() {
-		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
-	}
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createReferenceWidgetDescriptionStyleAdapter() {
+        if (this.referenceWidgetDescriptionStyleItemProvider == null) {
+            this.referenceWidgetDescriptionStyleItemProvider = new ReferenceWidgetDescriptionStyleItemProvider(this);
+        }
 
-	/**
-	 * This sets the composed adapter factory that contains this factory. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
-		this.parentAdapterFactory = parentAdapterFactory;
-	}
+        return this.referenceWidgetDescriptionStyleItemProvider;
+    }
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public boolean isFactoryForType(Object type) {
-		return supportedTypes.contains(type) || super.isFactoryForType(type);
-	}
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalReferenceWidgetDescriptionStyleAdapter() {
+        if (this.conditionalReferenceWidgetDescriptionStyleItemProvider == null) {
+            this.conditionalReferenceWidgetDescriptionStyleItemProvider = new ConditionalReferenceWidgetDescriptionStyleItemProvider(
+                    this);
+        }
 
-	/**
-	 * This implementation substitutes the factory itself as the key for the
-	 * adapter. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public Adapter adapt(Notifier notifier, Object type) {
-		return super.adapt(notifier, this);
-	}
+        return this.conditionalReferenceWidgetDescriptionStyleItemProvider;
+    }
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public Object adapt(Object object, Object type) {
-		if (isFactoryForType(type)) {
-			Object adapter = super.adapt(object, type);
-			if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
-				return adapter;
-			}
-		}
+    /**
+     * This returns the root adapter factory that contains this factory. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ComposeableAdapterFactory getRootAdapterFactory() {
+        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
+    }
 
-		return null;
-	}
+    /**
+     * This sets the composed adapter factory that contains this factory. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
+        this.parentAdapterFactory = parentAdapterFactory;
+    }
 
-	/**
-	 * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public void addListener(INotifyChangedListener notifyChangedListener) {
-		changeNotifier.addListener(notifyChangedListener);
-	}
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isFactoryForType(Object type) {
+        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
+    }
 
-	/**
-	 * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public void removeListener(INotifyChangedListener notifyChangedListener) {
-		changeNotifier.removeListener(notifyChangedListener);
-	}
+    /**
+     * This implementation substitutes the factory itself as the key for the
+     * adapter. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter adapt(Notifier notifier, Object type) {
+        return super.adapt(notifier, this);
+    }
 
-	/**
-	 * This delegates to {@link #changeNotifier} and to
-	 * {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public void fireNotifyChanged(Notification notification) {
-		changeNotifier.fireNotifyChanged(notification);
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object adapt(Object object, Object type) {
+        if (this.isFactoryForType(type)) {
+            Object adapter = super.adapt(object, type);
+            if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
+                return adapter;
+            }
+        }
 
-		if (parentAdapterFactory != null) {
-			parentAdapterFactory.fireNotifyChanged(notification);
-		}
-	}
+        return null;
+    }
 
-	/**
-	 * This disposes all of the item providers created by this factory. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	@Override
-	public void dispose() {
-		if (referenceWidgetDescriptionItemProvider != null)
-			referenceWidgetDescriptionItemProvider.dispose();
-	}
+    /**
+     * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void addListener(INotifyChangedListener notifyChangedListener) {
+        this.changeNotifier.addListener(notifyChangedListener);
+    }
 
-	/**
-	 * A child creation extender for the {@link FormPackage}. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 *
-	 * @generated
-	 */
-	public static class FormChildCreationExtender implements IChildCreationExtender {
-		/**
-		 * The switch for creating child descriptors specific to each extended class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 *
-		 * @generated
-		 */
-		protected static class CreationSwitch extends FormSwitch<Object> {
-			/**
-			 * The child descriptors being populated. <!-- begin-user-doc --> <!--
-			 * end-user-doc -->
-			 *
-			 * @generated
-			 */
-			protected List<Object> newChildDescriptors;
+    /**
+     * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void removeListener(INotifyChangedListener notifyChangedListener) {
+        this.changeNotifier.removeListener(notifyChangedListener);
+    }
 
-			/**
-			 * The domain in which to create the children. <!-- begin-user-doc --> <!--
-			 * end-user-doc -->
-			 *
-			 * @generated
-			 */
-			protected EditingDomain editingDomain;
+    /**
+     * This delegates to {@link #changeNotifier} and to
+     * {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void fireNotifyChanged(Notification notification) {
+        this.changeNotifier.fireNotifyChanged(notification);
 
-			/**
-			 * Creates the a switch for populating child descriptors in the given domain.
-			 * <!-- begin-user-doc --> <!-- end-user-doc -->
-			 *
-			 * @generated
-			 */
-			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) {
-				this.newChildDescriptors = newChildDescriptors;
-				this.editingDomain = editingDomain;
-			}
+        if (this.parentAdapterFactory != null) {
+            this.parentAdapterFactory.fireNotifyChanged(notification);
+        }
+    }
 
-			/**
-			 * <!-- begin-user-doc --> <!-- end-user-doc -->
-			 *
-			 * @generated
-			 */
-			@Override
-			public Object caseGroupDescription(GroupDescription object) {
-				newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS,
-						ReferenceFactory.eINSTANCE.createReferenceWidgetDescription()));
+    /**
+     * This disposes all of the item providers created by this factory. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void dispose() {
+        if (this.referenceWidgetDescriptionItemProvider != null)
+            this.referenceWidgetDescriptionItemProvider.dispose();
+        if (this.referenceWidgetDescriptionStyleItemProvider != null)
+            this.referenceWidgetDescriptionStyleItemProvider.dispose();
+        if (this.conditionalReferenceWidgetDescriptionStyleItemProvider != null)
+            this.conditionalReferenceWidgetDescriptionStyleItemProvider.dispose();
+    }
 
-				return null;
-			}
+    /**
+     * A child creation extender for the {@link FormPackage}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public static class FormChildCreationExtender implements IChildCreationExtender {
 
-			/**
-			 * <!-- begin-user-doc --> <!-- end-user-doc -->
-			 *
-			 * @generated
-			 */
-			@Override
-			public Object caseFlexboxContainerDescription(FlexboxContainerDescription object) {
-				newChildDescriptors
-						.add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
-								ReferenceFactory.eINSTANCE.createReferenceWidgetDescription()));
+        /**
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        @Override
+        public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
+            ArrayList<Object> result = new ArrayList<>();
+            new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
+            return result;
+        }
 
-				return null;
-			}
+        /**
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        @Override
+        public ResourceLocator getResourceLocator() {
+            return ReferenceEditPlugin.INSTANCE;
+        }
 
-			/**
-			 * <!-- begin-user-doc --> <!-- end-user-doc -->
-			 *
-			 * @generated
-			 */
-			protected CommandParameter createChildParameter(Object feature, Object child) {
-				return new CommandParameter(null, feature, child);
-			}
+        /**
+         * The switch for creating child descriptors specific to each extended class.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        protected static class CreationSwitch extends FormSwitch<Object> {
 
-		}
+            /**
+             * The child descriptors being populated. <!-- begin-user-doc --> <!--
+             * end-user-doc -->
+             *
+             * @generated
+             */
+            protected List<Object> newChildDescriptors;
 
-		/**
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 *
-		 * @generated
-		 */
-		@Override
-		public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
-			ArrayList<Object> result = new ArrayList<>();
-			new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
-			return result;
-		}
+            /**
+             * The domain in which to create the children. <!-- begin-user-doc --> <!--
+             * end-user-doc -->
+             *
+             * @generated
+             */
+            protected EditingDomain editingDomain;
 
-		/**
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 *
-		 * @generated
-		 */
-		@Override
-		public ResourceLocator getResourceLocator() {
-			return ReferenceEditPlugin.INSTANCE;
-		}
-	}
+            /**
+             * Creates the a switch for populating child descriptors in the given domain.
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) {
+                this.newChildDescriptors = newChildDescriptors;
+                this.editingDomain = editingDomain;
+            }
+
+            /**
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            @Override
+            public Object caseGroupDescription(GroupDescription object) {
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS,
+                        ReferenceFactory.eINSTANCE.createReferenceWidgetDescription()));
+
+                return null;
+            }
+
+            /**
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            @Override
+            public Object caseFlexboxContainerDescription(FlexboxContainerDescription object) {
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                                ReferenceFactory.eINSTANCE.createReferenceWidgetDescription()));
+
+                return null;
+            }
+
+            /**
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            protected CommandParameter createChildParameter(Object feature, Object child) {
+                return new CommandParameter(null, feature, child);
+            }
+
+        }
+    }
 
 }

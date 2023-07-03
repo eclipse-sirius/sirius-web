@@ -25,6 +25,7 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.form.provider.WidgetDescriptionItemProvider;
+import org.eclipse.sirius.components.widgets.reference.ReferenceFactory;
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 
@@ -113,6 +114,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY);
+            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE);
+            this.childrenFeatures.add(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.childrenFeatures;
     }
@@ -201,6 +204,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -212,7 +217,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
      * the children that can be created under this object. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -232,6 +237,35 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
 
         newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY,
                 ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE,
+                ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
+
+        newChildDescriptors
+                .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES,
+                        ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
+    }
+
+    /**
+     * This returns the label text for
+     * {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
+        Object childFeature = feature;
+        Object childObject = child;
+
+        boolean qualify = childFeature == ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE
+                || childFeature == ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES;
+
+        if (qualify) {
+            return this.getString("_UI_CreateChild_text2",
+                    new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
+        }
+        return super.getCreateChildText(owner, feature, child, selection);
     }
 
     /**

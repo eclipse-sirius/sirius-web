@@ -94,6 +94,40 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
     EList<Operation> getBody();
 
     /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @model containment="true"
+     * @generated
+     * @see #setStyle(ReferenceWidgetDescriptionStyle)
+     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_Style()
+     */
+    ReferenceWidgetDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getStyle
+     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value the new value of the '<em>Style</em>' containment reference.
+     * @generated
+     * @see #getStyle()
+     */
+    void setStyle(ReferenceWidgetDescriptionStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @model containment="true"
+     * @generated
+     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ConditionalStyles()
+     */
+    EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles();
+
+    /**
      * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *

@@ -72,6 +72,9 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
             if (props.getHelpTextProvider() != null) {
                 builder.helpTextProvider(props.getHelpTextProvider());
             }
+            if (props.getStyle() != null) {
+                builder.style(props.getStyle());
+            }
             result = Optional.of(builder.build());
         }
         return result;

@@ -160,7 +160,8 @@ const propertySectionsRegistry = {
     };
     const referenceWidget: WidgetContribution = {
       name: 'ReferenceWidget',
-      fields: 'id label iconURL container manyValued referenceValues { id label kind iconURL hasClickAction }',
+      fields:
+        'id label iconURL container manyValued referenceValues { id label kind iconURL hasClickAction }  style { color fontSize italic bold underline strikeThrough }',
       icon: <ReferenceIcon />,
     };
     return [sliderWidgetContribution, referenceWidget];
