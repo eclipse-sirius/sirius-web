@@ -17,13 +17,14 @@ import { Label } from './Label';
 import { ListNodeData } from './ListNode.types';
 import { NodePalette } from './palette/NodePalette';
 
-const listNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
+const listNodeStyle = (style: React.CSSProperties, selected: boolean, faded: boolean): React.CSSProperties => {
   const listNodeStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
     width: '100%',
     height: '100%',
+    opacity: faded ? '0.4' : '',
     ...style,
   };
   if (selected) {
@@ -37,8 +38,8 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
-      <div style={listNodeStyle(data.style, selected)}>
-        {data.label ? <Label label={data.label} /> : null}
+      <div style={listNodeStyle(data.style, selected, data.faded)}>
+        {data.label ? <Label label={data.label} faded={data.faded} /> : null}
         <div>
           {data.listItems.map((listItem) => {
             return (

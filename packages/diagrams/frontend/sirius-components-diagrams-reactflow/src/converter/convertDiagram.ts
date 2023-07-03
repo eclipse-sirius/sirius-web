@@ -14,7 +14,12 @@
 import { Edge, Node } from 'reactflow';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
-import { GQLImageNodeStyle, GQLNode, GQLRectangularNodeStyle } from '../graphql/subscription/nodeFragment.types';
+import {
+  GQLImageNodeStyle,
+  GQLNode,
+  GQLRectangularNodeStyle,
+  GQLViewModifier,
+} from '../graphql/subscription/nodeFragment.types';
 import { Diagram, Label } from '../renderer/DiagramRenderer.types';
 import { ImageNodeData } from '../renderer/ImageNode.types';
 import { ListItemData, ListNodeData } from '../renderer/ListNode.types';
@@ -46,6 +51,7 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
       },
       iconURL: labelStyle.iconURL,
     },
+    faded: gqlNode.state === GQLViewModifier.Faded,
   };
 
   const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
@@ -87,6 +93,7 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
       width: `${size.width}px`,
       height: `${size.height}px`,
     },
+    hidden: gqlNode.state === GQLViewModifier.Hidden,
   };
 
   if (gqlParentNode) {
@@ -122,6 +129,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
         textAlign: 'left',
         ...convertLabelStyle(label.style),
       },
+      hidden: gqlChildNode.state === GQLViewModifier.Hidden,
     };
   });
 
@@ -152,6 +160,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
         ...convertLabelStyle(labelStyle),
       },
     },
+    faded: gqlNode.state === GQLViewModifier.Faded,
     listItems,
   };
 
@@ -215,6 +224,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
     label: null,
     imageURL: style.imageURL,
     style: {},
+    faded: gqlNode.state === GQLViewModifier.Faded,
   };
 
   const node: Node<ImageNodeData> = {
@@ -226,6 +236,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
       width: `${size.width}px`,
       height: `${size.height}px`,
     },
+    hidden: gqlNode.state === GQLViewModifier.Hidden,
   };
 
   if (gqlParentNode) {
@@ -357,6 +368,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
         strokeWidth: gqlEdge.style.size,
       },
       data,
+      hidden: gqlEdge.state === GQLViewModifier.Hidden,
     };
   });
 

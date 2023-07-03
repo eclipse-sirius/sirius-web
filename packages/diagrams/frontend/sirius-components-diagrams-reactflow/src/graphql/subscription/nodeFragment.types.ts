@@ -19,13 +19,19 @@ export interface GQLNode {
   targetObjectKind: string;
   targetObjectLabel: string;
   descriptionId: string;
-  state: string;
+  state: GQLViewModifier;
   label: GQLLabel;
   style: GQLNodeStyle;
   borderNodes: GQLNode[] | undefined;
   childNodes: GQLNode[] | undefined;
   position: GQLPosition;
   size: GQLSize;
+}
+
+export enum GQLViewModifier {
+  Normal = 'Normal',
+  Faded = 'Faded',
+  Hidden = 'Hidden',
 }
 
 export interface GQLPosition {

@@ -19,12 +19,13 @@ import React from 'react';
 import { Label } from './Label';
 import { NodePalette } from './palette/NodePalette';
 
-const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
+const rectangularNodeStyle = (style: React.CSSProperties, selected: boolean, faded: boolean): React.CSSProperties => {
   const rectangularNodeStyle: React.CSSProperties = {
     display: 'flex',
     padding: '8px',
     width: '100%',
     height: '100%',
+    opacity: faded ? '0.4' : '',
     ...style,
   };
 
@@ -39,8 +40,8 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
-      <div style={rectangularNodeStyle(data.style, selected)}>
-        {data.label ? <Label label={data.label} /> : null}
+      <div style={rectangularNodeStyle(data.style, selected, data.faded)}>
+        {data.label ? <Label label={data.label} faded={data.faded} /> : null}
         {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id} /> : null}
         <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
