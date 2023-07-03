@@ -46,10 +46,6 @@ public final class ReferenceElementProps implements IProps {
 
     private List<ReferenceValue> values;
 
-    private boolean container;
-
-    private boolean manyValued;
-
     private Setting setting;
 
     private ReferenceWidgetStyle style;
@@ -90,14 +86,6 @@ public final class ReferenceElementProps implements IProps {
         return this.values;
     }
 
-    public boolean isContainer() {
-        return this.container;
-    }
-
-    public boolean isManyValued() {
-        return this.manyValued;
-    }
-
     public Setting getSetting() {
         return this.setting;
     }
@@ -131,10 +119,6 @@ public final class ReferenceElementProps implements IProps {
         private List<Diagnostic> diagnostics;
 
         private List<ReferenceValue> values;
-
-        private boolean container;
-
-        private boolean manyValued;
 
         private Setting setting;
 
@@ -174,16 +158,6 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder container(boolean containment) {
-            this.container = Objects.requireNonNull(containment);
-            return this;
-        }
-
-        public Builder manyValued(boolean manyValued) {
-            this.manyValued = manyValued;
-            return this;
-        }
-
         public Builder setting(Setting setting) {
             this.setting = Objects.requireNonNull(setting);
             return this;
@@ -201,8 +175,6 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.iconURL = this.iconURL;
             referenceElementProps.diagnostics = this.diagnostics;
             referenceElementProps.readOnly = this.readOnly;
-            referenceElementProps.container = this.container;
-            referenceElementProps.manyValued = this.manyValued;
             referenceElementProps.values = Objects.requireNonNull(this.values);
             referenceElementProps.setting = Objects.requireNonNull(this.setting);
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose

@@ -89,8 +89,6 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager))
                 .iconURLProvider(variableManager -> "")
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))
-                .isManyValuedProvider(variableManager -> this.getReferenceIsMany(referenceDescription, variableManager))
-                .isContainerProvider(variableManager -> this.getReferenceIsContainer(referenceDescription, variableManager))
                 .itemsProvider(variableManager -> this.getReferenceValue(referenceDescription, variableManager))
                 .itemIdProvider(this::getItemId)
                 .itemKindProvider(this::getItemKind)
@@ -132,16 +130,6 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
 
     private String getReferenceLabel(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
         return new StringValueProvider(this.interpreter, referenceDescription.getLabelExpression()).apply(variableManager);
-    }
-
-    private boolean getReferenceIsMany(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
-        Setting setting = this.resolveSetting(referenceDescription, variableManager);
-        return setting != null && setting.getEStructuralFeature().isMany();
-    }
-
-    private boolean getReferenceIsContainer(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
-        Setting setting = this.resolveSetting(referenceDescription, variableManager);
-        return setting != null && setting.getEStructuralFeature() instanceof EReference reference && reference.isContainment();
     }
 
     private List<?> getReferenceValue(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {

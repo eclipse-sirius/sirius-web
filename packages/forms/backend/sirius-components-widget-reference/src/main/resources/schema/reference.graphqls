@@ -5,8 +5,7 @@ type ReferenceWidget implements Widget {
   iconURL: String
   hasHelpText: Boolean!
   readOnly: Boolean!
-  container: Boolean!
-  manyValued: Boolean!
+  reference: Reference!
   referenceValues: [ReferenceValue!]!
   style: ReferenceWidgetStyle
 }
@@ -18,6 +17,13 @@ type ReferenceWidgetStyle {
   bold: Boolean
   underline: Boolean
   strikeThrough: Boolean
+}
+
+type Reference {
+  typeName: String!
+  referenceName: String!
+  containment: Boolean!
+  manyValued: Boolean!
 }
 
 type ReferenceValue {

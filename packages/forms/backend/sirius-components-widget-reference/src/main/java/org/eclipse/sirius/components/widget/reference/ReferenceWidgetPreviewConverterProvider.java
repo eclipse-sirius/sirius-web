@@ -49,8 +49,6 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                         .labelProvider(vm -> ReferenceWidgetPreviewConverterProvider.this.getWidgetLabel(referenceDescription, "Reference"))
                         .iconURLProvider(variableManager -> "")
                         .isReadOnlyProvider(variableManager -> false)
-                        .isManyValuedProvider(variableManager -> false)
-                        .isContainerProvider(variableManager -> false)
                         .itemsProvider(variableManager -> List.of())
                         .itemIdProvider(variableManager -> "")
                         .itemKindProvider(variableManager -> "")

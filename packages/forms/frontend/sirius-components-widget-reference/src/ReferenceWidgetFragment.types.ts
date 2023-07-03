@@ -15,8 +15,7 @@ import { GQLMessage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 
 export interface GQLReferenceWidget extends GQLWidget {
   label: string;
-  container: boolean;
-  manyValued: boolean;
+  reference: GQLReference;
   referenceValues: Array<GQLReferenceValue> | null;
   style: GQLReferenceWidgetStyle | null;
 }
@@ -28,6 +27,13 @@ export interface GQLReferenceWidgetStyle {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
+}
+
+export interface GQLReference {
+  typeName: string;
+  referenceName: string;
+  containment: boolean;
+  manyValued: boolean;
 }
 
 export interface GQLReferenceValue {

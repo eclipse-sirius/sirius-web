@@ -69,6 +69,7 @@ The arrange all is made with elkjs.
 - https://github.com/eclipse-sirius/sirius-components/issues/2094[#2094] [diagram] Add the support for the palette on the diagram background
 - https://github.com/eclipse-sirius/sirius-components/issues/2125[#2125] [form] Add the API `IFormPostProcessor` to programmatically modify all forms just before they are published on the subscription.
 Note that IFormPostProcessor is a singleton, if several rules must be applied to several forms, a mechanism has to be added to the implementation.
+- https://github.com/eclipse-sirius/sirius-components/issues/2116[#2116] [form] Add a modal to select a new value for single-valued references
 
 === Improvements
 

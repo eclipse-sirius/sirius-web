@@ -12,16 +12,17 @@
  *******************************************************************************/
 import { DRAG_SOURCES_TYPE, Selection, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { isFilterCandidate, splitText } from './filterTreeItem';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
-import { isFilterCandidate, splitText } from './filterTreeItem';
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -36,6 +37,11 @@ const useTreeItemStyle = makeStyles((theme) => ({
       stroke: 'var(--daintree)',
       fill: 'var(--daintree)',
       backgroundColor: 'var(--blue-lagoon-lighten-95)',
+    },
+    '&:focus-within': {
+      borderWidth: '1px',
+      borderColor: 'black',
+      borderStyle: 'dotted',
     },
   },
   selected: {
@@ -66,6 +72,9 @@ const useTreeItemStyle = makeStyles((theme) => ({
       fill: 'var(--daintree)',
       backgroundColor: 'var(--blue-lagoon-lighten-90)',
     },
+  },
+  expandIcon: {
+    marginLeft: 'auto',
   },
   content: {
     display: 'grid',
@@ -137,6 +146,15 @@ export const TreeItem = ({
 
   const refDom = useRef() as any;
 
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
   // Context menu handling
   const openContextMenu = (event) => {
     if (!showContextMenu) {
@@ -388,7 +406,7 @@ export const TreeItem = ({
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
-        <div className={className}>
+        <div className={className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${item.label}-toggle`} />
           <div
             ref={refDom}
@@ -423,6 +441,18 @@ export const TreeItem = ({
               ) : null}
             </div>
           </div>
+          {!shouldDisplayMoreButton && isHovered && item.hasChildren && (
+            <IconButton
+              className={classes.expandIcon}
+              size="small"
+              data-testid="expand-all"
+              title="expand all"
+              onClick={() => {
+                onExpandAll(item);
+              }}>
+              <UnfoldMoreIcon style={{ fontSize: 12 }} />
+            </IconButton>
+          )}
         </div>
         {children}
         {contextMenu}

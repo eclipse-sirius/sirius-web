@@ -21,6 +21,15 @@ const useTreeStyle = makeStyles((_) => ({
     width: 'inherit',
     minWidth: 'fit-content',
   },
+  title: {
+    opacity: 0.6,
+    fontSize: 12,
+  },
+  borderStyle: {
+    border: '1px solid #0000008A',
+    height: 300,
+    overflow: 'auto',
+  },
 }));
 
 export const Tree = ({
@@ -31,13 +40,15 @@ export const Tree = ({
   selection,
   setSelection,
   readOnly,
+  enableMultiSelection = true,
+  options,
 }: TreeProps) => {
   const classes = useTreeStyle();
   const treeElement = useRef(null);
   const initialState: TreeState = {
-    filterBar: false,
-    filterBarText: null,
-    filterBarTreeFiltering: false,
+    filterBar: options?.filterBarOptions?.filterBarDisplayByDefault,
+    filterBarText: '',
+    filterBarTreeFiltering: options?.filterBarOptions?.filterEnabled,
   };
   const [state, setState] = useState<TreeState>(initialState);
 
@@ -128,14 +139,22 @@ export const Tree = ({
             return { ...prevState, filterBarTreeFiltering: enabled };
           })
         }
-        onClose={() => setState({ filterBar: false, filterBarText: null, filterBarTreeFiltering: false })}
+        onClose={() => setState({ filterBar: false, filterBarText: '', filterBarTreeFiltering: false })}
+        onTextClear={() => {
+          setState((prevState) => {
+            return { ...prevState, filterBarText: '' };
+          });
+        }}
+        text={state.filterBarText}
+        options={options?.filterBarOptions}
       />
     );
   }
   return (
     <>
       {filterBar}
-      <div ref={treeElement}>
+      {options?.treeTitle && <span className={options.treeTitle}>Choices</span>}
+      <div ref={treeElement} className={options?.treeBorderStyle ? classes.borderStyle : undefined}>
         <ul className={classes.ul} data-testid="tree-root-elements">
           {tree.children.map((item) => (
             <li key={item.id}>

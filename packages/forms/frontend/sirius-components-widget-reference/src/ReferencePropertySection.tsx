@@ -23,6 +23,7 @@ import {
   PropertySectionLabel,
   useClickHandler,
 } from '@eclipse-sirius/sirius-components-forms';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -32,11 +33,14 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useContext, useEffect } from 'react';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { useContext, useEffect, useState } from 'react';
+import { BrowseModal } from './modals/BrowseModal';
 import {
   GQLClickReferenceValueMutationData,
   GQLClickReferenceValueMutationVariables,
   GQLEditReferenceData,
+  GQLEditReferenceInput,
   GQLEditReferencePayload,
   GQLEditReferenceVariables,
   GQLErrorPayload,
@@ -140,10 +144,10 @@ export const ReferencePropertySection = ({
 
   const onDelete = (valueId: string) => {
     let newValueIds = [];
-    if (widget.manyValued) {
+    if (widget.reference.manyValued) {
       newValueIds = widget.referenceValues.map((rv) => rv.id).filter((id) => id !== valueId);
     }
-    const variables = {
+    const variables: { input: GQLEditReferenceInput } = {
       input: {
         id: crypto.randomUUID(),
         editingContextId,
@@ -282,7 +286,7 @@ export const ReferencePropertySection = ({
           const valueIds = widget.referenceValues.map((referenceValue) => referenceValue.id);
 
           let newValueIds = [];
-          if (widget.manyValued) {
+          if (widget.reference.manyValued) {
             newValueIds = [...valueIds, ...semanticElementIds];
           } else {
             // We let the backend decide how to handle it if there are multiple values.
@@ -311,6 +315,9 @@ export const ReferencePropertySection = ({
         <ListItemText data-testid="reference-value-none" classes={{ primary: classes.style }}>
           None
         </ListItemText>
+        <IconButton aria-label="more" size="small" disabled={readOnly || widget.readOnly} onClick={() => onBrowse()}>
+          <MoreHorizIcon />
+        </IconButton>
       </ListItem>
     );
   } else {
@@ -320,8 +327,8 @@ export const ReferencePropertySection = ({
           {item.iconURL ? <img width="16" height="16" alt={''} src={httpOrigin + item.iconURL} /> : null}
         </ListItemIcon>
         <ListItemText
-          data-testid={`reference-value-${item.id}`}
-          onClick={() => (readOnly || widget.readOnly ? {} : clickHandler(item))}
+          data-testid={`reference-value-${item.label}`}
+          onClick={() => (readOnly || widget.readOnly || !item.hasClickAction ? {} : clickHandler(item))}
           classes={{
             primary: `${!readOnly && !widget.readOnly && item.hasClickAction ? classes.canBeSelectedItem : ''} ${
               classes.style
@@ -329,50 +336,105 @@ export const ReferencePropertySection = ({
           }}>
           {item.label}
         </ListItemText>
-        {widget.manyValued ? (
+        {widget.reference.manyValued ? (
           <>
             <IconButton
               aria-label="up"
+              size="small"
               disabled={readOnly || widget.readOnly || index === 0}
               onClick={() => onMoveUp(item.id)}>
               <ArrowUpwardIcon />
             </IconButton>
             <IconButton
               aria-label="down"
+              size="small"
               disabled={readOnly || widget.readOnly || index === widget.referenceValues.length - 1}
               onClick={() => onMoveDown(item.id)}>
               <ArrowDownwardIcon />
             </IconButton>
           </>
         ) : null}
-        <IconButton aria-label="delete" disabled={readOnly || widget.readOnly} onClick={() => onDelete(item.id)}>
+        <IconButton
+          aria-label="more"
+          size="small"
+          title="Select an object"
+          data-testid={`${widget.label}-more`}
+          disabled={readOnly || widget.readOnly}
+          onClick={() => onBrowse()}>
+          <MoreHorizIcon />
+        </IconButton>
+        <IconButton
+          aria-label="delete"
+          size="small"
+          title="Unset the object"
+          data-testid={`${widget.label}-delete`}
+          disabled={readOnly || widget.readOnly}
+          onClick={() => onDelete(item.id)}>
           <DeleteIcon />
         </IconButton>
       </ListItem>
     ));
   }
 
-  return (
-    <div>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-        data-testid={widget.label}
-      />
+  const [modalDisplayed, setModalDisplayed] = useState<string | null>(null);
 
-      {readOnly || widget.readOnly ? (
-        <List dense className={classes.root}>
-          {items}
-        </List>
-      ) : (
-        <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDrop={handleDrop}>
+  const onBrowse = () => {
+    setModalDisplayed('browse');
+  };
+
+  let modal: JSX.Element | null = null;
+  if (modalDisplayed === 'browse') {
+    const addSelectedElements = (selectedElementIds: string[]): void => {
+      setModalDisplayed(null);
+      if (selectedElementIds) {
+        const valueIds: string[] = widget.referenceValues.map((referenceValue) => referenceValue.id);
+
+        let newValueIds: string[] = [];
+        if (widget.reference.manyValued) {
+          newValueIds = [...valueIds, ...selectedElementIds];
+        } else {
+          newValueIds = [...selectedElementIds];
+        }
+
+        const variables = {
+          input: {
+            id: crypto.randomUUID(),
+            editingContextId,
+            representationId: formId,
+            referenceWidgetId: widget.id,
+            newValueIds,
+          },
+        };
+        editReference({ variables });
+      }
+    };
+    modal = <BrowseModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />;
+  }
+
+  return (
+    <>
+      <div>
+        <PropertySectionLabel
+          editingContextId={editingContextId}
+          formId={formId}
+          widget={widget}
+          subscribers={subscribers}
+          data-testid={widget.label + '_' + widget.reference.typeName + '.' + widget.reference.referenceName}
+        />
+        {readOnly || widget.readOnly ? (
           <List dense className={classes.root}>
             {items}
           </List>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDrop={handleDrop}>
+            <List dense className={classes.root}>
+              {items}
+            </List>
+          </div>
+        )}
+        <Divider />
+      </div>
+      {modal}
+    </>
   );
 };

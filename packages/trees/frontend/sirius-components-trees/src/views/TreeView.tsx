@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 
 import { TreeToolBar } from '../toolbar/TreeToolBar';
 import { Tree } from '../trees/Tree';
+import { getTreeEventSubscription } from './getTreeEventSubscription';
 import {
   GQLGetExpandAllTreePathData,
   GQLGetExpandAllTreePathVariables,
@@ -44,7 +45,6 @@ import {
   TreeViewEvent,
   treeViewMachine,
 } from './TreeViewMachine';
-import { getTreeEventSubscription } from './getTreeEventSubscription';
 
 const getTreePathQuery = gql`
   query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
@@ -92,6 +92,8 @@ export const TreeView = ({
   readOnly,
   treeId,
   showToolBar,
+  enableMultiSelection,
+  treeOptions,
 }: TreeViewComponentProps) => {
   const styles = useTreeViewStyles();
 
@@ -248,6 +250,8 @@ export const TreeView = ({
             selection={selection}
             setSelection={setSelection}
             readOnly={readOnly}
+            enableMultiSelection={enableMultiSelection}
+            options={treeOptions}
           />
         ) : null}
       </div>
