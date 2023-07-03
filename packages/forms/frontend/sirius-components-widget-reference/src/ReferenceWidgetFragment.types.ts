@@ -18,6 +18,16 @@ export interface GQLReferenceWidget extends GQLWidget {
   container: boolean;
   manyValued: boolean;
   referenceValues: Array<GQLReferenceValue> | null;
+  style: GQLReferenceWidgetStyle | null;
+}
+
+export interface GQLReferenceWidgetStyle {
+  color: string | null;
+  fontSize: number | null;
+  italic: boolean | null;
+  bold: boolean | null;
+  underline: boolean | null;
+  strikeThrough: boolean | null;
 }
 
 export interface GQLReferenceValue {

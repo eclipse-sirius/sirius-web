@@ -18,6 +18,7 @@ import {
   useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
 import {
+  getTextDecorationLineValue,
   PropertySectionComponentProps,
   PropertySectionLabel,
   useClickHandler,
@@ -27,7 +28,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -41,13 +42,21 @@ import {
   GQLErrorPayload,
   GQLReferenceValue,
   GQLReferenceWidget,
+  GQLReferenceWidgetStyle,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
 
-const useStyles = makeStyles((_) => ({
+const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>(() => ({
   root: {
     overflow: 'auto',
     maxHeight: 300,
+  },
+  style: {
+    color: ({ color }) => (color ? color : null),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+    fontStyle: ({ italic }) => (italic ? 'italic' : null),
+    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
   canBeSelectedItem: {
     '&:hover': {
@@ -109,8 +118,16 @@ export const ReferencePropertySection = ({
   subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
+  const props: GQLReferenceWidgetStyle = {
+    color: widget.style?.color ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
+  const classes = useStyles(props);
   const { httpOrigin } = useContext(ServerContext);
-  const classes = useStyles();
 
   const [editReference, { loading, error, data }] = useMutation<GQLEditReferenceData, GQLEditReferenceVariables>(
     editReferenceMutation
@@ -291,7 +308,9 @@ export const ReferencePropertySection = ({
   if (widget.referenceValues.length === 0) {
     items = (
       <ListItem>
-        <ListItemText data-testid="reference-value-none">None</ListItemText>
+        <ListItemText data-testid="reference-value-none" classes={{ primary: classes.style }}>
+          None
+        </ListItemText>
       </ListItem>
     );
   } else {
@@ -304,7 +323,9 @@ export const ReferencePropertySection = ({
           data-testid={`reference-value-${item.id}`}
           onClick={() => (readOnly || widget.readOnly ? {} : clickHandler(item))}
           classes={{
-            primary: !readOnly && !widget.readOnly && item.hasClickAction ? classes.canBeSelectedItem : '',
+            primary: `${!readOnly && !widget.readOnly && item.hasClickAction ? classes.canBeSelectedItem : ''} ${
+              classes.style
+            }`,
           }}>
           {item.label}
         </ListItemText>

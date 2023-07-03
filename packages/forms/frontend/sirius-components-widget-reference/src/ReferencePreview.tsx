@@ -12,22 +12,27 @@
  *******************************************************************************/
 import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
+import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { GQLReferenceWidgetStyle } from './ReferenceWidgetFragment.types';
 
-type ReferenceWidgetStyleProps = {};
-const useStyles = makeStyles<Theme, ReferenceWidgetStyleProps>((theme) => ({
+const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   style: {
-    color: theme.palette.secondary.main,
+    color: ({ color }) => (color ? color : null),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+    fontStyle: ({ italic }) => (italic ? 'italic' : null),
+    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
   selected: {
     color: theme.palette.primary.main,
@@ -42,7 +47,14 @@ const useStyles = makeStyles<Theme, ReferenceWidgetStyleProps>((theme) => ({
 type ReferenceWidgetProps = WidgetProps<GQLReferenceWidget>;
 
 export const ReferencePreview = ({ widget, selection }: ReferenceWidgetProps) => {
-  const props: ReferenceWidgetStyleProps = {};
+  const props: GQLReferenceWidgetStyle = {
+    color: widget.style?.color ?? null,
+    fontSize: widget.style?.fontSize ?? null,
+    italic: widget.style?.italic ?? null,
+    bold: widget.style?.bold ?? null,
+    underline: widget.style?.underline ?? null,
+    strikeThrough: widget.style?.strikeThrough ?? null,
+  };
   const classes = useStyles(props);
   const { httpOrigin } = useContext(ServerContext);
 
@@ -72,7 +84,9 @@ export const ReferencePreview = ({ widget, selection }: ReferenceWidgetProps) =>
           <ListItemIcon>
             <img width="16" height="16" alt={''} src={httpOrigin + '/api/images/icons/full/obj16/Entity.svg'} />
           </ListItemIcon>
-          <ListItemText data-testid={`reference-value`}>Referenced Value</ListItemText>
+          <ListItemText data-testid={`reference-value`} classes={{ primary: classes.style }}>
+            Referenced Value
+          </ListItemText>
           <IconButton aria-label="clearReference" onClick={() => {}} data-testid={`clear-reference-${widget.id}`}>
             <DeleteIcon />
           </IconButton>

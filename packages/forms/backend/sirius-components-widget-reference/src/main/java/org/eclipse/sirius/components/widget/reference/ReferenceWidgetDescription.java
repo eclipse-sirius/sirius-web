@@ -56,6 +56,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
+    private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
+
     private ReferenceWidgetDescription() {
         // Prevent instantiation
     }
@@ -112,6 +114,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.itemClickHandlerProvider;
     }
 
+    public Function<VariableManager, ReferenceWidgetStyle> getStyleProvider() {
+        return this.styleProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -153,6 +159,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, String> helpTextProvider;
 
         private Function<VariableManager, IStatus> itemClickHandlerProvider;
+
+        private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -228,6 +236,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder styleProvider(Function<VariableManager, ReferenceWidgetStyle> styleProvider) {
+            this.styleProvider = Objects.requireNonNull(styleProvider);
+            return this;
+        }
+
         public ReferenceWidgetDescription build() {
             ReferenceWidgetDescription referenceWidgetDescription = new ReferenceWidgetDescription();
             referenceWidgetDescription.id = Objects.requireNonNull(this.id);
@@ -245,6 +258,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.settingProvider = Objects.requireNonNull(this.settingProvider);
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidgetDescription.itemClickHandlerProvider = this.itemClickHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             return referenceWidgetDescription;
         }
     }

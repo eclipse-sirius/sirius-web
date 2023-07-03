@@ -18,6 +18,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetDescription/referenceOwnerExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reference.ecore#//ReferenceWidgetDescription/referenceNameExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescription/conditionalStyles"/>
     </genClasses>
+    <genClasses ecoreClass="reference.ecore#//ReferenceWidgetDescriptionStyle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference reference.ecore#//ReferenceWidgetDescriptionStyle/color"/>
+    </genClasses>
+    <genClasses ecoreClass="reference.ecore#//ConditionalReferenceWidgetDescriptionStyle"/>
   </genPackages>
 </genmodel:GenModel>

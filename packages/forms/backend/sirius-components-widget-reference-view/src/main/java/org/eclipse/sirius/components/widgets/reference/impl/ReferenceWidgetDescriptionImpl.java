@@ -25,8 +25,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
+import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Widget Description</b></em>'. <!-- end-user-doc
@@ -109,6 +111,26 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @see #getBody()
      */
     protected EList<Operation> body;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getStyle()
+     */
+    protected ReferenceWidgetDescriptionStyle style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getConditionalStyles()
+     */
+    protected EList<ConditionalReferenceWidgetDescriptionStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -196,9 +218,76 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @generated
      */
     @Override
+    public ReferenceWidgetDescriptionStyle getStyle() {
+        return this.style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStyle(ReferenceWidgetDescriptionStyle newStyle) {
+        if (newStyle != this.style) {
+            NotificationChain msgs = null;
+            if (this.style != null)
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
+            if (newStyle != null)
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
+            msgs = this.basicSetStyle(newStyle, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(ReferenceWidgetDescriptionStyle newStyle, NotificationChain msgs) {
+        ReferenceWidgetDescriptionStyle oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalReferenceWidgetDescriptionStyle.class, this,
+                    ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        if (featureID == ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY) {
-            return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+        switch (featureID) {
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -242,6 +331,10 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.getReferenceNameExpression();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return this.getBody();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -268,6 +361,13 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 this.getBody().clear();
                 this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+                this.setStyle((ReferenceWidgetDescriptionStyle) newValue);
+                return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalReferenceWidgetDescriptionStyle>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -292,6 +392,12 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 this.getBody().clear();
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+                this.setStyle(null);
+                return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -312,6 +418,10 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return !Objects.equals(REFERENCE_NAME_EXPRESSION_EDEFAULT, this.referenceNameExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return this.body != null && !this.body.isEmpty();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+                return this.style != null;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

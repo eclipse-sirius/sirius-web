@@ -125,6 +125,8 @@ The existing context menu contributions now only apply to the _Explorer_ view.
 These should be registered globally like other representations using a `IRepresentationDescriptionRegistryConfigurer`.
 Their `TreeDescription.getCanCreatePredicate()` will be invoked with a `treeId` variable (a string) to test if it handles a given tree subscription requested by the front.
 For example the main _Explorer_ frontend component suscribes to the `treeEvent` subscription with a `treeId` of `'explorer://'`, and the backend `ExplorerDescriptionProvider`'s tests for `treeId.startsWith("explorer://")` to indicate it is the one to use to handle this subscription.
+- https://github.com/eclipse-sirius/sirius-components/issues/2096[#2096] [form] Add style for the reference widget.
+Use the same style properties as the list widget.
 
 == v2023.6.0
 

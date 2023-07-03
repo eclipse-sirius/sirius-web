@@ -19,9 +19,11 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.ReferenceFactory;
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -29,12 +31,43 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * @generated
  */
 public class ReferencePackageImpl extends EPackageImpl implements ReferencePackage {
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private static boolean isInited = false;
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass referenceWidgetDescriptionEClass = null;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass referenceWidgetDescriptionStyleEClass = null;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalReferenceWidgetDescriptionStyleEClass = null;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private boolean isCreated = false;
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private boolean isInitialized = false;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -44,21 +77,14 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * performs initialization of the package, or returns the registered package, if one already exists. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.emf.ecore.EPackage.Registry
      * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#eNS_URI
      * @see #init()
-     * @generated
      */
     private ReferencePackageImpl() {
         super(eNS_URI, ReferenceFactory.eINSTANCE);
     }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private static boolean isInited = false;
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
@@ -68,10 +94,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
-     * @generated
      */
     public static ReferencePackage init() {
         if (isInited)
@@ -147,6 +173,56 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     @Override
+    public EReference getReferenceWidgetDescription_Style() {
+        return (EReference) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getReferenceWidgetDescription_ConditionalStyles() {
+        return (EReference) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getReferenceWidgetDescriptionStyle() {
+        return this.referenceWidgetDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getReferenceWidgetDescriptionStyle_Color() {
+        return (EReference) this.referenceWidgetDescriptionStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalReferenceWidgetDescriptionStyle() {
+        return this.conditionalReferenceWidgetDescriptionStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getReferenceWidgetDescription_IsEnabledExpression() {
         return (EAttribute) this.referenceWidgetDescriptionEClass.getEStructuralFeatures().get(0);
     }
@@ -160,13 +236,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
     public ReferenceFactory getReferenceFactory() {
         return (ReferenceFactory) this.getEFactoryInstance();
     }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private boolean isCreated = false;
 
     /**
      * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but
@@ -185,14 +254,14 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION);
         this.createEAttribute(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION);
         this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__BODY);
-    }
+        this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__STYLE);
+        this.createEReference(this.referenceWidgetDescriptionEClass, REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private boolean isInitialized = false;
+        this.referenceWidgetDescriptionStyleEClass = this.createEClass(REFERENCE_WIDGET_DESCRIPTION_STYLE);
+        this.createEReference(this.referenceWidgetDescriptionStyleEClass, REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR);
+
+        this.conditionalReferenceWidgetDescriptionStyleEClass = this.createEClass(CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE);
+    }
 
     /**
      * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any
@@ -220,6 +289,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
         // Add supertypes to classes
         this.referenceWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
+        this.referenceWidgetDescriptionStyleEClass.getESuperTypes().add(theFormPackage.getWidgetDescriptionStyle());
+        this.referenceWidgetDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+        this.conditionalReferenceWidgetDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+        this.conditionalReferenceWidgetDescriptionStyleEClass.getESuperTypes().add(this.getReferenceWidgetDescriptionStyle());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.referenceWidgetDescriptionEClass, ReferenceWidgetDescription.class, "ReferenceWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -231,6 +304,17 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
                 ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getReferenceWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getReferenceWidgetDescription_Style(), this.getReferenceWidgetDescriptionStyle(), null, "style", null, 0, 1, ReferenceWidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getReferenceWidgetDescription_ConditionalStyles(), this.getConditionalReferenceWidgetDescriptionStyle(), null, "conditionalStyles", null, 0, -1,
+                ReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.referenceWidgetDescriptionStyleEClass, ReferenceWidgetDescriptionStyle.class, "ReferenceWidgetDescriptionStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getReferenceWidgetDescriptionStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, ReferenceWidgetDescriptionStyle.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalReferenceWidgetDescriptionStyleEClass, ConditionalReferenceWidgetDescriptionStyle.class, "ConditionalReferenceWidgetDescriptionStyle", !IS_ABSTRACT,
+                !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

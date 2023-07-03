@@ -8,6 +8,16 @@ type ReferenceWidget implements Widget {
   container: Boolean!
   manyValued: Boolean!
   referenceValues: [ReferenceValue!]!
+  style: ReferenceWidgetStyle
+}
+
+type ReferenceWidgetStyle {
+  color: String
+  fontSize: Int
+  italic: Boolean
+  bold: Boolean
+  underline: Boolean
+  strikeThrough: Boolean
 }
 
 type ReferenceValue {

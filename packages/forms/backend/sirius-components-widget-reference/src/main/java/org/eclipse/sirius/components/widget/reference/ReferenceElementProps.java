@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class ReferenceElementProps implements IProps {
+
     public static final String TYPE = ReferenceWidget.class.getSimpleName();
 
     private String id;
@@ -51,8 +52,14 @@ public final class ReferenceElementProps implements IProps {
 
     private Setting setting;
 
+    private ReferenceWidgetStyle style;
+
     private ReferenceElementProps() {
         // Prevent instantiation
+    }
+
+    public static Builder newReferenceElementProps(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -95,8 +102,8 @@ public final class ReferenceElementProps implements IProps {
         return this.setting;
     }
 
-    public static Builder newMultiValuedReferenceElementProps(String id) {
-        return new Builder(id);
+    public ReferenceWidgetStyle getStyle() {
+        return this.style;
     }
 
     @Override
@@ -112,7 +119,8 @@ public final class ReferenceElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
@@ -129,6 +137,8 @@ public final class ReferenceElementProps implements IProps {
         private boolean manyValued;
 
         private Setting setting;
+
+        private ReferenceWidgetStyle style;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -179,6 +189,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder style(ReferenceWidgetStyle style) {
+            this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
@@ -191,6 +206,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.values = Objects.requireNonNull(this.values);
             referenceElementProps.setting = Objects.requireNonNull(this.setting);
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            referenceElementProps.style = this.style; // Optional on purpose
             return referenceElementProps;
         }
     }

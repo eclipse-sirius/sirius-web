@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +63,14 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                             EObject owner = EcorePackage.Literals.ECLASS;
                             return ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
                         })
-                        .itemClickHandlerProvider(variableManager -> new Success());
+                        .itemClickHandlerProvider(variableManager -> new Success())
+                        .styleProvider(variableManager -> {
+                            ReferenceWidgetDescriptionStyle style = referenceDescription.getStyle();
+                            if (style == null) {
+                                return null;
+                            }
+                            return new ReferenceWidgetStyleProvider(style).apply(variableManager);
+                        });
                 if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
                     String helpText = ReferenceWidgetPreviewConverterProvider.this.getWidgetHelpText(referenceDescription);
                     builder.helpTextProvider(variableManager -> helpText);

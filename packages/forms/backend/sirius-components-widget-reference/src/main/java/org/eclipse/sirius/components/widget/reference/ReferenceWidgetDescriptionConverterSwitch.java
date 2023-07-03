@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
 
 /**
@@ -71,6 +72,18 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
     public AbstractWidgetDescription caseReferenceWidgetDescription(ReferenceWidgetDescription referenceDescription) {
         String descriptionId = this.getDescriptionId(referenceDescription);
 
+        Function<VariableManager, ReferenceWidgetStyle> styleProvider = variableManager -> {
+            var effectiveStyle = referenceDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(style.getCondition(), variableManager))
+                    .map(ReferenceWidgetDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(referenceDescription::getStyle);
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new ReferenceWidgetStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
         var builder = org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager))
@@ -83,7 +96,8 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .itemKindProvider(this::getItemKind)
                 .itemLabelProvider(this::getItemLabel)
                 .itemImageURLProvider(this::getItemIconURL)
-                .settingProvider(variableManager -> this.resolveSetting(referenceDescription, variableManager));
+                .settingProvider(variableManager -> this.resolveSetting(referenceDescription, variableManager))
+                .styleProvider(styleProvider);
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(referenceDescription.getHelpExpression()));
@@ -197,5 +211,9 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         } else {
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
         }
+    }
+
+    private boolean matches(String condition, VariableManager variableManager) {
+        return this.interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 }

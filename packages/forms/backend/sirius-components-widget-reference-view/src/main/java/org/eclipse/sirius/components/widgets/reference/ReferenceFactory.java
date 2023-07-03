@@ -38,6 +38,23 @@ public interface ReferenceFactory extends EFactory {
     ReferenceWidgetDescription createReferenceWidgetDescription();
 
     /**
+     * Returns a new object of class '<em>Widget Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Widget Description Style</em>'.
+     * @generated
+     */
+    ReferenceWidgetDescriptionStyle createReferenceWidgetDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Reference Widget Description Style</em>'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Reference Widget Description Style</em>'.
+     * @generated
+     */
+    ConditionalReferenceWidgetDescriptionStyle createConditionalReferenceWidgetDescriptionStyle();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

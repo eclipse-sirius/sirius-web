@@ -54,6 +54,7 @@ public class ReferenceWidgetComponent implements IComponent {
         boolean isContainer = referenceDescription.getIsContainerProvider().apply(variableManager);
         List<?> rawValue = referenceDescription.getItemsProvider().apply(variableManager);
         Setting setting = referenceDescription.getSettingProvider().apply(variableManager);
+        ReferenceWidgetStyle style = referenceDescription.getStyleProvider().apply(variableManager);
 
         List<ReferenceValue> items = rawValue.stream()
                 .map(object -> {
@@ -81,7 +82,7 @@ public class ReferenceWidgetComponent implements IComponent {
                 })
                 .toList();
 
-        var builder = ReferenceElementProps.newMultiValuedReferenceElementProps(id)
+        var builder = ReferenceElementProps.newReferenceElementProps(id)
                 .label(label)
                 .iconURL(iconURL)
                 .diagnostics(List.of())
@@ -95,6 +96,10 @@ public class ReferenceWidgetComponent implements IComponent {
         if (readOnly != null) {
             builder.readOnly(readOnly);
         }
+        if (style != null) {
+            builder.style(style);
+        }
+
         return new Element(ReferenceElementProps.TYPE, builder.build());
     }
 
