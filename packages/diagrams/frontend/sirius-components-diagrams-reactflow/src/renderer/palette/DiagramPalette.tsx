@@ -37,7 +37,7 @@ export const DiagramPalette = ({ targetObjectId }: DiagramPaletteProps) => {
   return isOpened ? (
     <DiagramPalettePortal>
       <div className={classes.toolbar} style={{ position: 'absolute', left: x, top: y }}>
-        <Palette diagramElementId={targetObjectId} onDirectEditClick={() => {}} />
+        <Palette diagramElementId={targetObjectId} onDirectEditClick={() => {}} isNodePalette={false} />
       </div>
     </DiagramPalettePortal>
   ) : null;

@@ -49,6 +49,7 @@ export interface NodeData {
   targetObjectKind: string;
   targetObjectLabel: string;
   label: Label | null;
+  faded: boolean;
 }
 
 export interface Label {

@@ -17,8 +17,8 @@ import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { ImageNodeData } from './ImageNode.types';
 import { NodePalette } from './palette/NodePalette';
 
-const imageNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSSProperties => {
-  const imageNodeStyle: React.CSSProperties = { width: '100%', height: '100%', ...style };
+const imageNodeStyle = (style: React.CSSProperties, selected: boolean, faded: boolean): React.CSSProperties => {
+  const imageNodeStyle: React.CSSProperties = { width: '100%', height: '100%', opacity: faded ? '0.4' : '', ...style };
 
   if (selected) {
     imageNodeStyle.outline = `var(--blue-lagoon) solid 1px`;
@@ -33,7 +33,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
-      <img src={httpOrigin + data.imageURL} style={imageNodeStyle(data.style, selected)} />
+      <img src={httpOrigin + data.imageURL} style={imageNodeStyle(data.style, selected, data.faded)} />
       {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id} /> : null}
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />

@@ -29,11 +29,13 @@ export const performLayout = (
     edges: [],
   };
 
+  const hiddenNodes = nodes.filter((node) => node.hidden);
+  const visibleNodes = nodes.filter((node) => !node.hidden);
   const nodeId2Node = new Map<string, Node>();
-  nodes.forEach((node) => nodeId2Node.set(node.id, node));
+  visibleNodes.forEach((node) => nodeId2Node.set(node.id, node));
 
   const nodeId2ElkNode = new Map<String, ElkNode>();
-  nodes.forEach((node) => {
+  visibleNodes.forEach((node) => {
     const elkNode: ElkNode = {
       id: node.id,
       children: [],
@@ -42,6 +44,7 @@ export const performLayout = (
         'nodeLabels.placement': '[H_CENTER, V_TOP, INSIDE]',
       },
     };
+
     if (node.type === 'rectangularNode') {
       const rectangularNodeData: RectangularNodeData = node.data as RectangularNodeData;
 
@@ -64,12 +67,14 @@ export const performLayout = (
     nodeId2ElkNode.set(elkNode.id, elkNode);
   });
 
-  nodes.forEach((node) => {
+  visibleNodes.forEach((node) => {
     if (graph.children) {
       if (!!node.parentNode) {
         const elknodeChild = nodeId2ElkNode.get(node.id);
         const elkNodeParent = nodeId2ElkNode.get(node.parentNode);
-        elkNodeParent.children.push(elknodeChild);
+        if (elkNodeParent && elkNodeParent.children) {
+          elkNodeParent.children.push(elknodeChild);
+        }
       } else {
         const elkNodeRoot = nodeId2ElkNode.get(node.id);
         graph.children.push(elkNodeRoot);
@@ -77,28 +82,32 @@ export const performLayout = (
     }
   });
 
-  edges.forEach((edge) => {
-    if (graph.edges) {
-      const elkEdge: ElkExtendedEdge = {
-        id: edge.id,
-        sources: [edge.source],
-        targets: [edge.target],
-      };
-      graph.edges.push(elkEdge);
-    }
-  });
+  edges
+    .filter((edge) => !edge.hidden)
+    .forEach((edge) => {
+      if (graph.edges) {
+        const elkEdge: ElkExtendedEdge = {
+          id: edge.id,
+          sources: [edge.source],
+          targets: [edge.target],
+        };
+        graph.edges.push(elkEdge);
+      }
+    });
 
-  return elk.layout(graph).then((layoutedGraph) => {
-    const nodes: Node[] = [];
-    elkToReactFlow(layoutedGraph.children ?? [], nodes, nodeId2Node);
-    return {
-      nodes,
-    };
-  });
+  return elk
+    .layout(graph)
+    .then((laidoutGraph) => elkToReactFlow(laidoutGraph.children ?? [], nodeId2Node))
+    .then((laidoutNodes) => {
+      return {
+        nodes: [...laidoutNodes, ...hiddenNodes],
+      };
+    });
 };
 
-const elkToReactFlow = (elkNodes: ElkNode[], nodes: Node[], nodeId2Node: Map<string, Node>) => {
-  elkNodes.map((elkNode) => {
+const elkToReactFlow = (elkNodes: ElkNode[], nodeId2Node: Map<string, Node>): Node[] => {
+  const nodes: Node[] = [];
+  elkNodes.forEach((elkNode) => {
     const node = nodeId2Node.get(elkNode.id);
     if (node) {
       node.position.x = elkNode.x ?? 0;
@@ -116,7 +125,9 @@ const elkToReactFlow = (elkNodes: ElkNode[], nodes: Node[], nodeId2Node: Map<str
       nodes.push(node);
     }
     if (elkNode.children.length > 0) {
-      elkToReactFlow(elkNode.children, nodes, nodeId2Node);
+      const laidoutChildren = elkToReactFlow(elkNode.children, nodeId2Node);
+      nodes.push(...laidoutChildren);
     }
   });
+  return nodes;
 };
