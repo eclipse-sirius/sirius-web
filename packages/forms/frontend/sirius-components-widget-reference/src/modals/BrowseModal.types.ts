@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { TreeView } from './TreeView';
 
-export const ExplorerView = (props: WorkbenchViewComponentProps) => (
-  <TreeView {...props} treeId="explorer://" showToolBar={true} enableMultiSelection={true} treeOptions={undefined} />
-);
+import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
+
+export interface BrowseModalProps {
+  editingContextId: string;
+  widget: GQLReferenceWidget;
+  onClose: (selectedElementIds: string[]) => void;
+}

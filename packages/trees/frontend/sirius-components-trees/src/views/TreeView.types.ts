@@ -12,10 +12,13 @@
  *******************************************************************************/
 
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { TreeOptions } from '../trees/Tree.types';
 
 export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
   treeId: string;
   showToolBar: boolean;
+  enableMultiSelection: boolean;
+  treeOptions: TreeOptions | undefined;
 }
 
 export interface GQLTreeEventVariables {

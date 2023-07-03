@@ -31,12 +31,12 @@ import org.eclipse.sirius.web.services.explorer.api.IExplorerNavigationService;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of {@link IExpandAllTreePathProvider} for the Sirius Web Explorer.
+ * Implementation of {@link IExpandAllTreePathProvider} for Sirius Web Tree.
  *
  * @author arichard
  */
 @Service
-public class ExplorerExpandAllTreePathProvider implements IExpandAllTreePathProvider {
+public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
 
     private final IObjectService objectService;
 
@@ -44,7 +44,7 @@ public class ExplorerExpandAllTreePathProvider implements IExpandAllTreePathProv
 
     private final IExplorerNavigationService explorerNavigationService;
 
-    public ExplorerExpandAllTreePathProvider(IObjectService objectService, IRepresentationService representationService, IExplorerNavigationService explorerNavigationService) {
+    public ExpandAllTreePathProvider(IObjectService objectService, IRepresentationService representationService, IExplorerNavigationService explorerNavigationService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationService = Objects.requireNonNull(representationService);
         this.explorerNavigationService = Objects.requireNonNull(explorerNavigationService);
@@ -52,7 +52,7 @@ public class ExplorerExpandAllTreePathProvider implements IExpandAllTreePathProv
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree != null && Objects.equals(ExplorerDescriptionProvider.DESCRIPTION_ID, tree.getDescriptionId());
+        return tree != null;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ExplorerExpandAllTreePathProvider implements IExpandAllTreePathProv
                     var contents = optionalResource.get().getContents();
                     if (!contents.isEmpty()) {
                         treeItemIdsToExpand.add(treeItemId);
-                        for (var rootObject: contents) {
+                        for (var rootObject : contents) {
                             var rootObjectId = this.objectService.getId(rootObject);
                             var rootObjectTreePathMaxDepth = 1;
                             maxDepth = this.addAllContents(editingContext, rootObjectId, rootObjectTreePathMaxDepth, treeItemIdsToExpand);
@@ -99,7 +99,7 @@ public class ExplorerExpandAllTreePathProvider implements IExpandAllTreePathProv
         if (!contents.isEmpty()) {
             treeItemIdsToExpand.add(treeItemId);
 
-            for (var child: contents) {
+            for (var child : contents) {
                 String childId = this.objectService.getId(child);
                 treeItemIdsToExpand.add(childId);
                 var childTreePathMaxDepth = depth + 1;

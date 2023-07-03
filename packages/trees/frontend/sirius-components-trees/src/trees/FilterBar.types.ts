@@ -13,10 +13,23 @@
 
 export interface FilterBarProps {
   onTextChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+  onTextClear: () => void;
   onFilterButtonClick: (enabled: boolean) => void;
   onClose: () => void;
+  text: string | null;
+  options: FilterBarOptions | undefined;
 }
 
 export interface FilterBarState {
   filterEnabled: boolean;
+}
+
+export interface FilterBarOptions {
+  textFieldVariant: 'outlined' | 'standard';
+  searchIcon: boolean;
+  clearTextButton: boolean;
+  filterButton: boolean;
+  closeButton: boolean;
+  filterEnabled: boolean;
+  filterBarDisplayByDefault: boolean;
 }

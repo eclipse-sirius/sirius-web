@@ -32,10 +32,6 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private List<ReferenceValue> referenceValues;
 
-    private boolean container;
-
-    private boolean manyValued;
-
     private Setting setting;
 
     private ReferenceWidgetStyle style;
@@ -50,14 +46,6 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public List<ReferenceValue> getReferenceValues() {
         return this.referenceValues;
-    }
-
-    public boolean isContainer() {
-        return this.container;
-    }
-
-    public boolean isManyValued() {
-        return this.manyValued;
     }
 
     public Setting getSetting() {
@@ -93,10 +81,6 @@ public final class ReferenceWidget extends AbstractWidget {
         private boolean readOnly;
 
         private List<ReferenceValue> referenceValues;
-
-        private boolean container;
-
-        private boolean manyValued;
 
         private Setting setting;
 
@@ -136,16 +120,6 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder container(boolean containment) {
-            this.container = Objects.requireNonNull(containment);
-            return this;
-        }
-
-        public Builder manyValued(boolean manyValued) {
-            this.manyValued = manyValued;
-            return this;
-        }
-
         public Builder setting(Setting setting) {
             this.setting = Objects.requireNonNull(setting);
             return this;
@@ -162,8 +136,6 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.label = Objects.requireNonNull(this.label);
             referenceWidget.iconURL = this.iconURL;
             referenceWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
-            referenceWidget.container = this.container;
-            referenceWidget.manyValued = this.manyValued;
             referenceWidget.referenceValues = Objects.requireNonNull(this.referenceValues);
             referenceWidget.setting = Objects.requireNonNull(this.setting);
             referenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose

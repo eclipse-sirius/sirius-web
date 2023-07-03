@@ -12,10 +12,12 @@
  *******************************************************************************/
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import { FilterList } from '@material-ui/icons';
+import ClearIcon from '@material-ui/icons/Clear';
 import CloseIcon from '@material-ui/icons/Close';
+import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react';
 import { FilterBarProps, FilterBarState } from './FilterBar.types';
 
@@ -33,11 +35,18 @@ const useFilterBarStyles = makeStyles((theme: Theme) => ({
     fontSize: theme.typography.fontSize,
   },
 }));
-export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: FilterBarProps) => {
+export const FilterBar = ({
+  onTextChange,
+  onTextClear,
+  onFilterButtonClick,
+  onClose,
+  text,
+  options,
+}: FilterBarProps) => {
   const classes = useFilterBarStyles();
 
   const initialState: FilterBarState = {
-    filterEnabled: false,
+    filterEnabled: options?.filterEnabled || false,
   };
   const [state, setState] = useState<FilterBarState>(initialState);
 
@@ -49,41 +58,56 @@ export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: Filter
         name="filterbar-textfield"
         placeholder="Type to filter"
         spellCheck={false}
-        variant="outlined"
+        variant={options?.textFieldVariant || 'outlined'}
         size="small"
         margin="none"
         autoFocus={true}
         multiline={false}
         fullWidth
+        value={text}
         onChange={onTextChange}
         InputProps={{
+          startAdornment: options?.searchIcon && (
+            <InputAdornment position="start">
+              <SearchIcon fontSize="small" />
+            </InputAdornment>
+          ),
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton
-                data-testid="filterbar-filter-button"
-                aria-label="filter"
-                size="small"
-                onClick={() => {
-                  onFilterButtonClick(!state.filterEnabled);
-                  setState((prevState) => {
-                    return { filterEnabled: !prevState.filterEnabled };
-                  });
-                }}>
-                <FilterList fontSize="small" color={state.filterEnabled ? 'primary' : 'secondary'} />
-              </IconButton>
+              {options?.clearTextButton && (
+                <IconButton data-testid="filterbar-clear-button" aria-label="clear" size="small" onClick={onTextClear}>
+                  <ClearIcon fontSize="small" />
+                </IconButton>
+              )}
+              {(options?.filterButton !== undefined ? options.filterButton : true) && (
+                <IconButton
+                  data-testid="filterbar-filter-button"
+                  aria-label="filter"
+                  size="small"
+                  onClick={() => {
+                    onFilterButtonClick(!state.filterEnabled);
+                    setState((prevState) => {
+                      return { filterEnabled: !prevState.filterEnabled };
+                    });
+                  }}>
+                  <FilterList fontSize="small" color={state.filterEnabled ? 'primary' : 'secondary'} />
+                </IconButton>
+              )}
             </InputAdornment>
           ),
           className: classes.textfield,
         }}
       />
-      <IconButton
-        data-testid="filterbar-close-button"
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={onClose}>
-        <CloseIcon fontSize="small" />
-      </IconButton>
+      {(options?.closeButton !== undefined ? options.closeButton : true) && (
+        <IconButton
+          data-testid="filterbar-close-button"
+          size="small"
+          aria-label="close"
+          color="inherit"
+          onClick={onClose}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      )}
     </div>
   );
 };

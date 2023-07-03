@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { TreeView } from './TreeView';
+package org.eclipse.sirius.components.widget.reference;
 
-export const ExplorerView = (props: WorkbenchViewComponentProps) => (
-  <TreeView {...props} treeId="explorer://" showToolBar={true} enableMultiSelection={true} treeOptions={undefined} />
-);
+/**
+ * Represents the metadata needed to identify the EMF feature (EReference) being edited by a Reference widget.
+ * Needed for the frontend to subscribe to a Model Browser tree representation configured for this EReference.
+ *
+ * @author pcdavid
+ */
+public record Reference(String typeName, String referenceName, boolean containment, boolean manyValued) {
+
+}

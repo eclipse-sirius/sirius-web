@@ -50,8 +50,6 @@ public class ReferenceWidgetComponent implements IComponent {
         String iconURL = referenceDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = referenceDescription.getIsReadOnlyProvider().apply(variableManager);
 
-        boolean isMany = referenceDescription.getIsManyValuedProvider().apply(variableManager);
-        boolean isContainer = referenceDescription.getIsContainerProvider().apply(variableManager);
         List<?> rawValue = referenceDescription.getItemsProvider().apply(variableManager);
         Setting setting = referenceDescription.getSettingProvider().apply(variableManager);
         ReferenceWidgetStyle style = referenceDescription.getStyleProvider().apply(variableManager);
@@ -86,8 +84,6 @@ public class ReferenceWidgetComponent implements IComponent {
                 .label(label)
                 .iconURL(iconURL)
                 .diagnostics(List.of())
-                .container(isContainer)
-                .manyValued(isMany)
                 .values(items)
                 .setting(setting);
         if (referenceDescription.getHelpTextProvider() != null) {

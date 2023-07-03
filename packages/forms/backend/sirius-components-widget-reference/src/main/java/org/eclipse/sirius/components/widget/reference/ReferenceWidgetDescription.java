@@ -38,10 +38,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> iconURLProvider;
 
-    private Function<VariableManager, Boolean> isContainerProvider;
-
-    private Function<VariableManager, Boolean> isManyValuedProvider;
-
     private Function<VariableManager, List<?>> itemsProvider;
 
     private Function<VariableManager, String> itemIdProvider;
@@ -76,14 +72,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     public Function<VariableManager, String> getIconURLProvider() {
         return this.iconURLProvider;
-    }
-
-    public Function<VariableManager, Boolean> getIsContainerProvider() {
-        return this.isContainerProvider;
-    }
-
-    public Function<VariableManager, Boolean> getIsManyValuedProvider() {
-        return this.isManyValuedProvider;
     }
 
     public Function<VariableManager, List<?>> getItemsProvider() {
@@ -140,10 +128,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
-        private Function<VariableManager, Boolean> isContainerProvider;
-
-        private Function<VariableManager, Boolean> isManyValuedProvider;
-
         private Function<VariableManager, List<?>> itemsProvider;
 
         private Function<VariableManager, String> itemIdProvider;
@@ -183,16 +167,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
             this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
-            return this;
-        }
-
-        public Builder isManyValuedProvider(Function<VariableManager, Boolean> isManyValuedProvider) {
-            this.isManyValuedProvider = Objects.requireNonNull(isManyValuedProvider);
-            return this;
-        }
-
-        public Builder isContainerProvider(Function<VariableManager, Boolean> isContainerProvider) {
-            this.isContainerProvider = Objects.requireNonNull(isContainerProvider);
             return this;
         }
 
@@ -248,8 +222,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             referenceWidgetDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             referenceWidgetDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
-            referenceWidgetDescription.isManyValuedProvider = Objects.requireNonNull(this.isManyValuedProvider);
-            referenceWidgetDescription.isContainerProvider = Objects.requireNonNull(this.isContainerProvider);
             referenceWidgetDescription.itemsProvider = Objects.requireNonNull(this.itemsProvider);
             referenceWidgetDescription.itemIdProvider = Objects.requireNonNull(this.itemIdProvider);
             referenceWidgetDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);
