@@ -19,10 +19,10 @@ import { LinkWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, LinkStyleProps>((theme) => ({
   style: {
-    color: ({ color }) => (color ? color : 'inherit'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
-    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
-    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    color: ({ color }) => (color ? color : null),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+    fontStyle: ({ italic }) => (italic ? 'italic' : null),
+    fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
   selected: {
