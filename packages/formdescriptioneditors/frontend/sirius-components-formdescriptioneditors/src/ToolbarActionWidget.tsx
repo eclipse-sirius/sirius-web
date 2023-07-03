@@ -14,13 +14,13 @@ import { useMutation } from '@apollo/client';
 import { Selection, ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import {
   ButtonStyleProps,
-  getTextDecorationLineValue,
   GQLButton,
   GQLToolbarAction,
   PropertySectionContext,
+  getTextDecorationLineValue,
 } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { deleteToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -41,16 +41,16 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
     lineHeight: 1.25,
     backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.light),
     color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
-    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
-    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+    fontStyle: ({ italic }) => (italic ? 'italic' : null),
+    fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     '&:hover': {
       backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.main),
       color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
-      fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
-      fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+      fontStyle: ({ italic }) => (italic ? 'italic' : null),
+      fontWeight: ({ bold }) => (bold ? 'bold' : null),
       textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     },
   },
@@ -59,16 +59,16 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
     lineHeight: 1.25,
     backgroundColor: theme.palette.secondary.light,
     color: 'white',
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
-    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
-    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+    fontStyle: ({ italic }) => (italic ? 'italic' : null),
+    fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     '&:hover': {
       backgroundColor: theme.palette.secondary.main,
       color: 'white',
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
-      fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
-      fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+      fontStyle: ({ italic }) => (italic ? 'italic' : null),
+      fontWeight: ({ bold }) => (bold ? 'bold' : null),
       textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     },
   },

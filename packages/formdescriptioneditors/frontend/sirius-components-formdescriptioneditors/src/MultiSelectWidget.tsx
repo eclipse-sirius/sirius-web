@@ -23,11 +23,11 @@ import { MultiSelectWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
   style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : 'inherit'),
-    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'inherit'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : 'inherit'),
-    fontStyle: ({ italic }) => (italic ? 'italic' : 'inherit'),
-    fontWeight: ({ bold }) => (bold ? 'bold' : 'inherit'),
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : null),
+    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : null),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
+    fontStyle: ({ italic }) => (italic ? 'italic' : null),
+    fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
   selected: {
