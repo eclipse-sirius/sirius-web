@@ -47,5 +47,6 @@ export interface NodeData {
 export interface Label {
   id: string;
   text: string;
+  iconURL: string | null;
   style: React.CSSProperties;
 }

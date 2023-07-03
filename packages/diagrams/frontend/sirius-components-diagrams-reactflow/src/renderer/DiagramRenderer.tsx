@@ -18,6 +18,7 @@ import {
   Background,
   BackgroundVariant,
   EdgeChange,
+  EdgeTypes,
   NodeChange,
   NodeSelectionChange,
   NodeTypes,
@@ -34,6 +35,7 @@ import { ImageNode } from './ImageNode';
 import { ListNode } from './ListNode';
 import { RectangularNode } from './RectangularNode';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
+import { CustomEdge } from './edge/CustomEdge';
 import { performLayout } from './layout';
 
 import 'reactflow/dist/style.css';
@@ -42,6 +44,10 @@ const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
   imageNode: ImageNode,
   listNode: ListNode,
+};
+
+const edgeTypes: EdgeTypes = {
+  customEdge: CustomEdge,
 };
 
 const isSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
@@ -157,6 +163,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       nodeTypes={nodeTypes}
       onNodesChange={handleNodesChange}
       edges={edges}
+      edgeTypes={edgeTypes}
       onKeyDown={onKeyDown}
       onEdgesChange={handleEdgesChange}
       onPaneClick={handlePaneClick}

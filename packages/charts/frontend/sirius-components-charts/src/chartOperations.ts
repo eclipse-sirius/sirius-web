@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@
 import { FontStyle } from './Charts.types';
 
 export const getFontWeight = (style: FontStyle | null): string => {
-  if (style?.bold != null) {
-    return style.bold ? 'bold' : 'normal';
+  if (style?.bold) {
+    return 'bold';
   }
   return 'normal';
 };
@@ -26,18 +26,18 @@ export const getFontSize = (style: FontStyle | null): number => {
 };
 
 export const getFontStyle = (style: FontStyle | null): string => {
-  if (style?.italic != null) {
-    return style.italic ? 'italic' : 'normal';
+  if (style?.italic) {
+    return 'italic';
   }
   return 'normal';
 };
 
 export const getTextDecoration = (style: FontStyle | null): string => {
   let decoration: string = '';
-  if (style?.strikeThrough != null && style.strikeThrough) {
+  if (style?.strikeThrough) {
     decoration = decoration + 'line-through';
   }
-  if (style?.underline != null && style.underline) {
+  if (style?.underline) {
     let separator: string = decoration.length > 0 ? ' ' : '';
     decoration = decoration + separator + 'underline';
   }
