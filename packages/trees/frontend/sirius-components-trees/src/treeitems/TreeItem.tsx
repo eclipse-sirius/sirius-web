@@ -248,7 +248,13 @@ export const TreeItem = ({
   if (item.imageURL) {
     image = <img height="16" width="16" alt={item.kind} src={httpOrigin + item.imageURL}></img>;
   }
-  const highlightRegExp = new RegExp(`(${textToHighlight})`, 'gi');
+  let highlightRegExp: RegExp | null = null;
+  if (textToHighlight) {
+    // With the RegExp, we keep the searched value in the split result
+    // But we need to escape the special characters from the RegExp
+    const excapedTextToHighlight = textToHighlight.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    highlightRegExp = new RegExp(`(${excapedTextToHighlight})`, 'gi');
+  }
   let text;
   const onCloseEditingMode = () => {
     setState((prevState) => {
