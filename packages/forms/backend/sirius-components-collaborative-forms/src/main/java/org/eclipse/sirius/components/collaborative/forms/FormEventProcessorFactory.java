@@ -27,7 +27,10 @@ import org.eclipse.sirius.components.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
+import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorFactoryConfiguration;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -61,16 +64,18 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IObjectService objectService, List<IWidgetDescriptor> widgetDescriptors,
-            List<IFormEventHandler> formEventHandlers, IWidgetSubscriptionManagerFactory widgetSubscriptionManagerFactory) {
+    private final IFormPostProcessor formPostProcessor;
+
+    public FormEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
-        this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
-        this.widgetSubscriptionManagerFactory = Objects.requireNonNull(widgetSubscriptionManagerFactory);
+        this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
+        this.widgetSubscriptionManagerFactory = Objects.requireNonNull(formConfiguration.getWidgetSubscriptionManagerFactory());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
+        this.formPostProcessor = Objects.requireNonNull(formConfiguration.getFormPostProcessor());
     }
 
     @Override
@@ -81,39 +86,34 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration) {
-            FormConfiguration formConfiguration = (FormConfiguration) configuration;
+        if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof FormConfiguration formConfiguration) {
 
             Optional<Form> optionalForm = this.representationSearchService.findById(editingContext, formConfiguration.getId(), Form.class);
             if (optionalForm.isPresent()) {
                 Form form = optionalForm.get();
-                // @formatter:off
                 Optional<FormDescription> optionalFormDescription = this.representationDescriptionSearchService.findById(editingContext, form.getDescriptionId())
                         .filter(FormDescription.class::isInstance)
                         .map(FormDescription.class::cast);
-                // @formatter:on
                 Optional<Object> optionalObject = this.objectService.getObject(editingContext, form.getTargetObjectId());
                 if (optionalFormDescription.isPresent() && optionalObject.isPresent()) {
                     FormDescription formDescription = optionalFormDescription.get();
                     Object object = optionalObject.get();
 
-                    // @formatter:off
                     FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(formConfiguration.getId())
                             .editingContext(editingContext)
                             .formDescription(formDescription)
                             .object(object)
                             .selection(List.of())
                             .build();
-                    // @formatter:on
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, this.widgetDescriptors, this.formEventHandlers,
-                            this.subscriptionManagerFactory.create(), this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
+                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, this.widgetDescriptors,
+                            this.formEventHandlers),
+                            this.subscriptionManagerFactory.create(), this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry,
+                            this.formPostProcessor);
 
-                    // @formatter:off
                     return Optional.of(formEventProcessor)
                             .filter(representationEventProcessorClass::isInstance)
                             .map(representationEventProcessorClass::cast);
-                    // @formatter:on
 
                 }
             }
