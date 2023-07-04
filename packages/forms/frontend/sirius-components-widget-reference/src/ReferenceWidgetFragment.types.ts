@@ -25,6 +25,7 @@ export interface GQLReferenceValue {
   label: string;
   kind: string;
   iconURL: string | null;
+  hasClickAction: boolean;
 }
 
 export interface GQLEditReferencePayload {
@@ -53,4 +54,25 @@ export interface GQLEditReferenceInput {
 
 export interface GQLEditReferenceData {
   editReference: GQLEditReferencePayload;
+}
+
+export interface GQLClickReferenceValueMutationData {
+  clickReferenceValue: GQLClickReferenceValuePayload;
+}
+
+export interface GQLClickReferenceValuePayload {
+  __typename: string;
+}
+
+export interface GQLClickReferenceValueMutationVariables {
+  input: GQLClickReferenceValueInput;
+}
+
+export interface GQLClickReferenceValueInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  referenceWidgetId: string;
+  referenceValueId: string;
+  clickEventKind: 'SINGLE_CLICK' | 'DOUBLE_CLICK';
 }

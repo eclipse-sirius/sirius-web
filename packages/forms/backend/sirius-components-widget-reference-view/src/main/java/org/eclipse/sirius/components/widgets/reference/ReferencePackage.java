@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widgets.reference;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.form.FormPackage;
 
 /**
@@ -28,11 +29,12 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * </ul>
  * <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.widgets.reference.ReferenceFactory
  * @model kind="package"
  * @generated
+ * @see org.eclipse.sirius.components.widgets.reference.ReferenceFactory
  */
 public interface ReferencePackage extends EPackage {
+
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -53,25 +55,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     String eNS_PREFIX = "reference";
-
-    /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    ReferencePackage eINSTANCE = org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl.init();
-
     /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
-     * @generated
      */
     int REFERENCE_WIDGET_DESCRIPTION = 0;
-
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -79,7 +72,6 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION__NAME = FormPackage.WIDGET_DESCRIPTION__NAME;
-
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -88,7 +80,6 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION__LABEL_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION;
-
     /**
      * The feature id for the '<em><b>Help Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -96,7 +87,6 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION__HELP_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION;
-
     /**
      * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -105,7 +95,6 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT;
-
     /**
      * The feature id for the '<em><b>Reference Owner Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -114,7 +103,6 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
-
     /**
      * The feature id for the '<em><b>Reference Name Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -123,7 +111,20 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
-
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REFERENCE_WIDGET_DESCRIPTION__BODY = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    ReferencePackage eINSTANCE = org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl.init();
     /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -131,7 +132,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+    int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -140,7 +141,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+    int REFERENCE_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT;
 
     /**
      * Returns the meta object for class
@@ -148,8 +149,8 @@ public interface ReferencePackage extends EPackage {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description</em>'.
-     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription
      * @generated
+     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription
      */
     EClass getReferenceWidgetDescription();
 
@@ -159,9 +160,9 @@ public interface ReferencePackage extends EPackage {
      * <em>Reference Owner Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Owner Expression</em>'.
+     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression()
      * @see #getReferenceWidgetDescription()
-     * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceOwnerExpression();
 
@@ -171,11 +172,23 @@ public interface ReferencePackage extends EPackage {
      * <em>Reference Name Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Name Expression</em>'.
+     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression()
      * @see #getReferenceWidgetDescription()
-     * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceNameExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getBody()
+     * @see #getReferenceWidgetDescription()
+     */
+    EReference getReferenceWidgetDescription_Body();
 
     /**
      * Returns the meta object for the attribute
@@ -211,14 +224,15 @@ public interface ReferencePackage extends EPackage {
      * @generated
      */
     interface Literals {
+
         /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl
          * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
-         * @generated
          */
         EClass REFERENCE_WIDGET_DESCRIPTION = eINSTANCE.getReferenceWidgetDescription();
 
@@ -237,6 +251,14 @@ public interface ReferencePackage extends EPackage {
          * @generated
          */
         EAttribute REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION = eINSTANCE.getReferenceWidgetDescription_ReferenceNameExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REFERENCE_WIDGET_DESCRIPTION__BODY = eINSTANCE.getReferenceWidgetDescription_Body();
 
         /**
          * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--

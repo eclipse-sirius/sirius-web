@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
+
     public static final String TYPE = "ReferenceWidget";
 
     @Override
@@ -59,7 +60,7 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
     public Optional<Object> instanciate(String type, IProps elementProps, List<Object> children) {
         Optional<Object> result = Optional.empty();
         if (Objects.equals(type, ReferenceElementProps.TYPE) && elementProps instanceof ReferenceElementProps props) {
-            var builder = ReferenceWidget.newMultiValuedReferenceWidget(props.getId())
+            var builder = ReferenceWidget.newReferenceWidget(props.getId())
                     .label(props.getLabel())
                     .iconURL(props.getIconURL())
                     .diagnostics(props.getDiagnostics())

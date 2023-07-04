@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class ReferenceWidget extends AbstractWidget {
+
     private List<ReferenceValue> referenceValues;
 
     private boolean container;
@@ -39,6 +40,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private ReferenceWidget() {
         // Prevent instantiation
+    }
+
+    public static Builder newReferenceWidget(String id) {
+        return new Builder(id);
     }
 
     public List<ReferenceValue> getReferenceValues() {
@@ -63,17 +68,13 @@ public final class ReferenceWidget extends AbstractWidget {
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
 
-    public static Builder newMultiValuedReferenceWidget(String id) {
-        return new Builder(id);
-    }
-
     /**
      * Builder used to create the MultiValuedReferenceWidget.
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private String label;
 

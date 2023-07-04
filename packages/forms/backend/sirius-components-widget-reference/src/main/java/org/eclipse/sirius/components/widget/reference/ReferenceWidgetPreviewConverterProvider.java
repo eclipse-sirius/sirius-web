@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewConverterProvider {
+
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(FormDescriptionEditorDescription formDescriptionEditorDescription, VariableManager variableManager) {
         return new ReferenceSwitch<>() {
@@ -41,7 +43,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, referenceDescription);
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-                var builder =  ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
+                var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
                         .idProvider(vm -> id)
                         .labelProvider(vm -> ReferenceWidgetPreviewConverterProvider.this.getWidgetLabel(referenceDescription, "Reference"))
                         .iconURLProvider(variableManager -> "")
@@ -49,17 +51,18 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                         .isManyValuedProvider(variableManager -> false)
                         .isContainerProvider(variableManager -> false)
                         .itemsProvider(variableManager -> List.of())
-                        .itemIdProvider(variableManager ->  "")
-                        .itemKindProvider(variableManager ->  "")
-                        .itemLabelProvider(variableManager ->  "")
-                        .itemKindProvider(variableManager ->  "")
-                        .itemLabelProvider(variableManager ->  "")
-                        .itemImageURLProvider(variableManager ->  "")
+                        .itemIdProvider(variableManager -> "")
+                        .itemKindProvider(variableManager -> "")
+                        .itemLabelProvider(variableManager -> "")
+                        .itemKindProvider(variableManager -> "")
+                        .itemLabelProvider(variableManager -> "")
+                        .itemImageURLProvider(variableManager -> "")
                         .settingProvider(variableManager -> {
                             // We need a non-null Setting instance which does not depend on any actual instance model.
                             EObject owner = EcorePackage.Literals.ECLASS;
                             return ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
-                        });
+                        })
+                        .itemClickHandlerProvider(variableManager -> new Success());
                 if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
                     String helpText = ReferenceWidgetPreviewConverterProvider.this.getWidgetHelpText(referenceDescription);
                     builder.helpTextProvider(variableManager -> helpText);

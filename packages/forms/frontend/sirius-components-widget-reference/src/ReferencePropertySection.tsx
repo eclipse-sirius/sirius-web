@@ -17,7 +17,11 @@ import {
   ServerContext,
   useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
-import { PropertySectionComponentProps, PropertySectionLabel } from '@eclipse-sirius/sirius-components-forms';
+import {
+  PropertySectionComponentProps,
+  PropertySectionLabel,
+  useClickHandler,
+} from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -29,10 +33,13 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useContext, useEffect } from 'react';
 import {
+  GQLClickReferenceValueMutationData,
+  GQLClickReferenceValueMutationVariables,
   GQLEditReferenceData,
   GQLEditReferencePayload,
   GQLEditReferenceVariables,
   GQLErrorPayload,
+  GQLReferenceValue,
   GQLReferenceWidget,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
@@ -42,11 +49,37 @@ const useStyles = makeStyles((_) => ({
     overflow: 'auto',
     maxHeight: 300,
   },
+  canBeSelectedItem: {
+    '&:hover': {
+      textDecoration: 'underline',
+      cursor: 'pointer',
+    },
+  },
 }));
 
 export const editReferenceMutation = gql`
   mutation editReference($input: EditReferenceInput!) {
     editReference(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+export const clickReferenceValueMutation = gql`
+  mutation clickReferenceValue($input: ClickReferenceValueInput!) {
+    clickReferenceValue(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -77,10 +110,16 @@ export const ReferencePropertySection = ({
   readOnly,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
   const { httpOrigin } = useContext(ServerContext);
+  const classes = useStyles();
 
   const [editReference, { loading, error, data }] = useMutation<GQLEditReferenceData, GQLEditReferenceVariables>(
     editReferenceMutation
   );
+
+  const [clickReferenceValue, { loading: clickLoading, error: clickError, data: clickData }] = useMutation<
+    GQLClickReferenceValueMutationData,
+    GQLClickReferenceValueMutationVariables
+  >(clickReferenceValueMutation);
 
   const onDelete = (valueId: string) => {
     let newValueIds = [];
@@ -145,6 +184,35 @@ export const ReferencePropertySection = ({
     }
   };
 
+  const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
+    const variables: GQLClickReferenceValueMutationVariables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+        referenceValueId: item.id,
+        clickEventKind: 'SINGLE_CLICK',
+      },
+    };
+    clickReferenceValue({ variables });
+  };
+  const onReferenceValueDoubleClick = (item: GQLReferenceValue) => {
+    const variables: GQLClickReferenceValueMutationVariables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+        referenceValueId: item.id,
+        clickEventKind: 'DOUBLE_CLICK',
+      },
+    };
+    clickReferenceValue({ variables });
+  };
+
+  const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);
+
   const { addErrorMessage, addMessages } = useMultiToast();
   useEffect(() => {
     if (!loading) {
@@ -159,6 +227,19 @@ export const ReferencePropertySection = ({
       }
     }
   }, [loading, error, data]);
+  useEffect(() => {
+    if (!clickLoading) {
+      if (clickError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (clickData) {
+        const { clickReferenceValue } = clickData;
+        if (isErrorPayload(clickReferenceValue) || isSuccessPayload(clickReferenceValue)) {
+          addMessages(clickReferenceValue.messages);
+        }
+      }
+    }
+  }, [clickLoading, clickError, clickData]);
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -219,7 +300,14 @@ export const ReferencePropertySection = ({
         <ListItemIcon>
           {item.iconURL ? <img width="16" height="16" alt={''} src={httpOrigin + item.iconURL} /> : null}
         </ListItemIcon>
-        <ListItemText data-testid={`reference-value-${item.id}`}>{item.label}</ListItemText>
+        <ListItemText
+          data-testid={`reference-value-${item.id}`}
+          onClick={() => (readOnly || widget.readOnly ? {} : clickHandler(item))}
+          classes={{
+            primary: !readOnly && !widget.readOnly && item.hasClickAction ? classes.canBeSelectedItem : '',
+          }}>
+          {item.label}
+        </ListItemText>
         {widget.manyValued ? (
           <>
             <IconButton
@@ -242,8 +330,6 @@ export const ReferencePropertySection = ({
       </ListItem>
     ));
   }
-
-  const classes = useStyles();
 
   return (
     <div>

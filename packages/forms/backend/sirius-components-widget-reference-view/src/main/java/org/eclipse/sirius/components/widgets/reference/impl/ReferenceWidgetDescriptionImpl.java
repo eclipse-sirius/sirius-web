@@ -12,11 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.widgets.reference.impl;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
@@ -57,6 +64,15 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      */
     protected static final String REFERENCE_OWNER_EXPRESSION_EDEFAULT = null;
     /**
+     * The default value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getReferenceNameExpression()
+     */
+    protected static final String REFERENCE_NAME_EXPRESSION_EDEFAULT = null;
+    /**
      * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -65,7 +81,6 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @see #getIsEnabledExpression()
      */
     protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
-
     /**
      * The cached value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -75,17 +90,6 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @see #getReferenceOwnerExpression()
      */
     protected String referenceOwnerExpression = REFERENCE_OWNER_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getReferenceNameExpression()
-     */
-    protected static final String REFERENCE_NAME_EXPRESSION_EDEFAULT = null;
-
     /**
      * The cached value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -95,6 +99,16 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @see #getReferenceNameExpression()
      */
     protected String referenceNameExpression = REFERENCE_NAME_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBody()
+     */
+    protected EList<Operation> body;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -169,6 +183,32 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @generated
      */
     @Override
+    public EList<Operation> getBody() {
+        if (this.body == null) {
+            this.body = new EObjectContainmentEList<>(Operation.class, this, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY);
+        }
+        return this.body;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        if (featureID == ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY) {
+            return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public String getIsEnabledExpression() {
         return this.isEnabledExpression;
     }
@@ -200,6 +240,8 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return this.getReferenceOwnerExpression();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 return this.getReferenceNameExpression();
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+                return this.getBody();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -209,6 +251,7 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -220,6 +263,10 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 this.setReferenceNameExpression((String) newValue);
+                return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+                this.getBody().clear();
+                this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -242,6 +289,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
                 this.setReferenceNameExpression(REFERENCE_NAME_EXPRESSION_EDEFAULT);
                 return;
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+                this.getBody().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -257,9 +307,11 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                return REFERENCE_OWNER_EXPRESSION_EDEFAULT == null ? this.referenceOwnerExpression != null : !REFERENCE_OWNER_EXPRESSION_EDEFAULT.equals(this.referenceOwnerExpression);
+                return !Objects.equals(REFERENCE_OWNER_EXPRESSION_EDEFAULT, this.referenceOwnerExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? this.referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(this.referenceNameExpression);
+                return !Objects.equals(REFERENCE_NAME_EXPRESSION_EDEFAULT, this.referenceNameExpression);
+            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+                return this.body != null && !this.body.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -274,15 +326,14 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (isEnabledExpression: ");
-        result.append(this.isEnabledExpression);
-        result.append(", referenceOwnerExpression: ");
-        result.append(this.referenceOwnerExpression);
-        result.append(", referenceNameExpression: ");
-        result.append(this.referenceNameExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (isEnabledExpression: " +
+                this.isEnabledExpression +
+                ", referenceOwnerExpression: " +
+                this.referenceOwnerExpression +
+                ", referenceNameExpression: " +
+                this.referenceNameExpression +
+                ')';
+        return result;
     }
 
 } // ReferenceWidgetDescriptionImpl
