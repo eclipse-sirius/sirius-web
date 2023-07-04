@@ -12,19 +12,54 @@
  *******************************************************************************/
 import { GQLTreeItem } from '../views/ExplorerView.types';
 
-export const isFilterCandidate = (treeItem: GQLTreeItem, highlightRegExp: RegExp): boolean => {
+export const splitText = (label: string, userInput: string | null): string[] => {
+  if (!userInput) {
+    return [label];
+  }
+
+  // Split the label in a case insensitive manner
+  const caseInsensitiveSplitLabel: string[] = label
+    .toLocaleLowerCase()
+    .split(userInput.toLocaleLowerCase())
+    .flatMap((value, index, array) => {
+      if (index === 0 && value === '') {
+        return [];
+      } else if (index === array.length - 1 && value === '') {
+        return [userInput.toLocaleLowerCase()];
+      } else if (index === 0) {
+        return [value];
+      }
+      return [userInput.toLocaleLowerCase(), value];
+    });
+
+  // Create the real result
+  const splitLabel: string[] = [];
+  let index = 0;
+  for (const caseInsensitiveSegment of caseInsensitiveSplitLabel) {
+    const caseSensitiveSegment = label.substring(index, index + caseInsensitiveSegment.length);
+    splitLabel.push(caseSensitiveSegment);
+    index = index + caseInsensitiveSegment.length;
+  }
+
+  return splitLabel;
+};
+
+export const isFilterCandidate = (treeItem: GQLTreeItem, textToHighlight: string | null): boolean => {
   let filter: boolean = false;
-  const splitLabelWithTextToHighlight: string[] = treeItem.label.split(highlightRegExp);
+  const splitLabelWithTextToHighlight: string[] = splitText(treeItem.label, textToHighlight);
   if (splitLabelWithTextToHighlight.length > 1) {
     filter = false;
   } else if (!treeItem.hasChildren && splitLabelWithTextToHighlight.length === 1) {
     filter = true;
   } else if (
+    textToHighlight &&
     treeItem.hasChildren &&
     treeItem.expanded &&
-    treeItem.children.map((child) => child.label.split(highlightRegExp).length).every((v) => v === 1)
+    treeItem.children
+      .map((child) => child.label.toLocaleLowerCase().split(textToHighlight.toLocaleLowerCase()).length)
+      .every((v) => v === 1)
   ) {
-    filter = treeItem.children.map((child) => isFilterCandidate(child, highlightRegExp)).every((v) => v === true);
+    filter = treeItem.children.map((child) => isFilterCandidate(child, textToHighlight)).every((v) => v === true);
   }
   return filter;
 };

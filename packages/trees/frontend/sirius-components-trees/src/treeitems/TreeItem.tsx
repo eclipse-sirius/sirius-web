@@ -21,7 +21,7 @@ import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
-import { isFilterCandidate } from './filterTreeItem';
+import { isFilterCandidate, splitText } from './filterTreeItem';
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -248,13 +248,6 @@ export const TreeItem = ({
   if (item.imageURL) {
     image = <img height="16" width="16" alt={item.kind} src={httpOrigin + item.imageURL}></img>;
   }
-  let highlightRegExp: RegExp | null = null;
-  if (textToHighlight) {
-    // With the RegExp, we keep the searched value in the split result
-    // But we need to escape the special characters from the RegExp
-    const excapedTextToHighlight = textToHighlight.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
-    highlightRegExp = new RegExp(`(${excapedTextToHighlight})`, 'gi');
-  }
   let text;
   const onCloseEditingMode = () => {
     setState((prevState) => {
@@ -273,7 +266,7 @@ export const TreeItem = ({
     );
   } else {
     let itemLabel: JSX.Element;
-    const splitLabelWithTextToHighlight: string[] = item.label.split(highlightRegExp);
+    const splitLabelWithTextToHighlight: string[] = splitText(item.label, textToHighlight);
     if (textToHighlight === null || textToHighlight === '' || splitLabelWithTextToHighlight.length === 1) {
       itemLabel = <>{item.label}</>;
     } else {
@@ -378,7 +371,7 @@ export const TreeItem = ({
   const shouldDisplayMoreButton = item.deletable || item.editable || treeItemMenuContributionComponents.length > 0;
 
   let currentTreeItem: JSX.Element | null;
-  if (isFilterEnabled && isFilterCandidate(item, highlightRegExp)) {
+  if (isFilterEnabled && isFilterCandidate(item, textToHighlight)) {
     currentTreeItem = null;
   } else {
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */

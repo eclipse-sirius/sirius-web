@@ -41,19 +41,47 @@ describe('/projects/:projectId/edit - Tree filter bar', () => {
 
     cy.getByTestId('Central_Unit-en-1').should('not.exist');
     cy.getByTestId('Motion_Engine-En-1').should('not.exist');
-    cy.getByTestId('Engine-En-1').should('not.exist');
+    cy.getByTestId('Engine-En-0').should('not.exist');
 
     cy.getByTestId('filterbar-textfield').type('en');
 
     cy.getByTestId('Central_Unit-en-1').should('exist');
     cy.getByTestId('Motion_Engine-En-1').should('exist');
-    cy.getByTestId('Engine-En-1').should('exist');
+    cy.getByTestId('Engine-En-0').should('exist');
 
     cy.getByTestId('filterbar-close-button').click();
 
     cy.getByTestId('Central_Unit-en-1').should('not.exist');
     cy.getByTestId('Motion_Engine-En-1').should('not.exist');
-    cy.getByTestId('Engine-En-1').should('not.exist');
+    cy.getByTestId('Engine-En-0').should('not.exist');
+  });
+
+  it('test special characters do not break the filter bar ([, *, ), ^, ...)', () => {
+    cy.getByTestId('flow').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('Central_Unit').dblclick();
+    cy.getByTestId('CaptureSubSystem').dblclick();
+    cy.getByTestId('Wifi').dblclick();
+
+    cy.getByTestId('flow').type('{ctrl+f}');
+
+    cy.getByTestId('filterbar-textfield').type('[');
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+
+    cy.getByTestId('filterbar-textfield').type('^');
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+
+    cy.getByTestId('filterbar-textfield').type(')');
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+
+    cy.getByTestId('filterbar-textfield').type('*');
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+
+    cy.getByTestId('filterbar-close-button').click();
   });
 
   it('filter button in filter bar', () => {
