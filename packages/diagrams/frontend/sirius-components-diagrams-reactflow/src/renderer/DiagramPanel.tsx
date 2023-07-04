@@ -23,16 +23,13 @@ import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { useState } from 'react';
-import { Panel } from 'reactflow';
+import { Panel, useReactFlow } from 'reactflow';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { ShareDiagramDialog } from './ShareDiagramDialog';
 
 export const DiagramPanel = ({
   fullscreen,
   onFullscreen,
-  onFitToScreen,
-  onZoomIn,
-  onZoomOut,
   snapToGrid,
   onSnapToGrid,
   onArrangeAll,
@@ -41,8 +38,12 @@ export const DiagramPanel = ({
     dialogOpen: null,
   });
 
-  const onShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
-  const onCloseDialog = () => setState((prevState) => ({ ...prevState, dialogOpen: null }));
+  const reactFlow = useReactFlow();
+  const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
+  const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
+  const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
+  const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
+  const handleCloseDialog = () => setState((prevState) => ({ ...prevState, dialogOpen: null }));
 
   return (
     <>
@@ -57,16 +58,16 @@ export const DiagramPanel = ({
               <FullscreenIcon />
             </IconButton>
           )}
-          <IconButton size="small" onClick={() => onFitToScreen()}>
+          <IconButton size="small" onClick={handleFitToScreen}>
             <AspectRatioIcon />
           </IconButton>
-          <IconButton size="small" onClick={() => onZoomIn()}>
+          <IconButton size="small" onClick={handleZoomIn}>
             <ZoomInIcon />
           </IconButton>
-          <IconButton size="small" onClick={() => onZoomOut()}>
+          <IconButton size="small" onClick={handleZoomOut}>
             <ZoomOutIcon />
           </IconButton>
-          <IconButton size="small" onClick={() => onShare()}>
+          <IconButton size="small" onClick={handleShare}>
             <ShareIcon />
           </IconButton>
           {snapToGrid ? (
@@ -83,7 +84,7 @@ export const DiagramPanel = ({
           </IconButton>
         </Paper>
       </Panel>
-      {state.dialogOpen === 'Share' ? <ShareDiagramDialog onClose={onCloseDialog} /> : null}
+      {state.dialogOpen === 'Share' ? <ShareDiagramDialog onClose={handleCloseDialog} /> : null}
     </>
   );
 };

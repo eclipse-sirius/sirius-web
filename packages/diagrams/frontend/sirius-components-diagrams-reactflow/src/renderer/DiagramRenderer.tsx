@@ -26,7 +26,6 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
-  useReactFlow,
   useStoreApi,
 } from 'reactflow';
 import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
@@ -47,7 +46,6 @@ const nodeTypes: NodeTypes = {
 const isSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 
 export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRendererProps) => {
-  const reactFlow = useReactFlow();
   const store = useStoreApi();
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
@@ -135,9 +133,6 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     }
   };
 
-  const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
-  const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
-  const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
   const handleArrangeAll = () => {
     const layoutOptions: LayoutOptions = {
@@ -184,9 +179,6 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       <DiagramPanel
         fullscreen={state.fullscreen}
         onFullscreen={handleFullscreen}
-        onFitToScreen={handleFitToScreen}
-        onZoomIn={handleZoomIn}
-        onZoomOut={handleZoomOut}
         snapToGrid={state.snapToGrid}
         onSnapToGrid={handleSnapToGrid}
         onArrangeAll={handleArrangeAll}
