@@ -27,7 +27,9 @@ import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParamet
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IWidgetSubscriptionManager;
+import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.RenameFormInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusInput;
@@ -84,17 +86,21 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final AtomicReference<Form> currentForm = new AtomicReference<>();
 
-    public FormEventProcessor(IEditingContext editingContext, FormCreationParameters formCreationParameters, List<IWidgetDescriptor> widgetDescriptors, List<IFormEventHandler> formEventHandlers,
-            ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.logger.trace("Creating the form event processor {}", formCreationParameters.getId());
+    private final IFormPostProcessor formPostProcessor;
 
-        this.editingContext = Objects.requireNonNull(editingContext);
-        this.formCreationParameters = Objects.requireNonNull(formCreationParameters);
-        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
-        this.formEventHandlers = Objects.requireNonNull(formEventHandlers);
+    public FormEventProcessor(FormEventProcessorConfiguration configuration,
+            ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager,
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IFormPostProcessor formPostProcessor) {
+        this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
+
+        this.editingContext = Objects.requireNonNull(configuration.editingContext());
+        this.formCreationParameters = Objects.requireNonNull(configuration.formCreationParameters());
+        this.widgetDescriptors = Objects.requireNonNull(configuration.widgetDescriptors());
+        this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.widgetSubscriptionManager = Objects.requireNonNull(widgetSubscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
+        this.formPostProcessor = Objects.requireNonNull(formPostProcessor);
 
         Form form = this.refreshForm();
         this.currentForm.set(form);
@@ -114,16 +120,13 @@ public class FormEventProcessor implements IFormEventProcessor {
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         IRepresentationInput effectiveInput = representationInput;
-        if (representationInput instanceof RenameRepresentationInput) {
-            RenameRepresentationInput renameRepresentationInput = (RenameRepresentationInput) representationInput;
+        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
             effectiveInput = new RenameFormInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
                     renameRepresentationInput.newLabel());
         }
-        if (effectiveInput instanceof IFormInput) {
-            IFormInput formInput = (IFormInput) effectiveInput;
+        if (effectiveInput instanceof IFormInput formInput) {
 
-            if (formInput instanceof UpdateWidgetFocusInput) {
-                UpdateWidgetFocusInput input = (UpdateWidgetFocusInput) formInput;
+            if (formInput instanceof UpdateWidgetFocusInput input) {
                 this.widgetSubscriptionManager.handle(input);
 
                 payloadSink.tryEmitValue(new UpdateWidgetFocusSuccessPayload(input.id(), input.widgetId()));
@@ -159,11 +162,9 @@ public class FormEventProcessor implements IFormEventProcessor {
     }
 
     private boolean shouldRefresh(ChangeDescription changeDescription) {
-        // @formatter:off
         return this.representationRefreshPolicyRegistry.getRepresentationRefreshPolicy(this.formCreationParameters.getFormDescription())
                 .orElseGet(this::getDefaultRefreshPolicy)
                 .shouldRefresh(changeDescription);
-        // @formatter:on
 
     }
 
@@ -182,6 +183,8 @@ public class FormEventProcessor implements IFormEventProcessor {
         Element element = new Element(FormComponent.class, formComponentProps);
         Form form = new FormRenderer(this.widgetDescriptors).render(element);
 
+        form = this.formPostProcessor.postProcess(form, variableManager);
+
         this.logger.trace("Form refreshed: {}", form.getId());
 
         return form;
@@ -192,13 +195,11 @@ public class FormEventProcessor implements IFormEventProcessor {
         var initialRefresh = Mono.fromCallable(() -> new FormRefreshedEventPayload(input.id(), this.currentForm.get()));
         var refreshEventFlux = Flux.concat(initialRefresh, this.sink.asFlux());
 
-        // @formatter:off
         return Flux.merge(
                 refreshEventFlux,
                 this.widgetSubscriptionManager.getFlux(input),
                 this.subscriptionManager.getFlux(input)
-                );
-        // @formatter:on
+        );
     }
 
     @Override

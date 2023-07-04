@@ -19,6 +19,8 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParameters;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor;
+import org.eclipse.sirius.components.collaborative.forms.configuration.FormEventProcessorConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.representations.RepresentationRefreshPolicyRegistry;
@@ -55,8 +57,7 @@ public class FormEventProcessorTests {
 
     private Predicate<IPayload> getRefreshFormEventPayloadPredicate() {
         return representationEventPayload -> {
-            if (representationEventPayload instanceof FormRefreshedEventPayload) {
-                FormRefreshedEventPayload payload = (FormRefreshedEventPayload) representationEventPayload;
+            if (representationEventPayload instanceof FormRefreshedEventPayload payload) {
                 return payload.form() != null;
             }
             return false;
@@ -77,8 +78,9 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry());
+        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, List.of(), List.of()),
+                new SubscriptionManager(), new WidgetSubscriptionManager(),
+                new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
 
         // @formatter:off
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
@@ -102,8 +104,9 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry());
+        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, List.of(), List.of()),
+                new SubscriptionManager(), new WidgetSubscriptionManager(),
+                new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
 
         Runnable performRefresh = () -> formEventProcessor.refresh(new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, input.formId(), input));
 
@@ -131,10 +134,11 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(editingContext, formCreationParameters, List.of(), List.of(), new SubscriptionManager(), new WidgetSubscriptionManager(),
-                new RepresentationRefreshPolicyRegistry());
+        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, List.of(), List.of()),
+                new SubscriptionManager(), new WidgetSubscriptionManager(),
+                new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
 
-        Runnable disposeFormEventProcessor = () -> formEventProcessor.dispose();
+        Runnable disposeFormEventProcessor = formEventProcessor::dispose;
 
         // @formatter:off
         StepVerifier.create(formEventProcessor.getOutputEvents(input))
