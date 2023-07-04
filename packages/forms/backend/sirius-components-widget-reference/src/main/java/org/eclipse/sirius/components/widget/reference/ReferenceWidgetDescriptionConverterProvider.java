@@ -30,6 +30,6 @@ import org.springframework.stereotype.Service;
 public class ReferenceWidgetDescriptionConverterProvider implements IWidgetConverterProvider {
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService);
+        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, feedbackMessageService);
     }
 }

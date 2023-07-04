@@ -20,6 +20,7 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -30,6 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class ReferenceWidgetDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
@@ -52,8 +54,14 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, Setting> settingProvider;
 
+    private Function<VariableManager, IStatus> itemClickHandlerProvider;
+
     private ReferenceWidgetDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newReferenceWidgetDescription(String id) {
+        return new Builder(id);
     }
 
     public Function<VariableManager, String> getIdProvider() {
@@ -100,14 +108,14 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.settingProvider;
     }
 
+    public Function<VariableManager, IStatus> getItemClickHandlerProvider() {
+        return this.itemClickHandlerProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId());
-    }
-
-    public static Builder newReferenceWidgetDescription(String id) {
-        return new Builder(id);
     }
 
     /**
@@ -143,6 +151,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, Setting> settingProvider;
 
         private Function<VariableManager, String> helpTextProvider;
+
+        private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -213,6 +223,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder itemClickHandlerProvider(Function<VariableManager, IStatus> itemClickHandlerProvider) {
+            this.itemClickHandlerProvider = Objects.requireNonNull(itemClickHandlerProvider);
+            return this;
+        }
+
         public ReferenceWidgetDescription build() {
             ReferenceWidgetDescription referenceWidgetDescription = new ReferenceWidgetDescription();
             referenceWidgetDescription.id = Objects.requireNonNull(this.id);
@@ -229,6 +244,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemImageURLProvider = Objects.requireNonNull(this.itemImageURLProvider);
             referenceWidgetDescription.settingProvider = Objects.requireNonNull(this.settingProvider);
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            referenceWidgetDescription.itemClickHandlerProvider = this.itemClickHandlerProvider; // Optional on purpose
             return referenceWidgetDescription;
         }
     }

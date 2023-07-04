@@ -15,15 +15,16 @@ import { ServerContext, useMultiToast } from '@eclipse-sirius/sirius-components-
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { MouseEvent, useContext, useEffect, useRef, useState } from 'react';
+import { MouseEvent, useContext, useEffect } from 'react';
 import { GQLListItem } from '../form/FormEventFragments.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -35,7 +36,7 @@ import {
   ListStyleProps,
 } from './ListPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
+import { useClickHandler } from './useClickHandler';
 
 export const deleteListItemMutation = gql`
   mutation deleteListItem($input: DeleteListItemInput!) {
@@ -113,34 +114,6 @@ const isErrorPayload = (payload: GQLDeleteListItemPayload): payload is GQLErrorP
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLDeleteListItemPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
-
-export function useClickHandler<T>(
-  onSimpleClick: (element: T) => void,
-  onDoubleClick: (element: T) => void,
-  delay: number = 250
-): (element: T) => void {
-  const eventRef = useRef<T | null>(null);
-  const [clicks, setClicks] = useState(0);
-  useEffect(() => {
-    let singleClickTimer;
-    if (clicks === 1) {
-      singleClickTimer = setTimeout(function () {
-        onSimpleClick?.(eventRef.current);
-        setClicks(0);
-        eventRef.current = null;
-      }, delay);
-    } else if (clicks === 2) {
-      onDoubleClick?.(eventRef.current);
-      eventRef.current = null;
-      setClicks(0);
-    }
-    return () => clearTimeout(singleClickTimer);
-  }, [clicks, onSimpleClick, onDoubleClick, delay]);
-  return (element) => {
-    eventRef.current = element;
-    setClicks(clicks + 1);
-  };
-}
 
 export const ListPropertySection = ({
   editingContextId,

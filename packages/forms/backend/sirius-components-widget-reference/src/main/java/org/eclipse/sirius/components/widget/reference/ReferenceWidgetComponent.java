@@ -14,10 +14,13 @@ package org.eclipse.sirius.components.widget.reference;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -26,7 +29,10 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author pcdavid
  */
 public class ReferenceWidgetComponent implements IComponent {
+
     public static final String ITEM_VARIABLE = "item";
+
+    public static final String CLICK_EVENT_KIND_VARIABLE = "onClickEventKind";
 
     private final ReferenceWidgetComponentProps props;
 
@@ -57,11 +63,21 @@ public class ReferenceWidgetComponent implements IComponent {
                     String itemLabel = referenceDescription.getItemLabelProvider().apply(childVariables);
                     String itemImageURL = referenceDescription.getItemImageURLProvider().apply(childVariables);
                     String itemKind = referenceDescription.getItemKindProvider().apply(childVariables);
-                    return ReferenceValue.newReferenceValue(itemId)
+                    Function<VariableManager, IStatus> clickHandlerProvider = referenceDescription.getItemClickHandlerProvider();
+
+                    var referenceValueBuilder = ReferenceValue.newReferenceValue(itemId)
                             .label(itemLabel)
                             .iconURL(itemImageURL)
-                            .kind(itemKind)
-                            .build();
+                            .kind(itemKind);
+                    if (clickHandlerProvider != null) {
+                        Function<ClickEventKind, IStatus> clickHandler = (clickEventKind) -> {
+                            VariableManager clickHandlerVariableManager = childVariables.createChild();
+                            clickHandlerVariableManager.put(CLICK_EVENT_KIND_VARIABLE, clickEventKind.toString());
+                            return clickHandlerProvider.apply(clickHandlerVariableManager);
+                        };
+                        referenceValueBuilder.clickHandler(clickHandler);
+                    }
+                    return referenceValueBuilder.build();
                 })
                 .toList();
 

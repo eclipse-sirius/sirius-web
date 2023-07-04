@@ -27,6 +27,7 @@ export type { RadioStyleProps } from './propertysections/RadioPropertySection.ty
 export type { SelectStyleProps } from './propertysections/SelectPropertySection.types';
 export type { TextfieldStyleProps } from './propertysections/TextfieldPropertySection.types';
 export * from './propertysections/getTextDecorationLineValue';
+export * from './propertysections/useClickHandler';
 export * from './representations/FormRepresentation';
 export * from './views/DetailsView';
 export * from './views/RelatedElementsView';

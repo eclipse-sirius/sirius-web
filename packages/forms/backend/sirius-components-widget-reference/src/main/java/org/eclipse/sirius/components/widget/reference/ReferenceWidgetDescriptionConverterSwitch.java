@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.widget.reference;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,13 +25,23 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
+import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.Operation;
+import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
 
@@ -39,13 +51,20 @@ import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
  * @author pcdavid
  */
 public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<AbstractWidgetDescription> {
+
     private final AQLInterpreter interpreter;
 
     private final IObjectService objectService;
 
-    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService) {
+    private final IEditService editService;
+
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.editService = editService;
+        this.feedbackMessageService = feedbackMessageService;
     }
 
     @Override
@@ -69,6 +88,10 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(referenceDescription.getHelpExpression()));
         }
+        if (!referenceDescription.getBody().isEmpty()) {
+            builder.itemClickHandlerProvider(variableManager -> this.handleItemClick(variableManager, referenceDescription.getBody()));
+        }
+
         return builder.build();
     }
 
@@ -161,5 +184,18 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
     private String getDescriptionId(EObject description) {
         String descriptionURI = EcoreUtil.getURI(description).toString();
         return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+    }
+
+    private IStatus handleItemClick(VariableManager variableManager, List<Operation> operations) {
+        OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
+        Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
+        if (optionalVariableManager.isEmpty()) {
+            List<Message> errorMessages = new ArrayList<>();
+            errorMessages.add(new Message("Something went wrong while handling the item click.", MessageLevel.ERROR));
+            errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
+            return new Failure(errorMessages);
+        } else {
+            return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+        }
     }
 }

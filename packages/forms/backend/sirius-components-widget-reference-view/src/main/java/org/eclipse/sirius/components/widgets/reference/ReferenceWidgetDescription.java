@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.widgets.reference;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
@@ -28,9 +30,9 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <em>Reference Name Expression</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription()
  */
 public interface ReferenceWidgetDescription extends WidgetDescription {
 
@@ -39,10 +41,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reference Owner Expression</em>' attribute.
-     * @see #setReferenceOwnerExpression(String)
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceOwnerExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setReferenceOwnerExpression(String)
+     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceOwnerExpression()
      */
     String getReferenceOwnerExpression();
 
@@ -51,10 +53,9 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
      * <em>Reference Owner Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Reference Owner Expression</em>' attribute.
-     * @see #getReferenceOwnerExpression()
+     * @param value the new value of the '<em>Reference Owner Expression</em>' attribute.
      * @generated
+     * @see #getReferenceOwnerExpression()
      */
     void setReferenceOwnerExpression(String value);
 
@@ -63,10 +64,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reference Name Expression</em>' attribute.
-     * @see #setReferenceNameExpression(String)
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceNameExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
      * @generated
+     * @see #setReferenceNameExpression(String)
+     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceNameExpression()
      */
     String getReferenceNameExpression();
 
@@ -75,12 +76,22 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression
      * <em>Reference Name Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Reference Name Expression</em>' attribute.
-     * @see #getReferenceNameExpression()
+     * @param value the new value of the '<em>Reference Name Expression</em>' attribute.
      * @generated
+     * @see #getReferenceNameExpression()
      */
     void setReferenceNameExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Body</em>' containment reference list.
+     * @model containment="true"
+     * @generated
+     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_Body()
+     */
+    EList<Operation> getBody();
 
     /**
      * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--

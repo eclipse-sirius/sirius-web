@@ -14,8 +14,11 @@ package org.eclipse.sirius.components.widget.reference;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.forms.ClickEventKind;
+import org.eclipse.sirius.components.representations.IStatus;
 
 /**
  * Represents a single value for a reference. Multi-valued references can have multiple of these.
@@ -24,6 +27,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class ReferenceValue {
+
     private String id;
 
     private String label;
@@ -32,8 +36,18 @@ public final class ReferenceValue {
 
     private String iconURL;
 
+    private Function<ClickEventKind, IStatus> clickHandler;
+
     private ReferenceValue() {
         // Prevent instantiation
+    }
+
+    public static Builder newReferenceValue(String id) {
+        return new Builder(id);
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public String getLabel() {
@@ -48,8 +62,8 @@ public final class ReferenceValue {
         return this.iconURL;
     }
 
-    public static Builder newReferenceValue(String id) {
-        return new Builder(id);
+    public Function<ClickEventKind, IStatus> getClickHandler() {
+        return this.clickHandler;
     }
 
     @Override
@@ -65,13 +79,16 @@ public final class ReferenceValue {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
         private String kind;
 
         private String iconURL;
+
+        private Function<ClickEventKind, IStatus> clickHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -92,12 +109,18 @@ public final class ReferenceValue {
             return this;
         }
 
+        public Builder clickHandler(Function<ClickEventKind, IStatus> clickHandler) {
+            this.clickHandler = Objects.requireNonNull(clickHandler);
+            return this;
+        }
+
         public ReferenceValue build() {
             ReferenceValue referenceValue = new ReferenceValue();
             referenceValue.id = Objects.requireNonNull(this.id);
             referenceValue.label = Objects.requireNonNull(this.label);
             referenceValue.kind = Objects.requireNonNull(this.kind);
             referenceValue.iconURL = this.iconURL;
+            referenceValue.clickHandler = this.clickHandler; // Optional on purpose
             return referenceValue;
         }
     }

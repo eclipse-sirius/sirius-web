@@ -3,10 +3,12 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="reference" nsURI="https://www.eclipse.org/sirius/widgets/reference"
     nsPrefix="reference">
   <eClassifiers xsi:type="ecore:EClass" name="ReferenceWidgetDescription" eSuperTypes="../../../../../sirius-components-view-form/src/main/resources/model/form.ecore#//WidgetDescription">
-+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referenceOwnerExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referenceNameExpression"
         lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
