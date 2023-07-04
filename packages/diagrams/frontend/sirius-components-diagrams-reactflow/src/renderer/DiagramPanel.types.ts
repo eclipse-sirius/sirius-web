@@ -14,9 +14,6 @@
 export interface DiagramPanelProps {
   fullscreen: boolean;
   onFullscreen: (fullscreen: boolean) => void;
-  onFitToScreen: () => void;
-  onZoomIn: () => void;
-  onZoomOut: () => void;
   snapToGrid: boolean;
   onSnapToGrid: (snapToGrid: boolean) => void;
   onArrangeAll: () => void;
