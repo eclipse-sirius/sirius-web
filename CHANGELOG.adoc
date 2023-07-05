@@ -45,6 +45,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2133[#2133] [workbench] Fix NPE in Related Elements view
 - https://github.com/eclipse-sirius/sirius-components/issues/2112[#2112] [form] Fix the pages filtering in form editor.
 - https://github.com/eclipse-sirius/sirius-components/issues/2152[#2152] [tree] Fix an issue where some characters typed in the filter bar raised exception
+- https://github.com/eclipse-sirius/sirius-components/issues/2155[#2155] [explorer] Fix an issue where representations leaf tree items were not expanded by Expand All action
 
 === New Features
 

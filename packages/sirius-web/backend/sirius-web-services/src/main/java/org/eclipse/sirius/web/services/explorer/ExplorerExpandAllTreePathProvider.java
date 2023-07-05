@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.trees.Tree;
+import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.explorer.api.IExplorerNavigationService;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +40,13 @@ public class ExplorerExpandAllTreePathProvider implements IExpandAllTreePathProv
 
     private final IObjectService objectService;
 
+    private final IRepresentationService representationService;
+
     private final IExplorerNavigationService explorerNavigationService;
 
-    public ExplorerExpandAllTreePathProvider(IObjectService objectService, IExplorerNavigationService explorerNavigationService) {
+    public ExplorerExpandAllTreePathProvider(IObjectService objectService, IRepresentationService representationService, IExplorerNavigationService explorerNavigationService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.representationService = Objects.requireNonNull(representationService);
         this.explorerNavigationService = Objects.requireNonNull(explorerNavigationService);
     }
 
@@ -102,6 +106,9 @@ public class ExplorerExpandAllTreePathProvider implements IExpandAllTreePathProv
                 childTreePathMaxDepth = this.addAllContents(editingContext, childId, childTreePathMaxDepth, treeItemIdsToExpand);
                 depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
             }
+        } else if (this.representationService.hasRepresentations(treeItemId)) {
+            treeItemIdsToExpand.add(treeItemId);
+            depthConsidered = Math.max(depthConsidered, depth + 1);
         }
 
         return depthConsidered;
