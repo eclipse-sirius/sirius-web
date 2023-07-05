@@ -17,7 +17,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.trees.api.IExplorerDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
@@ -50,16 +49,13 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
 
     private final ICollaborativeTreeMessageService messageService;
 
-    private final IExplorerDescriptionProvider explorerDescriptionProvider;
-
     private final ITreeQueryService treeQueryService;
 
     private final Counter counter;
 
-    public DeleteTreeItemEventHandler(ICollaborativeTreeMessageService messageService, IExplorerDescriptionProvider explorerDescriptionProvider, ITreeQueryService treeQueryService,
+    public DeleteTreeItemEventHandler(ICollaborativeTreeMessageService messageService, ITreeQueryService treeQueryService,
             MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
-        this.explorerDescriptionProvider = Objects.requireNonNull(explorerDescriptionProvider);
         this.treeQueryService = Objects.requireNonNull(treeQueryService);
 
         // @formatter:off
@@ -75,20 +71,17 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Tree tree, ITreeInput treeInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, TreeDescription treeDescription, Tree tree, ITreeInput treeInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(treeInput.getClass().getSimpleName(), DeleteTreeItemInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(treeInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, treeInput.representationId(), treeInput);
 
-        if (treeInput instanceof DeleteTreeItemInput) {
-            DeleteTreeItemInput input = (DeleteTreeItemInput) treeInput;
-
+        if (treeInput instanceof DeleteTreeItemInput input) {
             var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId());
 
             if (optionalTreeItem.isPresent()) {
-                TreeDescription treeDescription = this.explorerDescriptionProvider.getDescription();
                 TreeItem treeItem = optionalTreeItem.get();
 
                 VariableManager variableManager = new VariableManager();
@@ -96,12 +89,11 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
                 variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
 
                 var status = treeDescription.getDeleteHandler().apply(variableManager);
-                if (status instanceof Success) {
-                    Success success = (Success) status;
+                if (status instanceof Success success) {
                     changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.representationId(), treeInput, success.getParameters());
                     payload = new SuccessPayload(treeInput.id());
-                } else if (status instanceof Failure) {
-                    payload = new ErrorPayload(treeInput.id(), ((Failure) status).getMessages());
+                } else if (status instanceof Failure failure) {
+                    payload = new ErrorPayload(treeInput.id(), failure.getMessages());
                 }
             }
         }

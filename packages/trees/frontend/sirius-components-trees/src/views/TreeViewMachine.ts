@@ -13,15 +13,15 @@
 import { SubscriptionResult } from '@apollo/client';
 import { assign, Machine } from 'xstate';
 import {
-  GQLExplorerEventData,
   GQLGetExpandAllTreePathData,
   GQLGetTreePathData,
   GQLTree,
+  GQLTreeEventData,
   GQLTreeEventPayload,
   GQLTreeRefreshedEventPayload,
-} from './ExplorerView.types';
+} from './TreeView.types';
 
-export interface ExplorerViewStateSchema {
+export interface TreeViewStateSchema {
   states: {
     toast: {
       states: {
@@ -29,7 +29,7 @@ export interface ExplorerViewStateSchema {
         hidden: {};
       };
     };
-    explorerView: {
+    treeView: {
       states: {
         idle: {};
         ready: {};
@@ -41,10 +41,10 @@ export interface ExplorerViewStateSchema {
 
 export type SchemaValue = {
   toast: 'visible' | 'hidden';
-  explorerView: 'idle' | 'ready' | 'complete';
+  treeView: 'idle' | 'ready' | 'complete';
 };
 
-export interface ExplorerViewContext {
+export interface TreeViewContext {
   id: string;
   tree: GQLTree | null;
   expanded: string[];
@@ -59,7 +59,7 @@ export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type HandleSubscriptionResultEvent = {
   type: 'HANDLE_SUBSCRIPTION_RESULT';
-  result: SubscriptionResult<GQLExplorerEventData>;
+  result: SubscriptionResult<GQLTreeEventData>;
 };
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
 export type AutoExpandToRevealSelectionEvent = {
@@ -80,7 +80,7 @@ export type HandleExpandAllTreePathEvent = {
   expandAllTreePathData: GQLGetExpandAllTreePathData;
 };
 export type HandleTreePathEvent = { type: 'HANDLE_TREE_PATH'; treePathData: GQLGetTreePathData };
-export type ExplorerViewEvent =
+export type TreeViewEvent =
   | HandleSubscriptionResultEvent
   | HandleCompleteEvent
   | ShowToastEvent
@@ -95,7 +95,7 @@ export type ExplorerViewEvent =
 const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is GQLTreeRefreshedEventPayload =>
   payload.__typename === 'TreeRefreshedEventPayload';
 
-export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStateSchema, ExplorerViewEvent>(
+export const treeViewMachine = Machine<TreeViewContext, TreeViewStateSchema, TreeViewEvent>(
   {
     type: 'parallel',
     context: {
@@ -130,7 +130,7 @@ export const explorerViewMachine = Machine<ExplorerViewContext, ExplorerViewStat
           },
         },
       },
-      explorerView: {
+      treeView: {
         initial: 'idle',
         states: {
           idle: {

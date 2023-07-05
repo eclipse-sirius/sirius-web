@@ -115,7 +115,7 @@ public class TreeEventProcessor implements ITreeEventProcessor {
 
             if (optionalTreeEventHandler.isPresent()) {
                 ITreeEventHandler treeEventHandler = optionalTreeEventHandler.get();
-                treeEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentTree.get(), treeInput);
+                treeEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.treeCreationParameters.getTreeDescription(), this.currentTree.get(), treeInput);
             } else {
                 this.logger.warn("No handler found for event: {}", treeInput);
             }

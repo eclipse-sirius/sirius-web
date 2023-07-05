@@ -25,13 +25,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
-import org.eclipse.sirius.components.collaborative.trees.api.IExplorerDescriptionProvider;
+import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
+import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.representations.Failure;
@@ -52,7 +54,7 @@ import org.springframework.stereotype.Service;
  * @author hmarchadour
  */
 @Service
-public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider {
+public class ExplorerDescriptionProvider implements IRepresentationDescriptionRegistryConfigurer {
 
     public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
@@ -81,12 +83,19 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     }
 
     @Override
-    public TreeDescription getDescription() {
-        // This predicate will NOT be used while creating the explorer but we don't want to see the description of the
-        // explorer in the list of representations that can be created. Thus, we will return false all the time.
-        Predicate<VariableManager> canCreatePredicate = variableManager -> false;
+    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
+        registry.add(this.getExplorerDescription());
+    }
 
-        // @formatter:off
+    public TreeDescription getExplorerDescription() {
+        // This predicate will be called when the user tries to create a new representation, but in this case the
+        // treeId variable is not defined, so it will never be instanciable in this way.
+        // However the same predicate will also be called by TreeEventProcessorFactory to select the appropriate TreeDescription
+        // when a frontend component subscribes to a treeEvent with a given treeId.
+        Predicate<VariableManager> canCreatePredicate = variableManager -> {
+            return variableManager.get(TreeConfiguration.TREE_ID, String.class).map(treeId -> treeId.startsWith("explorer://")).orElse(false);
+        };
+
         return TreeDescription.newTreeDescription(DESCRIPTION_ID)
                 .label("Explorer")
                 .idProvider(new GetOrCreateRandomIdProvider())
@@ -104,17 +113,15 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .build();
-        // @formatter:on
     }
 
     private String getTreeItemId(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
 
         String id = null;
-        if (self instanceof RepresentationMetadata) {
-            id = ((RepresentationMetadata) self).getId();
-        } else if (self instanceof Resource) {
-            Resource resource = (Resource) self;
+        if (self instanceof RepresentationMetadata representationMetadata) {
+            id = representationMetadata.getId();
+        } else if (self instanceof Resource resource) {
             id = resource.getURI().path().substring(1);
         } else if (self instanceof EObject) {
             id = this.objectService.getId(self);
@@ -125,8 +132,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     private String getKind(VariableManager variableManager) {
         String kind = "";
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        if (self instanceof RepresentationMetadata) {
-            RepresentationMetadata representationMetadata = (RepresentationMetadata) self;
+        if (self instanceof RepresentationMetadata representationMetadata) {
             kind = representationMetadata.getKind();
         } else if (self instanceof Resource) {
             kind = DOCUMENT_KIND;
@@ -140,13 +146,10 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         Object self = variableManager.getVariables().get(VariableManager.SELF);
 
         String label = "";
-        if (self instanceof RepresentationMetadata) {
-            label = ((RepresentationMetadata) self).getLabel();
-        } else if (self instanceof Resource) {
-            Resource resource = (Resource) self;
-            // @formatter:off
+        if (self instanceof RepresentationMetadata representationMetadata) {
+            label = representationMetadata.getLabel();
+        } else if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
-            // @formatter:on
         } else if (self instanceof EObject) {
             label = this.objectService.getLabel(self);
             if (label.isBlank()) {
@@ -158,14 +161,12 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     }
 
     private String getResourceLabel(Resource resource) {
-        // @formatter:off
         return resource.eAdapters().stream()
                 .filter(ResourceMetadataAdapter.class::isInstance)
                 .map(ResourceMetadataAdapter.class::cast)
                 .findFirst()
                 .map(ResourceMetadataAdapter::getName)
                 .orElse(resource.getURI().lastSegment());
-        // @formatter:on
     }
 
     private boolean isEditable(VariableManager variableManager) {
@@ -197,16 +198,12 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         String imageURL = null;
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
-        } else if (self instanceof RepresentationMetadata) {
-            RepresentationMetadata representationMetadata = (RepresentationMetadata) self;
-
-            // @formatter:off
+        } else if (self instanceof RepresentationMetadata representationMetadata) {
             imageURL = this.representationImageProviders.stream()
                     .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
                     .flatMap(Optional::stream)
                     .findFirst()
                     .orElse(ImageConstants.RESOURCE_SVG);
-            // @formatter:on
         } else if (self instanceof Resource) {
             imageURL = ImageConstants.RESOURCE_SVG;
         }
@@ -215,7 +212,6 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
 
     private List<Resource> getElements(VariableManager variableManager) {
         var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
-        // @formatter:off
         var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
@@ -223,18 +219,10 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 .map(EditingDomain::getResourceSet);
 
         if (optionalResourceSet.isPresent()) {
-            var resourceSet = optionalResourceSet.get();
-            List<Resource> resources = resourceSet.getResources().stream()
-                    .filter(res -> {
-                        if (res.getURI() != null) {
-                            return EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme());
-                        }
-                        return false;
-                    })
-                    .sorted(Comparator.nullsLast(Comparator.comparing(res -> this.getResourceLabel(res), String.CASE_INSENSITIVE_ORDER)))
+            return optionalResourceSet.get().getResources().stream()
+                    .filter(res -> res.getURI() != null && EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme()))
+                    .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
                     .toList();
-                // @formatter:on
-            return resources;
         }
         return new ArrayList<>();
     }
@@ -243,11 +231,9 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
         Object self = variableManager.getVariables().get(VariableManager.SELF);
 
         boolean hasChildren = false;
-        if (self instanceof Resource) {
-            Resource resource = (Resource) self;
+        if (self instanceof Resource resource) {
             hasChildren = !resource.getContents().isEmpty();
-        } else if (self instanceof EObject) {
-            EObject eObject = (EObject) self;
+        } else if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
 
             if (!hasChildren) {
@@ -263,8 +249,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
 
         List<String> expandedIds = new ArrayList<>();
         Object objects = variableManager.getVariables().get(TreeRenderer.EXPANDED);
-        if (objects instanceof List<?>) {
-            List<?> list = (List<?>) objects;
+        if (objects instanceof List<?> list) {
             expandedIds = list.stream().filter(String.class::isInstance).map(String.class::cast).collect(Collectors.toUnmodifiableList());
         }
 
@@ -277,8 +262,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
             if (expandedIds.contains(id)) {
                 Object self = variableManager.getVariables().get(VariableManager.SELF);
 
-                if (self instanceof Resource) {
-                    Resource resource = (Resource) self;
+                if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
                     var representationMetadata = new ArrayList<>(this.representationService.findAllByTargetObjectId(editingContext, id));
@@ -299,10 +283,9 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
             IEditingContext editingContext = optionalEditingContext.get();
             TreeItem treeItem = optionalTreeItem.get();
 
-            // @formatter:off
-            var optionalHandler = this.deleteTreeItemHandlers.stream().filter(handler -> handler.canHandle(editingContext, treeItem))
+            var optionalHandler = this.deleteTreeItemHandlers.stream()
+                    .filter(handler -> handler.canHandle(editingContext, treeItem))
                     .findFirst();
-            // @formatter:on
 
             if (optionalHandler.isPresent()) {
                 IDeleteTreeItemHandler deleteTreeItemHandler = optionalHandler.get();
@@ -319,10 +302,9 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
             IEditingContext editingContext = optionalEditingContext.get();
             TreeItem treeItem = optionalTreeItem.get();
 
-            // @formatter:off
-            var optionalHandler = this.renameTreeItemHandlers.stream().filter(handler -> handler.canHandle(editingContext, treeItem, newLabel))
+            var optionalHandler = this.renameTreeItemHandlers.stream()
+                    .filter(handler -> handler.canHandle(editingContext, treeItem, newLabel))
                     .findFirst();
-            // @formatter:on
 
             if (optionalHandler.isPresent()) {
                 IRenameTreeItemHandler renameTreeItemHandler = optionalHandler.get();

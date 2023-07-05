@@ -52,7 +52,7 @@ describe('/projects/:projectId/edit - Details', () => {
 
     cy.getByTestId('Name').clear();
     cy.getByTestId('Name').type('NewName{enter}');
-    cy.getByTestId('explorerTree').contains('NewName');
+    cy.getByTestId('explorer://').contains('NewName');
     cy.getByTestId('form').contains('NewName');
   });
 
@@ -63,9 +63,9 @@ describe('/projects/:projectId/edit - Details', () => {
     cy.getByTestId('Name').clear();
     cy.getByTestId('Name').type('NewName');
 
-    cy.getByTestId('explorerTree').click({ force: true });
+    cy.getByTestId('explorer://').click({ force: true });
 
-    cy.getByTestId('explorerTree').contains('NewName');
+    cy.getByTestId('explorer://').contains('NewName');
     cy.getByTestId('NewName').click();
     cy.getByTestId('form').contains('NewName');
   });

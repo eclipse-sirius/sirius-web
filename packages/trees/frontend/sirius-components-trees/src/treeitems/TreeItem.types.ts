@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLTreeItem } from '../views/ExplorerView.types';
+import { GQLTreeItem } from '../views/TreeView.types';
 
 export interface TreeItemProps {
   editingContextId: string;

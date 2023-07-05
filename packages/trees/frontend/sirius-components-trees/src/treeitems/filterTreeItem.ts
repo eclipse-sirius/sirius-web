@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTreeItem } from '../views/ExplorerView.types';
+import { GQLTreeItem } from '../views/TreeView.types';
 
 export const splitText = (label: string, userInput: string | null): string[] => {
   if (!userInput) {
