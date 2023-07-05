@@ -11,18 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GQLExplorerEventVariables {
-  input: GQLExplorerEventInput;
+import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+
+export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
+  treeId: string;
+  showToolBar: boolean;
 }
 
-export interface GQLExplorerEventInput {
+export interface GQLTreeEventVariables {
+  input: GQLTreeEventInput;
+}
+
+export interface GQLTreeEventInput {
   id: string;
   treeId: string;
   editingContextId: string;
   expanded: string[];
 }
 
-export interface GQLExplorerEventData {
+export interface GQLTreeEventData {
   treeEvent: GQLTreeEventPayload;
 }
 

@@ -43,7 +43,7 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
 
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorerTree').contains('System');
+    cy.getByTestId('explorer://').contains('System');
   });
 
   it('can select the created root object', () => {
@@ -59,7 +59,7 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
 
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorerTree').contains('System');
+    cy.getByTestId('explorer://').contains('System');
     cy.getByTestId('selected').contains('System');
   });
 
@@ -101,7 +101,7 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
 
     cy.getByTestId('create-object').click();
 
-    cy.getByTestId('explorerTree').contains('NewEntity');
+    cy.getByTestId('explorer://').contains('NewEntity');
   });
 
   it('expand all menu item', () => {

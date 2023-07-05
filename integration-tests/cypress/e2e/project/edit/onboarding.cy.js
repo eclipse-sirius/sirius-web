@@ -20,8 +20,8 @@ describe('/projects/:projectId/edit - Onboarding', () => {
     });
   });
 
-  it('Create a new model', () => {    
+  it('Create a new model', () => {
     cy.getByTestId('empty_flow').click();
-    cy.getByTestId('explorerTree').contains('Flow');
+    cy.getByTestId('explorer://').contains('Flow');
   });
 });

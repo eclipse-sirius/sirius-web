@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.trees.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -58,7 +59,7 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, TreeEventInput.class);
-        var treeConfiguration = new TreeConfiguration(input.editingContextId(), input.expanded());
+        var treeConfiguration = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());

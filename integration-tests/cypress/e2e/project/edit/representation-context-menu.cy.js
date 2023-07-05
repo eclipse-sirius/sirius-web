@@ -60,8 +60,8 @@ describe('/projects/:projectId/edit - Representation Context Menu', () => {
     cy.getByTestId('representation-tab-A02').should('exist');
     cy.getByTestId('representation-tab-B01').should('not.exist');
     */
-    cy.getByTestId('explorerTree').contains('A02');
-    cy.getByTestId('explorerTree').contains('B01');
+    cy.getByTestId('explorer://').contains('A02');
+    cy.getByTestId('explorer://').contains('B01');
   });
 
   it('can rename an opened focused representation', () => {
@@ -80,7 +80,7 @@ describe('/projects/:projectId/edit - Representation Context Menu', () => {
     cy.getByTestId('representation-tab-A02').should('exist');
     cy.getByTestId('representation-tab-B01').should('not.exist');
     */
-    cy.getByTestId('explorerTree').contains('A02');
-    cy.getByTestId('explorerTree').contains('B01');
+    cy.getByTestId('explorer://').contains('A02');
+    cy.getByTestId('explorer://').contains('B01');
   });
 });

@@ -25,13 +25,15 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationConfigurat
  */
 public class TreeConfiguration implements IRepresentationConfiguration {
 
+    public static final String TREE_ID = "treeId";
+
     private final String treeId;
 
     private final List<String> expanded;
 
-    public TreeConfiguration(String editingContextId, List<String> expanded) {
+    public TreeConfiguration(String editingContextId, String treeId, List<String> expanded) {
         String uniqueId = editingContextId + expanded.toString();
-        this.treeId = "explorer://" + UUID.nameUUIDFromBytes(uniqueId.getBytes()).toString();
+        this.treeId = treeId + "&uniqueId=" + UUID.nameUUIDFromBytes(uniqueId.getBytes()).toString();
         this.expanded = Objects.requireNonNull(expanded);
     }
 

@@ -22,13 +22,14 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
-import org.eclipse.sirius.components.collaborative.trees.api.IExplorerDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventProcessor;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     public static final String TREE_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
-    private final IExplorerDescriptionProvider explorerDescriptionProvider;
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final ITreeService treeService;
 
@@ -54,9 +55,9 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    public TreeEventProcessorFactory(IExplorerDescriptionProvider explorerDescriptionProvider, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
+    public TreeEventProcessorFactory(IRepresentationDescriptionSearchService representationDescriptionSearchService, ITreeService treeService, List<ITreeEventHandler> treeEventHandlers,
             ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.explorerDescriptionProvider = Objects.requireNonNull(explorerDescriptionProvider);
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.treeService = Objects.requireNonNull(treeService);
         this.treeEventHandlers = Objects.requireNonNull(treeEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
@@ -71,28 +72,37 @@ public class TreeEventProcessorFactory implements IRepresentationEventProcessorF
     @Override
     public <T extends IRepresentationEventProcessor> Optional<T> createRepresentationEventProcessor(Class<T> representationEventProcessorClass, IRepresentationConfiguration configuration,
             IEditingContext editingContext) {
-        if (ITreeEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof TreeConfiguration) {
-            TreeConfiguration treeConfiguration = (TreeConfiguration) configuration;
+        if (ITreeEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof TreeConfiguration treeConfiguration) {
 
-            TreeDescription treeDescription = this.explorerDescriptionProvider.getDescription();
+            Optional<TreeDescription> optionalTreeDescription = this.findTreeDescription(editingContext, treeConfiguration);
+            if (optionalTreeDescription.isPresent()) {
+                var treeDescription = optionalTreeDescription.get();
 
-            // @formatter:off
-            TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(treeConfiguration.getId())
-                    .treeDescription(treeDescription)
-                    .expanded(treeConfiguration.getExpanded())
-                    .editingContext(editingContext)
-                    .build();
-            // @formatter:on
+                TreeCreationParameters treeCreationParameters = TreeCreationParameters.newTreeCreationParameters(treeConfiguration.getId())
+                        .treeDescription(treeDescription)
+                        .expanded(treeConfiguration.getExpanded())
+                        .editingContext(editingContext)
+                        .build();
 
-            IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
-                    this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
-            // @formatter:off
-            return Optional.of(treeEventProcessor)
-                    .filter(representationEventProcessorClass::isInstance)
-                    .map(representationEventProcessorClass::cast);
-            // @formatter:on
+                IRepresentationEventProcessor treeEventProcessor = new TreeEventProcessor(editingContext, this.treeService, treeCreationParameters, this.treeEventHandlers,
+                        this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
+                return Optional.of(treeEventProcessor)
+                        .filter(representationEventProcessorClass::isInstance)
+                        .map(representationEventProcessorClass::cast);
+            }
         }
         return Optional.empty();
+    }
+
+    private Optional<TreeDescription> findTreeDescription(IEditingContext editingContext, TreeConfiguration treeConfiguration) {
+        VariableManager variableManager = new VariableManager();
+        variableManager.put(TreeConfiguration.TREE_ID, treeConfiguration.getId());
+        return this.representationDescriptionSearchService
+                .findAll(editingContext).values().stream()
+                .filter(TreeDescription.class::isInstance)
+                .map(TreeDescription.class::cast)
+                .filter(treeDescription -> treeDescription.getCanCreatePredicate().test(variableManager))
+                .findFirst();
     }
 
 }

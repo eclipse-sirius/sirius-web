@@ -24,6 +24,8 @@
 As such targetObjectId is removed from RepresentationMetadata.
 - https://github.com/eclipse-sirius/sirius-components/issues/2124[#2124] [sirius-web,emf] The `org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter` has been renamed `ResourceMetadataAdapter` and moved to the `org.eclipse.sirius.components.emf` package (in `sirius-components-emf`).
 This allows for code which does not depend on Sirius Web and the Document notion to properly display the top-level elements of a project in the UI.
+- https://github.com/eclipse-sirius/sirius-components/issues/2126[#2126] [tree] The `IExplorerDescriptionProvider` interface has been removed.
+The `TreeDescription` used by the _Explorer_ view is now registered using the general `IRepresentationDescriptionRegistryConfigurer` (see `ExplorerDescriptionProvider`).
 
 === Dependency update
 
@@ -119,6 +121,10 @@ The existing context menu contributions now only apply to the _Explorer_ view.
 - https://github.com/eclipse-sirius/sirius-components/issues/2142[#2142] [diagram] Add support for Edge labels (begin, center, end) in sirius-components-diagrams-reactflow.
 - https://github.com/eclipse-sirius/sirius-components/issues/2097[#2097] [forms] Add click handler support on the reference value of a reference widget.
 - https://github.com/eclipse-sirius/sirius-components/issues/2123[#2123] [tree] Add support for non-selectable tree items
+- https://github.com/eclipse-sirius/sirius-components/issues/2126[#2126] [tree] Add support for multiple Explorer-like tree definitions.
+These should be registered globally like other representations using a `IRepresentationDescriptionRegistryConfigurer`.
+Their `TreeDescription.getCanCreatePredicate()` will be invoked with a `treeId` variable (a string) to test if it handles a given tree subscription requested by the front.
+For example the main _Explorer_ frontend component suscribes to the `treeEvent` subscription with a `treeId` of `'explorer://'`, and the backend `ExplorerDescriptionProvider`'s tests for `treeId.startsWith("explorer://")` to indicate it is the one to use to handle this subscription.
 
 == v2023.6.0
 

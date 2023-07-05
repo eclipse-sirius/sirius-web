@@ -32,7 +32,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('name').type('diagram');
     cy.getByTestId('create-representation').click();
 
-    cy.getByTestId('explorerTree').contains('diagram');
+    cy.getByTestId('explorer://').contains('diagram');
 
     cy.getByTestId('diagram-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();

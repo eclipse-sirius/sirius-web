@@ -17,7 +17,6 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.trees.api.IExplorerDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
@@ -51,16 +50,13 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
 
     private final ICollaborativeTreeMessageService messageService;
 
-    private final IExplorerDescriptionProvider explorerDescriptionProvider;
-
     private final ITreeQueryService treeQueryService;
 
     private final Counter counter;
 
-    public RenameTreeItemEventHandler(ICollaborativeTreeMessageService messageService, IExplorerDescriptionProvider explorerDescriptionProvider, ITreeQueryService treeQueryService,
+    public RenameTreeItemEventHandler(ICollaborativeTreeMessageService messageService, ITreeQueryService treeQueryService,
             MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
-        this.explorerDescriptionProvider = Objects.requireNonNull(explorerDescriptionProvider);
         this.treeQueryService = Objects.requireNonNull(treeQueryService);
 
         // @formatter:off
@@ -76,7 +72,7 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Tree tree, ITreeInput treeInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, TreeDescription treeDescription, Tree tree, ITreeInput treeInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(treeInput.getClass().getSimpleName(), DeleteTreeItemInput.class.getSimpleName());
@@ -89,7 +85,6 @@ public class RenameTreeItemEventHandler implements ITreeEventHandler {
             var optionalTreeItem = this.treeQueryService.findTreeItem(tree, input.treeItemId());
 
             if (optionalTreeItem.isPresent()) {
-                TreeDescription treeDescription = this.explorerDescriptionProvider.getDescription();
                 TreeItem treeItem = optionalTreeItem.get();
 
                 VariableManager variableManager = new VariableManager();

@@ -86,7 +86,7 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     cy.getByTestId('create-document').click();
 
     cy.get('.MuiDialog-container').should('not.exist');
-    cy.getByTestId('explorerTree').contains('nobel');
+    cy.getByTestId('explorer://').contains('nobel');
   });
 
   it('can open the upload document modal', () => {
@@ -114,6 +114,6 @@ it.skip('can upload an existing document', () => {
     cy.getByTestId('upload-document').click();
 
     cy.get('.MuiDialog-container').should('not.exist');
-    cy.getByTestId('explorerTree').contains('robot');
+    cy.getByTestId('explorer://').contains('robot');
   });
 });

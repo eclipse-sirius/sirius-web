@@ -33,17 +33,17 @@ describe('/projects/:projectId/edit - Explorer', () => {
   });
 
   it('contains the documents', () => {
-    cy.getByTestId('explorerTree').contains('robot');
+    cy.getByTestId('explorer://').contains('robot');
   });
 
   it('can expand a tree item', () => {
     cy.getByTestId('robot').dblclick();
-    cy.getByTestId('explorerTree').contains('Robot');
+    cy.getByTestId('explorer://').contains('Robot');
 
     cy.getByTestId('Robot').dblclick();
-    cy.getByTestId('explorerTree').contains('Central_Unit');
-    cy.getByTestId('explorerTree').contains('CaptureSubSystem');
-    cy.getByTestId('explorerTree').contains('Wifi');
+    cy.getByTestId('explorer://').contains('Central_Unit');
+    cy.getByTestId('explorer://').contains('CaptureSubSystem');
+    cy.getByTestId('explorer://').contains('Wifi');
   });
 
   it('can collapse a tree item', () => {
