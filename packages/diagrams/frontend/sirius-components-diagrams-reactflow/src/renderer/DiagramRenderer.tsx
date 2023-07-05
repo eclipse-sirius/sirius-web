@@ -41,6 +41,7 @@ import { DiagramPalette } from './palette/DiagramPalette';
 
 import 'reactflow/dist/style.css';
 import { useDiagramPalette } from './palette/useDiagramPalette';
+import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
 const nodeTypes: NodeTypes = {
   rectangularNode: RectangularNode,
@@ -63,6 +64,9 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     snapToGrid: false,
   });
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
+
+  const { reconnectEdge } = useReconnectEdge();
+
   const [nodes, setNodes, onNodesChange] = useNodesState(diagram.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(diagram.edges);
 
@@ -179,6 +183,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       edgeTypes={edgeTypes}
       onKeyDown={onKeyDown}
       onEdgesChange={handleEdgesChange}
+      onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
       onMove={() => hideDiagramPalette()}
       maxZoom={40}
