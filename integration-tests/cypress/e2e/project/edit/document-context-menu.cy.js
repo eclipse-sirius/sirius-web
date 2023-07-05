@@ -133,4 +133,43 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
     cy.getByTestId('Wifi').should('exist');
     cy.getByTestId('standard').should('exist');
   });
+
+  it('expand all menu item - with single Representation leaf tree item', () => {
+    cy.getByTestId('robot').should('exist');
+    cy.getByTestId('Robot').should('not.exist');
+
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('Central_Unit-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('CaptureSubSystem-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('Wifi-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+
+    cy.getByTestId('robot').should('exist');
+    cy.getByTestId('Robot').should('exist');
+    cy.getByTestId('Central_Unit').should('not.exist');
+    cy.getByTestId('CaptureSubSystem').should('not.exist');
+    cy.getByTestId('Wifi').should('not.exist');
+
+    cy.getByTestId('Robot-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('name').clear();
+    cy.getByTestId('name').type('diagram');
+    cy.getByTestId('create-representation').click();
+    cy.getByTestId('diagram').should('exist');
+
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('robot').should('exist');
+    cy.getByTestId('Robot').should('not.exist');
+    cy.getByTestId('diagram').should('not.exist');
+
+    cy.getByTestId('robot-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('expand-all').click();
+    cy.getByTestId('robot').should('exist');
+    cy.getByTestId('Robot').should('exist');
+    cy.getByTestId('diagram').should('exist');
+  });
 });
