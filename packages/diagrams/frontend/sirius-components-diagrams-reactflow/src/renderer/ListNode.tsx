@@ -13,6 +13,7 @@
 
 import { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { Label } from './Label';
 import { ListNodeData } from './ListNode.types';
 import { NodePalette } from './palette/NodePalette';
 
@@ -32,42 +33,16 @@ const listNodeStyle = (style: React.CSSProperties, selected: boolean): React.CSS
   return listNodeStyle;
 };
 
-const listNodeHeaderStyle = (style: React.CSSProperties): React.CSSProperties => {
-  return {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '8px',
-    padding: '8px 16px',
-    ...style,
-  };
-};
-
-const listItemStyle = (style: React.CSSProperties): React.CSSProperties => {
-  return {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    gap: '8px',
-    padding: '4px 8px',
-    ...style,
-  };
-};
-
 export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<ListNodeData>) => {
   return (
     <>
       <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
       <div style={listNodeStyle(data.style, selected)}>
-        <div data-id={data.label.id} style={listNodeHeaderStyle(data.label.style)}>
-          {data.label.text}
-        </div>
+        {data.label ? <Label label={data.label} /> : null}
         <div>
           {data.listItems.map((listItem) => {
             return (
-              <div key={listItem.id} style={listItemStyle(listItem.style)}>
+              <div key={listItem.id} style={listItem.style}>
                 {listItem.label.text}
               </div>
             );
