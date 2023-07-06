@@ -108,8 +108,15 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
       label: {
         id: label.id,
         text: label.text,
-        style: {},
         iconURL: null,
+        style: {
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          gap: '8px',
+          padding: '4px 8px',
+        },
       },
       style: {
         textAlign: 'left',
@@ -135,6 +142,12 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
       text: gqlNode.label.text,
       iconURL: labelStyle.iconURL,
       style: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        padding: '8px 16px',
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },

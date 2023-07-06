@@ -15,12 +15,6 @@ import { LabelProps } from './Label.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 
-const labelStyle = (style: React.CSSProperties): React.CSSProperties => {
-  return {
-    ...style,
-  };
-};
-
 export const Label = ({ label }: LabelProps) => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId } = useDiagramDirectEdit();
 
@@ -36,7 +30,7 @@ export const Label = ({ label }: LabelProps) => {
     return <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />;
   }
   return (
-    <div data-id={label.id} onDoubleClick={handleDoubleClick} style={labelStyle(label.style)}>
+    <div data-id={label.id} onDoubleClick={handleDoubleClick} style={label.style}>
       {label.text}
     </div>
   );

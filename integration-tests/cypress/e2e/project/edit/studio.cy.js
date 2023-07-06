@@ -41,6 +41,8 @@ describe('/projects/:projectId/edit - Studio', () => {
   it('Check the new object domain list', () => {
     cy.getByTestId('DomainNewModel-more').click();
     cy.getByTestId('new-object').click();
+    cy.getByTestId('domain').find('input').invoke('val').should('not.be.empty');
+
     cy.getByTestId('domain').click();
     cy.get('[data-value="http://www.eclipse.org/sirius-web/domain"]').should('exist');
     cy.getByTestId('domain').get('[data-value="http://www.eclipse.org/sirius-web/view"]').should('exist');
