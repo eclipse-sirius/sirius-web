@@ -38,6 +38,7 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 === Improvements
 
 - [releng] Add some automatic checks to simplify code reviews
+- [releng] Make some cypress tests more robust
 
 
 == v2023.8.0

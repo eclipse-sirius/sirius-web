@@ -22,7 +22,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     });
     cy.getByTestId('ViewDocument').dblclick();
     cy.getByTestId('View').dblclick();
-    cy.getByTestId('View-more').click();
+    cy.getByTestId('View-more').should('be.enabled').click();
     // create the form description
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     //make sure the data are fetched before selecting
@@ -32,7 +32,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('create-object').click();
     // create the form description editor
     cy.getByTestId('New Form Description').click();
-    cy.getByTestId('New Form Description-more').click();
+    cy.getByTestId('New Form Description-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('create-representation').click();
   });
@@ -131,14 +131,14 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
 
   it('display the page of the element selected', () => {
     // Creates a second page
-    cy.getByTestId('New Form Description-more').click();
+    cy.getByTestId('New Form Description-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click().get('[data-value="Page Description"]').should('exist').click();
     cy.getByTestId('create-object').click();
     // Adds a widget to the first page
     cy.getByTestId('PageDescription').eq(0).dblclick();
-    cy.getByTestId('GroupDescription-more').eq(0).click();
+    cy.getByTestId('GroupDescription-more').eq(0).should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
@@ -149,7 +149,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('create-object').click();
     // Adds a widget to the second page
     cy.getByTestId('PageDescription').eq(1).dblclick();
-    cy.getByTestId('GroupDescription-more').eq(1).click();
+    cy.getByTestId('GroupDescription-more').eq(1).should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
@@ -195,7 +195,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.get('[title="ReferenceWidget"]').should('be.visible');
     cy.getByTestId('PageDescription').dblclick();
     cy.getByTestId('GroupDescription').dblclick();
-    cy.getByTestId('ReferenceWidgetDescription-more').click();
+    cy.getByTestId('ReferenceWidgetDescription-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
@@ -228,7 +228,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   });
 
   function checkWidgetIsEnabledExpression(widgetName, should) {
-    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('GroupDescription-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription')
@@ -273,10 +273,10 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
 
   it('can create border style in a Group', () => {
     cy.getByTestId('PageDescription').dblclick();
-    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('GroupDescription-more').should('be.enabled').click();
     createBorderStyleAndCheckProperties('Border Style Container Border Style');
 
-    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('GroupDescription-more').should('be.enabled').click();
     createBorderStyleAndCheckProperties('Conditional Border Styles Conditional Container Border Style');
     cy.getByTestId('Condition').should('exist');
   });

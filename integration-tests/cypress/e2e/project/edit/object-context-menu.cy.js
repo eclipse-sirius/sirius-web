@@ -16,7 +16,7 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.createProject('Cypress Project').then((res) => {
       const projectId = res.body.data.createProject.project.id;
       const robot_flow_id = 'c26b6086-b444-3ee6-b8cd-9a4fde5956a7';
-      cy.createDocument(projectId, robot_flow_id, 'robot').then((res) => {
+      cy.createDocument(projectId, robot_flow_id, 'robot').then((_res) => {
         cy.visit(`/projects/${projectId}/edit`);
       });
     });
@@ -27,9 +27,8 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
 
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
-
     cy.getByTestId('treeitem-contextmenu').should('not.exist');
-
+    cy.getByTestId('name-edit').get('input').should('have.value', 'Robot');
     cy.getByTestId('name-edit').type('NewRobot{enter}');
     cy.getByTestId('Robot').should('not.exist');
     cy.getByTestId('NewRobot').should('exist');
