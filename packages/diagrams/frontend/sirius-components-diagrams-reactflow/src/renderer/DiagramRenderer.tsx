@@ -36,6 +36,7 @@ import { RectangularNode } from './RectangularNode';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
+import { useDrop } from './drop/useDrop';
 import { CustomEdge } from './edge/CustomEdge';
 import { CustomEdgeData } from './edge/CustomEdge.types';
 import { useLayout } from './layout/useLayout';
@@ -69,6 +70,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const { onConnect } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { autoLayout } = useLayout();
+  const { onDrop, onDragOver } = useDrop();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>(diagram.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<CustomEdgeData>(diagram.edges);
@@ -180,6 +182,8 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
       onMove={() => hideDiagramPalette()}
+      onDrop={onDrop}
+      onDragOver={onDragOver}
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={state.snapToGrid}

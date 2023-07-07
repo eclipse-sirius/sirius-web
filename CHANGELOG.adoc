@@ -43,6 +43,8 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2185[#2185] [diagram] Add support for drop tool from the explorer with React Flow.
+
 
 === Improvements
 

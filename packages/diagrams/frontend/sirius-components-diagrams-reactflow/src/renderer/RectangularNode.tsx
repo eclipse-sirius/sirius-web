@@ -11,16 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
-import { Label } from './Label';
 import { RectangularNodeData } from './RectangularNode.types';
+
+import { Theme, useTheme } from '@material-ui/core/styles';
+import React from 'react';
+import { Label } from './Label';
+import { useDrop } from './drop/useDrop';
 import { NodePalette } from './palette/NodePalette';
 
 const rectangularNodeStyle = (
-  style: React.CSSProperties,
   theme: Theme,
+  style: React.CSSProperties,
   selected: boolean,
   faded: boolean
 ): React.CSSProperties => {
@@ -42,13 +45,22 @@ const rectangularNodeStyle = (
 
 export const RectangularNode = memo(({ data, isConnectable, id, selected }: NodeProps<RectangularNodeData>) => {
   const theme = useTheme();
+  const { onDrop, onDragOver } = useDrop();
+
+  const handleOnDrop = (event: React.DragEvent) => {
+    onDrop(event, id);
+  };
 
   return (
     <>
       <NodeResizer color={theme.palette.primary.main} isVisible={selected} />
-      <div style={rectangularNodeStyle(data.style, theme, selected, data.faded)}>
+      <div
+        style={rectangularNodeStyle(theme, data.style, selected, data.faded)}
+        onDragOver={onDragOver}
+        onDrop={handleOnDrop}
+        data-testid={`Rectangle - ${data?.label?.text}`}>
         {data.label ? <Label label={data.label} faded={data.faded} /> : null}
-        {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id ?? null} /> : null}
+        {selected ? <NodePalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
         <Handle id="source" type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle id="target" type="target" position={Position.Right} isConnectable={isConnectable} />
       </div>
