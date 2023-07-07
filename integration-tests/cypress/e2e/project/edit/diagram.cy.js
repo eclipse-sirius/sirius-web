@@ -174,4 +174,55 @@ describe('/projects/:projectId/edit - Diagram', () => {
 
     cy.get('#diagram>svg>g>g>rect').siblings('g').children('image').should('have.length', 9);
   });
+
+  it('can create views by Drag and Drop on an unsynchronized diagram', () => {
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('Robot-more').click();
+
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+
+    cy.getByTestId('name').clear();
+    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('Topography unsynchronized').click();
+    cy.getByTestId('create-representation').click();
+
+    // Drop Central_Unit on the diagram's background
+    const dataTransfer1 = new DataTransfer();
+    cy.getByTestId('Central_Unit').trigger('dragstart', { dataTransfer: dataTransfer1 });
+    cy.getByTestId('Diagram').trigger('drop', { dataTransfer: dataTransfer1 });
+    cy.wait(500); // Wait for representation to refresh
+    cy.getByTestId('Rectangle - Central_Unit').should('exist');
+
+    // Drop Motion_Engine inside Central_Unit
+    const dataTransfer2 = new DataTransfer();
+    cy.getByTestId('Central_Unit').dblclick();
+    cy.getByTestId('Motion_Engine').trigger('dragstart', { dataTransfer: dataTransfer2 });
+    cy.getByTestId('Rectangle - Central_Unit').trigger('drop', { dataTransfer: dataTransfer2 });
+    cy.wait(500); // Wait for representation to refresh
+    cy.getByTestId('Image - Motion_Engine').should('exist');
+  });
+
+  it.only('can create views by Drag and Drop on an unsynchronized diagram when a representation is selected', () => {
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('Robot-more').click();
+
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+
+    cy.getByTestId('name').clear();
+    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('Topography unsynchronized').click();
+    cy.getByTestId('create-representation').click();
+
+    cy.getByTestId('Topography1').click();
+
+    const dataTransfer = new DataTransfer();
+    cy.getByTestId('Central_Unit').trigger('dragstart', { dataTransfer });
+    cy.getByTestId('Diagram').trigger('drop', { dataTransfer });
+    cy.wait(500); // Wait for representation to refresh
+    cy.getByTestId('Rectangle - Central_Unit').should('exist');
+  });
 });
