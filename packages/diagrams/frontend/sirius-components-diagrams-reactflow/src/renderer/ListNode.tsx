@@ -11,13 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { Label } from './Label';
 import { ListNodeData } from './ListNode.types';
+import { useDrop } from './drop/useDrop';
 import { NodePalette } from './palette/NodePalette';
 
-const listNodeStyle = (style: React.CSSProperties, selected: boolean, faded: boolean): React.CSSProperties => {
+const listNodeStyle = (
+  theme: Theme,
+  style: React.CSSProperties,
+  selected: boolean,
+  faded: boolean
+): React.CSSProperties => {
   const listNodeStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -28,17 +35,28 @@ const listNodeStyle = (style: React.CSSProperties, selected: boolean, faded: boo
     ...style,
   };
   if (selected) {
-    listNodeStyle.outline = `var(--blue-lagoon) solid 1px`;
+    listNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
   }
 
   return listNodeStyle;
 };
 
 export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<ListNodeData>) => {
+  const theme = useTheme();
+  const { onDrop, onDragOver } = useDrop();
+
+  const handleOnDrop = (event: React.DragEvent) => {
+    onDrop(event, id);
+  };
+
   return (
     <>
-      <NodeResizer color="var(--blue-lagoon)" isVisible={selected} />
-      <div style={listNodeStyle(data.style, selected, data.faded)}>
+      <NodeResizer color={theme.palette.primary.main} isVisible={selected} />
+      <div
+        style={listNodeStyle(theme, data.style, selected, data.faded)}
+        onDragOver={onDragOver}
+        onDrop={handleOnDrop}
+        data-testid={`Rectangle - ${data?.label?.text}`}>
         {data.label ? <Label label={data.label} faded={data.faded} /> : null}
         <div>
           {data.listItems.map((listItem) => {

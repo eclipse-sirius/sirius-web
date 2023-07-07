@@ -19,13 +19,12 @@ import { ImageNodeData } from './ImageNode.types';
 import { NodePalette } from './palette/NodePalette';
 
 const imageNodeStyle = (
-  style: React.CSSProperties,
   theme: Theme,
+  style: React.CSSProperties,
   selected: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const imageNodeStyle: React.CSSProperties = { width: '100%', height: '100%', opacity: faded ? '0.4' : '', ...style };
-
   if (selected) {
     imageNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
   }
@@ -34,14 +33,17 @@ const imageNodeStyle = (
 };
 
 export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<ImageNodeData>) => {
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const theme = useTheme();
-
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   return (
     <>
       <NodeResizer color={theme.palette.primary.main} isVisible={selected} />
-      <img src={httpOrigin + data.imageURL} style={imageNodeStyle(data.style, theme, selected, data.faded)} />
-      {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id ?? null} /> : null}
+      <img
+        src={httpOrigin + data.imageURL}
+        style={imageNodeStyle(theme, data.style, selected, data.faded)}
+        data-testid={`Image - ${data?.targetObjectLabel}`}
+      />
+      {selected ? <NodePalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
     </>
