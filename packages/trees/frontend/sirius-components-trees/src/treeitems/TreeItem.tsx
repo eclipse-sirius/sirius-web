@@ -340,15 +340,14 @@ export const TreeItem = ({
   const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
     const entries = selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic'));
 
-    if (entries.length > 0) {
-      if (!selection.entries.map((entry) => entry.id).includes(item.id)) {
-        const itemEntry: SelectionEntry = { id: item.id, label: item.label, kind: item.kind };
-        event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemEntry]));
-      } else {
-        event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(entries));
-      }
+    if (draggable && !selection.entries.map((entry) => entry.id).includes(item.id)) {
+      const itemEntry: SelectionEntry = { id: item.id, label: item.label, kind: item.kind };
+      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemEntry]));
+    } else if (entries.length > 0) {
+      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(entries));
     }
   };
+
   const dragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.stopPropagation();
   };
