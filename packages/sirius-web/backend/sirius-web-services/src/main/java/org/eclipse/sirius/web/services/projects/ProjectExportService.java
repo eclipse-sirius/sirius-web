@@ -113,6 +113,7 @@ public class ProjectExportService implements IProjectExportService {
         byte[] zip = new byte[0];
         String projectId = project.getId().toString();
         String projectName = project.getName();
+        var natures = this.projectService.getNatures(project.getId());
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (var zippedOut = new ZipOutputStream(outputStream)) {
@@ -121,7 +122,7 @@ public class ProjectExportService implements IProjectExportService {
 
             Map<String, RepresentationManifest> representationsManifests = this.addRepresentation(projectId, projectName, zippedOut);
 
-            this.addManifest(projectId, projectName, id2DocumentName, representationsManifests, zippedOut);
+            this.addManifest(projectId, projectName, natures, id2DocumentName, representationsManifests, zippedOut);
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
             outputStream.reset();
@@ -316,7 +317,7 @@ public class ProjectExportService implements IProjectExportService {
      * @throws IOException
      *             if an I/O error occurred
      */
-    private void addManifest(String projectId, String projectName, Map<String, String> id2DocumentName, Map<String, RepresentationManifest> representationsManifests, ZipOutputStream zippedout)
+    private void addManifest(String projectId, String projectName, List<String> natures, Map<String, String> id2DocumentName, Map<String, RepresentationManifest> representationsManifests, ZipOutputStream zippedout)
             throws IOException {
         // @formatter:off
         List<String> metamodels = this.editingContextEPackageService.getEPackages(projectId).stream()
@@ -325,6 +326,7 @@ public class ProjectExportService implements IProjectExportService {
 
         ProjectManifest projectManifest = ProjectManifest.newProjectManifest(CURRENT_MANIFEST_VERSION, this.buildProperties.getVersion())
                 .metamodels(metamodels)
+                .natures(natures)
                 .documentIdsToName(id2DocumentName)
                 .representations(representationsManifests)
                 .build();

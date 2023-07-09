@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.api.projects;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
@@ -21,5 +22,8 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author wpiers
  */
-public record CreateProjectInput(UUID id, String name) implements IInput {
+public record CreateProjectInput(UUID id, String name, List<String> natures) implements IInput {
+    public CreateProjectInput(UUID id, String name) {
+        this(id, name, List.of());
+    }
 }

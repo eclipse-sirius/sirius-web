@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public final class ProjectManifest {
 
     private List<String> metamodels;
 
+    private List<String> natures;
+
     private Map<String, String> documentIdsToName;
 
     private Map<String, RepresentationManifest> representations;
@@ -49,6 +51,10 @@ public final class ProjectManifest {
 
     public List<String> getMetamodels() {
         return this.metamodels;
+    }
+
+    public List<String> getNatures() {
+        return this.natures;
     }
 
     public Map<String, String> getDocumentIdsToName() {
@@ -76,6 +82,8 @@ public final class ProjectManifest {
 
         private List<String> metamodels;
 
+        private List<String> natures;
+
         private Map<String, String> documentIdsToName;
 
         private Map<String, RepresentationManifest> representations;
@@ -100,11 +108,17 @@ public final class ProjectManifest {
             return this;
         }
 
+        public Builder natures(List<String> natures) {
+            this.natures = Objects.requireNonNull(natures);
+            return this;
+        }
+
         public ProjectManifest build() {
             ProjectManifest projectManifest = new ProjectManifest();
             projectManifest.manifestVersion = Objects.requireNonNull(this.manifestVersion);
             projectManifest.siriusWebVersion = Objects.requireNonNull(this.siriusWebVersion);
             projectManifest.metamodels = Objects.requireNonNull(this.metamodels);
+            projectManifest.natures = Objects.requireNonNull(this.natures);
             projectManifest.documentIdsToName = Objects.requireNonNull(this.documentIdsToName);
             projectManifest.representations = Objects.requireNonNull(this.representations);
             return projectManifest;

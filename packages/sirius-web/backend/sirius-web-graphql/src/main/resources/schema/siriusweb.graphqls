@@ -73,6 +73,7 @@ extend type Mutation {
 input CreateProjectInput {
   id: ID!
   name: String!
+  natures: [String!]!
 }
 
 union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload

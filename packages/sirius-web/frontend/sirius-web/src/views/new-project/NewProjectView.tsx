@@ -15,8 +15,8 @@ import { Form, FormContainer } from '@eclipse-sirius/sirius-components';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -29,10 +29,10 @@ import {
   HideToastEvent,
   NewProjectEvent,
   NewProjectViewContext,
-  newProjectViewMachine,
   RequestProjectCreationEvent,
   SchemaValue,
   ShowToastEvent,
+  newProjectViewMachine,
 } from './NewProjectViewMachine';
 
 const createProjectMutation = gql`
@@ -91,6 +91,7 @@ export const NewProjectView = () => {
       input: {
         id: crypto.randomUUID(),
         name: name.trim(),
+        natures: [],
       },
     };
     const submitEvent: RequestProjectCreationEvent = { type: 'REQUEST_PROJECT_CREATION' };

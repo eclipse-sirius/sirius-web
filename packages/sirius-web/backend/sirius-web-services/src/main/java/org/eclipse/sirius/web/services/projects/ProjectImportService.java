@@ -95,7 +95,7 @@ public class ProjectImportService implements IProjectImportService {
         ProjectManifest manifest = unzippedProject.getProjectManifest();
         String projectName = unzippedProject.getProjectName();
 
-        CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName);
+        CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName, manifest.getNatures());
         IPayload createProjectPayload = this.projectService.createProject(createProjectInput);
         if (createProjectPayload instanceof CreateProjectSuccessPayload) {
             Project project = ((CreateProjectSuccessPayload) createProjectPayload).project();

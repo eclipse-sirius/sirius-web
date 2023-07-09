@@ -77,6 +77,7 @@ Cypress.Commands.add('createProject', (name) => {
     input: {
       id: uuid(),
       name,
+      natures: [],
     },
   };
 
