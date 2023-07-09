@@ -79,6 +79,11 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
+    public List<String> getNatures(UUID projectId) {
+        return this.projectNatureRepository.findAllByProjectId(projectId).stream().map(ProjectNatureEntity::getName).toList();
+    }
+
+    @Override
     public List<Project> getProjects() {
         // @formatter:off
         return StreamSupport.stream(this.projectRepository.findAll().spliterator(), false)
@@ -98,7 +103,13 @@ public class ProjectService implements IProjectService {
 
             ProjectEntity projectEntity = this.createProjectEntity(name);
             projectEntity = this.projectRepository.save(projectEntity);
-
+            List<String> natures = input.natures();
+            if (natures != null && !natures.isEmpty()) {
+                UUID projectid = projectEntity.getId();
+                input.natures().stream()
+                    .map(nature -> this.createProjectNatureEntity(projectid, nature))
+                    .forEach(this.projectNatureRepository::save);
+            }
             Project project = this.projectMapper.toDTO(projectEntity);
             payload = new CreateProjectSuccessPayload(input.id(), project);
 

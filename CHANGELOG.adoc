@@ -53,6 +53,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2140[#2140] [tree] Fix Drag'n'drop when a representation is selected.
 - https://github.com/eclipse-sirius/sirius-components/issues/2179[#2179] [tree] Fix an issue where labels of tree items matching exactly pattern typed in the filter bar were not detected.
 - https://github.com/eclipse-sirius/sirius-components/issues/2178[#2178] [view] Fix an error when selecting an EdgeStyle.
+- https://github.com/eclipse-sirius/sirius-components/issues/2019[#2019] [project] Fix exporting and re-importing studio projects
 
 === New Features
 

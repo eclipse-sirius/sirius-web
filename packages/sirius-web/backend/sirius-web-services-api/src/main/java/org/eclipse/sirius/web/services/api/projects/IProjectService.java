@@ -27,6 +27,10 @@ public interface IProjectService {
 
     Optional<Project> getProject(UUID projectId);
 
+    default List<String> getNatures(UUID projectId) {
+        return List.of();
+    }
+
     List<Project> getProjects();
 
     IPayload createProject(CreateProjectInput input);
