@@ -123,7 +123,7 @@ public class SelectDescriptionBuilder {
      *
      * @generated
      */
-    public SelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle... values) {
+    public SelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle value : values) {
             this.getSelectDescription().getConditionalStyles().add(value);
         }

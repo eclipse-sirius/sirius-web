@@ -25,7 +25,7 @@ public class ConditionalContainerBorderStyleBuilder {
      *
      * @generated
      */
-    private final org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle conditionalContainerBorderStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalContainerBorderStyle();
+    private org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle conditionalContainerBorderStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalContainerBorderStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle.

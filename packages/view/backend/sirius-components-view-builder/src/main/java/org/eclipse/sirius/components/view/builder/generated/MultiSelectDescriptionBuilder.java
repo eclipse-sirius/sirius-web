@@ -123,7 +123,7 @@ public class MultiSelectDescriptionBuilder {
      *
      * @generated
      */
-    public MultiSelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle... values) {
+    public MultiSelectDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle value : values) {
             this.getMultiSelectDescription().getConditionalStyles().add(value);
         }

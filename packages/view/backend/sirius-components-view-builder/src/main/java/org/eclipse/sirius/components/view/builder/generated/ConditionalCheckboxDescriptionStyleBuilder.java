@@ -61,5 +61,15 @@ public class ConditionalCheckboxDescriptionStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for LabelPlacement.
+     *
+     * @generated
+     */
+    public ConditionalCheckboxDescriptionStyleBuilder labelPlacement(org.eclipse.sirius.components.view.form.LabelPlacement value) {
+        this.getConditionalCheckboxDescriptionStyle().setLabelPlacement(value);
+        return this;
+    }
+
 }
 

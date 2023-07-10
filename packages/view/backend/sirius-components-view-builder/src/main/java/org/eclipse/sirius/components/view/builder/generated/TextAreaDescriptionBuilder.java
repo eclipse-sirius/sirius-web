@@ -105,7 +105,7 @@ public class TextAreaDescriptionBuilder {
      *
      * @generated
      */
-    public TextAreaDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle... values) {
+    public TextAreaDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalTextareaDescriptionStyle value : values) {
             this.getTextAreaDescription().getConditionalStyles().add(value);
         }

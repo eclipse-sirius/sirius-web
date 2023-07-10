@@ -123,7 +123,7 @@ public class ListDescriptionBuilder {
      *
      * @generated
      */
-    public ListDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle... values) {
+    public ListDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle value : values) {
             this.getListDescription().getConditionalStyles().add(value);
         }

@@ -116,7 +116,7 @@ public class FlexboxContainerDescriptionBuilder {
      *
      * @generated
      */
-    public FlexboxContainerDescriptionBuilder conditionalBorderStyles(org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle... values) {
+    public FlexboxContainerDescriptionBuilder conditionalBorderStyles(org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle value : values) {
             this.getFlexboxContainerDescription().getConditionalBorderStyles().add(value);
         }
