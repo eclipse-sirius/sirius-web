@@ -122,6 +122,7 @@ IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson
 1. Clone this repository
 2. Build the frontend packages:
 +
+[source,sh]
 ----
 npm ci
 npx turbo run build
@@ -129,6 +130,20 @@ npx turbo run build
 +
 
 NOTE: In order to run tests, use `npx turbo run coverage`
++
+
+[WARNING]
+====
+To build the package `@eclipse-sirius/sirius-components-diagrams` the `mkdir` command is required.
+
+For Windows users, according to the link:https://docs.npmjs.com/cli/v8/using-npm/config#script-shell[npm documentation] the default value for script-shell configuration on Windows is `cmd.exe` which does not support the `mkdir` command. We recommend to use link:https://git-scm.com/downloads[git bash] instead of the default command tool.
+
+Then you can set the `script-shell` configuration with the following command:
+[source,sh]
+----
+npm config set script-shell "path\to\bash.exe"
+----
+====
 
 3. Install the frontend artifacts as static resource to be served by the backend.
 From the root directory of the repository:
