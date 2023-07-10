@@ -105,7 +105,7 @@ public class TextfieldDescriptionBuilder {
      *
      * @generated
      */
-    public TextfieldDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle... values) {
+    public TextfieldDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionStyle value : values) {
             this.getTextfieldDescription().getConditionalStyles().add(value);
         }

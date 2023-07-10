@@ -114,7 +114,7 @@ public class ButtonDescriptionBuilder {
      *
      * @generated
      */
-    public ButtonDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle... values) {
+    public ButtonDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle value : values) {
             this.getButtonDescription().getConditionalStyles().add(value);
         }

@@ -105,7 +105,7 @@ public class CheckboxDescriptionBuilder {
      *
      * @generated
      */
-    public CheckboxDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle... values) {
+    public CheckboxDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle value : values) {
             this.getCheckboxDescription().getConditionalStyles().add(value);
         }

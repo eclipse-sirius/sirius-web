@@ -52,5 +52,15 @@ public class CheckboxDescriptionStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for LabelPlacement.
+     *
+     * @generated
+     */
+    public CheckboxDescriptionStyleBuilder labelPlacement(org.eclipse.sirius.components.view.form.LabelPlacement value) {
+        this.getCheckboxDescriptionStyle().setLabelPlacement(value);
+        return this;
+    }
+
 }
 

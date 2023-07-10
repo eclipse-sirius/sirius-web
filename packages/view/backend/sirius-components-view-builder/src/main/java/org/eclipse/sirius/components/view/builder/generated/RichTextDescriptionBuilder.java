@@ -84,7 +84,7 @@ public class RichTextDescriptionBuilder {
      *
      * @generated
      */
-    public RichTextDescriptionBuilder body(org.eclipse.sirius.components.view.Operation... values) {
+    public RichTextDescriptionBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
         for (org.eclipse.sirius.components.view.Operation value : values) {
             this.getRichTextDescription().getBody().add(value);
         }

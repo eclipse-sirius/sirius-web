@@ -123,7 +123,7 @@ public class RadioDescriptionBuilder {
      *
      * @generated
      */
-    public RadioDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle... values) {
+    public RadioDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle ... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle value : values) {
             this.getRadioDescription().getConditionalStyles().add(value);
         }

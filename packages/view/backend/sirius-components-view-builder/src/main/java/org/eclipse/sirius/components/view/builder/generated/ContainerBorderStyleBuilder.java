@@ -25,7 +25,7 @@ public class ContainerBorderStyleBuilder {
      *
      * @generated
      */
-    private final org.eclipse.sirius.components.view.form.ContainerBorderStyle containerBorderStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createContainerBorderStyle();
+    private org.eclipse.sirius.components.view.form.ContainerBorderStyle containerBorderStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createContainerBorderStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.ContainerBorderStyle.
