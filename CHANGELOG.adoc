@@ -124,6 +124,7 @@ For example the main _Explorer_ frontend component suscribes to the `treeEvent` 
 - https://github.com/eclipse-sirius/sirius-components/issues/2096[#2096] [form] Add style for the reference widget.
 Use the same style properties as the list widget.
 - https://github.com/eclipse-sirius/sirius-components/issues/2175[#2175] [tree] Change tree behavior to reveal the current value(s) in the model browser.
+- https://github.com/eclipse-sirius/sirius-components/issues/2171[#2171] [tree] Remove from model browser subtrees with no compatible values.
 
 == v2023.6.0
 

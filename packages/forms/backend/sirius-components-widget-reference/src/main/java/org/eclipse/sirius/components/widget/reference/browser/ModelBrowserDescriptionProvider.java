@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.springframework.stereotype.Service;
 
 /**
- * This class is used to provide the description of the explorer.
+ * This class is used to provide the description of the model browser tree.
  *
  * @author pcdavid
  */
@@ -74,12 +74,10 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
 
     public TreeDescription getModelBrowserDescription() {
         // This predicate will NOT be used while creating the model browser but we don't want to see the description of the
-        // explorer in the list of representations that can be created. Thus, we will return false all the time.
-        Predicate<VariableManager> canCreatePredicate = variableManager -> {
-            return variableManager.get("treeId", String.class).map(treeId -> treeId.startsWith("modelBrowser://")).orElse(false);
-        };
+        // model browser in the list of representations that can be created. Thus, we will return false all the time.
+        Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get("treeId", String.class).map(treeId -> treeId.startsWith("modelBrowser://"))
+                .orElse(false);
 
-        // @formatter:off
         return TreeDescription.newTreeDescription(DESCRIPTION_ID)
                 .label("Model Browser")
                 .idProvider(new GetOrCreateRandomIdProvider())
@@ -97,37 +95,44 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
                 .build();
-        // @formatter:on
     }
 
     private boolean isSelectable(VariableManager variableManager) {
-        var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
+        var optionalReference = this.resolveReference(variableManager);
+        return optionalReference.isPresent() && this.isSelectable(variableManager, optionalReference.get());
+    }
+
+    private boolean isSelectable(VariableManager variableManager, EReference reference) {
         var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
-        if (optionalSelf.isPresent() && optionalTreeId.isPresent() && optionalTreeId.get().startsWith("modelBrowser://") && optionalEditingContext.isPresent()) {
-            Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
-            var optionalReference = this.resolveReference(ePackageRegistry, optionalTreeId.get());
-            return optionalReference.isPresent() &&  optionalReference.get().getEType().isInstance(optionalSelf.get());
+        if (optionalSelf.isPresent() && reference != null) {
+            return reference.getEType().isInstance(optionalSelf.get());
         } else {
             return false;
         }
     }
 
-    private Optional<EReference> resolveReference(EPackage.Registry ePackageRegistry, String referenceDescriptor) {
-        Map<String, List<String>> parameters = new URLParser().getParameterValues(referenceDescriptor);
-        String[] qualifiedTypeName = parameters.get("typeName").get(0).split("::");
+    private Optional<EReference> resolveReference(VariableManager variableManager) {
+        var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith("modelBrowser://") && optionalEditingContext.isPresent()) {
+            Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
+            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            String[] qualifiedTypeName = parameters.get("typeName").get(0).split("::");
 
-        String domain = qualifiedTypeName[0];
-        String typeName = qualifiedTypeName[1];
-        String referenceName = parameters.get("featureName").get(0);
+            String domain = qualifiedTypeName[0];
+            String typeName = qualifiedTypeName[1];
+            String referenceName = parameters.get("featureName").get(0);
 
-        return this.findEPackage(ePackageRegistry, domain)
-                .map(ePackage -> ePackage.getEClassifier(typeName))
-                .filter(EClass.class::isInstance)
-                .map(EClass.class::cast)
-                .map(klass -> klass.getEStructuralFeature(referenceName))
-                .filter(EReference.class::isInstance)
-                .map(EReference.class::cast);
+            return this.findEPackage(ePackageRegistry, domain)
+                    .map(ePackage -> ePackage.getEClassifier(typeName))
+                    .filter(EClass.class::isInstance)
+                    .map(EClass.class::cast)
+                    .map(klass -> klass.getEStructuralFeature(referenceName))
+                    .filter(EReference.class::isInstance)
+                    .map(EReference.class::cast);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<EPackage> findEPackage(EPackage.Registry ePackageRegistry, String ePackageName) {
@@ -146,7 +151,6 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
 
     private String getTreeItemId(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
         String id = null;
         if (self instanceof Resource resource) {
             id = resource.getURI().path().substring(1);
@@ -169,7 +173,6 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
 
     private String getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
         String label = "";
         if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
@@ -203,7 +206,6 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
 
     private String getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
         String imageURL = null;
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
@@ -215,7 +217,6 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
 
     private List<Resource> getElements(VariableManager variableManager) {
         var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
-        // @formatter:off
         var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
@@ -226,7 +227,7 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
             var resourceSet = optionalResourceSet.get();
             return resourceSet.getResources().stream()
                     .filter(res -> res.getURI() != null && EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme()))
-                    .sorted(Comparator.nullsLast(Comparator.comparing(res -> this.getResourceLabel(res), String.CASE_INSENSITIVE_ORDER)))
+                    .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
                     .toList();
         }
         return new ArrayList<>();
@@ -234,14 +235,33 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
 
     private boolean hasChildren(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
         boolean hasChildren = false;
         if (self instanceof Resource resource) {
             hasChildren = !resource.getContents().isEmpty();
         } else if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
+            hasChildren = hasChildren && this.hasCompatibleDescendants(variableManager, eObject, this.resolveReference(variableManager).orElse(null));
         }
         return hasChildren;
+    }
+
+    private boolean hasChildren(VariableManager variableManager, EReference reference) {
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        boolean hasChildren = false;
+        if (self instanceof Resource resource) {
+            hasChildren = !resource.getContents().isEmpty();
+        } else if (self instanceof EObject eObject) {
+            hasChildren = !eObject.eContents().isEmpty();
+            hasChildren = hasChildren && this.hasCompatibleDescendants(variableManager, eObject, reference);
+        }
+        return hasChildren;
+    }
+
+    private boolean hasCompatibleDescendants(VariableManager variableManager, EObject eObject, EReference reference) {
+        VariableManager childVariableManager = variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, eObject);
+        return this.isSelectable(childVariableManager, reference) || eObject.eContents().stream()
+                .anyMatch(eContent -> this.hasCompatibleDescendants(childVariableManager, eContent, reference));
     }
 
     private List<Object> getChildren(VariableManager variableManager) {
@@ -270,6 +290,16 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
                 }
             }
         }
+        EReference reference = this.resolveReference(variableManager).orElse(null);
+        result.removeIf(object -> {
+            if (object instanceof EObject eObject) {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VariableManager.SELF, eObject);
+                return !this.isSelectable(childVariableManager, reference) && !this.hasChildren(childVariableManager, reference);
+            } else {
+                return false;
+            }
+        });
         return result;
     }
 
