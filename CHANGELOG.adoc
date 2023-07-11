@@ -123,6 +123,7 @@ Their `TreeDescription.getCanCreatePredicate()` will be invoked with a `treeId` 
 For example the main _Explorer_ frontend component suscribes to the `treeEvent` subscription with a `treeId` of `'explorer://'`, and the backend `ExplorerDescriptionProvider`'s tests for `treeId.startsWith("explorer://")` to indicate it is the one to use to handle this subscription.
 - https://github.com/eclipse-sirius/sirius-components/issues/2096[#2096] [form] Add style for the reference widget.
 Use the same style properties as the list widget.
+- https://github.com/eclipse-sirius/sirius-components/issues/2175[#2175] [tree] Change tree behavior to reveal the current value(s) in the model browser.
 
 == v2023.6.0
 

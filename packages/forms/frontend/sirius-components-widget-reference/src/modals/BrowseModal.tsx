@@ -30,7 +30,7 @@ const useBrowserModalStyles = makeStyles((_) => ({
 
 export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalProps) => {
   const styles = useBrowserModalStyles();
-  const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: [] });
+  const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: widget.referenceValues });
 
   return (
     <>
