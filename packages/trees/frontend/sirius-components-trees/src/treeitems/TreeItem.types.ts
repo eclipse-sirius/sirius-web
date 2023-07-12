@@ -25,4 +25,5 @@ export interface TreeItemProps {
   readOnly: boolean;
   textToHighlight: string | null;
   isFilterEnabled: boolean;
+  enableMultiSelection: boolean;
 }

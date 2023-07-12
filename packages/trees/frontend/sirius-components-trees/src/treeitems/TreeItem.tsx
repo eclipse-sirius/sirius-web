@@ -124,6 +124,7 @@ export const TreeItem = ({
   readOnly,
   textToHighlight,
   isFilterEnabled,
+  enableMultiSelection,
 }: TreeItemProps) => {
   const classes = useTreeItemStyle();
   const { httpOrigin } = useContext(ServerContext);
@@ -236,6 +237,7 @@ export const TreeItem = ({
                 onExpandAll={onExpandAll}
                 selection={selection}
                 setSelection={setSelection}
+                enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
                 isFilterEnabled={isFilterEnabled}
@@ -328,7 +330,7 @@ export const TreeItem = ({
         return;
       }
 
-      if (event.ctrlKey || event.metaKey) {
+      if ((event.ctrlKey || event.metaKey) && enableMultiSelection) {
         event.stopPropagation();
         const isItemInSelection = selection.entries.find((entry) => entry.id === item.id);
         if (isItemInSelection) {
