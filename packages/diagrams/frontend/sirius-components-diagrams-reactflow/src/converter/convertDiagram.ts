@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node } from 'reactflow';
+import { Edge, Node, XYPosition } from 'reactflow';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import {
@@ -26,9 +26,11 @@ import { ListItemData, ListNodeData } from '../renderer/ListNode.types';
 import { RectangularNodeData } from '../renderer/RectangularNode.types';
 import { CustomEdgeData } from '../renderer/edge/CustomEdge.types';
 
+const defaultPosition: XYPosition = { x: 0, y: 0 };
+
 const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<RectangularNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
-  const { targetObjectId, targetObjectLabel, targetObjectKind, position, size } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
   const labelStyle = gqlNode.label.style;
 
   const data: RectangularNodeData = {
@@ -88,11 +90,7 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
     id: gqlNode.id,
     type: 'rectangularNode',
     data,
-    position,
-    style: {
-      width: `${size.width}px`,
-      height: `${size.height}px`,
-    },
+    position: defaultPosition,
     hidden: gqlNode.state === GQLViewModifier.Hidden,
   };
 
@@ -133,7 +131,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
     };
   });
 
-  const { targetObjectId, targetObjectLabel, targetObjectKind, position } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
   const data: ListNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -202,7 +200,8 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
     id: gqlNode.id,
     type: 'listNode',
     data,
-    position,
+    position: defaultPosition,
+    hidden: gqlNode.state === GQLViewModifier.Hidden,
   };
 
   if (gqlParentNode) {
@@ -215,7 +214,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
 
 const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ImageNodeData> => {
   const style = gqlNode.style as GQLImageNodeStyle;
-  const { targetObjectId, targetObjectLabel, targetObjectKind, position, size } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
 
   const data: ImageNodeData = {
     targetObjectId,
@@ -231,11 +230,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
     id: gqlNode.id,
     type: 'imageNode',
     data,
-    position,
-    style: {
-      width: `${size.width}px`,
-      height: `${size.height}px`,
-    },
+    position: defaultPosition,
     hidden: gqlNode.state === GQLViewModifier.Hidden,
   };
 
@@ -261,6 +256,7 @@ const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[]
       nodes.push(toListNode(gqlNode, parentNode));
 
       (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
+      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
     }
   } else if (gqlNode.style.__typename === 'ImageNodeStyle') {
     nodes.push(toImageNode(gqlNode, parentNode));
