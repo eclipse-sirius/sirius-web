@@ -167,6 +167,7 @@ export const Tree = ({
                 onExpandAll={onExpandAll}
                 selection={selection}
                 setSelection={setSelection}
+                enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={state.filterBarText}
                 isFilterEnabled={state.filterBarTreeFiltering}
