@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { LayoutOptions } from 'elkjs/lib/elk.bundled.js';
 import { useEffect, useRef, useState } from 'react';
 import {
   Background,
@@ -38,7 +37,8 @@ import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { CustomEdge } from './edge/CustomEdge';
-import { performLayout } from './layout';
+import { CustomEdgeData } from './edge/CustomEdge.types';
+import { useLayout } from './layout/useLayout';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
@@ -68,9 +68,10 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onConnect } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
+  const { autoLayout } = useLayout();
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(diagram.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(diagram.edges);
+  const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>(diagram.nodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<CustomEdgeData>(diagram.edges);
 
   useEffect(() => {
     setNodes(diagram.nodes);
@@ -81,7 +82,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
     const firstSelectedNodeId = diagram.nodes
-      .filter((node) => selectionEntryIds.includes((node.data as NodeData).targetObjectId))
+      .filter((node) => selectionEntryIds.includes(node.data.targetObjectId))
       .map((node) => node.id);
     const reactFlowState = store.getState();
     reactFlowState.unselectNodesAndEdges();
@@ -99,8 +100,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       .filter((change) => change.selected)
       .flatMap((change) => diagram.nodes.filter((node) => node.id === change.id))
       .map((node) => {
-        const nodeData = node.data as NodeData;
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = nodeData;
+        const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
         return {
           id: targetObjectId,
           kind: targetObjectKind,
@@ -162,16 +162,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
 
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
   const handleArrangeAll = () => {
-    const layoutOptions: LayoutOptions = {
-      'elk.algorithm': 'layered',
-      'elk.layered.spacing.nodeNodeBetweenLayers': '100',
-      'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
-      'layering.strategy': 'NETWORK_SIMPLEX',
-      'elk.spacing.nodeNode': '80',
-      'elk.direction': 'DOWN',
-      'elk.layered.spacing.edgeNodeBetweenLayers': '30',
-    };
-    performLayout(nodes, edges, layoutOptions).then(({ nodes }) => {
+    autoLayout(nodes, edges).then(({ nodes }) => {
       setNodes(nodes);
     });
   };

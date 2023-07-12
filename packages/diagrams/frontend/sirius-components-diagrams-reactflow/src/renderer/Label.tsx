@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { memo } from 'react';
 import { LabelProps } from './Label.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
@@ -22,7 +23,7 @@ const labelStyle = (style: React.CSSProperties, faded: Boolean): React.CSSProper
   };
 };
 
-export const Label = ({ label, faded }: LabelProps) => {
+export const Label = memo(({ label, faded }: LabelProps) => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId } = useDiagramDirectEdit();
 
   const handleClose = () => {
@@ -41,4 +42,4 @@ export const Label = ({ label, faded }: LabelProps) => {
       {label.text}
     </div>
   );
-};
+});

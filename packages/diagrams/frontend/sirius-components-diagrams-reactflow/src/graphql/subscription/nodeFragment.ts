@@ -44,14 +44,6 @@ fragment nodeFragment on Node {
       backgroundColor
     }
   }
-  position {
-    x
-    y
-  }
-  size {
-    width
-    height
-  }
   userResizable
 }
 `;

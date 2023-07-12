@@ -144,6 +144,7 @@ The node palette with hide and fade:
 +
 image:doc/images/NodePaletteWithHideFade.png[Hide and Fade on node palette]
 - https://github.com/eclipse-sirius/sirius-components/issues/2095[#2095] [diagram] Add support for the creation of new edges in the alternate diagram rendering solution
+- https://github.com/eclipse-sirius/sirius-components/issues/2104[#2104] [diagram] Improve the frontend rendering. Labels and node list are rendered with css.
 
 == v2023.6.0
 
