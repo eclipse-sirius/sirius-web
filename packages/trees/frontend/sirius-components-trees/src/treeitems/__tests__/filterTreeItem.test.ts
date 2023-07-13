@@ -17,7 +17,6 @@ import { splitText } from '../filterTreeItem';
 test('should split text in a case insensitive manner', () => {
   const comPattern = 'com';
   const ompPattern = 'omp';
-  const scPattern = '[]*(){}^/$';
 
   expect(splitText('Composed Composite Computer ComCom - com2', comPattern)).toStrictEqual([
     'Com',
@@ -111,9 +110,10 @@ test('should split text in a case insensitive manner', () => {
   expect(splitText('A null pattern', null)).toStrictEqual(['A null pattern']);
   expect(splitText('An undefined pattern', undefined)).toStrictEqual(['An undefined pattern']);
   expect(splitText('An empty pattern', '')).toStrictEqual(['An empty pattern']);
-  expect(splitText('A pattern with []*(){}^/$ special characters', scPattern)).toStrictEqual([
+  expect(splitText('A pattern with []*(){}^/$ special characters', '[]*(){}^/$')).toStrictEqual([
     'A pattern with ',
     '[]*(){}^/$',
     ' special characters',
   ]);
+  expect(splitText('whole_word_pattern', 'whole_word_pattern')).toStrictEqual(['whole_word_pattern']);
 });

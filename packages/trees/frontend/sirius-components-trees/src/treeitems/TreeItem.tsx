@@ -271,7 +271,12 @@ export const TreeItem = ({
   } else {
     let itemLabel: JSX.Element;
     const splitLabelWithTextToHighlight: string[] = splitText(item.label, textToHighlight);
-    if (textToHighlight === null || textToHighlight === '' || splitLabelWithTextToHighlight.length === 1) {
+    if (
+      textToHighlight === null ||
+      textToHighlight === '' ||
+      (splitLabelWithTextToHighlight.length === 1 &&
+        splitLabelWithTextToHighlight[0].toLocaleLowerCase() !== item.label.toLocaleLowerCase())
+    ) {
       itemLabel = <>{item.label}</>;
     } else {
       const languages: string[] = Array.from(navigator.languages);

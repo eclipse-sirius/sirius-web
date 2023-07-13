@@ -51,6 +51,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2155[#2155] [explorer] Fix an issue where representations leaf tree items were not expanded by Expand All action
 - https://github.com/eclipse-sirius/sirius-components/issues/2144[#2144] [form] Fix the default properties values for widgets with no style.
 - https://github.com/eclipse-sirius/sirius-components/issues/2140[#2140] [tree] Fix Drag'n'drop when a representation is selected.
+- https://github.com/eclipse-sirius/sirius-components/issues/2179[#2179] [tree] Fix an issue where labels of tree items matching exactly pattern typed in the filter bar were not detected.
 
 === New Features
 

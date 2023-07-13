@@ -47,10 +47,21 @@ export const splitText = (label: string, userInput: string | null): string[] => 
 export const isFilterCandidate = (treeItem: GQLTreeItem, textToHighlight: string | null): boolean => {
   let filter: boolean = false;
   const splitLabelWithTextToHighlight: string[] = splitText(treeItem.label, textToHighlight);
-  if (splitLabelWithTextToHighlight.length > 1) {
+  if (textToHighlight === null || textToHighlight === '') {
     filter = false;
-  } else if (!treeItem.hasChildren && splitLabelWithTextToHighlight.length === 1) {
+  } else if (splitLabelWithTextToHighlight.length > 1) {
+    filter = false;
+  } else if (
+    !treeItem.hasChildren &&
+    splitLabelWithTextToHighlight.length === 1 &&
+    splitLabelWithTextToHighlight[0].toLocaleLowerCase() !== textToHighlight.toLocaleLowerCase()
+  ) {
     filter = true;
+  } else if (
+    splitLabelWithTextToHighlight.length === 1 &&
+    splitLabelWithTextToHighlight[0].toLocaleLowerCase() === textToHighlight.toLocaleLowerCase()
+  ) {
+    filter = false;
   } else if (
     textToHighlight &&
     treeItem.hasChildren &&
