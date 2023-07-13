@@ -152,4 +152,49 @@ describe('/projects/:projectId/edit - Tree filter bar', () => {
     cy.getByTestId('Wifi').should('exist');
     cy.getByTestId('standard').should('exist');
   });
+
+  it('test whole word pattern', () => {
+    cy.getByTestId('flow').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('Central_Unit-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('CaptureSubSystem-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('Wifi-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+
+    cy.getByTestId('flow').click().type('{ctrl+f}');
+
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('exist');
+
+    cy.getByTestId('filterbar-textfield').type('Robot');
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('exist');
+
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('exist');
+
+    cy.getByTestId('filterbar-textfield').clear();
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('exist');
+
+    cy.getByTestId('filterbar-textfield').type('flow');
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('not.exist');
+
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('exist');
+
+    cy.getByTestId('flow').dblclick();
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('not.exist');
+
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('flow').should('exist');
+    cy.getByTestId('Robot').should('not.exist');
+  });
 });
