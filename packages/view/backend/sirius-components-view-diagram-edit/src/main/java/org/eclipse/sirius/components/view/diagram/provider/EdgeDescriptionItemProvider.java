@@ -22,8 +22,6 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -37,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeStyle;
  * @generated
  */
 public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemProvider {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -263,17 +262,9 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultEdgePalette()));
 
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
-        FixedColor edgeFixedColor = ViewFactory.eINSTANCE.createFixedColor();
-        edgeFixedColor.setName("#002639");
-        edgeFixedColor.setValue("#002639");
-        newEdgeStyle.setColor(edgeFixedColor);
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));
 
         ConditionalEdgeStyle conditionalEdgeStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
-        FixedColor conditionalEdgeFixedColor = ViewFactory.eINSTANCE.createFixedColor();
-        conditionalEdgeFixedColor.setName("#002639");
-        conditionalEdgeFixedColor.setValue("#002639");
-        conditionalEdgeStyle.setColor(conditionalEdgeFixedColor);
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES, conditionalEdgeStyle));
     }
 
@@ -291,7 +282,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         boolean qualify = childFeature == DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE || childFeature == DiagramPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }
