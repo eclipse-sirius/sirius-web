@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.sample.configuration;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import org.eclipse.sirius.web.spring.configuration.SiriusWebPathResourceResolver;
 import org.eclipse.sirius.web.spring.configuration.SpringWebMvcConfigurerConstants;
@@ -79,7 +80,7 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        boolean inDevMode = Arrays.asList(this.environment.getActiveProfiles()).contains("dev");
+        boolean inDevMode = Arrays.asList(this.environment.getActiveProfiles()).stream().anyMatch(profile -> Objects.equals(profile, "dev") || Objects.equals(profile, "test-h2"));
         if (inDevMode) {
             registry.addMapping(URLConstants.API_BASE_PATH + SpringWebMvcConfigurerConstants.ANY_PATTERN).allowedOriginPatterns(ALLOWED_ORIGIN_PATTERNS).allowCredentials(true);
         }

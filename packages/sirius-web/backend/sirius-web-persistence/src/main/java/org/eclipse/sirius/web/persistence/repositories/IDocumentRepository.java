@@ -12,9 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.persistence.repositories;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.eclipse.sirius.components.annotations.Audited;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.springframework.data.jpa.repository.Query;
@@ -39,12 +46,28 @@ public interface IDocumentRepository extends PagingAndSortingRepository<Document
     List<DocumentEntity> findAll();
 
     @Audited
-    @Query(value = """
-            SELECT * FROM Document document
-            WHERE length(document.content) > 0
-            AND document.content::::jsonb @> ('{ "ns": { "' || ?1 || '": "' || ?2 ||'" } }')::::jsonb
-            """, nativeQuery = true)
-    List<DocumentEntity> findAllByType(String name, String uri);
+    default List<DocumentEntity> findAllByType(String name, String uri) {
+        List<DocumentEntity> documents = this.findAll();
+        return documents.stream().filter(doc -> {
+            String jsonDocumentContent = doc.getContent();
+            if (jsonDocumentContent != null && !jsonDocumentContent.isBlank()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    JsonNode jsonNode = objectMapper.readTree(jsonDocumentContent);
+                    JsonNode nsProperty = jsonNode.get("ns");
+                    if (nsProperty != null) {
+                        JsonNode nsUri = nsProperty.get(name);
+                        if (nsUri != null) {
+                            return Objects.equals(nsUri.asText(), uri);
+                        }
+                    }
+                } catch (JsonMappingException e) {
+                } catch (JsonProcessingException e) {
+                }
+            }
+            return false;
+        }).toList();
+    }
 
     @Audited
     List<DocumentEntity> findAllByProjectId(UUID projectId);

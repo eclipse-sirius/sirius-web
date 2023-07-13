@@ -15,14 +15,13 @@ package org.eclipse.sirius.web.persistence.repositories;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.eclipse.sirius.components.annotations.Audited;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Persistence layer used to manipulate representations.
@@ -55,20 +54,6 @@ public interface IRepresentationRepository extends PagingAndSortingRepository<Re
     @Audited
     @Override
     <S extends RepresentationEntity> S save(S representationEntity);
-
-    @Audited
-    @Transactional
-    @Modifying
-    @Query(value = """
-            DELETE FROM Representation representation
-            WHERE representation.project_id=?1
-            AND NOT EXISTS (
-                SELECT * FROM Document document
-                WHERE document.project_id=?1
-                AND jsonb_path_exists(document.content::::jsonb, ('strict $.content.**.id ? (@ == "' || representation.targetobjectid || '" ) ')::::jsonpath)
-            )
-            """, countQuery = "select 1", nativeQuery = true)
-    int deleteDanglingRepresentations(UUID projectId);
 
     @Audited
     @Override

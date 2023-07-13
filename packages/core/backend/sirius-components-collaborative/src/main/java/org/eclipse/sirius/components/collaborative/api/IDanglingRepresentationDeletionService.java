@@ -35,7 +35,7 @@ public interface IDanglingRepresentationDeletionService {
      */
     boolean isDangling(IEditingContext editingContext, IRepresentation representation);
 
-    void deleteDanglingRepresentations(String editingContextId);
+    void deleteDanglingRepresentations(IEditingContext editingContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -50,7 +50,7 @@ public interface IDanglingRepresentationDeletionService {
         }
 
         @Override
-        public void deleteDanglingRepresentations(String editingContextId) {
+        public void deleteDanglingRepresentations(IEditingContext editingContext) {
         }
 
     }

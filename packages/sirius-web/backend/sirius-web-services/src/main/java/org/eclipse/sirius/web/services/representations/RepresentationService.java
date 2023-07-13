@@ -13,8 +13,10 @@
 package org.eclipse.sirius.web.services.representations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -178,8 +180,26 @@ public class RepresentationService implements IRepresentationService, IRepresent
     }
 
     @Override
-    public void deleteDanglingRepresentations(String editingContextId) {
-        new IDParser().parse(editingContextId).ifPresent(this.representationRepository::deleteDanglingRepresentations);
+    public void deleteDanglingRepresentations(IEditingContext editingContext) {
+        Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
+        if (editingContextUUID.isPresent()) {
+            List<RepresentationEntity> representationEntities = this.representationRepository.findAllByProjectId(editingContextUUID.get());
+            List<RepresentationEntity> representationEntitiesCopy = new ArrayList<>(representationEntities);
+
+            representationEntitiesCopy.forEach(representationEntity -> {
+                String targetObjectId = representationEntity.getTargetObjectId();
+                Optional<Object> optionalObject = this.objectService.getObject(editingContext, targetObjectId);
+                if (optionalObject.isEmpty()) {
+                    this.representationRepository.deleteById(representationEntity.getId());
+                }
+            });
+        }
+    }
+
+    List<JsonNode> getAllNodesWithKey(JsonNode jsonNode, String key) {
+        List<JsonNode> nodes = jsonNode.findValues(key);
+        nodes.forEach(n -> nodes.addAll(this.getAllNodesWithKey(n, key)));
+        return nodes;
     }
 
     @Override

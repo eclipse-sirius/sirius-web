@@ -115,10 +115,4 @@ public class NoOpRepresentationRepository implements IRepresentationRepository {
     @Override
     public void deleteById(UUID id) {
     }
-
-    @Override
-    public int deleteDanglingRepresentations(UUID projectId) {
-        return 0;
-    }
-
 }
