@@ -23,8 +23,6 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -40,6 +38,7 @@ import org.eclipse.sirius.components.view.provider.RepresentationDescriptionItem
  * @generated
  */
 public class DiagramDescriptionItemProvider extends RepresentationDescriptionItemProvider {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -186,10 +185,6 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         EdgeDescription edgeChild = DiagramFactory.eINSTANCE.createEdgeDescription();
         edgeChild.setName("Edge");
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
-        FixedColor fixedColor = ViewFactory.eINSTANCE.createFixedColor();
-        fixedColor.setName("#002639");
-        fixedColor.setValue("#002639");
-        newEdgeStyle.setColor(fixedColor);
         edgeChild.setStyle(newEdgeStyle);
         edgeChild.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
