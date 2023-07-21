@@ -386,7 +386,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                                                                 this.getColorsFromColorPalettesStream(variableManager)
                                                                                     .filter(userColor -> newValue.equals(userColor.getName()))
                                                                                     .findFirst()
-                                                                                    .ifPresent(userColor -> colorSetter.accept(style, userColor));
+                                                                                    .ifPresentOrElse(userColor -> colorSetter.accept(style, userColor), () -> colorSetter.accept(style, null));
                                                                             }
                                                                             return new Success();
                                                                         }).orElseGet(() -> new Failure(""))
