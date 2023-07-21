@@ -27,6 +27,7 @@ export const CustomEdge = memo(
     data,
     style,
     markerEnd,
+    markerStart,
   }: EdgeProps<CustomEdgeData>) => {
     const [edgePath] = getSmoothStepPath({
       sourceX,
@@ -41,7 +42,7 @@ export const CustomEdge = memo(
 
     return (
       <>
-        <BaseEdge id={id} path={edgePath} style={style} markerEnd={markerEnd} />
+        <BaseEdge id={id} path={edgePath} style={style} markerEnd={markerEnd} markerStart={markerStart} />
         <EdgeLabelRenderer>
           {beginLabel && (
             <EdgeLabel transform={`translate(2%, 0%) translate(${sourceX}px,${sourceY}px)`} label={beginLabel} />
