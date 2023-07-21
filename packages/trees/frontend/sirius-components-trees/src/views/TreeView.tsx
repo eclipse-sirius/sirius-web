@@ -12,14 +12,10 @@
  *******************************************************************************/
 import { gql, useLazyQuery, useSubscription } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useContext, useEffect } from 'react';
-
-import { TreeToolBar } from '../toolbar/TreeToolBar';
-import { TreeToolBarContext } from '../toolbar/TreeToolBarContext';
-import { TreeToolBarContextValue } from '../toolbar/TreeToolBarContext.types';
+import { useEffect } from 'react';
 import { Tree } from '../trees/Tree';
+import { getTreeEventSubscription } from './getTreeEventSubscription';
 import {
   GQLGetExpandAllTreePathData,
   GQLGetExpandAllTreePathVariables,
@@ -46,7 +42,6 @@ import {
   TreeViewEvent,
   treeViewMachine,
 } from './TreeViewMachine';
-import { getTreeEventSubscription } from './getTreeEventSubscription';
 
 const getTreePathQuery = gql`
   query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
@@ -74,46 +69,26 @@ const getExpandAllTreePathQuery = gql`
   }
 `;
 
-const useTreeViewStyles = makeStyles((theme) => ({
-  treeView: {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  treeContent: {
-    paddingTop: theme.spacing(1),
-    flexGrow: 1,
-    overflow: 'auto',
-  },
-}));
-
 export const TreeView = ({
   editingContextId,
   selection,
   setSelection,
   readOnly,
   treeId,
-  showToolBar,
   enableMultiSelection,
-  treeOptions,
+  synchronizedWithSelection,
+  textToHighlight,
+  textToFilter,
+  markedItemIds = [],
 }: TreeViewComponentProps) => {
-  const styles = useTreeViewStyles();
-  const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
-    (contribution) => contribution.props.component
-  );
+  const [{ value, context }, dispatch] = useMachine<TreeViewContext, TreeViewEvent>(treeViewMachine, {
+    context: {
+      synchronizedWithSelection: synchronizedWithSelection,
+    },
+  });
 
-  const [{ value, context }, dispatch] = useMachine<TreeViewContext, TreeViewEvent>(treeViewMachine);
   const { toast, treeView } = value as SchemaValue;
-  const {
-    id,
-    tree,
-    expanded,
-    maxDepth,
-    autoExpandToRevealSelection,
-    treeItemToExpandAll,
-    synchronizedWithSelection,
-    message,
-  } = context;
+  const { id, tree, expanded, maxDepth, autoExpandToRevealSelection, treeItemToExpandAll, message } = context;
 
   const [getTreePath, { loading: treePathLoading, data: treePathData, error: treePathError }] = useLazyQuery<
     GQLGetTreePathData,
@@ -218,6 +193,14 @@ export const TreeView = ({
     dispatch(autoExpandToRevealSelectionEvent);
   }, [selection]);
 
+  useEffect(() => {
+    const synchronizeWithSelectionEvent: SynchronizeWithSelectionEvent = {
+      type: 'SYNCHRONIZE_WITH_SELECTION',
+      synchronizedWithSelection: synchronizedWithSelection,
+    };
+    dispatch(synchronizeWithSelectionEvent);
+  }, [synchronizedWithSelection]);
+
   const onExpand = (id: string, depth: number) => {
     const handleExpandedEvent: HandleExpandedEvent = { type: 'HANDLE_EXPANDED', id, depth };
     dispatch(handleExpandedEvent);
@@ -228,25 +211,9 @@ export const TreeView = ({
     dispatch(handleOnExpandAllEvent);
   };
 
-  const onSynchronizedClick = () => {
-    const synchronizeWithSelectionEvent: SynchronizeWithSelectionEvent = {
-      type: 'SYNCHRONIZE_WITH_SELECTION',
-      synchronizedWithSelection: !synchronizedWithSelection,
-    };
-    dispatch(synchronizeWithSelectionEvent);
-  };
   return (
-    <div className={styles.treeView}>
-      {showToolBar ? (
-        <TreeToolBar
-          editingContextId={editingContextId}
-          onSynchronizedClick={onSynchronizedClick}
-          synchronized={synchronizedWithSelection}
-          readOnly={readOnly}
-          treeToolBarContributionComponents={treeToolBarContributionComponents}
-        />
-      ) : null}
-      <div className={styles.treeContent} data-testid={treeId}>
+    <>
+      <div data-testid={treeId}>
         {tree ? (
           <Tree
             editingContextId={editingContextId}
@@ -257,7 +224,9 @@ export const TreeView = ({
             setSelection={setSelection}
             readOnly={readOnly}
             enableMultiSelection={enableMultiSelection}
-            options={treeOptions}
+            markedItemIds={markedItemIds}
+            textToFilter={textToFilter}
+            textToHighlight={textToHighlight}
           />
         ) : null}
       </div>
@@ -266,6 +235,6 @@ export const TreeView = ({
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
-    </div>
+    </>
   );
 };

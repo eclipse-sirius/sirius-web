@@ -11,12 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface FilterBarProps {
-  onTextChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  onFilterButtonClick: (enabled: boolean) => void;
-  onClose: () => void;
+import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
+
+export interface TransferModalProps {
+  editingContextId: string;
+  widget: GQLReferenceWidget;
+  onClose: (selectedElementIds: string[]) => void;
 }
 
-export interface FilterBarState {
-  filterEnabled: boolean;
+export interface TransferModalState {
+  leftSelection: SelectionEntry[];
+  right: SelectionEntry[];
+  rightSelection: SelectionEntry[];
+  draggingRightItemId: string | undefined;
 }

@@ -7,7 +7,9 @@ type ReferenceWidget implements Widget {
   readOnly: Boolean!
   reference: Reference!
   referenceValues: [ReferenceValue!]!
+  referenceOptions: [ReferenceValue!]!
   style: ReferenceWidgetStyle
+  ownerId: ID!
 }
 
 type ReferenceWidgetStyle {

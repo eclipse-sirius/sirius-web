@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLTree, GQLTreeItem } from '../views/TreeView.types';
-import { FilterBarOptions } from './FilterBar.types';
 
 export interface TreeProps {
   editingContextId: string;
@@ -23,17 +22,7 @@ export interface TreeProps {
   setSelection: (selection: Selection) => void;
   readOnly: boolean;
   enableMultiSelection: boolean;
-  options: TreeOptions | undefined;
-}
-
-export interface TreeState {
-  filterBar: boolean;
-  filterBarText: string | null;
-  filterBarTreeFiltering: boolean;
-}
-
-export interface TreeOptions {
-  filterBarOptions: FilterBarOptions | undefined;
-  treeBorderStyle: boolean | undefined;
-  treeTitle: string | undefined;
+  textToHighlight: string | null;
+  textToFilter: string | null;
+  markedItemIds: string[];
 }

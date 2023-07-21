@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -89,9 +90,11 @@ public class ClickReferenceValueEventHandlerTests {
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
                 .diagnostics(Collections.emptyList())
                 .referenceValues(Collections.singletonList(referenceValue))
+                .referenceOptions(List.of())
                 .label("")
                 .readOnly(false)
                 .setting(setting)
+                .ownerId("")
                 .build();
 
         Group group = Group.newGroup("groupId")
@@ -165,9 +168,11 @@ public class ClickReferenceValueEventHandlerTests {
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
                 .diagnostics(Collections.emptyList())
                 .referenceValues(Collections.singletonList(referenceValue))
+                .referenceOptions(List.of())
                 .label("")
                 .readOnly(true)
                 .setting(setting)
+                .ownerId("")
                 .build();
 
         Group group = Group.newGroup("groupId")

@@ -40,6 +40,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, List<?>> itemsProvider;
 
+    private Function<VariableManager, List<?>> optionsProvider;
+
     private Function<VariableManager, String> itemIdProvider;
 
     private Function<VariableManager, String> itemLabelProvider;
@@ -53,6 +55,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
     private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
     private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
+
+    private Function<VariableManager, String> ownerIdProvider;
 
     private ReferenceWidgetDescription() {
         // Prevent instantiation
@@ -76,6 +80,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     public Function<VariableManager, List<?>> getItemsProvider() {
         return this.itemsProvider;
+    }
+
+    public Function<VariableManager, List<?>> getOptionsProvider() {
+        return this.optionsProvider;
     }
 
     public Function<VariableManager, String> getItemIdProvider() {
@@ -106,6 +114,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.styleProvider;
     }
 
+    public Function<VariableManager, String> getOwnerIdProvider() {
+        return this.ownerIdProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -130,6 +142,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, List<?>> itemsProvider;
 
+        private Function<VariableManager, List<?>> optionsProvider;
+
         private Function<VariableManager, String> itemIdProvider;
 
         private Function<VariableManager, String> itemLabelProvider;
@@ -145,6 +159,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
         private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
+
+        private Function<VariableManager, String> ownerIdProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -172,6 +188,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         public Builder itemsProvider(Function<VariableManager, List<?>> itemsProvider) {
             this.itemsProvider = Objects.requireNonNull(itemsProvider);
+            return this;
+        }
+
+        public Builder optionsProvider(Function<VariableManager, List<?>> optionsProvider) {
+            this.optionsProvider = Objects.requireNonNull(optionsProvider);
             return this;
         }
 
@@ -215,6 +236,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder ownerIdProvider(Function<VariableManager, String> ownerIdProvider) {
+            this.ownerIdProvider = Objects.requireNonNull(ownerIdProvider);
+            return this;
+        }
+
         public ReferenceWidgetDescription build() {
             ReferenceWidgetDescription referenceWidgetDescription = new ReferenceWidgetDescription();
             referenceWidgetDescription.id = Objects.requireNonNull(this.id);
@@ -223,6 +249,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             referenceWidgetDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             referenceWidgetDescription.itemsProvider = Objects.requireNonNull(this.itemsProvider);
+            referenceWidgetDescription.optionsProvider = Objects.requireNonNull(this.optionsProvider);
             referenceWidgetDescription.itemIdProvider = Objects.requireNonNull(this.itemIdProvider);
             referenceWidgetDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);
             referenceWidgetDescription.itemKindProvider = Objects.requireNonNull(this.itemKindProvider);
@@ -231,6 +258,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidgetDescription.itemClickHandlerProvider = this.itemClickHandlerProvider; // Optional on purpose
             referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
+            referenceWidgetDescription.ownerIdProvider = Objects.requireNonNull(this.ownerIdProvider);
             return referenceWidgetDescription;
         }
     }

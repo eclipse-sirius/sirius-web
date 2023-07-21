@@ -12,9 +12,9 @@
  *******************************************************************************/
 
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { SiteProps } from './Site.types';
 
@@ -91,6 +91,9 @@ const useSiteStyles = makeStyles((theme) => ({
     overflow: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    '& > *': {
+      flexGrow: 1,
+    },
   },
 }));
 

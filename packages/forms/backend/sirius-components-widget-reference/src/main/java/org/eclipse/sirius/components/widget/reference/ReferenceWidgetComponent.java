@@ -49,8 +49,10 @@ public class ReferenceWidgetComponent implements IComponent {
         String label = referenceDescription.getLabelProvider().apply(variableManager);
         String iconURL = referenceDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = referenceDescription.getIsReadOnlyProvider().apply(variableManager);
+        String ownerId = referenceDescription.getOwnerIdProvider().apply(variableManager);
 
         List<?> rawValue = referenceDescription.getItemsProvider().apply(variableManager);
+        List<?> rawOptions = referenceDescription.getOptionsProvider().apply(variableManager);
         Setting setting = referenceDescription.getSettingProvider().apply(variableManager);
         ReferenceWidgetStyle style = referenceDescription.getStyleProvider().apply(variableManager);
 
@@ -80,12 +82,31 @@ public class ReferenceWidgetComponent implements IComponent {
                 })
                 .toList();
 
+        List<ReferenceValue> options = rawOptions.stream()
+                .map(object -> {
+                    VariableManager childVariables = variableManager.createChild();
+                    childVariables.put(ReferenceWidgetComponent.ITEM_VARIABLE, object);
+                    String itemId = referenceDescription.getItemIdProvider().apply(childVariables);
+                    String itemLabel = referenceDescription.getItemLabelProvider().apply(childVariables);
+                    String itemImageURL = referenceDescription.getItemImageURLProvider().apply(childVariables);
+                    String itemKind = referenceDescription.getItemKindProvider().apply(childVariables);
+
+                    return ReferenceValue.newReferenceValue(itemId)
+                            .label(itemLabel)
+                            .iconURL(itemImageURL)
+                            .kind(itemKind)
+                            .build();
+                })
+                .toList();
+
         var builder = ReferenceElementProps.newReferenceElementProps(id)
                 .label(label)
                 .iconURL(iconURL)
                 .diagnostics(List.of())
                 .values(items)
-                .setting(setting);
+                .options(options)
+                .setting(setting)
+                .ownerId(ownerId);
         if (referenceDescription.getHelpTextProvider() != null) {
             builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
         }

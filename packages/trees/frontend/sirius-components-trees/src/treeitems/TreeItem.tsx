@@ -39,30 +39,22 @@ const useTreeItemStyle = makeStyles((theme) => ({
     gap: theme.spacing(0.5),
     alignItems: 'center',
     userSelect: 'none',
-    fill: '#66808a',
-    '&:hover': {
-      stroke: 'var(--daintree)',
-      fill: 'var(--daintree)',
-      backgroundColor: 'var(--blue-lagoon-lighten-95)',
-    },
     '&:focus-within': {
       borderWidth: '1px',
       borderColor: 'black',
       borderStyle: 'dotted',
     },
   },
+  treeItemHover: {
+    backgroundColor: theme.palette.action.hover,
+  },
   selected: {
-    stroke: '#66808a',
-    fill: '#66808a',
-    backgroundColor: 'var(--blue-lagoon-lighten-90)',
+    backgroundColor: theme.palette.action.selected,
     '&:hover': {
-      stroke: '#66808a',
-      fill: '#66808a',
-      backgroundColor: 'var(--blue-lagoon-lighten-90)',
+      backgroundColor: theme.palette.action.selected,
     },
   },
   nonSelectable: {
-    fontStyle: 'italic',
     opacity: 0.6,
   },
   arrow: {
@@ -70,18 +62,15 @@ const useTreeItemStyle = makeStyles((theme) => ({
   },
   more: {
     hover: {
-      stroke: 'var(--daintree)',
-      fill: 'var(--daintree)',
-      backgroundColor: 'var(--blue-lagoon-lighten-95)',
+      backgroundColor: theme.palette.action.hover,
     },
     focus: {
-      stroke: 'var(--daintree)',
-      fill: 'var(--daintree)',
-      backgroundColor: 'var(--blue-lagoon-lighten-90)',
+      backgroundColor: theme.palette.action.selected,
     },
   },
   expandIcon: {
     marginLeft: 'auto',
+    marginRight: theme.spacing(1),
   },
   content: {
     display: 'grid',
@@ -97,6 +86,8 @@ const useTreeItemStyle = makeStyles((theme) => ({
     flexDirection: 'row',
     gap: '4px',
     alignItems: 'center',
+  },
+  imageAndLabelSelectable: {
     cursor: 'pointer',
   },
   label: {
@@ -106,6 +97,9 @@ const useTreeItemStyle = makeStyles((theme) => ({
     maxWidth: '100ch',
   },
   selectedLabel: {
+    fontWeight: 'bold',
+  },
+  marked: {
     fontWeight: 'bold',
   },
   ul: {
@@ -130,8 +124,9 @@ export const TreeItem = ({
   setSelection,
   readOnly,
   textToHighlight,
-  isFilterEnabled,
+  textToFilter,
   enableMultiSelection,
+  markedItemIds,
 }: TreeItemProps) => {
   const classes = useTreeItemStyle();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
@@ -247,7 +242,8 @@ export const TreeItem = ({
                 enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}
-                isFilterEnabled={isFilterEnabled}
+                textToFilter={textToFilter}
+                markedItemIds={markedItemIds}
               />
             </li>
           );
@@ -263,6 +259,9 @@ export const TreeItem = ({
   if (selected) {
     className = `${className} ${classes.selected}`;
     dataTestid = 'selected';
+  }
+  if (isHovered && item.selectable) {
+    className = `${className} ${classes.treeItemHover}`;
   }
   useEffect(() => {
     if (selected) {
@@ -286,6 +285,8 @@ export const TreeItem = ({
     });
     refDom.current.focus();
   };
+
+  const marked: boolean = markedItemIds.some((id) => id === item.id);
   if (editingMode) {
     text = (
       <TreeItemDirectEditInput
@@ -324,7 +325,9 @@ export const TreeItem = ({
       );
     }
     text = (
-      <Typography variant="body2" className={`${classes.label} ${selected ? classes.selectedLabel : ''}`}>
+      <Typography
+        variant="body2"
+        className={`${classes.label} ${selected ? classes.selectedLabel : ''} ${marked ? classes.marked : ''}`}>
         {itemLabel}
       </Typography>
     );
@@ -375,7 +378,7 @@ export const TreeItem = ({
   };
 
   const { kind } = item;
-  const draggable = kind.startsWith('siriusComponents://semantic');
+  const draggable = kind.startsWith('siriusComponents://semantic') && item.selectable;
   const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
     const entries = selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic'));
 
@@ -409,7 +412,7 @@ export const TreeItem = ({
   const shouldDisplayMoreButton = item.deletable || item.editable || treeItemMenuContributionComponents.length > 0;
 
   let currentTreeItem: JSX.Element | null;
-  if (isFilterEnabled && isFilterCandidate(item, textToHighlight)) {
+  if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
   } else {
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
@@ -432,7 +435,7 @@ export const TreeItem = ({
             data-testid={dataTestid}>
             <div className={`${classes.content} ${item.selectable ? '' : classes.nonSelectable}`}>
               <div
-                className={classes.imageAndLabel}
+                className={`${classes.imageAndLabel} ${item.selectable ? classes.imageAndLabelSelectable : ''}`}
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
                 title={tooltipText}
                 data-testid={item.label}>

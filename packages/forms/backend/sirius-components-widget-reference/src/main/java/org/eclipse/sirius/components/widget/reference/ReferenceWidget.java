@@ -32,9 +32,13 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private List<ReferenceValue> referenceValues;
 
+    private List<ReferenceValue> referenceOptions;
+
     private Setting setting;
 
     private ReferenceWidgetStyle style;
+
+    private String ownerId;
 
     private ReferenceWidget() {
         // Prevent instantiation
@@ -48,12 +52,20 @@ public final class ReferenceWidget extends AbstractWidget {
         return this.referenceValues;
     }
 
+    public List<ReferenceValue> getReferenceOptions() {
+        return this.referenceOptions;
+    }
+
     public Setting getSetting() {
         return this.setting;
     }
 
     public ReferenceWidgetStyle getStyle() {
         return this.style;
+    }
+
+    public String getOwnerId() {
+        return this.ownerId;
     }
 
     @Override
@@ -82,9 +94,13 @@ public final class ReferenceWidget extends AbstractWidget {
 
         private List<ReferenceValue> referenceValues;
 
+        private List<ReferenceValue> referenceOptions;
+
         private Setting setting;
 
         private ReferenceWidgetStyle style;
+
+        private String ownerId;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -120,6 +136,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder referenceOptions(List<ReferenceValue> options) {
+            this.referenceOptions = Objects.requireNonNull(options);
+            return this;
+        }
+
         public Builder setting(Setting setting) {
             this.setting = Objects.requireNonNull(setting);
             return this;
@@ -130,6 +151,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder ownerId(String ownerId) {
+            this.ownerId = Objects.requireNonNull(ownerId);
+            return this;
+        }
+
         public ReferenceWidget build() {
             ReferenceWidget referenceWidget = new ReferenceWidget();
             referenceWidget.id = Objects.requireNonNull(this.id);
@@ -137,10 +163,12 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.iconURL = this.iconURL;
             referenceWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
             referenceWidget.referenceValues = Objects.requireNonNull(this.referenceValues);
+            referenceWidget.referenceOptions = Objects.requireNonNull(this.referenceOptions);
             referenceWidget.setting = Objects.requireNonNull(this.setting);
             referenceWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidget.readOnly = this.readOnly;
             referenceWidget.style = this.style; // Optional on purpose
+            referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
             return referenceWidget;
         }
     }

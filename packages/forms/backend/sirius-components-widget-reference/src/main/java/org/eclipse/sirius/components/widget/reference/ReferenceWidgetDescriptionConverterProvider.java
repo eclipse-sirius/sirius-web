@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.widget.reference;
 
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -28,8 +29,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ReferenceWidgetDescriptionConverterProvider implements IWidgetConverterProvider {
+
+    private final ComposedAdapterFactory composedAdapterFactory;
+
+    public ReferenceWidgetDescriptionConverterProvider(ComposedAdapterFactory composedAdapterFactory) {
+        this.composedAdapterFactory = composedAdapterFactory;
+    }
+
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, feedbackMessageService);
+        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, feedbackMessageService, this.composedAdapterFactory);
     }
 }

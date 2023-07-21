@@ -32,6 +32,7 @@ export type PropertySectionComponentProps<W extends GQLWidget> = {
   widget: W;
   subscribers: GQLSubscriber[];
   readOnly: boolean;
+  setSelection: (selection: Selection) => void;
 };
 
 export type PropertySectionComponent<W extends GQLWidget> = (

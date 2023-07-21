@@ -21,3 +21,4 @@ export * from './treeitems/TreeItemContextMenuContribution.types';
 export * from './views/ExplorerView';
 export * from './views/TreeView';
 export * from './views/TreeView.types';
+export * from './treeitems/filterTreeItem';

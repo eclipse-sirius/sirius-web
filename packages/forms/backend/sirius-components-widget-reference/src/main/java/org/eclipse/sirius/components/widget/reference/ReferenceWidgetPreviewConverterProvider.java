@@ -50,6 +50,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                         .iconURLProvider(variableManager -> "")
                         .isReadOnlyProvider(variableManager -> false)
                         .itemsProvider(variableManager -> List.of())
+                        .optionsProvider(variableManager -> List.of())
                         .itemIdProvider(variableManager -> "")
                         .itemKindProvider(variableManager -> "")
                         .itemLabelProvider(variableManager -> "")
@@ -61,6 +62,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                             EObject owner = EcorePackage.Literals.ECLASS;
                             return ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
                         })
+                        .ownerIdProvider(variableManager -> "")
                         .itemClickHandlerProvider(variableManager -> new Success())
                         .styleProvider(variableManager -> {
                             ReferenceWidgetDescriptionStyle style = referenceDescription.getStyle();
