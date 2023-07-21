@@ -130,7 +130,7 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
   }
 
   return (
-    <div className={classes.group}>
+    <div className={classes.group} data-testid={`group-${group.label}`}>
       <div className={classes.groupLabelAndToolbar}>
         {group.displayMode === 'TOGGLEABLE_AREAS' ? (
           widgetSelector

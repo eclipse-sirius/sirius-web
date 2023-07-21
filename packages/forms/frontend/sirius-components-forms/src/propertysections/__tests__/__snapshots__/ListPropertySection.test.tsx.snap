@@ -19,6 +19,7 @@ exports[`render list widget 1`] = `
     </div>
     <table
       class="MuiTable-root"
+      data-testid="table-myList"
     >
       <tbody
         class="MuiTableBody-root"
@@ -31,14 +32,14 @@ exports[`render list widget 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item1"
+              data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item1"
+              data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
@@ -70,14 +71,14 @@ exports[`render list widget 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item2"
+              data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item2"
+              data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
@@ -109,14 +110,14 @@ exports[`render list widget 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-3 makeStyles-style-4 makeStyles-style-5 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item3"
+              data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item3"
+              data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
@@ -180,6 +181,7 @@ exports[`render list widget with help hint 1`] = `
     </div>
     <table
       class="MuiTable-root"
+      data-testid="table-myList"
     >
       <tbody
         class="MuiTableBody-root"
@@ -192,14 +194,14 @@ exports[`render list widget with help hint 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-27 makeStyles-style-28 makeStyles-style-29 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item1"
+              data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item1"
+              data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
@@ -231,14 +233,14 @@ exports[`render list widget with help hint 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-27 makeStyles-style-28 makeStyles-style-29 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item2"
+              data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item2"
+              data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
@@ -270,14 +272,14 @@ exports[`render list widget with help hint 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-27 makeStyles-style-28 makeStyles-style-29 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item3"
+              data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item3"
+              data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
@@ -329,6 +331,7 @@ exports[`render list widget with style 1`] = `
     </div>
     <table
       class="MuiTable-root"
+      data-testid="table-myList"
     >
       <tbody
         class="MuiTableBody-root"
@@ -341,14 +344,14 @@ exports[`render list widget with style 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item1"
+              data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item1"
+              data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
@@ -380,14 +383,14 @@ exports[`render list widget with style 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item2"
+              data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item2"
+              data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
@@ -419,14 +422,14 @@ exports[`render list widget with style 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-11 makeStyles-style-12 makeStyles-style-13 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item3"
+              data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item3"
+              data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
@@ -478,6 +481,7 @@ exports[`should render a readOnly list from widget properties 1`] = `
     </div>
     <table
       class="MuiTable-root"
+      data-testid="table-myList"
     >
       <tbody
         class="MuiTableBody-root"
@@ -490,14 +494,14 @@ exports[`should render a readOnly list from widget properties 1`] = `
           >
             <p
               class="MuiTypography-root  makeStyles-style-36 makeStyles-style-37 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item1"
+              data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
-              data-testid="delete-representation-item1"
+              data-testid="delete-representation-item1Label"
               disabled=""
               tabindex="-1"
               type="button"
@@ -527,14 +531,14 @@ exports[`should render a readOnly list from widget properties 1`] = `
           >
             <p
               class="MuiTypography-root  makeStyles-style-36 makeStyles-style-37 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item2"
+              data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
-              data-testid="delete-representation-item2"
+              data-testid="delete-representation-item2Label"
               disabled=""
               tabindex="-1"
               type="button"
@@ -564,14 +568,14 @@ exports[`should render a readOnly list from widget properties 1`] = `
           >
             <p
               class="MuiTypography-root  makeStyles-style-36 makeStyles-style-37 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item3"
+              data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
-              data-testid="delete-representation-item3"
+              data-testid="delete-representation-item3Label"
               disabled=""
               tabindex="-1"
               type="button"
@@ -621,6 +625,7 @@ exports[`should the click event sent on item click 1`] = `
     </div>
     <table
       class="MuiTable-root"
+      data-testid="table-myList"
     >
       <tbody
         class="MuiTableBody-root"
@@ -633,14 +638,14 @@ exports[`should the click event sent on item click 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item1"
+              data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item1"
+              data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
@@ -672,14 +677,14 @@ exports[`should the click event sent on item click 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item2"
+              data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item2"
+              data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
@@ -711,14 +716,14 @@ exports[`should the click event sent on item click 1`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item3"
+              data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item3"
+              data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >
@@ -770,6 +775,7 @@ exports[`should the click event sent on item click 2`] = `
     </div>
     <table
       class="MuiTable-root"
+      data-testid="table-myList"
     >
       <tbody
         class="MuiTableBody-root"
@@ -782,14 +788,14 @@ exports[`should the click event sent on item click 2`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item1"
+              data-testid="representation-item1Label"
             >
               item1Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item1"
+              data-testid="delete-representation-item1Label"
               tabindex="0"
               type="button"
             >
@@ -821,14 +827,14 @@ exports[`should the click event sent on item click 2`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item2"
+              data-testid="representation-item2Label"
             >
               item2Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item2"
+              data-testid="delete-representation-item2Label"
               tabindex="0"
               type="button"
             >
@@ -860,14 +866,14 @@ exports[`should the click event sent on item click 2`] = `
           >
             <p
               class="MuiTypography-root makeStyles-canBeSelectedItem-19 makeStyles-style-20 makeStyles-style-21 MuiTypography-body1 MuiTypography-colorTextPrimary"
-              data-testid="representation-item3"
+              data-testid="representation-item3Label"
             >
               item3Label
             </p>
             <button
               aria-label="deleteListItem"
               class="MuiButtonBase-root MuiIconButton-root"
-              data-testid="delete-representation-item3"
+              data-testid="delete-representation-item3Label"
               tabindex="0"
               type="button"
             >

@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
@@ -143,6 +143,7 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
                   </div>
                 }
                 key={page.id}
+                data-testid={`page-tab-${page.label}`}
               />
             );
           })}

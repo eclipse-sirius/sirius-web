@@ -4,6 +4,7 @@ exports[`should render the flexbox container with border style 1`] = `
 <div>
   <div
     class="makeStyles-containerAndLabel-1 makeStyles-containerAndLabel-10"
+    data-testid="flexbox-label"
   >
     <div
       class="makeStyles-propertySectionLabel-7"
@@ -28,6 +29,7 @@ exports[`should render the flexbox container without style 1`] = `
 <div>
   <div
     class="makeStyles-containerAndLabel-1 makeStyles-containerAndLabel-4"
+    data-testid="flexbox-label"
   >
     <div
       class="makeStyles-propertySectionLabel-7"

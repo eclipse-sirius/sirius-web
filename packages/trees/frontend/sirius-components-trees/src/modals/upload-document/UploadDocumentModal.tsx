@@ -142,7 +142,7 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
             color="primary"
             type="submit"
             form="upload-form-id"
-            data-testid="upload-document">
+            data-testid="upload-document-submit">
             Upload
           </Button>
         </DialogActions>

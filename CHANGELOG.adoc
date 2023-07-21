@@ -126,6 +126,7 @@ Use the same style properties as the list widget.
 - https://github.com/eclipse-sirius/sirius-components/issues/2175[#2175] [tree] Change tree behavior to reveal the current value(s) in the model browser.
 - https://github.com/eclipse-sirius/sirius-components/issues/2171[#2171] [tree] Remove from model browser subtrees with no compatible values.
 - https://github.com/eclipse-sirius/sirius-components/issues/2168[#2168] [tree] Add option on tree to disable multiple selection.
+- https://github.com/eclipse-sirius/sirius-components/issues/2183[#2183] [form] Add some data-testid to help cypress tests redaction.
 
 == v2023.6.0
 

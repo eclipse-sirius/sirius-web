@@ -18,6 +18,7 @@ import { useState } from 'react';
 import { NewDocumentModal } from '../modals/new-document/NewDocumentModal';
 import { UploadDocumentModal } from '../modals/upload-document/UploadDocumentModal';
 import { TreeToolBarProps, TreeToolBarState } from './TreeToolBar.types';
+
 const useTreeToolbarStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
@@ -63,7 +64,7 @@ export const TreeToolBar = ({ editingContextId, onSynchronizedClick, synchronize
           aria-label="Upload model"
           title="Upload model"
           onClick={openUploadDocumentModal}
-          data-testid="upload-document">
+          data-testid="upload-document-icon">
           <PublishIcon />
         </IconButton>
         <IconButton

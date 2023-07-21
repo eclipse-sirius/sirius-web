@@ -72,7 +72,7 @@ export const FlexboxContainerPropertySection = ({
   ));
 
   return (
-    <div className={classes.containerAndLabel}>
+    <div className={classes.containerAndLabel} data-testid={`flexbox-${widget.label}`}>
       <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} subscribers={[]} />
       <div className={classes.container}>{children}</div>
     </div>

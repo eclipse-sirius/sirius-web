@@ -90,28 +90,26 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
   });
 
   it('can open the upload document modal', () => {
-    cy.getByTestId('upload-document').click();
+    cy.getByTestId('upload-document-icon').click();
 
     cy.get('.MuiDialog-container').should('be.visible');
 
     cy.get('.MuiDialog-container').type('{esc}');
     cy.get('.MuiDialog-container').should('not.exist');
   });
-});
 
-//The upload function doesn't exist anymore.
-it.skip('can upload an existing document', () => {
-  cy.getByTestId('upload-document').click();
+  it('can upload an existing document', () => {
+    cy.getByTestId('upload-document-icon').click();
 
-  cy.fixture('Robot.xmi').then((fileContent) => {
-    cy.getByTestId('file').upload({
-      fileContent,
-      fileName: 'robot',
-      mimeType: 'text/xml',
-      encoding: 'utf8',
-    });
+    cy.getByTestId('file').selectFile(
+      {
+        contents: 'cypress/fixtures/Robot.xmi',
+        fileName: 'robot',
+      },
+      { force: true }
+    );
 
-    cy.getByTestId('upload-document').click();
+    cy.getByTestId('upload-document-submit').click();
 
     cy.get('.MuiDialog-container').should('not.exist');
     cy.getByTestId('explorer://').contains('robot');
