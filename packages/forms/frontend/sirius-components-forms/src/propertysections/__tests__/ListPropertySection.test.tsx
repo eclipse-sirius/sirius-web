@@ -16,7 +16,7 @@ import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
-import { ListPropertySection, clickListItemMutation } from '../ListPropertySection';
+import { clickListItemMutation, ListPropertySection } from '../ListPropertySection';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -181,7 +181,7 @@ test('should the click event sent on item click', async () => {
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
-  const element: HTMLElement = screen.getByTestId('representation-item3');
+  const element: HTMLElement = screen.getByTestId('representation-item3Label');
   expect(element.textContent).toBe('item3Label');
 
   await act(async () => {

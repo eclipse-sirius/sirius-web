@@ -239,14 +239,14 @@ export const ListPropertySection = ({
           className={`${readOnly || widget.readOnly ? '' : classes.canBeSelectedItem} ${classes.style}`}
           onClick={() => (readOnly || widget.readOnly ? {} : clickHandler(item))}
           color="textPrimary"
-          data-testid={`representation-${item.id}`}>
+          data-testid={`representation-${item.label}`}>
           {item.label}
         </Typography>
         <IconButton
           aria-label="deleteListItem"
           onClick={(event) => onDelete(event, item)}
           disabled={readOnly || !item.deletable || widget.readOnly}
-          data-testid={`delete-representation-${item.id}`}>
+          data-testid={`delete-representation-${item.label}`}>
           <DeleteIcon />
         </IconButton>
       </>
@@ -261,7 +261,7 @@ export const ListPropertySection = ({
         widget={widget}
         subscribers={subscribers}
       />
-      <Table size="small">
+      <Table size="small" data-testid={`table-${widget.label}`}>
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.id}>
