@@ -349,7 +349,8 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       type: 'customEdge',
       source: gqlEdge.sourceId,
       target: gqlEdge.targetId,
-      markerEnd: `open-arrow--${gqlEdge.id}--markerEnd`,
+      markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
+      markerStart: `${gqlEdge.style.sourceArrow}--${gqlEdge.id}--markerStart`,
       zIndex,
       style: {
         stroke: gqlEdge.style.color,
