@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
@@ -58,6 +59,8 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
 
     public static final String DOCUMENT_KIND = "siriusWeb://document";
 
+    public static final String TREE_KIND = "modelBrowser://";
+
     private final IObjectService objectService;
 
     private final IURLParser urlParser;
@@ -75,7 +78,7 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
     public TreeDescription getModelBrowserDescription() {
         // This predicate will NOT be used while creating the model browser but we don't want to see the description of the
         // model browser in the list of representations that can be created. Thus, we will return false all the time.
-        Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get("treeId", String.class).map(treeId -> treeId.startsWith("modelBrowser://"))
+        Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get("treeId", String.class).map(treeId -> treeId.startsWith(TREE_KIND))
                 .orElse(false);
 
         return TreeDescription.newTreeDescription(DESCRIPTION_ID)
@@ -105,16 +108,31 @@ public class ModelBrowserDescriptionProvider implements IRepresentationDescripti
     private boolean isSelectable(VariableManager variableManager, EReference reference) {
         var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
         if (optionalSelf.isPresent() && reference != null) {
-            return reference.getEType().isInstance(optionalSelf.get());
+            return reference.getEType().isInstance(optionalSelf.get()) && this.resolveOwnerEObject(variableManager)
+                    .map(eObject -> !EcoreUtil.isAncestor(optionalSelf.get(), eObject))
+                    .orElse(true);
         } else {
             return false;
+        }
+    }
+
+    private Optional<EObject> resolveOwnerEObject(VariableManager variableManager) {
+        var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
+            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            String ownerId = parameters.get("ownerId").get(0);
+
+            return this.objectService.getObject(optionalEditingContext.get(), ownerId).filter(EObject.class::isInstance).map(EObject.class::cast);
+        } else {
+            return Optional.empty();
         }
     }
 
     private Optional<EReference> resolveReference(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
-        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith("modelBrowser://") && optionalEditingContext.isPresent()) {
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String[] qualifiedTypeName = parameters.get("typeName").get(0).split("::");

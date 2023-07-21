@@ -10,36 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { FilterList } from '@material-ui/icons';
-import CloseIcon from '@material-ui/icons/Close';
-import { useState } from 'react';
-import { FilterBarProps, FilterBarState } from './FilterBar.types';
+import ClearIcon from '@material-ui/icons/Clear';
+import SearchIcon from '@material-ui/icons/Search';
+import { ModelBrowserFilterBarProps } from './ModelBrowserFilterBar.types';
 
 const useFilterBarStyles = makeStyles((theme: Theme) => ({
   filterbar: {
     display: 'flex',
     flexDirection: 'row',
     overflow: 'hidden',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
   },
   textfield: {
     height: theme.spacing(3),
     fontSize: theme.typography.fontSize,
   },
+  placeHolderIcon: {
+    color: theme.palette.text.disabled,
+  },
 }));
-export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: FilterBarProps) => {
+export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: ModelBrowserFilterBarProps) => {
   const classes = useFilterBarStyles();
-
-  const initialState: FilterBarState = {
-    filterEnabled: false,
-  };
-  const [state, setState] = useState<FilterBarState>(initialState);
 
   return (
     <div className={classes.filterbar}>
@@ -49,41 +44,29 @@ export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: Filter
         name="filterbar-textfield"
         placeholder="Type to filter"
         spellCheck={false}
-        variant="outlined"
         size="small"
         margin="none"
         autoFocus={true}
         multiline={false}
         fullWidth
+        value={text}
         onChange={onTextChange}
         InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon fontSize="small" className={classes.placeHolderIcon} />
+            </InputAdornment>
+          ),
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton
-                data-testid="filterbar-filter-button"
-                aria-label="filter"
-                size="small"
-                onClick={() => {
-                  onFilterButtonClick(!state.filterEnabled);
-                  setState((prevState) => {
-                    return { filterEnabled: !prevState.filterEnabled };
-                  });
-                }}>
-                <FilterList fontSize="small" color={state.filterEnabled ? 'primary' : 'secondary'} />
+              <IconButton data-testid="filterbar-clear-button" aria-label="clear" size="small" onClick={onTextClear}>
+                <ClearIcon fontSize="small" />
               </IconButton>
             </InputAdornment>
           ),
           className: classes.textfield,
         }}
       />
-      <IconButton
-        data-testid="filterbar-close-button"
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={onClose}>
-        <CloseIcon fontSize="small" />
-      </IconButton>
     </div>
   );
 };

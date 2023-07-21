@@ -46,9 +46,13 @@ public final class ReferenceElementProps implements IProps {
 
     private List<ReferenceValue> values;
 
+    private List<ReferenceValue> options;
+
     private Setting setting;
 
     private ReferenceWidgetStyle style;
+
+    private String ownerId;
 
     private ReferenceElementProps() {
         // Prevent instantiation
@@ -86,12 +90,20 @@ public final class ReferenceElementProps implements IProps {
         return this.values;
     }
 
+    public List<ReferenceValue> getOptions() {
+        return this.options;
+    }
+
     public Setting getSetting() {
         return this.setting;
     }
 
     public ReferenceWidgetStyle getStyle() {
         return this.style;
+    }
+
+    public String getOwnerId() {
+        return this.ownerId;
     }
 
     @Override
@@ -120,9 +132,13 @@ public final class ReferenceElementProps implements IProps {
 
         private List<ReferenceValue> values;
 
+        private List<ReferenceValue> options;
+
         private Setting setting;
 
         private ReferenceWidgetStyle style;
+
+        private String ownerId;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -158,6 +174,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder options(List<ReferenceValue> options) {
+            this.options = Objects.requireNonNull(options);
+            return this;
+        }
+
         public Builder setting(Setting setting) {
             this.setting = Objects.requireNonNull(setting);
             return this;
@@ -165,6 +186,11 @@ public final class ReferenceElementProps implements IProps {
 
         public Builder style(ReferenceWidgetStyle style) {
             this.style = Objects.requireNonNull(style);
+            return this;
+        }
+
+        public Builder ownerId(String ownerId) {
+            this.ownerId = Objects.requireNonNull(ownerId);
             return this;
         }
 
@@ -176,9 +202,11 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.diagnostics = this.diagnostics;
             referenceElementProps.readOnly = this.readOnly;
             referenceElementProps.values = Objects.requireNonNull(this.values);
+            referenceElementProps.options = Objects.requireNonNull(this.options);
             referenceElementProps.setting = Objects.requireNonNull(this.setting);
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
+            referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
             return referenceElementProps;
         }
     }

@@ -11,8 +11,109 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { makeStyles } from '@material-ui/core/styles';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { TreeToolBar } from '../toolbar/TreeToolBar';
+import { TreeToolBarContext } from '../toolbar/TreeToolBarContext';
+import { TreeToolBarContextValue } from '../toolbar/TreeToolBarContext.types';
+import { FilterBar } from '../trees/FilterBar';
+import { ExplorerViewState } from './ExplorerView.types';
 import { TreeView } from './TreeView';
 
-export const ExplorerView = (props: WorkbenchViewComponentProps) => (
-  <TreeView {...props} treeId="explorer://" showToolBar={true} enableMultiSelection={true} treeOptions={undefined} />
-);
+const useStyles = makeStyles((theme) => ({
+  treeView: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  treeContent: {
+    paddingTop: theme.spacing(1),
+    flexGrow: 1,
+    overflow: 'auto',
+  },
+}));
+
+export const ExplorerView = (props: WorkbenchViewComponentProps) => {
+  const styles = useStyles();
+  const initialState: ExplorerViewState = {
+    synchronizedWithSelection: true,
+    filterBar: false,
+    filterBarText: '',
+    filterBarTreeFiltering: false,
+  };
+  const [state, setState] = useState<ExplorerViewState>(initialState);
+  const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
+    (contribution) => contribution.props.component
+  );
+
+  const treeElement = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const downHandler = (event) => {
+      if ((event.ctrlKey === true || event.metaKey === true) && event.key === 'f' && event.target.tagName !== 'INPUT') {
+        event.preventDefault();
+        setState((prevState) => {
+          return { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false };
+        });
+      }
+    };
+    const element = treeElement?.current;
+    if (element) {
+      element.addEventListener('keydown', downHandler);
+
+      return () => {
+        element.removeEventListener('keydown', downHandler);
+      };
+    }
+    return null;
+  }, [treeElement]);
+
+  let filterBar: JSX.Element;
+  if (state.filterBar) {
+    filterBar = (
+      <FilterBar
+        onTextChange={(event) => {
+          const {
+            target: { value },
+          } = event;
+          setState((prevState) => {
+            return { ...prevState, filterBarText: value };
+          });
+        }}
+        onFilterButtonClick={(enabled) =>
+          setState((prevState) => {
+            return { ...prevState, filterBarTreeFiltering: enabled };
+          })
+        }
+        onClose={() =>
+          setState((prevState) => {
+            return { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+          })
+        }
+      />
+    );
+  }
+  return (
+    <div className={styles.treeView} ref={treeElement}>
+      <TreeToolBar
+        {...props}
+        onSynchronizedClick={() =>
+          setState((prevState) => {
+            return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
+          })
+        }
+        synchronized={state.synchronizedWithSelection}
+        treeToolBarContributionComponents={treeToolBarContributionComponents}
+      />
+      <div className={styles.treeContent}>
+        {filterBar}
+        <TreeView
+          {...props}
+          treeId="explorer://"
+          enableMultiSelection={true}
+          synchronizedWithSelection={state.synchronizedWithSelection}
+          textToHighlight={state.filterBarText}
+          textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+        />
+      </div>
+    </div>
+  );
+};

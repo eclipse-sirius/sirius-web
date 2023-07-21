@@ -11,24 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { makeStyles } from '@material-ui/core/styles';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { TreeItem } from '../treeitems/TreeItem';
-import { FilterBar } from './FilterBar';
-import { TreeProps, TreeState } from './Tree.types';
+import { TreeProps } from './Tree.types';
 
 const useTreeStyle = makeStyles((_) => ({
   ul: {
     width: 'inherit',
     minWidth: 'fit-content',
-  },
-  title: {
-    opacity: 0.6,
-    fontSize: 12,
-  },
-  borderStyle: {
-    border: '1px solid #0000008A',
-    height: 300,
-    overflow: 'auto',
   },
 }));
 
@@ -41,23 +31,16 @@ export const Tree = ({
   setSelection,
   readOnly,
   enableMultiSelection = true,
-  options,
+  textToHighlight,
+  textToFilter,
+  markedItemIds,
 }: TreeProps) => {
   const classes = useTreeStyle();
   const treeElement = useRef(null);
-  const initialState: TreeState = {
-    filterBar: options?.filterBarOptions?.filterBarDisplayByDefault,
-    filterBarText: '',
-    filterBarTreeFiltering: options?.filterBarOptions?.filterEnabled,
-  };
-  const [state, setState] = useState<TreeState>(initialState);
 
   useEffect(() => {
     const downHandler = (event) => {
-      if ((event.ctrlKey === true || event.metaKey === true) && event.key === 'f' && event.target.tagName !== 'INPUT') {
-        event.preventDefault();
-        setState({ filterBar: true, filterBarText: '', filterBarTreeFiltering: false });
-      } else if (
+      if (
         (event.key === 'ArrowLeft' ||
           event.key === 'ArrowRight' ||
           event.key === 'ArrowUp' ||
@@ -122,39 +105,9 @@ export const Tree = ({
     return null;
   }, [treeElement, onExpand]);
 
-  let filterBar: JSX.Element;
-  if (state.filterBar) {
-    filterBar = (
-      <FilterBar
-        onTextChange={(event) => {
-          const {
-            target: { value },
-          } = event;
-          setState((prevState) => {
-            return { ...prevState, filterBarText: value };
-          });
-        }}
-        onFilterButtonClick={(enabled) =>
-          setState((prevState) => {
-            return { ...prevState, filterBarTreeFiltering: enabled };
-          })
-        }
-        onClose={() => setState({ filterBar: false, filterBarText: '', filterBarTreeFiltering: false })}
-        onTextClear={() => {
-          setState((prevState) => {
-            return { ...prevState, filterBarText: '' };
-          });
-        }}
-        text={state.filterBarText}
-        options={options?.filterBarOptions}
-      />
-    );
-  }
   return (
     <>
-      {filterBar}
-      {options?.treeTitle && <span className={options.treeTitle}>Choices</span>}
-      <div ref={treeElement} className={options?.treeBorderStyle ? classes.borderStyle : undefined}>
+      <div ref={treeElement}>
         <ul className={classes.ul} data-testid="tree-root-elements">
           {tree.children.map((item) => (
             <li key={item.id}>
@@ -169,8 +122,9 @@ export const Tree = ({
                 setSelection={setSelection}
                 enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
-                textToHighlight={state.filterBarText}
-                isFilterEnabled={state.filterBarTreeFiltering}
+                textToHighlight={textToHighlight}
+                textToFilter={textToFilter}
+                markedItemIds={markedItemIds}
               />
             </li>
           ))}

@@ -44,33 +44,33 @@ export const splitText = (label: string, userInput: string | null): string[] => 
   return splitLabel;
 };
 
-export const isFilterCandidate = (treeItem: GQLTreeItem, textToHighlight: string | null): boolean => {
+export const isFilterCandidate = (treeItem: GQLTreeItem, textToFilter: string | null): boolean => {
   let filter: boolean = false;
-  const splitLabelWithTextToHighlight: string[] = splitText(treeItem.label, textToHighlight);
-  if (textToHighlight === null || textToHighlight === '') {
+  const splitLabelWithTextToHighlight: string[] = splitText(treeItem.label, textToFilter);
+  if (textToFilter === null || textToFilter === '') {
     filter = false;
   } else if (splitLabelWithTextToHighlight.length > 1) {
     filter = false;
   } else if (
     !treeItem.hasChildren &&
     splitLabelWithTextToHighlight.length === 1 &&
-    splitLabelWithTextToHighlight[0].toLocaleLowerCase() !== textToHighlight.toLocaleLowerCase()
+    splitLabelWithTextToHighlight[0].toLocaleLowerCase() !== textToFilter.toLocaleLowerCase()
   ) {
     filter = true;
   } else if (
     splitLabelWithTextToHighlight.length === 1 &&
-    splitLabelWithTextToHighlight[0].toLocaleLowerCase() === textToHighlight.toLocaleLowerCase()
+    splitLabelWithTextToHighlight[0].toLocaleLowerCase() === textToFilter.toLocaleLowerCase()
   ) {
     filter = false;
   } else if (
-    textToHighlight &&
+    textToFilter &&
     treeItem.hasChildren &&
     treeItem.expanded &&
     treeItem.children
-      .map((child) => child.label.toLocaleLowerCase().split(textToHighlight.toLocaleLowerCase()).length)
+      .map((child) => child.label.toLocaleLowerCase().split(textToFilter.toLocaleLowerCase()).length)
       .every((v) => v === 1)
   ) {
-    filter = treeItem.children.map((child) => isFilterCandidate(child, textToHighlight)).every((v) => v === true);
+    filter = treeItem.children.map((child) => isFilterCandidate(child, textToFilter)).every((v) => v === true);
   }
   return filter;
 };

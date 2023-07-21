@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.widget.reference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,11 +21,16 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
@@ -61,11 +67,14 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService) {
+    private final AdapterFactory adapterFactory;
+
+    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = editService;
         this.feedbackMessageService = feedbackMessageService;
+        this.adapterFactory = composedAdapterFactory;
     }
 
     @Override
@@ -90,11 +99,13 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .iconURLProvider(variableManager -> "")
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))
                 .itemsProvider(variableManager -> this.getReferenceValue(referenceDescription, variableManager))
+                .optionsProvider(variableManager -> this.getReferenceOptions(referenceDescription, variableManager))
                 .itemIdProvider(this::getItemId)
                 .itemKindProvider(this::getItemKind)
                 .itemLabelProvider(this::getItemLabel)
                 .itemImageURLProvider(this::getItemIconURL)
                 .settingProvider(variableManager -> this.resolveSetting(referenceDescription, variableManager))
+                .ownerIdProvider(variableManager -> this.getOwnerId(referenceDescription, variableManager))
                 .styleProvider(styleProvider);
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
@@ -115,6 +126,11 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
             referenceOwner = result.asObject().filter(EObject.class::isInstance).map(EObject.class::cast).orElse(referenceOwner);
         }
         return referenceOwner;
+    }
+
+    private String getOwnerId(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        return this.objectService.getId(owner);
     }
 
     private Setting resolveSetting(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
@@ -146,6 +162,29 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
             }
         }
         return value;
+    }
+
+    private List<?> getReferenceOptions(ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
+        var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        if (optionalEObject.isPresent() && owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference eReference) {
+            EObject eObject = optionalEObject.get();
+            Object adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
+            if (adapter instanceof IItemPropertySource itemPropertySource) {
+                IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
+                List<?> referenceOptions;
+                if (descriptor != null) {
+                    referenceOptions = descriptor.getChoiceOfValues(eObject).stream()
+                            .filter(Objects::nonNull)
+                            .toList();
+                } else {
+                    referenceOptions = Arrays.asList(ItemPropertyDescriptor.getReachableObjectsOfType(eObject, eReference.getEReferenceType()).toArray());
+                }
+                return referenceOptions.stream().filter(option -> !EcoreUtil.isAncestor((EObject) option, eObject)).toList();
+            }
+        }
+        return new ArrayList<>();
     }
 
     private StringValueProvider getStringValueProvider(String valueExpression) {

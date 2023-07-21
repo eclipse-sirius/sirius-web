@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,20 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLTreeItem } from '../views/TreeView.types';
+import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 
-export interface TreeItemProps {
+export interface ModelBrowserTreeViewProps {
   editingContextId: string;
-  treeId: string;
-  item: GQLTreeItem;
-  depth: number;
-  onExpand: (id: string, depth: number) => void;
-  onExpandAll: (treeItem: GQLTreeItem) => void;
   selection: Selection;
   setSelection: (selection: Selection) => void;
-  readOnly: boolean;
-  textToHighlight: string | null;
-  textToFilter: string | null;
-  enableMultiSelection: boolean;
+  widget: GQLReferenceWidget;
   markedItemIds: string[];
+}
+
+export interface ModelBrowserTreeViewState {
+  filterBarText: string;
 }

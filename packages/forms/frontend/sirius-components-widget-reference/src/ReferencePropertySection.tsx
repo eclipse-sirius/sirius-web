@@ -11,63 +11,32 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import {
-  DRAG_SOURCES_TYPE,
-  SelectionEntry,
-  ServerContext,
-  ServerContextValue,
-  useMultiToast,
-} from '@eclipse-sirius/sirius-components-core';
+import { DRAG_SOURCES_TYPE, SelectionEntry, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import {
   PropertySectionComponentProps,
   PropertySectionLabel,
-  getTextDecorationLineValue,
   useClickHandler,
 } from '@eclipse-sirius/sirius-components-forms';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import DeleteIcon from '@material-ui/icons/Delete';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { useContext, useEffect, useState } from 'react';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { useEffect, useState } from 'react';
+import { ValuedReferenceAutocomplete } from './components/ValuedReferenceAutocomplete';
+import { BrowseModal } from './modals/BrowseModal';
+import { TransferModal } from './modals/TransferModal';
 import {
   GQLClickReferenceValueMutationData,
   GQLClickReferenceValueMutationVariables,
   GQLEditReferenceData,
-  GQLEditReferenceInput,
   GQLEditReferencePayload,
   GQLEditReferenceVariables,
   GQLErrorPayload,
   GQLReferenceValue,
   GQLReferenceWidget,
-  GQLReferenceWidgetStyle,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
-import { BrowseModal } from './modals/BrowseModal';
 
-const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>(() => ({
+const useStyles = makeStyles<Theme>(() => ({
   root: {
-    overflow: 'auto',
-    maxHeight: 300,
-  },
-  style: {
-    color: ({ color }) => (color ? color : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  canBeSelectedItem: {
-    '&:hover': {
-      textDecoration: 'underline',
-      cursor: 'pointer',
-    },
+    overflow: 'hidden',
   },
 }));
 
@@ -122,17 +91,9 @@ export const ReferencePropertySection = ({
   widget,
   subscribers,
   readOnly,
+  setSelection,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
-  const props: GQLReferenceWidgetStyle = {
-    color: widget.style?.color ?? null,
-    fontSize: widget.style?.fontSize ?? null,
-    italic: widget.style?.italic ?? null,
-    bold: widget.style?.bold ?? null,
-    underline: widget.style?.underline ?? null,
-    strikeThrough: widget.style?.strikeThrough ?? null,
-  };
-  const classes = useStyles(props);
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const classes = useStyles();
 
   const [editReference, { loading, error, data }] = useMutation<GQLEditReferenceData, GQLEditReferenceVariables>(
     editReferenceMutation
@@ -143,94 +104,39 @@ export const ReferencePropertySection = ({
     GQLClickReferenceValueMutationVariables
   >(clickReferenceValueMutation);
 
-  const onDelete = (valueId: string) => {
-    let newValueIds = [];
-    if (widget.reference.manyValued) {
-      newValueIds = widget.referenceValues.map((rv) => rv.id).filter((id) => id !== valueId);
-    }
-    const variables: { input: GQLEditReferenceInput } = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        newValueIds,
-      },
-    };
-    editReference({ variables });
-  };
-
-  const onMoveUp = (valueId: string) => {
-    const valueIds = widget.referenceValues.map((rv) => rv.id);
-    const index = valueIds.findIndex((id) => id === valueId);
-    const newValueIds = widget.referenceValues.map((rv) => rv.id);
-    if (index > 0) {
-      const predecessor = valueIds[index - 1];
-      newValueIds[index - 1] = valueId;
-      newValueIds[index] = predecessor;
-    }
-    if (index !== -1) {
-      const variables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          newValueIds,
-        },
-      };
-      editReference({ variables });
-    }
-  };
-
-  const onMoveDown = (valueId: string) => {
-    const valueIds = widget.referenceValues.map((rv) => rv.id);
-    const index = valueIds.findIndex((id) => id === valueId);
-    const newValueIds = widget.referenceValues.map((rv) => rv.id);
-    if (index < newValueIds.length - 1) {
-      const successor = valueIds[index + 1];
-      newValueIds[index + 1] = valueId;
-      newValueIds[index] = successor;
-    }
-    if (index !== -1) {
-      const variables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          newValueIds,
-        },
-      };
-      editReference({ variables });
-    }
-  };
-
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
-    const variables: GQLClickReferenceValueMutationVariables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        referenceValueId: item.id,
-        clickEventKind: 'SINGLE_CLICK',
-      },
-    };
-    clickReferenceValue({ variables });
+    const { id, label, kind } = item;
+    setSelection({ entries: [{ id, label, kind }] });
+    if (item.hasClickAction) {
+      const variables: GQLClickReferenceValueMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          referenceValueId: item.id,
+          clickEventKind: 'SINGLE_CLICK',
+        },
+      };
+      clickReferenceValue({ variables });
+    }
   };
   const onReferenceValueDoubleClick = (item: GQLReferenceValue) => {
-    const variables: GQLClickReferenceValueMutationVariables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        referenceValueId: item.id,
-        clickEventKind: 'DOUBLE_CLICK',
-      },
-    };
-    clickReferenceValue({ variables });
+    const { id, label, kind } = item;
+    setSelection({ entries: [{ id, label, kind }] });
+    if (item.hasClickAction) {
+      const variables: GQLClickReferenceValueMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          referenceValueId: item.id,
+          clickEventKind: 'DOUBLE_CLICK',
+        },
+      };
+      clickReferenceValue({ variables });
+    }
   };
 
   const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);
@@ -273,7 +179,7 @@ export const ReferencePropertySection = ({
 
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
-    if (readOnly) {
+    if (readOnly || widget.readOnly) {
       addErrorMessage('This widget is currently read-only');
     } else {
       const dragSourcesStringified = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
@@ -286,7 +192,7 @@ export const ReferencePropertySection = ({
             .map((entry) => entry.id);
           const valueIds = widget.referenceValues.map((referenceValue) => referenceValue.id);
 
-          let newValueIds = [];
+          let newValueIds;
           if (widget.reference.manyValued) {
             newValueIds = [...valueIds, ...semanticElementIds];
           } else {
@@ -309,74 +215,6 @@ export const ReferencePropertySection = ({
     }
   };
 
-  let items;
-  if (widget.referenceValues.length === 0) {
-    items = (
-      <ListItem>
-        <ListItemText data-testid="reference-value-none" classes={{ primary: classes.style }}>
-          None
-        </ListItemText>
-        <IconButton aria-label="more" size="small" disabled={readOnly || widget.readOnly} onClick={() => onBrowse()}>
-          <MoreHorizIcon />
-        </IconButton>
-      </ListItem>
-    );
-  } else {
-    items = widget.referenceValues.map((item, index) => (
-      <ListItem key={item.id}>
-        <ListItemIcon>
-          {item.iconURL ? <img width="16" height="16" alt={''} src={httpOrigin + item.iconURL} /> : null}
-        </ListItemIcon>
-        <ListItemText
-          data-testid={`reference-value-${item.label}`}
-          onClick={() => (readOnly || widget.readOnly || !item.hasClickAction ? {} : clickHandler(item))}
-          classes={{
-            primary: `${!readOnly && !widget.readOnly && item.hasClickAction ? classes.canBeSelectedItem : ''} ${
-              classes.style
-            }`,
-          }}>
-          {item.label}
-        </ListItemText>
-        {widget.reference.manyValued ? (
-          <>
-            <IconButton
-              aria-label="up"
-              size="small"
-              disabled={readOnly || widget.readOnly || index === 0}
-              onClick={() => onMoveUp(item.id)}>
-              <ArrowUpwardIcon />
-            </IconButton>
-            <IconButton
-              aria-label="down"
-              size="small"
-              disabled={readOnly || widget.readOnly || index === widget.referenceValues.length - 1}
-              onClick={() => onMoveDown(item.id)}>
-              <ArrowDownwardIcon />
-            </IconButton>
-          </>
-        ) : null}
-        <IconButton
-          aria-label="more"
-          size="small"
-          title="Select an object"
-          data-testid={`${widget.label}-more`}
-          disabled={readOnly || widget.readOnly}
-          onClick={() => onBrowse()}>
-          <MoreHorizIcon />
-        </IconButton>
-        <IconButton
-          aria-label="delete"
-          size="small"
-          title="Unset the object"
-          data-testid={`${widget.label}-delete`}
-          disabled={readOnly || widget.readOnly}
-          onClick={() => onDelete(item.id)}>
-          <DeleteIcon />
-        </IconButton>
-      </ListItem>
-    ));
-  }
-
   const [modalDisplayed, setModalDisplayed] = useState<string | null>(null);
 
   const onBrowse = () => {
@@ -388,14 +226,7 @@ export const ReferencePropertySection = ({
     const addSelectedElements = (selectedElementIds: string[]): void => {
       setModalDisplayed(null);
       if (selectedElementIds) {
-        const valueIds: string[] = widget.referenceValues.map((referenceValue) => referenceValue.id);
-
-        let newValueIds: string[] = [];
-        if (widget.reference.manyValued) {
-          newValueIds = [...valueIds, ...selectedElementIds];
-        } else {
-          newValueIds = [...selectedElementIds];
-        }
+        let newValueIds = [...selectedElementIds];
 
         const variables = {
           input: {
@@ -409,12 +240,16 @@ export const ReferencePropertySection = ({
         editReference({ variables });
       }
     };
-    modal = <BrowseModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />;
+    modal = widget.reference.manyValued ? (
+      <TransferModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
+    ) : (
+      <BrowseModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
+    );
   }
 
   return (
     <>
-      <div>
+      <div className={classes.root}>
         <PropertySectionLabel
           editingContextId={editingContextId}
           formId={formId}
@@ -422,18 +257,18 @@ export const ReferencePropertySection = ({
           subscribers={subscribers}
           data-testid={widget.label + '_' + widget.reference.typeName + '.' + widget.reference.referenceName}
         />
-        {readOnly || widget.readOnly ? (
-          <List dense className={classes.root}>
-            {items}
-          </List>
-        ) : (
-          <div onDragEnter={handleDragEnter} onDragOver={handleDragOver} onDrop={handleDrop}>
-            <List dense className={classes.root}>
-              {items}
-            </List>
-          </div>
-        )}
-        <Divider />
+        <ValuedReferenceAutocomplete
+          editingContextId={editingContextId}
+          formId={formId}
+          widget={widget}
+          readOnly={readOnly}
+          editReference={editReference}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          onMoreClick={onBrowse}
+          optionClickHandler={clickHandler}
+        />
       </div>
       {modal}
     </>

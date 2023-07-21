@@ -11,12 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface FilterBarProps {
+export interface ModelBrowserFilterBarProps {
   onTextChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  onFilterButtonClick: (enabled: boolean) => void;
-  onClose: () => void;
-}
-
-export interface FilterBarState {
-  filterEnabled: boolean;
+  onTextClear: () => void;
+  text: string | null;
 }

@@ -232,6 +232,7 @@ export const PropertySection = ({
           subscribers={subscribers}
           key={widget.id}
           readOnly={readOnly}
+          setSelection={setSelection}
         />
       );
     } else {

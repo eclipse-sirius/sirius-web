@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { TreeView } from '@eclipse-sirius/sirius-components-trees';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -20,6 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
+import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import { BrowseModalProps } from './BrowseModal.types';
 
 const useBrowserModalStyles = makeStyles((_) => ({
@@ -42,27 +42,12 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
         data-testid="browse-modal">
         <DialogTitle id="dialog-title">Select an object</DialogTitle>
         <DialogContent className={styles.content}>
-          <TreeView
+          <ModelBrowserTreeView
             editingContextId={editingContextId}
-            readOnly={true}
             selection={browserSelection}
             setSelection={setBrowserSelection}
-            treeId={`modelBrowser://reference?typeName=${widget.reference.typeName}&featureName=${widget.reference.referenceName}`}
-            showToolBar={false}
-            enableMultiSelection={widget.reference.manyValued}
-            treeOptions={{
-              filterBarOptions: {
-                textFieldVariant: 'standard',
-                searchIcon: true,
-                clearTextButton: true,
-                filterButton: false,
-                closeButton: false,
-                filterEnabled: true,
-                filterBarDisplayByDefault: true,
-              },
-              treeBorderStyle: true,
-              treeTitle: 'Choices',
-            }}
+            widget={widget}
+            markedItemIds={[]}
           />
         </DialogContent>
         <DialogActions>
