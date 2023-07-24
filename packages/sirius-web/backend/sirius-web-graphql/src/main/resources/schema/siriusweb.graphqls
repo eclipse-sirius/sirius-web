@@ -19,6 +19,23 @@ type Project {
   customImages: [CustomImage!]!
 }
 
+extend type Subscription {
+  projectEvent(input: ProjectEventInput!): ProjectEventPayload!
+}
+
+input ProjectEventInput {
+  id: ID!
+  projectId: ID!
+}
+
+union ProjectEventPayload = ErrorPayload | ProjectRenamedEventPayload
+
+type ProjectRenamedEventPayload {
+  id: ID!
+  projectId: ID!
+  newName: String!
+}
+
 type CustomImage {
   id: ID!
   label: String!

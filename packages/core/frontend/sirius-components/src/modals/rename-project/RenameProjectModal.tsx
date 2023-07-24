@@ -27,15 +27,16 @@ import {
   RenameProjectModalProps,
 } from './RenameProjectModal.types';
 import {
+  ChangeInitialNameEvent,
   ChangeNameEvent,
   HandleResponseEvent,
   HideToastEvent,
   RenameProjectModalContext,
   RenameProjectModalEvent,
-  renameProjectModalMachine,
   RequestProjectRenamingEvent,
   SchemaValue,
   ShowToastEvent,
+  renameProjectModalMachine,
 } from './RenameProjectModalMachine';
 
 const renameProjectMutation = gql`
@@ -63,6 +64,14 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onRename, on
   );
   const { toast, renameProjectModal } = value as SchemaValue;
   const { name, nameIsInvalid, nameMessage, message } = context;
+
+  useEffect(() => {
+    const changeInitialNameEvent: ChangeInitialNameEvent = {
+      type: 'CHANGE_INITIAL_NAME',
+      initialName: initialProjectName,
+    };
+    dispatch(changeInitialNameEvent);
+  }, [dispatch, initialProjectName]);
 
   const onNewName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -126,8 +135,8 @@ export const RenameProjectModal = ({ projectId, initialProjectName, onRename, on
             error={nameIsInvalid}
             helperText={nameMessage}
             label="Name"
-            placeholder="Enter the new modeler name"
-            data-testid="name"
+            placeholder="Enter a new project name"
+            data-testid="rename-textfield"
             autoFocus
             fullWidth
           />
