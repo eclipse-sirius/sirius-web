@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2023, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.services.api.projects;
 
-import { Project } from '../../edit-project/EditProjectView.types';
+import java.util.UUID;
 
-export interface EditProjectNavbarProps {
-  project: Project;
-}
+import org.eclipse.sirius.components.core.api.IInput;
 
-export interface GQLProjectEventSubscription {
-  projectEvent: GQLProjectEventPayload;
-}
-
-export interface GQLProjectEventPayload {
-  __typename: string;
-}
-
-export interface GQLProjectRenamedEventPayload extends GQLProjectEventPayload {
-  id: string;
-  projectId: string;
-  newName: string;
+/**
+ * The input of the project event subscription.
+ *
+ * @author arichard
+ */
+public record ProjectEventInput(UUID id, UUID projectId) implements IInput {
 }

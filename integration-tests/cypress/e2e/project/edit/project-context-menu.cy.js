@@ -53,4 +53,19 @@ describe('/projects/:projectId/edit - Project Context Menu', () => {
     cy.getByTestId('delete-project').click();
     cy.url().should('match', new RegExp(Cypress.config().baseUrl + '/projects'));
   });
+
+  it('can rename a project', () => {
+    cy.getByTestId('navbar-New Project Name').should('not.exist');
+    cy.getByTestId('navbar-Cypress Project').should('exist');
+
+    cy.getByTestId('more').click();
+    cy.getByTestId('navbar-contextmenu').findByTestId('rename').click();
+
+    cy.getByTestId('rename-textfield').type('{selectAll}{backspace}');
+    cy.getByTestId('rename-textfield').type('New Project Name');
+    cy.getByTestId('rename-project').click();
+
+    cy.getByTestId('navbar-New Project Name').should('exist');
+    cy.getByTestId('navbar-Cypress Project').should('not.exist');
+  });
 });
