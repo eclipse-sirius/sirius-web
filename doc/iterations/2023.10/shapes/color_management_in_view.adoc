@@ -1,0 +1,82 @@
+= (M) Color Management in View
+
+== Problems
+
+It is possible to set `None` for color properties of a Node/Edge Description.
+Depending on the case, `None` means `black`, `white` or `transparent`.
+
+It is possible to set `None` for color properties of a Form Widget Description.
+Depending on the case, `None` means `theme.primary`, `theme.secondary` or `transparent`.
+
+Some color properties of a Node/Edge/Widget Description are mandatory, which means when `None` is selected, an error message is displayed.
+That's ok but we should review which color property is really mandatory or not.
+
+== Key results
+
+* Specifier always know which color will be displayed at the end, corresponding exactly to what is set for each color property.
+* A set of predefined colors is accessible in color properties.
+
+== Solutions
+
+`None` doesn't exist anymore as a possible value for color properties.
+
+All color properties are mandatory.
+
+Theme colors are provided by default.
+They are accessible in the Reference widget of color properties by default.
+Color palettes are provided by default (along with the creation of a View, or directly provided in the ResourceSet).
+Those color palettes and their colors cannot be modified/deleted.
+
+
+Those color palettes will contain the following colors:
+
+* special colors like "transparent", "inherit", "none" and use some of them as default values when we are creating new elements
+* provide every single one of the raw MUI colors like https://mui.com/material-ui/customization/color/#color-palette[here] in various palettes (red, pink, blue, etc) with their proper name
+* some https://mui.com/material-ui/customization/palette/[theme colors] like palette.primary.light, palette.secondary.dark etc to create theme independent representations (for example a for with buttons matching the palette.error.main color to perform destructive actions)
+
+The colors could be chosen in a separate contribution.
+
+=== Scenario
+
+==== Scenario 1: diagram description
+
+Specifier creates a new View. 
+A Diagram Description is also created.
+From now on, a color palette is also created.
+
+When specifier creates a new Node (Rectangular/Image/Icon-Label):
+* Label Color is set to theme primary color by default.
+* Color is set to transparent by default.
+* Border Color is set to theme primary color by default.
+
+When specifier creates a new Edge, Color is set to the theme primary color by default.
+
+==== Scenario 2: form description
+
+Specifier creates a new View. 
+A Diagram Description is also created.
+From now on, a color palette is also created.
+Specifier need to create a Form Description.
+
+When specifier creates a new Widget (depending on the widget):
+* Color is set to the theme primary color by default.
+* Foreground Color is set to white color by default.
+* Background Color is set to the theme primary color by default.
+
+=== Breadboarding
+
+Same UI as before.
+
+=== Cutting backs
+
+No cutting backs identified.
+
+== Rabbit holes
+
+* With the possibility of _`None` means no color_, it is possible to specify some Node/Edge/Widget Descriptions with no color, resulting in invisible (or crash?) node/edge/widget instance in a diagram/form.
+So make sure that it does not crash at least.
+
+== No-gos
+
+No no-gos identified.
+
