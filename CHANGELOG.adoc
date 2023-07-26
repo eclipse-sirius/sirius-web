@@ -22,6 +22,8 @@
 
 === Improvements
 
+- [releng] Add some automatic checks to simplify code reviews
+
 
 == v2023.8.0
 
