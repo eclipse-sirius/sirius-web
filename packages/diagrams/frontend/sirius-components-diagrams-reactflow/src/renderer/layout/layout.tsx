@@ -117,37 +117,21 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void):
 
   const hiddenContainerContentElements: JSX.Element = createElement(Fragment, { children: elements });
 
-  const diagramDirectEditContextProvider = createElement(DiagramDirectEditContextProvider, {
-    children: hiddenContainerContentElements,
-  });
+  const element = (
+    <ReactFlowProvider>
+      <ApolloProvider client={new ApolloClient({ cache: new InMemoryCache(), uri: '' })}>
+        <ThemeProvider theme={theme}>
+          <ServerContext.Provider value={{ httpOrigin: '' }}>
+            <ToastContext.Provider value={{ enqueueSnackbar: (_body: string, _options?: MessageOptions) => {} }}>
+              <DiagramDirectEditContextProvider>{hiddenContainerContentElements}</DiagramDirectEditContextProvider>
+            </ToastContext.Provider>
+          </ServerContext.Provider>
+        </ThemeProvider>
+      </ApolloProvider>
+    </ReactFlowProvider>
+  );
 
-  const enqueueSnackbar = (_body: string, _options?: MessageOptions) => {};
-  const toastContext: JSX.Element = createElement(ToastContext.Provider, {
-    value: {
-      enqueueSnackbar,
-    },
-    children: diagramDirectEditContextProvider,
-  });
-
-  const serveurContext: JSX.Element = createElement(ServerContext.Provider, {
-    value: {
-      httpOrigin: '',
-    },
-    children: toastContext,
-  });
-
-  const themeProvider: JSX.Element = createElement(ThemeProvider, {
-    children: serveurContext,
-    theme: theme,
-  });
-
-  const cache = new InMemoryCache();
-  const apolloProvider: JSX.Element = createElement(ApolloProvider, {
-    client: new ApolloClient({ cache: cache, uri: '' }),
-    children: themeProvider,
-  });
-
-  ReactDOM.render(createElement(ReactFlowProvider, { children: apolloProvider }), hiddenContainer, renderCallback);
+  ReactDOM.render(element, hiddenContainer, renderCallback);
   return hiddenContainer;
 };
 

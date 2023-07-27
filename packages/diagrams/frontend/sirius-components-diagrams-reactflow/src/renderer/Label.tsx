@@ -48,6 +48,7 @@ export const Label = memo(({ label, faded, transform }: LabelProps) => {
   return (
     <div
       data-id={label.id}
+      data-testid={`Label - ${label.text}`}
       onDoubleClick={handleDoubleClick}
       style={labelStyle(label.style, faded, transform)}
       className="nopan">
