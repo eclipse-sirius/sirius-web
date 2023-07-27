@@ -39,7 +39,7 @@ export const Tool = ({ tool, onClick }: ToolProps) => {
   };
 
   return (
-    <div key={id} className={classes.tool} onClick={onToolClick}>
+    <div key={id} className={classes.tool} onClick={onToolClick} data-testid={`${tool.label} - Tool`}>
       {image}
     </div>
   );

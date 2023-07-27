@@ -66,6 +66,7 @@ As a result the development of applications consuming Sirius Components packages
 - https://github.com/eclipse-sirius/sirius-web/issues/2295[#2295] [diagram] Support direct edit on edges labels (center, start, end) on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2233[#2233] [diagram] Move the behavior of the arrange all in the diagram panel component
 - https://github.com/eclipse-sirius/sirius-web/issues/2311[2311] [diagram] Ensure that the layout uses the same context as the rendering
+- https://github.com/eclipse-sirius/sirius-web/issues/2208[#2208] [diagram] Add Cypress tests for React Flow.
 
 
 == v2023.8.0

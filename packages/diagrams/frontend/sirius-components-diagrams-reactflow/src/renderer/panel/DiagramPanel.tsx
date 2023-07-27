@@ -94,7 +94,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
           <IconButton size="small" onClick={handleZoomOut}>
             <ZoomOutIcon />
           </IconButton>
-          <IconButton size="small" onClick={handleShare}>
+          <IconButton size="small" onClick={handleShare} data-testid="share">
             <ShareIcon />
           </IconButton>
           <IconButton
