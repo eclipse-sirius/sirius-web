@@ -30,20 +30,17 @@ import { useState } from 'react';
 import { Panel, useReactFlow } from 'reactflow';
 import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
+import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 
-export const DiagramPanel = ({
-  fullscreen,
-  onFullscreen,
-  snapToGrid,
-  onSnapToGrid,
-  onArrangeAll,
-}: DiagramPanelProps) => {
+export const DiagramPanel = ({ snapToGrid, onSnapToGrid, onArrangeAll }: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
   });
+
+  const { fullscreen, handleFullscreen } = useFullscreen();
 
   const reactFlow = useReactFlow();
   const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
@@ -69,11 +66,11 @@ export const DiagramPanel = ({
       <Panel position="top-left">
         <Paper>
           {fullscreen ? (
-            <IconButton size="small" onClick={() => onFullscreen(false)}>
+            <IconButton size="small" onClick={() => handleFullscreen(false)}>
               <FullscreenExitIcon />
             </IconButton>
           ) : (
-            <IconButton size="small" onClick={() => onFullscreen(true)}>
+            <IconButton size="small" onClick={() => handleFullscreen(true)}>
               <FullscreenIcon />
             </IconButton>
           )}

@@ -22,7 +22,6 @@ export interface DiagramRendererProps {
 }
 
 export interface DiagramRendererState {
-  fullscreen: boolean;
   snapToGrid: boolean;
 }
 

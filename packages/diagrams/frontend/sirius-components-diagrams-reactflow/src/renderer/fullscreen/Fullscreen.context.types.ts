@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo and others.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface DiagramPanelProps {
-  snapToGrid: boolean;
-  onSnapToGrid: (snapToGrid: boolean) => void;
-  onArrangeAll: () => void;
+export interface FullscreenContextValue {
+  fullscreen: boolean;
+  setFullscreen: (fullscreen: boolean) => void;
 }
 
-export interface DiagramPanelState {
-  dialogOpen: DiagramPanelDialog | null;
+export interface FullscreenContextProviderProps {
+  children: React.ReactNode;
 }
 
-export type DiagramPanelDialog = 'Share';
+export interface FullscreenContextProviderState {
+  fullscreen: boolean;
+}

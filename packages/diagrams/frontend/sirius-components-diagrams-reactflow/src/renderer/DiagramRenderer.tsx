@@ -66,7 +66,6 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
 
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
-    fullscreen: false,
     snapToGrid: false,
   });
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
@@ -146,25 +145,6 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     onDiagramBackgroundClick(event);
   };
 
-  useEffect(() => {
-    const onFullscreenChange = () =>
-      setState((prevState) => ({ ...prevState, fullscreen: Boolean(document.fullscreenElement) }));
-
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-
-    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
-  }, []);
-
-  const handleFullscreen = (fullscreen: boolean) => {
-    if (ref.current) {
-      if (fullscreen) {
-        ref.current.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-  };
-
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
   const handleArrangeAll = () => {
     autoLayout(nodes, edges).then(({ nodes }) => {
@@ -211,13 +191,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       ) : (
         <Background style={{ backgroundColor: '#ffffff' }} variant={BackgroundVariant.Lines} color="#ffffff" />
       )}
-      <DiagramPanel
-        fullscreen={state.fullscreen}
-        onFullscreen={handleFullscreen}
-        snapToGrid={state.snapToGrid}
-        onSnapToGrid={handleSnapToGrid}
-        onArrangeAll={handleArrangeAll}
-      />
+      <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} onArrangeAll={handleArrangeAll} />
       <DiagramPalette targetObjectId={diagram.metadata.id} />
       <ConnectorContextualMenu />
     </ReactFlow>
