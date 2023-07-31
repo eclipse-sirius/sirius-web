@@ -14,7 +14,6 @@
 export interface DiagramPanelProps {
   snapToGrid: boolean;
   onSnapToGrid: (snapToGrid: boolean) => void;
-  onArrangeAll: () => void;
 }
 
 export interface DiagramPanelState {
