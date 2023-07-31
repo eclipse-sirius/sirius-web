@@ -36,7 +36,6 @@ import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { MultiLabelEdge } from './edge/MultiLabelEdge';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
-import { useLayout } from './layout/useLayout';
 import { ImageNode } from './node/ImageNode';
 import { ListNode } from './node/ListNode';
 import { RectangularNode } from './node/RectangularNode';
@@ -71,7 +70,6 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onConnect } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
-  const { autoLayout } = useLayout();
   const { onDrop, onDragOver } = useDrop();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>(diagram.nodes);
@@ -146,11 +144,6 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   };
 
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
-  const handleArrangeAll = () => {
-    autoLayout(nodes, edges).then(({ nodes }) => {
-      setNodes(nodes);
-    });
-  };
 
   const onKeyDown = (event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
@@ -191,7 +184,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       ) : (
         <Background style={{ backgroundColor: '#ffffff' }} variant={BackgroundVariant.Lines} color="#ffffff" />
       )}
-      <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} onArrangeAll={handleArrangeAll} />
+      <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} />
       <DiagramPalette targetObjectId={diagram.metadata.id} />
       <ConnectorContextualMenu />
     </ReactFlow>

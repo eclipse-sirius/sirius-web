@@ -25,21 +25,26 @@ import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-
 import { useState } from 'react';
-import { Panel, useReactFlow } from 'reactflow';
+import { Panel, useEdges, useNodes, useReactFlow } from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
 import { ShareDiagramDialog } from '../ShareDiagramDialog';
+import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { useLayout } from '../layout/useLayout';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 
-export const DiagramPanel = ({ snapToGrid, onSnapToGrid, onArrangeAll }: DiagramPanelProps) => {
+export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
   });
 
+  const nodes = useNodes<NodeData>();
+  const edges = useEdges<MultiLabelEdgeData>();
+  const { autoLayout } = useLayout();
   const { fullscreen, onFullscreen } = useFullscreen();
 
   const reactFlow = useReactFlow();
@@ -59,6 +64,12 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid, onArrangeAll }: Diagram
 
   const getAllElementsIds = () => {
     return [...reactFlow.getNodes().map((elem) => elem.id), ...reactFlow.getEdges().map((elem) => elem.id)];
+  };
+
+  const handleArrangeAll = () => {
+    autoLayout(nodes, edges).then(({ nodes }) => {
+      reactFlow.setNodes(nodes);
+    });
   };
 
   return (
@@ -103,7 +114,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid, onArrangeAll }: Diagram
               <GridOnIcon />
             </IconButton>
           )}
-          <IconButton size="small" onClick={() => onArrangeAll()}>
+          <IconButton size="small" onClick={() => handleArrangeAll()}>
             <AccountTreeIcon />
           </IconButton>
           <IconButton
