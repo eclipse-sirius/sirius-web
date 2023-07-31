@@ -43,7 +43,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   return (
     <>
-      <NodeResizer color={theme.palette.primary.main} isVisible={selected} />
+      <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => !data.isBorderNode} />
       <img
         src={httpOrigin + data.imageURL}
         style={imageNodeStyle(theme, data.style, selected, data.faded)}

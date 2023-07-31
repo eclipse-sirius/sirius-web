@@ -32,6 +32,7 @@ UI is unchanged except that we removed the transactional behavior of the _Transf
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2214[#2214] [diagram] Add support for borders nodes with React Flow.
 
 === Improvements
 

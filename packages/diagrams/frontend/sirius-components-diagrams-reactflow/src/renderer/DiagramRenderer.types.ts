@@ -55,6 +55,15 @@ export interface NodeData {
   targetObjectLabel: string;
   label: Label | null;
   faded: boolean;
+  isBorderNode: boolean;
+  borderNodePosition: BorderNodePositon | null;
+}
+
+export enum BorderNodePositon {
+  NORTH,
+  EAST,
+  SOUTH,
+  WEST,
 }
 
 export interface EdgeData {
