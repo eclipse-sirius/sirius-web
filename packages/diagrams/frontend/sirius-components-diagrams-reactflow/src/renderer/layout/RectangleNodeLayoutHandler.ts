@@ -11,16 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Box, Node, Rect, boxToRect, rectToBox } from 'reactflow';
+import { Node } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
-
-const gap = 20;
-const rectangularNodePadding = 8;
-const defaultWidth = 150;
-const defaultHeight = 70;
+import { getBorderNodeExtent } from './layoutBorderNodes';
+import {
+  computeContentBox,
+  findNodeIndex,
+  getChildNodePosition,
+  getEastBorderNodeFootprintHeight,
+  getNodeOrMinHeight,
+  getNodeOrMinWidth,
+  getNorthBorderNodeFootprintWidth,
+  getSouthBorderNodeFootprintWidth,
+  getWestBorderNodeFootprintHeight,
+  setBorderNodesPosition,
+} from './layoutNode';
+import { rectangularNodePadding } from './layoutParams';
 
 export class RectangleNodeLayoutHandler implements INodeLayoutHandler<RectangularNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -35,7 +44,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     directChildren: Node<NodeData, DiagramNodeType>[],
     forceWidth?: number
   ) {
-    const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
+    const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
@@ -57,39 +66,58 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren);
 
-    const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
+    const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
+    const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
+    const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
+
     // Update children position to be under the label and at the right padding.
-    directChildren.forEach((child, index) => {
-      child.position = {
-        x: borderWidth + rectangularNodePadding,
-        y:
-          borderWidth +
-          rectangularNodePadding +
-          (labelElement?.getBoundingClientRect().height ?? 0) +
-          rectangularNodePadding,
-      };
-      const previousSibling = directChildren[index - 1];
+    directNodesChildren.forEach((child, index) => {
+      child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth);
+      const previousSibling = directNodesChildren[index - 1];
       if (previousSibling) {
-        child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
+        child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth, previousSibling);
       }
     });
 
     // Update node to layout size
     // WARN: We suppose label are always on top of children (that wrong)
-    const childrenFootprint = this.getChildrenFootprint(directChildren);
-    const labelOnlyWidth = labelElement?.getBoundingClientRect().width ?? 0;
-    const nodeWidth = Math.max(childrenFootprint.width, labelOnlyWidth) + rectangularNodePadding * 2 + borderWidth * 2;
-    const nodeHeight =
-      rectangularNodePadding +
-      (labelElement?.getBoundingClientRect().height ?? 0) +
-      rectangularNodePadding +
-      childrenFootprint.height +
-      rectangularNodePadding +
+    const childrenContentBox = computeContentBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
+
+    const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+    const labelOnlyWidth =
+      rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
+
+    const nodeWidth =
+      Math.max(
+        directChildrenAwareNodeWidth,
+        labelOnlyWidth,
+        northBorderNodeFootprintWidth,
+        southBorderNodeFootprintWidth
+      ) +
+      rectangularNodePadding * 2 +
       borderWidth * 2;
-    node.width = forceWidth ?? this.getNodeOrMinWidth(nodeWidth);
-    node.height = this.getNodeOrMinHeight(nodeHeight);
+
+    // WARN: the label is not used for the height because children are already position under the label
+    const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes);
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes);
+
+    const nodeHeight =
+      Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
+      borderWidth * 2;
+
+    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
+    node.height = getNodeOrMinHeight(nodeHeight);
+
+    // Update border nodes positions
+    borderNodes.forEach((borderNode) => {
+      borderNode.extent = getBorderNodeExtent(node, borderNode);
+    });
+    setBorderNodesPosition(borderNodes, node);
   }
 
   private handleLeafNode(
@@ -99,7 +127,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     borderWidth: number,
     forceWidth?: number
   ) {
-    const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
+    const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
     const labelWidth =
@@ -109,52 +137,13 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       borderWidth * 2;
     const labelHeight =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
-    node.width = forceWidth ?? this.getNodeOrMinWidth(labelWidth);
-    node.height = this.getNodeOrMinHeight(labelHeight);
+    node.width = forceWidth ?? getNodeOrMinWidth(labelWidth);
+    node.height = getNodeOrMinHeight(labelHeight);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
     if (previousNode && previousNode.width && previousNode.height) {
       node.width = previousNode.width;
       node.height = previousNode.height;
     }
-  }
-
-  private getChildrenFootprint(children: Node<NodeData>[]): Rect {
-    const footPrint: Box = children.reduce(
-      (currentFootPrint, node) => {
-        const { x, y } = node.position;
-        const nodeBox = rectToBox({
-          x,
-          y,
-          width: node.width ?? 0,
-          height: node.height ?? 0,
-        });
-
-        return this.getBoundsOfBoxes(currentFootPrint, nodeBox);
-      },
-      { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity }
-    );
-    return boxToRect(footPrint);
-  }
-
-  private getBoundsOfBoxes(box1: Box, box2: Box): Box {
-    return {
-      x: Math.min(box1.x, box2.x),
-      y: Math.min(box1.y, box2.y),
-      x2: Math.max(box1.x2, box2.x2),
-      y2: Math.max(box1.y2, box2.y2),
-    };
-  }
-
-  private findNodeIndex(nodes: Node<NodeData>[], nodeId: string): number {
-    return nodes.findIndex((node) => node.id === nodeId);
-  }
-
-  private getNodeOrMinWidth(nodeWidth: number | undefined): number {
-    return Math.max(nodeWidth ?? -Infinity, defaultWidth);
-  }
-
-  private getNodeOrMinHeight(nodeHeight: number | undefined): number {
-    return Math.max(nodeHeight ?? -Infinity, defaultHeight);
   }
 }

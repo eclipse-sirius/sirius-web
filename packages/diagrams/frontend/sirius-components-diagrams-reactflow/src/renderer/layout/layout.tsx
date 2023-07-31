@@ -27,6 +27,8 @@ import { ListNodeData } from '../node/ListNode.types';
 import { RectangularNode } from '../node/RectangularNode';
 import { RectangularNodeData } from '../node/RectangularNode.types';
 import { LayoutEngine } from './LayoutEngine';
+import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
+import { getChildren } from './layoutNode';
 
 const emptyNodeProps = {
   selected: false,
@@ -196,10 +198,28 @@ const layoutDiagram = (previousDiagram: Diagram | null, diagram: Diagram) => {
     if (previousNode) {
       node.position = previousNode.position;
     } else {
+      const maxBorderNodeWidthWest = getChildren(node, allVisibleNodes)
+        .filter(isWestBorderNode)
+        .map((borderNode) => borderNode.width || 0)
+        .reduce((a, b) => Math.max(a, b), 0);
+
       node.position = { x: 0, y: 0 };
       const previousSibling = nodesToLayout[index - 1];
       if (previousSibling) {
-        node.position = { x: previousSibling.position.x + (previousSibling.width ?? 0) + gap, y: 0 };
+        const previousSiblingMaxBorderNodeWidthEast = getChildren(previousSibling, allVisibleNodes)
+          .filter(isEastBorderNode)
+          .map((borderNode) => borderNode.width || 0)
+          .reduce((a, b) => Math.max(a, b), 0);
+
+        node.position = {
+          x:
+            previousSibling.position.x +
+            maxBorderNodeWidthWest +
+            previousSiblingMaxBorderNodeWidthEast +
+            (previousSibling.width ?? 0) +
+            gap,
+          y: 0,
+        };
       }
     }
   });

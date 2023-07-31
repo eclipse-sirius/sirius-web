@@ -16,9 +16,24 @@ import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { ImageNodeData } from '../node/ImageNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
-
-const defaultWidth = 150;
-const defaultHeight = 70;
+import { getBorderNodeExtent } from './layoutBorderNodes';
+import {
+  computeContentBox,
+  getEastBorderNodeFootprintHeight,
+  getNodeOrMinHeight,
+  getNodeOrMinWidth,
+  getNorthBorderNodeFootprintWidth,
+  getSouthBorderNodeFootprintWidth,
+  getWestBorderNodeFootprintHeight,
+  setBorderNodesPosition,
+} from './layoutNode';
+import {
+  borderLeftAndRight,
+  borderTopAndBottom,
+  defaultHeight,
+  defaultWidth,
+  rectangularNodePadding,
+} from './layoutParams';
 
 export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -26,20 +41,73 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
   }
 
   public handle(
-    _layoutEngine: ILayoutEngine,
+    layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,
     node: Node<ImageNodeData, 'imageNode'>,
-    _visibleNodes: Node<NodeData, DiagramNodeType>[],
-    _directChildren: Node<NodeData, DiagramNodeType>[],
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    directChildren: Node<NodeData, DiagramNodeType>[],
     forceWidth?: number
   ) {
-    node.width = forceWidth ?? defaultWidth;
-    node.height = defaultHeight;
+    if (directChildren.length > 0) {
+      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren);
+    } else {
+      node.width = forceWidth ?? defaultWidth;
+      node.height = defaultHeight;
+    }
+  }
+
+  private handleParentNode(
+    layoutEngine: ILayoutEngine,
+    previousDiagram: Diagram | null,
+    node: Node<ImageNodeData, 'imageNode'>,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    directChildren: Node<NodeData, DiagramNodeType>[]
+  ) {
+    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
+
     if (previousNode && previousNode.width && previousNode.height) {
       node.width = previousNode.width;
       node.height = previousNode.height;
+    } else {
+      node.width = defaultWidth;
+      node.height = defaultHeight;
     }
+
+    const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
+    const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
+
+    const childrenContentBox = computeContentBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
+
+    const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+    const nodeWidth = Math.max(
+      directChildrenAwareNodeWidth,
+      node.width,
+      northBorderNodeFootprintWidth,
+      southBorderNodeFootprintWidth
+    );
+
+    // WARN: the label is not used for the height because children are already position under the label
+    const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes);
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes);
+    const nodeHeight = Math.max(
+      directChildrenAwareNodeHeight,
+      node.height,
+      eastBorderNodeFootprintHeight,
+      westBorderNodeFootprintHeight
+    );
+
+    node.width = getNodeOrMinWidth(nodeWidth + borderLeftAndRight);
+    node.height = getNodeOrMinHeight(nodeHeight + borderTopAndBottom);
+
+    // Update border nodes positions
+    borderNodes.forEach((borderNode) => {
+      borderNode.extent = getBorderNodeExtent(node, borderNode);
+    });
+    setBorderNodesPosition(borderNodes, node);
   }
 }

@@ -11,14 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Box, Node, Rect, boxToRect, rectToBox } from 'reactflow';
+import { Node } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
-
-const defaultWidth = 150;
-const defaultHeight = 70;
+import { getBorderNodeExtent } from './layoutBorderNodes';
+import {
+  computeContentBox,
+  findNodeIndex,
+  getEastBorderNodeFootprintHeight,
+  getNodeOrMinHeight,
+  getNodeOrMinWidth,
+  getNorthBorderNodeFootprintWidth,
+  getSouthBorderNodeFootprintWidth,
+  getWestBorderNodeFootprintHeight,
+  setBorderNodesPosition,
+} from './layoutNode';
 
 export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -33,7 +42,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     directChildren: Node<NodeData, DiagramNodeType>[],
     forceWidth?: number
   ) {
-    const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
+    const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-listNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
@@ -43,6 +52,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceWidth);
     }
   }
+
   handleLeafNode(
     _previousDiagram: Diagram | null,
     node: Node<ListNodeData, 'listNode'>,
@@ -50,13 +60,14 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     borderWidth: number,
     forceWidth?: number
   ) {
-    const labelElement = document.getElementById(`${node.id}-label-${this.findNodeIndex(visibleNodes, node.id)}`);
+    const labelElement = document.getElementById(`${node.id}-label-${findNodeIndex(visibleNodes, node.id)}`);
 
     const nodeWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
     const nodeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
-    node.width = forceWidth ?? this.getNodeOrMinWidth(nodeWidth);
-    node.height = this.getNodeOrMinHeight(nodeHeight);
+    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
+    node.height = getNodeOrMinHeight(nodeHeight);
   }
+
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,
@@ -68,73 +79,62 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, forceWidth);
 
-    const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
+    const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
+    const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
+    const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+
     if (!forceWidth) {
-      const widerWidth = directChildren.reduce<number>(
-        (widerWidth, child) => Math.max(child.width ?? 0, widerWidth),
-        labelElement?.getBoundingClientRect().width ?? 0
+      const widerWidth = Math.max(
+        directNodesChildren.reduce<number>(
+          (widerWidth, child) => Math.max(child.width ?? 0, widerWidth),
+          labelElement?.getBoundingClientRect().width ?? 0
+        ),
+        northBorderNodeFootprintWidth,
+        southBorderNodeFootprintWidth
       );
 
-      layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, widerWidth);
+      layoutEngine.layoutNodes(previousDiagram, visibleNodes, directNodesChildren, widerWidth);
     }
 
-    directChildren.forEach((child, index) => {
+    directNodesChildren.forEach((child, index) => {
       child.position = {
         x: borderWidth,
         y: borderWidth + (labelElement?.getBoundingClientRect().height ?? 0),
       };
-      const previousSibling = directChildren[index - 1];
+      const previousSibling = directNodesChildren[index - 1];
       if (previousSibling) {
         child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) };
       }
     });
 
-    const childrenFootprint = this.getChildrenFootprint(directChildren);
+    const childrenContentBox = computeContentBox(visibleNodes, directNodesChildren);
+
     const labelOnlyWidth = labelElement?.getBoundingClientRect().width ?? 0;
-    const nodeWidth = Math.max(childrenFootprint.width, labelOnlyWidth) + borderWidth * 2;
-    const nodeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + childrenFootprint.height + borderWidth * 2;
-    node.width = forceWidth ?? this.getNodeOrMinWidth(nodeWidth);
-    node.height = this.getNodeOrMinHeight(nodeHeight);
-  }
+    const nodeWidth = Math.max(childrenContentBox.width, labelOnlyWidth) + borderWidth * 2;
 
-  private findNodeIndex(nodes: Node<NodeData>[], nodeId: string): number {
-    return nodes.findIndex((node) => node.id === nodeId);
-  }
+    const directChildrenAwareNodeHeight =
+      (labelElement?.getBoundingClientRect().height ?? 0) + childrenContentBox.height + borderWidth * 2;
 
-  private getChildrenFootprint(children: Node<NodeData>[]): Rect {
-    const footPrint: Box = children.reduce(
-      (currentFootPrint, node) => {
-        const { x, y } = node.position;
-        const nodeBox = rectToBox({
-          x,
-          y,
-          width: node.width ?? 0,
-          height: node.height ?? 0,
-        });
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes);
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes);
 
-        return this.getBoundsOfBoxes(currentFootPrint, nodeBox);
-      },
-      { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity }
+    const nodeHeight = Math.max(
+      directChildrenAwareNodeHeight,
+      eastBorderNodeFootprintHeight,
+      westBorderNodeFootprintHeight
     );
-    return boxToRect(footPrint);
-  }
 
-  private getBoundsOfBoxes(box1: Box, box2: Box): Box {
-    return {
-      x: Math.min(box1.x, box2.x),
-      y: Math.min(box1.y, box2.y),
-      x2: Math.max(box1.x2, box2.x2),
-      y2: Math.max(box1.y2, box2.y2),
-    };
-  }
+    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
+    node.height = getNodeOrMinHeight(nodeHeight);
 
-  private getNodeOrMinWidth(nodeWidth: number | undefined): number {
-    return Math.max(nodeWidth ?? -Infinity, defaultWidth);
-  }
-
-  private getNodeOrMinHeight(nodeHeight: number | undefined): number {
-    return Math.max(nodeHeight ?? -Infinity, defaultHeight);
+    // Update border nodes positions
+    borderNodes.forEach((borderNode) => {
+      borderNode.extent = getBorderNodeExtent(node, borderNode);
+    });
+    setBorderNodesPosition(borderNodes, node);
   }
 }
