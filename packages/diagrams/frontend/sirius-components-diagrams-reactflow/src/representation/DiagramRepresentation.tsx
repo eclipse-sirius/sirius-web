@@ -27,6 +27,7 @@ import { Diagram } from '../renderer/DiagramRenderer.types';
 import { MarkerDefinitions } from '../renderer/MarkerDefinitions';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
+import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
 import { useLayout } from '../renderer/layout/useLayout';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
 import {
@@ -110,7 +111,9 @@ export const DiagramRepresentation = ({
             <ConnectorContextProvider>
               <div style={{ display: 'inline-block', position: 'relative' }}>
                 <MarkerDefinitions />
-                <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+                <FullscreenContextProvider>
+                  <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+                </FullscreenContextProvider>
               </div>
             </ConnectorContextProvider>
           </DiagramPaletteContextProvider>
