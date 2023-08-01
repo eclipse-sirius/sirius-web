@@ -204,7 +204,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('Image - Motion_Engine').should('exist');
   });
 
-  it.only('can create views by Drag and Drop on an unsynchronized diagram when a representation is selected', () => {
+  it('can create views by Drag and Drop on an unsynchronized diagram when a representation is selected', () => {
     cy.getByTestId('robot').dblclick();
     cy.getByTestId('Robot').dblclick();
     cy.getByTestId('Robot-more').click();
