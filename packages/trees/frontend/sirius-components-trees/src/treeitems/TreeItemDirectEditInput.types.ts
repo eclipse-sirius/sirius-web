@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 export interface TreeItemDirectEditInputProps {
   editingContextId: string;
   treeId: string;
@@ -54,9 +55,9 @@ export interface GQLRenameTreeItemPayload {
 }
 
 export interface GQLSuccessPayload extends GQLRenameTreeItemPayload {
-  messages: string;
+  message: string;
 }
 
 export interface GQLErrorPayload extends GQLRenameTreeItemPayload {
-  messages: string;
+  message: string;
 }
