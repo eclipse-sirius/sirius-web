@@ -60,6 +60,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2194[#2194] [view] Fix an issue where it was impossible to set the None value to a color property in a View Node/Edge Description from the Details view.
 - https://github.com/eclipse-sirius/sirius-components/issues/2225[#2225] [form] Fix an issue where tabs displaying page name could be hidden.
 - https://github.com/eclipse-sirius/sirius-components/issues/2220[#2220] [vs-code] Fix an issue where some React contexts where missing, the treeID variable was missing in graphQLSubscription for the explorer and the Forms were not parts of the list of representations availables.
+- https://github.com/eclipse-sirius/sirius-components/issues/2217[#2217] [diagram] Fix the svg export when the file extension was not available. It falls back to the image content type to determine the image type.
 
 === New Features
 
