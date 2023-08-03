@@ -15,9 +15,10 @@ import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import { commands, window } from 'vscode';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import { getTreeEventSubscription } from './getTreeEventSubscription';
 import { ModelData } from './ModelData';
+import { GQLGetRepresentationMetadataResponse } from './ProjectData.types';
 import { RepresentationData } from './RepresentationData';
+import { getTreeEventSubscription } from './getTreeEventSubscription';
 
 export class ProjectData {
   private modelsData: ModelData[];
@@ -61,7 +62,7 @@ export class ProjectData {
       }
       const payload = {
         query: graphQLSubscription,
-        variables: { input: { id: uuid(), editingContextId: this.id, expanded: expandedItems } },
+        variables: { input: { id: uuid(), treeId: 'explorer://', editingContextId: this.id, expanded: expandedItems } },
       };
       const startMessage = { id: this.genSubscriptionTreeEventId(), type: 'start', payload };
       const startMessageJSON = JSON.stringify(startMessage);
@@ -85,11 +86,18 @@ export class ProjectData {
     return this.subscriptionTreeEventId;
   }
 
+  private isHandledRepresentation(element: { kind: string }): boolean {
+    return (
+      element.kind.startsWith('siriusComponents://representation?type=Diagram') ||
+      element.kind.startsWith('siriusComponents://representation?type=Form')
+    );
+  }
+
   private buildModelData(elements: []): ModelData[] {
     const modelsData: ModelData[] = [];
     elements.forEach(
       (element: { id: string; label: string; kind: string; imageURL: string; hasChildren: boolean; children: [] }) => {
-        if (element.kind !== 'Diagram') {
+        if (!this.isHandledRepresentation(element)) {
           let elementLabel = element.label;
           if (elementLabel === undefined || elementLabel.length === 0) {
             elementLabel = String(element.kind.split('::').pop());
@@ -137,7 +145,7 @@ export class ProjectData {
     const queryURL = `${address}/api/graphql`;
     const headers = { headers: { Cookie: cookie } };
     return axios
-      .post(
+      .post<GQLGetRepresentationMetadataResponse>(
         queryURL,
         {
           query: graphQLQuery,
@@ -151,10 +159,10 @@ export class ProjectData {
           return Promise.reject([]);
         } else {
           this.representationsData = [];
-          const diagrams = response.data.data.viewer.editingContext?.representations?.edges
-            .map((e: { node: any }) => e.node)
-            .filter((r: { kind: string }) => r.kind.startsWith('siriusComponents://representation?type=Diagram'));
-          diagrams.forEach((diagram: { id: string; label: string; kind: string }) => {
+          const representations = response.data.data.viewer.editingContext?.representations?.edges
+            .map((e) => e.node)
+            .filter(this.isHandledRepresentation);
+          representations.forEach((diagram) => {
             const representationData = new RepresentationData(diagram.id, diagram.label, diagram.kind, this.id);
             this.representationsData.push(representationData);
           });
