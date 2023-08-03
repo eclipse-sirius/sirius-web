@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { Collections } from '@material-ui/icons';
-
 import { RepresentationAreaProps } from './RepresentationsArea.types';
 
 const useRepresentationAreaStyles = makeStyles((theme) => ({
@@ -29,7 +29,9 @@ const useRepresentationAreaStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RepresentationsArea = ({ representations, setSelection }: RepresentationAreaProps) => {
+export const RepresentationsArea = ({ representations }: RepresentationAreaProps) => {
+  const { setSelection } = useSelection();
+
   const classes = useRepresentationAreaStyles();
 
   return (

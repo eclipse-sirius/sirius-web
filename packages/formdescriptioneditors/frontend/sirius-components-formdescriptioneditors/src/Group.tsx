@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
   PropertySectionContext,
@@ -143,15 +143,7 @@ const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteGroupPayload | GQLMoveGroupPayload | GQLMoveWidgetPayload
 ): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
-export const Group = ({
-  editingContextId,
-  representationId,
-  formDescriptionEditor,
-  page,
-  group,
-  selection,
-  setSelection,
-}: GroupProps) => {
+export const Group = ({ editingContextId, representationId, formDescriptionEditor, page, group }: GroupProps) => {
   const classes = useGroupEntryStyles({
     borderStyle: group.borderStyle,
   });
@@ -159,6 +151,7 @@ export const Group = ({
   const initialState: GroupState = { message: null, selected: false };
   const [state, setState] = useState<GroupState>(initialState);
   const { message, selected } = state;
+  const { selection, setSelection } = useSelection();
 
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -456,8 +449,6 @@ export const Group = ({
       formDescriptionEditor={formDescriptionEditor}
       toolbarActions={group.toolbarActions}
       containerId={group.id}
-      selection={selection}
-      setSelection={setSelection}
     />
   );
 
@@ -512,8 +503,6 @@ export const Group = ({
                   page={page}
                   container={group}
                   widget={widget}
-                  selection={selection}
-                  setSelection={setSelection}
                   flexDirection={group.displayMode === 'LIST' ? 'column' : 'row'}
                   flexGrow={1}
                 />

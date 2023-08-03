@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { Selection, ServerContext, ServerContextValue, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -24,11 +24,12 @@ type Modal = 'CreateNewRootObject';
 
 export const DocumentTreeItemContextMenuContribution = forwardRef(
   (
-    { editingContextId, item, readOnly, setSelection, expandItem, onClose }: TreeItemContextMenuComponentProps,
+    { editingContextId, item, readOnly, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
     const [modal, setModal] = useState<Modal | null>(null);
+    const { setSelection } = useSelection();
 
     const onObjectCreated = (selection: Selection) => {
       setSelection(selection);

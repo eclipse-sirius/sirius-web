@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLForm, GQLPage, GQLSubscriber, GQLWidget, GQLWidgetSubscription } from './FormEventFragments.types';
 
 export interface FormProps {
@@ -18,7 +17,6 @@ export interface FormProps {
   form: GQLForm;
   widgetSubscriptions: GQLWidgetSubscription[];
   readOnly: boolean;
-  setSelection: (selection: Selection) => void;
 }
 
 export interface FormState {
@@ -32,7 +30,6 @@ export type PropertySectionComponentProps<W extends GQLWidget> = {
   widget: W;
   subscribers: GQLSubscriber[];
   readOnly: boolean;
-  setSelection: (selection: Selection) => void;
 };
 
 export type PropertySectionComponent<W extends GQLWidget> = (

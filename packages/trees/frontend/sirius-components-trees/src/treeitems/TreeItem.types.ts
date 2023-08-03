@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '../views/TreeView.types';
 
 export interface TreeItemProps {
@@ -20,8 +19,6 @@ export interface TreeItemProps {
   depth: number;
   onExpand: (id: string, depth: number) => void;
   onExpandAll: (treeItem: GQLTreeItem) => void;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
   readOnly: boolean;
   textToHighlight: string | null;
   textToFilter: string | null;

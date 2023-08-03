@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { DRAG_SOURCES_TYPE, SelectionEntry, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { DRAG_SOURCES_TYPE, SelectionEntry, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   PropertySectionComponentProps,
   PropertySectionLabel,
@@ -199,9 +199,9 @@ export const ReferencePropertySection = ({
   widget,
   subscribers,
   readOnly,
-  setSelection,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
   const classes = useStyles();
+  const { setSelection } = useSelection();
 
   const [clearReference, { loading: clearLoading, error: clearError, data: clearData }] = useMutation<
     GQLClearReferenceMutationData,

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
   GQLChartWidget,
@@ -125,8 +125,6 @@ export const WidgetEntry = ({
   page,
   container,
   widget,
-  selection,
-  setSelection,
   flexDirection,
   flexGrow,
 }: WidgetEntryProps) => {
@@ -137,6 +135,8 @@ export const WidgetEntry = ({
   const { message } = state;
 
   const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+
+  const { setSelection } = useSelection();
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -308,24 +308,10 @@ export const WidgetEntry = ({
 
   let widgetElement: JSX.Element | null = null;
   if (widget.__typename === 'Button') {
-    widgetElement = (
-      <ButtonWidget
-        data-testid={widget.id}
-        widget={widget as GQLButton}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
+    widgetElement = <ButtonWidget data-testid={widget.id} widget={widget as GQLButton} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'Checkbox') {
     widgetElement = (
-      <CheckboxWidget
-        data-testid={widget.id}
-        widget={widget as GQLCheckbox}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
+      <CheckboxWidget data-testid={widget.id} widget={widget as GQLCheckbox} onDropBefore={onDropBefore} />
     );
   } else if (widget.__typename === 'FlexboxContainer') {
     widgetElement = (
@@ -337,8 +323,6 @@ export const WidgetEntry = ({
         page={page}
         container={container}
         widget={widget as GQLFlexboxContainer}
-        selection={selection}
-        setSelection={setSelection}
       />
     );
   } else if (widget.__typename === 'FormDescriptionEditorIf') {
@@ -358,8 +342,6 @@ export const WidgetEntry = ({
         page={page}
         container={container}
         widget={ifPreview}
-        selection={selection}
-        setSelection={setSelection}
       />
     );
   } else if (widget.__typename === 'FormDescriptionEditorFor') {
@@ -379,155 +361,55 @@ export const WidgetEntry = ({
         page={page}
         container={container}
         widget={forPreview}
-        selection={selection}
-        setSelection={setSelection}
       />
     );
   } else if (widget.__typename === 'Image') {
-    widgetElement = (
-      <ImageWidget
-        data-testid={widget.id}
-        widget={widget as GQLImage}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
+    widgetElement = <ImageWidget data-testid={widget.id} widget={widget as GQLImage} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'LabelWidget') {
     widgetElement = (
-      <LabelWidget
-        data-testid={widget.id}
-        widget={widget as GQLLabelWidget}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
+      <LabelWidget data-testid={widget.id} widget={widget as GQLLabelWidget} onDropBefore={onDropBefore} />
     );
   } else if (widget.__typename === 'Link') {
-    widgetElement = (
-      <LinkWidget
-        data-testid={widget.id}
-        widget={widget as GQLLink}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
+    widgetElement = <LinkWidget data-testid={widget.id} widget={widget as GQLLink} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'List') {
-    widgetElement = (
-      <ListWidget
-        data-testid={widget.id}
-        widget={widget as GQLList}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
+    widgetElement = <ListWidget data-testid={widget.id} widget={widget as GQLList} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'MultiSelect') {
     widgetElement = (
-      <MultiSelectWidget
-        data-testid={widget.id}
-        widget={widget as GQLMultiSelect}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
+      <MultiSelectWidget data-testid={widget.id} widget={widget as GQLMultiSelect} onDropBefore={onDropBefore} />
     );
   } else if (widget.__typename === 'Radio') {
-    widgetElement = (
-      <RadioWidget
-        data-testid={widget.id}
-        widget={widget as GQLRadio}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
+    widgetElement = <RadioWidget data-testid={widget.id} widget={widget as GQLRadio} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'RichText') {
     widgetElement = (
-      <RichTextWidget
-        data-testid={widget.id}
-        widget={widget as GQLRichText}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
+      <RichTextWidget data-testid={widget.id} widget={widget as GQLRichText} onDropBefore={onDropBefore} />
     );
   } else if (widget.__typename === 'Select') {
-    widgetElement = (
-      <SelectWidget
-        data-testid={widget.id}
-        widget={widget as GQLSelect}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
-    );
+    widgetElement = <SelectWidget data-testid={widget.id} widget={widget as GQLSelect} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'Textarea') {
     widgetElement = (
-      <TextAreaWidget
-        data-testid={widget.id}
-        widget={widget as GQLTextarea}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
+      <TextAreaWidget data-testid={widget.id} widget={widget as GQLTextarea} onDropBefore={onDropBefore} />
     );
   } else if (widget.__typename === 'Textfield') {
     widgetElement = (
-      <TextfieldWidget
-        data-testid={widget.id}
-        widget={widget as GQLTextfield}
-        selection={selection}
-        setSelection={setSelection}
-        onDropBefore={onDropBefore}
-      />
+      <TextfieldWidget data-testid={widget.id} widget={widget as GQLTextfield} onDropBefore={onDropBefore} />
     );
   } else if (widget.__typename === 'ChartWidget') {
     const chartWidget: GQLChartWidget = widget as GQLChartWidget;
     if (chartWidget.chart.metadata.kind === 'BarChart') {
       widgetElement = (
-        <BarChartWidget
-          data-testid={widget.id}
-          widget={widget as GQLChartWidget}
-          selection={selection}
-          setSelection={setSelection}
-          onDropBefore={onDropBefore}
-        />
+        <BarChartWidget data-testid={widget.id} widget={widget as GQLChartWidget} onDropBefore={onDropBefore} />
       );
     } else if (chartWidget.chart.metadata.kind === 'PieChart') {
       widgetElement = (
-        <PieChartWidget
-          data-testid={widget.id}
-          widget={widget as GQLChartWidget}
-          selection={selection}
-          setSelection={setSelection}
-          onDropBefore={onDropBefore}
-        />
+        <PieChartWidget data-testid={widget.id} widget={widget as GQLChartWidget} onDropBefore={onDropBefore} />
       );
     }
   } else {
     const PreviewComponent = propertySectionsRegistry.getPreviewComponent(widget);
     if (PreviewComponent) {
-      widgetElement = (
-        <PreviewComponent
-          data-testid={widget.id}
-          widget={widget as GQLWidget}
-          selection={selection}
-          setSelection={setSelection}
-          onDropBefore={onDropBefore}
-        />
-      );
+      widgetElement = <PreviewComponent data-testid={widget.id} widget={widget} onDropBefore={onDropBefore} />;
     } else if (propertySectionsRegistry.getComponent(widget)) {
-      widgetElement = (
-        <CustomWidget
-          data-testid={widget.id}
-          widget={widget as GQLWidget}
-          selection={selection}
-          setSelection={setSelection}
-          onDropBefore={onDropBefore}
-        />
-      );
+      widgetElement = <CustomWidget data-testid={widget.id} widget={widget} onDropBefore={onDropBefore} />;
     } else {
       console.error(`Unsupported widget type ${widget.__typename}`);
     }

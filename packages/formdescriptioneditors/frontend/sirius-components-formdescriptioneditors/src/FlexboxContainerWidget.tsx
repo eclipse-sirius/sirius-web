@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { Toast, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
   PropertySectionContext,
@@ -91,8 +91,6 @@ export const FlexboxContainerWidget = ({
   formDescriptionEditor,
   page,
   widget,
-  selection,
-  setSelection,
 }: FlexboxContainerWidgetProps) => {
   const classes = useStyles({
     flexDirection: widget.flexDirection,
@@ -103,6 +101,7 @@ export const FlexboxContainerWidget = ({
   const initialState: FlexboxContainerWidgetState = { message: null, selected: false };
   const [state, setState] = useState<FlexboxContainerWidgetState>(initialState);
   const { message, selected } = state;
+  const { selection } = useSelection();
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -227,8 +226,6 @@ export const FlexboxContainerWidget = ({
         page={page}
         container={widget}
         widget={childWidget}
-        selection={selection}
-        setSelection={setSelection}
         flexDirection={widget.flexDirection}
         flexGrow={widget.flexGrow}
       />

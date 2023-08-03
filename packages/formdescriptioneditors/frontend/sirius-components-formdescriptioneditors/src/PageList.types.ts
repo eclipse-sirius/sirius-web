@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 import { GQLPage } from '@eclipse-sirius/sirius-components-forms/src';
+import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 
 export interface PageListProps {
   editingContextId: string;
   representationId: string;
   formDescriptionEditor: GQLFormDescriptionEditor;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
 }
 
 export interface PageListState {

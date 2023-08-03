@@ -31,8 +31,6 @@ const useTreeStyle = makeStyles((theme) => ({
 
 export const ModelBrowserTreeView = ({
   editingContextId,
-  selection,
-  setSelection,
   widget,
   markedItemIds,
   enableMultiSelection,
@@ -56,8 +54,6 @@ export const ModelBrowserTreeView = ({
         <TreeView
           editingContextId={editingContextId}
           readOnly={true}
-          selection={selection}
-          setSelection={setSelection}
           treeId={`modelBrowser://${leafType}?ownerKind=${encodeURIComponent(
             ownerKind
           )}&targetType=${encodeURIComponent(widget.reference.referenceKind)}&ownerId=${

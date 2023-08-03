@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { BarChart, BarChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLBarChart } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
@@ -32,7 +33,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
 }));
 
-export const BarChartWidget = ({ widget, selection }: BarChartWidgetProps) => {
+export const BarChartWidget = ({ widget }: BarChartWidgetProps) => {
   const classes = useStyles();
   const barChartWidget = widget.chart as GQLBarChart;
 
@@ -71,6 +72,7 @@ export const BarChartWidget = ({ widget, selection }: BarChartWidgetProps) => {
     height: barChartWidget.height,
   };
   const [selected, setSelected] = useState<boolean>(false);
+  const { selection } = useSelection();
 
   const ref = useRef<HTMLDivElement | null>(null);
 

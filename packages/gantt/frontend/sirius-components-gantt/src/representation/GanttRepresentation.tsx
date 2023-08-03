@@ -66,13 +66,9 @@ const isErrorPayload = (payload: GQLGanttEventPayload): payload is GQLErrorPaylo
   payload.__typename === 'ErrorPayload';
 
 /**
- * Connect the Gantt component to the GraphQL API over Web Socket.
+ * Connect the Gantt component to the GraphQL API.
  */
-export const GanttRepresentation = ({
-  editingContextId,
-  representationId,
-  setSelection,
-}: RepresentationComponentProps) => {
+export const GanttRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const classes = useGanttRepresentationStyles();
 
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -142,7 +138,6 @@ export const GanttRepresentation = ({
     content = (
       <Gantt
         tasks={tasks}
-        setSelection={setSelection}
         onSelect={onselect}
         onTaskChange={onTaskChange}
         onTaskDelete={onTaskDelete}

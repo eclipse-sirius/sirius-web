@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, RadioStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
@@ -39,7 +39,7 @@ const useStyles = makeStyles<Theme, RadioStyleProps>((theme) => ({
   },
 }));
 
-export const RadioWidget = ({ widget, selection }: RadioWidgetProps) => {
+export const RadioWidget = ({ widget }: RadioWidgetProps) => {
   const props: RadioStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -51,7 +51,7 @@ export const RadioWidget = ({ widget, selection }: RadioWidgetProps) => {
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
-
+  const { selection } = useSelection();
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

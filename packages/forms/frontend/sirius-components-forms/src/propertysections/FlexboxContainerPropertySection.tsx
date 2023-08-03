@@ -48,7 +48,6 @@ export const FlexboxContainerPropertySection = ({
   formId,
   widget,
   widgetSubscriptions,
-  setSelection,
   readOnly,
 }: FlexboxContainerPropertySectionProps) => {
   const classes = useFlexboxContainerPropertySectionStyles({
@@ -65,7 +64,6 @@ export const FlexboxContainerPropertySection = ({
         formId={formId}
         widget={childWidget}
         widgetSubscriptions={widgetSubscriptions}
-        setSelection={setSelection}
         readOnly={readOnly || widget.readOnly}
         key={childWidget.id}
       />

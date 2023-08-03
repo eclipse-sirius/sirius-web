@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { ImageStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
@@ -45,7 +45,7 @@ const useStyles = makeStyles<Theme, ImageStyleProps>((theme) => ({
   },
 }));
 
-export const ImageWidget = ({ widget, selection }: ImageWidgetProps) => {
+export const ImageWidget = ({ widget }: ImageWidgetProps) => {
   const props: ImageStyleProps = {
     maxWidth: widget.maxWidth,
   };
@@ -53,6 +53,7 @@ export const ImageWidget = ({ widget, selection }: ImageWidgetProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const initialState: ImageWidgetState = { imageURL: widget.url, validImage: false, selected: false };
   const [state, setState] = useState<ImageWidgetState>(initialState);
+  const { selection } = useSelection();
 
   const onErrorLoadingImage = () => {
     setState((prevState) => {

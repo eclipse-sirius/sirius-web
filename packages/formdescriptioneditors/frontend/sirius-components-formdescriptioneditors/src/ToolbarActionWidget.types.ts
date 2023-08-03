@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 
@@ -21,8 +20,6 @@ export interface ToolbarActionProps {
   toolbarActions: GQLToolbarAction[];
   containerId: string;
   toolbarAction: GQLToolbarAction;
-  selection: Selection;
-  setSelection: (newSelection: Selection) => void;
 }
 
 export interface ToolbarActionState {

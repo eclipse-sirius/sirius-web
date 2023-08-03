@@ -71,7 +71,7 @@ const a11yProps = (id: string) => {
   };
 };
 
-export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection, readOnly }: FormProps) => {
+export const Form = ({ editingContextId, form, widgetSubscriptions, readOnly }: FormProps) => {
   const classes = useFormStyles();
   const { id, pages } = form;
 
@@ -115,7 +115,6 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
         formId={id}
         page={state.selectedPage}
         widgetSubscriptions={widgetSubscriptions}
-        setSelection={setSelection}
         readOnly={readOnly}
       />
     );

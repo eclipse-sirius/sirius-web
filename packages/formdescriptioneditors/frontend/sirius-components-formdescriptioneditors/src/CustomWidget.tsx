@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import ExtensionIcon from '@material-ui/icons/Extension';
@@ -37,11 +38,12 @@ const useStyles = makeStyles<Theme, CustomWidgetStyleProps>((theme) => ({
  * specific implementation. This allows them to still be created/displayed/selected/moved
  * in a Form Description Editor, but they will be represented by a generic icon.
  */
-export const CustomWidget = ({ widget, selection }: CustomWidgetProps) => {
+export const CustomWidget = ({ widget }: CustomWidgetProps) => {
   const props: CustomWidgetStyleProps = {};
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
+  const { selection } = useSelection();
 
   const ref = useRef<HTMLInputElement | null>(null);
 

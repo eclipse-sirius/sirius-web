@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { PieChart, PieChartRepresentation } from '@eclipse-sirius/sirius-components-charts';
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLPieChart } from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const PieChartWidget = ({ widget, selection }: PieChartWidgetProps) => {
+export const PieChartWidget = ({ widget }: PieChartWidgetProps) => {
   const classes = useStyles();
   const pieChartWidget = widget.chart as GQLPieChart;
 
@@ -57,7 +58,7 @@ export const PieChartWidget = ({ widget, selection }: PieChartWidgetProps) => {
     style: pieChartWidget.style,
   };
   const [selected, setSelected] = useState<boolean>(false);
-
+  const { selection } = useSelection();
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

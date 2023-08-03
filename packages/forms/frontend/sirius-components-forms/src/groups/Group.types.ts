@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLContainerBorderStyle, GQLGroup, GQLWidgetSubscription } from '../form/FormEventFragments.types';
 
 export interface GroupProps {
@@ -18,7 +17,6 @@ export interface GroupProps {
   formId: string;
   group: GQLGroup;
   widgetSubscriptions: GQLWidgetSubscription[];
-  setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }
 

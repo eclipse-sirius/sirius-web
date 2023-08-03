@@ -12,16 +12,6 @@
  *******************************************************************************/
 import React, { ReactNode } from 'react';
 
-export interface Selection {
-  entries: SelectionEntry[];
-}
-
-export interface SelectionEntry {
-  id: string;
-  label: string;
-  kind: string;
-}
-
 export interface GQLEditingContextEventPayload {
   __typename: string;
 }
@@ -53,15 +43,11 @@ export interface WorkbenchViewContributionProps {
 
 export interface WorkbenchViewComponentProps {
   editingContextId: string;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }
 
 export interface MainAreaComponentProps {
   editingContextId: string;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }
 
@@ -80,8 +66,6 @@ export type RepresentationComponentProps = {
   editingContextId: string;
   representationId: string;
   readOnly: boolean;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
 };
 
 export type RepresentationComponent = React.ComponentType<RepresentationComponentProps>;

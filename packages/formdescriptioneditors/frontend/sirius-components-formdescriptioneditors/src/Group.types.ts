@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLGroup, GQLPage } from '@eclipse-sirius/sirius-components-forms';
 import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 
@@ -20,8 +19,6 @@ export interface GroupProps {
   formDescriptionEditor: GQLFormDescriptionEditor;
   page: GQLPage;
   group: GQLGroup;
-  selection: Selection;
-  setSelection: (newSelection: Selection) => void;
 }
 
 export interface GroupState {

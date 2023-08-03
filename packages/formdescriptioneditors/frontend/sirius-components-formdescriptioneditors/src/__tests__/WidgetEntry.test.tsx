@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { GQLChartWidget, GQLGroup, GQLPage, GQLPieChart, GQLTextfield } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -32,12 +32,6 @@ import { DataTransfer } from './DataTransfer';
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => cleanup());
-
-const emptySelection: Selection = {
-  entries: [],
-};
-
-const emptySetSelection = (_: Selection) => {};
 
 const successPayload: GQLSuccessPayload = {
   __typename: 'SuccessPayload',
@@ -88,6 +82,12 @@ const moveWidgetVariables: GQLMoveWidgetMutationVariables = {
 };
 
 const moveWidgetSuccessData: GQLMoveWidgetMutationData = { moveWidget: successPayload };
+
+const emptySelection: Selection = {
+  entries: [],
+};
+
+const emptySetSelection = (_: Selection) => {};
 
 test('should drop the Textfield in the drop area', async () => {
   const textfieldWidget: GQLTextfield = {
@@ -147,18 +147,19 @@ test('should drop the Textfield in the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <WidgetEntry
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        container={group}
-        flexDirection={'row'}
-        flexGrow={0}
-        widget={textfieldWidget}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <WidgetEntry
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          page={page}
+          container={group}
+          flexDirection={'row'}
+          flexGrow={0}
+          widget={textfieldWidget}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -235,18 +236,19 @@ test('should delete the Textfield from the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <WidgetEntry
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        container={group}
-        flexDirection={'row'}
-        flexGrow={0}
-        widget={textfieldWidget}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <WidgetEntry
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          page={page}
+          container={group}
+          flexDirection={'row'}
+          flexGrow={0}
+          widget={textfieldWidget}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -331,18 +333,19 @@ test('should delete the PieChart from the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <WidgetEntry
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        container={group}
-        flexDirection={'row'}
-        flexGrow={0}
-        widget={pieChartWidget}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <WidgetEntry
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          page={page}
+          container={group}
+          flexDirection={'row'}
+          flexGrow={0}
+          widget={pieChartWidget}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -416,18 +419,19 @@ test('should move the existing Textfield from/into the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <WidgetEntry
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        container={group}
-        flexDirection={'row'}
-        flexGrow={0}
-        widget={textfieldWidget}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <WidgetEntry
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          page={page}
+          container={group}
+          flexDirection={'row'}
+          flexGrow={0}
+          widget={textfieldWidget}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 

@@ -11,14 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionComponent, WidgetContribution } from './Form.types';
 import { GQLWidget } from './FormEventFragments.types';
 
 interface PreviewWidgetProps {
   widget: GQLWidget;
-  selection: Selection;
-  setSelection: (newSelection: Selection) => void;
   onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: GQLWidget) => void;
 }
 

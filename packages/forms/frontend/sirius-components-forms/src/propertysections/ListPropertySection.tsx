@@ -11,20 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { getCSSColor, IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, getCSSColor, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { MouseEvent, useEffect } from 'react';
 import { GQLListItem } from '../form/FormEventFragments.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -36,6 +35,7 @@ import {
   ListStyleProps,
 } from './ListPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { useClickHandler } from './useClickHandler';
 
 export const deleteListItemMutation = gql`
@@ -116,7 +116,6 @@ export const ListPropertySection = ({
   widget,
   subscribers,
   readOnly,
-  setSelection,
 }: ListPropertySectionProps) => {
   const props: ListStyleProps = {
     color: widget.style?.color ?? null,
@@ -128,6 +127,7 @@ export const ListPropertySection = ({
   };
   const classes = useListPropertySectionStyles(props);
   const theme = useTheme();
+  const { setSelection } = useSelection();
 
   let items = [...widget.items];
   if (items.length === 0) {

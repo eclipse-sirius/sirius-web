@@ -25,7 +25,7 @@ const usePageStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Page = ({ editingContextId, formId, page, widgetSubscriptions, setSelection, readOnly }: PageProps) => {
+export const Page = ({ editingContextId, formId, page, widgetSubscriptions, readOnly }: PageProps) => {
   const classes = usePageStyles();
   return (
     <div className={classes.page}>
@@ -37,7 +37,6 @@ export const Page = ({ editingContextId, formId, page, widgetSubscriptions, setS
             group={group}
             widgetSubscriptions={widgetSubscriptions}
             key={group.id}
-            setSelection={setSelection}
             readOnly={readOnly}
           />
         );

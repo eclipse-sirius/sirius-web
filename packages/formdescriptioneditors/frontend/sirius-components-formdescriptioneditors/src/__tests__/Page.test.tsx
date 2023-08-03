@@ -11,11 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { GQLPage } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 
+import { addPageMutation, deletePageMutation, movePageMutation } from '../FormDescriptionEditorEventFragment';
 import {
   GQLAddPageMutationData,
   GQLAddPageMutationVariables,
@@ -26,9 +27,8 @@ import {
   GQLMovePageMutationVariables,
   GQLSuccessPayload,
 } from '../FormDescriptionEditorEventFragment.types';
-import { addPageMutation, deletePageMutation, movePageMutation } from '../FormDescriptionEditorEventFragment';
-import { DataTransfer } from './DataTransfer';
 import { PageList } from '../PageList';
+import { DataTransfer } from './DataTransfer';
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
@@ -114,13 +114,14 @@ test('should drop the Page in the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <PageList
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <PageList
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -168,13 +169,14 @@ test('should delete the Page', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <PageList
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <PageList
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -227,13 +229,14 @@ test('should move the existing Page into the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <PageList
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <PageList
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 

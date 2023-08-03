@@ -27,8 +27,6 @@ export const Tree = ({
   tree,
   onExpand,
   onExpandAll,
-  selection,
-  setSelection,
   readOnly,
   enableMultiSelection = true,
   textToHighlight,
@@ -118,8 +116,6 @@ export const Tree = ({
                 depth={1}
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}
-                selection={selection}
-                setSelection={setSelection}
                 enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}

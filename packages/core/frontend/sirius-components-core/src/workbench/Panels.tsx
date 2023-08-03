@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,8 +47,6 @@ interface PanelState {
 
 export const Panels = ({
   editingContextId,
-  selection,
-  setSelection,
   readOnly,
   leftContributions,
   rightContributions,
@@ -166,8 +164,6 @@ export const Panels = ({
       <div className={styles.panel}>
         <Site
           editingContextId={editingContextId}
-          selection={selection}
-          setSelection={setSelection}
           readOnly={readOnly}
           side="left"
           expanded={leftPanelState.expanded}
@@ -198,8 +194,6 @@ export const Panels = ({
       <div className={styles.panel}>
         <Site
           editingContextId={editingContextId}
-          selection={selection}
-          setSelection={setSelection}
           readOnly={readOnly}
           side="right"
           expanded={rightPanelState.expanded}
