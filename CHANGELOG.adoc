@@ -39,6 +39,7 @@ As a result the development of applications consuming Sirius Components packages
 - [releng] Switch to `@apollo/client` 3.8.1
 - [releng] Switch to `reactflow` 11.8.1
 - [releng] Switch to Spring Boot 3.1.2
+- [releng] Switch to Sirius Desktop 7.2.0
 
 === Bug fixes
 
