@@ -58,7 +58,6 @@ test('should render the flexbox container without style', () => {
             widget={defaultFlexboxContainer}
             widgetSubscriptions={[]}
             readOnly={false}
-            setSelection={() => {}}
           />
         </ToastContext.Provider>
       </ServerContext.Provider>
@@ -78,7 +77,6 @@ test('should render the flexbox container with border style', () => {
             widget={flexboxContainerWithStyle}
             widgetSubscriptions={[]}
             readOnly={false}
-            setSelection={() => {}}
           />
         </ToastContext.Provider>
       </ServerContext.Provider>

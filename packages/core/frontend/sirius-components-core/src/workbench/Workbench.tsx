@@ -13,7 +13,8 @@
 import { gql, useSubscription } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useSelection } from '../selection/useSelection';
 import { Toast } from '../toast/Toast';
 import { Panels } from './Panels';
 import { RepresentationContext } from './RepresentationContext';
@@ -23,7 +24,6 @@ import {
   GQLEditingContextEventSubscription,
   Representation,
   RepresentationComponentProps,
-  Selection,
   WorkbenchProps,
 } from './Workbench.types';
 import {
@@ -33,7 +33,7 @@ import {
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
-  UpdateSelectionEvent,
+  UpdateSelectedRepresentationEvent,
   WorkbenchContext,
   WorkbenchEvent,
   workbenchMachine,
@@ -78,13 +78,13 @@ export const Workbench = ({
   const { registry } = useContext<RepresentationContextValue>(RepresentationContext);
   const [{ value, context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
     context: {
-      selection: { entries: initialRepresentationSelected ? [initialRepresentationSelected] : [] },
       displayedRepresentation: initialRepresentationSelected,
       representations: initialRepresentationSelected ? [initialRepresentationSelected] : [],
     },
   });
   const { toast } = value as SchemaValue;
-  const { id, selection, representations, displayedRepresentation, message } = context;
+  const { id, representations, displayedRepresentation, message } = context;
+  const { selection, setSelection } = useSelection();
 
   const { error } = useSubscription<GQLEditingContextEventSubscription>(editingContextEventSubscription, {
     variables: {
@@ -115,20 +115,16 @@ export const Workbench = ({
     }
   }, [error, dispatch]);
 
-  const setSelection = useCallback(
-    (selection: Selection) => {
-      const representations: Representation[] = selection.entries.filter((entry) =>
-        entry.kind.startsWith('siriusComponents://representation')
-      );
-      const updateSelectionEvent: UpdateSelectionEvent = {
-        type: 'UPDATE_SELECTION',
-        selection,
-        representations,
-      };
-      dispatch(updateSelectionEvent);
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    const representations: Representation[] = selection.entries.filter((entry) =>
+      entry.kind.startsWith('siriusComponents://representation')
+    );
+    const updateSelectedRepresentation: UpdateSelectedRepresentationEvent = {
+      type: 'UPDATE_SELECTED_REPRESENTATION',
+      representations,
+    };
+    dispatch(updateSelectedRepresentation);
+  }, [selection, dispatch]);
 
   const onRepresentationClick = (representation: Representation) => {
     setSelection({ entries: [{ id: representation.id, label: representation.label, kind: representation.kind }] });
@@ -160,14 +156,7 @@ export const Workbench = ({
   });
 
   const MainComponent = mainAreaComponent;
-  let main = (
-    <MainComponent
-      editingContextId={editingContextId}
-      selection={selection}
-      setSelection={setSelection}
-      readOnly={readOnly}
-    />
-  );
+  let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
 
   if (displayedRepresentation) {
     const RepresentationComponent = registry.getComponent(displayedRepresentation);
@@ -175,8 +164,6 @@ export const Workbench = ({
       editingContextId,
       readOnly,
       representationId: displayedRepresentation.id,
-      selection,
-      setSelection,
     };
     if (RepresentationComponent) {
       main = (
@@ -197,8 +184,6 @@ export const Workbench = ({
     <>
       <Panels
         editingContextId={editingContextId}
-        selection={selection}
-        setSelection={setSelection}
         readOnly={readOnly}
         leftContributions={workbenchViewLeftSideContributions}
         leftPanelInitialSize={300}

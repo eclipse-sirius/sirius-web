@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, ListStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -49,7 +49,7 @@ const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
   },
 }));
 
-export const ListWidget = ({ widget, selection }: ListWidgetProps) => {
+export const ListWidget = ({ widget }: ListWidgetProps) => {
   const props: ListStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -61,6 +61,7 @@ export const ListWidget = ({ widget, selection }: ListWidgetProps) => {
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<Boolean>(false);
+  const { selection } = useSelection();
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

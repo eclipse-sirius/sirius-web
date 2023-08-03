@@ -11,7 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
+import {
+  MessageOptions,
+  Selection,
+  SelectionContext,
+  ToastContext,
+  ToastContextValue,
+} from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -112,18 +118,26 @@ const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
 };
 
+const emptySelection: Selection = {
+  entries: [],
+};
+
+const emptySetSelection = (_: Selection) => {};
+
 test('render list widget', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <ListPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultList}
-          subscribers={[]}
-          readOnly={false}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <ListPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultList}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </SelectionContext.Provider>
       </ToastContext.Provider>
     </MockedProvider>
   );
@@ -134,14 +148,16 @@ test('render list widget with style', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <ListPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultListWithStyle}
-          subscribers={[]}
-          readOnly={false}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <ListPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultListWithStyle}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </SelectionContext.Provider>
       </ToastContext.Provider>
     </MockedProvider>
   );
@@ -164,14 +180,16 @@ test('should the click event sent on item click', async () => {
   const { container } = render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
-        <ListPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={defaultListWithStyle}
-          subscribers={[]}
-          readOnly={false}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <ListPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={defaultListWithStyle}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </SelectionContext.Provider>
       </ToastContext.Provider>
     </MockedProvider>
   );
@@ -194,14 +212,16 @@ test('render list widget with help hint', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <ListPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={{ ...defaultList, hasHelpText: true }}
-          subscribers={[]}
-          readOnly={false}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <ListPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={{ ...defaultList, hasHelpText: true }}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </SelectionContext.Provider>
       </ToastContext.Provider>
     </MockedProvider>
   );
@@ -212,14 +232,16 @@ test('should render a readOnly list from widget properties', () => {
   const { container } = render(
     <MockedProvider>
       <ToastContext.Provider value={toastContextMock}>
-        <ListPropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={readOnlyList}
-          subscribers={[]}
-          readOnly={false}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <ListPropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={readOnlyList}
+            subscribers={[]}
+            readOnly={false}
+          />
+        </SelectionContext.Provider>
       </ToastContext.Provider>
     </MockedProvider>
   );

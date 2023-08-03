@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useSubscription } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Tree } from '../trees/Tree';
@@ -72,8 +72,6 @@ const getExpandAllTreePathQuery = gql`
 
 export const TreeView = ({
   editingContextId,
-  selection,
-  setSelection,
   readOnly,
   treeId,
   enableMultiSelection,
@@ -88,6 +86,7 @@ export const TreeView = ({
       synchronizedWithSelection: synchronizedWithSelection,
     },
   });
+  const { selection } = useSelection();
 
   const { toast, treeView } = value as SchemaValue;
   const { id, tree, expanded, maxDepth, autoExpandToRevealSelection, treeItemToExpandAll, message } = context;
@@ -224,8 +223,6 @@ export const TreeView = ({
             tree={treeConverter.convert(tree)}
             onExpand={onExpand}
             onExpandAll={onExpandAll}
-            selection={selection}
-            setSelection={setSelection}
             readOnly={readOnly}
             enableMultiSelection={enableMultiSelection}
             markedItemIds={markedItemIds}

@@ -10,7 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DRAG_SOURCES_TYPE, IconOverlay, Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+import {
+  DRAG_SOURCES_TYPE,
+  IconOverlay,
+  Selection,
+  SelectionEntry,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -114,8 +120,6 @@ export const TreeItem = ({
   depth,
   onExpand,
   onExpandAll,
-  selection,
-  setSelection,
   readOnly,
   textToHighlight,
   textToFilter,
@@ -141,6 +145,8 @@ export const TreeItem = ({
   const { showContextMenu, menuAnchor, editingMode } = state;
 
   const refDom = useRef() as any;
+
+  const { selection, setSelection } = useSelection();
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -208,8 +214,6 @@ export const TreeItem = ({
         depth={depth}
         onExpand={onExpand}
         onExpandAll={onExpandAll}
-        selection={selection}
-        setSelection={setSelection}
         enterEditingMode={enterEditingMode}
         onClose={closeContextMenu}
       />
@@ -230,8 +234,6 @@ export const TreeItem = ({
                 depth={depth + 1}
                 onExpand={onExpand}
                 onExpandAll={onExpandAll}
-                selection={selection}
-                setSelection={setSelection}
                 enableMultiSelection={enableMultiSelection}
                 readOnly={readOnly}
                 textToHighlight={textToHighlight}

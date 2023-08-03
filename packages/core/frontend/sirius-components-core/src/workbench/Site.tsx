@@ -97,16 +97,7 @@ const useSiteStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Site = ({
-  editingContextId,
-  selection,
-  setSelection,
-  readOnly,
-  side,
-  expanded,
-  toggleExpansion,
-  contributions,
-}: SiteProps) => {
+export const Site = ({ editingContextId, readOnly, side, expanded, toggleExpansion, contributions }: SiteProps) => {
   const classes = useSiteStyles();
   const [isExpanded, setExpanded] = useState<boolean>(expanded);
   const [selectedViewIndex, setSelectedViewIndex] = useState<number>(0);
@@ -160,12 +151,7 @@ export const Site = ({
           <Typography className={classes.viewHeaderTitle}>{title}</Typography>
         </div>
         <div className={classes.viewContent} data-testid={`view-${title}`}>
-          <Component
-            editingContextId={editingContextId}
-            selection={selection}
-            setSelection={setSelection}
-            readOnly={readOnly}
-          />
+          <Component editingContextId={editingContextId} readOnly={readOnly} />
         </div>
       </div>
     );

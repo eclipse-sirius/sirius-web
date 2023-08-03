@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 
 export interface NewDocumentAreaState {
   message: string;
@@ -24,7 +23,6 @@ export interface EditingContextAction {
 export interface NewDocumentAreaProps {
   editingContextId: string;
   editingContextActions: EditingContextAction[];
-  setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }
 

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import React, { useContext, useEffect, useRef } from 'react';
 import {
   Background,
@@ -65,7 +65,7 @@ import 'reactflow/dist/style.css';
 
 const GRID_STEP: number = 10;
 
-export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSelection }: DiagramRendererProps) => {
+export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
   const { diagramDescription } = useDiagramDescription();
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
@@ -86,6 +86,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
   const { nodeConverterHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { fitToScreen } = useInitialFitToScreen();
+  const { setSelection } = useSelection();
 
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
@@ -120,7 +121,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
     }
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
-  const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection(selection, setSelection);
+  const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection();
   const { transformBorderNodeChanges } = useBorderChange();
   const { applyHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);

@@ -58,8 +58,6 @@ export const TreeItemContextMenu = ({
   depth,
   onExpand,
   onExpandAll,
-  selection,
-  setSelection,
   enterEditingMode,
   onClose,
 }: TreeItemContextMenuProps) => {
@@ -123,8 +121,6 @@ export const TreeItemContextMenu = ({
             item,
             readOnly,
             onClose,
-            selection,
-            setSelection,
             expandItem,
             key: index.toString(),
             treeId: treeId,

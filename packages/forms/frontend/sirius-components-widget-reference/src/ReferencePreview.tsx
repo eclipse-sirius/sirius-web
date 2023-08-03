@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
@@ -46,7 +46,7 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
 
 type ReferenceWidgetProps = WidgetProps<GQLReferenceWidget>;
 
-export const ReferencePreview = ({ widget, selection }: ReferenceWidgetProps) => {
+export const ReferencePreview = ({ widget }: ReferenceWidgetProps) => {
   const props: GQLReferenceWidgetStyle = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -59,7 +59,7 @@ export const ReferencePreview = ({ widget, selection }: ReferenceWidgetProps) =>
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [selected, setSelected] = useState<boolean>(false);
-
+  const { selection } = useSelection();
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '../views/TreeView.types';
 import {
   TreeItemContextMenuComponentProps,
@@ -29,8 +28,6 @@ export interface TreeItemContextMenuProps {
   depth: number;
   onExpand: (id: string, depth: number) => void;
   onExpandAll: (treeItem: GQLTreeItem) => void;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
   enterEditingMode: () => void;
   onClose: () => void;
 }

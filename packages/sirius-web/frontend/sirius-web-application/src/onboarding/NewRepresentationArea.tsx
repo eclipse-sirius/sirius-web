@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import List from '@material-ui/core/List';
@@ -68,14 +68,14 @@ const isErrorPayload = (payload): payload is GQLErrorPayload => payload.__typena
 export const NewRepresentationArea = ({
   editingContextId,
   representationDescriptions,
-  selection,
-  setSelection,
   readOnly,
 }: NewRepresentationAreaProps) => {
   const [state, setState] = useState<NewDocumentAreaState>({
     message: null,
   });
   const classes = useNewRepresentationAreaStyles();
+  const { selection, setSelection } = useSelection();
+
   const selectedItem = selection.entries.length > 0 ? selection.entries[0] : null;
 
   // Representation creation

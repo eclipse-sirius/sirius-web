@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, LinkStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Link from '@material-ui/core/Link';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -36,7 +36,7 @@ const useStyles = makeStyles<Theme, LinkStyleProps>((theme) => ({
   },
 }));
 
-export const LinkWidget = ({ widget, selection }: LinkWidgetProps) => {
+export const LinkWidget = ({ widget }: LinkWidgetProps) => {
   const props: LinkStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -48,6 +48,7 @@ export const LinkWidget = ({ widget, selection }: LinkWidgetProps) => {
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
+  const { selection } = useSelection();
 
   const ref = useRef<HTMLInputElement | null>(null);
 

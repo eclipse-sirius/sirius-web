@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, MultiSelectStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -41,7 +41,7 @@ const useStyles = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
   },
 }));
 
-export const MultiSelectWidget = ({ widget, selection }: MultiSelectWidgetProps) => {
+export const MultiSelectWidget = ({ widget }: MultiSelectWidgetProps) => {
   const props: MultiSelectStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
@@ -54,7 +54,7 @@ export const MultiSelectWidget = ({ widget, selection }: MultiSelectWidgetProps)
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
-
+  const { selection } = useSelection();
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

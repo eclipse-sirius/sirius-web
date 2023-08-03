@@ -11,7 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { Representation, Toast, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
+import {
+  Representation,
+  Selection,
+  SelectionContextProvider,
+  Toast,
+  Workbench,
+  WorkbenchViewContribution,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   DiagramPaletteToolContext,
   DiagramPaletteToolContextValue,
@@ -136,6 +143,19 @@ export const EditProjectView = () => {
     }
   }, [editProjectView, projectId, routeMatch, history, representation, representationId]);
 
+  let initialSelection: Selection = null;
+  if (representation) {
+    initialSelection = {
+      entries: [
+        {
+          id: representation?.id,
+          label: representation?.label,
+          kind: representation?.kind,
+        },
+      ],
+    };
+  }
+
   let main = null;
   if (editProjectView === 'loaded' && project) {
     const onRepresentationSelected = (representationSelected: Representation) => {
@@ -245,8 +265,17 @@ export const EditProjectView = () => {
     navbar = <EditProjectNavbar project={project} />;
   }
 
+  if (editProjectView !== 'loaded') {
+    return (
+      <div className={classes.editProjectView}>
+        {navbar}
+        {main}
+      </div>
+    );
+  }
+
   return (
-    <>
+    <SelectionContextProvider initialSelection={initialSelection}>
       <div className={classes.editProjectView}>
         {navbar}
         {main}
@@ -256,6 +285,6 @@ export const EditProjectView = () => {
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
-    </>
+    </SelectionContextProvider>
   );
 };

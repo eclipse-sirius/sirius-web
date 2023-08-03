@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLSubscriber, GQLTree, GQLTreeNode } from '../form/FormEventFragments.types';
 
 export interface TreePropertySectionProps {
@@ -19,11 +18,9 @@ export interface TreePropertySectionProps {
   formId: string;
   widget: GQLTree;
   subscribers: GQLSubscriber[];
-  setSelection: (selection: Selection) => void;
 }
 
 export interface TreeItemProps {
   node: GQLTreeNode;
   nodes: GQLTreeNode[];
-  setSelection: (selection: Selection) => void;
 }

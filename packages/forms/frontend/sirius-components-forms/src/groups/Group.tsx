@@ -71,7 +71,7 @@ const useGroupStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
   },
 }));
 
-export const Group = ({ editingContextId, formId, group, widgetSubscriptions, setSelection, readOnly }: GroupProps) => {
+export const Group = ({ editingContextId, formId, group, widgetSubscriptions, readOnly }: GroupProps) => {
   const props: GroupStyleProps = {
     borderStyle: group.borderStyle,
   };
@@ -143,7 +143,6 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
               formId={formId}
               widget={widget}
               widgetSubscriptions={widgetSubscriptions}
-              setSelection={setSelection}
               readOnly={readOnly}
               key={widget.id}
             />

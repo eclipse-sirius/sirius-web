@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { SelectionEntry, IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -31,8 +31,9 @@ const useTreeItemWidgetStyles = makeStyles((theme) => ({
   },
 }));
 
-const TreeItem = ({ node, nodes, setSelection }: TreeItemProps) => {
+const TreeItem = ({ node, nodes }: TreeItemProps) => {
   const styles = useTreeItemWidgetStyles();
+  const { setSelection } = useSelection();
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
     if (node.selectable) {
@@ -55,19 +56,13 @@ const TreeItem = ({ node, nodes, setSelection }: TreeItemProps) => {
   return (
     <MuiTreeItem nodeId={node.id} label={label}>
       {childNodes.map((childNode) => (
-        <TreeItem node={childNode} nodes={nodes} setSelection={setSelection} key={childNode.id} />
+        <TreeItem node={childNode} nodes={nodes} key={childNode.id} />
       ))}
     </MuiTreeItem>
   );
 };
 
-export const TreePropertySection = ({
-  editingContextId,
-  formId,
-  widget,
-  setSelection,
-  subscribers,
-}: TreePropertySectionProps) => {
+export const TreePropertySection = ({ editingContextId, formId, widget, subscribers }: TreePropertySectionProps) => {
   let { nodes, expandedNodesIds } = widget;
 
   if (widget.nodes.length === 0) {
@@ -98,7 +93,7 @@ export const TreePropertySection = ({
         defaultExpanded={expandedNodesIds}
         defaultExpandIcon={<ChevronRightIcon />}>
         {rootNodes.map((rootNode) => (
-          <TreeItem node={rootNode} nodes={nodes} setSelection={setSelection} key={rootNode.id} />
+          <TreeItem node={rootNode} nodes={nodes} key={rootNode.id} />
         ))}
       </TreeView>
     </div>

@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useSubscription } from '@apollo/client';
-import { Toast, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { Toast, WorkbenchViewComponentProps, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
@@ -65,12 +65,7 @@ const useRepresentationsViewStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RepresentationsView = ({
-  editingContextId,
-  selection,
-  setSelection,
-  readOnly,
-}: WorkbenchViewComponentProps) => {
+export const RepresentationsView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const classes = useRepresentationsViewStyles();
 
   const [{ value, context }, dispatch] = useMachine<RepresentationsViewContext, RepresentationsViewEvent>(
@@ -79,6 +74,8 @@ export const RepresentationsView = ({
 
   const { toast, representationsView } = value as SchemaValue;
   const { id, currentSelection, formId, widget, subscribers, message } = context;
+
+  const { selection } = useSelection();
 
   useEffect(() => {
     if (selection.entries.length > 0 && selection.entries[0].id !== currentSelection?.id) {
@@ -141,7 +138,6 @@ export const RepresentationsView = ({
           readOnly={readOnly}
           widget={widget}
           subscribers={subscribers}
-          setSelection={setSelection}
         />
       </div>
     );

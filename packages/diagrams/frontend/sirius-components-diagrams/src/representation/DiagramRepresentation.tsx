@@ -19,6 +19,7 @@ import {
   ServerContextValue,
   Toast,
   useMultiToast,
+  useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import Typography from '@material-ui/core/Typography';
@@ -344,13 +345,12 @@ export const DiagramRepresentation = ({
   editingContextId,
   representationId,
   readOnly,
-  selection,
-  setSelection,
 }: RepresentationComponentProps) => {
   const theme: Theme = useTheme();
   const diagramDomElement = useRef<HTMLDivElement | null>(null);
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const classes = useDiagramRepresentationStyle();
+  const { selection, setSelection } = useSelection();
   const [{ value, context }, dispatch] = useMachine<DiagramRepresentationContext, DiagramRepresentationEvent>(
     diagramRepresentationMachine
   );

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { ButtonStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -52,7 +52,7 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   },
 }));
 
-export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
+export const ButtonWidget = ({ widget }: ButtonWidgetProps) => {
   const initialState: ButtonWidgetState = {
     buttonLabel: widget.buttonLabel,
     imageURL: widget.imageURL,
@@ -74,6 +74,7 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
   const classes = useStyles(props);
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { selection } = useSelection();
 
   const onErrorLoadingImage = () => {
     setState((prevState) => {

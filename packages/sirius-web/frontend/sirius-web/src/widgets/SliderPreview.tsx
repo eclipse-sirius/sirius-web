@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
@@ -36,11 +37,13 @@ const useStyles = makeStyles<Theme, SliderWidgetStyleProps>((theme) => ({
 
 type SliderWidgetProps = WidgetProps<GQLSlider>;
 
-export const SliderPreview = ({ widget, selection }: SliderWidgetProps) => {
+export const SliderPreview = ({ widget }: SliderWidgetProps) => {
   const props: SliderWidgetStyleProps = {};
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
+
+  const { selection } = useSelection();
 
   const ref = useRef<HTMLInputElement | null>(null);
 

@@ -143,8 +143,6 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
 export const FormDescriptionEditorRepresentation = ({
   editingContextId,
   representationId,
-  selection,
-  setSelection,
 }: RepresentationComponentProps) => {
   const classes = useFormDescriptionEditorStyles();
 
@@ -457,8 +455,6 @@ export const FormDescriptionEditorRepresentation = ({
               editingContextId={editingContextId}
               representationId={representationId}
               formDescriptionEditor={formDescriptionEditor}
-              selection={selection}
-              setSelection={setSelection}
             />
           </div>
         </div>

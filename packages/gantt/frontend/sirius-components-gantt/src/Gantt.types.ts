@@ -10,12 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Task } from '@ObeoNetwork/gantt-task-react';
 
 export interface GanttProps {
   tasks: Task[];
-  setSelection: (selection: Selection) => void;
   onTaskChange: (Task) => void;
   onTaskDelete: (Task) => void;
   onExpandCollapse: (Task) => void;

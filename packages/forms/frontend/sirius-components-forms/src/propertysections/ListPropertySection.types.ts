@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLList, GQLMessage, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface ListStyleProps {
@@ -28,7 +27,6 @@ export interface ListPropertySectionProps {
   widget: GQLList;
   subscribers: GQLSubscriber[];
   readOnly: boolean;
-  setSelection: (selection: Selection) => void;
 }
 
 export interface GQLDeleteListItemMutationData {

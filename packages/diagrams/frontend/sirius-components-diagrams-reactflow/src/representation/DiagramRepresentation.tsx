@@ -74,12 +74,7 @@ export const getDiagramDescription = gql`
 const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
   payload.__typename === 'DiagramRefreshedEventPayload';
 
-export const DiagramRepresentation = ({
-  editingContextId,
-  representationId,
-  selection,
-  setSelection,
-}: RepresentationComponentProps) => {
+export const DiagramRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const [state, setState] = useState<DiagramRepresentationState>({
     id: crypto.randomUUID(),
     diagramRefreshedEventPayload: null,
@@ -178,8 +173,6 @@ export const DiagramRepresentation = ({
                           <DiagramRenderer
                             key={state.diagramRefreshedEventPayload.diagram.id}
                             diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-                            selection={selection}
-                            setSelection={setSelection}
                           />
                         </FullscreenContextProvider>
                       </div>

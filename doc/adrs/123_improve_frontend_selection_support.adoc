@@ -1,0 +1,79 @@
+= ADR-123 - Improve frontend selection support
+
+== Context
+
+Selection handling is currently managed by the `Workbench` frontend component, which is only part (although the main one) of the project edition view/page (EditProjectView).
+Actions of the EditProjectView which are not part of the workbench (for example in the navbar and its menu) should also be able to read and set the selection.
+
+== Decision
+
+We will extract selection handling from `Workbench(Machine).tsx` into a custom hook.
+This will simplify the Workbench state machine.
+
+It will also isolate selection handling implementation and enable a lot of simplications where we used to drill down `selection` and/or `setSelection` using props.
+Components which need to read/set the selection will be able to do so using:
+
+[source,js]
+----
+const {selection, setSelection} = useSelection();
+----
+
+Some components (notably the workbench itself) need to be able to react to selection changes.
+They can do this with a `useEffect()` which reacts to changes in the selection value:
+
+[source,js]
+----
+const {selection} = useSelection();
+useEffect(() => {
+  /* handle the new selection value */
+}, [selection]);
+----
+
+Components which used to get the selection and/or setSelection callback as part of their props just to pass them to their children will be simplified.
+
+The state needed for the new hook will be handled by the `SelectionContext` and it will be possible to initialize the selection.
+
+[source,js]
+----
+
+export const SelectionContext = React.createContext(undefined);
+
+export const SelectionContextProvider = ({ initialSelection, children }) => {
+  const [state, setState] = useState({
+    selection: initialSelection ?? { entries: [] },
+  });
+
+  const setSelection = useCallback((selection: Selection) => {
+    setState((prevState) => ({ ...prevState, selection }));
+  }, []);
+
+  return (
+    <SelectionContext.Provider
+      value={{ selection: state.selection, setSelection }}>
+      {children}
+    </SelectionContext.Provider>
+  );
+}
+
+----
+
+The `SelectionContextProvider` will be used as the parent of the `Workbench` and the `Project Navbar` in `EditProjectView`:
+
+[source,js]
+----
+
+return (
+  <SelectionContextProvider initialSelection={initialSelection}>
+    {navbar}
+    {main}
+    <Snackbar />
+  </SelectionContextProvider>
+);
+
+----
+
+This makes sense because the selection is relative to a particular project/editing context.
+
+== Status
+
+Work in progress

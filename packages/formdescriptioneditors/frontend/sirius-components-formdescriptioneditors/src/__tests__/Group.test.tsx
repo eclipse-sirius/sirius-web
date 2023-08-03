@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { GQLGroup, GQLPage } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -32,12 +32,6 @@ import { DataTransfer } from './DataTransfer';
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => cleanup());
-
-const emptySelection: Selection = {
-  entries: [],
-};
-
-const emptySetSelection = (_: Selection) => {};
 
 const successPayload: GQLSuccessPayload = {
   __typename: 'SuccessPayload',
@@ -86,6 +80,12 @@ const moveGroupSuccessData: GQLMoveGroupMutationData = {
   moveGroup: successPayload,
 };
 
+const emptySelection: Selection = {
+  entries: [],
+};
+
+const emptySetSelection = (_: Selection) => {};
+
 test('should drop the Group in the drop area', async () => {
   const group: GQLGroup = {
     id: 'Group1',
@@ -124,15 +124,16 @@ test('should drop the Group in the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <Group
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        group={group}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <Group
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          page={page}
+          group={group}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -189,15 +190,16 @@ test('should delete the Group from the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <Group
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        group={group}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <Group
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          page={page}
+          group={group}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -261,15 +263,16 @@ test('should move the existing Group from/into the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <Group
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        group={group1}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <Group
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          page={page}
+          group={group1}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 

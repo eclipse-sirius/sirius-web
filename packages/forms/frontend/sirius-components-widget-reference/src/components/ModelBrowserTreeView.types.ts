@@ -10,13 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 
 export interface ModelBrowserTreeViewProps {
   editingContextId: string;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
   widget: GQLReferenceWidget;
   markedItemIds: string[];
   enableMultiSelection: boolean;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,6 @@ test('should render an empty site with no selector or view', () => {
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={true}
@@ -71,8 +69,6 @@ test('should initially display the first view', () => {
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={true}
@@ -100,8 +96,6 @@ test('should display a specific view when selected from its icon', () => {
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={true}
@@ -137,8 +131,6 @@ test('should highlight the icon of the selected view', () => {
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={true}
@@ -181,8 +173,6 @@ test("should toggle state when clicking on the selected view's icon (if expanded
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={true}
@@ -211,8 +201,6 @@ test("should toggle state when clicking on the selected view's icon (if collapse
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={false}
@@ -241,8 +229,6 @@ test('should toggle state when closed but a different view is selected', () => {
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={false}
@@ -274,8 +260,6 @@ test('should not toggle state when expanded and a different view is selected', (
     <ThemeProvider theme={theme}>
       <Site
         editingContextId="editingContextId"
-        selection={{ entries: [] }}
-        setSelection={() => {}}
         readOnly={false}
         side="left"
         expanded={true}

@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -78,9 +79,10 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup);
 
-export const RichTextWidget = ({ widget, selection }: RichTextWidgetProps) => {
+export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
   const classes = useStyles();
   const [selected, setSelected] = useState<boolean>(false);
+  const { selection } = useSelection();
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

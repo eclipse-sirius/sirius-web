@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
   GQLChartWidget,
@@ -41,16 +40,12 @@ export interface WidgetEntryProps {
   page: GQLPage;
   container: GQLGroup | GQLFlexboxContainer;
   widget: GQLWidget;
-  selection: Selection;
-  setSelection: (newSelection: Selection) => void;
   flexDirection: GQLFlexDirection;
   flexGrow: number;
 }
 
 export interface WidgetProps<WidgetType extends GQLWidget> {
   widget: WidgetType;
-  selection: Selection;
-  setSelection: (newSelection: Selection) => void;
   onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: WidgetType) => void;
 }
 
@@ -65,8 +60,6 @@ export interface FlexboxContainerWidgetProps {
   page: GQLPage;
   container: GQLGroup | GQLFlexboxContainer;
   widget: GQLFlexboxContainer;
-  selection: Selection;
-  setSelection: (newSelection: Selection) => void;
 }
 
 export type ImageWidgetProps = WidgetProps<GQLImage>;

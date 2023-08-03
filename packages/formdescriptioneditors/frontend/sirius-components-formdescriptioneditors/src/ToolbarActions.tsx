@@ -74,8 +74,6 @@ export const ToolbarActions = ({
   formDescriptionEditor,
   toolbarActions,
   containerId,
-  selection,
-  setSelection,
 }: ToolbarActionsProps) => {
   const classes = useToolbarActionsStyles();
 
@@ -182,8 +180,6 @@ export const ToolbarActions = ({
             toolbarActions={toolbarActions}
             containerId={containerId}
             toolbarAction={toolbarAction}
-            selection={selection}
-            setSelection={setSelection}
           />
         </div>
       ))}

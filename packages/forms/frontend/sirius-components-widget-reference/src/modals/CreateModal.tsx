@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { IconOverlay, Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, Selection, SelectionContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -48,13 +48,13 @@ import {
   CreateChildEvent,
   CreateModalContext,
   CreateModalEvent,
-  createModalMachine,
   CreateRootEvent,
   FetchedChildCreationDescriptionsEvent,
   FetchedDomainsEvent,
   FetchedRootObjectCreationDescriptionsEvent,
   HandleCreateElementResponseEvent,
   SchemaValue,
+  createModalMachine,
 } from './CreateModalMachine';
 
 const useStyle = makeStyles((theme) => ({
@@ -370,7 +370,11 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
   };
 
   return (
-    <>
+    <SelectionContext.Provider
+      value={{
+        selection: containerSelected,
+        setSelection: onBrowserSelection,
+      }}>
       <Dialog
         open={true}
         onClose={() => onClose(null)}
@@ -382,8 +386,6 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           {widget.reference.containment ? null : (
             <ModelBrowserTreeView
               editingContextId={editingContextId}
-              selection={containerSelected}
-              setSelection={onBrowserSelection}
               widget={widget}
               markedItemIds={[]}
               enableMultiSelection={false}
@@ -443,6 +445,6 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </SelectionContext.Provider>
   );
 };

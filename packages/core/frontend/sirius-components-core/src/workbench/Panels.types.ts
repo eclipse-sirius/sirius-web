@@ -11,12 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from './Workbench.types';
-
 export interface PanelsProps {
   editingContextId: string;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
   readOnly: boolean;
   leftContributions: React.ReactElement[];
   rightContributions: React.ReactElement[];

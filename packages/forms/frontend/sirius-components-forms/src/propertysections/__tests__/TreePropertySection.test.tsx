@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
-import { Selection, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test } from 'vitest';
@@ -24,6 +24,12 @@ afterEach(() => cleanup());
 function createNode(id: string, parentId: string, selectable: boolean = false): GQLTreeNode {
   return { id, parentId, label: `Node-${id}`, kind: 'siriusComponents://testNode', imageURL: '/node.svg', selectable };
 }
+
+const emptySelection: Selection = {
+  entries: [],
+};
+
+const emptySetSelection = (_selection: Selection) => {};
 
 test('should render the tree', () => {
   const treeWidget: GQLTree = {
@@ -40,13 +46,15 @@ test('should render the tree', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={treeWidget}
-          subscribers={[]}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <TreePropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={treeWidget}
+            subscribers={[]}
+          />
+        </SelectionContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -81,13 +89,15 @@ test('should render a multi-level tree correctly', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={treeWidget}
-          subscribers={[]}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <TreePropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={treeWidget}
+            subscribers={[]}
+          />
+        </SelectionContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -138,13 +148,15 @@ test('should correctly interpret the order of nodes with the same parent in the 
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={treeWidget}
-          subscribers={[]}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <TreePropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={treeWidget}
+            subscribers={[]}
+          />
+        </SelectionContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -192,13 +204,15 @@ test('should only expand the specified nodes on initial render', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={treeWidget}
-          subscribers={[]}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <TreePropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={treeWidget}
+            subscribers={[]}
+          />
+        </SelectionContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -233,15 +247,21 @@ test('should change the selection when a selectable node is clicked', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={treeWidget}
-          subscribers={[]}
-          setSelection={(newSelection: Selection) => {
-            selection = newSelection.entries[0];
-          }}
-        />
+        <SelectionContext.Provider
+          value={{
+            selection: { entries: [selection] },
+            setSelection: (newSelection: Selection) => {
+              selection = newSelection.entries[0];
+            },
+            selectedRepresentations: [],
+          }}>
+          <TreePropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={treeWidget}
+            subscribers={[]}
+          />
+        </SelectionContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -279,15 +299,21 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={treeWidget}
-          subscribers={[]}
-          setSelection={(newSelection: Selection) => {
-            selection = newSelection.entries[0];
-          }}
-        />
+        <SelectionContext.Provider
+          value={{
+            selection: { entries: [selection] },
+            setSelection: (newSelection: Selection) => {
+              selection = newSelection.entries[0];
+            },
+            selectedRepresentations: [],
+          }}>
+          <TreePropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={treeWidget}
+            subscribers={[]}
+          />
+        </SelectionContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );
@@ -338,13 +364,15 @@ test('should render the tree with a help hint', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <TreePropertySection
-          editingContextId="editingContextId"
-          formId="formId"
-          widget={treeWidget}
-          subscribers={[]}
-          setSelection={() => {}}
-        />
+        <SelectionContext.Provider
+          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+          <TreePropertySection
+            editingContextId="editingContextId"
+            formId="formId"
+            widget={treeWidget}
+            subscribers={[]}
+          />
+        </SelectionContext.Provider>
       </ServerContext.Provider>
     </MockedProvider>
   );

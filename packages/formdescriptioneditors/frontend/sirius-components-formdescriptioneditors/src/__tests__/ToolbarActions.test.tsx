@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { GQLGroup, GQLPage, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -36,12 +36,6 @@ import { DataTransfer } from './DataTransfer';
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => cleanup());
-
-const emptySelection: Selection = {
-  entries: [],
-};
-
-const emptySetSelection = (_: Selection) => {};
 
 const successPayload: GQLSuccessPayload = {
   __typename: 'SuccessPayload',
@@ -113,6 +107,12 @@ const moveToolbarActionAtTheEndSuccessData: GQLMoveToolbarActionMutationData = {
   moveToolbarAction: successPayload,
 };
 
+const emptySelection: Selection = {
+  entries: [],
+};
+
+const emptySetSelection = (_: Selection) => {};
+
 test('add ToolbarAction by clicking on the Add Toolbar Action button', async () => {
   const toolbarAction: GQLToolbarAction = {
     id: 'ToolbarAction1',
@@ -170,15 +170,16 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
 
   render(
     <MockedProvider mocks={mocks}>
-      <ToolbarActions
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        toolbarActions={group.toolbarActions}
-        containerId={group.id}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <ToolbarActions
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          toolbarActions={group.toolbarActions}
+          containerId={group.id}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -268,15 +269,16 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <ToolbarActions
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        toolbarActions={group.toolbarActions}
-        containerId={group.id}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <ToolbarActions
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          toolbarActions={group.toolbarActions}
+          containerId={group.id}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -368,15 +370,16 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <ToolbarActions
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        toolbarActions={group.toolbarActions}
-        containerId={group.id}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <ToolbarActions
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          toolbarActions={group.toolbarActions}
+          containerId={group.id}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -470,15 +473,16 @@ test('move the existing ToolbarAction from/into the drop area located at the end
 
   render(
     <MockedProvider mocks={mocks}>
-      <ToolbarActions
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        toolbarActions={group.toolbarActions}
-        containerId={group.id}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <ToolbarActions
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          toolbarActions={group.toolbarActions}
+          containerId={group.id}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 
@@ -545,15 +549,16 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button for a page'
 
   render(
     <MockedProvider mocks={mocks}>
-      <ToolbarActions
-        editingContextId="editingContextId"
-        representationId="formDescriptionEditorId"
-        formDescriptionEditor={formDescriptionEditor}
-        toolbarActions={page.toolbarActions}
-        containerId={page.id}
-        selection={emptySelection}
-        setSelection={emptySetSelection}
-      />
+      <SelectionContext.Provider
+        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <ToolbarActions
+          editingContextId="editingContextId"
+          representationId="formDescriptionEditorId"
+          formDescriptionEditor={formDescriptionEditor}
+          toolbarActions={page.toolbarActions}
+          containerId={page.id}
+        />
+      </SelectionContext.Provider>
     </MockedProvider>
   );
 

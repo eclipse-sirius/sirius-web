@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, SelectStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -39,7 +39,7 @@ const useStyles = makeStyles<Theme, SelectStyleProps>((theme) => ({
   },
 }));
 
-export const SelectWidget = ({ widget, selection }: SelectWidgetProps) => {
+export const SelectWidget = ({ widget }: SelectWidgetProps) => {
   const props: SelectStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
@@ -52,7 +52,7 @@ export const SelectWidget = ({ widget, selection }: SelectWidgetProps) => {
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
-
+  const { selection } = useSelection();
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

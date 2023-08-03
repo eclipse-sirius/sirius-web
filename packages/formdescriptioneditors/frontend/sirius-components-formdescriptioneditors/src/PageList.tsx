@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -104,19 +104,15 @@ const a11yProps = (id: string) => {
   };
 };
 
-export const PageList = ({
-  editingContextId,
-  representationId,
-  formDescriptionEditor,
-  selection,
-  setSelection,
-}: PageListProps) => {
+export const PageList = ({ editingContextId, representationId, formDescriptionEditor }: PageListProps) => {
   const classes = usePageListStyles();
 
   const { pages } = formDescriptionEditor;
 
   const [state, setState] = useState<PageListState>({ message: null, selectedPage: pages[0], pages });
   const { message } = state;
+
+  const { selection, setSelection } = useSelection();
 
   useEffect(() => {
     const entry = selection.entries.at(0);
@@ -368,8 +364,6 @@ export const PageList = ({
       formDescriptionEditor={formDescriptionEditor}
       toolbarActions={state.selectedPage.toolbarActions}
       containerId={state.selectedPage.id}
-      selection={selection}
-      setSelection={setSelection}
     />
   );
 
@@ -426,8 +420,6 @@ export const PageList = ({
         page={state.selectedPage}
         formDescriptionEditor={formDescriptionEditor}
         representationId={representationId}
-        selection={selection}
-        setSelection={setSelection}
       />
       <Toast
         message={message}

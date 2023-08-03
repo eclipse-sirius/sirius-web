@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLContainerBorderStyle,
   GQLFlexboxContainer,
@@ -24,7 +23,6 @@ export interface FlexboxContainerPropertySectionProps {
   formId: string;
   widget: GQLFlexboxContainer;
   widgetSubscriptions: GQLWidgetSubscription[];
-  setSelection: (selection: Selection) => void;
   readOnly: boolean;
 }
 

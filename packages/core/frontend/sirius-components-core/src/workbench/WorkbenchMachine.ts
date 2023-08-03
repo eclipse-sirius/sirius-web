@@ -17,7 +17,6 @@ import {
   GQLEditingContextEventSubscription,
   GQLRepresentationRenamedEventPayload,
   Representation,
-  Selection,
 } from './Workbench.types';
 
 export interface WorkbenchStateSchema {
@@ -44,16 +43,14 @@ export type SchemaValue = {
 
 export interface WorkbenchContext {
   id: string;
-  selection: Selection;
   representations: Representation[];
   displayedRepresentation: Representation | null;
   message: string | null;
 }
 
 export type HideRepresentationEvent = { type: 'HIDE_REPRESENTATION'; representation: Representation };
-export type UpdateSelectionEvent = {
-  type: 'UPDATE_SELECTION';
-  selection: Selection;
+export type UpdateSelectedRepresentationEvent = {
+  type: 'UPDATE_SELECTED_REPRESENTATION';
   representations: Representation[];
 };
 
@@ -65,7 +62,7 @@ export type HandleSubscriptionResultEvent = {
 };
 export type HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
 export type WorkbenchEvent =
-  | UpdateSelectionEvent
+  | UpdateSelectedRepresentationEvent
   | HideRepresentationEvent
   | HandleSubscriptionResultEvent
   | HandleCompleteEvent
@@ -81,7 +78,6 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
     type: 'parallel',
     context: {
       id: crypto.randomUUID(),
-      selection: { entries: [] },
       representations: [],
       displayedRepresentation: null,
       message: null,
@@ -113,10 +109,9 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
         states: {
           initial: {
             on: {
-              UPDATE_SELECTION: {
+              UPDATE_SELECTED_REPRESENTATION: {
                 target: 'initial',
-                actions: 'updateSelection',
-                cond: 'isNewSelection',
+                actions: 'updateSelectedRepresentation',
               },
               HIDE_REPRESENTATION: {
                 target: 'initial',
@@ -139,26 +134,9 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
     },
   },
   {
-    guards: {
-      isNewSelection: (context, event) => {
-        const { selection, representations: selectedRepresentations } = event as UpdateSelectionEvent;
-
-        const isEqual =
-          context.selection.entries.length === selection.entries.length &&
-          context.selection.entries.every((value, index) => value.id === selection.entries[index]?.id);
-
-        const isSelectedRepresentationDisplayed =
-          context.displayedRepresentation &&
-          selectedRepresentations
-            .map((representation) => representation.id)
-            .includes(context.displayedRepresentation.id);
-
-        return !isEqual || !isSelectedRepresentationDisplayed;
-      },
-    },
     actions: {
-      updateSelection: assign((context, event) => {
-        const { selection, representations: selectedRepresentations } = event as UpdateSelectionEvent;
+      updateSelectedRepresentation: assign((context, event) => {
+        const { representations: selectedRepresentations } = event as UpdateSelectedRepresentationEvent;
         if (selectedRepresentations.length > 0) {
           const displayedRepresentation = selectedRepresentations[0];
 
@@ -170,9 +148,9 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
 
           const newSelectedRepresentations = [...representations, ...newRepresentations];
 
-          return { selection, displayedRepresentation, representations: newSelectedRepresentations };
+          return { displayedRepresentation, representations: newSelectedRepresentations };
         }
-        return { selection };
+        return {};
       }),
       hideRepresentation: assign((context, event) => {
         const { representation: representationToHide } = event as HideRepresentationEvent;

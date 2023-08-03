@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
@@ -21,8 +20,6 @@ import { DiagramNodeType } from './node/NodeTypes.types';
 
 export interface DiagramRendererProps {
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload;
-  selection: Selection;
-  setSelection: (selection: Selection) => void;
 }
 
 export interface DiagramPaletteState {

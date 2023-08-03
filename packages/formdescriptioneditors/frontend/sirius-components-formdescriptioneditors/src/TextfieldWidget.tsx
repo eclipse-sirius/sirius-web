@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, TextfieldStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -38,7 +38,7 @@ const useStyles = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
   },
 }));
 
-export const TextfieldWidget = ({ widget, selection }: TextfieldWidgetProps) => {
+export const TextfieldWidget = ({ widget }: TextfieldWidgetProps) => {
   const props: TextfieldStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
@@ -51,7 +51,7 @@ export const TextfieldWidget = ({ widget, selection }: TextfieldWidgetProps) => 
   const classes = useStyles(props);
 
   const [selected, setSelected] = useState<boolean>(false);
-
+  const { selection } = useSelection();
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {

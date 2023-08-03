@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
@@ -75,18 +75,12 @@ const useFormBasedViewStyles = makeStyles((theme) => ({
 /**
  * Used to define workbench views based on a form.
  */
-export const FormBasedView = ({
-  editingContextId,
-  selection,
-  setSelection,
-  readOnly,
-  subscriptionName,
-  converter,
-}: FormBasedViewProps) => {
+export const FormBasedView = ({ editingContextId, readOnly, subscriptionName, converter }: FormBasedViewProps) => {
   const classes = useFormBasedViewStyles();
   const [{ value, context }, dispatch] = useMachine<FormBasedViewContext, FormBasedViewEvent>(formBasedViewMachine);
   const { toast, formBasedView } = value as SchemaValue;
   const { id, currentSelection, form, widgetSubscriptions, message } = context;
+  const { selection } = useSelection();
 
   /**
    * Displays another form if the selection indicates that we should display another properties view.
@@ -162,7 +156,6 @@ export const FormBasedView = ({
         editingContextId={editingContextId}
         form={formConverter.convert(form)}
         widgetSubscriptions={widgetSubscriptions}
-        setSelection={setSelection}
         readOnly={readOnly}
       />
     );

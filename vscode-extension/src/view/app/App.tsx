@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContextProvider } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
@@ -24,7 +24,7 @@ interface AppState {
   editingContextId: string;
   representationId: string;
   representationLabel: string;
-  selection: Selection;
+
   authenticate: boolean;
 }
 
@@ -51,7 +51,6 @@ export const App = ({
     editingContextId,
     representationId,
     representationLabel,
-    selection: { entries: [] },
     authenticate: false,
   });
 
@@ -60,12 +59,6 @@ export const App = ({
       return { ...prevState, editingContextId, representationId };
     });
   }, [editingContextId, representationId]);
-
-  const setSelection = (selection: Selection) => {
-    setState((prevState) => {
-      return { ...prevState, selection };
-    });
-  };
 
   const appStyle = {
     display: 'grid',
@@ -112,6 +105,7 @@ export const App = ({
   }, []);
 
   let component;
+  let selection: Selection = { entries: [] };
   if (
     representationKind.startsWith('siriusComponents://representation?type=Diagram') &&
     representationLabel.endsWith('__REACT_FLOW')
@@ -121,8 +115,6 @@ export const App = ({
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}
-        selection={state.selection}
-        setSelection={setSelection}
       />
     );
   } else if (representationKind.startsWith('siriusComponents://representation?type=Diagram')) {
@@ -131,8 +123,6 @@ export const App = ({
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}
-        selection={state.selection}
-        setSelection={setSelection}
       />
     );
   } else if (representationKind.startsWith('siriusComponents://representation?type=Form')) {
@@ -141,28 +131,20 @@ export const App = ({
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}
-        selection={state.selection}
-        setSelection={setSelection}
       />
     );
   } else {
-    const propertiesSelection: Selection = {
+    selection = {
       entries: [{ id: state.representationId, label: state.representationLabel, kind: representationKind }],
     };
-
-    component = (
-      <DetailsView
-        editingContextId={state.editingContextId}
-        readOnly={false}
-        selection={propertiesSelection}
-        setSelection={() => {}}
-      />
-    );
+    component = <DetailsView editingContextId={state.editingContextId} readOnly={false} />;
   }
   return (
-    <div style={appStyle}>
-      <div style={headerStyle}></div>
-      {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
-    </div>
+    <SelectionContextProvider initialSelection={selection}>
+      <div style={appStyle}>
+        <div style={headerStyle}></div>
+        {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
+      </div>
+    </SelectionContextProvider>
   );
 };

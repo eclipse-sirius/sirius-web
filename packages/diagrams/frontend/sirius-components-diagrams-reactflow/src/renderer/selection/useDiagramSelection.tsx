@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
   EdgeChange,
@@ -31,11 +31,10 @@ import { UseDiagramSelectionValue } from './useDiagramSelection.types';
 const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';
 
-export const useDiagramSelection = (
-  selection: Selection,
-  setSelection: (selection: Selection) => void
-): UseDiagramSelectionValue => {
+export const useDiagramSelection = (): UseDiagramSelectionValue => {
   const { hideDiagramPalette } = useDiagramPalette();
+  const { selection, setSelection } = useSelection();
+
   const store = useStoreApi();
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
   const { getNodes, getEdges } = useReactFlow<NodeData, MultiLabelEdgeData>();

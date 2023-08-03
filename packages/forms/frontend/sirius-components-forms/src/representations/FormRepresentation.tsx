@@ -93,12 +93,7 @@ const useFormRepresentationStyles = makeStyles((theme) => ({
 /**
  * Connect the Form component to the GraphQL API over Web Socket.
  */
-export const FormRepresentation = ({
-  editingContextId,
-  representationId,
-  setSelection,
-  readOnly,
-}: RepresentationComponentProps) => {
+export const FormRepresentation = ({ editingContextId, representationId, readOnly }: RepresentationComponentProps) => {
   const classes = useFormRepresentationStyles();
   const [{ value, context }, dispatch] = useMachine<FormRepresentationContext, FormRepresentationEvent>(
     formRepresentationMachine,
@@ -164,7 +159,6 @@ export const FormRepresentation = ({
           editingContextId={editingContextId}
           form={form}
           widgetSubscriptions={widgetSubscriptions}
-          setSelection={setSelection}
           readOnly={readOnly}
         />
       );
@@ -194,7 +188,6 @@ export const FormRepresentation = ({
             formId={form.id}
             page={form.pages[0]}
             widgetSubscriptions={widgetSubscriptions}
-            setSelection={setSelection}
             readOnly={readOnly}
           />
         </div>

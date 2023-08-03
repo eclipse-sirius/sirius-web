@@ -17,6 +17,7 @@ import {
   ServerContextValue,
   Toast,
   getCSSColor,
+  useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   ButtonStyleProps,
@@ -114,8 +115,6 @@ export const ToolbarActionWidget = ({
   toolbarActions,
   containerId,
   toolbarAction,
-  selection,
-  setSelection,
 }: ToolbarActionProps) => {
   const initialState: ToolbarActionState = {
     buttonLabel: toolbarAction.buttonLabel,
@@ -139,6 +138,8 @@ export const ToolbarActionWidget = ({
   const classes = useStyles(props);
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+
+  const { selection, setSelection } = useSelection();
 
   const onErrorLoadingImage = () => {
     setState((prevState) => {

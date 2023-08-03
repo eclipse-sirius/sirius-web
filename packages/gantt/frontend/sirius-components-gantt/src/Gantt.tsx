@@ -12,13 +12,15 @@
  *******************************************************************************/
 import { Gantt as GanttDiagram, Task, TaskListColumnEnum, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import '@ObeoNetwork/gantt-task-react/dist/style.css';
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { useState } from 'react';
 import { GanttProps } from './Gantt.types';
 import { SelectableTask } from './representation/GanttRepresentation.types';
 import { Toolbar } from './toolbar/Toolbar';
 
-export const Gantt = ({ tasks, onTaskChange, setSelection, onExpandCollapse, onTaskDelete }: GanttProps) => {
+export const Gantt = ({ tasks, onTaskChange, onExpandCollapse, onTaskDelete }: GanttProps) => {
+  const { setSelection } = useSelection();
+
   const [zoomLevel, setZoomLevel] = useState<ViewMode>(ViewMode.Day);
   const allColumns = [
     { columntype: TaskListColumnEnum.NAME, columnWidth: '120px' },

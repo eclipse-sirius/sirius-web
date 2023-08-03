@@ -69,7 +69,6 @@ export const PropertySection = ({
   formId,
   widget,
   widgetSubscriptions,
-  setSelection,
   readOnly,
 }: PropertySectionProps) => {
   let subscribers = [];
@@ -144,7 +143,6 @@ export const PropertySection = ({
         widget={widget}
         key={widget.id}
         subscribers={subscribers}
-        setSelection={setSelection}
         readOnly={readOnly}
       />
     );
@@ -191,7 +189,6 @@ export const PropertySection = ({
         widget={widget}
         key={widget.id}
         widgetSubscriptions={widgetSubscriptions}
-        setSelection={setSelection}
         readOnly={readOnly}
       />
     );
@@ -203,7 +200,6 @@ export const PropertySection = ({
         widget={widget}
         key={widget.id}
         subscribers={subscribers}
-        setSelection={setSelection}
       />
     );
   } else if (isImage(widget)) {
@@ -232,7 +228,6 @@ export const PropertySection = ({
           subscribers={subscribers}
           key={widget.id}
           readOnly={readOnly}
-          setSelection={setSelection}
         />
       );
     } else {

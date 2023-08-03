@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -33,7 +33,11 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
   const [browserSelection, setBrowserSelection] = useState<Selection>({ entries: widget.referenceValues });
 
   return (
-    <>
+    <SelectionContext.Provider
+      value={{
+        selection: browserSelection,
+        setSelection: setBrowserSelection,
+      }}>
       <Dialog
         open={true}
         onClose={() => onClose(null)}
@@ -44,8 +48,6 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
         <DialogContent className={styles.content}>
           <ModelBrowserTreeView
             editingContextId={editingContextId}
-            selection={browserSelection}
-            setSelection={setBrowserSelection}
             widget={widget}
             markedItemIds={[]}
             enableMultiSelection={widget.reference.manyValued}
@@ -70,6 +72,6 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </SelectionContext.Provider>
   );
 };

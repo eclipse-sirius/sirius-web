@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
 import { addGroupMutation, moveGroupMutation } from './FormDescriptionEditorEventFragment';
 import {
@@ -64,14 +64,7 @@ const usePageStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Page = ({
-  editingContextId,
-  representationId,
-  formDescriptionEditor,
-  page,
-  selection,
-  setSelection,
-}: PageProps) => {
+export const Page = ({ editingContextId, representationId, formDescriptionEditor, page }: PageProps) => {
   const classes = usePageStyles();
 
   const initialState: PageState = { message: null, selected: false };
@@ -79,6 +72,8 @@ export const Page = ({
   const { message } = state;
 
   const ref = useRef<HTMLInputElement | null>(null);
+
+  const { selection } = useSelection();
 
   useEffect(() => {
     if (ref.current && selection.entries.find((entry) => entry.id === page.id)) {
@@ -201,8 +196,6 @@ export const Page = ({
               formDescriptionEditor={formDescriptionEditor}
               page={page}
               group={group}
-              selection={selection}
-              setSelection={setSelection}
             />
           );
         })}
