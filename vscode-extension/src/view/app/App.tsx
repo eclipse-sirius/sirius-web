@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,10 @@
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
-import { DetailsView } from '@eclipse-sirius/sirius-components-forms';
+import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import React, { useEffect, useState } from 'react';
-import './reset.css';
 import './Sprotty.css';
+import './reset.css';
 import './variables.css';
 
 interface AppState {
@@ -114,6 +114,16 @@ export const App = ({
   if (representationKind.startsWith('siriusComponents://representation?type=Diagram')) {
     component = (
       <DiagramRepresentation
+        editingContextId={state.editingContextId}
+        representationId={state.representationId}
+        readOnly={false}
+        selection={state.selection}
+        setSelection={setSelection}
+      />
+    );
+  } else if (representationKind.startsWith('siriusComponents://representation?type=Form')) {
+    component = (
+      <FormRepresentation
         editingContextId={state.editingContextId}
         representationId={state.representationId}
         readOnly={false}

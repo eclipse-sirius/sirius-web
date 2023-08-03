@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,8 @@
 import { ApolloClient, ApolloProvider, DefaultOptions, HttpLink, InMemoryCache, split } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ToastContext } from '@eclipse-sirius/sirius-components-core';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
@@ -80,18 +81,45 @@ const ApolloGraphQLClient = new ApolloClient({
   defaultOptions,
 });
 
+const ToastCloseButton = ({ toastKey }) => {
+  const { closeSnackbar } = useSnackbar();
+
+  return (
+    <button aria-label="close" color="inherit" onClick={() => closeSnackbar(toastKey)}>
+      ✖
+    </button>
+  );
+};
+
 ReactDOM.render(
   <ServerContext.Provider value={value}>
     <ApolloProvider client={ApolloGraphQLClient}>
-      <App
-        serverAddress={window.serverAddress}
-        username={window.username}
-        password={window.password}
-        editingContextId={window.editingContextId}
-        representationId={window.representationId}
-        representationLabel={window.representationLabel}
-        representationKind={window.representationKind}
-      />
+      <SnackbarProvider
+        maxSnack={5}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        action={(key) => <ToastCloseButton toastKey={key} />}
+        autoHideDuration={10000}
+        data-testid="toast">
+        <ToastContext.Provider
+          value={{
+            useToast: () => {
+              return useSnackbar();
+            },
+          }}>
+          <App
+            serverAddress={window.serverAddress}
+            username={window.username}
+            password={window.password}
+            editingContextId={window.editingContextId}
+            representationId={window.representationId}
+            representationLabel={window.representationLabel}
+            representationKind={window.representationKind}
+          />
+        </ToastContext.Provider>
+      </SnackbarProvider>
     </ApolloProvider>
   </ServerContext.Provider>,
   document.getElementById('root')
