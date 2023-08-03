@@ -113,7 +113,7 @@ export const TreeItemDirectEditInput = ({
     if (renameTreeItemData) {
       const { renameTreeItem } = renameTreeItemData;
       if (isErrorPayload(renameTreeItem)) {
-        addErrorMessage(renameTreeItem.messages);
+        addErrorMessage(renameTreeItem.message);
       } else if (isSuccessPayload(renameTreeItem)) {
         if (renameTreeItem.__typename === 'SuccessPayload') {
           onClose();

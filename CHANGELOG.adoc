@@ -40,6 +40,7 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/2222[#2222] [tree] Fix an issue where all the tree items where editable, even for elements that have no label.
 
 === New Features
 

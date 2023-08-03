@@ -23,7 +23,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -251,8 +250,7 @@ public class ObjectService implements IObjectService {
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IEditingDomainItemProvider.class);
             if (adapter instanceof IEditingDomainItemProvider contentProvider) {
                 contents.addAll(contentProvider.getChildren(eObject));
-            }
-            else {
+            } else {
                 contents.addAll(eObject.eContents());
             }
         }
@@ -308,8 +306,7 @@ public class ObjectService implements IObjectService {
             if (labelFeatureProvider.isPresent()) {
                 isEditable = labelFeatureProvider.get().isLabelEditable(eObject);
             } else {
-                EClass eClass = eObject.eClass();
-                Optional<EAttribute> labelAttribute = this.getDefaultLabelEAttribute(eClass);
+                Optional<EAttribute> labelAttribute = this.getDefaultLabelEAttribute(eObject);
                 if (labelAttribute.isPresent()) {
                     isEditable = true;
                 }
