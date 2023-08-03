@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.version>7.0.0-SNAPSHOT</sirius.version>
+		<sirius.version>7.2.0-SNAPSHOT</sirius.version>
 	</properties>
 
 	<distributionManagement>
