@@ -137,20 +137,22 @@ public class ViewToolSectionsProvider implements IToolSectionsProvider {
 
     private List<ITool> createDiagramPaletteTools(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription) {
         List<ITool> diagramTools = new ArrayList<>();
-        for (NodeTool nodeTool : viewDiagramDescription.getPalette().getNodeTools()) {
-            String toolId = this.idProvider.apply(nodeTool).toString();
-            String selectionDescriptionId = "";
-            if (nodeTool.getSelectionDescription() != null) {
-                selectionDescriptionId = this.objectService.getId(nodeTool.getSelectionDescription());
+        if (viewDiagramDescription.getPalette() != null) {
+            for (NodeTool nodeTool : viewDiagramDescription.getPalette().getNodeTools()) {
+                String toolId = this.idProvider.apply(nodeTool).toString();
+                String selectionDescriptionId = "";
+                if (nodeTool.getSelectionDescription() != null) {
+                    selectionDescriptionId = this.objectService.getId(nodeTool.getSelectionDescription());
+                }
+                var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
+                        .label(nodeTool.getName())
+                        .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
+                        .selectionDescriptionId(selectionDescriptionId)
+                        .targetDescriptions(List.of())
+                        .appliesToDiagramRoot(true)
+                        .build();
+                diagramTools.add(tool);
             }
-            var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
-                    .label(nodeTool.getName())
-                    .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
-                    .selectionDescriptionId(selectionDescriptionId)
-                    .targetDescriptions(List.of())
-                    .appliesToDiagramRoot(true)
-                    .build();
-            diagramTools.add(tool);
         }
         return diagramTools;
     }
