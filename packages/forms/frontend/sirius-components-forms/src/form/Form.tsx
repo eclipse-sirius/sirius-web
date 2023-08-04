@@ -60,7 +60,6 @@ const useFormStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     paddingLeft: theme.spacing(1),
-    overflowX: 'auto',
   },
 }));
 
