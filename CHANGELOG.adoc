@@ -58,6 +58,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2211[#2211] [diagram] Fix an issue where the icons of an edge label where broken with ReactFlow.
 - https://github.com/eclipse-sirius/sirius-components/issues/2197[#2197] [project] Fix an issue where the renaming of a project from the project page needed a refresh to be visible.
 - https://github.com/eclipse-sirius/sirius-components/issues/2194[#2194] [view] Fix an issue where it was impossible to set the None value to a color property in a View Node/Edge Description from the Details view.
+- https://github.com/eclipse-sirius/sirius-components/issues/2225[#2225] [form] Fix an issue where tabs displaying page name could be hidden.
 
 === New Features
 
