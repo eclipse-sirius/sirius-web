@@ -13,6 +13,7 @@
 
 - [ADR-107] Add support for dynamic and conditional widgets in Forms
 - [ADR-108] Improve the widget id computation
+- [ADR-109] Add support for transient data in forms
 
 === Breaking changes
 
