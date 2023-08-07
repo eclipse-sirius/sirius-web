@@ -1,0 +1,85 @@
+= [ADR-107] Link widgets together in forms
+
+== Context
+
+The forms that can be defined in Sirius Web are sharing a core restriction with the form from EEF.
+In both case, you can only create forms using data backed up by models.
+As a result, there are families of use cases that are complex or borderline impossible to support.
+In some use cases, the end users may want to manipulate, in their forms, transient data which are not persisted in a model.
+
+Among those use case, we can find a dialog to create a new element.
+We don't want to create the element directly when we open the dialog and edit its properties.
+We want to create the element only when the user will have clicked on "Ok".
+
+Another popular use case is the creation of master / details interfaces.
+In this case, we could have a select showing a list of objects and below various widgets displaying the properties of the selected object.
+While the data in the various widgets would come from the model, the knowledge of which object is currently selected should not be persisted in the model at all.
+
+
+== Decision
+
+We will add the ability for specifiers to create forms allowing the manipulation of transient data not backup by a model.
+
+Let's consider a very simple text field allowing the manipulation of a transient piece of text.
+
+In order to allow such use case, we will have to specify how to retrieve the value of the textfield.
+For that, we will keep everything we have with the variable manager and the value provider (for the core API) and the value expression (for the view DSL).
+We will only have to provide some additional variables to retrieve the transient data and we will be able to display some text in our text field.
+
+We will thus have to figure out how to define, initialize and update those variables.
+Since we want those variables to be transient, they will be specific to every single instance of a representation.
+For example, two users watching the same form with a master / details user interface could have selected a different value.
+
+=== Transient datastore and lifecycle of the representation
+
+We could store those transient data in the frontend.
+This would easily ensure that they are specific to the instance of the representation.
+They would be provided to the backend as subscription parameters using the input in a similar fashion as the list of expanded tree items in a tree-based representation.
+
+Such an approach would have a couple of downsides.
+Firstly, we would be limited to basic types of transient data (string, boolean, number, list) and it would thus not be possible to have transient model objects or custom types.
+Specifiers would only have the ability to manipulate a set of unrelated primitive value.
+If you think about the new element dialog, we could not have a transient model element (with its behavior such as derived fields etc) but instead a transient piece of data for each widget of such form.
+
+Secondly, we will have to send to the backend all those data, everytime they change.
+This will imply sending potentially a sizable amount of data in the subscription.
+We may also spend our time subscribing / unsubscribing to various state of the representation on the server just to propagate a change in a value.
+
+While we are currently doing that for tree based representations in order to help share instances of the representation between users who are viewing the same state (same list of expanded tree items), as of today, we cannot conclude in any way that it is better than having one instance of the representation per subscription.
+End users can quickly end up with different list of expanded tree items so we may end up with one instance of the representation per subscription in practice anyway.
+On top of that, the cost of subscribing / unsubscribing may be more expensive than what we believe.
+Additionaly we have encountered a couple issues with Apollo client in the past with subscribing / unsubscribing so let's minimize those.
+
+Considering that in this case, the identity of the subscription would contain the value of all the transient variables, we may end up with one instance of the representation per subscription in most cases where transient data are needed.
+If that is the case, we could store the transient data store server side (and thus have the full power of Java and the (meta)models to create / manipulate those data).
+
+=== Initializing a transient variable
+
+In order to manipulate a transient variable, we would have to define its name, its type and its initial value.
+For a simple text field with a transient variable, we may want to manipulate a variable defined as `firstName: String = "Initial Value"`.
+This way, when the text field is instantiated, it can manipulate this variable to compute the value to be displayed.
+Without a type or an initial value, we can't really leverage a transient variable.
+
+The most simple solution could be to let a form define transient variables with a type and an initial value which could be computed.
+Transient variables could be defined on other parts of the form description but we would have to figure out their scope (page specific transient variables?)
+If all transient variables are accessible from any part of the form, they could be define directly on the form description to make it easier to discover them.
+For example, a new element dialog could provide a text field to edit the name of the new element to create with a default value computed to ensure no conflicts with existing model elements.
+
+
+=== Modifying a transient variable
+
+If transient variables are stored in the frontend, we would need a special mecanism to indicate that the value of the widget should be stored in the frontend and not send back to the backend using a mutation.
+Everything single widget will have to be updated to work in two different modes (can update the backend or can update the frontend).
+
+If transient variables are stored in the backend, we need a new operation to update them.
+Such an operation would be quite similar to the update of the view creation requests in the diagram API.
+In both cases, we would have a Java API to update something which is not stored in the model.
+In the view DSL, a new model operation could be used to update such transient variable.
+
+
+== Status
+
+Work in progress
+
+== Consequences
+
