@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useContext } from 'react';
@@ -35,7 +35,7 @@ const useToolStyles = makeStyles(() => ({
 
 export const Tool = ({ tool, selected, onClick, disabled, thumbnail }: ToolProps) => {
   const { id, label, imageURL } = tool;
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const classes = useToolStyles();
 

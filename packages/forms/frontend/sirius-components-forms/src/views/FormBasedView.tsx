@@ -12,13 +12,14 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useContext, useEffect } from 'react';
 import { Form } from '../form/Form';
 import { WidgetContribution } from '../form/Form.types';
 import { PropertySectionContext } from '../form/FormContext';
+import { PropertySectionContextValue } from '../form/FormContext.types';
 import {
   formRefreshedEventPayloadFragment,
   subscribersUpdatedEventPayloadFragment,
@@ -33,13 +34,13 @@ import { FormBasedViewProps } from './FormBasedView.types';
 import {
   FormBasedViewContext,
   FormBasedViewEvent,
-  formBasedViewMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SwitchSelectionEvent,
+  formBasedViewMachine,
 } from './FormBasedViewMachine';
 
 export const getFormEventSubscription = (subscriptionName: string, contributions: Array<WidgetContribution>) => {
@@ -110,7 +111,7 @@ export const FormBasedView = ({
     objectIds: currentSelection?.entries.map((entry) => entry.id),
   };
   const variables: GQLPropertiesEventVariables = { input };
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const formSubscription = getFormEventSubscription(
     subscriptionName,
     propertySectionsRegistry.getWidgetContributions()

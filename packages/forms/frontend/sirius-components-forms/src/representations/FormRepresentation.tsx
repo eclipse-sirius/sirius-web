@@ -19,6 +19,7 @@ import { useContext, useEffect } from 'react';
 import { Form } from '../form/Form';
 import { WidgetContribution } from '../form/Form.types';
 import { PropertySectionContext } from '../form/FormContext';
+import { PropertySectionContextValue } from '../form/FormContext.types';
 import {
   formRefreshedEventPayloadFragment,
   subscribersUpdatedEventPayloadFragment,
@@ -116,7 +117,7 @@ export const FormRepresentation = ({
     }
   }, [representationId, formId, dispatch]);
 
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
 
   const { error } = useSubscription<GQLFormEventSubscription>(
     formEventSubscription(propertySectionsRegistry.getWidgetContributions()),

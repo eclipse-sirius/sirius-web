@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -79,7 +79,7 @@ export const SelectionDialog = ({
   onFinish,
 }: SelectionDialogProps) => {
   const classes = useSelectionObjectModalStyles();
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
     selectionDialogMachine

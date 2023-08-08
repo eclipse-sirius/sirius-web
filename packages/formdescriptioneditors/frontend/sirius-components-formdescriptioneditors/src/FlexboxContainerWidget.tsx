@@ -12,9 +12,13 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
-import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import {
+  GQLWidget,
+  PropertySectionContext,
+  PropertySectionContextValue,
+} from '@eclipse-sirius/sirius-components-forms';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
@@ -173,7 +177,7 @@ export const FlexboxContainerWidget = ({
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);

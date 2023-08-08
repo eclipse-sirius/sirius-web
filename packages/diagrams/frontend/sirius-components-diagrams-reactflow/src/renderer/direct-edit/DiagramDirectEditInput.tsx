@@ -15,6 +15,7 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@material-ui/core/TextField';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
   DiagramDirectEditInputProps,
   DiagramDirectEditInputState,
@@ -69,7 +70,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
 
   const { addErrorMessage } = useMultiToast();
 
-  const { editingContextId, diagramId } = useContext(DiagramContext);
+  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
   const textInput = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 

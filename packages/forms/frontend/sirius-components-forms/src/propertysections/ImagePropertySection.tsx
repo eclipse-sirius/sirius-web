@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useContext, useEffect, useState } from 'react';
 import { ImagePropertySectionProps, ImageStyleProps } from './ImagePropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
@@ -38,7 +38,7 @@ const useImageStyles = makeStyles<Theme, ImageStyleProps>(() => ({
  * Defines the content of a Image property section.
  */
 export const ImagePropertySection = ({ editingContextId, formId, widget }: ImagePropertySectionProps) => {
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [validImage, setValidImage] = useState<boolean>(true);
 
   const onErrorLoadingImage = () => {

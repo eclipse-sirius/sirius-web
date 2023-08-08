@@ -12,7 +12,12 @@
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '../views/TreeView.types';
-import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuContribution.types';
+import {
+  TreeItemContextMenuComponentProps,
+  TreeItemContextMenuContributionProps,
+} from './TreeItemContextMenuContribution.types';
+
+export type TreeItemContextMenuContextValue = React.ReactElement<TreeItemContextMenuContributionProps>[];
 
 export interface TreeItemContextMenuProps {
   menuAnchor: Element;

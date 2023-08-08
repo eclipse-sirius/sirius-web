@@ -15,12 +15,13 @@ import {
   DRAG_SOURCES_TYPE,
   SelectionEntry,
   ServerContext,
+  ServerContextValue,
   useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
 import {
-  getTextDecorationLineValue,
   PropertySectionComponentProps,
   PropertySectionLabel,
+  getTextDecorationLineValue,
   useClickHandler,
 } from '@eclipse-sirius/sirius-components-forms';
 import Divider from '@material-ui/core/Divider';
@@ -29,13 +30,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useContext, useEffect, useState } from 'react';
-import { BrowseModal } from './modals/BrowseModal';
 import {
   GQLClickReferenceValueMutationData,
   GQLClickReferenceValueMutationVariables,
@@ -49,6 +49,7 @@ import {
   GQLReferenceWidgetStyle,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
+import { BrowseModal } from './modals/BrowseModal';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>(() => ({
   root: {
@@ -131,7 +132,7 @@ export const ReferencePropertySection = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyles(props);
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [editReference, { loading, error, data }] = useMutation<GQLEditReferenceData, GQLEditReferenceVariables>(
     editReferenceMutation

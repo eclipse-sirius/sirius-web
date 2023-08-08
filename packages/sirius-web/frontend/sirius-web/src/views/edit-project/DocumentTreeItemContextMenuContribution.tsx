@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { NewRootObjectModal } from '@eclipse-sirius/sirius-components';
-import { Selection, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { Selection, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { forwardRef, Fragment, useContext, useState } from 'react';
+import { Fragment, forwardRef, useContext, useState } from 'react';
 
 type Modal = 'CreateNewRootObject';
 
@@ -27,8 +27,8 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
     { editingContextId, item, readOnly, setSelection, expandItem, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLLIElement>
   ) => {
-    const { httpOrigin } = useContext(ServerContext);
-    const [modal, setModal] = useState<Modal>(null);
+    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+    const [modal, setModal] = useState<Modal | null>(null);
 
     const onObjectCreated = (selection: Selection) => {
       setSelection(selection);

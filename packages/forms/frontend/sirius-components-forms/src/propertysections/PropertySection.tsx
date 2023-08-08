@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { useContext } from 'react';
 import { PropertySectionContext } from '../form/FormContext';
+import { PropertySectionContextValue } from '../form/FormContext.types';
 import {
   GQLButton,
   GQLChartWidget,
@@ -73,7 +74,7 @@ export const PropertySection = ({
 }: PropertySectionProps) => {
   let subscribers = [];
 
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
 
   widgetSubscriptions
     .filter((subscription) => subscription.widgetId === widget.id)

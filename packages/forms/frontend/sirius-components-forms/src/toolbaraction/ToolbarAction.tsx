@@ -115,7 +115,7 @@ export const ToolbarAction = ({ editingContextId, formId, widget, readOnly }: To
   };
   const classes = useStyle(props);
 
-  const { httpOrigin }: ServerContextValue = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation
