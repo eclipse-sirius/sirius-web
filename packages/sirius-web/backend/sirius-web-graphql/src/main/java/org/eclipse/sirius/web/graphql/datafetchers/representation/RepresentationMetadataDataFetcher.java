@@ -54,7 +54,8 @@ public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldC
                 FieldCoordinates.coordinates("PieChart", METADATA_FIELD),
                 FieldCoordinates.coordinates("Tree", METADATA_FIELD),
                 FieldCoordinates.coordinates("Selection", METADATA_FIELD),
-                FieldCoordinates.coordinates("Validation", METADATA_FIELD)
+                FieldCoordinates.coordinates("Validation", METADATA_FIELD),
+                FieldCoordinates.coordinates("Gantt", METADATA_FIELD)
         );
         // @formatter:on
     }

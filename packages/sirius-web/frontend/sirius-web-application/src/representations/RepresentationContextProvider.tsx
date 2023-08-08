@@ -22,6 +22,7 @@ import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagram
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { RepresentationContextProviderProps } from './RepresentationContextProvider.types';
 
 export const RepresentationContextProvider = ({ children }: RepresentationContextProviderProps) => {
@@ -38,6 +39,8 @@ export const RepresentationContextProvider = ({ children }: RepresentationContex
         return FormRepresentation;
       } else if (type === 'FormDescriptionEditor') {
         return FormDescriptionEditorRepresentation;
+      } else if (type === 'Gantt') {
+        return GanttRepresentation;
       }
       return null;
     },

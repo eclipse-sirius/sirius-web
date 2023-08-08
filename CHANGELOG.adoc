@@ -57,12 +57,15 @@ info: {
 
 === Dependency update
 
+- [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.10
+
 
 === Bug fixes
 
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2735[#2735] [gantt] Contribute the first version of the Gantt representation.
 
 === Improvements
 

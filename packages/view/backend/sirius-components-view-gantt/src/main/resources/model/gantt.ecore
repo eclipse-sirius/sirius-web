@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gantt" nsURI="http://www.eclipse.org/sirius-web/gantt" nsPrefix="gantt">
+  <eClassifiers xsi:type="ecore:EClass" name="GanttDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="taskElementDescriptions"
+        upperBound="-1" eType="#//TaskDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
+        lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskDetailExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" lowerBound="1" eType="#//TaskStyleDescription"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalTaskStyle" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subTaskElementDescriptions"
+        upperBound="-1" eType="#//TaskDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reusedTaskElementDescriptions"
+        upperBound="-1" eType="#//TaskDescription"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskStyleDescription" abstract="true"
+      eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelColorExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="backgroundColorExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="progressColorExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalTaskStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" lowerBound="1" eType="#//TaskStyleDescription"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="TaskDetail" instanceClassName="org.eclipse.sirius.components.gantt.TaskDetail"/>
+</ecore:EPackage>

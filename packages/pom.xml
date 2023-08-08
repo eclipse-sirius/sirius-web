@@ -46,6 +46,7 @@
 		<module>tests/backend</module>
 		<module>charts/backend</module>
 		<module>diagrams/backend</module>
+		<module>gantt/backend</module>
 		<module>formdescriptioneditors/backend</module>
 		<module>forms/backend</module>
 		<module>selection/backend</module>
@@ -56,6 +57,7 @@
 		<module>view/backend</module>
 		<module>emf/backend</module>
 		<module>web/backend</module>
+		<module>task/backend</module>
 		<module>tools/backend</module>
 		<module>starters/backend</module>
 		<module>releng/backend</module>

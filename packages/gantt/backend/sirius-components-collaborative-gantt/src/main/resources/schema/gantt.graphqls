@@ -1,0 +1,58 @@
+extend type Subscription {
+  ganttEvent(input: GanttEventInput!): GanttEventPayload!
+}
+
+input GanttEventInput {
+  id: ID!
+  editingContextId: ID!
+  ganttId: ID!
+}
+
+union GanttEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | GanttRefreshedEventPayload
+
+type GanttRefreshedEventPayload {
+  id: ID!
+  gantt: Gantt!
+}
+
+type Gantt implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  targetObjectId: ID!
+  tasks: [Task!]!
+}
+
+type Task {
+  id: ID!
+  descriptionId: ID!
+  targetObjectId: String!
+  targetObjectKind: String!
+  targetObjectLabel: String!
+  detail: TaskDetail!
+  style: TaskStyle
+  subTasks: [Task!]
+  dependencies: [Task!]
+}
+
+type TaskDetail {
+  name: String!
+  description: String!
+  startDate: Int!
+  endDate: Int!
+  progress: Int!
+}
+
+type TaskStyle {
+  labelColor: String!
+  backgroundColor: String!
+  progressColor: String!
+}
+
+enum TaskType {
+  TASK
+  TASK_GROUP
+  MILESTONE
+}
+
+
+

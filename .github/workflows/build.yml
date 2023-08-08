@@ -65,6 +65,7 @@ jobs:
 
       - name: Build the frontend packages
         run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
           npm install -g yalc
           npm ci
           npx turbo run coverage

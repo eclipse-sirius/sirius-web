@@ -1,0 +1,9 @@
+= sirius-component-collaborative-gantt
+
+== Goal
+
+This project provides support for the gantt collaborative edition layer.
+
+== Dependencies
+
+- sirius-component-gantt
