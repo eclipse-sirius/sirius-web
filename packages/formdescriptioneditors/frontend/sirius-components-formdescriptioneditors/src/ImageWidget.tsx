@@ -50,7 +50,7 @@ export const ImageWidget = ({ widget, selection }: ImageWidgetProps) => {
     maxWidth: widget.maxWidth,
   };
   const classes = useStyles(props);
-  const { httpOrigin }: ServerContextValue = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const initialState: ImageWidgetState = { imageURL: widget.url, validImage: false, selected: false };
   const [state, setState] = useState<ImageWidgetState>(initialState);
 

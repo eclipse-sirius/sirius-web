@@ -118,7 +118,7 @@ export const ButtonPropertySection = ({
   };
   const classes = useStyle(props);
 
-  const { httpOrigin }: ServerContextValue = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [pushButton, { loading, data, error }] = useMutation<GQLPushButtonMutationData, GQLPushButtonMutationVariables>(
     pushButtonMutation

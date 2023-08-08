@@ -29,3 +29,7 @@ export type PropertySectionComponentRegistry = {
   getPreviewComponent: (widget: GQLWidget) => PreviewWidgetComponent | null;
   getWidgetContributions: () => WidgetContribution[];
 };
+
+export interface PropertySectionContextValue {
+  propertySectionsRegistry: PropertySectionComponentRegistry;
+}

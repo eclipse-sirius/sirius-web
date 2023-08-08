@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { useContext } from 'react';
 import { EdgeLabelProps } from './EdgeLabeL.types';
 export const EdgeLabel = ({ transform, label: { iconURL, style: labelStyle, text } }: EdgeLabelProps) => {
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const style: React.CSSProperties = {
     transform,
     ...labelStyle,

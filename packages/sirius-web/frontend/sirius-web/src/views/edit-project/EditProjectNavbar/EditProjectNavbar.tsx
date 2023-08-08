@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { DeleteProjectModal, RenameProjectModal } from '@eclipse-sirius/sirius-components';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -81,7 +81,7 @@ const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
 
 export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
   const classes = useEditProjectViewNavbarStyles();
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<EditProjectNavbarContext, EditProjectNavbarEvent>(
     editProjectNavbarMachine,

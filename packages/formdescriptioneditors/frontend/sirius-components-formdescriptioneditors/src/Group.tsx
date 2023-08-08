@@ -12,11 +12,15 @@
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
 import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
-import { GQLWidget, PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
+import {
+  GQLWidget,
+  PropertySectionContext,
+  PropertySectionContextValue,
+} from '@eclipse-sirius/sirius-components-forms';
 import { GroupStyleProps } from '@eclipse-sirius/sirius-components-forms/src/groups/Group.types';
-import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -331,7 +335,7 @@ export const Group = ({
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);
   };
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.currentTarget.classList.remove(classes.dragOver);

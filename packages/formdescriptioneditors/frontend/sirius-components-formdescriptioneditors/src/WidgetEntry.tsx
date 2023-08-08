@@ -30,9 +30,10 @@ import {
   GQLTextfield,
   GQLWidget,
   PropertySectionContext,
+  PropertySectionContextValue,
 } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
@@ -134,7 +135,7 @@ export const WidgetEntry = ({
   const [state, setState] = useState<WidgetEntryState>(initialState);
   const { message } = state;
 
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,

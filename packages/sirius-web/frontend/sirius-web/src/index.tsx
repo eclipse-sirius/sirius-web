@@ -18,13 +18,19 @@ import {
   ServerContext,
   theme,
 } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentRegistry,
+  RepresentationContextValue,
+} from '@eclipse-sirius/sirius-components-core/dist/workbench/RepresentationContext.types';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
   FormRepresentation,
   GQLWidget,
+  PropertySectionComponentRegistry,
   PropertySectionContext,
+  PropertySectionContextValue,
   WidgetContribution,
 } from '@eclipse-sirius/sirius-components-forms';
 import {
@@ -112,7 +118,7 @@ const style = {
   minHeight: '100vh',
 };
 
-const registry = {
+const registry: RepresentationComponentRegistry = {
   getComponent: (representation: Representation): RepresentationComponent | null => {
     const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
     const params = new URLSearchParams(query);
@@ -130,11 +136,11 @@ const registry = {
   },
 };
 
-const representationContextValue = {
+const representationContextValue: RepresentationContextValue = {
   registry,
 };
 
-const propertySectionsRegistry = {
+const propertySectionsRegistry: PropertySectionComponentRegistry = {
   getComponent: (widget: GQLWidget) => {
     if (widget.__typename === 'Slider') {
       return SliderPropertySection;
@@ -186,7 +192,7 @@ const propertySectionsRegistry = {
   },
 };
 
-const propertySectionRegistryValue = {
+const propertySectionRegistryValue: PropertySectionContextValue = {
   propertySectionsRegistry,
 };
 

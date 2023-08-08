@@ -130,7 +130,7 @@ export const ToolbarActionWidget = ({
   };
   const classes = useStyles(props);
 
-  const { httpOrigin }: ServerContextValue = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const onErrorLoadingImage = () => {
     setState((prevState) => {

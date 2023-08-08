@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -58,7 +58,7 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
   const { toast, uploadDocumentModal } = value as SchemaValue;
   const { file, message } = context;
 
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const useFormStyles = makeStyles((theme) => ({
     form: {
       display: 'flex',

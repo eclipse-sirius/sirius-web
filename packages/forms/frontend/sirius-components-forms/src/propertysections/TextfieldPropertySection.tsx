@@ -12,12 +12,7 @@
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Popover from '@material-ui/core/Popover';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
@@ -26,6 +21,7 @@ import { GQLSuccessPayload } from './ListPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 import { PropertySectionLabel } from './PropertySectionLabel';
+import { ProposalsList } from './ProposalsList';
 import {
   GQLCompletionProposal,
   GQLCompletionProposalsQueryData,
@@ -39,6 +35,7 @@ import {
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
+  TextFieldState,
   TextfieldPropertySectionProps,
   TextfieldStyleProps,
 } from './TextfieldPropertySection.types';
@@ -349,7 +346,7 @@ export const TextfieldPropertySection = ({
     };
     proposalsList = (
       <ProposalsList
-        anchor={inputElt}
+        anchorEl={inputElt.current}
         proposals={proposals}
         onProposalSelected={applyProposal}
         onClose={dismissProposals}
@@ -402,53 +399,7 @@ export const TextfieldPropertySection = ({
   );
 };
 
-// Proposals UI
-
-export interface ProposalsListProps {
-  anchor: React.MutableRefObject<HTMLElement>;
-  proposals: GQLCompletionProposal[];
-  onProposalSelected: (proposal: GQLCompletionProposal) => void;
-  onClose: () => void;
-}
-
-const ProposalsList = ({ anchor, proposals, onProposalSelected, onClose }: ProposalsListProps) => {
-  return (
-    <Popover
-      open={true}
-      onClose={onClose}
-      anchorEl={anchor.current}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}>
-      <MenuList id="completion-proposals" data-testid="completion-proposals">
-        {proposals.map((proposal, index) => (
-          <Tooltip
-            data-testid={`proposal-${proposal.textToInsert}-${proposal.charsToReplace}`}
-            key={index}
-            title={proposal.description}
-            placement="right">
-            <MenuItem button onClick={() => onProposalSelected(proposal)}>
-              <ListItemText primary={proposal.textToInsert} />
-            </MenuItem>
-          </Tooltip>
-        ))}
-      </MenuList>
-    </Popover>
-  );
-};
-
 // Proposal handling (exported for testing)
-
-export interface TextFieldState {
-  textValue: string;
-  cursorPosition: number;
-}
-
 export const applyCompletionProposal = (
   initialState: TextFieldState,
   proposal: GQLCompletionProposal

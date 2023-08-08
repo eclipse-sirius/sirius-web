@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { useContext, useEffect, useState } from 'react';
@@ -81,7 +81,7 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
 
   const classes = useGroupStyles(props);
   const [visibleWidgetIds, setVisibleWidgetIds] = useState<string[]>([]);
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   useEffect(() => {
     setVisibleWidgetIds(group.widgets.map((widget) => widget.id));

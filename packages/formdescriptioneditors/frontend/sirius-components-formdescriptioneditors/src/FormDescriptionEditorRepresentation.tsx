@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, Toast } from '@eclipse-sirius/sirius-components-core';
-import { PropertySectionContext } from '@eclipse-sirius/sirius-components-forms';
+import { PropertySectionContext, PropertySectionContextValue } from '@eclipse-sirius/sirius-components-forms';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -159,7 +159,7 @@ export const FormDescriptionEditorRepresentation = ({
     formDescriptionEditorId: representationId,
   };
   const variables: GQLFormDescriptionEditorEventVariables = { input };
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const { error } = useSubscription<GQLFormDescriptionEditorEventSubscription, GQLFormDescriptionEditorEventVariables>(
     gql(formDescriptionEditorEventSubscription(propertySectionsRegistry.getWidgetContributions())),
     {

@@ -30,6 +30,11 @@ export interface TextfieldPropertySectionProps {
   readOnly: boolean;
 }
 
+export interface TextFieldState {
+  textValue: string;
+  cursorPosition: number;
+}
+
 export interface GQLEditTextfieldMutationData {
   editTextfield: GQLEditTextfieldPayload;
 }
