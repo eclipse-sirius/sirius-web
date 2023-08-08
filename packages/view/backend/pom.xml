@@ -38,6 +38,8 @@
 		<module>sirius-components-view-builder</module>
 		<module>sirius-components-view-diagram</module>
 		<module>sirius-components-view-diagram-edit</module>
+		<module>sirius-components-view-gantt</module>
+		<module>sirius-components-view-gantt-edit</module>
 		<module>sirius-components-view-form</module>
 		<module>sirius-components-view-form-edit</module>
 	</modules>

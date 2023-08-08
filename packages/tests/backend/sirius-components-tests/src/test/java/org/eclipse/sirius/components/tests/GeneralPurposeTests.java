@@ -108,6 +108,7 @@ public class GeneralPurposeTests {
 
     private static final List<String> GENERATED_MODULE_PATHS = List.of(
             "/sirius-components-domain",
+            "/sirius-components-task",
             "/sirius-components-view",
             "/sirius-web-customwidgets",
             "/sirius-components-widget-reference-view",

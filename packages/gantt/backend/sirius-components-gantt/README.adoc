@@ -1,0 +1,9 @@
+= sirius-component-gantt
+
+== Goal
+
+This project contains the renderer, description and data structure to create gantt diagram.
+
+== Dependencies
+
+Nothing specific

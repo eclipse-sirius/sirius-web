@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    copyrightText="Copyright (c) 2023 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
+    modelDirectory="/sirius-components-task/src/main/java" creationIcons="false" editDirectory="/sirius-components-task-edit/src/main/java"
+    editorDirectory="" modelPluginID="sirius-components-task" modelName="Task" editPluginClass="org.eclipse.sirius.components.task.provider.TaskEditPlugin"
+    editorPluginClass="sirius-components-task.presentation.TaskEditorPlugin" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" commentFormatting="true" testSuiteClass="sirius-components-task.tests.TaskAllTests"
+    importerID="org.eclipse.emf.importer.ecore" bundleManifest="false" complianceLevel="17.0"
+    copyrightFields="false" editPluginID="sirius-components-task-edit" editorPluginID="sirius-components-task-editor"
+    runtimeVersion="2.35" importOrganizing="true" cleanup="true">
+  <foreignModel>task.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="Task" basePackage="org.eclipse.sirius.components" disposableProviderFactory="true"
+      extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="task.ecore#/">
+    <genClasses image="false" ecoreClass="task.ecore#//Resource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//Resource/name"/>
+    </genClasses>
+    <genClasses ecoreClass="task.ecore#//Company">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//Company/ownedTeams"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//Company/ownedPersons"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//Company/ownedProjects"/>
+    </genClasses>
+    <genClasses ecoreClass="task.ecore#//Team">
+      <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference task.ecore#//Team/members"/>
+    </genClasses>
+    <genClasses ecoreClass="task.ecore#//Person">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//Person/alias"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//Person/biography"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//Person/imageUrl"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="task.ecore#//AbstractTask">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/startDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/endDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/progress"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/computeDateDynamically"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/tags"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/dependencies"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/assignedPersons"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/assignedTeams"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/subTasks"/>
+    </genClasses>
+    <genClasses ecoreClass="task.ecore#//Task"/>
+    <genClasses ecoreClass="task.ecore#//Objective">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//Objective/ownedKeyResults"/>
+    </genClasses>
+    <genClasses ecoreClass="task.ecore#//KeyResult"/>
+    <genClasses ecoreClass="task.ecore#//Project">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//Project/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//Project/ownedTasks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//Project/ownedObjectives"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference task.ecore#//Project/ownedTags"/>
+    </genClasses>
+    <genClasses ecoreClass="task.ecore#//TaskTag">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//TaskTag/prefix"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//TaskTag/suffix"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

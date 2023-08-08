@@ -25,6 +25,7 @@ import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.tngtech.archunit.library.GeneralCodingRules;
+
 import java.lang.annotation.Target;
 import java.text.MessageFormat;
 import java.util.Iterator;
@@ -419,6 +420,9 @@ public abstract class AbstractCodingRulesTests {
                 .and()
                 .areDeclaredInClassesThat()
                 .areNotAssignableTo(Enum.class)
+                .and()
+                .areDeclaredInClassesThat()
+                .areNotAssignableTo(Record.class)
                 .and()
                 .areDeclaredInClassesThat(this.isNotTestCase())
                 .and(this.isNotLambda())
