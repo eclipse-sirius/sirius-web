@@ -1,0 +1,50 @@
+= [ADR-107] Add support for dynamic and conditional widgets in Forms
+
+== Context
+
+The set of widgets displayed by a _Form_ is currently hard-coded statically in the structure of the corresponding _FormDescription_.
+Each _WidgetDescription_ will produce one, and only one, concrete widget when the form is rendered.
+
+On the desktop side, EEF overcame this limitation by introducing https://eclipse.dev/sirius/doc/specifier/properties/Properties_View_Description.html#dynamic_mappings[dynamic mappings], based on two new configuration elements: `DynamicFor` and `DynamicIf`.
+
+The core rendering algorithm of the Sirius Web Forms already implements these mechanisms to support the compatibility layer with Sirius Desktop VSMs, but they are not exposed when creating a _FormDescription_ using the View DSL.
+
+== Decision
+
+We will add support for `DynamicFor` and `DynamicIf` to the Forms DSL.
+
+In this first version, we will only support the same case as in EEF desktop, namely widgets inside a _Group_.
+
+A _GroupDescription_ currently has a _widgets: WidgetDescription_ reference.
+As is the case in EEF desktop, we will introduce a new _ControlDescription_ type as a generalization of _WidgetDescription_, and _GroupDescription.widgets_ will now contain _ControlDescriptions_.
+We will not change the name of the _widgets_ reference to avoid breaking existing models.
+
+_FlexboxContainer_, which also acts as a container for widgets, will also be modified in a similar way so that it's _children_ are _ControlDescriptions_.
+
+The new _DynamicFor_ element will also extends _ControlDescription_, so that a group can contain both actual widgets and _DynamicFor_.
+
+_DynamicFor_ will have two attributes:
+
+* `iterationExpression`: an AQL expression to be evaluated when rendering the form, which should return a collection of (arbitrary) elements;
+* `iterator`: a (fixed) variable name.
+
+It will also _contain_ an arbitrary number if _DynamicIf_, which has a `predicateExpression` attribute and a `control: ControlDescription[1]` containment reference.
+
+The semantics will be the same as in EEF desktop.
+
+When rendering a _FormDescription_ which uses _DynamicFor_ & _DynamicIfs_, in the context of a _FormDescription Editor_ these elements will not be visible.
+The Form will display as if all the widgets inside all the _DynamicIfs_ of a _DynamicFor_ were defined directly inside the parent _GroupDescription_.
+
+== Status
+
+Accepted.
+
+== Consequences
+
+* Any custom widget's metamodel will need to be regenerated.
+This is required for the custom widget's child creation extender to be able to be created inside the new _DynamicIf_ elements.
+* With this, it will become possible to express more generic and dynamic form descriptions, including the equivalent of https://github.com/eclipse-sirius/sirius-desktop/blob/master/plugins/org.eclipse.sirius.properties.defaultrules/model/properties.odesign[Sirius Desktop defaults properties rules].
+* With _DynamicIf_ containing _ControlDescriptions_ instead of actual widgets, it should be possible to create nested loops.
+* The first version if the mechanism introduced here will be generalized to allow For/If in as many places as possible (and meaningful) in the Forms DSL, notable on Groups and Pages.
+Note that pages already support `semanticCandidatesExpression` which cover part of the same uses cases but is less powerful.
+* We will also investigate generalizing this mechanism to the diagrams DSL if/where it can make sense.
