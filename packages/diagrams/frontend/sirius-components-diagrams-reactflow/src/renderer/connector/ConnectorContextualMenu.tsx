@@ -27,6 +27,7 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
   GQLInvokeSingleClickOnTwoDiagramElementsToolInput,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
+  GQLRepresentationDescription,
   GQLTool,
   GetConnectorToolsData,
   GetConnectorToolsVariables,
@@ -88,6 +89,10 @@ export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
   }
 `;
 
+const isDiagramDescription = (
+  representationDescription: GQLRepresentationDescription
+): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
+
 export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { connection, onConnectorContextualMenuClose } = useConnector();
@@ -108,8 +113,8 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
     connectionTargetHandle = connectionTarget.querySelector(`[data-handleid="${connection.targetHandle}"]`);
   }
 
-  const sourceDiagramElementId = connectionSource?.dataset?.id;
-  const targetDiagramElementId = connectionTarget?.dataset?.id;
+  const sourceDiagramElementId = connectionSource?.dataset.id ?? '';
+  const targetDiagramElementId = connectionTarget?.dataset.id ?? '';
 
   const variables: GetConnectorToolsVariables = {
     editingContextId,
@@ -173,16 +178,16 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
         onShouldConnectorContextualMenuClose();
       }
     }
-    if (invokeSingleClickOnTwoDiagramElementToolError) {
-      addErrorMessage(error.message);
+    if (invokeSingleClickOnTwoDiagramElementToolError?.message) {
+      addErrorMessage(invokeSingleClickOnTwoDiagramElementToolError.message);
     }
   }, [invokeSingleClickOnTwoDiagramElementToolData, invokeSingleClickOnTwoDiagramElementToolError]);
 
   const connectorTools: GQLTool[] = [];
-  if ((data?.viewer.editingContext.representation.description.__typename ?? '') === 'DiagramDescription') {
-    (data.viewer.editingContext.representation.description as GQLDiagramDescription).connectorTools.forEach((tool) =>
-      connectorTools.push(tool)
-    );
+  const representationDescription: GQLRepresentationDescription | null | undefined =
+    data?.viewer.editingContext?.representation?.description;
+  if (representationDescription && isDiagramDescription(representationDescription)) {
+    representationDescription.connectorTools.forEach((tool) => connectorTools.push(tool));
   }
 
   useEffect(() => {

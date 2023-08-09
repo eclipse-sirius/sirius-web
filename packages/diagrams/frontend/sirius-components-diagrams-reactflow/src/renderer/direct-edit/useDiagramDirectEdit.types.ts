@@ -18,8 +18,9 @@ export interface UseDiagramDirectEditValue {
   currentlyEditedLabelId: string | null;
   editingKey: string | null;
   setCurrentlyEditedLabelId: (
-    directEditTrigger: DirectEditTrigger | null,
-    currentlyEditedLabelId: string | null,
+    directEditTrigger: DirectEditTrigger,
+    currentlyEditedLabelId: string,
     editingKey: string | null
   ) => void;
+  resetDirectEdit: () => void;
 }

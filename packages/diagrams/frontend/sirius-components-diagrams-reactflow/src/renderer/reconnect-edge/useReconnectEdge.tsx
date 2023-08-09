@@ -84,7 +84,9 @@ export const useReconnectEdge = (): UseReconnectEdge => {
       reconnectEdgeKind = GQLReconnectKind.SOURCE;
       newEdgeTargetId = newConnection.source;
     }
-    handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
+    if (newEdgeTargetId) {
+      handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
+    }
   };
 
   return { reconnectEdge };

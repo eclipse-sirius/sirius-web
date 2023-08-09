@@ -18,7 +18,15 @@ import {
   DirectEditTrigger,
 } from './DiagramDirectEditContext.types';
 
-export const DiagramDirectEditContext = React.createContext<DiagramDirectEditContextValue>(undefined);
+const defaultValue: DiagramDirectEditContextValue = {
+  currentlyEditedLabelId: null,
+  directEditTrigger: null,
+  editingKey: null,
+  setCurrentlyEditedLabelId: () => {},
+  resetDirectEdit: () => {},
+};
+
+export const DiagramDirectEditContext = React.createContext<DiagramDirectEditContextValue>(defaultValue);
 
 export const DiagramDirectEditContextProvider = ({ children }: DiagramDirectEditContextProviderProps) => {
   const [state, setState] = useState<DiagramDirectEditContextProviderState>({
@@ -34,6 +42,17 @@ export const DiagramDirectEditContextProvider = ({ children }: DiagramDirectEdit
     []
   );
 
+  const resetDirectEdit = useCallback(
+    () =>
+      setState((prevState) => ({
+        ...prevState,
+        currentlyEditedLabelId: null,
+        directEditTrigger: null,
+        editingKey: null,
+      })),
+    []
+  );
+
   return (
     <DiagramDirectEditContext.Provider
       value={{
@@ -41,6 +60,7 @@ export const DiagramDirectEditContextProvider = ({ children }: DiagramDirectEdit
         directEditTrigger: state.directEditTrigger,
         editingKey: state.editingKey,
         setCurrentlyEditedLabelId,
+        resetDirectEdit,
       }}>
       {children}
     </DiagramDirectEditContext.Provider>

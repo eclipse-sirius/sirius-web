@@ -103,7 +103,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
   }, [editLabelData, editLabelError]);
 
   useEffect(() => {
-    let cleanup = undefined;
+    let cleanup: (() => void) | undefined = undefined;
     if (initialLabelItemError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
@@ -115,7 +115,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
           return { ...prevState, newLabel: initialLabel };
         });
         const timeOutId = setTimeout(() => {
-          textInput.current.select();
+          textInput.current?.select();
         }, 0);
         cleanup = () => clearTimeout(timeOutId);
       }

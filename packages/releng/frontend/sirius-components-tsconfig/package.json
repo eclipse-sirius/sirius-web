@@ -13,6 +13,7 @@
   "main": "index.js",
   "files": [
     "base.json",
-    "react-library.json"
+    "react-library.json",
+    "strict-react-library.json"
   ]
 }

@@ -30,5 +30,5 @@ export interface UseLayoutState {
   currentStep: Step;
   diagramToLayout: Diagram | null;
   laidoutDiagram: Diagram | null;
-  onLaidoutDiagram: ((laidoutDiagram: Diagram) => void) | null;
+  onLaidoutDiagram: (laidoutDiagram: Diagram) => void;
 }

@@ -29,6 +29,7 @@ console.log("The following files will be reviewed:");
 const linesWithReferencesToDeprecatedCSS = [];
 const linesWithMissingTypes = [];
 const linesWithArrayType = [];
+const linesWithPotentialNullOrUndefined = [];
 
 for (let index = 0; index < filePaths.length; index++) {
   const filePath = filePaths[index];
@@ -58,6 +59,8 @@ for (let index = 0; index < filePaths.length; index++) {
         linesWithMissingTypes.push(`${filePath}#${index}: ${line}`);
       } else if (line.includes(": Array<")) {
         linesWithArrayType.push(`${filePath}#${index}: ${line}`);
+      } else if (line.includes("!.")) {
+        linesWithPotentialNullOrUndefined.push(`${filePath}#${index}: ${line}`);
       }
     }
   }
@@ -78,5 +81,11 @@ if (linesWithReferencesToDeprecatedCSS.length > 0) {
     "The following lines should be typed with Xxx[] instead of Array<Xxx>"
   );
   console.log(linesWithArrayType);
+  process.exit(1);
+} else if (linesWithPotentialNullOrUndefined.length > 0) {
+  console.log(
+    "The following lines should instead check that the value is not null or undefined"
+  );
+  console.log(linesWithPotentialNullOrUndefined);
   process.exit(1);
 }

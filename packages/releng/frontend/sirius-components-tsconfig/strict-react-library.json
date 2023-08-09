@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Strict React Library",
+  "extends": "./react-library.json",
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true
+  }
+}

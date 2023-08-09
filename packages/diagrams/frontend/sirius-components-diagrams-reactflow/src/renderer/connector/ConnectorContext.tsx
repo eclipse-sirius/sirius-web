@@ -19,7 +19,13 @@ import {
   ConnectorContextValue,
 } from './ConnectorContext.types';
 
-export const ConnectorContext = React.createContext<ConnectorContextValue>(undefined);
+const defaultValue: ConnectorContextValue = {
+  connection: null,
+  setConnection: () => {},
+  resetConnection: () => {},
+};
+
+export const ConnectorContext = React.createContext<ConnectorContextValue>(defaultValue);
 
 export const ConnectorContextProvider = ({ children }: ConnectorContextProviderProps) => {
   const [state, setState] = useState<ConnectorContextProviderState>({
@@ -28,8 +34,12 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
 
   const setConnection = (connection: Connection) => setState((prevState) => ({ ...prevState, connection }));
 
+  const resetConnection = () => {
+    setState((prevState) => ({ ...prevState, connection: null }));
+  };
+
   return (
-    <ConnectorContext.Provider value={{ connection: state.connection, setConnection }}>
+    <ConnectorContext.Provider value={{ connection: state.connection, setConnection, resetConnection }}>
       {children}
     </ConnectorContext.Provider>
   );

@@ -24,11 +24,9 @@ const labelStyle = (style: React.CSSProperties, faded: Boolean): React.CSSProper
 };
 
 export const Label = memo(({ label, faded }: LabelProps) => {
-  const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId } = useDiagramDirectEdit();
+  const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } = useDiagramDirectEdit();
 
-  const handleClose = () => {
-    setCurrentlyEditedLabelId(null, null, null);
-  };
+  const handleClose = () => resetDirectEdit();
 
   const handleDoubleClick = () => {
     setCurrentlyEditedLabelId('doubleClick', label.id, null);
