@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-form</artifactId>
-	<version>2023.6.6</version>
+	<version>2023.8.0</version>
 	<name>sirius-components-view-form</name>
 	<description>Sirius Components Form View Definition DSL</description>
 	<properties>
@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2023.6.6</version>
+			<version>2023.8.0</version>
 		</dependency>
 	</dependencies>
 

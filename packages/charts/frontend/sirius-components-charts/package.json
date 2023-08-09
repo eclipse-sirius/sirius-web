@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-sirius/sirius-components-charts",
-  "version": "2023.6.6",
+  "version": "2023.8.0",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "repository": {
@@ -33,7 +33,7 @@
     "react": "17.0.2"
   },
   "devDependencies": {
-    "@eclipse-sirius/sirius-components-tsconfig": "~2023.6.0",
+    "@eclipse-sirius/sirius-components-tsconfig": "~2023.8.0",
     "@types/react": "17.0.37",
     "@vitejs/plugin-react": "2.0.0",
     "d3": "7.0.0",
