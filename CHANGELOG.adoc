@@ -1,6 +1,6 @@
 = Changelog
 
-== v2023.8.0 (unreleased)
+== v2023.8.0
 
 === Shapes
 
