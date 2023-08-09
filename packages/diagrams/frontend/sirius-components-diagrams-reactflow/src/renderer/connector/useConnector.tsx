@@ -18,10 +18,10 @@ import { ConnectorContextValue } from './ConnectorContext.types';
 import { UseConnectorValue } from './useConnector.types';
 
 export const useConnector = (): UseConnectorValue => {
-  const { connection, setConnection } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { connection, setConnection, resetConnection } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const onConnect: OnConnect = (connection: Connection) => setConnection(connection);
-  const onConnectorContextualMenuClose = () => setConnection(null);
+  const onConnectorContextualMenuClose = () => resetConnection();
 
   return {
     onConnect,

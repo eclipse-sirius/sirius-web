@@ -38,7 +38,7 @@ export const CustomEdge = memo(
       targetPosition,
     });
 
-    const { beginLabel, endLabel, centerLabel } = data;
+    const { beginLabel, endLabel, centerLabel } = data || {};
 
     return (
       <>

@@ -20,7 +20,7 @@ const markerSelector = (state: ReactFlowState): MarkerProps[] => {
   const initialMarkerProps: MarkerProps[] = [];
   const reducer = (allMarkerProps: MarkerProps[], edge: Edge): MarkerProps[] => {
     [edge.markerStart, edge.markerEnd].forEach((marker) => {
-      if (marker && typeof marker === 'string') {
+      if (marker && typeof marker === 'string' && edge.style?.stroke) {
         if (!ids.includes(marker)) {
           allMarkerProps.push({
             id: marker,

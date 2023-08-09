@@ -27,11 +27,11 @@ export interface GetConnectorToolsData {
 }
 
 export interface GQLViewer {
-  editingContext: GQLEditingContext;
+  editingContext: GQLEditingContext | null;
 }
 
 export interface GQLEditingContext {
-  representation: GQLRepresentationMetadata;
+  representation: GQLRepresentationMetadata | null;
 }
 
 export interface GQLRepresentationMetadata {

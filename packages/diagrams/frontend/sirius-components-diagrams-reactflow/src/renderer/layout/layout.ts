@@ -152,7 +152,7 @@ const layoutDiagram = (diagram: Diagram) => {
     rootNode.position = { x: 0, y: 0 };
     if (index > 0) {
       const previousSibling = nodesToLayout[index - 1];
-      rootNode.position = { x: previousSibling.position.x + previousSibling.width + gap, y: 0 };
+      rootNode.position = { x: previousSibling.position.x + (previousSibling.width ?? 0) + gap, y: 0 };
     }
   });
 };
@@ -172,11 +172,11 @@ const layoutNodes = (allVisibleNodes: Node[], nodesToLayout: Node<NodeData>[]) =
         directChildren.forEach((child, index) => {
           child.position = {
             x: rectangularNodePadding,
-            y: rectangularNodePadding + labelElement.getBoundingClientRect().height + rectangularNodePadding,
+            y: rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding,
           };
           if (index > 0) {
             const previousSibling = directChildren[index - 1];
-            child.position = { ...child.position, x: previousSibling.position.x + previousSibling.width + gap };
+            child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
           }
         });
 
@@ -185,12 +185,12 @@ const layoutNodes = (allVisibleNodes: Node[], nodesToLayout: Node<NodeData>[]) =
         const childrenFootprint = getChildrenFootprint(directChildren);
         const childrenAwareNodeWidth = childrenFootprint.x + childrenFootprint.width + rectangularNodePadding;
         const labelOnlyWidth =
-          rectangularNodePadding + labelElement.getBoundingClientRect().width + rectangularNodePadding;
+          rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
         const nodeWidth = Math.max(childrenAwareNodeWidth, labelOnlyWidth);
         nodeToLayout.width = getNodeOrMinWidth(nodeWidth + borderLeftAndRight);
         nodeToLayout.height = getNodeOrMinHeight(
           rectangularNodePadding +
-            labelElement.getBoundingClientRect().height +
+            (labelElement?.getBoundingClientRect().height ?? 0) +
             rectangularNodePadding +
             childrenFootprint.height +
             rectangularNodePadding
@@ -202,11 +202,11 @@ const layoutNodes = (allVisibleNodes: Node[], nodesToLayout: Node<NodeData>[]) =
 
         const labelWidth =
           rectangularNodePadding +
-          labelElement.getBoundingClientRect().width +
+          (labelElement?.getBoundingClientRect().width ?? 0) +
           rectangularNodePadding +
           borderLeftAndRight;
         const labelHeight =
-          rectangularNodePadding + labelElement.getBoundingClientRect().height + rectangularNodePadding;
+          rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
         const nodeWidth = getNodeOrMinWidth(labelWidth);
         const nodeHeight = getNodeOrMinHeight(labelHeight);
         nodeToLayout.width = nodeWidth;
@@ -217,10 +217,10 @@ const layoutNodes = (allVisibleNodes: Node[], nodesToLayout: Node<NodeData>[]) =
       nodeToLayout.height = defaultHeight;
     } else if (nodeToLayout.type === 'listNode') {
       const nodeList = document.getElementById(`${nodeToLayout.id}-${findNodeIndex(allVisibleNodes, nodeToLayout.id)}`)
-        .children[0];
+        ?.children[0];
 
-      nodeToLayout.width = getNodeOrMinWidth(nodeList.getBoundingClientRect().width);
-      nodeToLayout.height = getNodeOrMinHeight(nodeList.getBoundingClientRect().height);
+      nodeToLayout.width = getNodeOrMinWidth(nodeList?.getBoundingClientRect().width);
+      nodeToLayout.height = getNodeOrMinHeight(nodeList?.getBoundingClientRect().height);
     }
     nodeToLayout.style = {
       ...nodeToLayout.style,
@@ -230,12 +230,12 @@ const layoutNodes = (allVisibleNodes: Node[], nodesToLayout: Node<NodeData>[]) =
   });
 };
 
-const getNodeOrMinWidth = (nodeWidth: number): number => {
-  return Math.max(nodeWidth, defaultWidth);
+const getNodeOrMinWidth = (nodeWidth: number | undefined): number => {
+  return Math.max(nodeWidth ?? -Infinity, defaultWidth);
 };
 
-const getNodeOrMinHeight = (nodeHeight: number): number => {
-  return Math.max(nodeHeight, defaultHeight);
+const getNodeOrMinHeight = (nodeHeight: number | undefined): number => {
+  return Math.max(nodeHeight ?? -Infinity, defaultHeight);
 };
 
 const getChildrenFootprint = (children: Node[]): Rect => {
@@ -245,8 +245,8 @@ const getChildrenFootprint = (children: Node[]): Rect => {
       const nodeBox = rectToBox({
         x,
         y,
-        width: node.width,
-        height: node.height,
+        width: node.width ?? 0,
+        height: node.height ?? 0,
       });
 
       return getBoundsOfBoxes(currentFootPrint, nodeBox);
@@ -306,15 +306,15 @@ export const performAutoLayout = (
     if (node.type === 'rectangularNode') {
       const rectangularNodeData: RectangularNodeData = node.data as RectangularNodeData;
 
-      const label = document.querySelector<HTMLDivElement>(`[data-id="${rectangularNodeData.label.id}"]`);
+      const label = document.querySelector<HTMLDivElement>(`[data-id="${rectangularNodeData.label?.id}"]`);
       if (label) {
         const elkLabel: ElkLabel = {
           width: label.getBoundingClientRect().width,
           height: label.getBoundingClientRect().height,
-          text: rectangularNodeData.label.text,
+          text: rectangularNodeData.label?.text,
         };
 
-        elkNode.labels.push(elkLabel);
+        elkNode.labels?.push(elkLabel);
       }
     }
 
@@ -331,12 +331,14 @@ export const performAutoLayout = (
       if (!!node.parentNode && !!nodeId2ElkNode.get(node.parentNode)) {
         const elknodeChild = nodeId2ElkNode.get(node.id);
         const elkNodeParent = nodeId2ElkNode.get(node.parentNode);
-        if (elkNodeParent && elkNodeParent.children) {
+        if (elkNodeParent && elkNodeParent.children && elknodeChild) {
           elkNodeParent.children.push(elknodeChild);
         }
       } else {
         const elkNodeRoot = nodeId2ElkNode.get(node.id);
-        graph.children.push(elkNodeRoot);
+        if (elkNodeRoot) {
+          graph.children.push(elkNodeRoot);
+        }
       }
     }
   });
@@ -386,7 +388,7 @@ const elkToReactFlow = (elkNodes: ElkNode[], nodeId2Node: Map<string, Node>): No
       }
       nodes.push(node);
     }
-    if (elkNode.children.length > 0) {
+    if (elkNode.children && elkNode.children.length > 0) {
       const laidoutChildren = elkToReactFlow(elkNode.children, nodeId2Node);
       nodes.push(...laidoutChildren);
     }

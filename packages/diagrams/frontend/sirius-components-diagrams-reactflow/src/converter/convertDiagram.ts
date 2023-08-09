@@ -64,26 +64,28 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
   );
   const horizontalAliment = gqlNode.label.type.substring(horitonzalAlignmentIndex + '-h_'.length);
 
-  if (verticalAlignment === 'top') {
-    data.label.style.alignSelf = 'flex-start';
-  } else if (verticalAlignment === 'center') {
-    data.label.style.alignSelf = 'center';
-  } else if (verticalAlignment === 'bottom') {
-    data.label.style.alignSelf = 'flex-end';
-  }
+  if (data.label) {
+    if (verticalAlignment === 'top') {
+      data.label.style.alignSelf = 'flex-start';
+    } else if (verticalAlignment === 'center') {
+      data.label.style.alignSelf = 'center';
+    } else if (verticalAlignment === 'bottom') {
+      data.label.style.alignSelf = 'flex-end';
+    }
 
-  if (horizontalAliment === 'start') {
-    data.label.style.marginRight = 'auto';
-  } else if (horizontalAliment === 'center') {
-    data.label.style.marginLeft = 'auto';
-    data.label.style.marginRight = 'auto';
-  } else if (horizontalAliment === 'end') {
-    data.label.style.marginLeft = 'auto';
-  }
+    if (horizontalAliment === 'start') {
+      data.label.style.marginRight = 'auto';
+    } else if (horizontalAliment === 'center') {
+      data.label.style.marginLeft = 'auto';
+      data.label.style.marginRight = 'auto';
+    } else if (horizontalAliment === 'end') {
+      data.label.style.marginLeft = 'auto';
+    }
 
-  if (gqlNode.label.type === 'label:inside-center') {
-    data.label.style.marginLeft = 'auto';
-    data.label.style.marginRight = 'auto';
+    if (gqlNode.label.type === 'label:inside-center') {
+      data.label.style.marginLeft = 'auto';
+      data.label.style.marginRight = 'auto';
+    }
   }
 
   const node: Node<RectangularNodeData> = {
@@ -162,7 +164,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
     listItems,
   };
 
-  if (style.withHeader) {
+  if (style.withHeader && data.label) {
     data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
   }
 
@@ -174,26 +176,28 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
   );
   const horizontalAliment = gqlNode.label.type.substring(horitonzalAlignmentIndex + '-h_'.length);
 
-  if (verticalAlignment === 'top') {
-    data.label.style.alignSelf = 'flex-start';
-  } else if (verticalAlignment === 'center') {
-    data.label.style.alignSelf = 'center';
-  } else if (verticalAlignment === 'bottom') {
-    data.label.style.alignSelf = 'flex-end';
-  }
+  if (data.label) {
+    if (verticalAlignment === 'top') {
+      data.label.style.alignSelf = 'flex-start';
+    } else if (verticalAlignment === 'center') {
+      data.label.style.alignSelf = 'center';
+    } else if (verticalAlignment === 'bottom') {
+      data.label.style.alignSelf = 'flex-end';
+    }
 
-  if (horizontalAliment === 'start') {
-    data.label.style.marginRight = 'auto';
-  } else if (horizontalAliment === 'center') {
-    data.label.style.marginLeft = 'auto';
-    data.label.style.marginRight = 'auto';
-  } else if (horizontalAliment === 'end') {
-    data.label.style.marginLeft = 'auto';
-  }
+    if (horizontalAliment === 'start') {
+      data.label.style.marginRight = 'auto';
+    } else if (horizontalAliment === 'center') {
+      data.label.style.marginLeft = 'auto';
+      data.label.style.marginRight = 'auto';
+    } else if (horizontalAliment === 'end') {
+      data.label.style.marginLeft = 'auto';
+    }
 
-  if (gqlNode.label.type === 'label:inside-center') {
-    data.label.style.marginLeft = 'auto';
-    data.label.style.marginRight = 'auto';
+    if (gqlNode.label.type === 'label:inside-center') {
+      data.label.style.marginLeft = 'auto';
+      data.label.style.marginRight = 'auto';
+    }
   }
 
   const node: Node<ListNodeData> = {
@@ -270,7 +274,7 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
   let depth = 0;
 
-  let parentNode = node.parentNode ? nodeId2node.get(node.parentNode) : undefined;
+  let parentNode = node?.parentNode ? nodeId2node.get(node.parentNode) : undefined;
   while (parentNode) {
     depth = depth + 1;
     parentNode = parentNode.parentNode ? nodeId2node.get(parentNode.parentNode) : undefined;
@@ -338,7 +342,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
 
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
-    const zIndex = Math.max(nodeId2Depth.get(gqlEdge.sourceId), nodeId2Depth.get(gqlEdge.targetId));
+    const zIndex = Math.max(nodeId2Depth.get(gqlEdge.sourceId) ?? -1, nodeId2Depth.get(gqlEdge.targetId) ?? -1);
 
     const data: CustomEdgeData = {};
     if (gqlEdge.beginLabel) {

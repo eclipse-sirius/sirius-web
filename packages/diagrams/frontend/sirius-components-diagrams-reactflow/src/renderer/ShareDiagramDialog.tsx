@@ -23,8 +23,10 @@ export const ShareDiagramDialog = ({ onClose }: ShareDiagramDialogProps) => {
       var range = document.createRange();
       range.selectNodeContents(node);
       var selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
+      if (selection) {
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
     }
   };
 

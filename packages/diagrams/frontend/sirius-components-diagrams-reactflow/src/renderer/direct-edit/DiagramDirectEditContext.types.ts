@@ -16,10 +16,11 @@ export interface DiagramDirectEditContextValue {
   editingKey: string | null;
   directEditTrigger: DirectEditTrigger | null;
   setCurrentlyEditedLabelId: (
-    directEditTrigger: DirectEditTrigger | null,
-    currentlyEditedLabelId: string | null,
+    directEditTrigger: DirectEditTrigger,
+    currentlyEditedLabelId: string,
     editingKey: string | null
   ) => void;
+  resetDirectEdit: () => void;
 }
 
 export type DirectEditTrigger = 'keyDown' | 'F2' | 'palette' | 'doubleClick';

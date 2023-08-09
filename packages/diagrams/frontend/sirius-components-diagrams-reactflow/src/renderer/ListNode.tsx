@@ -49,7 +49,7 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
             );
           })}
         </div>
-        {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id} /> : null}
+        {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id ?? null} /> : null}
         <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
       </div>

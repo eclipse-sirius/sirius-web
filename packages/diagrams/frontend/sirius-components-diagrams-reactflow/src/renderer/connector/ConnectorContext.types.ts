@@ -15,7 +15,8 @@ import { Connection } from 'reactflow';
 
 export interface ConnectorContextValue {
   connection: Connection | null;
-  setConnection: (connection: Connection | null) => void;
+  setConnection: (connection: Connection) => void;
+  resetConnection: () => void;
 }
 
 export interface ConnectorContextProviderProps {
