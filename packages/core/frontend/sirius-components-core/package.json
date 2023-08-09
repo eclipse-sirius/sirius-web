@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "build": "vite build && tsc src/index.ts --jsx react-jsx --declaration --emitDeclarationOnly --esModuleInterop --moduleResolution node --target ES2019 --outDir dist",
+    "build": "vite build && tsc",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
     "test": "vitest --run --config vite.config.js",

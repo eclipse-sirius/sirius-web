@@ -16,7 +16,6 @@ import {
   ButtonStyleProps,
   GQLButton,
   GQLToolbarAction,
-  PropertySectionContext,
   getTextDecorationLineValue,
 } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
@@ -174,7 +173,7 @@ export const ToolbarActionWidget = ({
     });
   }, [toolbarAction.imageURL, toolbarAction.buttonLabel]);
 
-  const ref = useRef<HTMLInputElement | null>(null);
+  const ref = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (ref.current && selection.entries.find((entry) => entry.id === toolbarAction.id)) {
@@ -277,7 +276,6 @@ export const ToolbarActionWidget = ({
     event.currentTarget.classList.remove(classes.dragOver);
     onDropBefore(event, toolbarAction);
   };
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, toolbarAction: GQLButton) => {
     const id: string = event.dataTransfer.getData('draggedElementId');
     // We only accept a drop of ToolbarAction

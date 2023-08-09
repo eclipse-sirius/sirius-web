@@ -239,7 +239,7 @@ export const formBasedViewMachine = Machine<FormBasedViewContext, FormBasedViewS
           currentSelection: selection,
         };
       }),
-      clearForm: assign((_, event) => {
+      clearForm: assign((_, _event) => {
         return { form: null };
       }),
       handleSubscriptionResult: assign((_, event) => {
