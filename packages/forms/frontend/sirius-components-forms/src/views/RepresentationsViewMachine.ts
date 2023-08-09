@@ -245,7 +245,7 @@ export const representationsViewMachine = Machine<
           currentSelection: selection,
         };
       }),
-      clearForm: assign((_, event) => {
+      clearForm: assign((_, _event) => {
         return { widget: null };
       }),
       handleSubscriptionResult: assign((_, event) => {

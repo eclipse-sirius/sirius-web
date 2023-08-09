@@ -15,10 +15,10 @@ import { PropertySectionComponentRegistry } from './FormContext.types';
 import { GQLWidget } from './FormEventFragments.types';
 
 const propertySectionsRegistry: PropertySectionComponentRegistry = {
-  getComponent: (widget: GQLWidget) => {
+  getComponent: (_widget: GQLWidget) => {
     return null;
   },
-  getPreviewComponent: (widget: GQLWidget) => {
+  getPreviewComponent: (_widget: GQLWidget) => {
     return null;
   },
   getWidgetContributions: () => [],

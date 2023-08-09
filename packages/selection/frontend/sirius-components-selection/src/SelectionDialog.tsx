@@ -35,8 +35,8 @@ import {
   SchemaValue,
   SelectionDialogContext,
   SelectionDialogEvent,
-  selectionDialogMachine,
   ShowToastEvent,
+  selectionDialogMachine,
 } from './SelectionDialogMachine';
 import { GQLSelectionEventSubscription } from './SelectionEvent.types';
 
@@ -60,7 +60,7 @@ const selectionEventSubscription = gql`
   }
 `;
 
-const useSelectionObjectModalStyles = makeStyles((theme) =>
+const useSelectionObjectModalStyles = makeStyles((_theme) =>
   createStyles({
     root: {
       width: '100%',
