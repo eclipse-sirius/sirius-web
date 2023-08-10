@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { FileUpload, Form, FormContainer, sendFile } from '@eclipse-sirius/sirius-components';
+import { Form, FormContainer } from '@eclipse-sirius/sirius-components';
 import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -19,6 +19,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
+import { FileUpload } from '../../core/file-upload/FileUpload';
+import { sendFile } from '../../core/sendFile';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   SchemaValue,

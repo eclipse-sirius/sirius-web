@@ -14,6 +14,9 @@
 As a result, the link between notistack and Sirius Components needs to be updated in applications using Sirius Components.
 See the Sirius Web `ToastProvider` and `ToastContextInitializer` to see how to give Sirius Components the relevant function(s) from notistack.
 Without the dependency to notistack in `sirius-components-core`, it will be easier to leverage native VS Code popup to display our errors.
+- https://github.com/eclipse-sirius/sirius-web/issues/2259[#2259] [tree] [sirius-web] Move the `NewDocumentModal` and the `UploadDocumentModal` from `sirius-components-tree` to `sirius-web`.
+We introduced the `TreeToolBarContribution` components to contribute actions to the `TreeToolBar` such as the `NewDocumentModal` and the `UploadDocumentModal`.
+As a result, the `NewDocumentModal` and the `UploadDocumentModal` will not be available in applications.
 
 === Dependency update
 

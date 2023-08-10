@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface FileUploadProps {
-  onFileSelected: (file: File) => void;
-  dataTestid: string;
-}
+import { TreeToolBarContributionProps } from './TreeToolBarContribution.types';
+
+export type TreeToolBarContextValue = React.ReactElement<TreeToolBarContributionProps>[];

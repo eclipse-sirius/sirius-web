@@ -14,11 +14,12 @@ import { gql, useLazyQuery, useSubscription } from '@apollo/client';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { TreeToolBar } from '../toolbar/TreeToolBar';
+import { TreeToolBarContext } from '../toolbar/TreeToolBarContext';
+import { TreeToolBarContextValue } from '../toolbar/TreeToolBarContext.types';
 import { Tree } from '../trees/Tree';
-import { getTreeEventSubscription } from './getTreeEventSubscription';
 import {
   GQLGetExpandAllTreePathData,
   GQLGetExpandAllTreePathVariables,
@@ -45,6 +46,7 @@ import {
   TreeViewEvent,
   treeViewMachine,
 } from './TreeViewMachine';
+import { getTreeEventSubscription } from './getTreeEventSubscription';
 
 const getTreePathQuery = gql`
   query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
@@ -96,6 +98,9 @@ export const TreeView = ({
   treeOptions,
 }: TreeViewComponentProps) => {
   const styles = useTreeViewStyles();
+  const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
+    (contribution) => contribution.props.component
+  );
 
   const [{ value, context }, dispatch] = useMachine<TreeViewContext, TreeViewEvent>(treeViewMachine);
   const { toast, treeView } = value as SchemaValue;
@@ -238,6 +243,7 @@ export const TreeView = ({
           onSynchronizedClick={onSynchronizedClick}
           synchronized={synchronizedWithSelection}
           readOnly={readOnly}
+          treeToolBarContributionComponents={treeToolBarContributionComponents}
         />
       ) : null}
       <div className={styles.treeContent} data-testid={treeId}>
