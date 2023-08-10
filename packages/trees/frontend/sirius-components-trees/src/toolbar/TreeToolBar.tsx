@@ -13,11 +13,10 @@
 
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import { Add as AddIcon, Publish as PublishIcon, SwapHoriz as SwapHorizIcon } from '@material-ui/icons';
-import { useState } from 'react';
-import { NewDocumentModal } from '../modals/new-document/NewDocumentModal';
-import { UploadDocumentModal } from '../modals/upload-document/UploadDocumentModal';
-import { TreeToolBarProps, TreeToolBarState } from './TreeToolBar.types';
+import { SwapHoriz as SwapHorizIcon } from '@material-ui/icons';
+import React from 'react';
+import { TreeToolBarProps } from './TreeToolBar.types';
+import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
 const useTreeToolbarStyles = makeStyles((theme) => ({
   toolbar: {
@@ -34,12 +33,14 @@ const useTreeToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TreeToolBar = ({ editingContextId, onSynchronizedClick, synchronized, readOnly }: TreeToolBarProps) => {
+export const TreeToolBar = ({
+  editingContextId,
+  onSynchronizedClick,
+  synchronized,
+  treeToolBarContributionComponents,
+  readOnly,
+}: TreeToolBarProps) => {
   const classes = useTreeToolbarStyles();
-  const [state, setState] = useState<TreeToolBarState>({ modalOpen: null });
-  const openNewDocumentModal = () => setState((prevState) => ({ ...prevState, modalOpen: 'NewDocument' }));
-  const openUploadDocumentModal = () => setState((prevState) => ({ ...prevState, modalOpen: 'UploadDocument' }));
-  const closeModal = () => setState((prevState) => ({ ...prevState, modalOpen: null }));
 
   const preferenceButtonSynchroniseTitle = synchronized
     ? 'Disable synchronisation with representation'
@@ -47,26 +48,15 @@ export const TreeToolBar = ({ editingContextId, onSynchronizedClick, synchronize
   return (
     <>
       <div className={classes.toolbar}>
-        <IconButton
-          disabled={readOnly}
-          size="small"
-          color="inherit"
-          aria-label="New model"
-          title="New model"
-          onClick={openNewDocumentModal}
-          data-testid="new-model">
-          <AddIcon />
-        </IconButton>
-        <IconButton
-          disabled={readOnly}
-          size="small"
-          color="inherit"
-          aria-label="Upload model"
-          title="Upload model"
-          onClick={openUploadDocumentModal}
-          data-testid="upload-document-icon">
-          <PublishIcon />
-        </IconButton>
+        {treeToolBarContributionComponents.map((component, index) => {
+          const props: TreeToolBarContributionComponentProps = {
+            editingContextId: editingContextId,
+            disabled: readOnly,
+            key: index.toString(),
+          };
+          const element = React.createElement(component, props);
+          return element;
+        })}
         <IconButton
           color="inherit"
           size="small"
@@ -77,12 +67,6 @@ export const TreeToolBar = ({ editingContextId, onSynchronizedClick, synchronize
           <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
         </IconButton>
       </div>
-      {state.modalOpen === 'NewDocument' && (
-        <NewDocumentModal editingContextId={editingContextId} onClose={closeModal} />
-      )}
-      {state.modalOpen === 'UploadDocument' && (
-        <UploadDocumentModal editingContextId={editingContextId} onDocumentUploaded={closeModal} onClose={closeModal} />
-      )}
     </>
   );
 };

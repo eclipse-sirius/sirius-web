@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { FileUpload, Form, sendFile } from '@eclipse-sirius/sirius-components';
+import { Form } from '@eclipse-sirius/sirius-components';
 import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -22,6 +22,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
+import { FileUpload } from '../../core/file-upload/FileUpload';
+import { sendFile } from '../../core/sendFile';
 import {
   GQLErrorPayload,
   GQLUploadImageMutationVariables,
@@ -139,7 +141,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
               disabled={uploadImageModal === 'uploadingImage'}
             />
             <FormGroup>
-              <FileUpload onFileSelected={onFileSelected} data-testid="file" />
+              <FileUpload onFileSelected={onFileSelected} dataTestid="file" />
             </FormGroup>
           </Form>
         </DialogContent>

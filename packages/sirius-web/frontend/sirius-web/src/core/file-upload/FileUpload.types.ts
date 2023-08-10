@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo and others.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
-export interface TreeToolBarProps {
-  synchronized: boolean;
-  onSynchronizedClick: () => void;
-  editingContextId: string;
-  treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => JSX.Element)[];
-  readOnly: boolean;
+export interface FileUploadProps {
+  onFileSelected: (file: File) => void;
+  'data-testid'?: string;
 }
 
-export interface TreeToolBarState {
-  modalOpen: Modal | null;
+export interface FileUploadState {
+  file: File | null;
+  message: string;
 }
-
-type Modal = 'NewDocument' | 'UploadDocument';

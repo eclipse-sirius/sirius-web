@@ -22,8 +22,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 
 import { useContext, useEffect } from 'react';
-import { sendFile } from '../../common/sendFile';
 import { FileUpload } from '../../core/file-upload/FileUpload';
+import { sendFile } from '../../core/sendFile';
 import { GQLErrorPayload, GQLUploadDocumentPayload, UploadDocumentModalProps } from './UploadDocumentModal.types';
 import {
   HandleResponseEvent,
@@ -131,7 +131,7 @@ export const UploadDocumentModal = ({ editingContextId, onDocumentUploaded, onCl
         <DialogContent>
           <form id="upload-form-id" onSubmit={uploadDocument} encType="multipart/form-data" className={styles.form}>
             <FormGroup>
-              <FileUpload onFileSelected={onFileSelected} dataTestid="file" />
+              <FileUpload onFileSelected={onFileSelected} data-testid="file" />
             </FormGroup>
           </form>
         </DialogContent>

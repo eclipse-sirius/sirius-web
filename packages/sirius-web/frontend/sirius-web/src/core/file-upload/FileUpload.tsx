@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,31 +10,48 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Text } from 'core/text/Text';
-import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import styles from './FileUpload.module.css';
+import { FileUploadProps, FileUploadState } from './FileUpload.types';
 
-const propTypes = {
-  onFileSelected: PropTypes.func.isRequired,
-  'data-testid': PropTypes.string.isRequired,
-};
+const useFileUploadViewStyles = makeStyles((theme) => ({
+  fileUpload: {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridTemplateRows: '1fr',
+    cursor: 'pointer',
+    height: 150,
+    alignItems: 'center',
+    justifyItems: 'center',
+    border: `1px dashed ${theme.palette.secondary.main}`,
+  },
+  inputfile: {
+    width: 0.1,
+    height: 0.1,
+    opacity: '0',
+    overflow: 'hidden',
+    position: 'absolute',
+    zIndex: -1,
+  },
+  message: {
+    fontSize: '16px',
+    color: theme.palette.text.primary,
+    fontWeight: 'bold',
+  },
+}));
 
 const DEFAULT_MESSAGE = 'Click here to select a file';
 
-/**
- * Display a file upload form.
- *
- * @author hmarchadour
- */
-export const FileUpload = ({ onFileSelected, 'data-testid': dataTestid }) => {
-  const fileInput: React.LegacyRef<HTMLInputElement> = React.createRef();
-  const initialState = {
-    file: null,
-    message: DEFAULT_MESSAGE,
-  };
+const initialState: FileUploadState = {
+  file: null,
+  message: DEFAULT_MESSAGE,
+};
+export const FileUpload = ({ onFileSelected, 'data-testid': dataTestId }: FileUploadProps) => {
+  const styles = useFileUploadViewStyles();
+  const fileInput = React.createRef<HTMLInputElement>();
 
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState<FileUploadState>(initialState);
   const { file, message } = state;
 
   // Update the message
@@ -71,10 +88,10 @@ export const FileUpload = ({ onFileSelected, 'data-testid': dataTestid }) => {
         className={styles.inputfile}
         ref={fileInput}
         onChange={onFileInputChange}
-        data-testid={dataTestid}
+        data-testid={dataTestId}
       />
-      <Text className={styles.message}>{message}</Text>
+
+      <Typography className={styles.message}>{message}</Typography>
     </label>
   );
 };
-FileUpload.propTypes = propTypes;

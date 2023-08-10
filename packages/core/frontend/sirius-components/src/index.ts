@@ -11,9 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export * from './common/sendFile';
 export * from './core/contextmenu/ContextMenu';
-export * from './core/file-upload/FileUpload';
 export * from './core/form/Form';
 export * from './errors/ErrorBoundary';
 export * from './icons';
