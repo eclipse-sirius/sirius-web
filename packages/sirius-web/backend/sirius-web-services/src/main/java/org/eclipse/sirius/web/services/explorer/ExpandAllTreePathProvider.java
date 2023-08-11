@@ -83,7 +83,7 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
                         for (var rootObject : contents) {
                             var rootObjectId = this.objectService.getId(rootObject);
                             var rootObjectTreePathMaxDepth = 1;
-                            maxDepth = this.addAllContents(editingContext, rootObjectId, rootObjectTreePathMaxDepth, treeItemIdsToExpand);
+                            rootObjectTreePathMaxDepth = this.addAllContents(editingContext, rootObjectId, rootObjectTreePathMaxDepth, treeItemIdsToExpand);
                             maxDepth = Math.max(maxDepth, rootObjectTreePathMaxDepth);
                         }
                     }
