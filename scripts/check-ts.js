@@ -37,7 +37,7 @@ for (let index = 0; index < filePaths.length; index++) {
   if (filePath.endsWith(".ts") || filePath.endsWith(".tsx")) {
     const gitLogCommand = `git diff ${baseSHA}...${headSHA} -- ${filePath}`;
     const result = childProcess.execSync(gitLogCommand, { encoding: "utf8" });
-    const lines = result.split(/\r?\n/);
+    const lines = result.split(/\r?\n/).filter((line) => line.startsWith("+"));
 
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
