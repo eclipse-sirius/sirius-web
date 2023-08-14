@@ -28,6 +28,14 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 
 === Dependency update
 
+- [releng] Switch to `typescript` 5.1.6
+- [releng] Switch to `vite` 4.4.9
+- [releng] Switch to `vitest` 0.34.2
+- [releng] Switch to `@vitejs/plugin-react` 4.0.4
+- [releng] Switch from `c8` to `@vitest/coverage-v8` 0.34.2 as now recommended
+- [releng] Switch to `graphql` 16.8.0
+- [releng] Switch to `@apollo/client` 3.8.1
+- [releng] Switch to `reactflow` 11.8.1
 
 === Bug fixes
 

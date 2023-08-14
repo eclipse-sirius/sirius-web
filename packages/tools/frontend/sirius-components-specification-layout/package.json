@@ -14,7 +14,6 @@
   "scripts": {
     "start:specification": "vite --host",
     "build": "vite build",
-    "test": "vitest --run --config vite.config.js",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\""
   },
@@ -27,10 +26,10 @@
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "@types/react": "17.0.37",
-    "@vitejs/plugin-react": "2.0.0",
+    "@vitejs/plugin-react": "4.0.4",
     "prettier": "2.7.1",
     "react": "17.0.2",
-    "typescript": "4.7.4",
-    "vite": "3.0.4"
+    "typescript": "5.1.6",
+    "vite": "4.4.9"
   }
 }
