@@ -114,7 +114,7 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
     });
   }, [widget.imageURL, widget.buttonLabel]);
 
-  const ref = useRef<HTMLInputElement | null>(null);
+  const ref = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {

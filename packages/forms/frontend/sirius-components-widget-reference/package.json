@@ -31,7 +31,7 @@
     "publish:local": "yalc push"
   },
   "peerDependencies": {
-    "@apollo/client": "3.6.9",
+    "@apollo/client": "3.8.1",
     "@eclipse-sirius/sirius-components-core": "~2023.8.0",
     "@eclipse-sirius/sirius-components-forms": "~2023.8.0",
     "@eclipse-sirius/sirius-components-formdescriptioneditors": "~2023.8.0",
@@ -42,14 +42,14 @@
     "@material-ui/lab": "4.0.0-alpha.61",
     "@xstate/react": "1.6.3",
     "d3": "7.0.0",
-    "graphql": "16.5.0",
+    "graphql": "16.8.0",
     "lexical": "0.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "xstate": "4.32.1"
   },
   "devDependencies": {
-    "@apollo/client": "3.6.9",
+    "@apollo/client": "3.8.1",
     "@eclipse-sirius/sirius-components-core": "~2023.8.0",
     "@eclipse-sirius/sirius-components-forms": "~2023.8.0",
     "@eclipse-sirius/sirius-components-formdescriptioneditors": "~2023.8.0",
@@ -62,20 +62,20 @@
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.2.1",
     "@types/react": "17.0.37",
-    "@vitejs/plugin-react": "2.0.0",
+    "@vitejs/plugin-react": "4.0.4",
     "@xstate/react": "1.6.3",
-    "c8": "7.12.0",
+    "@vitest/coverage-v8": "0.34.2",
     "jsdom": "16.7.0",
     "d3": "7.0.0",
-    "graphql": "16.5.0",
+    "graphql": "16.8.0",
     "prettier": "2.7.1",
     "lexical": "0.8.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "xstate": "4.32.1",
-    "typescript": "4.7.4",
-    "vite": "3.0.4",
-    "vitest": "0.21.1"
+    "typescript": "5.1.6",
+    "vite": "4.4.9",
+    "vitest": "0.34.2"
   }
 }
