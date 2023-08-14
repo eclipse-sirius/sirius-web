@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
-import { ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
+import { MessageOptions, ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { render } from '@testing-library/react';
 import { expect, test, vi } from 'vitest';
 import { GQLFlexboxContainer } from '../../form/FormEventFragments.types';
@@ -41,15 +41,10 @@ const flexboxContainerWithStyle: GQLFlexboxContainer = {
   },
 };
 
-const mockEnqueue = vi.fn();
+const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
-  useToast: () => {
-    return {
-      enqueueSnackbar: mockEnqueue,
-      closeSnackbar: () => {},
-    };
-  },
+  enqueueSnackbar: mockEnqueue,
 };
 
 test('should render the flexbox container without style', () => {

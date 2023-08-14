@@ -10,6 +10,10 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-components/issues/2250[#2250] [core] Remove all references to notistack from `sirius-components-core`.
+As a result, the link between notistack and Sirius Components needs to be updated in applications using Sirius Components.
+See the Sirius Web `ToastProvider` and `ToastContextInitializer` to see how to give Sirius Components the relevant function(s) from notistack.
+Without the dependency to notistack in `sirius-components-core`, it will be easier to leverage native VS Code popup to display our errors.
 
 === Dependency update
 

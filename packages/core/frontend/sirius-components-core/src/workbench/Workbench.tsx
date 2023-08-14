@@ -14,10 +14,10 @@ import { gql, useSubscription } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import React, { useCallback, useContext, useEffect } from 'react';
+import { Toast } from '../toast/Toast';
 import { Panels } from './Panels';
 import { RepresentationContext } from './RepresentationContext';
 import { RepresentationNavigation } from './RepresentationNavigation';
-import { Toast } from './Toast';
 import {
   GQLEditingContextEventSubscription,
   Representation,

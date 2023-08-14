@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Variant } from '../toast/MultiToast.types';
+import { SnackbarKey } from 'notistack';
 
-export interface ToastContextValue {
-  enqueueSnackbar: (body: string, options?: MessageOptions) => void;
+export interface ToastCloseButtonProps {
+  toastKey: SnackbarKey;
 }
 
-export interface MessageOptions {
-  variant: Variant;
+export interface ToastContextInitializerProps {
+  children: React.ReactNode;
+}
+
+export interface ToastProviderProps {
+  children: React.ReactNode;
 }
