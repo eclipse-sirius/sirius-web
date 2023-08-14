@@ -146,7 +146,7 @@ export const selectionDialogMachine = Machine<SelectionDialogContext, SelectionD
       isSelectionRefreshedEventPayload: (_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
         const { data } = result;
-        return isSelectionRefreshedEventPayload(data.selectionEvent);
+        return !!data && isSelectionRefreshedEventPayload(data.selectionEvent);
       },
     },
     actions: {
@@ -157,7 +157,7 @@ export const selectionDialogMachine = Machine<SelectionDialogContext, SelectionD
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
         const { data } = result;
-        if (isSelectionRefreshedEventPayload(data.selectionEvent)) {
+        if (data && isSelectionRefreshedEventPayload(data.selectionEvent)) {
           const { selection } = data.selectionEvent;
           return { selection };
         }

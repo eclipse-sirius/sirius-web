@@ -174,14 +174,16 @@ export const SelectionDialog = ({
             data-testid="finish-action"
             color="primary"
             onClick={() => {
-              onFinish(selectedObjectId);
+              if (selectedObjectId) {
+                onFinish(selectedObjectId);
+              }
             }}>
             Finish
           </Button>
         </DialogActions>
       </Dialog>
       <Toast
-        message={message}
+        message={message ?? ''}
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
