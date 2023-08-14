@@ -15,9 +15,7 @@ import React from 'react';
 import { ToastContextValue } from './ToastContext.types';
 
 const value: ToastContextValue = {
-  useToast: () => {
-    return null;
-  },
+  enqueueSnackbar: () => {},
 };
 
 export const ToastContext = React.createContext<ToastContextValue>(value);

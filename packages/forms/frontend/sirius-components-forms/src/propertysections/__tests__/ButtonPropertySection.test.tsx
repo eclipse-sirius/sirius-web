@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
+import { MessageOptions, ServerContext, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
@@ -138,15 +138,10 @@ const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
   updateWidgetFocus: updateWidgetFocusErrorPayload,
 };
 
-const mockEnqueue = vi.fn();
+const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
-  useToast: () => {
-    return {
-      enqueueSnackbar: mockEnqueue,
-      closeSnackbar: () => {},
-    };
-  },
+  enqueueSnackbar: mockEnqueue,
 };
 
 test('should render the button', () => {

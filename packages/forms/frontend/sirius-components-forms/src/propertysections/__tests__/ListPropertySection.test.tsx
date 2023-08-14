@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
+import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
-import { clickListItemMutation, ListPropertySection } from '../ListPropertySection';
+import { ListPropertySection, clickListItemMutation } from '../ListPropertySection';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -106,15 +106,10 @@ const clickListItemSuccessData: GQLClickListItemMutationData = {
   clickListItem: successPayload,
 };
 
-const mockEnqueue = vi.fn();
+const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
-  useToast: () => {
-    return {
-      enqueueSnackbar: mockEnqueue,
-      closeSnackbar: () => {},
-    };
-  },
+  enqueueSnackbar: mockEnqueue,
 };
 
 test('render list widget', () => {

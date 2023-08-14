@@ -11,12 +11,4 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Variant } from '../toast/MultiToast.types';
-
-export interface ToastContextValue {
-  enqueueSnackbar: (body: string, options?: MessageOptions) => void;
-}
-
-export interface MessageOptions {
-  variant: Variant;
-}
+export type Variant = 'default' | 'error' | 'success' | 'warning' | 'info';

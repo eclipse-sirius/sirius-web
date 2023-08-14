@@ -11,12 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Variant } from '../toast/MultiToast.types';
+import { SnackbarKey } from 'notistack';
 
-export interface ToastContextValue {
-  enqueueSnackbar: (body: string, options?: MessageOptions) => void;
+export interface ToastCloseButtonProps {
+  toastKey: SnackbarKey;
 }
 
-export interface MessageOptions {
-  variant: Variant;
+export interface ToastContextInitializerProps {
+  children: React.ReactNode;
+}
+
+export interface ToastProviderProps {
+  children: React.ReactNode;
 }

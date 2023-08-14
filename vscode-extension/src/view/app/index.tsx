@@ -14,12 +14,12 @@
 import { ApolloClient, ApolloProvider, DefaultOptions, HttpLink, InMemoryCache, split } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { ServerContext, ToastContext } from '@eclipse-sirius/sirius-components-core';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { ServerContext } from '@eclipse-sirius/sirius-components-core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
 import './index.css';
+import { ToastProvider } from './toast/ToastProvider';
 
 declare global {
   interface Window {
@@ -81,45 +81,20 @@ const ApolloGraphQLClient = new ApolloClient({
   defaultOptions,
 });
 
-const ToastCloseButton = ({ toastKey }) => {
-  const { closeSnackbar } = useSnackbar();
-
-  return (
-    <button aria-label="close" color="inherit" onClick={() => closeSnackbar(toastKey)}>
-      ✖
-    </button>
-  );
-};
-
 ReactDOM.render(
   <ServerContext.Provider value={value}>
     <ApolloProvider client={ApolloGraphQLClient}>
-      <SnackbarProvider
-        maxSnack={5}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        action={(key) => <ToastCloseButton toastKey={key} />}
-        autoHideDuration={10000}
-        data-testid="toast">
-        <ToastContext.Provider
-          value={{
-            useToast: () => {
-              return useSnackbar();
-            },
-          }}>
-          <App
-            serverAddress={window.serverAddress}
-            username={window.username}
-            password={window.password}
-            editingContextId={window.editingContextId}
-            representationId={window.representationId}
-            representationLabel={window.representationLabel}
-            representationKind={window.representationKind}
-          />
-        </ToastContext.Provider>
-      </SnackbarProvider>
+      <ToastProvider>
+        <App
+          serverAddress={window.serverAddress}
+          username={window.username}
+          password={window.password}
+          editingContextId={window.editingContextId}
+          representationId={window.representationId}
+          representationLabel={window.representationLabel}
+          representationKind={window.representationKind}
+        />
+      </ToastProvider>
     </ApolloProvider>
   </ServerContext.Provider>,
   document.getElementById('root')
