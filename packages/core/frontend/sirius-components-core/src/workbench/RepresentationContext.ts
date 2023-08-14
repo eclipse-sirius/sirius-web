@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React from 'react';
-import { RepresentationComponentRegistry } from './RepresentationContext.types';
+import { RepresentationComponentRegistry, RepresentationContextValue } from './RepresentationContext.types';
 import { Representation, RepresentationComponentProps } from './Workbench.types';
 
 const registry: RepresentationComponentRegistry = {
@@ -20,7 +20,7 @@ const registry: RepresentationComponentRegistry = {
   },
 };
 
-const value = {
+const value: RepresentationContextValue = {
   registry,
 };
-export const RepresentationContext = React.createContext(value);
+export const RepresentationContext = React.createContext<RepresentationContextValue>(value);

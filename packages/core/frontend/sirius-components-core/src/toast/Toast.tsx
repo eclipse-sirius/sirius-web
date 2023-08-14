@@ -27,7 +27,7 @@ export const Toast = ({ message, open, onClose }: ToastProps) => {
       onClose={onClose}
       message={message}
       action={
-        <IconButton size="small" aria-label="close" color="inherit" onClick={() => onClose()}>
+        <IconButton size="small" aria-label="close" color="inherit" onClick={onClose}>
           <CloseIcon fontSize="small" />
         </IconButton>
       }
