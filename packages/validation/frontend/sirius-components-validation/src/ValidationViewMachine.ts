@@ -133,21 +133,21 @@ export const validationViewMachine = Machine<ValidationViewContext, ValidationVi
       isValidationRefreshedEventPayload: (_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
         const { data } = result;
-        return isValidationRefreshedEventPayload(data.validationEvent);
+        return !!data && isValidationRefreshedEventPayload(data.validationEvent);
       },
     },
     actions: {
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
         const { data } = result;
-        if (isValidationRefreshedEventPayload(data.validationEvent)) {
+        if (data && isValidationRefreshedEventPayload(data.validationEvent)) {
           const { validation } = data.validationEvent;
 
           const categories: Category[] = [];
           const processedValidation: Validation = { categories };
 
           validation.diagnostics.forEach((diagnostic) => {
-            let category: Category = categories.find((category) => category.kind === diagnostic.kind);
+            let category: Category | undefined = categories.find((category) => category.kind === diagnostic.kind);
             if (!category) {
               category = {
                 kind: diagnostic.kind,
