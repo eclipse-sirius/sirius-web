@@ -178,7 +178,8 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
         const { representation: representationToHide } = event as HideRepresentationEvent;
 
         const previousIndex = context.representations.findIndex(
-          (representation) => representation.id === context.displayedRepresentation.id
+          (representation) =>
+            context.displayedRepresentation && representation.id === context.displayedRepresentation.id
         );
         const newRepresentations = context.representations.filter(
           (representation) => representation.id !== representationToHide.id
@@ -189,7 +190,8 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
           return { displayedRepresentation: null, representations: [] };
         } else {
           const newIndex = newRepresentations.findIndex(
-            (representation) => representation.id === context.displayedRepresentation.id
+            (representation) =>
+              context.displayedRepresentation && representation.id === context.displayedRepresentation.id
           );
 
           if (newIndex !== -1) {
@@ -208,7 +210,7 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
       handleSubscriptionResult: assign((context, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
         const { data } = result;
-        if (isRepresentationRenamedEventPayload(data.editingContextEvent)) {
+        if (data && isRepresentationRenamedEventPayload(data.editingContextEvent)) {
           const { representationId, newLabel } = data.editingContextEvent;
           const representations = context.representations;
 

@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { RepresentationNavigationProps } from './RepresentationNavigation.types';
 import { Representation } from './Workbench.types';
@@ -59,19 +59,24 @@ export const RepresentationNavigation = ({
 }: RepresentationNavigationProps) => {
   const classes = useRepresentationNavigationStyles();
 
-  const onChange = (_, value) => {
+  const onChange = (_event: React.ChangeEvent<{}>, value: string) => {
     const representationSelected = representations.find((representation) => representation.id === value);
-    const representation: Representation = {
-      id: representationSelected.id,
-      label: representationSelected.label,
-      kind: representationSelected.kind,
-    };
-    onRepresentationClick(representation);
+    if (representationSelected) {
+      const { id, label, kind } = representationSelected;
+      const representation: Representation = {
+        id,
+        label,
+        kind,
+      };
+      onRepresentationClick(representation);
+    }
   };
-  const onRepresentationClose = (event, representation: Representation) => {
+
+  const onRepresentationClose = (event: React.MouseEvent<SVGSVGElement>, representation: Representation) => {
     event.stopPropagation();
     onClose(representation);
   };
+
   return (
     <Tabs
       classes={{ root: classes.tabsRoot }}

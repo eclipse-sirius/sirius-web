@@ -146,8 +146,8 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
-  const workbenchViewLeftSideContributions = [];
-  const workbenchViewRightSideContributions = [];
+  const workbenchViewLeftSideContributions: JSX.Element[] = [];
+  const workbenchViewRightSideContributions: JSX.Element[] = [];
   React.Children.forEach(children, (child) => {
     if (React.isValidElement(child) && child.type === WorkbenchViewContribution) {
       if (child.props.side === 'left') {
@@ -177,17 +177,19 @@ export const Workbench = ({
       selection,
       setSelection,
     };
-    main = (
-      <div className={classes.representationArea} data-testid="representation-area">
-        <RepresentationNavigation
-          representations={representations}
-          displayedRepresentation={displayedRepresentation}
-          onRepresentationClick={onRepresentationClick}
-          onClose={onClose}
-        />
-        <RepresentationComponent {...props} />
-      </div>
-    );
+    if (RepresentationComponent) {
+      main = (
+        <div className={classes.representationArea} data-testid="representation-area">
+          <RepresentationNavigation
+            representations={representations}
+            displayedRepresentation={displayedRepresentation}
+            onRepresentationClick={onRepresentationClick}
+            onClose={onClose}
+          />
+          <RepresentationComponent {...props} />
+        </div>
+      );
+    }
   }
 
   return (
@@ -204,7 +206,7 @@ export const Workbench = ({
         mainArea={main}
       />
       <Toast
-        message={message}
+        message={message ?? ''}
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
