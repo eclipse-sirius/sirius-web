@@ -12,7 +12,5 @@
  *******************************************************************************/
 
 export * from './core/contextmenu/ContextMenu';
-export * from './core/form/Form';
 export * from './errors/ErrorBoundary';
 export * from './icons';
-export * from './views/FormContainer';

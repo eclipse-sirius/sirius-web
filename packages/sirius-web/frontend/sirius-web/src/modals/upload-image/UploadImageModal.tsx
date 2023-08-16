@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { Form } from '@eclipse-sirius/sirius-components';
 import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,6 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { FileUpload } from '../../core/file-upload/FileUpload';
@@ -56,10 +56,24 @@ const uploadImageMutationFile = gql`
   }
 `.loc.source.body;
 
+const useUploadImageModalStyle = makeStyles((theme) => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    '& > *': {
+      marginBottom: theme.spacing(2),
+    },
+  },
+}));
+
 const isErrorPayload = (payload: GQLUploadImagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
+  const classes = useUploadImageModalStyle();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [{ value, context }, dispatch] = useMachine<UploadImageModalContext, UploadImageModalEvent>(
     uploadImageModalMachine
@@ -71,7 +85,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
   const [label, setLabel] = useState<string>('');
 
   // Execute the upload of a image and redirect to the newly created image
-  const uploadImage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const uploadImage = async (event: React.FormEvent<HTMLFormElement>) => {
     const requestImageUploadingEvent: RequestImageUploadingEvent = { type: 'REQUEST_IMAGE_UPLOADING' };
     dispatch(requestImageUploadingEvent);
 
@@ -128,7 +142,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
         <DialogTitle id="dialog-title">Upload new image</DialogTitle>
         <DialogContent>
-          <Form id="upload-form-id" onSubmit={uploadImage} encType="multipart/form-data">
+          <form id="upload-form-id" onSubmit={uploadImage} encType="multipart/form-data" className={classes.form}>
             <TextField
               label="Label"
               name="label"
@@ -143,7 +157,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
             <FormGroup>
               <FileUpload onFileSelected={onFileSelected} dataTestid="file" />
             </FormGroup>
-          </Form>
+          </form>
         </DialogContent>
         <DialogActions>
           <Button
