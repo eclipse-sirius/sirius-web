@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,5 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export * from './core/contextmenu/ContextMenu';
-export * from './icons';
+export interface ErrorBoundaryProps {
+  children?: React.ReactNode;
+}
+
+export interface ErrorBoundaryState {
+  children?: React.ReactNode;
+  error: Error | null;
+}
