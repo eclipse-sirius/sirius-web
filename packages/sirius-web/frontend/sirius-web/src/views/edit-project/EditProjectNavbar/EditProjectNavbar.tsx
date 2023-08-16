@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { DeleteProjectModal, RenameProjectModal } from '@eclipse-sirius/sirius-components';
 import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -28,6 +27,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
 import { Redirect, Link as RouterLink } from 'react-router-dom';
+import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
+import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 

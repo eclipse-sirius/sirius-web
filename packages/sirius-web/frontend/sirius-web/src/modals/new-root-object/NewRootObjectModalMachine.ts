@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
 import {
   ChildCreationDescription,
   Domain,
@@ -19,8 +20,7 @@ import {
   GQLGetDomainsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryData,
 } from 'modals/new-root-object/NewRootObjectModal.types';
-import { SelectionEntry } from 'workbench/Workbench.types';
-import { assign, Machine } from 'xstate';
+import { Machine, assign } from 'xstate';
 
 export interface NewRootObjectModalStateSchema {
   states: {

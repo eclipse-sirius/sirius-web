@@ -22,7 +22,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
@@ -39,9 +39,9 @@ import {
   HideToastEvent,
   NewObjectModalContext,
   NewObjectModalEvent,
-  newObjectModalMachine,
   SchemaValue,
   ShowToastEvent,
+  newObjectModalMachine,
 } from './NewObjectModalMachine';
 
 const createChildMutation = gql`
