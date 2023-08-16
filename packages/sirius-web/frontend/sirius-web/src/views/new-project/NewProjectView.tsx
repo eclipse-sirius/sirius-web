@@ -11,11 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Form, FormContainer } from '@eclipse-sirius/sirius-components';
 import { Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
@@ -52,6 +53,11 @@ const createProjectMutation = gql`
 `;
 
 const useNewProjectViewStyles = makeStyles((theme) => ({
+  newProjectViewContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(8),
+  },
   newProjectView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -62,10 +68,25 @@ const useNewProjectViewStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
   },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingBottom: theme.spacing(2),
+  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'start',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    '& > *': {
+      marginBottom: theme.spacing(2),
+    },
   },
 }));
 
@@ -132,31 +153,41 @@ export const NewProjectView = () => {
         <NavigationBar />
         <main className={classes.main}>
           <Container maxWidth="sm">
-            <FormContainer title="Create a new project" subtitle="Get started by creating a new project">
-              <Form onSubmit={onCreateNewProject}>
-                <TextField
-                  error={nameIsInvalid}
-                  helperText={nameMessage}
-                  label="Name"
-                  name="name"
-                  value={name}
-                  placeholder="Enter the project name"
-                  inputProps={{ 'data-testid': 'name' }}
-                  autoFocus={true}
-                  onChange={onNameChange}
-                />
-                <div className={classes.buttons}>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={newProjectView !== 'valid'}
-                    data-testid="create-project"
-                    color="primary">
-                    Create
-                  </Button>
-                </div>
-              </Form>
-            </FormContainer>
+            <div className={classes.newProjectViewContainer}>
+              <div className={classes.titleContainer}>
+                <Typography variant="h2" align="center" gutterBottom>
+                  Create a new project
+                </Typography>
+                <Typography variant="h4" align="center" gutterBottom>
+                  Get started by creating a new project
+                </Typography>
+              </div>
+              <Paper>
+                <form onSubmit={onCreateNewProject} className={classes.form}>
+                  <TextField
+                    error={nameIsInvalid}
+                    helperText={nameMessage}
+                    label="Name"
+                    name="name"
+                    value={name}
+                    placeholder="Enter the project name"
+                    inputProps={{ 'data-testid': 'name' }}
+                    autoFocus={true}
+                    onChange={onNameChange}
+                  />
+                  <div className={classes.buttons}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      disabled={newProjectView !== 'valid'}
+                      data-testid="create-project"
+                      color="primary">
+                      Create
+                    </Button>
+                  </div>
+                </form>
+              </Paper>
+            </div>
           </Container>
         </main>
         <Footer />

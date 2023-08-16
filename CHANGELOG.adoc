@@ -19,6 +19,8 @@ We introduced the `TreeToolBarContribution` components to contribute actions to 
 As a result, the `NewDocumentModal` and the `UploadDocumentModal` will not be available in applications.
 - https://github.com/eclipse-sirius/sirius-web/issues/2270[#2270] [core] [sirius-web] Move `DeleteProjectModal`, `NewObjectModal`, `NewRepresentationModal`, `NewRootObjectModal` and `RenameProjectModal` from `sirius-components` to `sirius-web``.
 As a result, they will not be available in the Sirius Components packages anymore, and thus, applications that need such modals will need to implement them.
+- https://github.com/eclipse-sirius/sirius-web/issues/2274[#2274] [core] Remove the `Form` and `FormContainer` components.
+They will not be provided by the `sirius-components` package anymore.
 
 === Dependency update
 
