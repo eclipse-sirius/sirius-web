@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.provider.ConditionalItemProvider;
  * @generated
  */
 public class ConditionalContainerBorderStyleItemProvider extends ConditionalItemProvider {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

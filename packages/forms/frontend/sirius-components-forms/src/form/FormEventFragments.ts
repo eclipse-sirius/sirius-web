@@ -380,6 +380,11 @@ export const flexboxContainerFields = (contributions: Array<WidgetContribution>)
     flexDirection
     flexWrap
     flexGrow
+    justifyContent
+    alignItems
+    margin
+    padding
+    gap
     children {
       ...widgetFields
       ... on FlexboxContainer {
@@ -388,6 +393,11 @@ export const flexboxContainerFields = (contributions: Array<WidgetContribution>)
         flexDirection
         flexWrap
         flexGrow
+        justifyContent
+        alignItems
+        margin
+        padding
+        gap
         children {
           ...widgetFields
           ... on FlexboxContainer {
@@ -396,6 +406,11 @@ export const flexboxContainerFields = (contributions: Array<WidgetContribution>)
             flexDirection
             flexWrap
             flexGrow
+            justifyContent
+            alignItems
+            margin
+            padding
+            gap
             children {
               ...widgetFields
             }

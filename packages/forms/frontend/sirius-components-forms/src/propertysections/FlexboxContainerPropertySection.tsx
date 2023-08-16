@@ -22,17 +22,20 @@ import { PropertySectionLabel } from './PropertySectionLabel';
 const useFlexboxContainerPropertySectionStyles = makeStyles<Theme, FlexboxContainerPropertySectionStyleProps>(
   (theme) => ({
     containerAndLabel: {
-      margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-      padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
       borderWidth: ({ borderStyle }) => borderStyle?.size || 0,
       borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'transparent',
       borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
       borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
+      margin: ({ margin }) => margin || null,
+      padding: ({ padding }) => padding || null,
     },
     container: {
       display: 'flex',
       flexWrap: ({ flexWrap }) => flexWrap,
       flexDirection: ({ flexDirection }) => flexDirection,
+      gap: ({ gap }) => gap || null,
+      alignItems: ({ alignItems }) => alignItems,
+      justifyContent: ({ justifyContent }) => justifyContent,
       '& > *': {
         marginBottom: theme.spacing(0),
       },
@@ -56,6 +59,11 @@ export const FlexboxContainerPropertySection = ({
     flexWrap: widget.flexWrap,
     flexGrow: widget.flexGrow,
     borderStyle: widget.borderStyle,
+    justifyContent: widget.justifyContent,
+    alignItems: widget.alignItems,
+    margin: widget.margin,
+    padding: widget.padding,
+    gap: widget.gap,
   });
 
   let children = widget.children.map((childWidget) => (

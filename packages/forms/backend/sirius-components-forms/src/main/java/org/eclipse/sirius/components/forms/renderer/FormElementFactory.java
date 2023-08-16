@@ -74,6 +74,7 @@ import org.eclipse.sirius.components.representations.IProps;
  * @author sbegaudeau
  */
 public class FormElementFactory implements IElementFactory {
+
     private final List<IWidgetDescriptor> widgetDescriptors;
 
     public FormElementFactory(List<IWidgetDescriptor> widgetDescriptors) {
@@ -130,11 +131,11 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateToolbarAction((ToolbarActionElementProps) props, children);
         } else {
             object = this.widgetDescriptors.stream()
-                         .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
-                         .filter(Optional::isPresent)
-                         .findFirst()
-                         .map(Optional::get)
-                         .orElse(null);
+                    .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
+                    .filter(Optional::isPresent)
+                    .findFirst()
+                    .map(Optional::get)
+                    .orElse(null);
         }
 
         return object;
@@ -572,7 +573,9 @@ public class FormElementFactory implements IElementFactory {
                 .flexGrow(1)
                 .children(widgets)
                 .diagnostics(diagnostics)
-                .readOnly(props.isReadOnly());
+                .readOnly(props.isReadOnly())
+                .alignItems(props.getAlignItems().toString())
+                .justifyContent(props.getJustifyContent().toString());
 
         if (props.getHelpTextProvider() != null) {
             builder.helpTextProvider(props.getHelpTextProvider());
@@ -580,6 +583,16 @@ public class FormElementFactory implements IElementFactory {
 
         if (props.getBorderStyle() != null) {
             builder.borderStyle(props.getBorderStyle());
+        }
+
+        if (props.getMargin() != null) {
+            builder.margin(props.getMargin());
+        }
+        if (props.getPadding() != null) {
+            builder.padding(props.getPadding());
+        }
+        if (props.getGap() != null) {
+            builder.gap(props.getGap());
         }
 
         return builder.build();

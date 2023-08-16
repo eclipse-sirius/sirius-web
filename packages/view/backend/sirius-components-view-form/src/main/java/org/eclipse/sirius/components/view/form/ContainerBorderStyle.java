@@ -63,10 +63,10 @@ public interface ContainerBorderStyle extends EObject {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Radius</em>' attribute.
-     * @see #setBorderRadius(int)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderRadius()
      * @model default="3" dataType="org.eclipse.sirius.components.view.Length" required="true"
      * @generated
+     * @see #setBorderRadius(int)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderRadius()
      */
     int getBorderRadius();
 
@@ -86,10 +86,10 @@ public interface ContainerBorderStyle extends EObject {
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Size</em>' attribute.
-     * @see #setBorderSize(int)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderSize()
      * @model default="1" dataType="org.eclipse.sirius.components.view.Length" required="true"
      * @generated
+     * @see #setBorderSize(int)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderSize()
      */
     int getBorderSize();
 

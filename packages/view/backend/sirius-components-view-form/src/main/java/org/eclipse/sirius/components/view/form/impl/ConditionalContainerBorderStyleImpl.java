@@ -156,8 +156,12 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      *
      * @generated
      */
-    public UserColor basicGetBorderColor() {
-        return this.borderColor;
+    @Override
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
     }
 
     /**
@@ -165,12 +169,8 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      *
      * @generated
      */
-    @Override
-    public void setBorderColor(UserColor newBorderColor) {
-        UserColor oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+    public UserColor basicGetBorderColor() {
+        return this.borderColor;
     }
 
     /**

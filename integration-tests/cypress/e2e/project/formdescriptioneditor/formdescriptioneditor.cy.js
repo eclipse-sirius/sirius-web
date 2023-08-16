@@ -295,6 +295,11 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.get('[title="FlexboxContainer"]').should('be.visible');
 
     cy.getByTestId('GroupDescription').dblclick();
+    cy.getByTestId('FlexboxContainerDescription').click();
+    cy.getByTestId('Margin').should('exist');
+    cy.getByTestId('Padding').should('exist');
+    cy.getByTestId('Gap').should('exist');
+
     cy.getByTestId('FlexboxContainerDescription-more').click();
     createBorderStyleAndCheckProperties('Border Style Container Border Style');
 

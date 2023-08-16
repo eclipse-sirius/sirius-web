@@ -35,6 +35,31 @@
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Dashed"/>
       <genEnumLiterals ecoreEnumLiteral="form.ecore#//ContainerBorderLineStyle/Dotted"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="form.ecore#//JustifyContent">
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/stretch"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/start"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/center"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/end"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/flexStart"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/flexEnd"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/left"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/right"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/normal"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/spaceBetween"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/spaceAround"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//JustifyContent/spaceEvenly"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="form.ecore#//AlignItems">
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/stretch"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/normal"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/flexStart"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/flexEnd"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/center"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/start"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/end"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/selfStart"/>
+      <genEnumLiterals ecoreEnumLiteral="form.ecore#//AlignItems/selfEnd"/>
+    </genEnums>
     <genClasses ecoreClass="form.ecore#//FormDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormDescription/pages"/>
     </genClasses>
@@ -94,6 +119,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/IsEnabledExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FlexboxContainerDescription/borderStyle"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FlexboxContainerDescription/conditionalBorderStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/flexboxJustifyContent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/flexboxAlignItems"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/margin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/padding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FlexboxContainerDescription/gap"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ImageDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//ImageDescription/urlExpression"/>

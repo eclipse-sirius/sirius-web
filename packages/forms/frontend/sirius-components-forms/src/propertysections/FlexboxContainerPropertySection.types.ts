@@ -13,7 +13,9 @@
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLContainerBorderStyle,
+  GQLFlexboxAlignItems,
   GQLFlexboxContainer,
+  GQLFlexboxJustifyContent,
   GQLFlexDirection,
   GQLFlexWrap,
   GQLWidgetSubscription,
@@ -33,4 +35,9 @@ export interface FlexboxContainerPropertySectionStyleProps {
   flexWrap: GQLFlexWrap;
   flexGrow: number;
   borderStyle: GQLContainerBorderStyle | null;
+  justifyContent: GQLFlexboxJustifyContent;
+  alignItems: GQLFlexboxAlignItems;
+  margin: string | null;
+  padding: string | null;
+  gap: string | null;
 }

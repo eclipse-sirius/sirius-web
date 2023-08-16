@@ -38,6 +38,8 @@ import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
+import org.eclipse.sirius.components.forms.FlexboxAlignItems;
+import org.eclipse.sirius.components.forms.FlexboxJustifyContent;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.forms.ListStyle;
@@ -456,6 +458,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider labelProvider = this.getStringValueProvider(flexboxContainerDescription.getLabelExpression());
         Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(flexboxContainerDescription.getIsEnabledExpression());
         FlexDirection flexDirection = FlexDirection.valueOf(flexboxContainerDescription.getFlexDirection().getName());
+        FlexboxAlignItems flexboxAlignItems = FlexboxAlignItems.valueOf(flexboxContainerDescription.getFlexboxAlignItems().getName());
+        FlexboxJustifyContent flexboxJustifyContent = FlexboxJustifyContent.valueOf(flexboxContainerDescription.getFlexboxJustifyContent().getName());
         Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> {
             var effectiveStyle = flexboxContainerDescription.getConditionalBorderStyles().stream()
                     .filter(style -> this.matches(style.getCondition(), variableManager))
@@ -480,9 +484,20 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .borderStyleProvider(borderStyleProvider);
+                .borderStyleProvider(borderStyleProvider)
+                .alignItems(flexboxAlignItems)
+                .justifyContent(flexboxJustifyContent);
         if (flexboxContainerDescription.getHelpExpression() != null && !flexboxContainerDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(flexboxContainerDescription.getHelpExpression()));
+        }
+        if (flexboxContainerDescription.getMargin() != null && !flexboxContainerDescription.getMargin().isBlank()) {
+            builder.margin(flexboxContainerDescription.getMargin());
+        }
+        if (flexboxContainerDescription.getPadding() != null && !flexboxContainerDescription.getPadding().isBlank()) {
+            builder.padding(flexboxContainerDescription.getPadding());
+        }
+        if (flexboxContainerDescription.getGap() != null && !flexboxContainerDescription.getGap().isBlank()) {
+            builder.gap(flexboxContainerDescription.getGap());
         }
         return Optional.of(builder.build());
     }

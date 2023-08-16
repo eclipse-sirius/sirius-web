@@ -20,6 +20,8 @@ import java.util.function.Supplier;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
+import org.eclipse.sirius.components.forms.FlexboxAlignItems;
+import org.eclipse.sirius.components.forms.FlexboxJustifyContent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -47,8 +49,22 @@ public final class FlexboxContainerElementProps implements IProps {
 
     private ContainerBorderStyle borderStyle;
 
+    private String margin;
+
+    private String padding;
+
+    private String gap;
+
+    private FlexboxJustifyContent justifyContent;
+
+    private FlexboxAlignItems alignItems;
+
     private FlexboxContainerElementProps() {
         // Prevent instantiation
+    }
+
+    public static Builder newFlexboxContainerElementProps(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -80,8 +96,24 @@ public final class FlexboxContainerElementProps implements IProps {
         return this.borderStyle;
     }
 
-    public static Builder newFlexboxContainerElementProps(String id) {
-        return new Builder(id);
+    public String getMargin() {
+        return this.margin;
+    }
+
+    public String getPadding() {
+        return this.padding;
+    }
+
+    public String getGap() {
+        return this.gap;
+    }
+
+    public FlexboxJustifyContent getJustifyContent() {
+        return this.justifyContent;
+    }
+
+    public FlexboxAlignItems getAlignItems() {
+        return this.alignItems;
     }
 
     @Override
@@ -98,7 +130,7 @@ public final class FlexboxContainerElementProps implements IProps {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private String label;
 
@@ -111,6 +143,16 @@ public final class FlexboxContainerElementProps implements IProps {
         private List<Element> children;
 
         private ContainerBorderStyle borderStyle;
+
+        private String margin;
+
+        private String padding;
+
+        private String gap;
+
+        private FlexboxJustifyContent justifyContent;
+
+        private FlexboxAlignItems alignItems;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -146,6 +188,31 @@ public final class FlexboxContainerElementProps implements IProps {
             return this;
         }
 
+        public Builder margin(String margin) {
+            this.margin = Objects.requireNonNull(margin);
+            return this;
+        }
+
+        public Builder padding(String padding) {
+            this.padding = Objects.requireNonNull(padding);
+            return this;
+        }
+
+        public Builder gap(String gap) {
+            this.gap = Objects.requireNonNull(gap);
+            return this;
+        }
+
+        public Builder justifyContent(FlexboxJustifyContent flexboxJustifyContent) {
+            this.justifyContent = Objects.requireNonNull(flexboxJustifyContent);
+            return this;
+        }
+
+        public Builder alignItems(FlexboxAlignItems flexboxAlignItems) {
+            this.alignItems = Objects.requireNonNull(flexboxAlignItems);
+            return this;
+        }
+
         public FlexboxContainerElementProps build() {
             FlexboxContainerElementProps flexboxContainerElementProps = new FlexboxContainerElementProps();
             flexboxContainerElementProps.id = Objects.requireNonNull(this.id);
@@ -155,6 +222,11 @@ public final class FlexboxContainerElementProps implements IProps {
             flexboxContainerElementProps.children = Objects.requireNonNull(this.children);
             flexboxContainerElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             flexboxContainerElementProps.borderStyle = this.borderStyle; // Optional on purpose
+            flexboxContainerElementProps.margin = this.margin; // Optional on purpose
+            flexboxContainerElementProps.padding = this.padding; // Optional on purpose
+            flexboxContainerElementProps.gap = this.gap; // Optional on purpose
+            flexboxContainerElementProps.justifyContent = Objects.requireNonNull(this.justifyContent);
+            flexboxContainerElementProps.alignItems = Objects.requireNonNull(this.alignItems);
             return flexboxContainerElementProps;
         }
     }

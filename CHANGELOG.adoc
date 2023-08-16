@@ -85,6 +85,8 @@ info: {
 It is the responsibility of the drop targets (e.g. a diagram) to validate the dropped element(s) type and ignore the one it does not support.
 - https://github.com/eclipse-sirius/sirius-web/issues/2772[#2772] Improve performance of the Palette
 - https://github.com/eclipse-sirius/sirius-web/issues/2679[#2679] [diagram] When editing a label, place input element closer to the label's location (centered).
+- https://github.com/eclipse-sirius/sirius-web/issues/2161[#2161] [form] Improves flexbox customization possibilities by adding the following CSS properties:
+margin, padding, gap, alignItems and justifyContent
 
 
 == v2023.12.0

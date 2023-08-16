@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.components.view.form.AlignItems;
 import org.eclipse.sirius.components.view.form.BarChartDescription;
 import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
@@ -49,6 +50,7 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.ImageDescription;
+import org.eclipse.sirius.components.view.form.JustifyContent;
 import org.eclipse.sirius.components.view.form.LabelDescription;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.LabelPlacement;
@@ -224,6 +226,10 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createLabelPlacementFromString(eDataType, initialValue);
             case FormPackage.CONTAINER_BORDER_LINE_STYLE:
                 return this.createContainerBorderLineStyleFromString(eDataType, initialValue);
+            case FormPackage.JUSTIFY_CONTENT:
+                return this.createJustifyContentFromString(eDataType, initialValue);
+            case FormPackage.ALIGN_ITEMS:
+                return this.createAlignItemsFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -245,6 +251,10 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.convertLabelPlacementToString(eDataType, instanceValue);
             case FormPackage.CONTAINER_BORDER_LINE_STYLE:
                 return this.convertContainerBorderLineStyleToString(eDataType, instanceValue);
+            case FormPackage.JUSTIFY_CONTENT:
+                return this.convertJustifyContentToString(eDataType, instanceValue);
+            case FormPackage.ALIGN_ITEMS:
+                return this.convertAlignItemsToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -837,6 +847,48 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
      * @generated
      */
     public String convertContainerBorderLineStyleToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public JustifyContent createJustifyContentFromString(EDataType eDataType, String initialValue) {
+        JustifyContent result = JustifyContent.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertJustifyContentToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public AlignItems createAlignItemsFromString(EDataType eDataType, String initialValue) {
+        AlignItems result = AlignItems.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertAlignItemsToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

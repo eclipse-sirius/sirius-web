@@ -33,8 +33,8 @@ import {
   PropertySectionContextValue,
 } from '@eclipse-sirius/sirius-components-forms';
 import { GQLContainer } from '@eclipse-sirius/sirius-components-forms/src';
+import { makeStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useState } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
@@ -348,6 +348,11 @@ export const WidgetEntry = ({
       flexWrap: 'nowrap',
       flexGrow: 1,
       children: (widget as GQLContainer).children,
+      justifyContent: 'stretch',
+      alignItems: 'stretch',
+      margin: null,
+      padding: null,
+      gap: null,
     };
     widgetElement = (
       <FlexboxContainerWidget
@@ -369,6 +374,11 @@ export const WidgetEntry = ({
       flexWrap: 'nowrap',
       flexGrow: 1,
       children: (widget as GQLContainer).children,
+      justifyContent: 'stretch',
+      alignItems: 'stretch',
+      margin: null,
+      padding: null,
+      gap: null,
     };
     widgetElement = (
       <FlexboxContainerWidget

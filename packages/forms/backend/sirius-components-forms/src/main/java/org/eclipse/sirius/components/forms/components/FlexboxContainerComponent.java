@@ -18,6 +18,8 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.FlexDirection;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
+import org.eclipse.sirius.components.forms.FlexboxAlignItems;
+import org.eclipse.sirius.components.forms.FlexboxJustifyContent;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -58,6 +60,8 @@ public class FlexboxContainerComponent implements IComponent {
 
         Boolean readOnly = flexboxContainerDescription.getIsReadOnlyProvider().apply(variableManager);
         FlexDirection flexdirection = flexboxContainerDescription.getFlexDirection();
+        FlexboxAlignItems flexboxAlignItems = flexboxContainerDescription.getAlignItems();
+        FlexboxJustifyContent flexboxJustifyContent = flexboxContainerDescription.getJustifyContent();
         var borderStyle = flexboxContainerDescription.getBorderStyleProvider().apply(variableManager);
 
         List<Element> children = new ArrayList<>();
@@ -82,7 +86,9 @@ public class FlexboxContainerComponent implements IComponent {
         var flexboxContainerElementPropsBuilder = FlexboxContainerElementProps.newFlexboxContainerElementProps(id)
                 .label(label)
                 .flexDirection(flexdirection)
-                .children(childrenWidgets);
+                .children(childrenWidgets)
+                .alignItems(flexboxAlignItems)
+                .justifyContent(flexboxJustifyContent);
         if (readOnly != null) {
             flexboxContainerElementPropsBuilder.readOnly(readOnly);
         }
@@ -93,6 +99,16 @@ public class FlexboxContainerComponent implements IComponent {
 
         if (flexboxContainerDescription.getHelpTextProvider() != null) {
             flexboxContainerElementPropsBuilder.helpTextProvider(() -> flexboxContainerDescription.getHelpTextProvider().apply(variableManager));
+        }
+
+        if (flexboxContainerDescription.getGap() != null) {
+            flexboxContainerElementPropsBuilder.gap(flexboxContainerDescription.getGap());
+        }
+        if (flexboxContainerDescription.getMargin() != null) {
+            flexboxContainerElementPropsBuilder.margin(flexboxContainerDescription.getMargin());
+        }
+        if (flexboxContainerDescription.getPadding() != null) {
+            flexboxContainerElementPropsBuilder.padding(flexboxContainerDescription.getPadding());
         }
 
         Element flexboxContainerElement = new Element(FlexboxContainerElementProps.TYPE, flexboxContainerElementPropsBuilder.build());

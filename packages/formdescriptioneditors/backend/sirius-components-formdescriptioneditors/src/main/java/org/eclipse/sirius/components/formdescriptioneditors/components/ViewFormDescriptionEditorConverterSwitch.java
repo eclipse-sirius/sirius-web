@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
+import org.eclipse.sirius.components.forms.FlexboxAlignItems;
+import org.eclipse.sirius.components.forms.FlexboxJustifyContent;
 import org.eclipse.sirius.components.forms.LabelWidgetStyle;
 import org.eclipse.sirius.components.forms.LinkStyle;
 import org.eclipse.sirius.components.forms.ListStyle;
@@ -294,6 +296,8 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         FlexDirection flexDirection = FlexDirection.valueOf(viewFlexboxContainerDescription.getFlexDirection().getName());
+        FlexboxAlignItems flexboxAlignItems = FlexboxAlignItems.valueOf(viewFlexboxContainerDescription.getFlexboxAlignItems().getName());
+        FlexboxJustifyContent flexboxJustifyContent = FlexboxJustifyContent.valueOf(viewFlexboxContainerDescription.getFlexboxJustifyContent().getName());
         List<AbstractControlDescription> children = new ArrayList<>();
         viewFlexboxContainerDescription.getChildren().forEach(viewWidgetDescription -> {
             children.add(ViewFormDescriptionEditorConverterSwitch.this.doSwitch(viewWidgetDescription));
@@ -316,9 +320,20 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "")
-                .borderStyleProvider(borderStyleProvider);
+                .borderStyleProvider(borderStyleProvider)
+                .alignItems(flexboxAlignItems)
+                .justifyContent(flexboxJustifyContent);
         if (viewFlexboxContainerDescription.getHelpExpression() != null && !viewFlexboxContainerDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(vm -> this.getWidgetHelpText(viewFlexboxContainerDescription));
+        }
+        if (viewFlexboxContainerDescription.getMargin() != null && !viewFlexboxContainerDescription.getMargin().isBlank()) {
+            builder.margin(viewFlexboxContainerDescription.getMargin());
+        }
+        if (viewFlexboxContainerDescription.getPadding() != null && !viewFlexboxContainerDescription.getPadding().isBlank()) {
+            builder.padding(viewFlexboxContainerDescription.getPadding());
+        }
+        if (viewFlexboxContainerDescription.getGap() != null && !viewFlexboxContainerDescription.getGap().isBlank()) {
+            builder.gap(viewFlexboxContainerDescription.getGap());
         }
         return builder.build();
     }

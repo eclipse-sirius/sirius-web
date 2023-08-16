@@ -155,8 +155,12 @@ public class ContainerBorderStyleImpl extends MinimalEObjectImpl.Container imple
      *
      * @generated
      */
-    public UserColor basicGetBorderColor() {
-        return this.borderColor;
+    @Override
+    public void setBorderColor(UserColor newBorderColor) {
+        UserColor oldBorderColor = this.borderColor;
+        this.borderColor = newBorderColor;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
     }
 
     /**
@@ -164,12 +168,8 @@ public class ContainerBorderStyleImpl extends MinimalEObjectImpl.Container imple
      *
      * @generated
      */
-    @Override
-    public void setBorderColor(UserColor newBorderColor) {
-        UserColor oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+    public UserColor basicGetBorderColor() {
+        return this.borderColor;
     }
 
     /**
