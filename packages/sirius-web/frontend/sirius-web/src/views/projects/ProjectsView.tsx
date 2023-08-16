@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { DeleteProjectModal, RenameProjectModal } from '@eclipse-sirius/sirius-components';
 import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -43,7 +42,9 @@ import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
 import { Redirect, Link as RouterLink } from 'react-router-dom';
 import { Footer } from '../../footer/Footer';
+import { DeleteProjectModal } from '../../modals/delete-project/DeleteProjectModal';
 import { ProjectTemplatesModal } from '../../modals/project-templates/ProjectTemplatesModal';
+import { RenameProjectModal } from '../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   NewProjectCard,

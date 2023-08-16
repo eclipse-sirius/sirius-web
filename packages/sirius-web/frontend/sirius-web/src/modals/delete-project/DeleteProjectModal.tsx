@@ -19,23 +19,23 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useMachine } from '@xstate/react';
-import {
-  DeleteProjectModalContext,
-  DeleteProjectModalEvent,
-  deleteProjectModalMachine,
-  HandleResponseEvent,
-  HideToastEvent,
-  RequestProjectDeletionEvent,
-  SchemaValue,
-  ShowToastEvent,
-} from 'modals/delete-project/DeleteProjectModalMachine';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   DeleteProjectModalProps,
   GQLDeleteProjectMutationData,
   GQLDeleteProjectPayload,
   GQLErrorPayload,
 } from './DeleteProjectModal.types';
+import {
+  DeleteProjectModalContext,
+  DeleteProjectModalEvent,
+  HandleResponseEvent,
+  HideToastEvent,
+  RequestProjectDeletionEvent,
+  SchemaValue,
+  ShowToastEvent,
+  deleteProjectModalMachine,
+} from './DeleteProjectModalMachine';
 
 const deleteProjectMutation = gql`
   mutation deleteProject($input: DeleteProjectInput!) {

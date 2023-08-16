@@ -21,10 +21,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   GQLCreateRepresentationMutationData,
   GQLCreateRepresentationPayload,
@@ -42,9 +42,9 @@ import {
   HideToastEvent,
   NewRepresentationModalContext,
   NewRepresentationModalEvent,
-  newRepresentationModalMachine,
   SchemaValue,
   ShowToastEvent,
+  newRepresentationModalMachine,
 } from './NewRepresentationModalMachine';
 
 const createRepresentationMutation = gql`

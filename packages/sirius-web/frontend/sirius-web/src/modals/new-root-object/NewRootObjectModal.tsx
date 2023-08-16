@@ -24,7 +24,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   GQLCreateRootObjectMutationData,
   GQLGetDomainsQueryData,
@@ -44,9 +44,9 @@ import {
   HideToastEvent,
   NewRootObjectModalContext,
   NewRootObjectModalEvent,
-  newRootObjectModalMachine,
   SchemaValue,
   ShowToastEvent,
+  newRootObjectModalMachine,
 } from './NewRootObjectModalMachine';
 
 const createRootObjectMutation = gql`

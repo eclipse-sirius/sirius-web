@@ -17,6 +17,8 @@ Without the dependency to notistack in `sirius-components-core`, it will be easi
 - https://github.com/eclipse-sirius/sirius-web/issues/2259[#2259] [tree] [sirius-web] Move the `NewDocumentModal` and the `UploadDocumentModal` from `sirius-components-tree` to `sirius-web`.
 We introduced the `TreeToolBarContribution` components to contribute actions to the `TreeToolBar` such as the `NewDocumentModal` and the `UploadDocumentModal`.
 As a result, the `NewDocumentModal` and the `UploadDocumentModal` will not be available in applications.
+- https://github.com/eclipse-sirius/sirius-web/issues/2270[#2270] [core] [sirius-web] Move `DeleteProjectModal`, `NewObjectModal`, `NewRepresentationModal`, `NewRootObjectModal` and `RenameProjectModal` from `sirius-components` to `sirius-web``.
+As a result, they will not be available in the Sirius Components packages anymore, and thus, applications that need such modals will need to implement them.
 
 === Dependency update
 

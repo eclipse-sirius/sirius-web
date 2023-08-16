@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NewRootObjectModal } from '@eclipse-sirius/sirius-components';
 import { Selection, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -19,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Fragment, forwardRef, useContext, useState } from 'react';
+import { NewRootObjectModal } from '../../modals/new-root-object/NewRootObjectModal';
 
 type Modal = 'CreateNewRootObject';
 
