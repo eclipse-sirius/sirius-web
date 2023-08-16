@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { Component } from 'react';
+import { Component } from 'react';
+import { ErrorBoundaryProps, ErrorBoundaryState } from './ErrorBoundary.types';
 
 /**
  * HOC to wrap a component to catch exceptions and react accordingly.
@@ -19,9 +20,9 @@ import React, { Component } from 'react';
  * @author sbegaudeau
  * @author pcdavid
  */
-export const withErrorBoundary = (Child) => {
-  return class ErrorBoundary extends Component {
-    constructor(props) {
+export const withErrorBoundary = (Child: React.FunctionComponent<ErrorBoundaryProps>) => {
+  return class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+    constructor(props: ErrorBoundaryState) {
       super(props);
       this.state = {
         error: null,
@@ -36,7 +37,7 @@ export const withErrorBoundary = (Child) => {
      *
      * @param {*} error the error that was raised.
      */
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
       console.error('ErrorBoundary caught error', error);
       if (error) {
         return { error };
@@ -49,7 +50,7 @@ export const withErrorBoundary = (Child) => {
      * @param {*} props
      * @param {*} state
      */
-    static getDerivedStateFromProps(props, state) {
+    static getDerivedStateFromProps(props: ErrorBoundaryProps, state: ErrorBoundaryState) {
       if (state.children && state.children !== props.children) {
         return { error: null, children: props.children };
       }
@@ -57,8 +58,7 @@ export const withErrorBoundary = (Child) => {
     }
 
     render() {
-      const thisState = this.state as any;
-      if (thisState.error) {
+      if (this.state.error) {
         return <p>An error has occured, please contact your administrator or refresh the page...</p>;
       }
       return <Child />;

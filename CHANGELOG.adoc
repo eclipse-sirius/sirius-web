@@ -21,6 +21,8 @@ As a result, the `NewDocumentModal` and the `UploadDocumentModal` will not be av
 As a result, they will not be available in the Sirius Components packages anymore, and thus, applications that need such modals will need to implement them.
 - https://github.com/eclipse-sirius/sirius-web/issues/2274[#2274] [core] Remove the `Form` and `FormContainer` components.
 They will not be provided by the `sirius-components` package anymore.
+- https://github.com/eclipse-sirius/sirius-web/issues/2276[#2276] [core] [sirius-web] Move the `ErrorBoundary` HOC into sirius-web.
+It is not available for applications anymore, and thus, applications that need a global error handling strategy will need to implement it by themselves.
 
 === Dependency update
 
