@@ -1,0 +1,83 @@
+= (M) Add support for moving nodes to different containers by Drag and Drop
+
+== Problem
+
+Today, when a node inside a container is moved, it is blocked at its' parent' borders and can not be moved oustide of it.
+Symetrically, a node can not be moved inside a different container (or from the diagram's background inside a container).
+
+It should be possible to drag a node from its current container into a different one if, triggering a studio-defined tool which can perform any arbitrary change on the model.
+The DnD operation should only be possible if there is a compatible tool configured to accept the operation and interpret it.
+
+== Key Result
+
+How we will determine whether the problem has being solved.
+Qualitative and quantitative measures.
+
+== Solution
+
+We need:
+
+1. a new kind of tool, exposed in the View.Diagram DSL, to interpret these DnD operations.
+2. UX changes on the React Flow variant of Diagrams (and only on this variant) to trigger these tools when configured and compatible with the diagram elements' moved.
+
+=== Drop Tool
+
+For the first part, we alread support a _Drop Tool_ on Diagrams (`DiagramDescription.getDropHandler`, executed by `DropOnDiagramEventHandler`).
+It currently has two limitations:
+
+1. it can only be configured in the palette of a `DiagramDescription` (`DiagramPalette.getDropTool()`, with no equivalen on `NodePalette`).
+2. it assumes the element(s) dropped are semantic elements from the explorer (`DropOnDiagramInput.objectIds`).
+
+We will modify `NodePalette` to allow the definition of a `DropTool` inside of it like what is alread possible for diagrams.
+We will reused the existing `DropOnDiagramInput` and `DropOnDiagramEventHandler` as is, with `DropOnDiagramInput.objectIds` being the (single) `Node.targetObjectId` of the graphical element dropped.
+This means the drop tool will not be able to distinguish between a semantic element dropped on it i) from the explorer, ii) from the diagram on a node of different types.
+
+Alternatives: Add support for a new variant of InvokeSingleClickOnTwoDiagramElementsToolInput (& co) which is not tied to the notion of an edge.
+In practice, de DnD operation inside a diagram is defined by a source node, a target node, and (maybe) the mouse position inside the target node where the tool was triggered.
+All of these match the information we already have in InvokeSingleClickOnTwoDiagramElementsToolInput, and indeed if we ignore the "single click" part of that name, both "edge creation" and "node dnd" are operations with the same signature (if not the same UX).
+We could reuse part of the same infrastructure, and send a `InvokeSingleClickOnTwoDiagramElementsToolInput` on a drop operation.
+Instead of/in addition to `findConnectorToolById`, `InvokeSingleClickOnTwoDiagramElementsToolEventHandler` would need to by the/a drop tool on the graphical target element compatible with the source node.
+
+=== Diagram UX
+
+. Moving a node _inside_ or _outside_ a container
+.. completely free? with some resistance? with a key modifier?
+. How to decide when a (moved) node is outside/inside of an element?
+.. the node's center? the node's top-left corner? the mouse cursor? when the moved node is _completely_ outside or inside?
+.. for this last case, what if the target container is not large enough to (visually) contain the moved node? and can not be resized beforehand because auto-layout?
+.. relative the the container's bounding box or content area? if bounding box, how
+. Feedback (mouse cursor, color change when target is compatible or incompatible...)
+. Border nodes
+.. are they supported in React Flow?
+
+
+=== Scenario (TODO)
+
+The user scenario covered by the feature. It should define:
+
+* User
+* Scenario name
+* What we want to show
+* Scenario steps
+* Features
+
+=== Breadboarding (TODO)
+
+UI description made by hand
+
+=== Cutting backs
+
+* Multiple compatible drop tools?
+Propose a menu like we do for the magic connector? (This scenario illustrates how close the two operations are).
+
+== Rabbit holes
+
+* We should not make any assumption on the actual semantic change that a DnD operation performs, and make as little assumption as possible on the graphical effect.
+* How hard should we try to reproduce the visual structure & layout of the source node inside the new graphical context?
+In general, the NodeDescription available inside the new parent are not the same as the ones of the dragged elements.
+This includes sub-nodes, border nodes, and unsynchronized nodes.
+The target may not even be a container, in the sense that it can not have children nodes; but "dropping" a node on it could still be meaningful and trigger some semantic operation.
+
+== No-gos
+
+* This feature will only be implemented for the React Flow version of diagrams, not for Sportty.
