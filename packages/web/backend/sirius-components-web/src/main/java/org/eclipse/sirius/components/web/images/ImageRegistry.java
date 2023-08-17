@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.web.images;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -19,6 +20,7 @@ import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
@@ -30,9 +32,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.eclipse.sirius.components.collaborative.diagrams.export.api.IImageRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +39,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Registers the images for later retrieval as \<symbol\>.
@@ -121,11 +123,17 @@ public class ImageRegistry implements IImageRegistry {
             String content = new String(byteContent);
             if (content.contains("<svg")) {
                 imageType = Optional.of(SVG);
-            } else {
-                imageType = this.getImageType(imageURI);
             }
 
-            if (!imageType.isPresent()) {
+            if (imageType.isEmpty()) {
+                imageType = this.getImageTypeFromURI(imageURI);
+            }
+
+            if (imageType.isEmpty()) {
+                imageType = this.getImageTypeContent(byteContent);
+            }
+
+            if (imageType.isEmpty()) {
                 this.logger.warn("The type of the image at URI " + imageURI + " is not valid.");
             } else {
                 return this.addSymbolElement(symbolId, imageType.get(), byteContent);
@@ -145,7 +153,8 @@ public class ImageRegistry implements IImageRegistry {
         } else {
             symbol.append("<image xlink:href=\"");
             symbol.append(this.getBase64Image(imageType, content));
-            symbol.append("\"/>");
+            symbol.append('"');
+            symbol.append(" width=\"100%\" height=\"100%\"/>");
         }
         return symbol.append("</symbol>");
     }
@@ -160,11 +169,17 @@ public class ImageRegistry implements IImageRegistry {
             String content = new String(byteContent);
             if (content.contains("<svg")) {
                 imageType = Optional.of(SVG);
-            } else {
-                imageType = this.getImageType(imageURI);
             }
 
-            if (!imageType.isPresent()) {
+            if (imageType.isEmpty()) {
+                imageType = this.getImageTypeFromURI(imageURI);
+            }
+
+            if (imageType.isEmpty()) {
+                imageType = this.getImageTypeContent(byteContent);
+            }
+
+            if (imageType.isEmpty()) {
                 this.logger.warn("The type of the image at URI " + imageURI + " is not valid.");
             } else {
                 return this.getBase64Image(imageType.get(), byteContent);
@@ -178,7 +193,14 @@ public class ImageRegistry implements IImageRegistry {
 
     private StringBuilder getBase64Image(String imageType, byte[] content) {
         StringBuilder symbol = new StringBuilder();
-        symbol.append("data:image/" + imageType + ";charset=utf-8;base64,");
+        symbol.append("data:");
+        if (imageType.startsWith("image/")) {
+            symbol.append(imageType);
+        } else {
+            symbol.append("image/");
+            symbol.append(imageType);
+        }
+        symbol.append(";charset=utf-8;base64,");
         String encodedString = Base64.getEncoder().encodeToString(content);
         symbol.append(encodedString);
         return symbol;
@@ -192,7 +214,7 @@ public class ImageRegistry implements IImageRegistry {
         return cleanSvgString;
     }
 
-    private Optional<String> getImageType(URI imageURI) {
+    private Optional<String> getImageTypeFromURI(URI imageURI) {
         String imagePath = imageURI.getPath();
         String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1);
 
@@ -201,6 +223,12 @@ public class ImageRegistry implements IImageRegistry {
                 .filter(name -> name.contains("."))
                 .map(name -> name.substring(fileName.lastIndexOf(".") + 1));
         // @formatter:on
+    }
+
+    private Optional<String> getImageTypeContent(byte[] byteContent) throws IOException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(byteContent);
+        String contentType = URLConnection.guessContentTypeFromStream(bais);
+        return Optional.ofNullable(contentType);
     }
 
     private HttpClient buildImageClient(HttpServletRequest request) {

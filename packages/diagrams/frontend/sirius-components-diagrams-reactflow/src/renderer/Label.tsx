@@ -11,16 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { memo } from 'react';
 import { LabelProps } from './Label.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 
-export const Label = ({ label }: LabelProps) => {
-  const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId } = useDiagramDirectEdit();
-
-  const handleClose = () => {
-    setCurrentlyEditedLabelId(null, null, null);
+const labelStyle = (style: React.CSSProperties, faded: Boolean): React.CSSProperties => {
+  return {
+    opacity: faded ? '0.4' : '',
+    ...style,
   };
+};
+
+export const Label = memo(({ label, faded }: LabelProps) => {
+  const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } = useDiagramDirectEdit();
+
+  const handleClose = () => resetDirectEdit();
 
   const handleDoubleClick = () => {
     setCurrentlyEditedLabelId('doubleClick', label.id, null);
@@ -30,8 +36,8 @@ export const Label = ({ label }: LabelProps) => {
     return <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />;
   }
   return (
-    <div data-id={label.id} onDoubleClick={handleDoubleClick} style={label.style}>
+    <div data-id={label.id} onDoubleClick={handleDoubleClick} style={labelStyle(label.style, faded)}>
       {label.text}
     </div>
   );
-};
+});

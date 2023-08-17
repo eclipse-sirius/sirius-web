@@ -10,8 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ProviderContext } from 'notistack';
+
+import { Variant } from '../toast/MultiToast.types';
 
 export interface ToastContextValue {
-  useToast: () => ProviderContext;
+  enqueueSnackbar: (body: string, options?: MessageOptions) => void;
+}
+
+export interface MessageOptions {
+  variant: Variant;
 }

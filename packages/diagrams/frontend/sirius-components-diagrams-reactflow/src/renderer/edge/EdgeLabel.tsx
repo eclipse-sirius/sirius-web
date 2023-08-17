@@ -11,9 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { useContext } from 'react';
 import { EdgeLabelProps } from './EdgeLabeL.types';
-
 export const EdgeLabel = ({ transform, label: { iconURL, style: labelStyle, text } }: EdgeLabelProps) => {
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const style: React.CSSProperties = {
     transform,
     ...labelStyle,
@@ -21,7 +23,7 @@ export const EdgeLabel = ({ transform, label: { iconURL, style: labelStyle, text
 
   return (
     <div style={style} className="nodrag nopan">
-      {iconURL ? <img src={iconURL} /> : ''}
+      {iconURL ? <img src={httpOrigin + iconURL} /> : ''}
       {text}
     </div>
   );

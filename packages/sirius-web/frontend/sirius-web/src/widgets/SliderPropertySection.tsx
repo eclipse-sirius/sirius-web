@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionComponentProps, PropertySectionLabel } from '@eclipse-sirius/sirius-components-forms';
 import Slider from '@material-ui/core/Slider';
 import gql from 'graphql-tag';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GQLSlider } from './SliderFragment.types';
 import {
   GQLEditSliderInput,
@@ -76,8 +76,6 @@ export const SliderPropertySection = ({
   subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLSlider>) => {
-  const { httpOrigin }: ServerContextValue = useContext(ServerContext);
-
   const [editSlider, { loading, data, error }] = useMutation<GQLEditSliderMutationData, GQLEditSliderMutationVariables>(
     editSliderMutation
   );

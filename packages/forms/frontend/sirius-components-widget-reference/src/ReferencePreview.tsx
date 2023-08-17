@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
@@ -19,8 +19,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -56,7 +56,7 @@ export const ReferencePreview = ({ widget, selection }: ReferenceWidgetProps) =>
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyles(props);
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [selected, setSelected] = useState<boolean>(false);
 

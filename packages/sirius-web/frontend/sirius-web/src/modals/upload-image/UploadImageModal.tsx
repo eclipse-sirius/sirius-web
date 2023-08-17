@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql } from '@apollo/client';
 import { FileUpload, Form, sendFile } from '@eclipse-sirius/sirius-components';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -58,7 +58,7 @@ const isErrorPayload = (payload: GQLUploadImagePayload): payload is GQLErrorPayl
   payload.__typename === 'ErrorPayload';
 
 export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: UploadImageModalProps) => {
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [{ value, context }, dispatch] = useMachine<UploadImageModalContext, UploadImageModalEvent>(
     uploadImageModalMachine
   );

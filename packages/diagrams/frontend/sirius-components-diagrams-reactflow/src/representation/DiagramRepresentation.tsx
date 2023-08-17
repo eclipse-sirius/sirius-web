@@ -25,7 +25,9 @@ import {
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { Diagram } from '../renderer/DiagramRenderer.types';
 import { MarkerDefinitions } from '../renderer/MarkerDefinitions';
+import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
+import { useLayout } from '../renderer/layout/useLayout';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
 import {
   DiagramRepresentationState,
@@ -50,6 +52,7 @@ export const DiagramRepresentation = ({
     complete: false,
     message: null,
   });
+  const { layout } = useLayout();
 
   const variables: GQLDiagramEventVariables = {
     input: {
@@ -59,19 +62,24 @@ export const DiagramRepresentation = ({
     },
   };
 
+  const onDiagramLaidout = (laidoutDiagram: Diagram) => {
+    setState((prevState) => ({ ...prevState, diagram: laidoutDiagram }));
+  };
+
   const onSubscriptionData = ({ subscriptionData }: OnSubscriptionDataOptions<GQLDiagramEventData>) => {
     if (subscriptionData.data) {
       const { diagramEvent } = subscriptionData.data;
       if (isDiagramRefreshedEventPayload(diagramEvent)) {
         const { diagram } = diagramEvent;
         const convertedDiagram: Diagram = convertDiagram(diagram);
-        setState((prevState) => ({ ...prevState, diagram: convertedDiagram }));
+        const previousLayoutedDiagram: Diagram | null = state.diagram;
+        layout(previousLayoutedDiagram, convertedDiagram, onDiagramLaidout);
       }
     }
   };
 
   const onSubscriptionComplete = () => {
-    setState((prevState) => ({ ...prevState, diagram: null, convertedDiagram: null, complete: true }));
+    setState((prevState) => ({ ...prevState, diagram: null, complete: true }));
   };
 
   const { error } = useSubscription<GQLDiagramEventData>(subscription, {
@@ -99,10 +107,12 @@ export const DiagramRepresentation = ({
       <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
         <DiagramDirectEditContextProvider>
           <DiagramPaletteContextProvider>
-            <div style={{ display: 'inline-block', position: 'relative' }}>
-              <MarkerDefinitions />
-              <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
-            </div>
+            <ConnectorContextProvider>
+              <div style={{ display: 'inline-block', position: 'relative' }}>
+                <MarkerDefinitions />
+                <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+              </div>
+            </ConnectorContextProvider>
           </DiagramPaletteContextProvider>
         </DiagramDirectEditContextProvider>
       </DiagramContext.Provider>

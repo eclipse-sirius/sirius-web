@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider } from '@apollo/client/testing';
-import { ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
+import { MessageOptions, ToastContext, ToastContextValue } from '@eclipse-sirius/sirius-components-core';
 import { cleanup, render } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLMultiSelect } from '../../form/FormEventFragments.types';
@@ -85,15 +85,10 @@ const readOnlyMultiSelect: GQLMultiSelect = {
   readOnly: true,
 };
 
-const mockEnqueue = vi.fn();
+const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
 
 const toastContextMock: ToastContextValue = {
-  useToast: () => {
-    return {
-      enqueueSnackbar: mockEnqueue,
-      closeSnackbar: () => {},
-    };
-  },
+  enqueueSnackbar: mockEnqueue,
 };
 
 test('should render the multiSelect without style', () => {

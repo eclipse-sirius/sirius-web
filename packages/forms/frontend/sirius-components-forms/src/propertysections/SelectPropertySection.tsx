@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { ServerContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -106,7 +106,7 @@ export const SelectPropertySection = ({
   };
   const classes = useStyle(props);
 
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [isFocused, setFocus] = useState(false);
 

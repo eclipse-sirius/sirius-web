@@ -20,7 +20,7 @@ import { UseDiagramDirectEditValue } from './useDiagramDirectEdit.types';
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
 
 export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
-  const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId } =
+  const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
   const nodes = useNodes<NodeData>();
 
@@ -52,6 +52,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
     currentlyEditedLabelId,
     editingKey,
     setCurrentlyEditedLabelId,
+    resetDirectEdit,
     onKeyDown,
   };
 };

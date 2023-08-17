@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-sirius/sirius-components-tsconfig",
-  "version": "2023.6.5",
+  "version": "2023.8.0",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "repository": {
@@ -13,6 +13,7 @@
   "main": "index.js",
   "files": [
     "base.json",
-    "react-library.json"
+    "react-library.json",
+    "strict-react-library.json"
   ]
 }

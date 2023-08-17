@@ -12,13 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.projects;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.sirius.web.services.api.projects.ProjectRenamedEventPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -37,6 +40,10 @@ import org.eclipse.sirius.web.services.api.projects.IProjectTemplateService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
+import reactor.core.publisher.Sinks.Many;
 
 /**
  * Service used to manipulate projects.
@@ -60,6 +67,8 @@ public class ProjectService implements IProjectService {
     private final IEditingContextPersistenceService editingContextPersistenceService;
 
     private final ProjectMapper projectMapper;
+
+    private Map<UUID, Many<IPayload>> projectIdsToSink = new HashMap<>();
 
     public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IProjectNatureRepository projectNatureRepository,
             IProjectTemplateService projectTemplateService,
@@ -182,6 +191,7 @@ public class ProjectService implements IProjectService {
     public void delete(UUID projectId) {
         if (this.projectRepository.existsById(projectId)) {
             this.projectRepository.deleteById(projectId);
+            this.projectIdsToSink.remove(projectId);
         }
     }
 
@@ -191,9 +201,23 @@ public class ProjectService implements IProjectService {
         if (optionalProjectEntity.isPresent()) {
             ProjectEntity projectEntity = optionalProjectEntity.get();
             projectEntity.setName(newName);
-            return Optional.of(this.projectRepository.save(projectEntity)).map(this.projectMapper::toDTO);
+
+            ProjectEntity renamedProjectEntity = this.projectRepository.save(projectEntity);
+            Project renamedProject = this.projectMapper.toDTO(renamedProjectEntity);
+            Optional.ofNullable(this.projectIdsToSink.get(projectId)).ifPresent(many -> many.tryEmitNext(new ProjectRenamedEventPayload(UUID.randomUUID(), projectId, newName)));
+            return Optional.of(renamedProject);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Flux<IPayload> getOutputEvents(UUID projectId) {
+        Many<IPayload> many = this.projectIdsToSink.get(projectId);
+        if (many == null) {
+            many = Sinks.many().multicast().directBestEffort();
+            this.projectIdsToSink.put(projectId, many);
+        }
+        return many.asFlux();
     }
 
 }

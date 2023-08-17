@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo and others.
+ * Copyright (c) 2021, 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,7 @@ export type MainAreaComponent = (props: MainAreaComponentProps) => JSX.Element |
 export type WorkbenchProps = {
   editingContextId: string;
   initialRepresentationSelected: Representation | null;
-  onRepresentationSelected: (representation: Representation) => void;
+  onRepresentationSelected: (representation: Representation | null) => void;
   readOnly: boolean;
   mainAreaComponent: MainAreaComponent;
   children: ReactNode;
@@ -84,4 +84,4 @@ export type RepresentationComponentProps = {
   setSelection: (selection: Selection) => void;
 };
 
-export type RepresentationComponent = (props: RepresentationComponentProps) => JSX.Element | null;
+export type RepresentationComponent = React.ComponentType<RepresentationComponentProps>;

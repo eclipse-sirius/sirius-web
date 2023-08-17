@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,3 +15,7 @@ import { Representation, RepresentationComponent } from './Workbench.types';
 export type RepresentationComponentRegistry = {
   getComponent: (representation: Representation) => RepresentationComponent | null;
 };
+
+export interface RepresentationContextValue {
+  registry: RepresentationComponentRegistry;
+}

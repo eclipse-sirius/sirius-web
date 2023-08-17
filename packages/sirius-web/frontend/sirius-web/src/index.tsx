@@ -17,15 +17,20 @@ import {
   RepresentationContext,
   ServerContext,
   theme,
-  ToastContext,
 } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentRegistry,
+  RepresentationContextValue,
+} from '@eclipse-sirius/sirius-components-core/dist/workbench/RepresentationContext.types';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
   FormRepresentation,
   GQLWidget,
+  PropertySectionComponentRegistry,
   PropertySectionContext,
+  PropertySectionContextValue,
   WidgetContribution,
 } from '@eclipse-sirius/sirius-components-forms';
 import {
@@ -34,19 +39,17 @@ import {
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import IconButton from '@material-ui/core/IconButton';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
-import { SnackbarProvider, useSnackbar } from 'notistack';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloGraphQLClient } from './ApolloGraphQLClient';
+import './Sprotty.css';
 import { httpOrigin } from './core/URL';
 import './fonts.css';
 import { Main } from './main/Main';
 import './reset.css';
-import './Sprotty.css';
+import { ToastProvider } from './toast/ToastProvider';
 import './variables.css';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
@@ -115,7 +118,7 @@ const style = {
   minHeight: '100vh',
 };
 
-const registry = {
+const registry: RepresentationComponentRegistry = {
   getComponent: (representation: Representation): RepresentationComponent | null => {
     const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
     const params = new URLSearchParams(query);
@@ -133,11 +136,11 @@ const registry = {
   },
 };
 
-const representationContextValue = {
+const representationContextValue: RepresentationContextValue = {
   registry,
 };
 
-const propertySectionsRegistry = {
+const propertySectionsRegistry: PropertySectionComponentRegistry = {
   getComponent: (widget: GQLWidget) => {
     if (widget.__typename === 'Slider') {
       return SliderPropertySection;
@@ -189,18 +192,8 @@ const propertySectionsRegistry = {
   },
 };
 
-const propertySectionRegistryValue = {
+const propertySectionRegistryValue: PropertySectionContextValue = {
   propertySectionsRegistry,
-};
-
-const ToastCloseButton = ({ toastKey }) => {
-  const { closeSnackbar } = useSnackbar();
-
-  return (
-    <IconButton size="small" aria-label="close" color="inherit" onClick={() => closeSnackbar(toastKey)}>
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
 };
 
 ReactDOM.render(
@@ -209,30 +202,15 @@ ReactDOM.render(
       <ThemeProvider theme={siriusWebTheme}>
         <CssBaseline />
         <ServerContext.Provider value={{ httpOrigin }}>
-          <SnackbarProvider
-            maxSnack={5}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            action={(key) => <ToastCloseButton toastKey={key} />}
-            autoHideDuration={10000}
-            data-testid="toast">
-            <ToastContext.Provider
-              value={{
-                useToast: () => {
-                  return useSnackbar();
-                },
-              }}>
-              <RepresentationContext.Provider value={representationContextValue}>
-                <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-                  <div style={style}>
-                    <Main />
-                  </div>
-                </PropertySectionContext.Provider>
-              </RepresentationContext.Provider>
-            </ToastContext.Provider>
-          </SnackbarProvider>
+          <ToastProvider>
+            <RepresentationContext.Provider value={representationContextValue}>
+              <PropertySectionContext.Provider value={propertySectionRegistryValue}>
+                <div style={style}>
+                  <Main />
+                </div>
+              </PropertySectionContext.Provider>
+            </RepresentationContext.Provider>
+          </ToastProvider>
         </ServerContext.Provider>
       </ThemeProvider>
     </BrowserRouter>

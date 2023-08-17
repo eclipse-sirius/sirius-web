@@ -49,12 +49,14 @@ export interface RenameProjectModalContext {
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type ChangeNameEvent = { type: 'CHANGE_NAME'; name: string };
+export type ChangeInitialNameEvent = { type: 'CHANGE_INITIAL_NAME'; initialName: string };
 export type RequestProjectRenamingEvent = { type: 'REQUEST_PROJECT_RENAMING' };
 export type HandleResponseEvent = { type: 'HANDLE_RESPONSE'; data: GQLRenameProjectMutationData };
 export type RenameProjectModalEvent =
   | ShowToastEvent
   | HideToastEvent
   | ChangeNameEvent
+  | ChangeInitialNameEvent
   | RequestProjectRenamingEvent
   | HandleResponseEvent;
 
@@ -116,6 +118,17 @@ export const renameProjectModalMachine = Machine<
                   actions: 'updateName',
                 },
               ],
+              CHANGE_INITIAL_NAME: [
+                {
+                  cond: 'isPristine',
+                  target: 'pristine',
+                  actions: 'updateInitialName',
+                },
+                {
+                  target: 'valid',
+                  actions: 'updateInitialName',
+                },
+              ],
             },
           },
           valid: {
@@ -134,6 +147,16 @@ export const renameProjectModalMachine = Machine<
                 {
                   target: 'valid',
                   actions: 'updateName',
+                },
+              ],
+              CHANGE_INITIAL_NAME: [
+                {
+                  cond: 'isPristine',
+                  target: 'pristine',
+                  actions: 'updateInitialName',
+                },
+                {
+                  actions: 'updateInitialName',
                 },
               ],
               REQUEST_PROJECT_RENAMING: {
@@ -157,6 +180,16 @@ export const renameProjectModalMachine = Machine<
                 {
                   target: 'valid',
                   actions: 'updateName',
+                },
+              ],
+              CHANGE_INITIAL_NAME: [
+                {
+                  cond: 'isPristine',
+                  target: 'pristine',
+                  actions: 'updateInitialName',
+                },
+                {
+                  actions: 'updateInitialName',
                 },
               ],
             },
@@ -188,9 +221,15 @@ export const renameProjectModalMachine = Machine<
         return isNameInvalid(name);
       },
       isPristine: (context, event) => {
-        const { name } = event as ChangeNameEvent;
-        const { initialName } = context;
-        return name === initialName;
+        if (event.hasOwnProperty('name')) {
+          const { name } = event as ChangeNameEvent;
+          const { initialName } = context;
+          return name === initialName;
+        } else if (event.hasOwnProperty('initialName')) {
+          const { initialName } = event as ChangeInitialNameEvent;
+          const { name } = context;
+          return name === initialName;
+        }
       },
       isResponseSuccessful: (_, event) => {
         const { data } = event as HandleResponseEvent;
@@ -201,6 +240,10 @@ export const renameProjectModalMachine = Machine<
       updateName: assign((_, event) => {
         const { name } = event as ChangeNameEvent;
         return { name, nameIsInvalid: isNameInvalid(name) };
+      }),
+      updateInitialName: assign((_, event) => {
+        const { initialName } = event as ChangeInitialNameEvent;
+        return { initialName };
       }),
       setMessage: assign((_, event) => {
         const { message } = event as ShowToastEvent;

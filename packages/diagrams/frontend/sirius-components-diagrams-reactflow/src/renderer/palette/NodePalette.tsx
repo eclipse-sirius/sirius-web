@@ -42,7 +42,7 @@ export const NodePalette = ({ diagramElementId, labelId }: NodePaletteProps) => 
 
   return (
     <NodeToolbar className={classes.toolbar} position={Position.Top}>
-      <Palette diagramElementId={diagramElementId} onDirectEditClick={handleDirectEditClick} />
+      <Palette diagramElementId={diagramElementId} onDirectEditClick={handleDirectEditClick} isNodePalette={true} />
     </NodeToolbar>
   );
 };

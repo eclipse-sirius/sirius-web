@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { App } from './App';
 import './index.css';
+import { ToastProvider } from './toast/ToastProvider';
 
 declare global {
   interface Window {
@@ -83,15 +84,17 @@ const ApolloGraphQLClient = new ApolloClient({
 ReactDOM.render(
   <ServerContext.Provider value={value}>
     <ApolloProvider client={ApolloGraphQLClient}>
-      <App
-        serverAddress={window.serverAddress}
-        username={window.username}
-        password={window.password}
-        editingContextId={window.editingContextId}
-        representationId={window.representationId}
-        representationLabel={window.representationLabel}
-        representationKind={window.representationKind}
-      />
+      <ToastProvider>
+        <App
+          serverAddress={window.serverAddress}
+          username={window.username}
+          password={window.password}
+          editingContextId={window.editingContextId}
+          representationId={window.representationId}
+          representationLabel={window.representationLabel}
+          representationKind={window.representationKind}
+        />
+      </ToastProvider>
     </ApolloProvider>
   </ServerContext.Provider>,
   document.getElementById('root')

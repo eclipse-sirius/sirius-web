@@ -3,12 +3,12 @@ name: Continuous integration
 on:
   push:
     paths-ignore:
-      - 'CHANGELOG.adoc'
-      - 'doc/**'
+      - "CHANGELOG.adoc"
+      - "doc/**"
     branches:
-      - '**'
+      - "**"
     tags:
-      - '*'
+      - "*"
   pull_request:
   workflow_dispatch:
 
@@ -50,7 +50,7 @@ jobs:
         uses: actions/setup-java@v3.9.0
         with:
           java-version: 17
-          distribution: 'temurin'
+          distribution: "temurin"
 
       - name: Setup some global environment variables
         run: |
@@ -98,7 +98,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: vscode
-          path: vscode-extension/sirius-web-2023.6.5.vsix
+          path: vscode-extension/sirius-web-2023.8.0.vsix
           retention-days: 20
 
       - name: Compress the code coverage results
@@ -174,7 +174,7 @@ jobs:
         with:
           build: docker-compose -f ../packages/sirius-web/backend/sirius-web-sample-application/docker-compose.yml up -d
           start: docker-compose -f ../packages/sirius-web/backend/sirius-web-sample-application/docker-compose.yml ps
-          wait-on: 'http://localhost:8080/login'
+          wait-on: "http://localhost:8080/login"
           wait-on-timeout: 180
           working-directory: integration-tests
           record: false

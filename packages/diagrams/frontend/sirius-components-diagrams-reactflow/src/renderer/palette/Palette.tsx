@@ -12,11 +12,16 @@
  *******************************************************************************/
 
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import TonalityIcon from '@material-ui/icons/Tonality';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { Tool } from '../Tool';
+import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
+import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import {
   ContextualPaletteStyleProps,
   GQLCollapsingState,
@@ -39,13 +44,16 @@ import {
   PaletteProps,
 } from './Palette.types';
 
-const usePaletteStyle = makeStyles((_theme) => ({
+const usePaletteStyle = makeStyles((theme) => ({
   toolEntries: {
     display: 'grid',
     gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
     gridTemplateRows: '28px',
     gridAutoRows: '28px',
     placeItems: 'center',
+  },
+  toolIcon: {
+    color: theme.palette.text.primary,
   },
 }));
 
@@ -134,11 +142,14 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const Palette = ({ diagramElementId, onDirectEditClick }: PaletteProps) => {
+export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: PaletteProps) => {
   const [tools, setTools] = useState<GQLTool[]>([]);
-
+  const { fadeDiagramElements } = useFadeDiagramElements();
+  const { hideDiagramElements } = useHideDiagramElements();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const classes = usePaletteStyle({ toolCount: tools.length });
+
+  const toolCount = tools.length + (isNodePalette ? 2 : 0);
+  const classes = usePaletteStyle({ toolCount });
 
   const [getTools, { loading: toolSectionsLoading, data: toolSectionsData, error: toolSectionsError }] = useLazyQuery<
     GQLGetToolSectionsData,
@@ -271,11 +282,41 @@ export const Palette = ({ diagramElementId, onDirectEditClick }: PaletteProps) =
     }
   };
 
+  const invokeFadeDiagramElementTool = () => {
+    fadeDiagramElements([diagramElementId], true);
+  };
+
+  const invokeHideDiagramElementTool = () => {
+    hideDiagramElements([diagramElementId], true);
+  };
+
   return (
     <div className={classes.toolEntries}>
       {tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
         <Tool tool={tool} onClick={handleToolClick} key={tool.id} />
       ))}
+      {isNodePalette ? (
+        <>
+          <IconButton
+            className={classes.toolIcon}
+            size="small"
+            aria-label="hide elements"
+            title="Hide elements"
+            onClick={invokeHideDiagramElementTool}
+            data-testid="Hide-elements">
+            <VisibilityOffIcon fontSize="small" />
+          </IconButton>
+          <IconButton
+            className={classes.toolIcon}
+            size="small"
+            aria-label="Fade elements"
+            title="Fade elements"
+            onClick={invokeFadeDiagramElementTool}
+            data-testid="Fade-elements">
+            <TonalityIcon fontSize="small" />
+          </IconButton>
+        </>
+      ) : null}
     </div>
   );
 };

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { SelectionEntry, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -33,7 +33,7 @@ const useTreeItemWidgetStyles = makeStyles((theme) => ({
 
 const TreeItem = ({ node, nodes, setSelection }: TreeItemProps) => {
   const styles = useTreeItemWidgetStyles();
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
     if (node.selectable) {

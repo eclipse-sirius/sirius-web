@@ -10,19 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DRAG_SOURCES_TYPE, Selection, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import {
+  DRAG_SOURCES_TYPE,
+  Selection,
+  SelectionEntry,
+  ServerContext,
+  ServerContextValue,
+} from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { isFilterCandidate, splitText } from './filterTreeItem';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
+import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
+import { isFilterCandidate, splitText } from './filterTreeItem';
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -127,9 +134,9 @@ export const TreeItem = ({
   enableMultiSelection,
 }: TreeItemProps) => {
   const classes = useTreeItemStyle();
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
-  const treeItemMenuContributionComponents = useContext(TreeItemContextMenuContext)
+  const treeItemMenuContributionComponents = useContext<TreeItemContextMenuContextValue>(TreeItemContextMenuContext)
     .filter((contribution) => contribution.props.canHandle(treeId, item))
     .map((contribution) => contribution.props.component);
 

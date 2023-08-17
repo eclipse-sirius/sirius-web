@@ -12,8 +12,10 @@
  *******************************************************************************/
 import { useContext } from 'react';
 import { ToastContext } from '../contexts/ToastContext';
+import { ToastContextValue } from '../contexts/ToastContext.types';
+import { Variant } from './MultiToast.types';
 
-const getVariantFromMessageLevel = (level: string): 'default' | 'error' | 'success' | 'warning' | 'info' => {
+const getVariantFromMessageLevel = (level: string): Variant => {
   switch (level) {
     case 'ERROR':
       return 'error';
@@ -29,7 +31,7 @@ const getVariantFromMessageLevel = (level: string): 'default' | 'error' | 'succe
 };
 
 export const useMultiToast = () => {
-  const { enqueueSnackbar } = useContext(ToastContext).useToast();
+  const { enqueueSnackbar } = useContext<ToastContextValue>(ToastContext);
 
   const addMessages = (messages) =>
     messages.map((message) => enqueueSnackbar(message.body, { variant: getVariantFromMessageLevel(message.level) }));

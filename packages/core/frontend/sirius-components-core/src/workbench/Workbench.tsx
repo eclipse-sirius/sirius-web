@@ -14,10 +14,11 @@ import { gql, useSubscription } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import React, { useCallback, useContext, useEffect } from 'react';
+import { Toast } from '../toast/Toast';
 import { Panels } from './Panels';
 import { RepresentationContext } from './RepresentationContext';
+import { RepresentationContextValue } from './RepresentationContext.types';
 import { RepresentationNavigation } from './RepresentationNavigation';
-import { Toast } from './Toast';
 import {
   GQLEditingContextEventSubscription,
   Representation,
@@ -74,7 +75,7 @@ export const Workbench = ({
   children,
 }: WorkbenchProps) => {
   const classes = useWorkbenchStyles();
-  const { registry } = useContext(RepresentationContext);
+  const { registry } = useContext<RepresentationContextValue>(RepresentationContext);
   const [{ value, context }, dispatch] = useMachine<WorkbenchContext, WorkbenchEvent>(workbenchMachine, {
     context: {
       selection: { entries: initialRepresentationSelected ? [initialRepresentationSelected] : [] },
@@ -146,8 +147,8 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
-  const workbenchViewLeftSideContributions = [];
-  const workbenchViewRightSideContributions = [];
+  const workbenchViewLeftSideContributions: JSX.Element[] = [];
+  const workbenchViewRightSideContributions: JSX.Element[] = [];
   React.Children.forEach(children, (child) => {
     if (React.isValidElement(child) && child.type === WorkbenchViewContribution) {
       if (child.props.side === 'left') {
@@ -177,17 +178,19 @@ export const Workbench = ({
       selection,
       setSelection,
     };
-    main = (
-      <div className={classes.representationArea} data-testid="representation-area">
-        <RepresentationNavigation
-          representations={representations}
-          displayedRepresentation={displayedRepresentation}
-          onRepresentationClick={onRepresentationClick}
-          onClose={onClose}
-        />
-        <RepresentationComponent {...props} />
-      </div>
-    );
+    if (RepresentationComponent) {
+      main = (
+        <div className={classes.representationArea} data-testid="representation-area">
+          <RepresentationNavigation
+            representations={representations}
+            displayedRepresentation={displayedRepresentation}
+            onRepresentationClick={onRepresentationClick}
+            onClose={onClose}
+          />
+          <RepresentationComponent {...props} />
+        </div>
+      );
+    }
   }
 
   return (
@@ -204,7 +207,7 @@ export const Workbench = ({
         mainArea={main}
       />
       <Toast
-        message={message}
+        message={message ?? ''}
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />

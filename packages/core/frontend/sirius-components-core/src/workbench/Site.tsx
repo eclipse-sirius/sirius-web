@@ -146,7 +146,7 @@ export const Site = ({
     </div>
   );
 
-  let selectedView = undefined;
+  let selectedView: JSX.Element | null = null;
   if (isExpanded && selectedViewIndex < contributions.length) {
     const { title, icon, component: Component } = contributions[selectedViewIndex].props;
     selectedView = (

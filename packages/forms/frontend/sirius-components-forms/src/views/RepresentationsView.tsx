@@ -13,12 +13,13 @@
 
 import { gql, useSubscription } from '@apollo/client';
 import { Toast, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useContext, useEffect } from 'react';
 import { WidgetContribution } from '../form/Form.types';
 import { PropertySectionContext } from '../form/FormContext';
+import { PropertySectionContextValue } from '../form/FormContext.types';
 import {
   formRefreshedEventPayloadFragment,
   subscribersUpdatedEventPayloadFragment,
@@ -31,10 +32,10 @@ import {
   HideToastEvent,
   RepresentationsViewContext,
   RepresentationsViewEvent,
-  representationsViewMachine,
   SchemaValue,
   ShowToastEvent,
   SwitchSelectionEvent,
+  representationsViewMachine,
 } from './RepresentationsViewMachine';
 
 const representationsEventSubscription = (contributions: Array<WidgetContribution>) =>
@@ -88,7 +89,7 @@ export const RepresentationsView = ({
       dispatch(switchSelectionEvent);
     }
   }, [currentSelection, selection, dispatch]);
-  const { propertySectionsRegistry } = useContext(PropertySectionContext);
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const { error } = useSubscription(
     representationsEventSubscription(propertySectionsRegistry.getWidgetContributions()),
     {

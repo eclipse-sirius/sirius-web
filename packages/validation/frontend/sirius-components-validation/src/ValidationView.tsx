@@ -16,8 +16,8 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Divider from '@material-ui/core/Divider';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useMachine } from '@xstate/react';
 import React, { useEffect } from 'react';
@@ -112,9 +112,9 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
     }
   }, [error, dispatch]);
 
-  let content = null;
+  let content: JSX.Element | null = null;
 
-  if (validationView === 'ready') {
+  if (validationView === 'ready' && validation) {
     const accordions = validation.categories.map((category) => {
       const details = category.diagnostics
         .map<React.ReactNode>((diagnostic) => {
@@ -152,7 +152,7 @@ export const ValidationView = ({ editingContextId }: WorkbenchViewComponentProps
     <>
       {content}
       <Toast
-        message={message}
+        message={message ?? ''}
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />

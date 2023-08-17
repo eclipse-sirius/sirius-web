@@ -1,6 +1,35 @@
 = Changelog
 
-== v2023.8.0 (unreleased)
+== v2023.10.0 (work in progress)
+
+=== Shapes
+
+
+=== Architectural decision records
+
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-components/issues/2250[#2250] [core] Remove all references to notistack from `sirius-components-core`.
+As a result, the link between notistack and Sirius Components needs to be updated in applications using Sirius Components.
+See the Sirius Web `ToastProvider` and `ToastContextInitializer` to see how to give Sirius Components the relevant function(s) from notistack.
+Without the dependency to notistack in `sirius-components-core`, it will be easier to leverage native VS Code popup to display our errors.
+
+=== Dependency update
+
+
+=== Bug fixes
+
+
+=== New Features
+
+
+=== Improvements
+
+- [releng] Add some automatic checks to simplify code reviews
+
+
+== v2023.8.0
 
 === Shapes
 
@@ -54,6 +83,13 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2179[#2179] [tree] Fix an issue where labels of tree items matching exactly pattern typed in the filter bar were not detected.
 - https://github.com/eclipse-sirius/sirius-components/issues/2178[#2178] [view] Fix an error when selecting an EdgeStyle.
 - https://github.com/eclipse-sirius/sirius-components/issues/2019[#2019] [project] Fix exporting and re-importing studio projects
+- https://github.com/eclipse-sirius/sirius-components/issues/2190[#2190] [view] Fix an issue where diagram nodes with image style didn't use the width and height defined in view node descriptions.
+- https://github.com/eclipse-sirius/sirius-components/issues/2211[#2211] [diagram] Fix an issue where the icons of an edge label where broken with ReactFlow.
+- https://github.com/eclipse-sirius/sirius-components/issues/2197[#2197] [project] Fix an issue where the renaming of a project from the project page needed a refresh to be visible.
+- https://github.com/eclipse-sirius/sirius-components/issues/2194[#2194] [view] Fix an issue where it was impossible to set the None value to a color property in a View Node/Edge Description from the Details view.
+- https://github.com/eclipse-sirius/sirius-components/issues/2225[#2225] [form] Fix an issue where tabs displaying page name could be hidden.
+- https://github.com/eclipse-sirius/sirius-components/issues/2220[#2220] [vs-code] Fix an issue where some React contexts where missing, the treeID variable was missing in graphQLSubscription for the explorer and the Forms were not parts of the list of representations availables.
+- https://github.com/eclipse-sirius/sirius-components/issues/2217[#2217] [diagram] Fix the svg export when the file extension was not available. It falls back to the image content type to determine the image type.
 
 === New Features
 
@@ -131,6 +167,17 @@ Use the same style properties as the list widget.
 - https://github.com/eclipse-sirius/sirius-components/issues/2168[#2168] [tree] Add option on tree to disable multiple selection.
 - https://github.com/eclipse-sirius/sirius-components/issues/2183[#2183] [form] Add some data-testid to help cypress tests redaction.
 - https://github.com/eclipse-sirius/sirius-components/issues/2103[#2103] [diagram] Add support for edge reconnection with React Flow.
+- https://github.com/eclipse-sirius/sirius-components/issues/2086[#2086] [diagram] Add the support for the hide and fade of a node
++
+The diagram panel with unhide all and unfade all:
++
+image:doc/images/DiagramPanelUnhideUnfade.png[Unhide all and Unfade all]
++
+The node palette with hide and fade:
++
+image:doc/images/NodePaletteWithHideFade.png[Hide and Fade on node palette]
+- https://github.com/eclipse-sirius/sirius-components/issues/2095[#2095] [diagram] Add support for the creation of new edges in the alternate diagram rendering solution
+- https://github.com/eclipse-sirius/sirius-components/issues/2104[#2104] [diagram] Improve the frontend rendering. Labels and node list are rendered with css.
 
 == v2023.6.0
 

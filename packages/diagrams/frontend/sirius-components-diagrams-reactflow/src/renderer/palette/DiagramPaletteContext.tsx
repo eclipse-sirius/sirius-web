@@ -18,7 +18,15 @@ import {
   DiagramPaletteContextValue,
 } from './DiagramPaletteContext.types';
 
-export const DiagramPaletteContext = React.createContext<DiagramPaletteContextValue>(undefined);
+const defaultValue: DiagramPaletteContextValue = {
+  x: null,
+  y: null,
+  isOpened: false,
+  hideDiagramPalette: () => {},
+  showDiagramPalette: () => {},
+};
+
+export const DiagramPaletteContext = React.createContext<DiagramPaletteContextValue>(defaultValue);
 
 export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContextProviderProps) => {
   const [state, setState] = useState<DiagramPaletteContextProviderState>({

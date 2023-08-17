@@ -26,6 +26,7 @@ import {
   GQLDeleteTreeItemPayload,
   GQLDeleteTreeItemVariables,
   GQLErrorPayload,
+  TreeItemContextMenuContextValue,
   TreeItemContextMenuProps,
   TreeItemContextMenuState,
 } from './TreeItemContextMenu.types';
@@ -45,7 +46,7 @@ const deleteTreeItemMutation = gql`
 const isErrorPayload = (payload: GQLDeleteTreeItemPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const TreeItemContextMenuContext = React.createContext([]);
+export const TreeItemContextMenuContext = React.createContext<TreeItemContextMenuContextValue>([]);
 
 export const TreeItemContextMenu = ({
   menuAnchor,

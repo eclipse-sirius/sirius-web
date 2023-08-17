@@ -18,6 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
 
+import reactor.core.publisher.Flux;
+
 /**
  * Interface of the service used to manipulate projects.
  *
@@ -40,6 +42,8 @@ public interface IProjectService {
     void delete(UUID projectId);
 
     Optional<Project> renameProject(UUID projectId, String newName);
+
+    Flux<IPayload> getOutputEvents(UUID projectId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -77,5 +81,9 @@ public interface IProjectService {
             return Optional.empty();
         }
 
+        @Override
+        public Flux<IPayload> getOutputEvents(UUID projectId) {
+            return Flux.empty();
+        }
     }
 }

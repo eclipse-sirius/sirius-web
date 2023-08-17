@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql } from '@apollo/client';
 import { FileUpload, Form, FormContainer, sendFile } from '@eclipse-sirius/sirius-components';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,8 +23,8 @@ import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   SchemaValue,
   UploadProjectEvent,
-  uploadProjectMachine,
   UploadProjectViewContext,
+  uploadProjectMachine,
 } from './UploadProjectViewMachine';
 
 const uploadProjectMutation = gql`
@@ -67,7 +67,7 @@ export const UploadProjectView = () => {
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;
 
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const onUploadProject = async (event) => {
     event.preventDefault();

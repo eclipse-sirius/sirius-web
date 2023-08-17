@@ -26,13 +26,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { $setSelection, TextNode } from 'lexical';
 import { FocusEvent, useCallback, useEffect } from 'react';
 import { ListPlugin } from './ListPlugin';
-import { OnBlurPluginProps, RichTextEditorProps, UpdateValuePluginProps } from './RichTextEditor.types';
+import {
+  ContentEditableProps,
+  OnBlurPluginProps,
+  RichTextEditorProps,
+  UpdateValuePluginProps,
+} from './RichTextEditor.types';
 import { ToolbarPlugin } from './ToolbarPlugin';
-
-interface ContentEditableProps {
-  onFocus: () => void;
-  readOnly: boolean;
-}
 
 /**
  * A content-editable div managed by lexical, but which also invokes our onFocus callback.

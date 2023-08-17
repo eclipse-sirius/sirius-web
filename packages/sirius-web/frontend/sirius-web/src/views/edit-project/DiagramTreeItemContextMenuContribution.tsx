@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import GetAppIcon from '@material-ui/icons/Image';
-import React, { forwardRef, Fragment, useContext } from 'react';
+import React, { Fragment, forwardRef, useContext } from 'react';
 
 export const DiagramTreeItemContextMenuContribution = forwardRef(
   (
     { editingContextId, item, onClose }: TreeItemContextMenuComponentProps,
     ref: React.ForwardedRef<HTMLAnchorElement>
   ) => {
-    const { httpOrigin } = useContext(ServerContext);
+    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
     return (
       <Fragment key="diagram-tree-item-context-menu-contribution">

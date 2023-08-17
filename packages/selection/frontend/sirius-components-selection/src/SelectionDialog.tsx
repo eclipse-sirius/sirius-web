@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -35,8 +35,8 @@ import {
   SchemaValue,
   SelectionDialogContext,
   SelectionDialogEvent,
-  selectionDialogMachine,
   ShowToastEvent,
+  selectionDialogMachine,
 } from './SelectionDialogMachine';
 import { GQLSelectionEventSubscription } from './SelectionEvent.types';
 
@@ -60,7 +60,7 @@ const selectionEventSubscription = gql`
   }
 `;
 
-const useSelectionObjectModalStyles = makeStyles((theme) =>
+const useSelectionObjectModalStyles = makeStyles((_theme) =>
   createStyles({
     root: {
       width: '100%',
@@ -79,7 +79,7 @@ export const SelectionDialog = ({
   onFinish,
 }: SelectionDialogProps) => {
   const classes = useSelectionObjectModalStyles();
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
     selectionDialogMachine
@@ -174,14 +174,16 @@ export const SelectionDialog = ({
             data-testid="finish-action"
             color="primary"
             onClick={() => {
-              onFinish(selectedObjectId);
+              if (selectedObjectId) {
+                onFinish(selectedObjectId);
+              }
             }}>
             Finish
           </Button>
         </DialogActions>
       </Dialog>
       <Toast
-        message={message}
+        message={message ?? ''}
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />

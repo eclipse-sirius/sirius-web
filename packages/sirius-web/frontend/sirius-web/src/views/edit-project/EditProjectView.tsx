@@ -17,6 +17,7 @@ import {
   ExplorerView,
   GQLTreeItem,
   TreeItemContextMenuContext,
+  TreeItemContextMenuContextValue,
   TreeItemContextMenuContribution,
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
@@ -132,7 +133,7 @@ export const EditProjectView = () => {
       dispatch(selectRepresentationEvent);
     };
 
-    const treeItemContextMenuContributions = [
+    const treeItemContextMenuContributions: TreeItemContextMenuContextValue = [
       <TreeItemContextMenuContribution
         canHandle={(treeId: string, item: GQLTreeItem) =>
           treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')

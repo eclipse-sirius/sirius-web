@@ -51,3 +51,8 @@ jobs:
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-milestone.js
+
+      - name: Check that the TypeScript files do not have an issue
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-ts.js
