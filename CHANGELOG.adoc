@@ -36,6 +36,7 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 - [releng] Switch to `graphql` 16.8.0
 - [releng] Switch to `@apollo/client` 3.8.1
 - [releng] Switch to `reactflow` 11.8.1
+- [releng] Switch to Spring Boot 3.1.2
 
 === Bug fixes
 
