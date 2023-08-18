@@ -58,14 +58,20 @@ import reactor.core.publisher.Flux;
     "org.eclipse.sirius.components.diagrams.layout",
     "org.eclipse.sirius.components.graphql",
     "org.eclipse.sirius.components.collaborative",
+    "org.eclipse.sirius.components.collaborative.charts",
     "org.eclipse.sirius.components.collaborative.diagrams",
     "org.eclipse.sirius.components.collaborative.forms",
+    "org.eclipse.sirius.components.collaborative.formdescriptioneditors",
     "org.eclipse.sirius.components.collaborative.selection",
     "org.eclipse.sirius.components.collaborative.trees",
     "org.eclipse.sirius.components.collaborative.validation",
+    "org.eclipse.sirius.components.emf",
+    "org.eclipse.sirius.components.core",
+    "org.eclipse.sirius.components.compatibility",
+    "org.eclipse.sirius.components.web"
 })
 // @formatter:on
-public class SiriusWebStarterConfiguration {
+public class SiriusComponentsStarterConfiguration {
 
     private static final String PATH = "messages/sirius-components-starter";
 
