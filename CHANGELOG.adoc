@@ -5,6 +5,7 @@
 === Shapes
 
 - Add tool sections in the View DSL
+- Add support for Precondition Expressions in Tools
 
 === Architectural decision records
 
