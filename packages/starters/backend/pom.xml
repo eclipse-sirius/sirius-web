@@ -33,5 +33,6 @@
 
 	<modules>
 		<module>sirius-components-starter</module>
+		<module>sirius-components-studio-starter</module>
 	</modules>
 </project>

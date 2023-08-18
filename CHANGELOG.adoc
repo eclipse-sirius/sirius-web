@@ -25,6 +25,10 @@ They will not be provided by the `sirius-components` package anymore.
 It is not available for applications anymore, and thus, applications that need a global error handling strategy will need to implement it by themselves.
 - https://github.com/eclipse-sirius/sirius-web/issues/2279[#2279] [core] Remove the package `sirius-components`.
 All of its remaining content was only relevant inside of Sirius Web and it has thus been migrated to this location
+- https://github.com/eclipse-sirius/sirius-web/issues/2283[#2279] [starter] The `sirius-components-starter` is now providing as a dependency everything in the Sirius Components parts of the repository except for domain and view support.
+Another starter has been introduced for now to support domain and view.
+As a result, the starter is now scanning additional Sirius Components packages which were not scanned before.
+For applications which are only reusing a very specific subset of Sirius Components, this may be a change in behavior.
 
 === Dependency update
 
@@ -47,6 +51,8 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 === Improvements
 
 - [releng] Add some automatic checks to simplify code reviews
+- https://github.com/eclipse-sirius/sirius-web/issues/2283[#2279] [starter] Update the `sirius-components-starter` to make it work properly with the current state of the project.
+Another starter named `sirius-components-studio-starter` has also been introduced in order to bring support for domain and view related projects.
 
 
 == v2023.8.0
