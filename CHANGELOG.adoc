@@ -4,10 +4,11 @@
 
 === Shapes
 
+- Add tool sections in the View DSL
+
 === Architectural decision records
 
 - [ADR-107] Add support for dynamic and conditional widgets in Forms
-
 
 === Breaking changes
 
