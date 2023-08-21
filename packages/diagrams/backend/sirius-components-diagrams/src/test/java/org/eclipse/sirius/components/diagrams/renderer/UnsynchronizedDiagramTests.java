@@ -361,7 +361,7 @@ public class UnsynchronizedDiagramTests {
                 .labelProvider(variableManager -> "label")
                 .nodeDescriptions(List.of(unsynchronizedNodeDescription, synchronizedNodeDescription))
                 .edgeDescriptions(List.of())
-                .toolSections(List.of())
+                .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
         // @formatter:on

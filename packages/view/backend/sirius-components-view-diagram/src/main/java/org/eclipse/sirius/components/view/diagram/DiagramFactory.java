@@ -229,6 +229,30 @@ public interface DiagramFactory extends EFactory {
     SelectionDescription createSelectionDescription();
 
     /**
+     * Returns a new object of class '<em>Tool Section</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Tool Section</em>'.
+     * @generated
+     */
+    DiagramToolSection createDiagramToolSection();
+
+    /**
+     * Returns a new object of class '<em>Node Tool Section</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Node Tool Section</em>'.
+     * @generated
+     */
+    NodeToolSection createNodeToolSection();
+
+    /**
+     * Returns a new object of class '<em>Edge Tool Section</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Edge Tool Section</em>'.
+     * @generated
+     */
+    EdgeToolSection createEdgeToolSection();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

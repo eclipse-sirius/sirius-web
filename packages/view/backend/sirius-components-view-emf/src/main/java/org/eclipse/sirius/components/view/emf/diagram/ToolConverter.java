@@ -26,17 +26,19 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 
@@ -71,146 +73,134 @@ public class ToolConverter {
      * tool section's id is structured to identify the element whose contextual palette it represents:
      * <code>siriusComponents://(diagram|node|edge)Palette?(diagram|node|edge)Id=${palette.eContainer().id}</code>.
      * Given a specific element and the full list of these tool sections (stored on the top-level DiagramDescription),
-     * {@link ViewToolSectionsProvider} can then find all the applicable tools, and is free to reorganize them in proper
+     * {@link ViewPaletteProvider} can then find all the applicable tools, and is free to reorganize them in proper
      * user-facing sections and add the appropriate "extra tools".
      */
-    public List<ToolSection> createPaletteBasedToolSections(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        var allToolSections = new ArrayList<ToolSection>();
+    public List<Palette> createPaletteBasedToolSections(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription,
+            ViewDiagramDescriptionConverterContext converterContext) {
+        var allPalettes = new ArrayList<Palette>();
+        var toolFinder = new ToolFinder();
 
         // Palette for the diagram itself
         String diagramPaletteId = "siriusComponents://diagramPalette?diagramId=" + this.objectService.getId(viewDiagramDescription);
-        // @formatter:off
-        var diagramPalette = ToolSection.newToolSection(diagramPaletteId)
-                .label(viewDiagramDescription.getName())
-                .tools(this.createDiagramPaletteTools(viewDiagramDescription, converterContext))
-                .imageURL("")
+        var diagramPalette = Palette.newPalette(diagramPaletteId)
+                .toolSections(toolFinder.findToolSections(viewDiagramDescription).stream()
+                        .map(toolSection -> this.createToolSection(toolSection, converterContext))
+                        .toList())
+                .tools(toolFinder.findNodeTools(viewDiagramDescription).stream()
+                        .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true))
+                        .toList())
                 .build();
-        // @formatter:on
-        allToolSections.add(diagramPalette);
+
+        allPalettes.add(diagramPalette);
 
         // One palette for each NodeDescription
         for (var nodeDescription : converterContext.getConvertedNodes().keySet()) {
             String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + this.objectService.getId(nodeDescription);
-            // @formatter:off
-            var nodePalette = ToolSection.newToolSection(nodePaletteId)
-                    .label(nodeDescription.getName())
-                    .tools(this.createNodePaletteTools(nodeDescription, converterContext))
-                    .imageURL("")
+            var tools = new ArrayList<ITool>();
+            tools.addAll(toolFinder.findNodeTools(nodeDescription).stream()
+                    .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
+                    .toList());
+            tools.addAll(toolFinder.findEdgeTools(nodeDescription).stream()
+                    .map(edgeTool -> this.createEdgeTool(edgeTool, nodeDescription, converterContext))
+                    .toList());
+
+            var nodePalette = Palette.newPalette(nodePaletteId)
+                    .tools(tools)
+                    .toolSections(toolFinder.findToolSections(nodeDescription).stream()
+                            .map(nodeToolSection -> this.createToolSection(nodeToolSection, nodeDescription, converterContext))
+                            .toList())
                     .build();
-            // @formatter:on
-            allToolSections.add(nodePalette);
+
+            allPalettes.add(nodePalette);
         }
 
         // One palette for each EdgeDescription
         for (var edgeDescription : converterContext.getConvertedEdges().keySet()) {
             String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + this.objectService.getId(edgeDescription);
-            // @formatter:off
-            var edgeToolSection = ToolSection.newToolSection(edgePaletteId)
-                    .label(edgeDescription.getName())
-                    .tools(this.createEdgePaletteTools(edgeDescription, converterContext))
-                    .imageURL("")
+            var edgePalette = Palette.newPalette(edgePaletteId)
+                    .tools(toolFinder.findNodeTools(edgeDescription).stream()
+                            .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
+                            .toList())
+                    .toolSections(toolFinder.findToolSections(edgeDescription).stream()
+                            .map(edgeToolSection -> this.createToolSection(edgeToolSection, converterContext))
+                            .toList())
                     .build();
-            // @formatter:on
-            allToolSections.add(edgeToolSection);
+
+            allPalettes.add(edgePalette);
         }
 
-        return allToolSections;
+        return allPalettes;
     }
 
-    private List<ITool> createDiagramPaletteTools(DiagramDescription viewDiagramDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        List<ITool> diagramTools = new ArrayList<>();
-        for (NodeTool nodeTool : new ToolFinder().findNodeTools(viewDiagramDescription)) {
-            // @formatter:off
-            String toolId = this.idProvider.apply(nodeTool).toString();
-            var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
-                    .label(nodeTool.getName())
-                    .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
-                    .handler(variableManager -> {
-                        VariableManager child = variableManager.createChild();
-                        child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                        return this.execute(converterContext, capturedConvertedNodes, nodeTool, child);
-                    })
-                    .targetDescriptions(List.of())
-                    .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
-                    .appliesToDiagramRoot(true)
-                    .build();
-            // @formatter:on
-            diagramTools.add(tool);
-        }
-        return diagramTools;
+    private ToolSection createToolSection(DiagramToolSection toolSection, ViewDiagramDescriptionConverterContext converterContext) {
+        String toolSectionId = this.idProvider.apply(toolSection).toString();
+        return ToolSection.newToolSection(toolSectionId)
+                .label(toolSection.getName())
+                .tools(toolSection.getNodeTools().stream().map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true)).toList())
+                .imageURL("")
+                .build();
     }
 
-    private List<ITool> createNodePaletteTools(NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        List<ITool> tools = new ArrayList<>();
-
-        for (NodeTool nodeTool : new ToolFinder().findNodeTools(nodeDescription)) {
-            // @formatter:off
-            String toolId = this.idProvider.apply(nodeTool).toString();
-            var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
-                    .label(nodeTool.getName())
-                    .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
-                    .handler(variableManager -> {
-                        VariableManager child = variableManager.createChild();
-                        child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                        return this.execute(converterContext, capturedConvertedNodes, nodeTool, child);
-                    })
-                    .targetDescriptions(List.of())
-                    .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
-                    .appliesToDiagramRoot(false)
-                    .build();
-            // @formatter:on
-            tools.add(tool);
-        }
-
-        for (EdgeTool edgeTool : new ToolFinder().findEdgeTools(nodeDescription)) {
-            // @formatter:off
-            String toolId = this.idProvider.apply(edgeTool).toString();
-            var tool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
-                    .label(edgeTool.getName())
-                    .imageURL(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON)
-                    .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                            .sources(List.of(converterContext.getConvertedNodes().get(nodeDescription)))
-                            .targets(edgeTool.getTargetElementDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
-                            .build()))
-                    .handler(variableManager -> {
-                        VariableManager child = variableManager.createChild();
-                        child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                        child.put("nodeDescription", nodeDescription);
-                        return this.execute(converterContext, capturedConvertedNodes, edgeTool, child);
-                    })
-                    .build();
-            // @formatter:on
-            tools.add(tool);
-        }
-        return tools;
+    private ToolSection createToolSection(NodeToolSection toolSection, NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        var tools = new ArrayList<ITool>();
+        tools.addAll(toolSection.getNodeTools().stream()
+                .map(nodeTool -> this.createNodeTool(nodeTool, converterContext, false))
+                .toList());
+        tools.addAll(toolSection.getEdgeTools().stream()
+                .map(edgeTool -> this.createEdgeTool(edgeTool, nodeDescription, converterContext))
+                .toList());
+        String toolSectionId = this.idProvider.apply(toolSection).toString();
+        return ToolSection.newToolSection(toolSectionId)
+                .label(toolSection.getName())
+                .tools(tools)
+                .imageURL("")
+                .build();
     }
 
-    private List<ITool> createEdgePaletteTools(EdgeDescription edgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+    private ToolSection createToolSection(EdgeToolSection toolSection, ViewDiagramDescriptionConverterContext converterContext) {
+        String toolSectionId = this.idProvider.apply(toolSection).toString();
+        return ToolSection.newToolSection(toolSectionId)
+                .label(toolSection.getName())
+                .tools(toolSection.getNodeTools().stream().map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true)).toList())
+                .imageURL("")
+                .build();
+    }
+
+    private ITool createNodeTool(NodeTool nodeTool, ViewDiagramDescriptionConverterContext converterContext, boolean appliesToDiagramRoot) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        List<ITool> tools = new ArrayList<>();
+        String toolId = this.idProvider.apply(nodeTool).toString();
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
+                .label(nodeTool.getName())
+                .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
+                .handler(variableManager -> {
+                    VariableManager child = variableManager.createChild();
+                    child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                    return this.execute(converterContext, capturedConvertedNodes, nodeTool, child);
+                })
+                .targetDescriptions(List.of())
+                .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
+                .appliesToDiagramRoot(appliesToDiagramRoot)
+                .build();
+    }
 
-        List<NodeTool> paletteSingleTargetTools = new ToolFinder().findNodeTools(edgeDescription);
-        for (NodeTool nodeTool : paletteSingleTargetTools) {
-            // @formatter:off
-            String toolId = this.idProvider.apply(nodeTool).toString();
-            var tool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
-                    .label(nodeTool.getName())
-                    .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
-                    .handler(variableManager -> {
-                        VariableManager child = variableManager.createChild();
-                        child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                        return this.execute(converterContext, capturedConvertedNodes, nodeTool, child);
-                    })
-                    .targetDescriptions(List.of())
-                    .appliesToDiagramRoot(false)
-                    .build();
-            // @formatter:on
-            tools.add(tool);
-        }
-
-        return tools;
+    private ITool createEdgeTool(EdgeTool edgeTool, NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
+        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
+        String toolId = this.idProvider.apply(edgeTool).toString();
+        return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
+                .label(edgeTool.getName())
+                .imageURL(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON)
+                .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
+                        .sources(List.of(converterContext.getConvertedNodes().get(nodeDescription)))
+                        .targets(edgeTool.getTargetElementDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                        .build()))
+                .handler(variableManager -> {
+                    VariableManager child = variableManager.createChild();
+                    child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                    child.put("nodeDescription", nodeDescription);
+                    return this.execute(converterContext, capturedConvertedNodes, edgeTool, child);
+                })
+                .build();
     }
 
     private IStatus execute(ViewDiagramDescriptionConverterContext converterContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedConvertedNodes,

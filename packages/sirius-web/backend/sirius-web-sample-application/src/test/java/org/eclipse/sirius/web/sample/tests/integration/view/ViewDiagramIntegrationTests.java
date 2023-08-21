@@ -67,6 +67,7 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
+
     @Autowired
     private GraphQL graphQL;
 
@@ -117,18 +118,19 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
     private void createStudio() {
         var query = """
-            mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
-              createProjectFromTemplate(input: $input) {
-                __typename
-              }
-            }
-            """;
+                mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
+                  createProjectFromTemplate(input: $input) {
+                    __typename
+                  }
+                }
+                """;
 
         var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), PapayaStudioTemplateProvider.STUDIO_TEMPLATE_ID);
 
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
-                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
@@ -144,23 +146,24 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
     private void createProject() {
         var query = """
-            mutation createProject($input: CreateProjectInput!) {
-              createProject(input: $input) {
-                __typename
-                ... on CreateProjectSuccessPayload {
-                  project {
-                    id
+                mutation createProject($input: CreateProjectInput!) {
+                  createProject(input: $input) {
+                    __typename
+                    ... on CreateProjectSuccessPayload {
+                      project {
+                        id
+                      }
+                    }
                   }
                 }
-              }
-            }
-            """;
+                """;
 
         var input = new CreateProjectInput(UUID.randomUUID(), "Instance");
 
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
-                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
@@ -181,17 +184,17 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
     private void createProjectContent() {
         var createDocumentQuery = """
-            mutation createDocument($input: CreateDocumentInput!) {
-              createDocument(input: $input) {
-                __typename
-                ... on CreateDocumentSuccessPayload {
-                  document {
-                    id
+                mutation createDocument($input: CreateDocumentInput!) {
+                  createDocument(input: $input) {
+                    __typename
+                    ... on CreateDocumentSuccessPayload {
+                      document {
+                        id
+                      }
+                    }
                   }
                 }
-              }
-            }
-            """;
+                """;
 
         assertThat(this.projectRepository.existsById(this.projectId)).isTrue();
 
@@ -199,7 +202,8 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
         var createDocumentExecutionInput = ExecutionInput.newExecutionInput()
                 .query(createDocumentQuery)
-                .variables(Map.of("input", this.objectMapper.convertValue(createDocumentInput, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(createDocumentInput, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var createDocumentExecutionResult = this.graphQL.execute(createDocumentExecutionInput);
         assertThat(createDocumentExecutionResult.getErrors()).isEmpty();
@@ -217,23 +221,24 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
         }
 
         var createRootObjectQuery = """
-            mutation createRootObject($input: CreateRootObjectInput!) {
-              createRootObject(input: $input) {
-                __typename
-                ... on CreateRootObjectSuccessPayload {
-                  object {
-                    id
+                mutation createRootObject($input: CreateRootObjectInput!) {
+                  createRootObject(input: $input) {
+                    __typename
+                    ... on CreateRootObjectSuccessPayload {
+                      object {
+                        id
+                      }
+                    }
                   }
                 }
-              }
-            }
-            """;
+                """;
 
         var createRootObjectInput = new CreateRootObjectInput(UUID.randomUUID(), this.projectId.toString(), documentId, "domain://papaya_core", "Root");
 
         var createRootObjectExecutionInput = ExecutionInput.newExecutionInput()
                 .query(createRootObjectQuery)
-                .variables(Map.of("input", this.objectMapper.convertValue(createRootObjectInput, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(createRootObjectInput, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var createRootObjectExecutionResult = this.graphQL.execute(createRootObjectExecutionInput);
         assertThat(createRootObjectExecutionResult.getErrors()).isEmpty();
@@ -252,20 +257,20 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
     private void createDiagram() {
         var getRepresentationDescriptionsQuery = """
-            query getRepresentationDescriptions($editingContextId: ID!, $objectId: ID!) {
-              viewer {
-                editingContext(editingContextId: $editingContextId) {
-                  representationDescriptions(objectId: $objectId) {
-                    edges {
-                      node {
-                        id
+                query getRepresentationDescriptions($editingContextId: ID!, $objectId: ID!) {
+                  viewer {
+                    editingContext(editingContextId: $editingContextId) {
+                      representationDescriptions(objectId: $objectId) {
+                        edges {
+                          node {
+                            id
+                          }
+                        }
                       }
                     }
                   }
                 }
-              }
-            }
-            """;
+                """;
 
         var getRepresentationDescriptionsExecutionInput = ExecutionInput.newExecutionInput()
                 .query(getRepresentationDescriptionsQuery)
@@ -283,22 +288,23 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
         }
 
         var query = """
-            mutation createRepresentation($input: CreateRepresentationInput!) {
-              createRepresentation(input: $input) {
-                __typename
-                ... on CreateRepresentationSuccessPayload {
-                  representation {
-                    id
+                mutation createRepresentation($input: CreateRepresentationInput!) {
+                  createRepresentation(input: $input) {
+                    __typename
+                    ... on CreateRepresentationSuccessPayload {
+                      representation {
+                        id
+                      }
+                    }
                   }
                 }
-              }
-            }
-            """;
+                """;
 
         var input = new CreateRepresentationInput(UUID.randomUUID(), this.projectId.toString(), representationDescriptionId, this.rootObjectId.toString(), "Diagram");
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
-                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
@@ -345,25 +351,26 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
     private void initializeDiagram() {
         var query = """
-            query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
-              viewer {
-                editingContext(editingContextId: $editingContextId) {
-                  representation(representationId: $diagramId) {
-                    description {
-                      ... on DiagramDescription {
-                        toolSections(diagramElementId: $diagramElementId) {
-                          tools {
+                query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
+                  viewer {
+                    editingContext(editingContextId: $editingContextId) {
+                      representation(representationId: $diagramId) {
+                        description {
+                          ... on DiagramDescription {
+                           palette(diagramElementId: $diagramElementId) {
                             id
-                            label
+                            tools {
+                              id
+                              label
+                              }
+                            }
                           }
                         }
                       }
                     }
                   }
                 }
-              }
-            }
-            """;
+                """;
 
         var variables = Map.<String, Object>of(
                 "editingContextId", this.projectId.toString(),
@@ -381,19 +388,19 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
         String toolId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(executionResult.toSpecification());
-            toolId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representation.description.toolSections[0].tools[0].id");
+            toolId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representation.description.palette.tools[0].id");
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
         }
 
         if (toolId != null) {
             var invokeToolQuery = """
-                mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
-                  invokeSingleClickOnDiagramElementTool(input: $input) {
-                    __typename
-                  }
-                }
-                """;
+                    mutation invokeSingleClickOnDiagramElementTool($input: InvokeSingleClickOnDiagramElementToolInput!) {
+                      invokeSingleClickOnDiagramElementTool(input: $input) {
+                        __typename
+                      }
+                    }
+                    """;
 
             var invokeToolInput = new InvokeSingleClickOnDiagramElementToolInput(
                     UUID.randomUUID(),
@@ -408,7 +415,8 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
 
             var invokeToolExecutionInput = ExecutionInput.newExecutionInput()
                     .query(invokeToolQuery)
-                    .variables(Map.of("input", this.objectMapper.convertValue(invokeToolInput, new TypeReference<Map<String, Object>>() { })))
+                    .variables(Map.of("input", this.objectMapper.convertValue(invokeToolInput, new TypeReference<Map<String, Object>>() {
+                    })))
                     .build();
             var invokeToolExecutionResult = this.graphQL.execute(invokeToolExecutionInput);
             assertThat(invokeToolExecutionResult.getErrors()).isEmpty();

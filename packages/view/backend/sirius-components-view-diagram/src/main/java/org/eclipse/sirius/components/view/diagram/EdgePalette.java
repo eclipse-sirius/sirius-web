@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getEdgeReconnectionTools <em>Edge Reconnection
  * Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgePalette()
@@ -153,5 +154,17 @@ public interface EdgePalette extends EObject {
      * @generated
      */
     EList<EdgeReconnectionTool> getEdgeReconnectionTools();
+
+    /**
+     * Returns the value of the '<em><b>Tool Sections</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.view.diagram.EdgeToolSection}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Tool Sections</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgePalette_ToolSections()
+     * @model containment="true"
+     * @generated
+     */
+    EList<EdgeToolSection> getToolSections();
 
 } // EdgePalette

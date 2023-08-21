@@ -19,9 +19,9 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { Tool } from '../Tool';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { Tool } from '../Tool';
 import {
   ContextualPaletteStyleProps,
   GQLCollapsingState,
@@ -35,6 +35,7 @@ import {
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,
   GQLInvokeSingleClickOnDiagramElementToolVariables,
+  GQLPalette,
   GQLRepresentationDescription,
   GQLSingleClickOnDiagramElementTool,
   GQLTool,
@@ -43,6 +44,7 @@ import {
   GQLUpdateCollapsingStateVariables,
   PaletteProps,
 } from './Palette.types';
+import { ToolSection } from './tool-section/ToolSection';
 
 const usePaletteStyle = makeStyles((theme) => ({
   toolEntries: {
@@ -57,28 +59,41 @@ const usePaletteStyle = makeStyles((theme) => ({
   },
 }));
 
-export const getToolSectionsQuery = gql`
-  query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
+const ToolFields = gql`
+  fragment ToolFields on Tool {
+    __typename
+    id
+    label
+    imageURL
+    ... on SingleClickOnDiagramElementTool {
+      targetDescriptions {
+        id
+      }
+      appliesToDiagramRoot
+      selectionDescriptionId
+    }
+  }
+`;
+
+export const getPaletteQuery = gql`
+  ${ToolFields}
+  query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           description {
             ... on DiagramDescription {
-              toolSections(diagramElementId: $diagramElementId) {
+              palette(diagramElementId: $diagramElementId) {
                 id
-                label
-                imageURL
                 tools {
-                  __typename
+                  ...ToolFields
+                }
+                toolSections {
                   id
                   label
                   imageURL
-                  ... on SingleClickOnDiagramElementTool {
-                    targetDescriptions {
-                      id
-                    }
-                    appliesToDiagramRoot
-                    selectionDescriptionId
+                  tools {
+                    ...ToolFields
                   }
                 }
               }
@@ -143,52 +158,42 @@ const isDiagramDescription = (
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
 export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: PaletteProps) => {
-  const [tools, setTools] = useState<GQLTool[]>([]);
+  const [palette, setPalette] = useState<GQLPalette | undefined>(undefined);
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const toolCount = tools.length + (isNodePalette ? 2 : 0);
+  const toolCount =
+    (palette ? palette.tools.filter(isSingleClickOnDiagramElementTool).length + palette.toolSections.length : 0) +
+    (isNodePalette ? 2 : 0);
   const classes = usePaletteStyle({ toolCount });
 
-  const [getTools, { loading: toolSectionsLoading, data: toolSectionsData, error: toolSectionsError }] = useLazyQuery<
+  const [getPalette, { loading: paletteLoading, data: paletteData, error: paletteError }] = useLazyQuery<
     GQLGetToolSectionsData,
     GQLGetToolSectionsVariables
-  >(getToolSectionsQuery);
+  >(getPaletteQuery);
 
   useEffect(() => {
-    if (!toolSectionsLoading) {
-      if (toolSectionsData) {
+    if (!paletteLoading) {
+      if (paletteData) {
         const representationDescription: GQLRepresentationDescription =
-          toolSectionsData.viewer.editingContext.representation.description;
+          paletteData.viewer.editingContext.representation.description;
         if (isDiagramDescription(representationDescription)) {
-          const nodeTools = representationDescription.toolSections
-            .flatMap((toolSection) => {
-              return toolSection.tools;
-            })
-            .filter(isSingleClickOnDiagramElementTool);
-          setTools(nodeTools);
+          setPalette(representationDescription.palette);
         }
       }
     }
-  }, [
-    toolSectionsLoading,
-    toolSectionsData,
-    toolSectionsError,
-    setTools,
-    isSingleClickOnDiagramElementTool,
-    isDiagramDescription,
-  ]);
+  }, [paletteLoading, paletteData, paletteError, setPalette, isSingleClickOnDiagramElementTool, isDiagramDescription]);
 
   useEffect(() => {
-    getTools({
+    getPalette({
       variables: {
         editingContextId: editingContextId,
         diagramId,
         diagramElementId,
       },
     });
-  }, [editingContextId, diagramId, getTools]);
+  }, [editingContextId, diagramId, getPalette]);
 
   const [deleteElementsMutation] = useMutation<GQLDeleteFromDiagramData, GQLDeleteFromDiagramVariables>(
     deleteFromDiagramMutation
@@ -292,8 +297,11 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: 
 
   return (
     <div className={classes.toolEntries}>
-      {tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-        <Tool tool={tool} onClick={handleToolClick} key={tool.id} />
+      {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
+        <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
+      ))}
+      {palette?.toolSections.map((toolSection) => (
+        <ToolSection toolSection={toolSection} onToolClick={handleToolClick} />
       ))}
       {isNodePalette ? (
         <>

@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.diagram.EdgePalette;
  */
 public class EdgePaletteItemProvider extends ItemProviderAdapter
         implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -80,6 +81,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__NODE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.EDGE_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
     }
@@ -145,6 +147,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
             case DiagramPackage.EDGE_PALETTE__END_LABEL_EDIT_TOOL:
             case DiagramPackage.EDGE_PALETTE__NODE_TOOLS:
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
+            case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -174,6 +177,8 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, DiagramFactory.eINSTANCE.createSourceEdgeEndReconnectionTool()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS, DiagramFactory.eINSTANCE.createTargetEdgeEndReconnectionTool()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createEdgeToolSection()));
     }
 
     /**
@@ -191,7 +196,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
                 || childFeature == DiagramPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

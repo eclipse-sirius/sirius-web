@@ -19,7 +19,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
+import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -53,7 +53,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private List<ToolSection> toolSections;
+    private List<Palette> palettes;
 
     private List<NodeDescription> nodeDescriptions;
 
@@ -63,6 +63,14 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     private DiagramDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newDiagramDescription(String id) {
+        return new Builder(id);
+    }
+
+    public static Builder newDiagramDescription(DiagramDescription diagramDescription) {
+        return new Builder(diagramDescription);
     }
 
     @Override
@@ -92,8 +100,8 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.labelProvider;
     }
 
-    public List<ToolSection> getToolSections() {
-        return this.toolSections;
+    public List<Palette> getPalettes() {
+        return this.palettes;
     }
 
     public List<NodeDescription> getNodeDescriptions() {
@@ -106,14 +114,6 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     public Function<VariableManager, IStatus> getDropHandler() {
         return this.dropHandler;
-    }
-
-    public static Builder newDiagramDescription(String id) {
-        return new Builder(id);
-    }
-
-    public static Builder newDiagramDescription(DiagramDescription diagramDescription) {
-        return new Builder(diagramDescription);
     }
 
     @Override
@@ -129,7 +129,8 @@ public final class DiagramDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
@@ -141,7 +142,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private List<ToolSection> toolSections;
+        private List<Palette> palettes;
 
         private List<NodeDescription> nodeDescriptions;
 
@@ -160,7 +161,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             this.targetObjectIdProvider = diagramDescription.getTargetObjectIdProvider();
             this.canCreatePredicate = diagramDescription.getCanCreatePredicate();
             this.labelProvider = diagramDescription.getLabelProvider();
-            this.toolSections = diagramDescription.getToolSections();
+            this.palettes = diagramDescription.getPalettes();
             this.nodeDescriptions = diagramDescription.getNodeDescriptions();
             this.edgeDescriptions = diagramDescription.getEdgeDescriptions();
             this.dropHandler = diagramDescription.getDropHandler();
@@ -191,8 +192,8 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder toolSections(List<ToolSection> toolSections) {
-            this.toolSections = Objects.requireNonNull(toolSections);
+        public Builder palettes(List<Palette> palettes) {
+            this.palettes = Objects.requireNonNull(palettes);
             return this;
         }
 
@@ -219,7 +220,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             diagramDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             diagramDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             diagramDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            diagramDescription.toolSections = Objects.requireNonNull(this.toolSections);
+            diagramDescription.palettes = Objects.requireNonNull(this.palettes);
             diagramDescription.nodeDescriptions = Objects.requireNonNull(this.nodeDescriptions);
             diagramDescription.edgeDescriptions = Objects.requireNonNull(this.edgeDescriptions);
             diagramDescription.dropHandler = Objects.requireNonNull(this.dropHandler);

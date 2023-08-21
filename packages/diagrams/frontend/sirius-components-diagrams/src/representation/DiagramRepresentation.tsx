@@ -31,6 +31,7 @@ import { DropArea } from '../droparea/DropArea';
 import { ContextualMenu } from '../palette/ContextualMenu';
 import { ContextualPalette } from '../palette/ContextualPalette';
 import {
+  GQLPalette,
   GQLSingleClickOnDiagramElementTool,
   GQLSingleClickOnTwoDiagramElementsTool,
   GQLTool,
@@ -1102,10 +1103,10 @@ export const DiagramRepresentation = ({
       };
       dispatch(setDefaultToolEvent);
     };
-    const invokeConnectorToolFromContextualPalette = (toolSections: GQLToolSection[]) => {
+    const invokeConnectorToolFromContextualPalette = (palette: GQLPalette) => {
       resetTools();
       const tools = [];
-      toolSections.forEach((toolSection) => {
+      palette?.toolSections.forEach((toolSection) => {
         const filteredTools = toolSection.tools
           .filter((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
           .map((tool) => tool as GQLSingleClickOnTwoDiagramElementsTool)
@@ -1114,6 +1115,13 @@ export const DiagramRepresentation = ({
           );
         tools.push(...filteredTools);
       });
+      palette?.tools
+        .filter((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool')
+        .map((tool) => tool as GQLSingleClickOnTwoDiagramElementsTool)
+        .filter((tool) =>
+          tool.candidates.some((candidate) => candidate.sources.some((source) => source.id === element.descriptionId))
+        )
+        .map((tool) => tools.push(tool));
       const setActiveConnectorToolsEvent: SetActiveConnectorToolsEvent = {
         type: 'SET_ACTIVE_CONNECTOR_TOOLS',
         tools,

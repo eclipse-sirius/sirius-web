@@ -259,5 +259,35 @@ public class DiagramBuilders {
         return new SelectionDescriptionBuilder();
     }
 
+    /**
+     * Instantiate a DiagramToolSectionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DiagramToolSectionBuilder newDiagramToolSection() {
+        return new DiagramToolSectionBuilder();
+    }
+
+    /**
+     * Instantiate a NodeToolSectionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public NodeToolSectionBuilder newNodeToolSection() {
+        return new NodeToolSectionBuilder();
+    }
+
+    /**
+     * Instantiate a EdgeToolSectionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public EdgeToolSectionBuilder newEdgeToolSection() {
+        return new EdgeToolSectionBuilder();
+    }
+
 
 }

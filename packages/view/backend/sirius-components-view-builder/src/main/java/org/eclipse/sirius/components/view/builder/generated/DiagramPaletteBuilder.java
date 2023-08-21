@@ -63,6 +63,18 @@ public class DiagramPaletteBuilder {
         return this;
     }
 
+    /**
+     * Setter for ToolSections.
+     *
+     * @generated
+     */
+    public DiagramPaletteBuilder toolSections(org.eclipse.sirius.components.view.diagram.DiagramToolSection ... values) {
+        for (org.eclipse.sirius.components.view.diagram.DiagramToolSection value : values) {
+            this.getDiagramPalette().getToolSections().add(value);
+        }
+        return this;
+    }
+
 
 }
 

@@ -27,6 +27,7 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 
@@ -38,6 +39,7 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
  */
 public class NodePaletteItemProvider extends ItemProviderAdapter
         implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -77,6 +79,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
     }
@@ -140,6 +143,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
             case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
             case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
             case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
+            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -161,6 +165,8 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultLabelEditTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS, defaultToolsFactory.createDefaultNodeCreationTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS, defaultToolsFactory.createDefaultEdgeTool()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));
+
     }
 
     /**

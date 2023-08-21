@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Node Palette</b></em>'. <!-- end-user-doc -->
@@ -41,6 +42,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getEdgeTools <em>Edge Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getToolSections <em>Tool
+ * Sections</em>}</li>
  * </ul>
  *
  * @generated
@@ -85,6 +88,16 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
      * @ordered
      */
     protected EList<EdgeTool> edgeTools;
+
+    /**
+     * The cached value of the '{@link #getToolSections() <em>Tool Sections</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getToolSections()
+     * @generated
+     * @ordered
+     */
+    protected EList<NodeToolSection> toolSections;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -233,6 +246,19 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
      * @generated
      */
     @Override
+    public EList<NodeToolSection> getToolSections() {
+        if (this.toolSections == null) {
+            this.toolSections = new EObjectContainmentEList<>(NodeToolSection.class, this, DiagramPackage.NODE_PALETTE__TOOL_SECTIONS);
+        }
+        return this.toolSections;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
@@ -243,6 +269,8 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
                 return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+                return ((InternalEList<?>) this.getToolSections()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -263,6 +291,8 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 return this.getNodeTools();
             case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
                 return this.getEdgeTools();
+            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+                return this.getToolSections();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -290,6 +320,10 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 this.getEdgeTools().clear();
                 this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
                 return;
+            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                this.getToolSections().addAll((Collection<? extends NodeToolSection>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -314,6 +348,9 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
             case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
                 this.getEdgeTools().clear();
                 return;
+            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -334,6 +371,8 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
             case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
                 return this.edgeTools != null && !this.edgeTools.isEmpty();
+            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+                return this.toolSections != null && !this.toolSections.isEmpty();
         }
         return super.eIsSet(featureID);
     }

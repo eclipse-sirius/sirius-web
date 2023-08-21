@@ -63,6 +63,7 @@ import org.junit.jupiter.api.Test;
  * @author arichard
  */
 public class DeleteViewOperationHandlerTests {
+
     private static final String AQL = "aql:";
 
     private static final String VARIABLE_NAME = "myVariableName";
@@ -85,7 +86,7 @@ public class DeleteViewOperationHandlerTests {
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
                 .canCreatePredicate(variableManager -> true)
                 .labelProvider(variableManager -> "Diagram")
-                .toolSections(List.of())
+                .palettes(List.of())
                 .nodeDescriptions(List.of(this.getNodeDescription(UUID.randomUUID().toString())))
                 .edgeDescriptions(List.of())
                 .dropHandler(variableManager -> new Failure(""))

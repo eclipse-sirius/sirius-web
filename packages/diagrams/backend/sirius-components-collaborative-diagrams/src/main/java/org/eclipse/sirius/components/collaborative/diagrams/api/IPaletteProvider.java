@@ -10,23 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.collaborative.diagrams.api;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
-import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 
 
 /**
- * The payload of the "Get Tool Sections" query returned on success.
+ * Provide the tool palette for a given diagram element.
  *
  * @author arichard
  */
-public record GetToolSectionSuccessPayload(UUID id, List<ToolSection> toolSections) implements IPayload {
-    public GetToolSectionSuccessPayload {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(toolSections);
-    }
+public interface IPaletteProvider {
+
+    boolean canHandle(DiagramDescription diagramDescription);
+
+    Palette handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription);
 }

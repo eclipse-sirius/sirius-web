@@ -1662,12 +1662,21 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_PALETTE__NODE_TOOLS = 1;
 
     /**
+     * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_PALETTE__TOOL_SECTIONS = 2;
+
+    /**
      * The number of structural features of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_PALETTE_FEATURE_COUNT = 2;
+    int DIAGRAM_PALETTE_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1724,13 +1733,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_PALETTE__EDGE_TOOLS = 3;
 
     /**
+     * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE__TOOL_SECTIONS = 4;
+
+    /**
      * The number of structural features of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_PALETTE_FEATURE_COUNT = 4;
+    int NODE_PALETTE_FEATURE_COUNT = 5;
 
     /**
      * The number of operations of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1805,13 +1823,22 @@ public interface DiagramPackage extends EPackage {
     int EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = 5;
 
     /**
+     * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_PALETTE__TOOL_SECTIONS = 6;
+
+    /**
      * The number of structural features of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_PALETTE_FEATURE_COUNT = 6;
+    int EDGE_PALETTE_FEATURE_COUNT = 7;
 
     /**
      * The number of operations of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2419,6 +2446,182 @@ public interface DiagramPackage extends EPackage {
     int SELECTION_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl <em>Tool
+     * Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getToolSection()
+     * @generated
+     */
+    int TOOL_SECTION = 31;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL_SECTION__NAME = 0;
+
+    /**
+     * The number of structural features of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL_SECTION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL_SECTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolSectionImpl
+     * <em>Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramToolSectionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramToolSection()
+     * @generated
+     */
+    int DIAGRAM_TOOL_SECTION = 32;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_TOOL_SECTION__NODE_TOOLS = TOOL_SECTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_TOOL_SECTION_OPERATION_COUNT = TOOL_SECTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolSectionImpl <em>Node
+     * Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.NodeToolSectionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeToolSection()
+     * @generated
+     */
+    int NODE_TOOL_SECTION = 33;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_SECTION__NODE_TOOLS = TOOL_SECTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_SECTION__EDGE_TOOLS = TOOL_SECTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Node Tool Section</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Node Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL_SECTION_OPERATION_COUNT = TOOL_SECTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolSectionImpl <em>Edge
+     * Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.EdgeToolSectionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeToolSection()
+     * @generated
+     */
+    int EDGE_TOOL_SECTION = 34;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL_SECTION__NODE_TOOLS = TOOL_SECTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Edge Tool Section</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Edge Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL_SECTION_OPERATION_COUNT = TOOL_SECTION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow Style</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2426,7 +2629,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 31;
+    int ARROW_STYLE = 35;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutDirection <em>Layout
@@ -2436,7 +2639,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 32;
+    int LAYOUT_DIRECTION = 36;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LineStyle <em>Line Style</em>}'
@@ -2446,7 +2649,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 33;
+    int LINE_STYLE = 37;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeContainmentKind <em>Node
@@ -2456,7 +2659,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 34;
+    int NODE_CONTAINMENT_KIND = 38;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.SynchronizationPolicy
@@ -2466,7 +2669,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 35;
+    int SYNCHRONIZATION_POLICY = 39;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -3229,6 +3432,18 @@ public interface DiagramPackage extends EPackage {
     EReference getDiagramPalette_NodeTools();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections <em>Tool Sections</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Tool Sections</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections()
+     * @see #getDiagramPalette()
+     * @generated
+     */
+    EReference getDiagramPalette_ToolSections();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.NodePalette <em>Node
      * Palette</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3285,6 +3500,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getNodePalette_EdgeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getToolSections <em>Tool Sections</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Tool Sections</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodePalette#getToolSections()
+     * @see #getNodePalette()
+     * @generated
+     */
+    EReference getNodePalette_ToolSections();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgePalette <em>Edge
@@ -3367,6 +3594,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getEdgePalette_EdgeReconnectionTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgePalette#getToolSections <em>Tool Sections</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Tool Sections</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgePalette#getToolSections()
+     * @see #getEdgePalette()
+     * @generated
+     */
+    EReference getEdgePalette_ToolSections();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.Tool <em>Tool</em>}'. <!--
@@ -3644,6 +3883,105 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EAttribute getSelectionDescription_SelectionMessage();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ToolSection <em>Tool
+     * Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Tool Section</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.ToolSection
+     * @generated
+     */
+    EClass getToolSection();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.ToolSection#getName()
+     * @see #getToolSection()
+     * @generated
+     */
+    EAttribute getToolSection_Name();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramToolSection <em>Tool
+     * Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Tool Section</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramToolSection
+     * @generated
+     */
+    EClass getDiagramToolSection();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramToolSection#getNodeTools <em>Node Tools</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramToolSection#getNodeTools()
+     * @see #getDiagramToolSection()
+     * @generated
+     */
+    EReference getDiagramToolSection_NodeTools();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.NodeToolSection <em>Node
+     * Tool Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Node Tool Section</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeToolSection
+     * @generated
+     */
+    EClass getNodeToolSection();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeToolSection#getNodeTools <em>Node Tools</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeToolSection#getNodeTools()
+     * @see #getNodeToolSection()
+     * @generated
+     */
+    EReference getNodeToolSection_NodeTools();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeToolSection#getEdgeTools <em>Edge Tools</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Edge Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeToolSection#getEdgeTools()
+     * @see #getNodeToolSection()
+     * @generated
+     */
+    EReference getNodeToolSection_EdgeTools();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeToolSection <em>Edge
+     * Tool Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Edge Tool Section</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeToolSection
+     * @generated
+     */
+    EClass getEdgeToolSection();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeToolSection#getNodeTools <em>Node Tools</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Node Tools</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeToolSection#getNodeTools()
+     * @see #getEdgeToolSection()
+     * @generated
+     */
+    EReference getEdgeToolSection_NodeTools();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow
@@ -4289,6 +4627,14 @@ public interface DiagramPackage extends EPackage {
         EReference DIAGRAM_PALETTE__NODE_TOOLS = eINSTANCE.getDiagramPalette_NodeTools();
 
         /**
+         * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_PALETTE__TOOL_SECTIONS = eINSTANCE.getDiagramPalette_ToolSections();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl
          * <em>Node Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4329,6 +4675,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_PALETTE__EDGE_TOOLS = eINSTANCE.getNodePalette_EdgeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_PALETTE__TOOL_SECTIONS = eINSTANCE.getNodePalette_ToolSections();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl
@@ -4387,6 +4741,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = eINSTANCE.getEdgePalette_EdgeReconnectionTools();
+
+        /**
+         * The meta object literal for the '<em><b>Tool Sections</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_PALETTE__TOOL_SECTIONS = eINSTANCE.getEdgePalette_ToolSections();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl
@@ -4615,6 +4977,87 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute SELECTION_DESCRIPTION__SELECTION_MESSAGE = eINSTANCE.getSelectionDescription_SelectionMessage();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl
+         * <em>Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getToolSection()
+         * @generated
+         */
+        EClass TOOL_SECTION = eINSTANCE.getToolSection();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TOOL_SECTION__NAME = eINSTANCE.getToolSection_Name();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolSectionImpl <em>Tool Section</em>}' class.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramToolSectionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramToolSection()
+         * @generated
+         */
+        EClass DIAGRAM_TOOL_SECTION = eINSTANCE.getDiagramToolSection();
+
+        /**
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_TOOL_SECTION__NODE_TOOLS = eINSTANCE.getDiagramToolSection_NodeTools();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolSectionImpl
+         * <em>Node Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.NodeToolSectionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeToolSection()
+         * @generated
+         */
+        EClass NODE_TOOL_SECTION = eINSTANCE.getNodeToolSection();
+
+        /**
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_TOOL_SECTION__NODE_TOOLS = eINSTANCE.getNodeToolSection_NodeTools();
+
+        /**
+         * The meta object literal for the '<em><b>Edge Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_TOOL_SECTION__EDGE_TOOLS = eINSTANCE.getNodeToolSection_EdgeTools();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolSectionImpl
+         * <em>Edge Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.EdgeToolSectionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeToolSection()
+         * @generated
+         */
+        EClass EDGE_TOOL_SECTION = eINSTANCE.getEdgeToolSection();
+
+        /**
+         * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference EDGE_TOOL_SECTION__NODE_TOOLS = eINSTANCE.getEdgeToolSection_NodeTools();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow

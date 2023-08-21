@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -34,7 +35,6 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -81,7 +81,6 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
     @Override
     public List<ITool> getConnectorTools(Object sourceDiagramElement, Object targetDiagramElement, Diagram diagram, IEditingContext editingContext) {
         var optDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
-        //@formatter:off
         var optSourceSemanticElement = Optional.of(sourceDiagramElement)
                 .map(this::mapDiagramElementToTargetObjectId)
                 .filter(Optional::isPresent)
@@ -92,17 +91,14 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(targetObjectId -> this.objectService.getObject(editingContext, targetObjectId));
-        //@formatter:on
         var optSourceDiagramElementDescriptionId = this.mapDiagramElementToDescriptionId(sourceDiagramElement);
         var optTargetDiagramElementDescriptionId = this.mapDiagramElementToDescriptionId(targetDiagramElement);
 
         boolean semanticElementsPresent = optSourceSemanticElement.isPresent() && optTargetSemanticElement.isPresent();
         boolean diagramElementDescriptionsPresent = optDiagramDescription.isPresent() && optSourceDiagramElementDescriptionId.isPresent() && optTargetDiagramElementDescriptionId.isPresent();
-        if (semanticElementsPresent && diagramElementDescriptionsPresent && optDiagramDescription.get() instanceof DiagramDescription) {
-            DiagramDescription diagramDescription = (DiagramDescription) optDiagramDescription.get();
+        if (semanticElementsPresent && diagramElementDescriptionsPresent && optDiagramDescription.get() instanceof DiagramDescription diagramDescription) {
             var optionalVsmElementId = this.identifierProvider.findVsmElementId(diagramDescription.getId());
             if (optionalVsmElementId.isPresent()) {
-                // @formatter:off
                 var optionalSiriusDiagramDescription = this.odesignRegistry.getODesigns().stream()
                         .map(EObject::eResource)
                         .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
@@ -110,7 +106,6 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
                         .filter(org.eclipse.sirius.diagram.description.DiagramDescription.class::isInstance)
                         .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
                         .findFirst();
-                // @formatter:on
 
                 var optSourceDiagramElementDescription = this.mapDescriptionIdToDescription(optSourceDiagramElementDescriptionId.get(), diagramDescription, sourceDiagramElement);
                 var optTargetDiagramElementDescription = this.mapDescriptionIdToDescription(optTargetDiagramElementDescriptionId.get(), diagramDescription, targetDiagramElement);
@@ -120,17 +115,20 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
                     Object sourceDiagramElementDescription = optSourceDiagramElementDescription.get();
                     Object targetDiagramElementDescription = optTargetDiagramElementDescription.get();
 
-                    //@formatter:off
-                    return diagramDescription.getToolSections().stream()
-                            .map(ToolSection::getTools)
-                            .flatMap(List::stream)
+                    return diagramDescription.getPalettes().stream()
+                            .flatMap(palette -> Stream.concat(
+                                    palette.getTools().stream(),
+                                    palette.getToolSections().stream()
+                                            .flatMap(section -> section.getTools().stream())
+                            ))
                             .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
                             .map(SingleClickOnTwoDiagramElementsTool.class::cast)
-                            .filter(tool -> tool.getCandidates().stream().anyMatch(candidate -> candidate.getSources().contains(sourceDiagramElementDescription) && candidate.getTargets().contains(targetDiagramElementDescription)))
+                            .filter(tool -> tool.getCandidates().stream()
+                                    .anyMatch(candidate -> candidate.getSources().contains(sourceDiagramElementDescription) && candidate.getTargets()
+                                            .contains(targetDiagramElementDescription)))
                             .filter(tool -> this.filterTool(tool, optSourceSemanticElement.get(), optTargetSemanticElement.get(), sourceDiagramElement, targetDiagramElement, siriusDiagramDescription))
                             .map(ITool.class::cast)
                             .toList();
-                    //@formatter:on
 
                 }
             }
@@ -180,7 +178,8 @@ public class ConnectorToolsProvider implements IConnectorToolsProvider {
         var optionalVsmElementId = this.identifierProvider.findVsmElementId(tool.getId());
         if (optionalVsmElementId.isPresent()) {
             var optionalSiriusTool = this.odesignRegistry.getODesigns().stream().map(EObject::eResource)
-                    .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false)).filter(Objects::nonNull).filter(AbstractToolDescription.class::isInstance)
+                    .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false)).filter(Objects::nonNull)
+                    .filter(AbstractToolDescription.class::isInstance)
                     .map(AbstractToolDescription.class::cast).findFirst();
             if (optionalSiriusTool.isPresent()) {
                 AbstractToolDescription siriusTool = optionalSiriusTool.get();

@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
@@ -123,7 +124,8 @@ public class ToolProvider implements IToolProvider {
     }
 
     @Override
-    public List<ToolSection> getToolSections(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, DiagramDescription siriusDiagramDescription, List<Layer> layers) {
+    public Palette getPalette(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, DiagramDescription siriusDiagramDescription,
+            List<Layer> layers) {
 
         List<ToolSection> result = new ArrayList<>();
         var siriusToolSections = layers
@@ -135,19 +137,17 @@ public class ToolProvider implements IToolProvider {
 
         AQLInterpreter interpreter = this.interpreterFactory.create(siriusDiagramDescription);
         for (var siriusToolSection : siriusToolSections) {
-            // @formatter:off
             List<ITool> tools = this.getToolDescriptions(siriusToolSection).stream()
                     .filter(this::isSupported)
                     .map(toolDescription -> this.convertTool(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, toolDescription, interpreter))
                     .flatMap(Optional::stream)
                     .toList();
-            // @formatter:on
             if (!tools.isEmpty()) {
                 ToolSection toolSection = this.convertToolSection(siriusToolSection, tools);
                 result.add(toolSection);
             }
         }
-        return result;
+        return Palette.newPalette("").tools(List.of()).toolSections(result).build();
     }
 
     private boolean isSupported(AbstractToolDescription toolDescription) {
@@ -211,23 +211,17 @@ public class ToolProvider implements IToolProvider {
     private Optional<ITool> convertTool(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions,
             org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription, AbstractToolDescription siriusTool, AQLInterpreter interpreter) {
         Optional<ITool> result = Optional.empty();
-        if (siriusTool instanceof NodeCreationDescription) {
-            NodeCreationDescription nodeCreationTool = (NodeCreationDescription) siriusTool;
+        if (siriusTool instanceof NodeCreationDescription nodeCreationTool) {
             result = Optional.of(this.convertNodeCreationDescription(id2NodeDescriptions, interpreter, nodeCreationTool));
-        } else if (siriusTool instanceof ContainerCreationDescription) {
-            ContainerCreationDescription containerCreationDescription = (ContainerCreationDescription) siriusTool;
+        } else if (siriusTool instanceof ContainerCreationDescription containerCreationDescription) {
             result = Optional.of(this.convertContainerCreationDescription(id2NodeDescriptions, interpreter, containerCreationDescription));
-        } else if (siriusTool instanceof org.eclipse.sirius.viewpoint.description.tool.ToolDescription) {
-            org.eclipse.sirius.viewpoint.description.tool.ToolDescription toolDescription = (org.eclipse.sirius.viewpoint.description.tool.ToolDescription) siriusTool;
+        } else if (siriusTool instanceof ToolDescription toolDescription) {
             result = Optional.of(this.convertToolDescription(id2NodeDescriptions, edgeDescriptions, interpreter, siriusDiagramDescription, toolDescription));
-        } else if (siriusTool instanceof EdgeCreationDescription) {
-            EdgeCreationDescription edgeCreationDescription = (EdgeCreationDescription) siriusTool;
+        } else if (siriusTool instanceof EdgeCreationDescription edgeCreationDescription) {
             result = Optional.of(this.convertEdgeCreationDescription(id2NodeDescriptions, interpreter, edgeCreationDescription));
-        } else if (siriusTool instanceof DeleteElementDescription) {
-            DeleteElementDescription deleteElementDescription = (DeleteElementDescription) siriusTool;
+        } else if (siriusTool instanceof DeleteElementDescription deleteElementDescription) {
             result = Optional.of(this.convertDeleteElementDescription(id2NodeDescriptions, interpreter, deleteElementDescription));
-        } else if (siriusTool instanceof OperationAction) {
-            OperationAction operationAction = (OperationAction) siriusTool;
+        } else if (siriusTool instanceof OperationAction operationAction) {
             result = Optional.of(this.convertOperationAction(id2NodeDescriptions, edgeDescriptions, interpreter, siriusDiagramDescription, operationAction));
         }
 
@@ -468,7 +462,7 @@ public class ToolProvider implements IToolProvider {
                     Optional.ofNullable(variables.get(IDiagramContext.DIAGRAM_CONTEXT))
                             .filter(IDiagramContext.class::isInstance)
                             .map(IDiagramContext.class::cast)
-                            .ifPresent(diagramContext ->  variables.put(CONTAINER_VIEW, diagramContext.getDiagram()));
+                            .ifPresent(diagramContext -> variables.put(CONTAINER_VIEW, diagramContext.getDiagram()));
                 }
                 var selectModelelementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(toolDescription.getVariable());
                 if (selectModelelementVariableOpt.isPresent()) {

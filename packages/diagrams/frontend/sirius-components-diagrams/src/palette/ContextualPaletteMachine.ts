@@ -13,9 +13,9 @@
 import { assign, Machine } from 'xstate';
 import {
   GQLDiagramDescription,
-  GQLGetToolSectionsData,
+  GQLGetPaletteData,
+  GQLPalette,
   GQLRepresentationDescription,
-  GQLToolSection,
 } from './ContextualPalette.types';
 
 export interface ContextualPaletteStateSchema {
@@ -42,13 +42,13 @@ export type SchemaValue = {
 };
 
 export interface ContextualPaletteContext {
-  toolSections: GQLToolSection[];
+  palette: GQLPalette | null;
   message: string | null;
 }
 
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
-export type HandleToolSectionsResultEvent = { type: 'HANDLE_TOOL_SECTIONS_RESULT'; result: GQLGetToolSectionsData };
+export type HandleToolSectionsResultEvent = { type: 'HANDLE_PALETTE_RESULT'; result: GQLGetPaletteData };
 export type ContextualPaletteEvent = ShowToastEvent | HideToastEvent | HandleToolSectionsResultEvent;
 
 const isDiagramDescription = (
@@ -63,7 +63,7 @@ export const contextualPaletteMachine = Machine<
   {
     type: 'parallel',
     context: {
-      toolSections: [],
+      palette: null,
       message: null,
     },
     states: {
@@ -93,16 +93,16 @@ export const contextualPaletteMachine = Machine<
         states: {
           loading: {
             on: {
-              HANDLE_TOOL_SECTIONS_RESULT: [
-                { cond: 'isValidResult', target: 'loaded', actions: 'setToolSections' },
+              HANDLE_PALETTE_RESULT: [
+                { cond: 'isValidResult', target: 'loaded', actions: 'setPalette' },
                 { target: 'error' },
               ],
             },
           },
           loaded: {
             on: {
-              HANDLE_TOOL_SECTIONS_RESULT: [
-                { cond: 'isValidResult', target: 'loaded', actions: 'setToolSections' },
+              HANDLE_PALETTE_RESULT: [
+                { cond: 'isValidResult', target: 'loaded', actions: 'setPalette' },
                 { target: 'error' },
               ],
             },
@@ -123,11 +123,11 @@ export const contextualPaletteMachine = Machine<
       },
     },
     actions: {
-      setToolSections: assign((_, event) => {
+      setPalette: assign((_, event) => {
         const { result } = event as HandleToolSectionsResultEvent;
         const description = result.viewer.editingContext.representation.description;
-        const toolSections = isDiagramDescription(description) ? description.toolSections : [];
-        return { toolSections };
+        const palette = isDiagramDescription(description) ? description.palette : null;
+        return { palette };
       }),
       setMessage: assign((_, event) => {
         const { message } = event as ShowToastEvent;

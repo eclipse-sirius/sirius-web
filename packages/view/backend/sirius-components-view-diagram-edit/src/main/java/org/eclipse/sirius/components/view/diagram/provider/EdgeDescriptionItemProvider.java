@@ -282,7 +282,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         boolean qualify = childFeature == DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE || childFeature == DiagramPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

@@ -102,6 +102,18 @@ public class EdgePaletteBuilder {
         return this;
     }
 
+    /**
+     * Setter for ToolSections.
+     *
+     * @generated
+     */
+    public EdgePaletteBuilder toolSections(org.eclipse.sirius.components.view.diagram.EdgeToolSection ... values) {
+        for (org.eclipse.sirius.components.view.diagram.EdgeToolSection value : values) {
+            this.getEdgePalette().getToolSections().add(value);
+        }
+        return this;
+    }
+
 
 }
 

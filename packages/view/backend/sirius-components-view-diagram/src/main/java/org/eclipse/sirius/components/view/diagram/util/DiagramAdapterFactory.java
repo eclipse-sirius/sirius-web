@@ -30,12 +30,14 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -46,12 +48,14 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.diagram.ToolSection;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -257,6 +261,26 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseSelectionDescription(SelectionDescription object) {
             return DiagramAdapterFactory.this.createSelectionDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseToolSection(ToolSection object) {
+            return DiagramAdapterFactory.this.createToolSectionAdapter();
+        }
+
+        @Override
+        public Adapter caseDiagramToolSection(DiagramToolSection object) {
+            return DiagramAdapterFactory.this.createDiagramToolSectionAdapter();
+        }
+
+        @Override
+        public Adapter caseNodeToolSection(NodeToolSection object) {
+            return DiagramAdapterFactory.this.createNodeToolSectionAdapter();
+        }
+
+        @Override
+        public Adapter caseEdgeToolSection(EdgeToolSection object) {
+            return DiagramAdapterFactory.this.createEdgeToolSectionAdapter();
         }
 
         @Override
@@ -724,6 +748,62 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSelectionDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.ToolSection
+     * <em>Tool Section</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.ToolSection
+     * @generated
+     */
+    public Adapter createToolSectionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramToolSection <em>Tool Section</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramToolSection
+     * @generated
+     */
+    public Adapter createDiagramToolSectionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.NodeToolSection
+     * <em>Node Tool Section</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.NodeToolSection
+     * @generated
+     */
+    public Adapter createNodeToolSectionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.EdgeToolSection
+     * <em>Edge Tool Section</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeToolSection
+     * @generated
+     */
+    public Adapter createEdgeToolSectionAdapter() {
         return null;
     }
 

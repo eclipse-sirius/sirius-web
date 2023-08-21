@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
+import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.Success;
@@ -41,7 +41,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class TestDiagramDescriptionBuilder {
 
-    public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions, List<ToolSection> toolSections) {
+    public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions,
+            List<Palette> palettes) {
         // @formatter:off
         return DiagramDescription.newDiagramDescription(diagramDescriptionId)
                 .label("")
@@ -50,7 +51,7 @@ public class TestDiagramDescriptionBuilder {
                 .labelProvider(variableManager -> "Diagram")
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
-                .toolSections(toolSections)
+                .palettes(palettes)
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
         // @formatter:on

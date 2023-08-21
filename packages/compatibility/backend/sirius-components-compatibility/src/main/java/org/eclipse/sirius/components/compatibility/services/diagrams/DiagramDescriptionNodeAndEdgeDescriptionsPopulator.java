@@ -123,13 +123,12 @@ public class DiagramDescriptionNodeAndEdgeDescriptionsPopulator implements IDiag
         return builder.nodeDescriptions(allNodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .dropHandler(dropHandler)
-                .toolSections(this.toolProvider.getToolSections(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers));
+                .palettes(List.of(this.toolProvider.getPalette(id2NodeDescriptions, edgeDescriptions, siriusDiagramDescription, layers)));
         // @formatter:on
     }
 
     private boolean isEnabledByDefault(Layer layer) {
-        if (layer instanceof AdditionalLayer) {
-            AdditionalLayer additionalLayer = (AdditionalLayer) layer;
+        if (layer instanceof AdditionalLayer additionalLayer) {
             return !additionalLayer.isOptional() || additionalLayer.isActiveByDefault();
         }
         return true;

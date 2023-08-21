@@ -48,4 +48,67 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('domain').get('[data-value="http://www.eclipse.org/sirius-web/view"]').should('exist');
     cy.getByTestId('domain').get('[data-value="http://www.obeo.fr/dsl/designer/sample/flow"]').should('exist');
   });
+
+  it('Check the DiagramPalette toolSection creation', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.getByTestId('DiagramPalette').should('exist');
+    cy.getByTestId('DiagramPalette-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Diagram Tool Section"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Tool Section').should('exist');
+    cy.getByTestId('Tool Section-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Node Tool"]').should('exist');
+    cy.get('[data-value="Edge Tool"]').should('not.exist');
+  });
+
+  it('Check the NodePalette toolSection creation', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.getByTestId('Entity1 Node').dblclick();
+    cy.getByTestId('NodePalette-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Node Tool Section"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Tool Section').should('exist');
+    cy.getByTestId('Tool Section-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Node Tool"]').should('exist');
+    cy.get('[data-value="Edge Tool"]').should('exist');
+    cy.get('[data-value="Source Edge End Reconnection Tool"]').should('not.exist');
+  });
+
+  it('Check the EdgePalette toolSection creation', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.getByTestId('LinkedTo Edge').dblclick();
+    cy.getByTestId('EdgePalette-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Edge Tool Section"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Tool Section').should('exist');
+    cy.getByTestId('Tool Section-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').find('input').invoke('val').should('not.be.empty');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Node Tool"]').should('exist');
+    cy.get('[data-value="Edge Tool"]').should('not.exist');
+    cy.get('[data-value="Source Edge End Reconnection Tool"]').should('not.exist');
+    cy.get('[data-value="Target Edge End Reconnection Tool"]').should('not.exist');
+  });
 });

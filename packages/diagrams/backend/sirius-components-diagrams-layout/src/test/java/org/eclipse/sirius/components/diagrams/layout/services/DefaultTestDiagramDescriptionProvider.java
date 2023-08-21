@@ -69,7 +69,7 @@ public class DefaultTestDiagramDescriptionProvider {
 
     private IObjectService objectService;
 
-    private Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
+    private final Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getId)
@@ -77,7 +77,7 @@ public class DefaultTestDiagramDescriptionProvider {
         // @formatter:on
     };
 
-    private Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
+    private final Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
         // @formatter:off
         String prefix = variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
@@ -127,7 +127,7 @@ public class DefaultTestDiagramDescriptionProvider {
         return nodeStyle;
     };
 
-    private Function<VariableManager, String> nodeTypeProvider = variableManager -> {
+    private final Function<VariableManager, String> nodeTypeProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
@@ -159,7 +159,7 @@ public class DefaultTestDiagramDescriptionProvider {
         // @formatter:on
     };
 
-    private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
+    private final Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
@@ -188,7 +188,7 @@ public class DefaultTestDiagramDescriptionProvider {
         // @formatter:on
     };
 
-    private Function<VariableManager, String> labelProvider = variableManager -> {
+    private final Function<VariableManager, String> labelProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
@@ -199,7 +199,7 @@ public class DefaultTestDiagramDescriptionProvider {
         // @formatter:on
     };
 
-    private Function<VariableManager, List<?>> nodeSemanticElementProvider = variableManager -> {
+    private final Function<VariableManager, List<?>> nodeSemanticElementProvider = variableManager -> {
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getChildren)
                 .orElse(List.of())
@@ -286,7 +286,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 .targetObjectIdProvider(this.targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .labelProvider(variableManager -> variableManager.get(DiagramDescription.LABEL, String.class).orElse(""))
-                .toolSections(List.of())
+                .palettes(List.of())
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(List.of(edgeDescription))
                 .dropHandler(variableManager -> new Failure(""))
@@ -312,8 +312,7 @@ public class DefaultTestDiagramDescriptionProvider {
                     List<Object> objects = new ArrayList<>();
                     DiagramRenderingCache cache = optionalCache.get();
                     for (org.eclipse.sirius.components.representations.Element nodeElement : cache.getNodeToObject().keySet()) {
-                        if (nodeElement.getProps() instanceof NodeElementProps) {
-                            NodeElementProps props = (NodeElementProps) nodeElement.getProps();
+                        if (nodeElement.getProps() instanceof NodeElementProps props) {
                             if (nodeDescriptionIds.contains(props.getDescriptionId())) {
                                 Object object = cache.getNodeToObject().get(nodeElement);
                                 objects.add(object);

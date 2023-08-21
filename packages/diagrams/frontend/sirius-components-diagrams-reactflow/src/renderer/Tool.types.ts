@@ -16,4 +16,5 @@ import { GQLTool } from './palette/Palette.types';
 export interface ToolProps {
   tool: GQLTool;
   onClick: (tool: GQLTool) => void;
+  thumbnail?: boolean;
 }

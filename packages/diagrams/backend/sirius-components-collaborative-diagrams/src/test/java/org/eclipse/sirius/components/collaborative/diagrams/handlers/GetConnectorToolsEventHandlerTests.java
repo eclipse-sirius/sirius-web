@@ -45,9 +45,9 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramDescriptionBuilder;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
+import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.Success;
@@ -153,10 +153,9 @@ public class GetConnectorToolsEventHandlerTests {
                 .imageURL("")
                 .build();
 
-        ToolSection toolSection = ToolSection.newToolSection(TOOLSECTION_ID)
-                .label(TOOLSECTION_LABEL)
+        Palette palette = Palette.newPalette(TOOLSECTION_ID)
                 .tools(List.of(connectorTool, notConnectorTool))
-                .imageURL("")
+                .toolSections(List.of())
                 .build();
 
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID.toString())
@@ -166,7 +165,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
-                .toolSections(List.of(toolSection))
+                .palettes(List.of(palette))
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
         //@formatter:on

@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 
@@ -46,6 +47,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getEdgeReconnectionTools <em>Edge
  * Reconnection Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl#getToolSections <em>Tool
+ * Sections</em>}</li>
  * </ul>
  *
  * @generated
@@ -110,6 +113,16 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
      * @ordered
      */
     protected EList<EdgeReconnectionTool> edgeReconnectionTools;
+
+    /**
+     * The cached value of the '{@link #getToolSections() <em>Tool Sections</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getToolSections()
+     * @generated
+     * @ordered
+     */
+    protected EList<EdgeToolSection> toolSections;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -354,6 +367,19 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
      * @generated
      */
     @Override
+    public EList<EdgeToolSection> getToolSections() {
+        if (this.toolSections == null) {
+            this.toolSections = new EObjectContainmentEList<>(EdgeToolSection.class, this, DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS);
+        }
+        return this.toolSections;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.EDGE_PALETTE__DELETE_TOOL:
@@ -368,6 +394,8 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 return ((InternalEList<?>) this.getEdgeReconnectionTools()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
+                return ((InternalEList<?>) this.getToolSections()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -392,6 +420,8 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
                 return this.getNodeTools();
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 return this.getEdgeReconnectionTools();
+            case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
+                return this.getToolSections();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -425,6 +455,10 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
                 this.getEdgeReconnectionTools().clear();
                 this.getEdgeReconnectionTools().addAll((Collection<? extends EdgeReconnectionTool>) newValue);
                 return;
+            case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                this.getToolSections().addAll((Collection<? extends EdgeToolSection>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -455,6 +489,9 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 this.getEdgeReconnectionTools().clear();
                 return;
+            case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -479,6 +516,8 @@ public class EdgePaletteImpl extends MinimalEObjectImpl.Container implements Edg
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
             case DiagramPackage.EDGE_PALETTE__EDGE_RECONNECTION_TOOLS:
                 return this.edgeReconnectionTools != null && !this.edgeReconnectionTools.isEmpty();
+            case DiagramPackage.EDGE_PALETTE__TOOL_SECTIONS:
+                return this.toolSections != null && !this.toolSections.isEmpty();
         }
         return super.eIsSet(featureID);
     }

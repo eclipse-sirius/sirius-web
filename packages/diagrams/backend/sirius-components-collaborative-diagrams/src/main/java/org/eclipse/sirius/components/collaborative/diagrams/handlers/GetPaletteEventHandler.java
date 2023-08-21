@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,10 +24,10 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescript
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolSectionsInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -51,7 +50,7 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 @Service
-public class GetToolSectionsEventHandler implements IDiagramEventHandler {
+public class GetPaletteEventHandler implements IDiagramEventHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
@@ -61,14 +60,14 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
 
     private final IObjectService objectService;
 
-    private final List<IToolSectionsProvider> toolSectionsProviders;
+    private final List<IPaletteProvider> toolSectionsProviders;
 
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
-    public GetToolSectionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramQueryService diagramQueryService,
-            IDiagramDescriptionService diagramDescriptionService, IObjectService objectService, List<IToolSectionsProvider> toolSectionsProviders, ICollaborativeMessageService messageService,
+    public GetPaletteEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramQueryService diagramQueryService,
+            IDiagramDescriptionService diagramDescriptionService, IObjectService objectService, List<IPaletteProvider> toolSectionsProviders, ICollaborativeMessageService messageService,
             MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
@@ -77,35 +76,30 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
         this.toolSectionsProviders = Objects.requireNonNull(toolSectionsProviders);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
     public boolean canHandle(IDiagramInput diagramInput) {
-        return diagramInput instanceof GetToolSectionsInput;
+        return diagramInput instanceof GetPaletteInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-        List<ToolSection> toolSections = new ArrayList<>();
+        Palette palette = null;
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
 
-        if (diagramInput instanceof GetToolSectionsInput) {
-            GetToolSectionsInput toolSectionsInput = (GetToolSectionsInput) diagramInput;
+        if (diagramInput instanceof GetPaletteInput toolSectionsInput) {
             String diagramElementId = toolSectionsInput.diagramElementId();
 
             Diagram diagram = diagramContext.getDiagram();
-            // @formatter:off
             var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
-            // @formatter:on
             if (optionalDiagramDescription.isPresent()) {
                 DiagramDescription diagramDescription = optionalDiagramDescription.get();
                 var optionalToolSectionsProvider = this.toolSectionsProviders.stream().filter(toolSectionProvider -> toolSectionProvider.canHandle(diagramDescription)).findFirst();
@@ -114,13 +108,13 @@ public class GetToolSectionsEventHandler implements IDiagramEventHandler {
                 var optionalDiagramElementDescription = this.findDiagramElementDescription(diagram, diagramElementId, diagramDescription, optionalDiagramElement.orElse(null));
 
                 if (optionalToolSectionsProvider.isPresent() && optionalTargetElement.isPresent() && optionalDiagramElementDescription.isPresent()) {
-                    IToolSectionsProvider toolSectionsProvider = optionalToolSectionsProvider.get();
-                    toolSections = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
+                    IPaletteProvider toolSectionsProvider = optionalToolSectionsProvider.get();
+                    palette = toolSectionsProvider.handle(optionalTargetElement.get(), optionalDiagramElement.orElse(null), optionalDiagramElementDescription.get(),
                             diagramDescription);
                 }
             }
         }
-        payloadSink.tryEmitValue(new GetToolSectionSuccessPayload(diagramInput.id(), toolSections));
+        payloadSink.tryEmitValue(new GetPaletteSuccessPayload(diagramInput.id(), palette));
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 

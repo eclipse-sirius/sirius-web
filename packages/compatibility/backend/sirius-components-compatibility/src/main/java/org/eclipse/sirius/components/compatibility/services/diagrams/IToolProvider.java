@@ -17,7 +17,7 @@ import java.util.Map;
 
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
+import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.eclipse.sirius.diagram.description.DiagramDescription;
 import org.eclipse.sirius.diagram.description.Layer;
 
@@ -27,5 +27,6 @@ import org.eclipse.sirius.diagram.description.Layer;
  * @author sbegaudeau
  */
 public interface IToolProvider {
-    List<ToolSection> getToolSections(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, DiagramDescription siriusDiagramDescription, List<Layer> layers);
+
+    Palette getPalette(Map<String, NodeDescription> id2NodeDescriptions, List<EdgeDescription> edgeDescriptions, DiagramDescription siriusDiagramDescription, List<Layer> layers);
 }

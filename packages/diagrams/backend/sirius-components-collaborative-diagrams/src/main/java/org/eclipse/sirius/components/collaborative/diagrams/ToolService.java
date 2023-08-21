@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IToolService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
+import org.eclipse.sirius.components.diagrams.tools.Palette;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,26 +40,25 @@ public class ToolService implements IToolService {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
     }
 
-    private List<ToolSection> getToolSections(IEditingContext editingContext, Diagram diagram) {
-        // @formatter:off
+    private List<Palette> getPalettes(IEditingContext editingContext, Diagram diagram) {
         return this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
-            .filter(DiagramDescription.class::isInstance)
-            .map(DiagramDescription.class::cast)
-            .map(DiagramDescription::getToolSections)
-            .orElse(List.of());
-        // @formatter:on
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .map(DiagramDescription::getPalettes)
+                .orElse(List.of());
     }
 
     @Override
     public Optional<ITool> findToolById(IEditingContext editingContext, Diagram diagram, String toolId) {
-        // @formatter:off
-        return this.getToolSections(editingContext, diagram)
+        return this.getPalettes(editingContext, diagram)
                 .stream()
-                .map(ToolSection::getTools)
-                .flatMap(Collection::stream)
+                .flatMap(palette -> Stream.concat(
+                        palette.getTools().stream(),
+                        palette.getToolSections().stream()
+                                .flatMap(toolSection -> toolSection.getTools().stream())
+                ))
                 .filter(tool -> Objects.equals(tool.getId(), toolId))
                 .findFirst();
-        // @formatter:on
     }
 
 }
