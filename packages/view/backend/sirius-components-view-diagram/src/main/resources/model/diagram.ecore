@@ -162,6 +162,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
         eType="#//NodeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
+        eType="#//DiagramToolSection" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodePalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
@@ -172,6 +174,8 @@
         eType="#//NodeTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
         eType="#//EdgeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
+        eType="#//NodeToolSection" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgePalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
@@ -186,6 +190,8 @@
         eType="#//NodeTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="edgeReconnectionTools"
         upperBound="-1" eType="#//EdgeReconnectionTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
+        eType="#//EdgeToolSection" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Tool" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
@@ -233,5 +239,23 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectionMessage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ToolSection" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
+        defaultValueLiteral="Tool Section"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DiagramToolSection" eSuperTypes="#//ToolSection">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
+        eType="#//NodeTool" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeToolSection" eSuperTypes="#//ToolSection">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
+        eType="#//NodeTool" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edgeTools" upperBound="-1"
+        eType="#//EdgeTool" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EdgeToolSection" eSuperTypes="#//ToolSection">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
+        eType="#//NodeTool" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

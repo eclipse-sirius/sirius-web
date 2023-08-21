@@ -31,12 +31,14 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -50,6 +52,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
@@ -57,6 +60,7 @@ import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.diagram.ToolSection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -280,6 +284,34 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EClass selectionDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass toolSectionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass diagramToolSectionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass nodeToolSectionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass edgeToolSectionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1046,6 +1078,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getDiagramPalette_ToolSections() {
+        return (EReference) this.diagramPaletteEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getNodePalette() {
         return this.nodePaletteEClass;
     }
@@ -1088,6 +1130,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getNodePalette_EdgeTools() {
         return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodePalette_ToolSections() {
+        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -1158,6 +1210,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getEdgePalette_EdgeReconnectionTools() {
         return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getEdgePalette_ToolSections() {
+        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -1416,6 +1478,96 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getToolSection() {
+        return this.toolSectionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getToolSection_Name() {
+        return (EAttribute) this.toolSectionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDiagramToolSection() {
+        return this.diagramToolSectionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDiagramToolSection_NodeTools() {
+        return (EReference) this.diagramToolSectionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getNodeToolSection() {
+        return this.nodeToolSectionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodeToolSection_NodeTools() {
+        return (EReference) this.nodeToolSectionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodeToolSection_EdgeTools() {
+        return (EReference) this.nodeToolSectionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getEdgeToolSection() {
+        return this.edgeToolSectionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getEdgeToolSection_NodeTools() {
+        return (EReference) this.edgeToolSectionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -1571,12 +1723,14 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.diagramPaletteEClass = this.createEClass(DIAGRAM_PALETTE);
         this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__DROP_TOOL);
         this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__NODE_TOOLS);
+        this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__TOOL_SECTIONS);
 
         this.nodePaletteEClass = this.createEClass(NODE_PALETTE);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__DELETE_TOOL);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__LABEL_EDIT_TOOL);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__NODE_TOOLS);
         this.createEReference(this.nodePaletteEClass, NODE_PALETTE__EDGE_TOOLS);
+        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__TOOL_SECTIONS);
 
         this.edgePaletteEClass = this.createEClass(EDGE_PALETTE);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__DELETE_TOOL);
@@ -1585,6 +1739,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__END_LABEL_EDIT_TOOL);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__NODE_TOOLS);
         this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
+        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__TOOL_SECTIONS);
 
         this.toolEClass = this.createEClass(TOOL);
         this.createEAttribute(this.toolEClass, TOOL__NAME);
@@ -1622,6 +1777,19 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.selectionDescriptionEClass = this.createEClass(SELECTION_DESCRIPTION);
         this.createEAttribute(this.selectionDescriptionEClass, SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.selectionDescriptionEClass, SELECTION_DESCRIPTION__SELECTION_MESSAGE);
+
+        this.toolSectionEClass = this.createEClass(TOOL_SECTION);
+        this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
+
+        this.diagramToolSectionEClass = this.createEClass(DIAGRAM_TOOL_SECTION);
+        this.createEReference(this.diagramToolSectionEClass, DIAGRAM_TOOL_SECTION__NODE_TOOLS);
+
+        this.nodeToolSectionEClass = this.createEClass(NODE_TOOL_SECTION);
+        this.createEReference(this.nodeToolSectionEClass, NODE_TOOL_SECTION__NODE_TOOLS);
+        this.createEReference(this.nodeToolSectionEClass, NODE_TOOL_SECTION__EDGE_TOOLS);
+
+        this.edgeToolSectionEClass = this.createEClass(EDGE_TOOL_SECTION);
+        this.createEReference(this.edgeToolSectionEClass, EDGE_TOOL_SECTION__NODE_TOOLS);
 
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -1688,6 +1856,9 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.targetEdgeEndReconnectionToolEClass.getESuperTypes().add(this.getEdgeReconnectionTool());
         this.createViewEClass.getESuperTypes().add(theViewPackage.getOperation());
         this.deleteViewEClass.getESuperTypes().add(theViewPackage.getOperation());
+        this.diagramToolSectionEClass.getESuperTypes().add(this.getToolSection());
+        this.nodeToolSectionEClass.getESuperTypes().add(this.getToolSection());
+        this.edgeToolSectionEClass.getESuperTypes().add(this.getToolSection());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1822,6 +1993,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramPalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramPalette_ToolSections(), this.getDiagramToolSection(), null, "toolSections", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodePaletteEClass, NodePalette.class, "NodePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getNodePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -1832,6 +2005,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getNodePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodePalette_ToolSections(), this.getNodeToolSection(), null, "toolSections", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgePaletteEClass, EdgePalette.class, "EdgePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getEdgePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
@@ -1846,6 +2021,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getEdgePalette_EdgeReconnectionTools(), this.getEdgeReconnectionTool(), null, "edgeReconnectionTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getEdgePalette_ToolSections(), this.getEdgeToolSection(), null, "toolSections", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.toolEClass, Tool.class, "Tool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTool_Name(), theViewPackage.getIdentifier(), "name", "Tool", 1, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -1896,6 +2073,24 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 SelectionDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getSelectionDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.diagramToolSectionEClass, DiagramToolSection.class, "DiagramToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getDiagramToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.nodeToolSectionEClass, NodeToolSection.class, "NodeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getNodeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeToolSection_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.edgeToolSectionEClass, EdgeToolSection.class, "EdgeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getEdgeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");

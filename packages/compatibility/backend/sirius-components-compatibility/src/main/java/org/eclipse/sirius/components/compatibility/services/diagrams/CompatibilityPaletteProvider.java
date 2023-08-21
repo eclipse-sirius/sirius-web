@@ -22,8 +22,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IToolSectionsProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
@@ -63,7 +64,7 @@ import org.springframework.stereotype.Service;
  * @author arichard
  */
 @Service
-public class CompatibilityToolSectionsProvider implements IToolSectionsProvider {
+public class CompatibilityPaletteProvider implements IPaletteProvider {
 
     private final IIdentifierProvider identifierProvider;
 
@@ -71,7 +72,7 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
 
     private final IAQLInterpreterFactory interpreterFactory;
 
-    public CompatibilityToolSectionsProvider(IIdentifierProvider identifierProvider, IODesignRegistry odesignRegistry, IAQLInterpreterFactory interpreterFactory) {
+    public CompatibilityPaletteProvider(IIdentifierProvider identifierProvider, IODesignRegistry odesignRegistry, IAQLInterpreterFactory interpreterFactory) {
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.odesignRegistry = Objects.requireNonNull(odesignRegistry);
         this.interpreterFactory = Objects.requireNonNull(interpreterFactory);
@@ -83,10 +84,9 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
     }
 
     @Override
-    public List<ToolSection> handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription) {
+    public Palette handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription) {
         var optionalVsmElementId = this.identifierProvider.findVsmElementId(diagramDescription.getId());
 
-        // @formatter:off
         var optionalSiriusDiagramDescription = this.odesignRegistry.getODesigns().stream()
                 .map(EObject::eResource)
                 .map(resource -> resource.getResourceSet().getEObject(URI.createURI(optionalVsmElementId.get()), false))
@@ -94,47 +94,53 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
                 .filter(org.eclipse.sirius.diagram.description.DiagramDescription.class::isInstance)
                 .map(org.eclipse.sirius.diagram.description.DiagramDescription.class::cast)
                 .findFirst();
-        // @formatter:on
 
         List<ToolSection> toolSections = new ArrayList<>();
         if (optionalSiriusDiagramDescription.isPresent()) {
             org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription = optionalSiriusDiagramDescription.get();
-            // @formatter:off
             List<ToolSection> filteredToolSections = this.getToolSectionFromDiagramDescriptionToolSection(diagramDescription).stream()
                     .map(toolSection -> this.filteredTools(targetElement, diagramElement, toolSection, siriusDiagramDescription, diagramElementDescription))
                     .filter(toolSection -> !toolSection.tools().isEmpty())
                     .toList();
-            // @formatter:on
 
             toolSections.addAll(filteredToolSections);
             toolSections.addAll(this.createExtraToolSections(diagramElementDescription));
         }
-        return toolSections;
+        String paletteId = "siriusComponents://palette?diagramId=" + optionalVsmElementId.get();
+        return Palette.newPalette(paletteId).tools(List.of()).toolSections(toolSections).build();
     }
 
     private List<ToolSection> getToolSectionFromDiagramDescriptionToolSection(DiagramDescription diagramDescription) {
         List<ToolSection> toolSections = new ArrayList<>();
-        diagramDescription.getToolSections().forEach(toolSection -> {
-            List<ITool> tools = new ArrayList<>();
-            toolSection.getTools().forEach(tool -> {
-                if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool singleClickOnDiagramElementTool) {
-                    SingleClickOnDiagramElementTool convertedTool = new SingleClickOnDiagramElementTool(singleClickOnDiagramElementTool.getId(), singleClickOnDiagramElementTool.getLabel(), singleClickOnDiagramElementTool.getImageURL(), singleClickOnDiagramElementTool.getTargetDescriptions(), singleClickOnDiagramElementTool.getSelectionDescriptionId(), singleClickOnDiagramElementTool.isAppliesToDiagramRoot());
-                    tools.add(convertedTool);
-                }
-                if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool singleClickOnTwoDiagramElementsTool) {
-                    List<SingleClickOnTwoDiagramElementsCandidate> candidates = new ArrayList<>();
-                    singleClickOnTwoDiagramElementsTool.getCandidates().forEach(candidate -> {
-                        SingleClickOnTwoDiagramElementsCandidate convertedCandidate = new SingleClickOnTwoDiagramElementsCandidate(candidate.getSources(), candidate.getTargets());
-                        candidates.add(convertedCandidate);
-                    });
-                    SingleClickOnTwoDiagramElementsTool convertedTool = new SingleClickOnTwoDiagramElementsTool(singleClickOnTwoDiagramElementsTool.getId(), singleClickOnTwoDiagramElementsTool.getLabel(), singleClickOnTwoDiagramElementsTool.getImageURL(), candidates);
-                    tools.add(convertedTool);
-                }
-            });
-            ToolSection convertedToolSection = new ToolSection(toolSection.getId(), toolSection.getLabel(), toolSection.getImageURL(), tools);
+        diagramDescription.getPalettes().forEach(palette -> {
+            List<ITool> tools = palette.getTools().stream().map(this::convertTool).filter(Objects::nonNull).toList();
+            ToolSection convertedToolSection = new ToolSection(palette.getId(), "", "", tools);
             toolSections.add(convertedToolSection);
         });
+        diagramDescription.getPalettes().stream()
+                .flatMap(palette -> palette.getToolSections().stream())
+                .forEach(toolSection -> {
+                    List<ITool> tools = toolSection.getTools().stream().map(this::convertTool).filter(Objects::nonNull).toList();
+                    ToolSection convertedToolSection = new ToolSection(toolSection.getId(), toolSection.getLabel(), toolSection.getImageURL(), tools);
+                    toolSections.add(convertedToolSection);
+                });
         return toolSections;
+    }
+
+    private ITool convertTool(org.eclipse.sirius.components.diagrams.tools.ITool tool) {
+        ITool convertedTool = null;
+        if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool singleClickOnDiagramElementTool) {
+            convertedTool = new SingleClickOnDiagramElementTool(singleClickOnDiagramElementTool.getId(), singleClickOnDiagramElementTool.getLabel(), singleClickOnDiagramElementTool.getImageURL(), singleClickOnDiagramElementTool.getTargetDescriptions(), singleClickOnDiagramElementTool.getSelectionDescriptionId(), singleClickOnDiagramElementTool.isAppliesToDiagramRoot());
+        }
+        if (tool instanceof org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool singleClickOnTwoDiagramElementsTool) {
+            List<SingleClickOnTwoDiagramElementsCandidate> candidates = new ArrayList<>();
+            singleClickOnTwoDiagramElementsTool.getCandidates().forEach(candidate -> {
+                SingleClickOnTwoDiagramElementsCandidate convertedCandidate = new SingleClickOnTwoDiagramElementsCandidate(candidate.getSources(), candidate.getTargets());
+                candidates.add(convertedCandidate);
+            });
+            convertedTool = new SingleClickOnTwoDiagramElementsTool(singleClickOnTwoDiagramElementsTool.getId(), singleClickOnTwoDiagramElementsTool.getLabel(), singleClickOnTwoDiagramElementsTool.getImageURL(), candidates);
+        }
+        return convertedTool;
     }
 
     private ToolSection filteredTools(Object targetElement, Object diagramElement, ToolSection toolSection, org.eclipse.sirius.diagram.description.DiagramDescription siriusDiagramDescription,
@@ -245,9 +251,9 @@ public class CompatibilityToolSectionsProvider implements IToolSectionsProvider 
         if (diagramElementDescription instanceof DiagramDescription) {
             descriptionId = ((DiagramDescription) diagramElementDescription).getId();
         } else if (diagramElementDescription instanceof NodeDescription) {
-            descriptionId = ((NodeDescription) diagramElementDescription).getId().toString();
+            descriptionId = ((NodeDescription) diagramElementDescription).getId();
         } else if (diagramElementDescription instanceof EdgeDescription) {
-            descriptionId = ((EdgeDescription) diagramElementDescription).getId().toString();
+            descriptionId = ((EdgeDescription) diagramElementDescription).getId();
         }
         return descriptionId;
     }

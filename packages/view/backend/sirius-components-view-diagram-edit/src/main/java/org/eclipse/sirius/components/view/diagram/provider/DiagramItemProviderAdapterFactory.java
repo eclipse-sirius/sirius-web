@@ -657,6 +657,78 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.DiagramToolSection} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DiagramToolSectionItemProvider diagramToolSectionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramToolSection}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDiagramToolSectionAdapter() {
+        if (this.diagramToolSectionItemProvider == null) {
+            this.diagramToolSectionItemProvider = new DiagramToolSectionItemProvider(this);
+        }
+
+        return this.diagramToolSectionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.NodeToolSection} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected NodeToolSectionItemProvider nodeToolSectionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeToolSection}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createNodeToolSectionAdapter() {
+        if (this.nodeToolSectionItemProvider == null) {
+            this.nodeToolSectionItemProvider = new NodeToolSectionItemProvider(this);
+        }
+
+        return this.nodeToolSectionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.EdgeToolSection} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected EdgeToolSectionItemProvider edgeToolSectionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeToolSection}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEdgeToolSectionAdapter() {
+        if (this.edgeToolSectionItemProvider == null) {
+            this.edgeToolSectionItemProvider = new EdgeToolSectionItemProvider(this);
+        }
+
+        return this.edgeToolSectionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -804,6 +876,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.deleteViewItemProvider.dispose();
         if (this.selectionDescriptionItemProvider != null)
             this.selectionDescriptionItemProvider.dispose();
+        if (this.diagramToolSectionItemProvider != null)
+            this.diagramToolSectionItemProvider.dispose();
+        if (this.nodeToolSectionItemProvider != null)
+            this.nodeToolSectionItemProvider.dispose();
+        if (this.edgeToolSectionItemProvider != null)
+            this.edgeToolSectionItemProvider.dispose();
     }
 
     /**

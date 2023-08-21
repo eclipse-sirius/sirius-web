@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getLabelEditTool <em>Label Edit Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getEdgeTools <em>Edge Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodePalette()
@@ -100,5 +101,17 @@ public interface NodePalette extends EObject {
      * @generated
      */
     EList<EdgeTool> getEdgeTools();
+
+    /**
+     * Returns the value of the '<em><b>Tool Sections</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.view.diagram.NodeToolSection}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Tool Sections</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodePalette_ToolSections()
+     * @model containment="true"
+     * @generated
+     */
+    EList<NodeToolSection> getToolSections();
 
 } // NodePalette

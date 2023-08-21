@@ -149,7 +149,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
-                .toolSections(toolConverter.createPaletteBasedToolSections(viewDiagramDescription, converterContext))
+                .palettes(toolConverter.createPaletteBasedToolSections(viewDiagramDescription, converterContext))
                 .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
                 .build();
         // @formatter:on
@@ -173,7 +173,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private String computeDiagramLabel(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
-        String title = variableManager.get(DiagramDescription.LABEL, String.class).orElseGet(() -> this.evaluateString(interpreter, variableManager, viewDiagramDescription.getTitleExpression()));
+        String title = variableManager.get(DiagramDescription.LABEL, String.class)
+                .orElseGet(() -> this.evaluateString(interpreter, variableManager, viewDiagramDescription.getTitleExpression()));
         if (title == null || title.isBlank()) {
             return DEFAULT_DIAGRAM_LABEL;
         } else {
@@ -277,7 +278,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private NodeStyleDescription findEffectiveStyle(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
-        return viewNodeDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager)).map(ConditionalNodeStyle::getStyle).findFirst()
+        return viewNodeDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                .map(ConditionalNodeStyle::getStyle).findFirst()
                 .orElseGet(viewNodeDescription::getStyle);
     }
 
@@ -307,7 +309,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private LabelDescription getLabelDescription(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
-            return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
+            return parentId + LabelDescription.LABEL_SUFFIX;
         };
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
@@ -332,7 +334,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
-            return String.valueOf(parentId) + labelSuffix;
+            return parentId + labelSuffix;
         };
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {

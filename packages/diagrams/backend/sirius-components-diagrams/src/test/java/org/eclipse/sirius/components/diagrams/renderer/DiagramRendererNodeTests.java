@@ -92,15 +92,15 @@ public class DiagramRendererNodeTests {
 
         assertThat(diagram.getNodes()).hasSize(1);
         assertThat(diagram.getNodes()).extracting(Node::getTargetObjectId).noneMatch(String::isBlank);
-        assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(t -> t.toString().isBlank());
+        assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(String::isBlank);
         assertThat(diagram.getNodes()).extracting(Node::getType).noneMatch(String::isBlank);
-        assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(t -> NODE_RECTANGULAR.equals(t));
+        assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == -1 && s.getWidth() == -1);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(text -> LABEL_TEXT.equals(text));
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(color -> LABEL_COLOR.equals(color));
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(LABEL_TEXT::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isBold).allMatch(bold -> bold);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
@@ -129,15 +129,15 @@ public class DiagramRendererNodeTests {
 
         assertThat(diagram.getNodes()).hasSize(1);
         assertThat(diagram.getNodes()).extracting(Node::getTargetObjectId).noneMatch(String::isBlank);
-        assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(t -> t.toString().isBlank());
+        assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(String::isBlank);
         assertThat(diagram.getNodes()).extracting(Node::getType).noneMatch(String::isBlank);
-        assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(t -> NODE_RECTANGULAR.equals(t));
+        assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_RECTANGULAR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof RectangularNodeStyle);
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 200 && s.getWidth() == 10);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getId).allMatch(id -> UUID.nameUUIDFromBytes(LABEL_ID.getBytes()).toString().equals(id));
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(text -> LABEL_TEXT.equals(text));
-        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(color -> LABEL_COLOR.equals(color));
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getText).allMatch(LABEL_TEXT::equals);
+        assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getColor).allMatch(LABEL_COLOR::equals);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::getFontSize).allMatch(size -> LABEL_FONT_SIZE == size);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isBold).allMatch(bold -> bold);
         assertThat(diagram.getNodes()).extracting(Node::getLabel).extracting(Label::getStyle).extracting(LabelStyle::isItalic).allMatch(italic -> italic);
@@ -217,9 +217,9 @@ public class DiagramRendererNodeTests {
 
         assertThat(diagram.getNodes()).hasSize(1);
         assertThat(diagram.getNodes()).extracting(Node::getTargetObjectId).noneMatch(String::isBlank);
-        assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(t -> t.toString().isBlank());
+        assertThat(diagram.getNodes()).extracting(Node::getDescriptionId).noneMatch(String::isBlank);
         assertThat(diagram.getNodes()).extracting(Node::getType).noneMatch(String::isBlank);
-        assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(t -> NODE_IMAGE.equals(t));
+        assertThat(diagram.getNodes()).extracting(Node::getType).allMatch(NODE_IMAGE::equals);
         assertThat(diagram.getNodes()).extracting(Node::getBorderNodes).allMatch(List::isEmpty);
         assertThat(diagram.getNodes()).extracting(Node::getStyle).allMatch(s -> s instanceof ImageNodeStyle);
 
@@ -277,7 +277,7 @@ public class DiagramRendererNodeTests {
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(List.of(nodeDescription))
                 .edgeDescriptions(new ArrayList<>())
-                .toolSections(List.of())
+                .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
         // @formatter:on

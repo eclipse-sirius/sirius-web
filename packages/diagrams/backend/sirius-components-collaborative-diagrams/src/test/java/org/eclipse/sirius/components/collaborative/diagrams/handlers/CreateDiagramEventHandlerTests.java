@@ -49,6 +49,7 @@ import reactor.core.publisher.Sinks.One;
  * @author sbegaudeau
  */
 public class CreateDiagramEventHandlerTests {
+
     @Test
     public void testDiagramCreation() {
         IRepresentationDescriptionSearchService representationDescriptionSearchService = new IRepresentationDescriptionSearchService.NoOp() {
@@ -60,7 +61,7 @@ public class CreateDiagramEventHandlerTests {
                         .canCreatePredicate(variableManager -> Boolean.TRUE)
                         .edgeDescriptions(new ArrayList<>())
                         .labelProvider(variableManager -> "label")
-                        .toolSections(List.of())
+                        .palettes(List.of())
                         .nodeDescriptions(new ArrayList<>())
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .dropHandler(variableManager -> new Failure(""))

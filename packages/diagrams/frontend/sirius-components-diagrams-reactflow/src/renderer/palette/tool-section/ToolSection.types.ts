@@ -10,16 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+import { GQLTool, GQLToolSection } from '../Palette.types';
 
-import java.util.UUID;
+export interface ToolSectionProps {
+  toolSection: GQLToolSection;
+  onToolClick: (tool: GQLTool) => void;
+}
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
-
-/**
- * The input for the "Get Tool Sections" query.
- *
- * @author arichard
- */
-public record GetToolSectionsInput(UUID id, String editingContextId, String representationId, String diagramElementId) implements IDiagramInput {
+export interface ToolSectionState {
+  expanded: boolean;
 }

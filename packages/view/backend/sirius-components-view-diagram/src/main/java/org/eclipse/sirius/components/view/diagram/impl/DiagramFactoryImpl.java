@@ -28,11 +28,13 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -44,6 +46,7 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
@@ -138,6 +141,12 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createDeleteView();
             case DiagramPackage.SELECTION_DESCRIPTION:
                 return this.createSelectionDescription();
+            case DiagramPackage.DIAGRAM_TOOL_SECTION:
+                return this.createDiagramToolSection();
+            case DiagramPackage.NODE_TOOL_SECTION:
+                return this.createNodeToolSection();
+            case DiagramPackage.EDGE_TOOL_SECTION:
+                return this.createEdgeToolSection();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -451,6 +460,39 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public SelectionDescription createSelectionDescription() {
         SelectionDescriptionImpl selectionDescription = new SelectionDescriptionImpl();
         return selectionDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DiagramToolSection createDiagramToolSection() {
+        DiagramToolSectionImpl diagramToolSection = new DiagramToolSectionImpl();
+        return diagramToolSection;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NodeToolSection createNodeToolSection() {
+        NodeToolSectionImpl nodeToolSection = new NodeToolSectionImpl();
+        return nodeToolSection;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EdgeToolSection createEdgeToolSection() {
+        EdgeToolSectionImpl edgeToolSection = new EdgeToolSectionImpl();
+        return edgeToolSection;
     }
 
     /**

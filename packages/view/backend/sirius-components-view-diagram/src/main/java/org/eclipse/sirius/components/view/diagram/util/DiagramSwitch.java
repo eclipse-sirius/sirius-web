@@ -29,12 +29,14 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -45,12 +47,14 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.diagram.ToolSection;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -394,6 +398,40 @@ public class DiagramSwitch<T> extends Switch<T> {
             case DiagramPackage.SELECTION_DESCRIPTION: {
                 SelectionDescription selectionDescription = (SelectionDescription) theEObject;
                 T result = this.caseSelectionDescription(selectionDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.TOOL_SECTION: {
+                ToolSection toolSection = (ToolSection) theEObject;
+                T result = this.caseToolSection(toolSection);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.DIAGRAM_TOOL_SECTION: {
+                DiagramToolSection diagramToolSection = (DiagramToolSection) theEObject;
+                T result = this.caseDiagramToolSection(diagramToolSection);
+                if (result == null)
+                    result = this.caseToolSection(diagramToolSection);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.NODE_TOOL_SECTION: {
+                NodeToolSection nodeToolSection = (NodeToolSection) theEObject;
+                T result = this.caseNodeToolSection(nodeToolSection);
+                if (result == null)
+                    result = this.caseToolSection(nodeToolSection);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.EDGE_TOOL_SECTION: {
+                EdgeToolSection edgeToolSection = (EdgeToolSection) theEObject;
+                T result = this.caseEdgeToolSection(edgeToolSection);
+                if (result == null)
+                    result = this.caseToolSection(edgeToolSection);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -851,6 +889,64 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseSelectionDescription(SelectionDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Tool Section</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Tool Section</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseToolSection(ToolSection object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Tool Section</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Tool Section</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDiagramToolSection(DiagramToolSection object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Node Tool Section</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Node Tool Section</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNodeToolSection(NodeToolSection object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Edge Tool Section</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Edge Tool Section</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEdgeToolSection(EdgeToolSection object) {
         return null;
     }
 

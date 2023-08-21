@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
@@ -65,20 +66,25 @@ public class ConnectorToolsProviderDiagram implements IConnectorToolsProvider {
         boolean diagramElementDescriptionsPresent = optDiagramDescription.isPresent() && optSourceDiagramElementDescriptionId.isPresent() && optTargetDiagramElementDescriptionId.isPresent();
 
         List<ITool> result = null;
-        if (diagramElementDescriptionsPresent && optDiagramDescription.get() instanceof DiagramDescription) {
-            DiagramDescription diagramDescription = (DiagramDescription) optDiagramDescription.get();
+        if (diagramElementDescriptionsPresent && optDiagramDescription.get() instanceof DiagramDescription diagramDescription) {
             var optSourceDiagramElementDescription = this.mapDescriptionIdToDescription(optSourceDiagramElementDescriptionId.get(), diagramDescription, sourceDiagramElement);
             var optTargetDiagramElementDescription = this.mapDescriptionIdToDescription(optTargetDiagramElementDescriptionId.get(), diagramDescription, targetDiagramElement);
 
             if (optSourceDiagramElementDescription.isPresent() && optTargetDiagramElementDescription.isPresent()) {
                 Object sourceDescription = optSourceDiagramElementDescription.get();
                 Object targetDescription = optTargetDiagramElementDescription.get();
-                result = diagramDescription.getToolSections().stream().flatMap(toolSection -> toolSection.getTools().stream())
+                result = diagramDescription.getPalettes().stream()
+                        .flatMap(palette -> Stream.concat(
+                                palette.getTools().stream(),
+                                palette.getToolSections().stream()
+                                        .flatMap(toolSection -> toolSection.getTools().stream())
+                        ))
                         .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance)
                         .map(SingleClickOnTwoDiagramElementsTool.class::cast)
                         .filter(tool -> {
                             List<SingleClickOnTwoDiagramElementsCandidate> candidates = tool.getCandidates();
-                            return candidates.stream().anyMatch(candidate -> candidate.getSources().contains(sourceDescription) && candidate.getTargets().contains(targetDescription));
+                            return candidates.stream()
+                                    .anyMatch(candidate -> candidate.getSources().contains(sourceDescription) && candidate.getTargets().contains(targetDescription));
                         }).collect(Collectors.toList());
             }
         }

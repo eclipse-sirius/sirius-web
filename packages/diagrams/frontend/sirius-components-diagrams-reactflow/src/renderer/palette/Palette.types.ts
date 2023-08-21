@@ -66,6 +66,7 @@ export interface GQLInvokeSingleClickOnDiagramElementToolInput {
   startingPositionY: number;
   selectedObjectId: string | null;
 }
+
 export interface GQLTool {
   id: string;
   label: string;
@@ -83,6 +84,7 @@ export interface GQLGetToolSectionsVariables {
   diagramId: string;
   diagramElementId: string;
 }
+
 export interface GQLGetToolSectionsData {
   viewer: GQLViewer;
 }
@@ -108,6 +110,12 @@ export interface GQLRepresentationDescription {
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  palette: GQLPalette;
+}
+
+export interface GQLPalette {
+  id: string;
+  tools: GQLTool[];
   toolSections: GQLToolSection[];
 }
 

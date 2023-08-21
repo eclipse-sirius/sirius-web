@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 
@@ -36,6 +37,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl#getDropTool <em>Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl#getNodeTools <em>Node Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl#getToolSections <em>Tool
+ * Sections</em>}</li>
  * </ul>
  *
  * @generated
@@ -60,6 +63,16 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
      * @ordered
      */
     protected EList<NodeTool> nodeTools;
+
+    /**
+     * The cached value of the '{@link #getToolSections() <em>Tool Sections</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getToolSections()
+     * @generated
+     * @ordered
+     */
+    protected EList<DiagramToolSection> toolSections;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -147,12 +160,27 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
      * @generated
      */
     @Override
+    public EList<DiagramToolSection> getToolSections() {
+        if (this.toolSections == null) {
+            this.toolSections = new EObjectContainmentEList<>(DiagramToolSection.class, this, DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS);
+        }
+        return this.toolSections;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
                 return this.basicSetDropTool(null, msgs);
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
+                return ((InternalEList<?>) this.getToolSections()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -169,6 +197,8 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
                 return this.getDropTool();
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 return this.getNodeTools();
+            case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
+                return this.getToolSections();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -189,6 +219,10 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
                 this.getNodeTools().clear();
                 this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                this.getToolSections().addAll((Collection<? extends DiagramToolSection>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -207,6 +241,9 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 this.getNodeTools().clear();
                 return;
+            case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
+                this.getToolSections().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -223,6 +260,8 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
                 return this.dropTool != null;
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
+            case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
+                return this.toolSections != null && !this.toolSections.isEmpty();
         }
         return super.eIsSet(featureID);
     }

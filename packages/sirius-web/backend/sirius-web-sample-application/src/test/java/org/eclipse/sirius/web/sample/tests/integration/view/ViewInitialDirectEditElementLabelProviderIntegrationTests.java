@@ -67,6 +67,7 @@ import reactor.test.StepVerifier;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends AbstractIntegrationTests {
+
     @Autowired
     private GraphQL graphQL;
 
@@ -163,7 +164,8 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
 
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
-                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
@@ -195,7 +197,8 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
 
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
-                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
@@ -234,7 +237,8 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
 
         var createDocumentExecutionInput = ExecutionInput.newExecutionInput()
                 .query(createDocumentQuery)
-                .variables(Map.of("input", this.objectMapper.convertValue(createDocumentInput, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(createDocumentInput, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var createDocumentExecutionResult = this.graphQL.execute(createDocumentExecutionInput);
         assertThat(createDocumentExecutionResult.getErrors()).isEmpty();
@@ -268,7 +272,8 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
 
         var createRootObjectExecutionInput = ExecutionInput.newExecutionInput()
                 .query(createRootObjectQuery)
-                .variables(Map.of("input", this.objectMapper.convertValue(createRootObjectInput, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(createRootObjectInput, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var createRootObjectExecutionResult = this.graphQL.execute(createRootObjectExecutionInput);
         assertThat(createRootObjectExecutionResult.getErrors()).isEmpty();
@@ -333,7 +338,8 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
         var input = new CreateRepresentationInput(UUID.randomUUID(), this.projectId.toString(), representationDescriptionId, this.rootObjectId.toString(), "Diagram");
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
-                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { })))
+                .variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() {
+                })))
                 .build();
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
@@ -355,7 +361,8 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
                       representation(representationId: $diagramId) {
                         description {
                           ... on DiagramDescription {
-                            toolSections(diagramElementId: $diagramElementId) {
+                            palette(diagramElementId: $diagramElementId) {
+                              id
                               tools {
                                 id
                                 label
@@ -373,7 +380,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
                 "editingContextId", this.projectId.toString(),
                 "diagramId", this.representationId.toString(),
                 "diagramElementId", this.representationId.toString()
-                );
+        );
 
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
@@ -385,7 +392,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
         String toolId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(executionResult.toSpecification());
-            toolId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representation.description.toolSections[0].tools[0].id");
+            toolId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representation.description.palette.tools[0].id");
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
         }
@@ -408,11 +415,12 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
                     0d,
                     0d,
                     null
-                    );
+            );
 
             var invokeToolExecutionInput = ExecutionInput.newExecutionInput()
                     .query(invokeToolQuery)
-                    .variables(Map.of("input", this.objectMapper.convertValue(invokeToolInput, new TypeReference<Map<String, Object>>() { })))
+                    .variables(Map.of("input", this.objectMapper.convertValue(invokeToolInput, new TypeReference<Map<String, Object>>() {
+                    })))
                     .build();
             var invokeToolExecutionResult = this.graphQL.execute(invokeToolExecutionInput);
             assertThat(invokeToolExecutionResult.getErrors()).isEmpty();
@@ -452,7 +460,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
                 "editingContextId", this.projectId.toString(),
                 "diagramId", this.representationId.toString(),
                 "labelId", labelId
-                );
+        );
 
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)

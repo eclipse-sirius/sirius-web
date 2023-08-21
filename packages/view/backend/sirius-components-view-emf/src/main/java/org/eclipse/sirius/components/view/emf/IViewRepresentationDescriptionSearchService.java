@@ -30,4 +30,27 @@ public interface IViewRepresentationDescriptionSearchService {
     Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId);
 
     Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId);
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author frouene
+     */
+    class NoOp implements IViewRepresentationDescriptionSearchService {
+
+        @Override
+        public Optional<RepresentationDescription> findById(String representationDescriptionId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId) {
+            return Optional.empty();
+        }
+    }
 }

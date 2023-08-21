@@ -126,12 +126,14 @@
     <genClasses ecoreClass="diagram.ecore#//DiagramPalette">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/dropTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/nodeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/toolSections"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//NodePalette">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/deleteTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/labelEditTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/nodeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/edgeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/toolSections"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//EdgePalette">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgePalette/deleteTool"/>
@@ -140,6 +142,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgePalette/endLabelEditTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgePalette/nodeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgePalette/edgeReconnectionTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgePalette/toolSections"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//Tool">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/name"/>
@@ -172,6 +175,19 @@
     <genClasses ecoreClass="diagram.ecore#//SelectionDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDescription/selectionCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDescription/selectionMessage"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="diagram.ecore#//ToolSection">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ToolSection/name"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//DiagramToolSection">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramToolSection/nodeTools"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//NodeToolSection">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeToolSection/nodeTools"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeToolSection/edgeTools"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//EdgeToolSection">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeToolSection/nodeTools"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

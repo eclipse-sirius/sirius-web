@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropTool <em>Drop Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getNodeTools <em>Node Tools</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramPalette()
@@ -64,5 +65,17 @@ public interface DiagramPalette extends EObject {
      * @generated
      */
     EList<NodeTool> getNodeTools();
+
+    /**
+     * Returns the value of the '<em><b>Tool Sections</b></em>' containment reference list. The list contents are of
+     * type {@link org.eclipse.sirius.components.view.diagram.DiagramToolSection}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Tool Sections</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramPalette_ToolSections()
+     * @model containment="true"
+     * @generated
+     */
+    EList<DiagramToolSection> getToolSections();
 
 } // DiagramPalette

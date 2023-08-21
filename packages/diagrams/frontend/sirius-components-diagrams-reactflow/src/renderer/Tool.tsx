@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { useContext } from 'react';
 import { ToolProps } from './Tool.types';
 
@@ -25,13 +26,17 @@ const useToolStyle = makeStyles(() => ({
   },
 }));
 
-export const Tool = ({ tool, onClick }: ToolProps) => {
+export const Tool = ({ tool, onClick, thumbnail }: ToolProps) => {
   const { id, label, imageURL } = tool;
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const classes = useToolStyle();
   let image: JSX.Element | null = null;
   if (imageURL) {
     image = <img height="16" width="16" alt="" src={httpOrigin + imageURL} title={label} />;
+  }
+  let labelContent: JSX.Element | null = null;
+  if (!thumbnail) {
+    labelContent = <Typography>{label}</Typography>;
   }
 
   const onToolClick: React.MouseEventHandler<HTMLDivElement> = () => {
@@ -41,6 +46,7 @@ export const Tool = ({ tool, onClick }: ToolProps) => {
   return (
     <div key={id} className={classes.tool} onClick={onToolClick} data-testid={`${tool.label} - Tool`}>
       {image}
+      {labelContent}
     </div>
   );
 };

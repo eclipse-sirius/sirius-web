@@ -84,6 +84,18 @@ public class NodePaletteBuilder {
         return this;
     }
 
+    /**
+     * Setter for ToolSections.
+     *
+     * @generated
+     */
+    public NodePaletteBuilder toolSections(org.eclipse.sirius.components.view.diagram.NodeToolSection ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeToolSection value : values) {
+            this.getNodePalette().getToolSections().add(value);
+        }
+        return this;
+    }
+
 
 }
 

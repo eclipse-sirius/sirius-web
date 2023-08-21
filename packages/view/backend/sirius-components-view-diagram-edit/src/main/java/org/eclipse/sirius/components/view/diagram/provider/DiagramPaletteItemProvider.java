@@ -76,6 +76,7 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS);
         }
         return this.childrenFeatures;
     }
@@ -137,6 +138,7 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(DiagramPalette.class)) {
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
+            case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -156,6 +158,8 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_TOOL, DiagramFactory.eINSTANCE.createDropTool()));
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
+
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createDiagramToolSection()));
     }
 
     /**

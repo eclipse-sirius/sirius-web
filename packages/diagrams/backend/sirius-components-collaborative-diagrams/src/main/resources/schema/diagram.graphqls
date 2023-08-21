@@ -159,6 +159,12 @@ type Size {
   width: Float!
 }
 
+type Palette {
+  id: ID!
+  tools: [Tool]!
+  toolSections: [ToolSection]!
+}
+
 type ToolSection {
   id: ID!
   label: String!
@@ -199,7 +205,7 @@ type DiagramDescription implements RepresentationDescription {
   autoLayout: Boolean!
   nodeDescriptions: [NodeDescription!]!
   edgeDescriptions: [EdgeDescription!]!
-  toolSections(diagramElementId: ID!): [ToolSection!]!
+  palette(diagramElementId: ID!): Palette!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   debug: Boolean
@@ -324,9 +330,9 @@ input InvokeSingleClickOnDiagramElementToolInput {
 union InvokeSingleClickOnDiagramElementToolPayload = ErrorPayload | InvokeSingleClickOnDiagramElementToolSuccessPayload
 
 type InvokeSingleClickOnDiagramElementToolSuccessPayload {
-    id: ID!
-    newSelection: WorkbenchSelection
-    messages: [Message]!
+  id: ID!
+  newSelection: WorkbenchSelection
+  messages: [Message]!
 }
 
 input UpdateNodeBoundsInput {

@@ -104,7 +104,7 @@ public class DiagramElementChangeVisibilityTests {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return id.toString() + "__" + object;
+                return id + "__" + object;
             }
             return null;
         };
@@ -195,7 +195,7 @@ public class DiagramElementChangeVisibilityTests {
                 .labelProvider(variableManager -> DIAGRAM_LABEL)
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
-                .toolSections(List.of())
+                .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
 
@@ -317,7 +317,7 @@ public class DiagramElementChangeVisibilityTests {
         assertThat(newDiagram2.getNodes()).filteredOn(n -> modifiedNodeId.contains(n.getId())).extracting(Node::getState).allMatch(s -> s == ViewModifier.Hidden);
         assertThat(newDiagram2.getNodes()).filteredOn(n -> !modifiedNodeIds.contains(n.getId())).extracting(Node::getState).allMatch(s -> s == ViewModifier.Normal);
         assertThat(newDiagram2.getEdges()).filteredOn(e -> modifiedNodeIds.contains(e.getSourceId()) || modifiedNodeIds.contains(e.getTargetId())).extracting(Edge::getState)
-        .allMatch(s -> s == ViewModifier.Hidden);
+                .allMatch(s -> s == ViewModifier.Hidden);
 
         return new DiagramTestData(diagram, nodeDescriptions, List.of(edgeDescription, edge2Description));
     }

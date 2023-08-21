@@ -15,7 +15,7 @@ import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useCallback, useEffect } from 'react';
-import { EditLabelAction, SModelElement, isWithEditableLabel } from 'sprotty';
+import { EditLabelAction, isWithEditableLabel, SModelElement } from 'sprotty';
 import { GQLDeletionPolicy } from '../representation/DiagramRepresentation.types';
 import { BorderNode, Diagram, Edge, Node, ViewModifier } from '../sprotty/Diagram.types';
 import { HIDE_CONTEXTUAL_TOOLBAR_ACTION } from '../sprotty/DiagramServer';
@@ -27,8 +27,8 @@ import {
   GQLFadeDiagramElementData,
   GQLFadeDiagramElementInput,
   GQLFadeDiagramElementVariables,
-  GQLGetToolSectionsData,
-  GQLGetToolSectionsVariables,
+  GQLGetPaletteData,
+  GQLGetPaletteVariables,
   GQLHideDiagramElementData,
   GQLHideDiagramElementInput,
   GQLHideDiagramElementVariables,
@@ -41,11 +41,11 @@ import {
 import {
   ContextualPaletteContext,
   ContextualPaletteEvent,
+  contextualPaletteMachine,
   HandleToolSectionsResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
-  contextualPaletteMachine,
 } from './ContextualPaletteMachine';
 import closeImagePath from './icons/close.svg';
 import connectorImagePath from './icons/connector.svg';
@@ -54,17 +54,15 @@ import fadeImagePath from './icons/tonality.svg';
 import { ToolSection } from './tool-section/ToolSection';
 import { Tool } from './tool/Tool';
 
-export const getToolSectionsQuery = gql`
-  query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
+export const getPaletteQuery = gql`
+  query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
         representation(representationId: $diagramId) {
           description {
             ... on DiagramDescription {
-              toolSections(diagramElementId: $diagramElementId) {
+              palette(diagramElementId: $diagramElementId) {
                 id
-                label
-                imageURL
                 tools {
                   __typename
                   id
@@ -84,6 +82,34 @@ export const getToolSectionsQuery = gql`
                       }
                       targets {
                         id
+                      }
+                    }
+                  }
+                }
+                toolSections {
+                  id
+                  label
+                  imageURL
+                  tools {
+                    __typename
+                    id
+                    label
+                    imageURL
+                    ... on SingleClickOnDiagramElementTool {
+                      targetDescriptions {
+                        id
+                      }
+                      appliesToDiagramRoot
+                      selectionDescriptionId
+                    }
+                    ... on SingleClickOnTwoDiagramElementsTool {
+                      candidates {
+                        sources {
+                          id
+                        }
+                        targets {
+                          id
+                        }
                       }
                     }
                   }
@@ -226,16 +252,16 @@ export const ContextualPalette = ({
     contextualPaletteMachine
   );
   const { toast, contextualPalette } = value as SchemaValue;
-  const { toolSections, message } = context;
+  const { palette, message } = context;
 
   const diagramElementId = diagramElement.id;
   const isRoot: boolean = diagramElement instanceof Diagram;
 
   const {
-    loading: toolSectionsLoading,
-    data: toolSectionsData,
-    error: toolSectionsError,
-  } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery, {
+    loading: paletteLoading,
+    data: paletteData,
+    error: paletteError,
+  } = useQuery<GQLGetPaletteData, GQLGetPaletteVariables>(getPaletteQuery, {
     variables: {
       editingContextId,
       diagramId: representationId,
@@ -244,22 +270,23 @@ export const ContextualPalette = ({
   });
 
   useEffect(() => {
-    if (!toolSectionsLoading) {
-      if (toolSectionsData) {
-        const event: HandleToolSectionsResultEvent = { type: 'HANDLE_TOOL_SECTIONS_RESULT', result: toolSectionsData };
+    if (!paletteLoading) {
+      if (paletteData) {
+        const event: HandleToolSectionsResultEvent = { type: 'HANDLE_PALETTE_RESULT', result: paletteData };
         dispatch(event);
       }
-      if (toolSectionsError) {
-        const { message } = toolSectionsError;
+      if (paletteError) {
+        const { message } = paletteError;
         const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
         dispatch(showToastEvent);
       }
     }
-  }, [toolSectionsLoading, toolSectionsData, toolSectionsError, dispatch]);
+  }, [paletteLoading, paletteData, paletteError, dispatch]);
 
-  const atLeastOneSingleClickOnTwoDiagramElementsTool = toolSections.some((toolSection) => {
-    return toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool');
-  });
+  const atLeastOneSingleClickOnTwoDiagramElementsTool =
+    palette?.toolSections.some((toolSection) => {
+      return toolSection.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool');
+    }) || palette?.tools.some((tool) => tool.__typename === 'SingleClickOnTwoDiagramElementsTool');
 
   let invokeLabelEdit;
   if (renameable && isWithEditableLabel(diagramElement)) {
@@ -354,7 +381,9 @@ export const ContextualPalette = ({
   const updateCollapsingState = (collapsingState: GQLCollapsingState) =>
     collapseExpandElement(diagramElement.id, collapsingState);
 
-  let toolSectionsCount = toolSections.length + 1;
+  let toolSectionsCount = palette
+    ? palette.toolSections.filter((toolSection) => toolSection.tools.length > 0).length + palette.tools.length + 1
+    : 0;
   if (atLeastOneSingleClickOnTwoDiagramElementsTool) {
     toolSectionsCount = toolSectionsCount + 1;
   }
@@ -416,7 +445,7 @@ export const ContextualPalette = ({
   const props: ContextualPaletteStyleProps = { toolSectionsCount };
   const classes = useContextualPaletteStyle(props);
 
-  const toolSectionElements: JSX.Element[] = toolSections.map((toolSection: GQLToolSection) => {
+  const toolElements: JSX.Element[] = palette?.tools.map((tool: GQLTool) => {
     const handleToolClick = (tool: GQLTool) => {
       if (tool.id === 'edit') {
         invokeLabelEdit();
@@ -429,20 +458,46 @@ export const ContextualPalette = ({
       } else if (tool.id === 'collapse') {
         updateCollapsingState(GQLCollapsingState.COLLAPSED);
       } else {
-        invokeTool(tool, toolSection);
+        invokeTool(tool, null);
       }
     };
 
-    const defaultToolId: string | undefined = defaultTools.find(
-      (ts) => ts.toolSectionId === toolSection.id
-    )?.defaultToolId;
-
     return (
-      <div className={classes.toolSection} key={diagramElementId + toolSection.id}>
-        <ToolSection toolSection={toolSection} defaultToolId={defaultToolId} onToolClick={handleToolClick} />
+      <div className={classes.toolSection} key={diagramElementId + tool.id}>
+        <Tool tool={tool} thumbnail onClick={handleToolClick} />
       </div>
     );
   });
+
+  const toolSectionElements: JSX.Element[] = palette?.toolSections
+    .filter((toolSection) => toolSection.tools.length > 0)
+    .map((toolSection: GQLToolSection) => {
+      const handleToolClick = (tool: GQLTool) => {
+        if (tool.id === 'edit') {
+          invokeLabelEdit();
+        } else if (tool.id === 'semantic-delete') {
+          invokeDelete(GQLDeletionPolicy.SEMANTIC);
+        } else if (tool.id === 'graphical-delete') {
+          invokeDelete(GQLDeletionPolicy.GRAPHICAL);
+        } else if (tool.id === 'expand') {
+          updateCollapsingState(GQLCollapsingState.EXPANDED);
+        } else if (tool.id === 'collapse') {
+          updateCollapsingState(GQLCollapsingState.COLLAPSED);
+        } else {
+          invokeTool(tool, toolSection);
+        }
+      };
+
+      const defaultToolId: string | undefined = defaultTools.find(
+        (ts) => ts.toolSectionId === toolSection.id
+      )?.defaultToolId;
+
+      return (
+        <div className={classes.toolSection} key={diagramElementId + toolSection.id}>
+          <ToolSection toolSection={toolSection} defaultToolId={defaultToolId} onToolClick={handleToolClick} />
+        </div>
+      );
+    });
 
   const invokeVisibilityTool = (tool: GQLTool) => {
     if (tool.id === 'fade') {
@@ -453,14 +508,15 @@ export const ContextualPalette = ({
   };
 
   const paletteContent =
-    contextualPalette === 'loaded' && !toolSectionsLoading && toolSectionsData ? (
+    contextualPalette === 'loaded' && !paletteLoading && paletteData ? (
       <div className={classes.toolbar} data-testid="PopupToolbar" key="PopupToolbar">
         <div className={classes.toolEntries}>
           {atLeastOneSingleClickOnTwoDiagramElementsTool ? (
             <div className={classes.connectorTool} key="connectorTool">
-              <Tool tool={connectorTool} thumbnail onClick={() => invokeConnectorTool(toolSections)} />
+              <Tool tool={connectorTool} thumbnail onClick={() => invokeConnectorTool(palette)} />
             </div>
           ) : null}
+          {toolElements}
           {toolSectionElements}
           {!isRoot ? (
             <div className={classes.visibilitySection} data-testid="visibilitySection">

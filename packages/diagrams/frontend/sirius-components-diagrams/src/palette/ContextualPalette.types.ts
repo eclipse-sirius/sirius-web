@@ -22,7 +22,7 @@ export interface ContextualPaletteProps {
   renameable: boolean;
   defaultTools: ToolSectionWithDefaultTool[];
   invokeTool: (tool: GQLTool, toolSection: GQLToolSection) => void;
-  invokeConnectorTool: (toolSections: GQLToolSection[]) => void;
+  invokeConnectorTool: (palette: GQLPalette) => void;
   invokeDelete: (deletionPolicy: GQLDeletionPolicy) => void | null;
   invokeClose: () => void;
 }
@@ -31,12 +31,13 @@ export interface ContextualPaletteStyleProps {
   toolSectionsCount: number;
 }
 
-export interface GQLGetToolSectionsVariables {
+export interface GQLGetPaletteVariables {
   editingContextId: string;
   diagramId: string;
   diagramElementId: string;
 }
-export interface GQLGetToolSectionsData {
+
+export interface GQLGetPaletteData {
   viewer: GQLViewer;
 }
 
@@ -61,6 +62,12 @@ export interface GQLRepresentationDescription {
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  palette: GQLPalette;
+}
+
+export interface GQLPalette {
+  id: string;
+  tools: GQLTool[];
   toolSections: GQLToolSection[];
 }
 
@@ -96,6 +103,7 @@ export interface GQLSingleClickOnTwoDiagramElementsCandidate {
 export interface GQLDiagramElementDescription {
   id: string;
 }
+
 export interface GQLNodeDescription {
   id: string;
 }
@@ -115,6 +123,7 @@ export interface GQLHideDiagramElementVariables {
 export interface GQLHideDiagramElementPayload {
   __typename: string;
 }
+
 export interface GQLHideDiagramElementData {
   hideDiagramElement: GQLHideDiagramElementPayload;
 }
@@ -134,9 +143,11 @@ export interface GQLFadeDiagramElementVariables {
 export interface GQLFadeDiagramElementPayload {
   __typename: string;
 }
+
 export interface GQLFadeDiagramElementData {
   fadeDiagramElement: GQLFadeDiagramElementPayload;
 }
+
 export enum GQLCollapsingState {
   EXPANDED = 'EXPANDED',
   COLLAPSED = 'COLLAPSED',
