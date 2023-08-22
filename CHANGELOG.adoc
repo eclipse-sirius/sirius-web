@@ -8,6 +8,7 @@
 - Add support for Precondition Expressions in Tools
 - Color management in View
 - Add support for image overlay
+- Add the possibility to contribute custom palette tools
 
 === Architectural decision records
 
