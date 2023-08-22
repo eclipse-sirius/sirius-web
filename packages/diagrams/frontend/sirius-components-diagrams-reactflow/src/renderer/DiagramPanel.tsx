@@ -19,18 +19,27 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import GridOffIcon from '@material-ui/icons/GridOff';
 import GridOnIcon from '@material-ui/icons/GridOn';
+import ImageIcon from '@material-ui/icons/Image';
 import ShareIcon from '@material-ui/icons/Share';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 
+import { toSvg } from 'html-to-image';
 import { useState } from 'react';
-import { Panel, useReactFlow } from 'reactflow';
+import { Panel, Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from 'reactflow';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { ShareDiagramDialog } from './ShareDiagramDialog';
 import { useFadeDiagramElements } from './fade/useFadeDiagramElements';
 import { useHideDiagramElements } from './hide/useHideDiagramElements';
+
+const downloadImage = (dataUrl: string) => {
+  const a: HTMLAnchorElement = document.createElement('a');
+  a.setAttribute('download', 'diagram.svg');
+  a.setAttribute('href', dataUrl);
+  a.click();
+};
 
 export const DiagramPanel = ({
   fullscreen,
@@ -50,18 +59,35 @@ export const DiagramPanel = ({
   const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
   const handleCloseDialog = () => setState((prevState) => ({ ...prevState, dialogOpen: null }));
 
-  const reactFlowInstance = useReactFlow();
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
 
   const onUnfadeAll = () => fadeDiagramElements([...getAllElementsIds()], false);
   const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
 
+  const handleExport = () => {
+    const nodesBounds: Rect = getRectOfNodes(reactFlow.getNodes());
+    const imageWidth: number = nodesBounds.width;
+    const imageHeight: number = nodesBounds.height;
+    const transform: Transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.2);
+
+    const viewport: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__viewport');
+    if (viewport) {
+      toSvg(viewport, {
+        backgroundColor: '#ffffff',
+        width: imageWidth,
+        height: imageHeight,
+        style: {
+          width: imageWidth.toString(),
+          height: imageHeight.toString(),
+          transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
+        },
+      }).then(downloadImage);
+    }
+  };
+
   const getAllElementsIds = () => {
-    return [
-      ...reactFlowInstance.getNodes().map((elem) => elem.id),
-      ...reactFlowInstance.getEdges().map((elem) => elem.id),
-    ];
+    return [...reactFlow.getNodes().map((elem) => elem.id), ...reactFlow.getEdges().map((elem) => elem.id)];
   };
 
   return (
@@ -88,6 +114,14 @@ export const DiagramPanel = ({
           </IconButton>
           <IconButton size="small" onClick={handleShare}>
             <ShareIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            aria-label="export to svg"
+            title="Export to SVG"
+            onClick={handleExport}
+            data-testid="export-diagram-to-svg">
+            <ImageIcon />
           </IconButton>
           {snapToGrid ? (
             <IconButton size="small" onClick={() => onSnapToGrid(false)}>
