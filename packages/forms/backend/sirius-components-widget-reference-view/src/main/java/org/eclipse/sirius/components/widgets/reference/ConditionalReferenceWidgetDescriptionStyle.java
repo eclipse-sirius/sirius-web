@@ -18,9 +18,10 @@ import org.eclipse.sirius.components.view.Conditional;
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Conditional Reference Widget Description
  * Style</b></em>'. <!-- end-user-doc -->
  *
+ *
+ * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getConditionalReferenceWidgetDescriptionStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getConditionalReferenceWidgetDescriptionStyle()
  */
 public interface ConditionalReferenceWidgetDescriptionStyle extends Conditional, ReferenceWidgetDescriptionStyle {
 

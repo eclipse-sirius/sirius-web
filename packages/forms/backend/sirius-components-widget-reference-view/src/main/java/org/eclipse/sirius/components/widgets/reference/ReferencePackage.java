@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * </ul>
  * <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.widgets.reference.ReferenceFactory
  * @model kind="package"
  * @generated
- * @see org.eclipse.sirius.components.widgets.reference.ReferenceFactory
  */
 public interface ReferencePackage extends EPackage {
 
@@ -62,9 +62,9 @@ public interface ReferencePackage extends EPackage {
      * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
+     * @generated
      */
     int REFERENCE_WIDGET_DESCRIPTION = 0;
 
@@ -100,7 +100,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT;
+    int REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Reference Owner Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -146,6 +146,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
     /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -154,6 +155,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -161,24 +163,27 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT;
+    int REFERENCE_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
     /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
      * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl
      * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
+     * @generated
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE = 1;
+
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT;
+    int REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 0;
+
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -186,6 +191,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -193,6 +199,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 2;
+
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -200,6 +207,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 3;
+
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -207,6 +215,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 4;
+
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -214,6 +223,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 5;
+
     /**
      * The number of structural features of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -222,6 +232,7 @@ public interface ReferencePackage extends EPackage {
      * @ordered
      */
     int REFERENCE_WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_STYLE_FEATURE_COUNT + 6;
+
     /**
      * The number of operations of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -229,23 +240,26 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REFERENCE_WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT;
+    int REFERENCE_WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT + 0;
+
     /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
      * <em>Conditional Reference Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl
      * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getConditionalReferenceWidgetDescriptionStyle()
+     * @generated
      */
     int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE = 2;
+
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     ReferencePackage eINSTANCE = org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl.init();
+
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -260,7 +274,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE = ViewPackage.CONDITIONAL_FEATURE_COUNT;
+    int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -318,7 +332,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT;
+    int CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
 
     /**
      * Returns the meta object for class
@@ -326,8 +340,8 @@ public interface ReferencePackage extends EPackage {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription
+     * @generated
      */
     EClass getReferenceWidgetDescription();
 
@@ -337,9 +351,9 @@ public interface ReferencePackage extends EPackage {
      * <em>Reference Owner Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Owner Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression()
      * @see #getReferenceWidgetDescription()
+     * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceOwnerExpression();
 
@@ -349,9 +363,9 @@ public interface ReferencePackage extends EPackage {
      * <em>Reference Name Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Reference Name Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression()
      * @see #getReferenceWidgetDescription()
+     * @generated
      */
     EAttribute getReferenceWidgetDescription_ReferenceNameExpression();
 
@@ -373,9 +387,9 @@ public interface ReferencePackage extends EPackage {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getStyle()
      * @see #getReferenceWidgetDescription()
+     * @generated
      */
     EReference getReferenceWidgetDescription_Style();
 
@@ -385,9 +399,9 @@ public interface ReferencePackage extends EPackage {
      * <em>Conditional Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getConditionalStyles()
      * @see #getReferenceWidgetDescription()
+     * @generated
      */
     EReference getReferenceWidgetDescription_ConditionalStyles();
 
@@ -397,8 +411,8 @@ public interface ReferencePackage extends EPackage {
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle
+     * @generated
      */
     EClass getReferenceWidgetDescriptionStyle();
 
@@ -408,9 +422,9 @@ public interface ReferencePackage extends EPackage {
      * <em>Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the reference '<em>Color</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle#getColor()
      * @see #getReferenceWidgetDescriptionStyle()
+     * @generated
      */
     EReference getReferenceWidgetDescriptionStyle_Color();
 
@@ -420,8 +434,8 @@ public interface ReferencePackage extends EPackage {
      * <em>Conditional Reference Widget Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Reference Widget Description Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle
+     * @generated
      */
     EClass getConditionalReferenceWidgetDescriptionStyle();
 
@@ -431,9 +445,9 @@ public interface ReferencePackage extends EPackage {
      * Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression()
      * @see #getReferenceWidgetDescription()
+     * @generated
      */
     EAttribute getReferenceWidgetDescription_IsEnabledExpression();
 
@@ -465,9 +479,9 @@ public interface ReferencePackage extends EPackage {
          * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl <em>Widget
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionImpl
          * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescription()
+         * @generated
          */
         EClass REFERENCE_WIDGET_DESCRIPTION = eINSTANCE.getReferenceWidgetDescription();
 
@@ -516,9 +530,9 @@ public interface ReferencePackage extends EPackage {
          * '{@link org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl <em>Widget
          * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.widgets.reference.impl.ReferenceWidgetDescriptionStyleImpl
          * @see org.eclipse.sirius.components.widgets.reference.impl.ReferencePackageImpl#getReferenceWidgetDescriptionStyle()
+         * @generated
          */
         EClass REFERENCE_WIDGET_DESCRIPTION_STYLE = eINSTANCE.getReferenceWidgetDescriptionStyle();
 

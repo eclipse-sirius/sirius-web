@@ -46,6 +46,7 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
                 var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
                         .idProvider(vm -> id)
+                        .targetObjectIdProvider(vm -> "")
                         .labelProvider(vm -> ReferenceWidgetPreviewConverterProvider.this.getWidgetLabel(referenceDescription, "Reference"))
                         .iconURLProvider(variableManager -> "")
                         .isReadOnlyProvider(variableManager -> false)
@@ -64,19 +65,14 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                         })
                         .ownerIdProvider(variableManager -> "")
                         .itemClickHandlerProvider(variableManager -> new Success())
-                        .styleProvider(variableManager -> {
-                            ReferenceWidgetDescriptionStyle style = referenceDescription.getStyle();
-                            if (style == null) {
-                                return null;
-                            }
-                            return new ReferenceWidgetStyleProvider(style).apply(variableManager);
-                        });
+                        .styleProvider(variableManager -> ReferenceWidgetPreviewConverterProvider.this.getWidgetStyle(referenceDescription, variableManager));
                 if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
                     String helpText = ReferenceWidgetPreviewConverterProvider.this.getWidgetHelpText(referenceDescription);
                     builder.helpTextProvider(variableManager -> helpText);
                 }
                 return builder.build();
             }
+
         };
     }
 
@@ -99,6 +95,14 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
             helpText = helpExpression;
         }
         return helpText;
+    }
+
+    private ReferenceWidgetStyle getWidgetStyle(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
+        ReferenceWidgetDescriptionStyle style = referenceDescription.getStyle();
+        if (style == null) {
+            return null;
+        }
+        return new ReferenceWidgetStyleProvider(style).apply(variableManager);
     }
 
 }

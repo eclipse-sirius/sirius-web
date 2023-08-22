@@ -88,7 +88,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         org.eclipse.sirius.components.view.form.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.form.FormDescription) representationDescription;
         List<Switch<AbstractWidgetDescription>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter,
                 this.editService, this.objectService, this.feedbackMessageService)).toList();
-        Switch<AbstractWidgetDescription> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters), this.feedbackMessageService);
+        Switch<AbstractControlDescription> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters), this.feedbackMessageService);
 
         List<PageDescription> pageDescriptions = viewFormDescription.getPages()
                 .stream()
@@ -109,7 +109,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .build();
     }
 
-    private PageDescription instantiatePage(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, Switch<AbstractWidgetDescription> dispatcher,
+    private PageDescription instantiatePage(org.eclipse.sirius.components.view.form.PageDescription viewPageDescription, Switch<AbstractControlDescription> dispatcher,
             AQLInterpreter interpreter) {
 
         List<GroupDescription> groupDescriptions = viewPageDescription.getGroups().stream()
@@ -133,8 +133,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
                 .build();
     }
 
-    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, Switch<AbstractWidgetDescription> dispatcher, AQLInterpreter interpreter) {
-        List<AbstractControlDescription> controlDescriptions = viewGroupDescription.getWidgets().stream()
+    private GroupDescription instantiateGroup(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription, Switch<AbstractControlDescription> dispatcher, AQLInterpreter interpreter) {
+        List<AbstractControlDescription> controlDescriptions = viewGroupDescription.getChildren().stream()
                 .map(dispatcher::doSwitch)
                 .filter(Objects::nonNull)
                 .map(AbstractControlDescription.class::cast)

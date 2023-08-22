@@ -1,0 +1,72 @@
+= ADR-108 - Improve the widget id computation
+
+== Context
+
+When rendering a `Form`, we currently compute the id of a widget instance using a combination of:
+
+. the (EMF) URI of the underlying semantic element;
+. a integer counter which is incremented on every use (every time a new id is computed by `WidgetIdProvider`).
+
+Both of these inputs are passed as variables (resp. `self` and `widgetIdProviderCounter`).
+
+With the addition of conditional widgets and for loops, this is not enough to reliably produce consistent ids for the "same" widget instances accross renders.
+
+For example, assume a group with two children widgets W1 and W2 on the same semantic element (same `self`), but with the first widget wrapped inside an `IfDescription`.
+On a first render, where the first widget's condition is `true`, we will render W1 and W2 with ids `${uri(self)}#0` and `${uri(self)}#1`.
+After a model change and a new render where W1's condition is now `false`, we will render W2 with an id of `${uri(self)}#0`, which was the id of W1 in the previous state.
+
+More complex scenarios are of course possible when `ForDescription` where a given widget description can produce a different number of widget instances on each render.
+
+The (bad) consequence is that the frontend uses the widget's id to track the user focus, and more dangerously, to invoke edition operations requested by the user.
+With unstable and unpredicable ids, it is possible for the user to request a (possibly dangerous) operation on a widget it knows under a given id, but the backend to invoke the corresponding action on a different widget (the one with the given id at the time the backend executes the request).
+
+== Decision
+
+We will improve `WidgetIdProvider` by using the same approach as already used for diagram nodes (see ADR-007 - Adopt stable identifiers for diagrams).
+
+The input variables that will be used will be:
+
+. `parentElementId` (a String): the id of the widget's parent element in the `Form`.
+Passed by the parent element's `render()` method in the VariableManager it creates to render its children.
+. `controlDescriptionId` (a String): the id of the control's `AbstractControlDescription`.
+Passed by the widget's own `render()` method in a child VariableManager used to compute it's id.
+. `targetObjectId` (a String): the id of the semantic element (`self`) for the widget.
+Passed by the widget's own `render()` method in a child VariableManager used to compute it's id.
+. `widgetLabel` (a String): the display label of the widget.
+This will be used instead of the numeric counter.
+The rationale is that inside a given parent (`parentElementId`), if a given control description produces multiple instances for the same semantic element, they should have distinctive labels, or the end-user would not be able to distinguish them anyway.
+Passed by the widget's own `render()` method in a child VariableManager used to compute it's id.
+
+These variables will be combined to produce a `UUID` using the same approach as in `NodeComponent.computeNodeId(String)`:
+
+[source,java]
+----
+private String computeWidgetId(String parentElementId, String controlDescriptionId, String targetObjectId, String label) {
+    String rawIdentifier = parentElementId + controlDescriptionId + targetObjectId + label;
+    return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
+}
+----
+
+We will no longer use the `WidgetIdCounter`, even combined with the previous values.
+It makes the id of a widget depend on the number of widgets rendered before it, which is not stable in the presence of loops and conditionals.
+
+The widget's label will need to be computed _before_ its id so that we can pass the label to the id provider.
+
+All widgets will need to provide a `Function<VariableManager, String> targetObjectIdProvider`, as is done on e.g. diagram elements.
+The implementation of this `targetObjectIdProvider` will be based on `IObjectService`;
+
+[source,java]
+----
+this.self(variableManager).map(this.objectService::getId).orElse(null)
+----
+
+== Status
+
+Accepted
+
+== Consequences
+
+* Widgets will have a more stable id which no longer depends on the number of widgets rendered before them inside the same form.
+* The widgets' id will depend on the text of their labels, which technically may change between renders of "the same" widget.
+This is judged acceptable as the label is the main way an end-user _identifies_ a widget in the UI.
+Making this label dynamic for a given widget would produce a confusing UI anyway so should probably be avoided.

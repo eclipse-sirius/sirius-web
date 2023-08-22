@@ -48,8 +48,14 @@ public class SelectComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         SelectDescription selectDescription = this.props.getSelectDescription();
 
-        String id = selectDescription.getIdProvider().apply(variableManager);
         String label = selectDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, selectDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, selectDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = selectDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = selectDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = selectDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = selectDescription.getOptionsProvider().apply(variableManager);

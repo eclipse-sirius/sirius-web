@@ -459,5 +459,25 @@ public class FormBuilders {
         return new ConditionalContainerBorderStyleBuilder();
     }
 
+    /**
+     * Instantiate a FormElementForBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public FormElementForBuilder newFormElementFor() {
+        return new FormElementForBuilder();
+    }
+
+    /**
+     * Instantiate a FormElementIfBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public FormElementIfBuilder newFormElementIf() {
+        return new FormElementIfBuilder();
+    }
+
 
 }

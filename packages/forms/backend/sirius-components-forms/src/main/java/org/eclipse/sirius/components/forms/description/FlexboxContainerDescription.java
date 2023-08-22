@@ -36,7 +36,7 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
 
     private FlexDirection flexDirection;
 
-    private List<AbstractWidgetDescription> children;
+    private List<AbstractControlDescription> children;
 
     private Function<VariableManager, ContainerBorderStyle> borderStyleProvider;
 
@@ -56,7 +56,7 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
         return this.flexDirection;
     }
 
-    public List<AbstractWidgetDescription> getChildren() {
+    public List<AbstractControlDescription> getChildren() {
         return this.children;
     }
 
@@ -86,13 +86,15 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private FlexDirection flexDirection;
 
-        private List<AbstractWidgetDescription> children;
+        private List<AbstractControlDescription> children;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
 
@@ -113,6 +115,11 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
             return this;
         }
 
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
+            return this;
+        }
+
         public Builder labelProvider(Function<VariableManager, String> labelProvider) {
             this.labelProvider = Objects.requireNonNull(labelProvider);
             return this;
@@ -128,7 +135,7 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
             return this;
         }
 
-        public Builder children(List<AbstractWidgetDescription> children) {
+        public Builder children(List<AbstractControlDescription> children) {
             this.children = Objects.requireNonNull(children);
             return this;
         }
@@ -161,6 +168,7 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
         public FlexboxContainerDescription build() {
             FlexboxContainerDescription flexboxContainerDescription = new FlexboxContainerDescription();
             flexboxContainerDescription.id = Objects.requireNonNull(this.id);
+            flexboxContainerDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             flexboxContainerDescription.idProvider = Objects.requireNonNull(this.idProvider);
             flexboxContainerDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             flexboxContainerDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);

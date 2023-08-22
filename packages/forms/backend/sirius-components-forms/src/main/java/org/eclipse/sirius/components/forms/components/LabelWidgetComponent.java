@@ -42,8 +42,14 @@ public class LabelWidgetComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         LabelDescription labelDescription = this.props.getLabelDescription();
 
-        String id = labelDescription.getIdProvider().apply(variableManager);
         String label = labelDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, labelDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, labelDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = labelDescription.getIdProvider().apply(idVariableManager);
+
         String value = labelDescription.getValueProvider().apply(variableManager);
         var style = labelDescription.getStyleProvider().apply(variableManager);
 

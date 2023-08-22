@@ -40,6 +40,9 @@ import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionSt
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.ImageDescription;
@@ -140,9 +143,18 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case FormPackage.FORM_ELEMENT_DESCRIPTION: {
+                FormElementDescription formElementDescription = (FormElementDescription) theEObject;
+                T result = this.caseFormElementDescription(formElementDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case FormPackage.WIDGET_DESCRIPTION: {
                 WidgetDescription widgetDescription = (WidgetDescription) theEObject;
                 T result = this.caseWidgetDescription(widgetDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(widgetDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -153,6 +165,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(barChartDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(barChartDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -161,6 +175,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseButtonDescription(buttonDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(buttonDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(buttonDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -171,6 +187,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(checkboxDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(checkboxDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -179,6 +197,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseFlexboxContainerDescription(flexboxContainerDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(flexboxContainerDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(flexboxContainerDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -189,6 +209,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(imageDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(imageDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -197,6 +219,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseLabelDescription(labelDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(labelDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(labelDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -207,6 +231,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(linkDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(linkDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -215,6 +241,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseListDescription(listDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(listDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(listDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -225,6 +253,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(multiSelectDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(multiSelectDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -233,6 +263,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.casePieChartDescription(pieChartDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(pieChartDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(pieChartDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -243,6 +275,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(radioDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(radioDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -251,6 +285,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseRichTextDescription(richTextDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(richTextDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(richTextDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -261,6 +297,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(selectDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(selectDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -270,6 +308,8 @@ public class FormSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(textAreaDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(textAreaDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -278,6 +318,8 @@ public class FormSwitch<T> extends Switch<T> {
                 T result = this.caseTextfieldDescription(textfieldDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(textfieldDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(textfieldDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -615,6 +657,24 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case FormPackage.FORM_ELEMENT_FOR: {
+                FormElementFor formElementFor = (FormElementFor) theEObject;
+                T result = this.caseFormElementFor(formElementFor);
+                if (result == null)
+                    result = this.caseFormElementDescription(formElementFor);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.FORM_ELEMENT_IF: {
+                FormElementIf formElementIf = (FormElementIf) theEObject;
+                T result = this.caseFormElementIf(formElementIf);
+                if (result == null)
+                    result = this.caseFormElementDescription(formElementIf);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -661,6 +721,21 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseGroupDescription(GroupDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFormElementDescription(FormElementDescription object) {
         return null;
     }
 
@@ -1290,7 +1365,8 @@ public class FormSwitch<T> extends Switch<T> {
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
      *
-     * @param object the target of the switch.
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Container Border Style</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1304,12 +1380,41 @@ public class FormSwitch<T> extends Switch<T> {
      * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      *
-     * @param object the target of the switch.
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conditional Container Border Style</em>'.
-     * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
      */
     public T caseConditionalContainerBorderStyle(ConditionalContainerBorderStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element For</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element For</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFormElementFor(FormElementFor object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element If</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element If</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFormElementIf(FormElementIf object) {
         return null;
     }
 

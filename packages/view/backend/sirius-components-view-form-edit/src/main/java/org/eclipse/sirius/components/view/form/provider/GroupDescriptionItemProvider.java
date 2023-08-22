@@ -130,7 +130,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS);
-            this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS);
+            this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN);
             this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__BORDER_STYLE);
             this.childrenFeatures.add(FormPackage.Literals.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
         }
@@ -200,7 +200,7 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
-            case FormPackage.GROUP_DESCRIPTION__WIDGETS:
+            case FormPackage.GROUP_DESCRIPTION__CHILDREN:
             case FormPackage.GROUP_DESCRIPTION__BORDER_STYLE:
             case FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -221,35 +221,39 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS, FormFactory.eINSTANCE.createButtonDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createBarChartDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFormElementFor()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createButtonDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFormElementIf()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createCheckboxDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createBarChartDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createFlexboxContainerDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createButtonDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createImageDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createCheckboxDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createLabelDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFlexboxContainerDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createLinkDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createImageDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createListDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createLabelDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createMultiSelectDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createLinkDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createPieChartDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createListDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createRadioDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createMultiSelectDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createRichTextDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createPieChartDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createSelectDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createRadioDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createTextAreaDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createRichTextDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, FormFactory.eINSTANCE.createTextfieldDescription()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createSelectDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createTextAreaDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createTextfieldDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__BORDER_STYLE, FormFactory.eINSTANCE.createContainerBorderStyle()));
 
@@ -267,11 +271,11 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == FormPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS
+        boolean qualify = childFeature == FormPackage.Literals.GROUP_DESCRIPTION__TOOLBAR_ACTIONS || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN
                 || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__BORDER_STYLE || childFeature == FormPackage.Literals.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

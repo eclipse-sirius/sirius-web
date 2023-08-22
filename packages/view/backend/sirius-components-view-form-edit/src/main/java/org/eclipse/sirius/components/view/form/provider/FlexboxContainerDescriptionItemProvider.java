@@ -199,6 +199,9 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFormElementFor()));
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFormElementIf()));
+
         BarChartDescription barChartDescription = FormFactory.eINSTANCE.createBarChartDescription();
         barChartDescription.setStyle(FormFactory.eINSTANCE.createBarChartDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, barChartDescription));
@@ -277,7 +280,7 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
                 || childFeature == FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

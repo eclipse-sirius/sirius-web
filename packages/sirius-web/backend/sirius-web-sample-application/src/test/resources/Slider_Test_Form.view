@@ -3,14 +3,14 @@
   <descriptions xmi:type="form:FormDescription" name="Slider Widget Test" domainType="flow::System" titleExpression="Slider Widget Test">
     <pages>
       <groups>
-        <widgets xmi:type="form:TextfieldDescription" name="Weight" labelExpression="Weight" valueExpression="aql:self.weight">
+        <children xmi:type="form:TextfieldDescription" name="Weight" labelExpression="Weight" valueExpression="aql:self.weight">
           <body xmi:type="view:SetValue" featureName="weight" valueExpression="aql:newValue"/>
           <style/>
-        </widgets>
-        <widgets xmi:type="customwidgets:SliderDescription" name="Weight" labelExpression="Weight" minValueExpression="0" maxValueExpression="100" currentValueExpression="aql:self.weight">
+        </children>
+        <children xmi:type="customwidgets:SliderDescription" name="Weight" labelExpression="Weight" minValueExpression="0" maxValueExpression="100" currentValueExpression="aql:self.weight">
           <body xmi:type="view:SetValue" featureName="weight" valueExpression="aql:newValue"/>
-        </widgets>
-        <widgets xmi:type="form:FlexboxContainerDescription">
+        </children>
+        <children xmi:type="form:FlexboxContainerDescription">
           <children xmi:type="form:TextfieldDescription" name="Temp" labelExpression="Temp" valueExpression="aql:self.temperature">
             <body xmi:type="view:SetValue" featureName="temperature" valueExpression="aql:newValue"/>
             <style/>
@@ -18,7 +18,7 @@
           <children xmi:type="customwidgets:SliderDescription" name="temperature" labelExpression="temperature" minValueExpression="-273" maxValueExpression="500" currentValueExpression="aql:self.temperature">
             <body xmi:type="view:SetValue" featureName="temperature" valueExpression="aql:newValue"/>
           </children>
-        </widgets>
+        </children>
       </groups>
     </pages>
   </descriptions>

@@ -106,9 +106,9 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
                 try {
                     if (container instanceof GroupDescription) {
                         if (container.equals(widgetToMove.eContainer())) {
-                            ((GroupDescription) container).getWidgets().move(index, widgetToMove);
+                            ((GroupDescription) container).getChildren().move(index, widgetToMove);
                         } else {
-                            ((GroupDescription) container).getWidgets().add(index, widgetToMove);
+                            ((GroupDescription) container).getChildren().add(index, widgetToMove);
                         }
                         success = true;
                     } else if (container instanceof FlexboxContainerDescription) {

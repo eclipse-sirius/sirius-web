@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.emf.properties;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -44,16 +45,20 @@ public class EBooleanIfDescriptionProvider {
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    public EBooleanIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
+    public EBooleanIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
+        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
     }
 
     public IfDescription getIfDescription() {
         // @formatter:off
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
-                .widgetDescription(this.getCheckboxDescription())
+                .controlDescriptions(List.of(this.getCheckboxDescription()))
                 .build();
         // @formatter:on
     }
@@ -68,6 +73,7 @@ public class EBooleanIfDescriptionProvider {
     private CheckboxDescription getCheckboxDescription() {
         // @formatter:off
         return CheckboxDescription.newCheckboxDescription(CHECKBOX_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .valueProvider(this.getValueProvider())

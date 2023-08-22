@@ -91,13 +91,13 @@ public class GroupDescriptionBuilder {
     }
 
     /**
-     * Setter for Widgets.
+     * Setter for Children.
      *
      * @generated
      */
-    public GroupDescriptionBuilder widgets(org.eclipse.sirius.components.view.form.WidgetDescription ... values) {
-        for (org.eclipse.sirius.components.view.form.WidgetDescription value : values) {
-            this.getGroupDescription().getWidgets().add(value);
+    public GroupDescriptionBuilder children(org.eclipse.sirius.components.view.form.FormElementDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.FormElementDescription value : values) {
+            this.getGroupDescription().getChildren().add(value);
         }
         return this;
     }
@@ -111,7 +111,6 @@ public class GroupDescriptionBuilder {
         this.getGroupDescription().setBorderStyle(value);
         return this;
     }
-
     /**
      * Setter for ConditionalBorderStyles.
      *

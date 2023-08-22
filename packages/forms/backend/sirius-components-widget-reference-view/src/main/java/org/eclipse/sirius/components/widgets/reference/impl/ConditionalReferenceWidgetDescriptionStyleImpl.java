@@ -54,20 +54,42 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getFontSize()
      * @generated
      * @ordered
-     * @see #getFontSize()
      */
     protected static final int FONT_SIZE_EDEFAULT = 14;
+
+    /**
+     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected int fontSize = FONT_SIZE_EDEFAULT;
+
     /**
      * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #isItalic()
      * @generated
      * @ordered
-     * @see #isItalic()
      */
     protected static final boolean ITALIC_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected boolean italic = ITALIC_EDEFAULT;
+
     /**
      * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -77,42 +99,7 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
      * @see #isBold()
      */
     protected static final boolean BOLD_EDEFAULT = false;
-    /**
-     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isUnderline()
-     */
-    protected static final boolean UNDERLINE_EDEFAULT = false;
-    /**
-     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isStrikeThrough()
-     */
-    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
-    /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getFontSize()
-     */
-    protected int fontSize = FONT_SIZE_EDEFAULT;
-    /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isItalic()
-     */
-    protected boolean italic = ITALIC_EDEFAULT;
+
     /**
      * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -122,22 +109,44 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
      * @see #isBold()
      */
     protected boolean bold = BOLD_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean UNDERLINE_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #isUnderline()
      * @generated
      * @ordered
-     * @see #isUnderline()
      */
     protected boolean underline = UNDERLINE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #isStrikeThrough()
      * @generated
      * @ordered
-     * @see #isStrikeThrough()
      */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
@@ -405,7 +414,7 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
             case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                this.setColor(null);
+                this.setColor((UserColor) null);
                 return;
         }
         super.eUnset(featureID);
@@ -443,7 +452,10 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == WidgetDescriptionStyle.class) {
-            return -1;
+            switch (derivedFeatureID) {
+                default:
+                    return -1;
+            }
         }
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
@@ -462,10 +474,12 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
             }
         }
         if (baseClass == ReferenceWidgetDescriptionStyle.class) {
-            if (derivedFeatureID == ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR) {
-                return ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
+            switch (derivedFeatureID) {
+                case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
+                    return ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
+                default:
+                    return -1;
             }
-            return -1;
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
@@ -478,7 +492,10 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == WidgetDescriptionStyle.class) {
-            return -1;
+            switch (baseFeatureID) {
+                default:
+                    return -1;
+            }
         }
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
@@ -497,10 +514,12 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
             }
         }
         if (baseClass == ReferenceWidgetDescriptionStyle.class) {
-            if (baseFeatureID == ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR) {
-                return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
+            switch (baseFeatureID) {
+                case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
+                    return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
+                default:
+                    return -1;
             }
-            return -1;
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
@@ -515,18 +534,19 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (fontSize: " +
-                this.fontSize +
-                ", italic: " +
-                this.italic +
-                ", bold: " +
-                this.bold +
-                ", underline: " +
-                this.underline +
-                ", strikeThrough: " +
-                this.strikeThrough +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (fontSize: ");
+        result.append(this.fontSize);
+        result.append(", italic: ");
+        result.append(this.italic);
+        result.append(", bold: ");
+        result.append(this.bold);
+        result.append(", underline: ");
+        result.append(this.underline);
+        result.append(", strikeThrough: ");
+        result.append(this.strikeThrough);
+        result.append(')');
+        return result.toString();
     }
 
 } // ConditionalReferenceWidgetDescriptionStyleImpl

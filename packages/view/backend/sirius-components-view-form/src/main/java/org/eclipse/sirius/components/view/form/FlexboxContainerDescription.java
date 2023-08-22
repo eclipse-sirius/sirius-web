@@ -41,14 +41,15 @@ public interface FlexboxContainerDescription extends WidgetDescription {
 
     /**
      * Returns the value of the '<em><b>Children</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.form.WidgetDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * {@link org.eclipse.sirius.components.view.form.FormElementDescription}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @return the value of the '<em>Children</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_Children()
      * @model containment="true"
      * @generated
      */
-    EList<WidgetDescription> getChildren();
+    EList<FormElementDescription> getChildren();
 
     /**
      * Returns the value of the '<em><b>Flex Direction</b></em>' attribute. The default value is <code>"row"</code>. The
@@ -82,10 +83,10 @@ public interface FlexboxContainerDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsEnabledExpression(String)
      * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_IsEnabledExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsEnabledExpression();
 
@@ -94,9 +95,10 @@ public interface FlexboxContainerDescription extends WidgetDescription {
      * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression <em>Is Enabled
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Is Enabled Expression</em>' attribute.
      * @see #getIsEnabledExpression()
+     * @generated
      */
     void setIsEnabledExpression(String value);
 
@@ -105,10 +107,10 @@ public interface FlexboxContainerDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Border Style</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setBorderStyle(ContainerBorderStyle)
      * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_BorderStyle()
+     * @model containment="true"
+     * @generated
      */
     ContainerBorderStyle getBorderStyle();
 
@@ -116,9 +118,10 @@ public interface FlexboxContainerDescription extends WidgetDescription {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle
      * <em>Border Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Border Style</em>' containment reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Border Style</em>' containment reference.
      * @see #getBorderStyle()
+     * @generated
      */
     void setBorderStyle(ContainerBorderStyle value);
 

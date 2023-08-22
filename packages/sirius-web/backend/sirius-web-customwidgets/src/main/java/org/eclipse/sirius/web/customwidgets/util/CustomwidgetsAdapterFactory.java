@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage;
 import org.eclipse.sirius.web.customwidgets.SliderDescription;
@@ -77,6 +78,11 @@ public class CustomwidgetsAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseFormElementDescription(FormElementDescription object) {
+            return CustomwidgetsAdapterFactory.this.createFormElementDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseWidgetDescription(WidgetDescription object) {
             return CustomwidgetsAdapterFactory.this.createWidgetDescriptionAdapter();
         }
@@ -111,6 +117,20 @@ public class CustomwidgetsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSliderDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.form.FormElementDescription <em>Element Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.FormElementDescription
+     * @generated
+     */
+    public Adapter createFormElementDescriptionAdapter() {
         return null;
     }
 

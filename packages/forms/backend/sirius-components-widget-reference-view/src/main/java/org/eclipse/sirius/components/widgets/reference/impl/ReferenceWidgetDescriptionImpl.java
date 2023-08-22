@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.widgets.reference.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -56,24 +55,7 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @see #getIsEnabledExpression()
      */
     protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getReferenceOwnerExpression()
-     */
-    protected static final String REFERENCE_OWNER_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getReferenceNameExpression()
-     */
-    protected static final String REFERENCE_NAME_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -83,22 +65,44 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * @see #getIsEnabledExpression()
      */
     protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getReferenceOwnerExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String REFERENCE_OWNER_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getReferenceOwnerExpression()
      * @generated
      * @ordered
-     * @see #getReferenceOwnerExpression()
      */
     protected String referenceOwnerExpression = REFERENCE_OWNER_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getReferenceNameExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String REFERENCE_NAME_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getReferenceNameExpression()
      * @generated
      * @ordered
-     * @see #getReferenceNameExpression()
      */
     protected String referenceNameExpression = REFERENCE_NAME_EXPRESSION_EDEFAULT;
 
@@ -106,9 +110,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBody()
      * @generated
      * @ordered
-     * @see #getBody()
      */
     protected EList<Operation> body;
 
@@ -116,9 +120,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getStyle()
      * @generated
      * @ordered
-     * @see #getStyle()
      */
     protected ReferenceWidgetDescriptionStyle style;
 
@@ -126,9 +130,9 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getConditionalStyles()
      * @generated
      * @ordered
-     * @see #getConditionalStyles()
      */
     protected EList<ConditionalReferenceWidgetDescriptionStyle> conditionalStyles;
 
@@ -268,8 +272,7 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     @Override
     public EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalReferenceWidgetDescriptionStyle.class, this,
-                    ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalReferenceWidgetDescriptionStyle.class, this, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }
@@ -393,7 +396,7 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
                 this.getBody().clear();
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                this.setStyle(null);
+                this.setStyle((ReferenceWidgetDescriptionStyle) null);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
@@ -411,11 +414,11 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
+                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                return !Objects.equals(REFERENCE_OWNER_EXPRESSION_EDEFAULT, this.referenceOwnerExpression);
+                return REFERENCE_OWNER_EXPRESSION_EDEFAULT == null ? this.referenceOwnerExpression != null : !REFERENCE_OWNER_EXPRESSION_EDEFAULT.equals(this.referenceOwnerExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                return !Objects.equals(REFERENCE_NAME_EXPRESSION_EDEFAULT, this.referenceNameExpression);
+                return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? this.referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(this.referenceNameExpression);
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
                 return this.body != null && !this.body.isEmpty();
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
@@ -436,14 +439,15 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (isEnabledExpression: " +
-                this.isEnabledExpression +
-                ", referenceOwnerExpression: " +
-                this.referenceOwnerExpression +
-                ", referenceNameExpression: " +
-                this.referenceNameExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (isEnabledExpression: ");
+        result.append(this.isEnabledExpression);
+        result.append(", referenceOwnerExpression: ");
+        result.append(this.referenceOwnerExpression);
+        result.append(", referenceNameExpression: ");
+        result.append(this.referenceNameExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // ReferenceWidgetDescriptionImpl

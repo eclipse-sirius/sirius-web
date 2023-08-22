@@ -75,6 +75,7 @@ public class RenderTextfieldTest {
     public void testRenderTextfieldWithoutProposalProvider() {
         // @formatter:off
         TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.constantProvider(TEXTFIELD_ID))
                 .idProvider(this.constantProvider(TEXTFIELD_ID))
                 .labelProvider(this.constantProvider(LABEL))
                 .valueProvider(this.constantProvider(VALUE))
@@ -105,6 +106,7 @@ public class RenderTextfieldTest {
 
         // @formatter:off
         TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.constantProvider(TEXTFIELD_ID))
                 .idProvider(this.constantProvider(TEXTFIELD_ID))
                 .labelProvider(this.constantProvider(LABEL))
                 .valueProvider(this.constantProvider(VALUE))
@@ -134,6 +136,7 @@ public class RenderTextfieldTest {
     public void testRenderTextfieldWithHelpTextProvider() {
         // @formatter:off
         TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.constantProvider(TEXTFIELD_ID))
                 .idProvider(this.constantProvider(TEXTFIELD_ID))
                 .labelProvider(this.constantProvider(LABEL))
                 .valueProvider(this.constantProvider(VALUE))
@@ -168,6 +171,7 @@ public class RenderTextfieldTest {
     public void testRenderTextfieldWithReadOnlyProvider() {
         // @formatter:off
         TextfieldDescription textDescription = TextfieldDescription.newTextfieldDescription(TEXTFIELD_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.constantProvider(TEXTFIELD_ID))
                 .idProvider(this.constantProvider(TEXTFIELD_ID))
                 .labelProvider(this.constantProvider(LABEL))
                 .valueProvider(this.constantProvider(VALUE))
@@ -223,6 +227,7 @@ public class RenderTextfieldTest {
                 .semanticElementsProvider(this.constantProvider(List.of(this.self)))
                 .build();
         FormDescription formDescription = FormDescription.newFormDescription("formDescriptionId")
+                .targetObjectIdProvider(this.constantProvider(TEXTFIELD_ID))
                 .label("formDescriptionLabel")
                 .idProvider(this.constantProvider("formId"))
                 .labelProvider(this.constantProvider("formLabel"))

@@ -22,84 +22,84 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Label Placement</b></em>', and
  * utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.form.FormPackage#getLabelPlacement()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.form.FormPackage#getLabelPlacement()
  */
 public enum LabelPlacement implements Enumerator {
     /**
      * The '<em><b>End</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #END_VALUE
      * @generated
      * @ordered
-     * @see #END_VALUE
      */
     END(0, "end", "end"),
 
     /**
      * The '<em><b>Top</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #TOP_VALUE
      * @generated
      * @ordered
-     * @see #TOP_VALUE
      */
     TOP(1, "top", "top"),
 
     /**
      * The '<em><b>Start</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #START_VALUE
      * @generated
      * @ordered
-     * @see #START_VALUE
      */
     START(2, "start", "start"),
 
     /**
      * The '<em><b>Bottom</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #BOTTOM_VALUE
      * @generated
      * @ordered
-     * @see #BOTTOM_VALUE
      */
     BOTTOM(3, "bottom", "bottom");
 
     /**
      * The '<em><b>End</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #END
      * @model name="end"
      * @generated
      * @ordered
-     * @see #END
      */
     public static final int END_VALUE = 0;
 
     /**
      * The '<em><b>Top</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #TOP
      * @model name="top"
      * @generated
      * @ordered
-     * @see #TOP
      */
     public static final int TOP_VALUE = 1;
 
     /**
      * The '<em><b>Start</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #START
      * @model name="start"
      * @generated
      * @ordered
-     * @see #START
      */
     public static final int START_VALUE = 2;
 
     /**
      * The '<em><b>Bottom</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #BOTTOM
      * @model name="bottom"
      * @generated
      * @ordered
-     * @see #BOTTOM
      */
     public static final int BOTTOM_VALUE = 3;
 
@@ -108,7 +108,7 @@ public enum LabelPlacement implements Enumerator {
      *
      * @generated
      */
-    private static final LabelPlacement[] VALUES_ARRAY = new LabelPlacement[]{END, TOP, START, BOTTOM,};
+    private static final LabelPlacement[] VALUES_ARRAY = new LabelPlacement[] { END, TOP, START, BOTTOM, };
 
     /**
      * A public read-only list of all the '<em><b>Label Placement</b></em>' enumerators. <!-- begin-user-doc --> <!--
@@ -117,18 +117,21 @@ public enum LabelPlacement implements Enumerator {
      * @generated
      */
     public static final List<LabelPlacement> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final int value;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private final String name;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -141,7 +144,7 @@ public enum LabelPlacement implements Enumerator {
      *
      * @generated
      */
-    LabelPlacement(int value, String name, String literal) {
+    private LabelPlacement(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;
@@ -151,7 +154,8 @@ public enum LabelPlacement implements Enumerator {
      * Returns the '<em><b>Label Placement</b></em>' literal with the specified literal value. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @param literal the literal.
+     * @param literal
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -169,7 +173,8 @@ public enum LabelPlacement implements Enumerator {
      * Returns the '<em><b>Label Placement</b></em>' literal with the specified name. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @param name the name.
+     * @param name
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -187,7 +192,8 @@ public enum LabelPlacement implements Enumerator {
      * Returns the '<em><b>Label Placement</b></em>' literal with the specified integer value. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @param value the integer value.
+     * @param value
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */

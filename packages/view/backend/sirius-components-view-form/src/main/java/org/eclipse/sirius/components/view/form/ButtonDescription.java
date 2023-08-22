@@ -136,10 +136,10 @@ public interface ButtonDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsEnabledExpression(String)
      * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_IsEnabledExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsEnabledExpression();
 
@@ -147,9 +147,10 @@ public interface ButtonDescription extends WidgetDescription {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getIsEnabledExpression
      * <em>Is Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Is Enabled Expression</em>' attribute.
      * @see #getIsEnabledExpression()
+     * @generated
      */
     void setIsEnabledExpression(String value);
 

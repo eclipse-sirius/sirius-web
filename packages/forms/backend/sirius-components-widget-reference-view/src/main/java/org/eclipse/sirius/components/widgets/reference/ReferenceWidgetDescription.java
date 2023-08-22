@@ -41,10 +41,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reference Owner Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setReferenceOwnerExpression(String)
      * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceOwnerExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getReferenceOwnerExpression();
 
@@ -53,9 +53,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceOwnerExpression
      * <em>Reference Owner Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Reference Owner Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Reference Owner Expression</em>' attribute.
      * @see #getReferenceOwnerExpression()
+     * @generated
      */
     void setReferenceOwnerExpression(String value);
 
@@ -64,10 +65,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Reference Name Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
-     * @generated
      * @see #setReferenceNameExpression(String)
      * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_ReferenceNameExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
+     * @generated
      */
     String getReferenceNameExpression();
 
@@ -76,9 +77,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getReferenceNameExpression
      * <em>Reference Name Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Reference Name Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Reference Name Expression</em>' attribute.
      * @see #getReferenceNameExpression()
+     * @generated
      */
     void setReferenceNameExpression(String value);
 
@@ -87,9 +89,9 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Body</em>' containment reference list.
+     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_Body()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_Body()
      */
     EList<Operation> getBody();
 
@@ -109,9 +111,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * Sets the value of the '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getStyle
      * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Style</em>' containment reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
      * @see #getStyle()
+     * @generated
      */
     void setStyle(ReferenceWidgetDescriptionStyle value);
 
@@ -132,10 +135,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsEnabledExpression(String)
      * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescription_IsEnabledExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsEnabledExpression();
 
@@ -144,9 +147,10 @@ public interface ReferenceWidgetDescription extends WidgetDescription {
      * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription#getIsEnabledExpression <em>Is
      * Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Is Enabled Expression</em>' attribute.
      * @see #getIsEnabledExpression()
+     * @generated
      */
     void setIsEnabledExpression(String value);
 

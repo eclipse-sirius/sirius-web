@@ -31,16 +31,15 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
+ * {@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription} object. <!-- begin-user-doc -->
+ * <!-- end-user-doc -->
  *
  * @generated
  */
 public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -49,8 +48,7 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -67,45 +65,36 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
     }
 
     /**
-     * This adds a property descriptor for the Reference Owner Expression feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Reference Owner Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addReferenceOwnerExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_ReferenceWidgetDescription_referenceOwnerExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description",
-                        "_UI_ReferenceWidgetDescription_referenceOwnerExpression_feature",
-                        "_UI_ReferenceWidgetDescription_type"),
-                ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ReferenceWidgetDescription_referenceOwnerExpression_feature", "_UI_ReferenceWidgetDescription_type"),
+                ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Reference Name Expression feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Reference Name Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addReferenceNameExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_ReferenceWidgetDescription_referenceNameExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description",
-                        "_UI_ReferenceWidgetDescription_referenceNameExpression_feature",
-                        "_UI_ReferenceWidgetDescription_type"),
-                ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ReferenceWidgetDescription_referenceNameExpression_feature", "_UI_ReferenceWidgetDescription_type"),
+                ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
@@ -127,40 +116,33 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
      */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
+        // Check the type of the specified child object and return the proper feature to use for
         // adding (see {@link AddCommand}) it as a child.
 
         return super.getChildFeature(object, child);
     }
 
     /**
-     * This adds a property descriptor for the Is Enabled Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_ReferenceWidgetDescription_isEnabledExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_ReferenceWidgetDescription_isEnabledExpression_feature",
-                                "_UI_ReferenceWidgetDescription_type"),
-                        ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false,
-                        false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ReferenceWidgetDescription_isEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ReferenceWidgetDescription_isEnabledExpression_feature", "_UI_ReferenceWidgetDescription_type"),
+                ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This returns ReferenceWidgetDescription.gif. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This returns ReferenceWidgetDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object,
-                this.getResourceLocator().getImage("full/obj16/ReferenceWidgetDescription.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ReferenceWidgetDescription.svg"));
     }
 
     /**
@@ -174,22 +156,20 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((ReferenceWidgetDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_ReferenceWidgetDescription_type")
-                : this.getString("_UI_ReferenceWidgetDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_ReferenceWidgetDescription_type") : this.getString("_UI_ReferenceWidgetDescription_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
@@ -213,9 +193,8 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -223,33 +202,25 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY,
-                ViewFactory.eINSTANCE.createDeleteElement()));
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE,
-                ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
+        newChildDescriptors.add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES,
-                        ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
+        newChildDescriptors.add(
+                this.createChildParameter(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES, ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
     }
 
     /**
-     * This returns the label text for
-     * {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -258,19 +229,16 @@ public class ReferenceWidgetDescriptionItemProvider extends WidgetDescriptionIte
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE
-                || childFeature == ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES;
+        boolean qualify = childFeature == ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__STYLE || childFeature == ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2",
-                    new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
+            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

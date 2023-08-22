@@ -83,7 +83,9 @@ public class CurrentTreeProvider {
 
     public TreeDescription getTreeDescription() {
         // @formatter:off
-        return TreeDescription.newTreeDescription(WIDGET_ID).idProvider(new WidgetIdProvider())
+        return TreeDescription.newTreeDescription(WIDGET_ID)
+                .idProvider(new WidgetIdProvider())
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())

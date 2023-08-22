@@ -89,6 +89,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private final IObjectService objectService;
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, IValidationService validationService,
             List<IParametricSVGImageRegistry> parametricSVGImageRegistries, AQLTextfieldCustomizer aqlTextfieldCustomizer, IObjectService objectService) {
         this.validationService = Objects.requireNonNull(validationService);
@@ -96,6 +98,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         this.parametricSVGImageRegistries = parametricSVGImageRegistries;
         this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
         this.objectService = Objects.requireNonNull(objectService);
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
 
     @Override
@@ -272,6 +275,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         return TextfieldDescription.newTextfieldDescription(id)
                 .idProvider(variableManager -> id)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(variableManager -> title)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
@@ -297,6 +301,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         return TextareaDescription.newTextareaDescription(id)
                 .idProvider(variableManager -> id)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(variableManager -> title)
                 .valueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
@@ -322,6 +327,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         };
         // @formatter:off
         return CheckboxDescription.newCheckboxDescription(id)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(variableManager -> id)
                 .labelProvider(variableManager -> title)
                 .valueProvider(valueProvider)
@@ -337,6 +343,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         return SelectDescription.newSelectDescription(id)
                                 .idProvider(variableManager -> id)
+                                .targetObjectIdProvider(this.semanticTargetIdProvider)
                                 .labelProvider(variableManager -> "Border Line Style")
                                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString).orElse(EMPTY))
                                 .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
@@ -366,6 +373,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
             , Function<T, UserColor> colorGetter, BiConsumer<T, UserColor> colorSetter) {
         return SelectDescription.newSelectDescription(id)
                                 .idProvider(variableManager -> id)
+                                .targetObjectIdProvider(this.semanticTargetIdProvider)
                                 .labelProvider(variableManager -> label)
                                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, styleType)
                                                                                  .map(colorGetter)
@@ -420,6 +428,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:off
         return SelectDescription.newSelectDescription("nodestyle.shapeSelector")
                 .idProvider(variableManager -> "nodestyle.shapeSelector")
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(variableManager -> "Shape")
                 .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(EMPTY))
                 .optionsProvider(variableManager -> {
@@ -454,6 +463,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private ImageDescription createShapePreviewField() {
         // @formatter:off
         return ImageDescription.newImageDescription("nodestyle.shapePreview")
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(variableManager -> "nodestyle.shapePreview")
                 .labelProvider(variableManager -> "Shape Preview")
                 .urlProvider(variableManager -> {

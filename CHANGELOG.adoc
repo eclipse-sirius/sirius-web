@@ -10,6 +10,7 @@
 === Architectural decision records
 
 - [ADR-107] Add support for dynamic and conditional widgets in Forms
+- [ADR-108] Improve the widget id computation
 
 === Breaking changes
 
@@ -31,6 +32,12 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 - [releng] Stop minifying the code of Sirius Components packages.
 As a result the development of applications consuming Sirius Components packages will be easier and it will be the responsability of the application to minify everything (which they should already be doing).
 - https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296] [diagram] `sirius-components-diagrams-reactflow` now depends on `html-to-image` node package.
+- https://github.com/eclipse-sirius/sirius-web/issues/2236[#2236] [forms] The introduction of _ForDescription_ and _IfDescription_ elements to the Forms DSL introduced breaking changes in the metamodel.
+Existing FormDescription documents will need to be modified to load correctly, and any custom widget's metamodel will need to be regenerated using the new `form.ecore` version as reference.
+See [ADR-107] _Add support for dynamic and conditional widgets in Forms_ for the details of the changes.
+Also, all widget descriptions now have a `Function<VariableManager, String> targetObjectIdProvider`, needed to compute the widget instance's id.
+The new `targetObjectIdProvider` is required to be non-null, so any code which programmatically builds core Form Descriptions (not View-based ones), needs to pass a non-null provider.
+A suitable implementation is to get the id of the `self` object using `IObjectService.getId()`.
 
 === Dependency update
 
@@ -58,6 +65,11 @@ As a result the development of applications consuming Sirius Components packages
 - https://github.com/eclipse-sirius/sirius-web/issues/2117[#2117] [form] Add a modal to select new values for multi-valued references
 - https://github.com/eclipse-sirius/sirius-web/issues/2118[#2118] [form] Add a modal to create new objects on a widget reference
 - https://github.com/eclipse-sirius/sirius-web/issues/2253[#2253] [diagram] Add the possibility of organizing palette tools into sections
+- https://github.com/eclipse-sirius/sirius-web/issues/2236[#2236] [forms] It is now possible to use `For` and `If` constructs inside the definition of Form (currently only inside _Groups_ and _Flexbox containers_).
+Both constructs are commonly combined together, with e.g. _For_ iterating on the different features of the current semantic element and several _If_ inside the loop to decide which concrete widget(s) to instantiate depending on the feature's type.
+They can however also be used independently (e.g. a single _If_ ouside of a _For_ to make the presence of a widget conditional) and combined in arbitrary ways (e.g. nested loops or conditionals).
+Note that this first version has a known limitation: _FormDescriptions_ which use _For_ or _If_ elements can not be reliably edited using the _Form Description Editor_.
+This will be fixed in the next version.
 
 === Improvements
 

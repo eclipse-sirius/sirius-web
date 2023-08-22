@@ -118,7 +118,7 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 if (widgetDescription instanceof WidgetDescription) {
                     this.createStyle((WidgetDescription) widgetDescription);
                     if (container instanceof GroupDescription) {
-                        ((GroupDescription) container).getWidgets().add(index, (WidgetDescription) widgetDescription);
+                        ((GroupDescription) container).getChildren().add(index, (WidgetDescription) widgetDescription);
                         success = true;
                     } else if (container instanceof FlexboxContainerDescription) {
                         ((FlexboxContainerDescription) container).getChildren().add(index, (WidgetDescription) widgetDescription);

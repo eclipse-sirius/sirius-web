@@ -38,30 +38,35 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * @generated
      */
     private static boolean isInited = false;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass referenceWidgetDescriptionEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass referenceWidgetDescriptionStyleEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private EClass conditionalReferenceWidgetDescriptionStyleEClass = null;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     private boolean isCreated = false;
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -94,10 +99,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
+     * @generated
      */
     public static ReferencePackage init() {
         if (isInited)

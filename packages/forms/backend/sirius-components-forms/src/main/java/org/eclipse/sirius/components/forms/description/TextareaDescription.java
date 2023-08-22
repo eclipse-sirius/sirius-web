@@ -99,6 +99,8 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -127,6 +129,11 @@ public final class TextareaDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -188,6 +195,7 @@ public final class TextareaDescription extends AbstractWidgetDescription {
         public TextareaDescription build() {
             TextareaDescription textareaDescription = new TextareaDescription();
             textareaDescription.id = Objects.requireNonNull(this.id);
+            textareaDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             textareaDescription.idProvider = Objects.requireNonNull(this.idProvider);
             textareaDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             textareaDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

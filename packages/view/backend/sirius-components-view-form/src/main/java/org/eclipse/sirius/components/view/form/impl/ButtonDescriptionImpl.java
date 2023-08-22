@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -110,6 +109,16 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
     protected ButtonDescriptionStyle style;
 
     /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalButtonDescriptionStyle> conditionalStyles;
+
+    /**
      * The default value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -118,15 +127,7 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
      * @see #getIsEnabledExpression()
      */
     protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
-    /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getConditionalStyles()
-     */
-    protected EList<ConditionalButtonDescriptionStyle> conditionalStyles;
+
     /**
      * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -423,7 +424,7 @@ public class ButtonDescriptionImpl extends WidgetDescriptionImpl implements Butt
             case FormPackage.BUTTON_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case FormPackage.BUTTON_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
+                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }

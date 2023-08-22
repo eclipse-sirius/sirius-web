@@ -224,9 +224,9 @@ public interface CustomwidgetsPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.web.customwidgets.SliderDescription#getIsEnabledExpression()
      * @see #getSliderDescription()
+     * @generated
      */
     EAttribute getSliderDescription_IsEnabledExpression();
 

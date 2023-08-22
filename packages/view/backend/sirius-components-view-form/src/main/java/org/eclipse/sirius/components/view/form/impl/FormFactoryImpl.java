@@ -42,6 +42,8 @@ import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
@@ -197,6 +199,10 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createContainerBorderStyle();
             case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE:
                 return this.createConditionalContainerBorderStyle();
+            case FormPackage.FORM_ELEMENT_FOR:
+                return this.createFormElementFor();
+            case FormPackage.FORM_ELEMENT_IF:
+                return this.createFormElementIf();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -726,6 +732,28 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
     public ConditionalContainerBorderStyle createConditionalContainerBorderStyle() {
         ConditionalContainerBorderStyleImpl conditionalContainerBorderStyle = new ConditionalContainerBorderStyleImpl();
         return conditionalContainerBorderStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FormElementFor createFormElementFor() {
+        FormElementForImpl formElementFor = new FormElementForImpl();
+        return formElementFor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FormElementIf createFormElementIf() {
+        FormElementIfImpl formElementIf = new FormElementIfImpl();
+        return formElementIf;
     }
 
     /**

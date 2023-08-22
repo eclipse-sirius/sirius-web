@@ -69,12 +69,15 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
 
     private final AdapterFactory adapterFactory;
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
     public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = editService;
         this.feedbackMessageService = feedbackMessageService;
         this.adapterFactory = composedAdapterFactory;
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
 
     @Override
@@ -94,6 +97,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         };
 
         var builder = org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager))
                 .iconURLProvider(variableManager -> "")

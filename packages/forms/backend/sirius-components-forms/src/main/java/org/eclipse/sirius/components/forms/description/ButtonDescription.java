@@ -97,6 +97,8 @@ public final class ButtonDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -125,6 +127,11 @@ public final class ButtonDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -186,6 +193,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
         public ButtonDescription build() {
             ButtonDescription buttonDescription = new ButtonDescription();
             buttonDescription.id = Objects.requireNonNull(this.id);
+            buttonDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             buttonDescription.idProvider = Objects.requireNonNull(this.idProvider);
             buttonDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             buttonDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

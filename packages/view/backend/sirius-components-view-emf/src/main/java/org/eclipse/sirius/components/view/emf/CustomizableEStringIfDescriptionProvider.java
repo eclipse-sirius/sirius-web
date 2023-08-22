@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -49,17 +50,21 @@ public class CustomizableEStringIfDescriptionProvider {
 
     private final ITextfieldCustomizer customizer;
 
-    public CustomizableEStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, ITextfieldCustomizer customizer) {
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
+    public CustomizableEStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, ITextfieldCustomizer customizer, Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.customizer = Objects.requireNonNull(customizer);
+        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
     }
 
     public IfDescription getIfDescription() {
         // @formatter:off
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
-                .widgetDescription(this.getTextareaDescription())
+                .controlDescriptions(List.of(this.getTextareaDescription()))
                 .build();
         // @formatter:on
     }
@@ -78,6 +83,7 @@ public class CustomizableEStringIfDescriptionProvider {
     private TextareaDescription getTextareaDescription() {
         // @formatter:off
         var builder = TextareaDescription.newTextareaDescription(TEXTAREA_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .isReadOnlyProvider(variableManager -> false)

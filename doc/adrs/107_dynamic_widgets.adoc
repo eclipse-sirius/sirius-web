@@ -1,4 +1,4 @@
-= [ADR-107] Add support for dynamic and conditional widgets in Forms
+= ADR-107 - Add support for dynamic and conditional widgets in Forms
 
 == Context
 
@@ -11,29 +11,32 @@ The core rendering algorithm of the Sirius Web Forms already implements these me
 
 == Decision
 
-We will add support for `DynamicFor` and `DynamicIf` to the Forms DSL.
+We will add support for _For_ and _If_ elements to the Forms DSL.
+They will be named _FormElementFor_ and _FormElementIf_ in the metamodel, but presented as simply _For_ an _If_ in the UI.
+In this first version, we will only support these new constructs inside _Groups_ and _FlexboxContainers_.
 
-In this first version, we will only support the same case as in EEF desktop, namely widgets inside a _Group_.
+All these four elements (For, If, Groups, Flexbox) behave as containers for an arbitrary number of sub-elements.
+To provide a common API for them, we will introduce an abstract _FormElementDescription_ type, which only contains a _name_ attribute.
+Widgets (including FlexboxContainer) _and_ constructs like _For_ and _If_ are sub-types of _FormElementDescription_, but _Group_ is not.
+For, If, Group and Flexbox will have a _children : FormElementDescription_ many-valued containment reference.
 
-A _GroupDescription_ currently has a _widgets: WidgetDescription_ reference.
-As is the case in EEF desktop, we will introduce a new _ControlDescription_ type as a generalization of _WidgetDescription_, and _GroupDescription.widgets_ will now contain _ControlDescriptions_.
-We will not change the name of the _widgets_ reference to avoid breaking existing models.
+Except for Groups which can only occur at the root of a Page, this structure allows for arbitrary combinations of all 3 of _For_, _If_ and _Flexbox_.
+It's possible to have _For_ without _If_, or with many of them; to have nested _For_ loop; _If_ outside of a _For_ loop, _If_ with an arbitrary number of sub-elements, including nested _If_, etc.
 
-_FlexboxContainer_, which also acts as a container for widgets, will also be modified in a similar way so that it's _children_ are _ControlDescriptions_.
-
-The new _DynamicFor_ element will also extends _ControlDescription_, so that a group can contain both actual widgets and _DynamicFor_.
-
-_DynamicFor_ will have two attributes:
+_FormElementFor_ will have two attributes:
 
 * `iterationExpression`: an AQL expression to be evaluated when rendering the form, which should return a collection of (arbitrary) elements;
 * `iterator`: a (fixed) variable name.
 
-It will also _contain_ an arbitrary number if _DynamicIf_, which has a `predicateExpression` attribute and a `control: ControlDescription[1]` containment reference.
+The semantics of the element is that it's children element will be rendered once for every element in the collection returned by `iterationExpression`, in order.
+For each value _V_ returned by `iterationExpression`, all the children are rendered in a context where _V_ is bound to a variable named as specified by _iterator_.
 
-The semantics will be the same as in EEF desktop.
+_FormElementIf_ will have a single attribute:
 
-When rendering a _FormDescription_ which uses _DynamicFor_ & _DynamicIfs_, in the context of a _FormDescription Editor_ these elements will not be visible.
-The Form will display as if all the widgets inside all the _DynamicIfs_ of a _DynamicFor_ were defined directly inside the parent _GroupDescription_.
+* `predicateExpression`: an AQL expression to be evaluated when rendering the form, which should return a boolean.
+If placed inside a _FormElementFor_ (or several nested ones), the expression has access to its (their) iterator variable.
+
+The semantics of the element is simple: the children of the _FormElementIf_ are only rendered if the expression returned `true`.
 
 == Status
 
@@ -44,7 +47,5 @@ Accepted.
 * Any custom widget's metamodel will need to be regenerated.
 This is required for the custom widget's child creation extender to be able to be created inside the new _DynamicIf_ elements.
 * With this, it will become possible to express more generic and dynamic form descriptions, including the equivalent of https://github.com/eclipse-sirius/sirius-desktop/blob/master/plugins/org.eclipse.sirius.properties.defaultrules/model/properties.odesign[Sirius Desktop defaults properties rules].
-* With _DynamicIf_ containing _ControlDescriptions_ instead of actual widgets, it should be possible to create nested loops.
 * The first version if the mechanism introduced here will be generalized to allow For/If in as many places as possible (and meaningful) in the Forms DSL, notable on Groups and Pages.
 Note that pages already support `semanticCandidatesExpression` which cover part of the same uses cases but is less powerful.
-* We will also investigate generalizing this mechanism to the diagrams DSL if/where it can make sense.

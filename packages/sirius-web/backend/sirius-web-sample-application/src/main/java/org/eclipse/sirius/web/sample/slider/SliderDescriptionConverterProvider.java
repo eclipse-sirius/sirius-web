@@ -31,7 +31,7 @@ public class SliderDescriptionConverterProvider implements IWidgetConverterProvi
 
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new SliderDescriptionConverterSwitch(interpreter, editService, feedbackMessageService);
+        return new SliderDescriptionConverterSwitch(interpreter, editService, objectService, feedbackMessageService);
     }
 
 }

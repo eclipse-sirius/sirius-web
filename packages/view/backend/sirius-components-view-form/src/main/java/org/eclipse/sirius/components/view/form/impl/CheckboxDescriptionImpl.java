@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -73,9 +72,9 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBody()
      * @generated
      * @ordered
-     * @see #getBody()
      */
     protected EList<Operation> body;
 
@@ -83,9 +82,9 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getStyle()
      * @generated
      * @ordered
-     * @see #getStyle()
      */
     protected CheckboxDescriptionStyle style;
 
@@ -93,9 +92,9 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getConditionalStyles()
      * @generated
      * @ordered
-     * @see #getConditionalStyles()
      */
     protected EList<ConditionalCheckboxDescriptionStyle> conditionalStyles;
 
@@ -230,8 +229,7 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
     @Override
     public EList<ConditionalCheckboxDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalCheckboxDescriptionStyle.class, this,
-                    FormPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalCheckboxDescriptionStyle.class, this, FormPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }
@@ -373,7 +371,7 @@ public class CheckboxDescriptionImpl extends WidgetDescriptionImpl implements Ch
             case FormPackage.CHECKBOX_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case FormPackage.CHECKBOX_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
+                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }

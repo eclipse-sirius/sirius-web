@@ -275,13 +275,13 @@ public interface FormPackage extends EPackage {
     int GROUP_DESCRIPTION__TOOLBAR_ACTIONS = 4;
 
     /**
-     * The feature id for the '<em><b>Widgets</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int GROUP_DESCRIPTION__WIDGETS = 5;
+    int GROUP_DESCRIPTION__CHILDREN = 5;
 
     /**
      * The feature id for the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -319,14 +319,14 @@ public interface FormPackage extends EPackage {
     int GROUP_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl <em>Widget
-     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.FormElementDescriptionImpl
+     * <em>Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
-     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescription()
+     * @see org.eclipse.sirius.components.view.form.impl.FormElementDescriptionImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementDescription()
      * @generated
      */
-    int WIDGET_DESCRIPTION = 3;
+    int FORM_ELEMENT_DESCRIPTION = 3;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -334,7 +334,43 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WIDGET_DESCRIPTION__NAME = 0;
+    int FORM_ELEMENT_DESCRIPTION__NAME = 0;
+
+    /**
+     * The number of structural features of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl <em>Widget
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescription()
+     * @generated
+     */
+    int WIDGET_DESCRIPTION = 4;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int WIDGET_DESCRIPTION__NAME = FORM_ELEMENT_DESCRIPTION__NAME;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -343,7 +379,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WIDGET_DESCRIPTION__LABEL_EXPRESSION = 1;
+    int WIDGET_DESCRIPTION__LABEL_EXPRESSION = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Help Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -351,7 +387,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WIDGET_DESCRIPTION__HELP_EXPRESSION = 2;
+    int WIDGET_DESCRIPTION__HELP_EXPRESSION = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -360,7 +396,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WIDGET_DESCRIPTION_FEATURE_COUNT = 3;
+    int WIDGET_DESCRIPTION_FEATURE_COUNT = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Widget Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -369,7 +405,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int WIDGET_DESCRIPTION_OPERATION_COUNT = 0;
+    int WIDGET_DESCRIPTION_OPERATION_COUNT = FORM_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionImpl <em>Bar
@@ -379,7 +415,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getBarChartDescription()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION = 4;
+    int BAR_CHART_DESCRIPTION = 5;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -492,7 +528,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getButtonDescription()
      * @generated
      */
-    int BUTTON_DESCRIPTION = 5;
+    int BUTTON_DESCRIPTION = 6;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -599,7 +635,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getCheckboxDescription()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION = 6;
+    int CHECKBOX_DESCRIPTION = 7;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -697,7 +733,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexboxContainerDescription()
      * @generated
      */
-    int FLEXBOX_CONTAINER_DESCRIPTION = 7;
+    int FLEXBOX_CONTAINER_DESCRIPTION = 8;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -794,7 +830,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getImageDescription()
      * @generated
      */
-    int IMAGE_DESCRIPTION = 8;
+    int IMAGE_DESCRIPTION = 9;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -863,7 +899,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelDescription()
      * @generated
      */
-    int LABEL_DESCRIPTION = 9;
+    int LABEL_DESCRIPTION = 10;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -942,7 +978,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLinkDescription()
      * @generated
      */
-    int LINK_DESCRIPTION = 10;
+    int LINK_DESCRIPTION = 11;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1021,7 +1057,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getListDescription()
      * @generated
      */
-    int LIST_DESCRIPTION = 11;
+    int LIST_DESCRIPTION = 12;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1136,7 +1172,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getMultiSelectDescription()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION = 12;
+    int MULTI_SELECT_DESCRIPTION = 13;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1252,7 +1288,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getPieChartDescription()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION = 13;
+    int PIE_CHART_DESCRIPTION = 14;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1340,7 +1376,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getRadioDescription()
      * @generated
      */
-    int RADIO_DESCRIPTION = 14;
+    int RADIO_DESCRIPTION = 15;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1455,7 +1491,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getRichTextDescription()
      * @generated
      */
-    int RICH_TEXT_DESCRIPTION = 15;
+    int RICH_TEXT_DESCRIPTION = 16;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1535,7 +1571,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSelectDescription()
      * @generated
      */
-    int SELECT_DESCRIPTION = 16;
+    int SELECT_DESCRIPTION = 17;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1651,7 +1687,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextAreaDescription()
      * @generated
      */
-    int TEXT_AREA_DESCRIPTION = 17;
+    int TEXT_AREA_DESCRIPTION = 18;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1749,7 +1785,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextfieldDescription()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION = 18;
+    int TEXTFIELD_DESCRIPTION = 19;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1847,7 +1883,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescriptionStyle()
      * @generated
      */
-    int WIDGET_DESCRIPTION_STYLE = 19;
+    int WIDGET_DESCRIPTION_STYLE = 20;
 
     /**
      * The number of structural features of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -1875,7 +1911,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getBarChartDescriptionStyle()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION_STYLE = 20;
+    int BAR_CHART_DESCRIPTION_STYLE = 21;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1952,7 +1988,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalBarChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 21;
+    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 22;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2036,7 +2072,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getButtonDescriptionStyle()
      * @generated
      */
-    int BUTTON_DESCRIPTION_STYLE = 22;
+    int BUTTON_DESCRIPTION_STYLE = 23;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2123,7 +2159,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalButtonDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 23;
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 24;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2217,7 +2253,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getCheckboxDescriptionStyle()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION_STYLE = 24;
+    int CHECKBOX_DESCRIPTION_STYLE = 25;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2262,7 +2298,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalCheckboxDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 25;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 26;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2314,7 +2350,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelDescriptionStyle()
      * @generated
      */
-    int LABEL_DESCRIPTION_STYLE = 26;
+    int LABEL_DESCRIPTION_STYLE = 27;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2391,7 +2427,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalLabelDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 27;
+    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 28;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2475,7 +2511,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLinkDescriptionStyle()
      * @generated
      */
-    int LINK_DESCRIPTION_STYLE = 28;
+    int LINK_DESCRIPTION_STYLE = 29;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2552,7 +2588,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalLinkDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 29;
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 30;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2636,7 +2672,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getListDescriptionStyle()
      * @generated
      */
-    int LIST_DESCRIPTION_STYLE = 30;
+    int LIST_DESCRIPTION_STYLE = 31;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2713,7 +2749,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalListDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 31;
+    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 32;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2797,7 +2833,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getMultiSelectDescriptionStyle()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 32;
+    int MULTI_SELECT_DESCRIPTION_STYLE = 33;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2892,7 +2928,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalMultiSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 33;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 34;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2994,7 +3030,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getPieChartDescriptionStyle()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION_STYLE = 34;
+    int PIE_CHART_DESCRIPTION_STYLE = 35;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3087,7 +3123,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalPieChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 35;
+    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 36;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3187,7 +3223,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getRadioDescriptionStyle()
      * @generated
      */
-    int RADIO_DESCRIPTION_STYLE = 36;
+    int RADIO_DESCRIPTION_STYLE = 37;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3264,7 +3300,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalRadioDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 37;
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 38;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3348,7 +3384,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSelectDescriptionStyle()
      * @generated
      */
-    int SELECT_DESCRIPTION_STYLE = 38;
+    int SELECT_DESCRIPTION_STYLE = 39;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3443,7 +3479,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 39;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 40;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3545,7 +3581,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextareaDescriptionStyle()
      * @generated
      */
-    int TEXTAREA_DESCRIPTION_STYLE = 40;
+    int TEXTAREA_DESCRIPTION_STYLE = 41;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3632,7 +3668,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalTextareaDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 41;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 42;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3726,7 +3762,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextfieldDescriptionStyle()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION_STYLE = 42;
+    int TEXTFIELD_DESCRIPTION_STYLE = 43;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3813,7 +3849,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalTextfieldDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 43;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 44;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3903,11 +3939,11 @@ public interface FormPackage extends EPackage {
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
      * <em>Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderStyle()
+     * @generated
      */
-    int CONTAINER_BORDER_STYLE = 44;
+    int CONTAINER_BORDER_STYLE = 45;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3965,11 +4001,11 @@ public interface FormPackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl <em>Conditional
      * Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalContainerBorderStyle()
+     * @generated
      */
-    int CONDITIONAL_CONTAINER_BORDER_STYLE = 45;
+    int CONDITIONAL_CONTAINER_BORDER_STYLE = 46;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3985,7 +4021,7 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT;
+    int CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4028,55 +4064,169 @@ public interface FormPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CONDITIONAL_CONTAINER_BORDER_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT;
+    int CONDITIONAL_CONTAINER_BORDER_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl <em>Element
+     * For</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.form.impl.FormElementForImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementFor()
+     * @generated
+     */
+    int FORM_ELEMENT_FOR = 47;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_FOR__NAME = FORM_ELEMENT_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Iterator</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_FOR__ITERATOR = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Iterable Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_FOR__ITERABLE_EXPRESSION = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_FOR__CHILDREN = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of structural features of the '<em>Element For</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_FOR_FEATURE_COUNT = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of operations of the '<em>Element For</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_FOR_OPERATION_COUNT = FORM_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.FormElementIfImpl <em>Element
+     * If</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.form.impl.FormElementIfImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementIf()
+     * @generated
+     */
+    int FORM_ELEMENT_IF = 48;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_IF__NAME = FORM_ELEMENT_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Predicate Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_IF__PREDICATE_EXPRESSION = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_IF__CHILDREN = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Element If</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_IF_FEATURE_COUNT = FORM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Element If</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FORM_ELEMENT_IF_OPERATION_COUNT = FORM_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.FlexDirection <em>Flex
      * Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.form.FlexDirection
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexDirection()
+     * @generated
      */
-    int FLEX_DIRECTION = 46;
+    int FLEX_DIRECTION = 49;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.GroupDisplayMode <em>Group Display
      * Mode</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getGroupDisplayMode()
+     * @generated
      */
-    int GROUP_DISPLAY_MODE = 47;
+    int GROUP_DISPLAY_MODE = 50;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
      * Placement</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.form.LabelPlacement
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
+     * @generated
      */
-    int LABEL_PLACEMENT = 48;
+    int LABEL_PLACEMENT = 51;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.ContainerBorderLineStyle <em>Container
      * Border Line Style</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderLineStyle()
+     * @generated
      */
-    int CONTAINER_BORDER_LINE_STYLE = 49;
+    int CONTAINER_BORDER_LINE_STYLE = 52;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.FormDescription
+     * @generated
      */
     EClass getFormDescription();
 
@@ -4257,15 +4407,15 @@ public interface FormPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference list
-     * '{@link org.eclipse.sirius.components.view.form.GroupDescription#getWidgets <em>Widgets</em>}'. <!--
+     * '{@link org.eclipse.sirius.components.view.form.GroupDescription#getChildren <em>Children</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the containment reference list '<em>Widgets</em>'.
-     * @see org.eclipse.sirius.components.view.form.GroupDescription#getWidgets()
+     * @return the meta object for the containment reference list '<em>Children</em>'.
+     * @see org.eclipse.sirius.components.view.form.GroupDescription#getChildren()
      * @see #getGroupDescription()
      * @generated
      */
-    EReference getGroupDescription_Widgets();
+    EReference getGroupDescription_Children();
 
     /**
      * Returns the meta object for the containment reference
@@ -4285,33 +4435,43 @@ public interface FormPackage extends EPackage {
      * Border Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Border Styles</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.GroupDescription#getConditionalBorderStyles()
      * @see #getGroupDescription()
+     * @generated
      */
     EReference getGroupDescription_ConditionalBorderStyles();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormElementDescription
+     * <em>Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Element Description</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementDescription
+     * @generated
+     */
+    EClass getFormElementDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FormElementDescription#getName <em>Name</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementDescription#getName()
+     * @see #getFormElementDescription()
+     * @generated
+     */
+    EAttribute getFormElementDescription_Name();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.WidgetDescription <em>Widget
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.WidgetDescription
+     * @generated
      */
     EClass getWidgetDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getName <em>Name</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see org.eclipse.sirius.components.view.form.WidgetDescription#getName()
-     * @see #getWidgetDescription()
-     * @generated
-     */
-    EAttribute getWidgetDescription_Name();
 
     /**
      * Returns the meta object for the attribute
@@ -4507,9 +4667,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ButtonDescription#getIsEnabledExpression()
      * @see #getButtonDescription()
+     * @generated
      */
     EAttribute getButtonDescription_IsEnabledExpression();
 
@@ -4518,8 +4678,8 @@ public interface FormPackage extends EPackage {
      * <em>Checkbox Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Checkbox Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.CheckboxDescription
+     * @generated
      */
     EClass getCheckboxDescription();
 
@@ -4577,9 +4737,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.CheckboxDescription#getIsEnabledExpression()
      * @see #getCheckboxDescription()
+     * @generated
      */
     EAttribute getCheckboxDescription_IsEnabledExpression();
 
@@ -4588,8 +4748,8 @@ public interface FormPackage extends EPackage {
      * <em>Flexbox Container Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Flexbox Container Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription
+     * @generated
      */
     EClass getFlexboxContainerDescription();
 
@@ -4623,9 +4783,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression()
      * @see #getFlexboxContainerDescription()
+     * @generated
      */
     EAttribute getFlexboxContainerDescription_IsEnabledExpression();
 
@@ -4635,9 +4795,9 @@ public interface FormPackage extends EPackage {
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Border Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle()
      * @see #getFlexboxContainerDescription()
+     * @generated
      */
     EReference getFlexboxContainerDescription_BorderStyle();
 
@@ -4647,9 +4807,9 @@ public interface FormPackage extends EPackage {
      * <em>Conditional Border Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Conditional Border Styles</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getConditionalBorderStyles()
      * @see #getFlexboxContainerDescription()
+     * @generated
      */
     EReference getFlexboxContainerDescription_ConditionalBorderStyles();
 
@@ -4658,8 +4818,8 @@ public interface FormPackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Image Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ImageDescription
+     * @generated
      */
     EClass getImageDescription();
 
@@ -4867,9 +5027,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ListDescription#getIsEnabledExpression()
      * @see #getListDescription()
+     * @generated
      */
     EAttribute getListDescription_IsEnabledExpression();
 
@@ -4878,8 +5038,8 @@ public interface FormPackage extends EPackage {
      * <em>Multi Select Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Multi Select Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.MultiSelectDescription
+     * @generated
      */
     EClass getMultiSelectDescription();
 
@@ -4961,9 +5121,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.MultiSelectDescription#getIsEnabledExpression()
      * @see #getMultiSelectDescription()
+     * @generated
      */
     EAttribute getMultiSelectDescription_IsEnabledExpression();
 
@@ -4972,8 +5132,8 @@ public interface FormPackage extends EPackage {
      * Chart Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Pie Chart Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.PieChartDescription
+     * @generated
      */
     EClass getPieChartDescription();
 
@@ -5113,9 +5273,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.RadioDescription#getIsEnabledExpression()
      * @see #getRadioDescription()
+     * @generated
      */
     EAttribute getRadioDescription_IsEnabledExpression();
 
@@ -5124,8 +5284,8 @@ public interface FormPackage extends EPackage {
      * Text Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Rich Text Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.RichTextDescription
+     * @generated
      */
     EClass getRichTextDescription();
 
@@ -5159,9 +5319,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.RichTextDescription#getIsEnabledExpression()
      * @see #getRichTextDescription()
+     * @generated
      */
     EAttribute getRichTextDescription_IsEnabledExpression();
 
@@ -5170,8 +5330,8 @@ public interface FormPackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Select Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.SelectDescription
+     * @generated
      */
     EClass getSelectDescription();
 
@@ -5253,9 +5413,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.SelectDescription#getIsEnabledExpression()
      * @see #getSelectDescription()
+     * @generated
      */
     EAttribute getSelectDescription_IsEnabledExpression();
 
@@ -5264,8 +5424,8 @@ public interface FormPackage extends EPackage {
      * Area Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Text Area Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.TextAreaDescription
+     * @generated
      */
     EClass getTextAreaDescription();
 
@@ -5323,9 +5483,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.TextAreaDescription#getIsEnabledExpression()
      * @see #getTextAreaDescription()
+     * @generated
      */
     EAttribute getTextAreaDescription_IsEnabledExpression();
 
@@ -5334,8 +5494,8 @@ public interface FormPackage extends EPackage {
      * <em>Textfield Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Textfield Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.TextfieldDescription
+     * @generated
      */
     EClass getTextfieldDescription();
 
@@ -5393,9 +5553,9 @@ public interface FormPackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.TextfieldDescription#getIsEnabledExpression()
      * @see #getTextfieldDescription()
+     * @generated
      */
     EAttribute getTextfieldDescription_IsEnabledExpression();
 
@@ -5404,8 +5564,8 @@ public interface FormPackage extends EPackage {
      * <em>Widget Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Widget Description Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.WidgetDescriptionStyle
+     * @generated
      */
     EClass getWidgetDescriptionStyle();
 
@@ -5515,9 +5675,9 @@ public interface FormPackage extends EPackage {
      * Placement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Label Placement</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement()
      * @see #getCheckboxDescriptionStyle()
+     * @generated
      */
     EAttribute getCheckboxDescriptionStyle_LabelPlacement();
 
@@ -5527,8 +5687,8 @@ public interface FormPackage extends EPackage {
      * Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Checkbox Description Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ConditionalCheckboxDescriptionStyle
+     * @generated
      */
     EClass getConditionalCheckboxDescriptionStyle();
 
@@ -5928,8 +6088,8 @@ public interface FormPackage extends EPackage {
      * <em>Container Border Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Container Border Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle
+     * @generated
      */
     EClass getContainerBorderStyle();
 
@@ -5951,9 +6111,9 @@ public interface FormPackage extends EPackage {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Border Radius</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderRadius()
      * @see #getContainerBorderStyle()
+     * @generated
      */
     EAttribute getContainerBorderStyle_BorderRadius();
 
@@ -5975,9 +6135,9 @@ public interface FormPackage extends EPackage {
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Border Line Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderLineStyle()
      * @see #getContainerBorderStyle()
+     * @generated
      */
     EAttribute getContainerBorderStyle_BorderLineStyle();
 
@@ -5986,18 +6146,98 @@ public interface FormPackage extends EPackage {
      * <em>Conditional Container Border Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Conditional Container Border Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle
+     * @generated
      */
     EClass getConditionalContainerBorderStyle();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormElementFor <em>Element
+     * For</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Element For</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementFor
+     * @generated
+     */
+    EClass getFormElementFor();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FormElementFor#getIterator <em>Iterator</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Iterator</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementFor#getIterator()
+     * @see #getFormElementFor()
+     * @generated
+     */
+    EAttribute getFormElementFor_Iterator();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FormElementFor#getIterableExpression <em>Iterable
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Iterable Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementFor#getIterableExpression()
+     * @see #getFormElementFor()
+     * @generated
+     */
+    EAttribute getFormElementFor_IterableExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.form.FormElementFor#getChildren <em>Children</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Children</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementFor#getChildren()
+     * @see #getFormElementFor()
+     * @generated
+     */
+    EReference getFormElementFor_Children();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormElementIf <em>Element
+     * If</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Element If</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementIf
+     * @generated
+     */
+    EClass getFormElementIf();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.FormElementIf#getPredicateExpression <em>Predicate
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Predicate Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementIf#getPredicateExpression()
+     * @see #getFormElementIf()
+     * @generated
+     */
+    EAttribute getFormElementIf_PredicateExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.form.FormElementIf#getChildren <em>Children</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Children</em>'.
+     * @see org.eclipse.sirius.components.view.form.FormElementIf#getChildren()
+     * @see #getFormElementIf()
+     * @generated
+     */
+    EReference getFormElementIf_Children();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.form.FlexDirection <em>Flex
      * Direction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Flex Direction</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.FlexDirection
+     * @generated
      */
     EEnum getFlexDirection();
 
@@ -6006,8 +6246,8 @@ public interface FormPackage extends EPackage {
      * Display Mode</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Group Display Mode</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
+     * @generated
      */
     EEnum getGroupDisplayMode();
 
@@ -6016,8 +6256,8 @@ public interface FormPackage extends EPackage {
      * Placement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Label Placement</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.LabelPlacement
+     * @generated
      */
     EEnum getLabelPlacement();
 
@@ -6026,8 +6266,8 @@ public interface FormPackage extends EPackage {
      * <em>Container Border Line Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for enum '<em>Container Border Line Style</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
+     * @generated
      */
     EEnum getContainerBorderLineStyle();
 
@@ -6188,12 +6428,12 @@ public interface FormPackage extends EPackage {
         EReference GROUP_DESCRIPTION__TOOLBAR_ACTIONS = eINSTANCE.getGroupDescription_ToolbarActions();
 
         /**
-         * The meta object literal for the '<em><b>Widgets</b></em>' containment reference list feature. <!--
+         * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference GROUP_DESCRIPTION__WIDGETS = eINSTANCE.getGroupDescription_Widgets();
+        EReference GROUP_DESCRIPTION__CHILDREN = eINSTANCE.getGroupDescription_Children();
 
         /**
          * The meta object literal for the '<em><b>Border Style</b></em>' containment reference feature. <!--
@@ -6212,14 +6452,15 @@ public interface FormPackage extends EPackage {
         EReference GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES = eINSTANCE.getGroupDescription_ConditionalBorderStyles();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
-         * <em>Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.form.impl.FormElementDescriptionImpl <em>Element
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @see org.eclipse.sirius.components.view.form.impl.FormElementDescriptionImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementDescription()
          * @generated
-         * @see org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
-         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescription()
          */
-        EClass WIDGET_DESCRIPTION = eINSTANCE.getWidgetDescription();
+        EClass FORM_ELEMENT_DESCRIPTION = eINSTANCE.getFormElementDescription();
 
         /**
          * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -6227,7 +6468,17 @@ public interface FormPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute WIDGET_DESCRIPTION__NAME = eINSTANCE.getWidgetDescription_Name();
+        EAttribute FORM_ELEMENT_DESCRIPTION__NAME = eINSTANCE.getFormElementDescription_Name();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
+         * <em>Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescription()
+         * @generated
+         */
+        EClass WIDGET_DESCRIPTION = eINSTANCE.getWidgetDescription();
 
         /**
          * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
@@ -6373,9 +6624,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.CheckboxDescriptionImpl
          * <em>Checkbox Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.CheckboxDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getCheckboxDescription()
+         * @generated
          */
         EClass CHECKBOX_DESCRIPTION = eINSTANCE.getCheckboxDescription();
 
@@ -6424,9 +6675,9 @@ public interface FormPackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.form.impl.FlexboxContainerDescriptionImpl <em>Flexbox Container
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.FlexboxContainerDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexboxContainerDescription()
+         * @generated
          */
         EClass FLEXBOX_CONTAINER_DESCRIPTION = eINSTANCE.getFlexboxContainerDescription();
 
@@ -6474,9 +6725,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.ImageDescriptionImpl
          * <em>Image Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.ImageDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getImageDescription()
+         * @generated
          */
         EClass IMAGE_DESCRIPTION = eINSTANCE.getImageDescription();
 
@@ -6635,9 +6886,9 @@ public interface FormPackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.form.impl.MultiSelectDescriptionImpl <em>Multi Select
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.MultiSelectDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getMultiSelectDescription()
+         * @generated
          */
         EClass MULTI_SELECT_DESCRIPTION = eINSTANCE.getMultiSelectDescription();
 
@@ -6701,9 +6952,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.PieChartDescriptionImpl
          * <em>Pie Chart Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.PieChartDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getPieChartDescription()
+         * @generated
          */
         EClass PIE_CHART_DESCRIPTION = eINSTANCE.getPieChartDescription();
 
@@ -6809,9 +7060,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl
          * <em>Rich Text Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getRichTextDescription()
+         * @generated
          */
         EClass RICH_TEXT_DESCRIPTION = eINSTANCE.getRichTextDescription();
 
@@ -6843,9 +7094,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.SelectDescriptionImpl
          * <em>Select Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.SelectDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSelectDescription()
+         * @generated
          */
         EClass SELECT_DESCRIPTION = eINSTANCE.getSelectDescription();
 
@@ -6909,9 +7160,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.TextAreaDescriptionImpl
          * <em>Text Area Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.TextAreaDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextAreaDescription()
+         * @generated
          */
         EClass TEXT_AREA_DESCRIPTION = eINSTANCE.getTextAreaDescription();
 
@@ -6959,9 +7210,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionImpl
          * <em>Textfield Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.TextfieldDescriptionImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextfieldDescription()
+         * @generated
          */
         EClass TEXTFIELD_DESCRIPTION = eINSTANCE.getTextfieldDescription();
 
@@ -7010,9 +7261,9 @@ public interface FormPackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionStyleImpl <em>Widget Description
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.WidgetDescriptionStyleImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescriptionStyle()
+         * @generated
          */
         EClass WIDGET_DESCRIPTION_STYLE = eINSTANCE.getWidgetDescriptionStyle();
 
@@ -7116,9 +7367,9 @@ public interface FormPackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl <em>Conditional
          * Checkbox Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.ConditionalCheckboxDescriptionStyleImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalCheckboxDescriptionStyle()
+         * @generated
          */
         EClass CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = eINSTANCE.getConditionalCheckboxDescriptionStyle();
 
@@ -7458,9 +7709,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
          * <em>Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.ContainerBorderStyleImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderStyle()
+         * @generated
          */
         EClass CONTAINER_BORDER_STYLE = eINSTANCE.getContainerBorderStyle();
 
@@ -7501,19 +7752,79 @@ public interface FormPackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl <em>Conditional
          * Container Border Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalContainerBorderStyle()
+         * @generated
          */
         EClass CONDITIONAL_CONTAINER_BORDER_STYLE = eINSTANCE.getConditionalContainerBorderStyle();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl
+         * <em>Element For</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.form.impl.FormElementForImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementFor()
+         * @generated
+         */
+        EClass FORM_ELEMENT_FOR = eINSTANCE.getFormElementFor();
+
+        /**
+         * The meta object literal for the '<em><b>Iterator</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FORM_ELEMENT_FOR__ITERATOR = eINSTANCE.getFormElementFor_Iterator();
+
+        /**
+         * The meta object literal for the '<em><b>Iterable Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FORM_ELEMENT_FOR__ITERABLE_EXPRESSION = eINSTANCE.getFormElementFor_IterableExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FORM_ELEMENT_FOR__CHILDREN = eINSTANCE.getFormElementFor_Children();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.FormElementIfImpl
+         * <em>Element If</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.form.impl.FormElementIfImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementIf()
+         * @generated
+         */
+        EClass FORM_ELEMENT_IF = eINSTANCE.getFormElementIf();
+
+        /**
+         * The meta object literal for the '<em><b>Predicate Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute FORM_ELEMENT_IF__PREDICATE_EXPRESSION = eINSTANCE.getFormElementIf_PredicateExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Children</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference FORM_ELEMENT_IF__CHILDREN = eINSTANCE.getFormElementIf_Children();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.FlexDirection <em>Flex
          * Direction</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.FlexDirection
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexDirection()
+         * @generated
          */
         EEnum FLEX_DIRECTION = eINSTANCE.getFlexDirection();
 
@@ -7521,9 +7832,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.GroupDisplayMode <em>Group
          * Display Mode</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getGroupDisplayMode()
+         * @generated
          */
         EEnum GROUP_DISPLAY_MODE = eINSTANCE.getGroupDisplayMode();
 
@@ -7531,9 +7842,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
          * Placement</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.LabelPlacement
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
+         * @generated
          */
         EEnum LABEL_PLACEMENT = eINSTANCE.getLabelPlacement();
 
@@ -7541,9 +7852,9 @@ public interface FormPackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
          * <em>Container Border Line Style</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.form.ContainerBorderLineStyle
          * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderLineStyle()
+         * @generated
          */
         EEnum CONTAINER_BORDER_LINE_STYLE = eINSTANCE.getContainerBorderLineStyle();
 

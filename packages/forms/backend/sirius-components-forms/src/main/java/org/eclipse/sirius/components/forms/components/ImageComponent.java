@@ -42,8 +42,14 @@ public class ImageComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         ImageDescription imageDescription = this.props.getImageDescription();
 
-        String id = imageDescription.getIdProvider().apply(variableManager);
         String label = imageDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, imageDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, imageDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = imageDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = imageDescription.getIconURLProvider().apply(variableManager);
         String url = imageDescription.getUrlProvider().apply(variableManager);
         String maxWidth = imageDescription.getMaxWidthProvider().apply(variableManager);

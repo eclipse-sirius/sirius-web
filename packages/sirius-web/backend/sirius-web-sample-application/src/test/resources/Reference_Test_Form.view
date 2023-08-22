@@ -3,10 +3,10 @@
   <descriptions xmi:type="form:FormDescription" name="Reference Widget Test" domainType="flow::System" titleExpression="Reference Test">
     <pages>
       <groups>
-        <widgets xmi:type="reference:ReferenceWidgetDescription" name="elements" labelExpression="elements" referenceNameExpression="elements"/>
-        <widgets xmi:type="form:FlexboxContainerDescription">
+        <children xmi:type="reference:ReferenceWidgetDescription" name="elements" labelExpression="elements" referenceNameExpression="elements"/>
+        <children xmi:type="form:FlexboxContainerDescription">
           <children xmi:type="reference:ReferenceWidgetDescription" name="outgoingFlows" labelExpression="outgoingFlows" referenceNameExpression="outgoingFlows"/>
-        </widgets>
+        </children>
       </groups>
     </pages>
   </descriptions>

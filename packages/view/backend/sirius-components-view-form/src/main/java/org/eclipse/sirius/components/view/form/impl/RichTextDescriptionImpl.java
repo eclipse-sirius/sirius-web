@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -65,6 +64,16 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
     protected String valueExpression = VALUE_EXPRESSION_EDEFAULT;
 
     /**
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getBody()
+     * @generated
+     * @ordered
+     */
+    protected EList<Operation> body;
+
+    /**
      * The default value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -73,15 +82,7 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
      * @see #getIsEnabledExpression()
      */
     protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
-    /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBody()
-     */
-    protected EList<Operation> body;
+
     /**
      * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -259,7 +260,7 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
             case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
                 return this.body != null && !this.body.isEmpty();
             case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
+                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }

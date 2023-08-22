@@ -41,6 +41,9 @@ import org.eclipse.sirius.components.view.form.ConditionalTextfieldDescriptionSt
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.ImageDescription;
@@ -131,6 +134,11 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseGroupDescription(GroupDescription object) {
             return FormAdapterFactory.this.createGroupDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseFormElementDescription(FormElementDescription object) {
+            return FormAdapterFactory.this.createFormElementDescriptionAdapter();
         }
 
         @Override
@@ -349,6 +357,16 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseFormElementFor(FormElementFor object) {
+            return FormAdapterFactory.this.createFormElementForAdapter();
+        }
+
+        @Override
+        public Adapter caseFormElementIf(FormElementIf object) {
+            return FormAdapterFactory.this.createFormElementIfAdapter();
+        }
+
+        @Override
         public Adapter caseRepresentationDescription(RepresentationDescription object) {
             return FormAdapterFactory.this.createRepresentationDescriptionAdapter();
         }
@@ -421,6 +439,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createGroupDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.form.FormElementDescription <em>Element Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.FormElementDescription
+     * @generated
+     */
+    public Adapter createFormElementDescriptionAdapter() {
         return null;
     }
 
@@ -1015,8 +1047,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle
+     * @generated
      */
     public Adapter createContainerBorderStyleAdapter() {
         return null;
@@ -1029,10 +1061,38 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle
+     * @generated
      */
     public Adapter createConditionalContainerBorderStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FormElementFor
+     * <em>Element For</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.FormElementFor
+     * @generated
+     */
+    public Adapter createFormElementForAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FormElementIf
+     * <em>Element If</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.FormElementIf
+     * @generated
+     */
+    public Adapter createFormElementIfAdapter() {
         return null;
     }
 

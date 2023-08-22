@@ -93,6 +93,8 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -119,6 +121,11 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -175,6 +182,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
         public CheckboxDescription build() {
             CheckboxDescription checkboxDescription = new CheckboxDescription();
             checkboxDescription.id = Objects.requireNonNull(this.id);
+            checkboxDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             checkboxDescription.idProvider = Objects.requireNonNull(this.idProvider);
             checkboxDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             checkboxDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

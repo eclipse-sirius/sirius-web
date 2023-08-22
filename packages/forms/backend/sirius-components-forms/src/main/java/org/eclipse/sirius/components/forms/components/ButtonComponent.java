@@ -45,8 +45,14 @@ public class ButtonComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         ButtonDescription buttonDescription = this.props.getButtonDescription();
 
-        String id = buttonDescription.getIdProvider().apply(variableManager);
         String label = buttonDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, buttonDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, buttonDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = buttonDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = buttonDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = buttonDescription.getIsReadOnlyProvider().apply(variableManager);
         String buttonLabel = buttonDescription.getButtonLabelProvider().apply(variableManager);

@@ -43,6 +43,9 @@ import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
@@ -98,6 +101,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EClass groupDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass formElementDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -405,6 +415,20 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      *
      * @generated
      */
+    private EClass formElementForEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass formElementIfEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum flexDirectionEEnum = null;
 
     /**
@@ -658,7 +682,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
-    public EReference getGroupDescription_Widgets() {
+    public EReference getGroupDescription_Children() {
         return (EReference) this.groupDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -688,6 +712,26 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getFormElementDescription() {
+        return this.formElementDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFormElementDescription_Name() {
+        return (EAttribute) this.formElementDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getWidgetDescription() {
         return this.widgetDescriptionEClass;
     }
@@ -698,7 +742,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
-    public EAttribute getWidgetDescription_Name() {
+    public EAttribute getWidgetDescription_LabelExpression() {
         return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -708,18 +752,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
-    public EAttribute getWidgetDescription_LabelExpression() {
-        return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EAttribute getWidgetDescription_HelpExpression() {
-        return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(2);
+        return (EAttribute) this.widgetDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2168,6 +2202,76 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getFormElementFor() {
+        return this.formElementForEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFormElementFor_Iterator() {
+        return (EAttribute) this.formElementForEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFormElementFor_IterableExpression() {
+        return (EAttribute) this.formElementForEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFormElementFor_Children() {
+        return (EReference) this.formElementForEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getFormElementIf() {
+        return this.formElementIfEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFormElementIf_PredicateExpression() {
+        return (EAttribute) this.formElementIfEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFormElementIf_Children() {
+        return (EReference) this.formElementIfEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getFlexDirection() {
         return this.flexDirectionEEnum;
     }
@@ -2249,12 +2353,14 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__DISPLAY_MODE);
         this.createEAttribute(this.groupDescriptionEClass, GROUP_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__TOOLBAR_ACTIONS);
-        this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__WIDGETS);
+        this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__CHILDREN);
         this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__BORDER_STYLE);
         this.createEReference(this.groupDescriptionEClass, GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
 
+        this.formElementDescriptionEClass = this.createEClass(FORM_ELEMENT_DESCRIPTION);
+        this.createEAttribute(this.formElementDescriptionEClass, FORM_ELEMENT_DESCRIPTION__NAME);
+
         this.widgetDescriptionEClass = this.createEClass(WIDGET_DESCRIPTION);
-        this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__NAME);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__LABEL_EXPRESSION);
         this.createEAttribute(this.widgetDescriptionEClass, WIDGET_DESCRIPTION__HELP_EXPRESSION);
 
@@ -2444,6 +2550,15 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         this.conditionalContainerBorderStyleEClass = this.createEClass(CONDITIONAL_CONTAINER_BORDER_STYLE);
 
+        this.formElementForEClass = this.createEClass(FORM_ELEMENT_FOR);
+        this.createEAttribute(this.formElementForEClass, FORM_ELEMENT_FOR__ITERATOR);
+        this.createEAttribute(this.formElementForEClass, FORM_ELEMENT_FOR__ITERABLE_EXPRESSION);
+        this.createEReference(this.formElementForEClass, FORM_ELEMENT_FOR__CHILDREN);
+
+        this.formElementIfEClass = this.createEClass(FORM_ELEMENT_IF);
+        this.createEAttribute(this.formElementIfEClass, FORM_ELEMENT_IF__PREDICATE_EXPRESSION);
+        this.createEReference(this.formElementIfEClass, FORM_ELEMENT_IF__CHILDREN);
+
         // Create enums
         this.flexDirectionEEnum = this.createEEnum(FLEX_DIRECTION);
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
@@ -2483,6 +2598,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
 
         // Add supertypes to classes
         this.formDescriptionEClass.getESuperTypes().add(theViewPackage.getRepresentationDescription());
+        this.widgetDescriptionEClass.getESuperTypes().add(this.getFormElementDescription());
         this.barChartDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.buttonDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.checkboxDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
@@ -2547,6 +2663,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.conditionalTextfieldDescriptionStyleEClass.getESuperTypes().add(this.getTextfieldDescriptionStyle());
         this.conditionalContainerBorderStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.conditionalContainerBorderStyleEClass.getESuperTypes().add(this.getContainerBorderStyle());
+        this.formElementForEClass.getESuperTypes().add(this.getFormElementDescription());
+        this.formElementIfEClass.getESuperTypes().add(this.getFormElementDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.formDescriptionEClass, FormDescription.class, "FormDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2580,16 +2698,18 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGroupDescription_ToolbarActions(), this.getButtonDescription(), null, "toolbarActions", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getGroupDescription_Widgets(), this.getWidgetDescription(), null, "widgets", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+        this.initEReference(this.getGroupDescription_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGroupDescription_BorderStyle(), this.getContainerBorderStyle(), null, "borderStyle", null, 0, 1, GroupDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getGroupDescription_ConditionalBorderStyles(), this.getConditionalContainerBorderStyle(), null, "conditionalBorderStyles", null, 0, -1, GroupDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.formElementDescriptionEClass, FormElementDescription.class, "FormElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getFormElementDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, FormElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.widgetDescriptionEClass, WidgetDescription.class, "WidgetDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getWidgetDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getWidgetDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getWidgetDescription_HelpExpression(), theViewPackage.getInterpretedExpression(), "helpExpression", null, 0, 1, WidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -2638,8 +2758,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.flexboxContainerDescriptionEClass, FlexboxContainerDescription.class, "FlexboxContainerDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getFlexboxContainerDescription_Children(), this.getWidgetDescription(), null, "children", null, 0, -1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFlexboxContainerDescription_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, FlexboxContainerDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getFlexboxContainerDescription_FlexDirection(), this.getFlexDirection(), "flexDirection", "row", 1, 1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getFlexboxContainerDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, FlexboxContainerDescription.class,
@@ -2892,6 +3012,20 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalContainerBorderStyleEClass, ConditionalContainerBorderStyle.class, "ConditionalContainerBorderStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.formElementForEClass, FormElementFor.class, "FormElementFor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getFormElementFor_Iterator(), this.ecorePackage.getEString(), "iterator", "it", 1, 1, FormElementFor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFormElementFor_IterableExpression(), theViewPackage.getInterpretedExpression(), "iterableExpression", null, 1, 1, FormElementFor.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFormElementFor_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, FormElementFor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.formElementIfEClass, FormElementIf.class, "FormElementIf", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getFormElementIf_PredicateExpression(), theViewPackage.getInterpretedExpression(), "predicateExpression", null, 1, 1, FormElementIf.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFormElementIf_Children(), this.getFormElementDescription(), null, "children", null, 0, -1, FormElementIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.flexDirectionEEnum, FlexDirection.class, "FlexDirection");

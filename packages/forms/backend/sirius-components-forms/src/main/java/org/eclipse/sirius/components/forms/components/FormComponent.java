@@ -31,10 +31,28 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public class FormComponent implements IComponent {
 
     /**
-     * The variable name used to store a {@link WidgetIdCounter} in the {@link VariableManager} of the
-     * {@link FormComponent}.
+     * The name of the variable used to store the id of the parent element in the {@link VariableManager} for a widget
+     * to compute its own id.
      */
-    public static final String WIDGET_ID_PROVIDER_COUNTER = "widgetIdProviderCounter";
+    public static final String PARENT_ELEMENT_ID = "parentElementId";
+
+    /**
+     * The name of the variable used to store the id of widget's description in the {@link VariableManager} for a widget
+     * to compute its own id.
+     */
+    public static final String CONTROL_DESCRIPTION_ID = "controlDescriptionId";
+
+    /**
+     * The name of the variable used to store the id of widget's target object in the {@link VariableManager} for a widget
+     * to compute its own id.
+     */
+    public static final String TARGET_OBJECT_ID = "targetObjectId";
+
+    /**
+     * The name of the variable used to store the id of widget's label in the {@link VariableManager} for a widget
+     * to compute its own id.
+     */
+    public static final String WIDGET_LABEL = "widgetLabel";
 
     private final FormComponentProps props;
 
@@ -46,10 +64,15 @@ public class FormComponent implements IComponent {
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
         FormDescription formDescription = this.props.getFormDescription();
-        WidgetIdCounter widgetIdCounter = new WidgetIdCounter();
 
-        String id = formDescription.getIdProvider().apply(variableManager);
         String label = formDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, formDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, formDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = formDescription.getIdProvider().apply(idVariableManager);
+
         String targetObjectId = formDescription.getTargetObjectIdProvider().apply(variableManager);
         List<PageDescription> pageDescriptions = formDescription.getPageDescriptions();
 
@@ -65,22 +88,17 @@ public class FormComponent implements IComponent {
             }
         }
 
-        List<Element> children = candidates
-                .stream()
+        List<Element> children = candidates.stream()
                 .map(candidate -> {
                     VariableManager childVariableManager = variableManager.createChild();
                     childVariableManager.put(VariableManager.SELF, candidate);
-                    childVariableManager.put(WIDGET_ID_PROVIDER_COUNTER, widgetIdCounter);
+                    childVariableManager.put(FormComponent.PARENT_ELEMENT_ID, id);
                     return childVariableManager;
+                }).flatMap(childVariableManager -> {
+                    return pageDescriptions.stream()
+                            .filter(pageDescription -> pageDescription.getCanCreatePredicate().test(childVariableManager))
+                            .map(pageDescription -> new Element(PageComponent.class, new PageComponentProps(childVariableManager, pageDescription, this.props.getWidgetDescriptors())));
                 })
-                .flatMap(childVariableManager -> pageDescriptions
-                        .stream()
-                        .filter(pageDescription -> pageDescription.getCanCreatePredicate().test(childVariableManager))
-                        .map(pageDescription -> {
-                            PageComponentProps pageComponentProps = new PageComponentProps(childVariableManager, pageDescription, this.props.getWidgetDescriptors());
-                            return new Element(PageComponent.class, pageComponentProps);
-                        })
-                )
                 .toList();
 
         FormElementProps formElementProps = FormElementProps.newFormElementProps(id)
