@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.sample.slider;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -38,8 +39,14 @@ public class SliderComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         SliderDescription sliderDescription = this.props.getSliderDescription();
 
-        String id = sliderDescription.getIdProvider().apply(variableManager);
         String label = sliderDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, sliderDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, sliderDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = sliderDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = sliderDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = sliderDescription.getIsReadOnlyProvider().apply(variableManager);
         int minValue = sliderDescription.getMinValueProvider().apply(variableManager);

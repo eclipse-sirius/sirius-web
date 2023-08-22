@@ -78,6 +78,8 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -100,6 +102,11 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -141,6 +148,7 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
         public ChartWidgetDescription build() {
             ChartWidgetDescription chartDescription = new ChartWidgetDescription();
             chartDescription.id = Objects.requireNonNull(this.id);
+            chartDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             chartDescription.idProvider = Objects.requireNonNull(this.idProvider);
             chartDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             chartDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

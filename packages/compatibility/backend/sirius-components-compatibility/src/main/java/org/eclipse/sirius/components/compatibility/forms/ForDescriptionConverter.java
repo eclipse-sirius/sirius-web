@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.api.IModelOperationHandlerSwitchProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
-import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.properties.DynamicMappingForDescription;
@@ -57,14 +57,15 @@ public class ForDescriptionConverter {
                     .orElse(Collections.emptyList());
         };
         IfDescriptionConverter converter = new IfDescriptionConverter(this.interpreter, this.objectService, this.identifierProvider, this.modelOperationHandlerSwitchProvider);
-        List<IfDescription> ifDescriptions = siriusForDescription.getIfs().stream()
+        List<AbstractControlDescription> ifDescriptions = siriusForDescription.getIfs().stream()
                 .flatMap(ifDescription -> converter.convert(ifDescription).stream())
                 .collect(Collectors.toUnmodifiableList());
 
         return ForDescription.newForDescription(this.identifierProvider.getIdentifier(siriusForDescription))
+               .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                .iterableProvider(iterableProvider)
                .iterator(siriusForDescription.getIterator())
-               .ifDescriptions(ifDescriptions)
+               .controlDescriptions(ifDescriptions)
                .build();
         // @formatter:on
     }

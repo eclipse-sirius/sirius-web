@@ -46,8 +46,14 @@ public class TextfieldComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         TextfieldDescription textfieldDescription = this.props.getTextfieldDescription();
 
-        String id = textfieldDescription.getIdProvider().apply(variableManager);
         String label = textfieldDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, textfieldDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, textfieldDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = textfieldDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = textfieldDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = textfieldDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = textfieldDescription.getValueProvider().apply(variableManager);

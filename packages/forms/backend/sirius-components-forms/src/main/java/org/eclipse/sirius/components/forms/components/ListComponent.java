@@ -52,8 +52,14 @@ public class ListComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         ListDescription listDescription = this.props.getListDescription();
 
-        String id = listDescription.getIdProvider().apply(variableManager);
         String label = listDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, listDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, listDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = listDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = listDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = listDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> itemCandidates = listDescription.getItemsProvider().apply(variableManager);

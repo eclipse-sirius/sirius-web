@@ -17,7 +17,10 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.forms.FlexDirection;
+import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.FlexboxContainerDescription;
+import org.eclipse.sirius.components.forms.description.ForDescription;
+import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.elements.FlexboxContainerElementProps;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
@@ -45,8 +48,14 @@ public class FlexboxContainerComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         FlexboxContainerDescription flexboxContainerDescription = this.props.getFlexboxContainerDescription();
 
-        String id = flexboxContainerDescription.getIdProvider().apply(variableManager);
         String label = flexboxContainerDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, flexboxContainerDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, flexboxContainerDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = flexboxContainerDescription.getIdProvider().apply(idVariableManager);
+
         Boolean readOnly = flexboxContainerDescription.getIsReadOnlyProvider().apply(variableManager);
         FlexDirection flexdirection = flexboxContainerDescription.getFlexDirection();
         var borderStyle = flexboxContainerDescription.getBorderStyleProvider().apply(variableManager);
@@ -54,14 +63,18 @@ public class FlexboxContainerComponent implements IComponent {
         List<Element> children = new ArrayList<>();
 
         List<Element> childrenWidgets = new ArrayList<>();
-
-        flexboxContainerDescription.getChildren().forEach(widget -> {
-            var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
-
-            if (optionalSelf.isPresent()) {
-                VariableManager childVariableManager = variableManager.createChild();
-                childVariableManager.put(VariableManager.SELF, optionalSelf.get());
-                childrenWidgets.add(new Element(WidgetComponent.class, new WidgetComponentProps(childVariableManager, widget, this.props.getWidgetDescriptors())));
+        VariableManager childrenVariableManager = variableManager.createChild();
+        childrenVariableManager.put(FormComponent.PARENT_ELEMENT_ID, id);
+        flexboxContainerDescription.getChildren().forEach(controlDescription -> {
+            if (controlDescription instanceof AbstractWidgetDescription widgetDescription) {
+                WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childrenVariableManager, widgetDescription, this.props.getWidgetDescriptors());
+                childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
+            } else if (controlDescription instanceof ForDescription forDescription) {
+                ForComponentProps forComponentProps = new ForComponentProps(childrenVariableManager, forDescription, this.props.getWidgetDescriptors());
+                childrenWidgets.add(new Element(ForComponent.class, forComponentProps));
+            } else if (controlDescription instanceof IfDescription ifDescription) {
+                IfComponentProps ifComponentProps = new IfComponentProps(childrenVariableManager, ifDescription, this.props.getWidgetDescriptors());
+                childrenWidgets.add(new Element(IfComponent.class, ifComponentProps));
             }
         });
 

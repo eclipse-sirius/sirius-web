@@ -96,9 +96,9 @@ public class MultipleDomainPropertiesConfigurer implements IPropertiesDescriptio
         group.setName("Core Properties");
         group.setLabelExpression("Core Properties");
         group.setSemanticCandidatesExpression("aql:self");
-        group.getWidgets().add(this.createTypeSelectorWidget());
-        group.getWidgets().add(this.createBooleanAttributeEditWidget("Optional", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
-        group.getWidgets().add(this.createBooleanAttributeEditWidget("Many", DomainPackage.Literals.FEATURE__MANY.getName()));
+        group.getChildren().add(this.createTypeSelectorWidget());
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Optional", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Many", DomainPackage.Literals.FEATURE__MANY.getName()));
         return group;
     }
 

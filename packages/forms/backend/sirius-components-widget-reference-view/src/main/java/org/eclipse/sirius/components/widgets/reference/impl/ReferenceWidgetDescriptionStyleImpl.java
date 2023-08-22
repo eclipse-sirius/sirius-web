@@ -52,20 +52,42 @@ public class ReferenceWidgetDescriptionStyleImpl extends WidgetDescriptionStyleI
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getFontSize()
      * @generated
      * @ordered
-     * @see #getFontSize()
      */
     protected static final int FONT_SIZE_EDEFAULT = 14;
+
+    /**
+     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected int fontSize = FONT_SIZE_EDEFAULT;
+
     /**
      * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #isItalic()
      * @generated
      * @ordered
-     * @see #isItalic()
      */
     protected static final boolean ITALIC_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected boolean italic = ITALIC_EDEFAULT;
+
     /**
      * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -75,42 +97,7 @@ public class ReferenceWidgetDescriptionStyleImpl extends WidgetDescriptionStyleI
      * @see #isBold()
      */
     protected static final boolean BOLD_EDEFAULT = false;
-    /**
-     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isUnderline()
-     */
-    protected static final boolean UNDERLINE_EDEFAULT = false;
-    /**
-     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isStrikeThrough()
-     */
-    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
-    /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getFontSize()
-     */
-    protected int fontSize = FONT_SIZE_EDEFAULT;
-    /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #isItalic()
-     */
-    protected boolean italic = ITALIC_EDEFAULT;
+
     /**
      * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -120,22 +107,44 @@ public class ReferenceWidgetDescriptionStyleImpl extends WidgetDescriptionStyleI
      * @see #isBold()
      */
     protected boolean bold = BOLD_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean UNDERLINE_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #isUnderline()
      * @generated
      * @ordered
-     * @see #isUnderline()
      */
     protected boolean underline = UNDERLINE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #isStrikeThrough()
      * @generated
      * @ordered
-     * @see #isStrikeThrough()
      */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
@@ -403,7 +412,7 @@ public class ReferenceWidgetDescriptionStyleImpl extends WidgetDescriptionStyleI
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
             case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                this.setColor(null);
+                this.setColor((UserColor) null);
                 return;
         }
         super.eUnset(featureID);
@@ -495,18 +504,19 @@ public class ReferenceWidgetDescriptionStyleImpl extends WidgetDescriptionStyleI
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (fontSize: " +
-                this.fontSize +
-                ", italic: " +
-                this.italic +
-                ", bold: " +
-                this.bold +
-                ", underline: " +
-                this.underline +
-                ", strikeThrough: " +
-                this.strikeThrough +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (fontSize: ");
+        result.append(this.fontSize);
+        result.append(", italic: ");
+        result.append(this.italic);
+        result.append(", bold: ");
+        result.append(this.bold);
+        result.append(", underline: ");
+        result.append(this.underline);
+        result.append(", strikeThrough: ");
+        result.append(this.strikeThrough);
+        result.append(')');
+        return result.toString();
     }
 
 } // ReferenceWidgetDescriptionStyleImpl

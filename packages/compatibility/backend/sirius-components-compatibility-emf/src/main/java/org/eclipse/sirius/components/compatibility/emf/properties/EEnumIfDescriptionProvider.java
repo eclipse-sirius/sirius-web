@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,16 +58,20 @@ public class EEnumIfDescriptionProvider {
 
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
-    public EEnumIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider) {
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
+    public EEnumIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
+        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
     }
 
     public IfDescription getIfDescription() {
         // @formatter:off
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
-                .widgetDescription(this.getRadioDescription())
+                .controlDescriptions(List.of(this.getRadioDescription()))
                 .build();
         // @formatter:on
     }
@@ -86,6 +90,7 @@ public class EEnumIfDescriptionProvider {
     private RadioDescription getRadioDescription() {
         // @formatter:off
         return RadioDescription.newRadioDescription(RADIO_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .optionsProvider(this.getOptionsProvider())

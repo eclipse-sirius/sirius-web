@@ -28,9 +28,9 @@ import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
  * <em>Color</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescriptionStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescriptionStyle()
  */
 public interface ReferenceWidgetDescriptionStyle extends WidgetDescriptionStyle, LabelStyle {
 
@@ -38,10 +38,10 @@ public interface ReferenceWidgetDescriptionStyle extends WidgetDescriptionStyle,
      * Returns the value of the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Color</em>' reference.
-     * @model
-     * @generated
      * @see #setColor(UserColor)
      * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage#getReferenceWidgetDescriptionStyle_Color()
+     * @model
+     * @generated
      */
     UserColor getColor();
 
@@ -50,9 +50,10 @@ public interface ReferenceWidgetDescriptionStyle extends WidgetDescriptionStyle,
      * '{@link org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle#getColor <em>Color</em>}'
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Color</em>' reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Color</em>' reference.
      * @see #getColor()
+     * @generated
      */
     void setColor(UserColor value);
 

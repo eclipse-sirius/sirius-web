@@ -79,6 +79,8 @@ public final class LabelDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
@@ -101,6 +103,11 @@ public final class LabelDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -142,6 +149,7 @@ public final class LabelDescription extends AbstractWidgetDescription {
         public LabelDescription build() {
             LabelDescription textfieldDescription = new LabelDescription();
             textfieldDescription.id = Objects.requireNonNull(this.id);
+            textfieldDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             textfieldDescription.idProvider = Objects.requireNonNull(this.idProvider);
             textfieldDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             textfieldDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);

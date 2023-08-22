@@ -22,65 +22,65 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Container Border Line
  * Style</b></em>', and utility methods for working with them. <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderLineStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderLineStyle()
  */
 public enum ContainerBorderLineStyle implements Enumerator {
     /**
      * The '<em><b>Solid</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #SOLID_VALUE
      * @generated
      * @ordered
-     * @see #SOLID_VALUE
      */
     SOLID(0, "Solid", "Solid"),
 
     /**
      * The '<em><b>Dashed</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DASHED_VALUE
      * @generated
      * @ordered
-     * @see #DASHED_VALUE
      */
     DASHED(1, "Dashed", "Dashed"),
 
     /**
      * The '<em><b>Dotted</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOTTED_VALUE
      * @generated
      * @ordered
-     * @see #DOTTED_VALUE
      */
     DOTTED(2, "Dotted", "Dotted");
 
     /**
      * The '<em><b>Solid</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #SOLID
      * @model name="Solid"
      * @generated
      * @ordered
-     * @see #SOLID
      */
     public static final int SOLID_VALUE = 0;
 
     /**
      * The '<em><b>Dashed</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DASHED
      * @model name="Dashed"
      * @generated
      * @ordered
-     * @see #DASHED
      */
     public static final int DASHED_VALUE = 1;
 
     /**
      * The '<em><b>Dotted</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #DOTTED
      * @model name="Dotted"
      * @generated
      * @ordered
-     * @see #DOTTED
      */
     public static final int DOTTED_VALUE = 2;
 
@@ -90,7 +90,7 @@ public enum ContainerBorderLineStyle implements Enumerator {
      *
      * @generated
      */
-    private static final ContainerBorderLineStyle[] VALUES_ARRAY = new ContainerBorderLineStyle[]{SOLID, DASHED, DOTTED,};
+    private static final ContainerBorderLineStyle[] VALUES_ARRAY = new ContainerBorderLineStyle[] { SOLID, DASHED, DOTTED, };
 
     /**
      * A public read-only list of all the '<em><b>Container Border Line Style</b></em>' enumerators. <!-- begin-user-doc
@@ -104,7 +104,8 @@ public enum ContainerBorderLineStyle implements Enumerator {
      * Returns the '<em><b>Container Border Line Style</b></em>' literal with the specified literal value. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param literal the literal.
+     * @param literal
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -184,7 +185,7 @@ public enum ContainerBorderLineStyle implements Enumerator {
      *
      * @generated
      */
-    ContainerBorderLineStyle(int value, String name, String literal) {
+    private ContainerBorderLineStyle(int value, String name, String literal) {
         this.value = value;
         this.name = name;
         this.literal = literal;

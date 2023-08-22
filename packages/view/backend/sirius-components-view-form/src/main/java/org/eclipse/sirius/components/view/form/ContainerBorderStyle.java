@@ -40,10 +40,10 @@ public interface ContainerBorderStyle extends EObject {
      * Returns the value of the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Border Color</em>' reference.
-     * @model required="true"
-     * @generated
      * @see #setBorderColor(UserColor)
      * @see org.eclipse.sirius.components.view.form.FormPackage#getContainerBorderStyle_BorderColor()
+     * @model required="true"
+     * @generated
      */
     UserColor getBorderColor();
 
@@ -51,9 +51,10 @@ public interface ContainerBorderStyle extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle#getBorderColor
      * <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Border Color</em>' reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Border Color</em>' reference.
      * @see #getBorderColor()
+     * @generated
      */
     void setBorderColor(UserColor value);
 

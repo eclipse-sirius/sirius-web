@@ -119,6 +119,8 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -153,6 +155,11 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -229,6 +236,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         public MultiSelectDescription build() {
             MultiSelectDescription multiSelectDescription = new MultiSelectDescription();
             multiSelectDescription.id = Objects.requireNonNull(this.id);
+            multiSelectDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             multiSelectDescription.idProvider = Objects.requireNonNull(this.idProvider);
             multiSelectDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             multiSelectDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

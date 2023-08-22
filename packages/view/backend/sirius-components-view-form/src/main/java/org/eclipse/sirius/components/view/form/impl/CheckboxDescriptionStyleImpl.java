@@ -38,15 +38,6 @@ import org.eclipse.sirius.components.view.form.LabelPlacement;
 public class CheckboxDescriptionStyleImpl extends WidgetDescriptionStyleImpl implements CheckboxDescriptionStyle {
 
     /**
-     * The default value of the '{@link #getLabelPlacement() <em>Label Placement</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getLabelPlacement()
-     */
-    protected static final LabelPlacement LABEL_PLACEMENT_EDEFAULT = LabelPlacement.END;
-    /**
      * The cached value of the '{@link #getColor() <em>Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -55,13 +46,24 @@ public class CheckboxDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
      * @see #getColor()
      */
     protected UserColor color;
+
+    /**
+     * The default value of the '{@link #getLabelPlacement() <em>Label Placement</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getLabelPlacement()
+     * @generated
+     * @ordered
+     */
+    protected static final LabelPlacement LABEL_PLACEMENT_EDEFAULT = LabelPlacement.END;
+
     /**
      * The cached value of the '{@link #getLabelPlacement() <em>Label Placement</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getLabelPlacement()
      * @generated
      * @ordered
-     * @see #getLabelPlacement()
      */
     protected LabelPlacement labelPlacement = LABEL_PLACEMENT_EDEFAULT;
 
@@ -227,10 +229,11 @@ public class CheckboxDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (labelPlacement: " +
-                this.labelPlacement +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (labelPlacement: ");
+        result.append(this.labelPlacement);
+        result.append(')');
+        return result.toString();
     }
 
 } // CheckboxDescriptionStyleImpl

@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.description.CheckboxDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
@@ -231,8 +232,8 @@ public class FormRendererTests {
                 .filter(ForDescription.class::isInstance)
                 .map(ForDescription.class::cast).findFirst();
         assertThat(forOptional).isNotEmpty();
-        assertThat(forOptional.get().getIfDescriptions()).hasSize(1);
-        assertThat(forOptional.get().getIfDescriptions().stream().findFirst().get().getWidgetDescription()).isNotNull();
+        assertThat(forOptional.get().getControlDescriptions()).hasSize(1);
+        assertThat(forOptional.get().getControlDescriptions().stream().filter(IfDescription.class::isInstance).map(IfDescription.class::cast).findFirst().get().getControlDescriptions()).isNotNull();
         // Test FormRenderer
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, List.of(EcorePackage.eINSTANCE));
@@ -259,10 +260,8 @@ public class FormRendererTests {
     private void checkIdsInGroups(List<Group> groups) {
         for (Group group : groups) {
             List<AbstractWidget> widgets = group.getWidgets();
-            for (int i = 0; i < widgets.size(); i++) {
-                AbstractWidget abstractWidget = widgets.get(i);
-                assertThat(abstractWidget.getId()).endsWith("#" + i);
-            }
+            long distincIds = widgets.stream().map(AbstractWidget::getId).distinct().count();
+            assertThat(distincIds).isEqualTo(widgets.size());
         }
     }
 }

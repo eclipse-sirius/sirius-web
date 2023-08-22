@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.description;
 
+import java.util.function.Function;
+
+import org.eclipse.sirius.components.representations.VariableManager;
+
 /**
  * Common superclass of all the controls.
  *
@@ -20,7 +24,13 @@ package org.eclipse.sirius.components.forms.description;
 public abstract class AbstractControlDescription {
     protected String id;
 
+    protected Function<VariableManager, String> targetObjectIdProvider;
+
     public String getId() {
         return this.id;
+    }
+
+    public Function<VariableManager, String> getTargetObjectIdProvider() {
+        return this.targetObjectIdProvider;
     }
 }

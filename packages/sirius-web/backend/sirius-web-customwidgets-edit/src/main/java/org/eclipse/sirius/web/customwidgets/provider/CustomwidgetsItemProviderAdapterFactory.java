@@ -36,6 +36,8 @@ import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.util.FormSwitch;
@@ -260,7 +262,7 @@ public class CustomwidgetsItemProviderAdapterFactory extends CustomwidgetsAdapte
              */
             @Override
             public Object caseGroupDescription(GroupDescription object) {
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS, CustomwidgetsFactory.eINSTANCE.createSliderDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, CustomwidgetsFactory.eINSTANCE.createSliderDescription()));
 
                 return null;
             }
@@ -273,6 +275,30 @@ public class CustomwidgetsItemProviderAdapterFactory extends CustomwidgetsAdapte
             @Override
             public Object caseFlexboxContainerDescription(FlexboxContainerDescription object) {
                 this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, CustomwidgetsFactory.eINSTANCE.createSliderDescription()));
+
+                return null;
+            }
+
+            /**
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            @Override
+            public Object caseFormElementFor(FormElementFor object) {
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, CustomwidgetsFactory.eINSTANCE.createSliderDescription()));
+
+                return null;
+            }
+
+            /**
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            @Override
+            public Object caseFormElementIf(FormElementIf object) {
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, CustomwidgetsFactory.eINSTANCE.createSliderDescription()));
 
                 return null;
             }

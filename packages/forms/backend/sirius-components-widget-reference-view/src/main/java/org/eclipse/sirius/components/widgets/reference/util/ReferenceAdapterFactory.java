@@ -18,6 +18,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
@@ -29,8 +30,8 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
  *
- * @generated
  * @see org.eclipse.sirius.components.widgets.reference.ReferencePackage
+ * @generated
  */
 public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 
@@ -60,6 +61,11 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalReferenceWidgetDescriptionStyle(ConditionalReferenceWidgetDescriptionStyle object) {
             return ReferenceAdapterFactory.this.createConditionalReferenceWidgetDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseFormElementDescription(FormElementDescription object) {
+            return ReferenceAdapterFactory.this.createFormElementDescriptionAdapter();
         }
 
         @Override
@@ -121,7 +127,8 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
     /**
      * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param target the object to adapt.
+     * @param target
+     *            the object to adapt.
      * @return the adapter for the <code>target</code>.
      * @generated
      */
@@ -137,8 +144,8 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription
+     * @generated
      */
     public Adapter createReferenceWidgetDescriptionAdapter() {
         return null;
@@ -151,8 +158,8 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle
+     * @generated
      */
     public Adapter createReferenceWidgetDescriptionStyleAdapter() {
         return null;
@@ -166,10 +173,24 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle
+     * @generated
      */
     public Adapter createConditionalReferenceWidgetDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.form.FormElementDescription <em>Element Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.FormElementDescription
+     * @generated
+     */
+    public Adapter createFormElementDescriptionAdapter() {
         return null;
     }
 
@@ -180,8 +201,8 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.form.WidgetDescription
+     * @generated
      */
     public Adapter createWidgetDescriptionAdapter() {
         return null;
@@ -207,8 +228,8 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.LabelStyle
+     * @generated
      */
     public Adapter createLabelStyleAdapter() {
         return null;

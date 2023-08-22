@@ -74,8 +74,8 @@ public class FlexboxContainerDescriptionBuilder {
      *
      * @generated
      */
-    public FlexboxContainerDescriptionBuilder children(org.eclipse.sirius.components.view.form.WidgetDescription ... values) {
-        for (org.eclipse.sirius.components.view.form.WidgetDescription value : values) {
+    public FlexboxContainerDescriptionBuilder children(org.eclipse.sirius.components.view.form.FormElementDescription ... values) {
+        for (org.eclipse.sirius.components.view.form.FormElementDescription value : values) {
             this.getFlexboxContainerDescription().getChildren().add(value);
         }
         return this;
@@ -90,7 +90,6 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setFlexDirection(value);
         return this;
     }
-
     /**
      * Setter for IsEnabledExpression.
      *
@@ -100,7 +99,6 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setIsEnabledExpression(value);
         return this;
     }
-
     /**
      * Setter for BorderStyle.
      *
@@ -110,7 +108,6 @@ public class FlexboxContainerDescriptionBuilder {
         this.getFlexboxContainerDescription().setBorderStyle(value);
         return this;
     }
-
     /**
      * Setter for ConditionalBorderStyles.
      *

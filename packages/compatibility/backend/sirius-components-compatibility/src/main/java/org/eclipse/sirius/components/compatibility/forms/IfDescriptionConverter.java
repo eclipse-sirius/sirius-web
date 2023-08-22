@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.forms;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.properties.DynamicMappingIfDescription;
 
 /**
@@ -55,8 +57,9 @@ public class IfDescriptionConverter {
         return optionalWidgetDescription.map(widgetDescription -> {
             // @formatter:off
             return IfDescription.newIfDescription(this.identifierProvider.getIdentifier(siriusIfDescription))
+                    .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                     .predicate(predicate)
-                    .widgetDescription(widgetDescription)
+                    .controlDescriptions(List.of(widgetDescription))
                     .build();
             // @formatter:on
         });

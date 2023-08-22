@@ -49,8 +49,14 @@ public class RadioComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         RadioDescription radioDescription = this.props.getRadioDescription();
 
-        String id = radioDescription.getIdProvider().apply(variableManager);
         String label = radioDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, radioDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, radioDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = radioDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = radioDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = radioDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = radioDescription.getOptionsProvider().apply(variableManager);

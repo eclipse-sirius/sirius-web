@@ -43,7 +43,7 @@ public class OverviewFormProvider implements IRepresentationDescriptionProvider 
         textfieldDescription.setLabelExpression("Root");
         textfieldDescription.setValueExpression("root element");
         textfieldDescription.setHelpExpression("aql:'This is a ' + self.eClass().name + ' element'");
-        groupDescription.getWidgets().add(textfieldDescription);
+        groupDescription.getChildren().add(textfieldDescription);
 
         pageDescription.getGroups().add(groupDescription);
         formDescription.getPages().add(pageDescription);

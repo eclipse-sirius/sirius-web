@@ -53,18 +53,23 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
 
     private final Logger logger = LoggerFactory.getLogger(MonoValuedNonContainmentReferenceIfDescriptionProvider.class);
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
     public MonoValuedNonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService,
-            IPropertiesValidationProvider propertiesValidationProvider) {
+            IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.objectService = Objects.requireNonNull(objectService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
+        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
+
     }
 
     public IfDescription getIfDescription() {
         // @formatter:off
         return IfDescription.newIfDescription(ID_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
-                .widgetDescription(this.getSelectDescription())
+                .controlDescriptions(List.of(this.getSelectDescription()))
                 .build();
         // @formatter:on
     }
@@ -84,6 +89,7 @@ public class MonoValuedNonContainmentReferenceIfDescriptionProvider {
     private SelectDescription getSelectDescription() {
         // @formatter:off
         return SelectDescription.newSelectDescription(SELECT_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .valueProvider(this.getValueProvider())

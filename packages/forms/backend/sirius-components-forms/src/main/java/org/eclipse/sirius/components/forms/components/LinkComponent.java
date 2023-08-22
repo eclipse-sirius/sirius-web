@@ -42,8 +42,14 @@ public class LinkComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         LinkDescription linkDescription = this.props.getLinkDescription();
 
-        String id = linkDescription.getIdProvider().apply(variableManager);
         String label = linkDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, linkDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, linkDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = linkDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = linkDescription.getIconURLProvider().apply(variableManager);
         String url = linkDescription.getUrlProvider().apply(variableManager);
         LinkStyle style = linkDescription.getStyleProvider().apply(variableManager);

@@ -117,6 +117,8 @@ public final class SelectDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -151,6 +153,11 @@ public final class SelectDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -227,6 +234,7 @@ public final class SelectDescription extends AbstractWidgetDescription {
         public SelectDescription build() {
             SelectDescription selectDescription = new SelectDescription();
             selectDescription.id = Objects.requireNonNull(this.id);
+            selectDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             selectDescription.idProvider = Objects.requireNonNull(this.idProvider);
             selectDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             selectDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

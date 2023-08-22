@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -134,6 +133,16 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     protected MultiSelectDescriptionStyle style;
 
     /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalMultiSelectDescriptionStyle> conditionalStyles;
+
+    /**
      * The default value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -142,15 +151,7 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
      * @see #getIsEnabledExpression()
      */
     protected static final String IS_ENABLED_EXPRESSION_EDEFAULT = null;
-    /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getConditionalStyles()
-     */
-    protected EList<ConditionalMultiSelectDescriptionStyle> conditionalStyles;
+
     /**
      * The cached value of the '{@link #getIsEnabledExpression() <em>Is Enabled Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -318,8 +319,7 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public EList<ConditionalMultiSelectDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalMultiSelectDescriptionStyle.class, this,
-                    FormPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalMultiSelectDescriptionStyle.class, this, FormPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }
@@ -481,7 +481,7 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
             case FormPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case FormPackage.MULTI_SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
+                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
         }
         return super.eIsSet(featureID);
     }

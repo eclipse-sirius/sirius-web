@@ -111,6 +111,8 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -143,6 +145,11 @@ public final class RadioDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -214,6 +221,7 @@ public final class RadioDescription extends AbstractWidgetDescription {
         public RadioDescription build() {
             RadioDescription radioDescription = new RadioDescription();
             radioDescription.id = Objects.requireNonNull(this.id);
+            radioDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             radioDescription.idProvider = Objects.requireNonNull(this.idProvider);
             radioDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             radioDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

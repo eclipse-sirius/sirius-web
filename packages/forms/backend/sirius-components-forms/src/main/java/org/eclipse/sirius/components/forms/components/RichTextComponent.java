@@ -45,8 +45,14 @@ public class RichTextComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         RichTextDescription richTextDescription = this.props.getRichTextDescription();
 
-        String id = richTextDescription.getIdProvider().apply(variableManager);
         String label = richTextDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, richTextDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, richTextDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = richTextDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = richTextDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = richTextDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = richTextDescription.getValueProvider().apply(variableManager);

@@ -147,25 +147,26 @@ public interface GroupDescription extends EObject {
     EList<ButtonDescription> getToolbarActions();
 
     /**
-     * Returns the value of the '<em><b>Widgets</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.form.WidgetDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Children</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.form.FormElementDescription}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
-     * @return the value of the '<em>Widgets</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_Widgets()
+     * @return the value of the '<em>Children</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_Children()
      * @model containment="true"
      * @generated
      */
-    EList<WidgetDescription> getWidgets();
+    EList<FormElementDescription> getChildren();
 
     /**
      * Returns the value of the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @return the value of the '<em>Border Style</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setBorderStyle(ContainerBorderStyle)
      * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_BorderStyle()
+     * @model containment="true"
+     * @generated
      */
     ContainerBorderStyle getBorderStyle();
 
@@ -173,9 +174,10 @@ public interface GroupDescription extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getBorderStyle <em>Border
      * Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Border Style</em>' containment reference.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Border Style</em>' containment reference.
      * @see #getBorderStyle()
+     * @generated
      */
     void setBorderStyle(ContainerBorderStyle value);
 

@@ -45,8 +45,14 @@ public class CheckboxComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         CheckboxDescription checkboxDescription = this.props.getCheckboxDescription();
 
-        String id = checkboxDescription.getIdProvider().apply(variableManager);
         String label = checkboxDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, checkboxDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, checkboxDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = checkboxDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = checkboxDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = checkboxDescription.getIsReadOnlyProvider().apply(variableManager);
         Boolean value = checkboxDescription.getValueProvider().apply(variableManager);

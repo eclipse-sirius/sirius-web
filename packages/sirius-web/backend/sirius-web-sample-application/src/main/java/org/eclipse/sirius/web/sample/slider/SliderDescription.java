@@ -95,6 +95,8 @@ public final class SliderDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -117,6 +119,11 @@ public final class SliderDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -163,6 +170,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
         public SliderDescription build() {
             SliderDescription sliderDescription = new SliderDescription();
             sliderDescription.id = Objects.requireNonNull(this.id);
+            sliderDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             sliderDescription.idProvider = Objects.requireNonNull(this.idProvider);
             sliderDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             sliderDescription.iconURLProvider = this.iconURLProvider; // Optional on purpose

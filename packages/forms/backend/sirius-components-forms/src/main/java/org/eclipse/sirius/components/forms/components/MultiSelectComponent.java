@@ -49,8 +49,14 @@ public class MultiSelectComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         MultiSelectDescription multiSelectDescription = this.props.getMultiSelectDescription();
 
-        String id = multiSelectDescription.getIdProvider().apply(variableManager);
         String label = multiSelectDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, multiSelectDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, multiSelectDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = multiSelectDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = multiSelectDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = multiSelectDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = multiSelectDescription.getOptionsProvider().apply(variableManager);

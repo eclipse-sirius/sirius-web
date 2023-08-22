@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.form.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -27,8 +26,8 @@ import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormPackage;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Flexbox Container Description</b></em>'. <!--
@@ -60,15 +59,15 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
      * @generated
      * @ordered
      */
-    protected EList<WidgetDescription> children;
+    protected EList<FormElementDescription> children;
 
     /**
      * The default value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getFlexDirection()
      * @generated
      * @ordered
-     * @see #getFlexDirection()
      */
     protected static final FlexDirection FLEX_DIRECTION_EDEFAULT = FlexDirection.ROW;
 
@@ -76,9 +75,9 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
      * The cached value of the '{@link #getFlexDirection() <em>Flex Direction</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getFlexDirection()
      * @generated
      * @ordered
-     * @see #getFlexDirection()
      */
     protected FlexDirection flexDirection = FLEX_DIRECTION_EDEFAULT;
 
@@ -116,9 +115,9 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
      * The cached value of the '{@link #getConditionalBorderStyles() <em>Conditional Border Styles</em>}' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getConditionalBorderStyles()
      * @generated
      * @ordered
-     * @see #getConditionalBorderStyles()
      */
     protected EList<ConditionalContainerBorderStyle> conditionalBorderStyles;
 
@@ -147,9 +146,9 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
      * @generated
      */
     @Override
-    public EList<WidgetDescription> getChildren() {
+    public EList<FormElementDescription> getChildren() {
         if (this.children == null) {
-            this.children = new EObjectContainmentEList<>(WidgetDescription.class, this, FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
+            this.children = new EObjectContainmentEList<>(FormElementDescription.class, this, FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
         }
         return this.children;
     }
@@ -256,8 +255,7 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
     @Override
     public EList<ConditionalContainerBorderStyle> getConditionalBorderStyles() {
         if (this.conditionalBorderStyles == null) {
-            this.conditionalBorderStyles = new EObjectContainmentEList<>(ConditionalContainerBorderStyle.class, this,
-                    FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
+            this.conditionalBorderStyles = new EObjectContainmentEList<>(ConditionalContainerBorderStyle.class, this, FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
         }
         return this.conditionalBorderStyles;
     }
@@ -313,7 +311,7 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
         switch (featureID) {
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
                 this.getChildren().clear();
-                this.getChildren().addAll((Collection<? extends WidgetDescription>) newValue);
+                this.getChildren().addAll((Collection<? extends FormElementDescription>) newValue);
                 return;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
                 this.setFlexDirection((FlexDirection) newValue);
@@ -350,7 +348,7 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
                 this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
                 return;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE:
-                this.setBorderStyle(null);
+                this.setBorderStyle((ContainerBorderStyle) null);
                 return;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
                 this.getConditionalBorderStyles().clear();
@@ -372,7 +370,7 @@ public class FlexboxContainerDescriptionImpl extends WidgetDescriptionImpl imple
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
                 return this.flexDirection != FLEX_DIRECTION_EDEFAULT;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return !Objects.equals(IS_ENABLED_EXPRESSION_EDEFAULT, this.isEnabledExpression);
+                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE:
                 return this.borderStyle != null;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES:

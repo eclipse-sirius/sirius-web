@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.forms.description.AbstractControlDescriptio
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
-import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -59,12 +58,15 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
     private final IEMFMessageService emfMessageService;
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
     public PropertiesDefaultDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
             IEMFMessageService emfMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
 
     @Override
@@ -155,13 +157,13 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
             return objects;
         };
 
-        List<IfDescription> ifDescriptions = new ArrayList<>();
-        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
+        List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
+        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider).getIfDescription());
+        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
         // @formatter:off
         var numericDataTypes = List.of(
@@ -178,14 +180,15 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 );
         // @formatter:on
         for (var dataType : numericDataTypes) {
-            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService).getIfDescription());
+            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
         }
 
         // @formatter:off
         ForDescription forDescription = ForDescription.newForDescription("forId")
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
-                .ifDescriptions(ifDescriptions)
+                .controlDescriptions(ifDescriptions)
                 .build();
         // @formatter:on
 

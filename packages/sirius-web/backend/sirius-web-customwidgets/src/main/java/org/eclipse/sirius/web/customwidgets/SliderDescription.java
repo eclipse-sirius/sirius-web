@@ -113,9 +113,9 @@ public interface SliderDescription extends WidgetDescription {
      * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Body</em>' containment reference list.
+     * @see org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage#getSliderDescription_Body()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage#getSliderDescription_Body()
      */
     EList<Operation> getBody();
 
@@ -124,10 +124,10 @@ public interface SliderDescription extends WidgetDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsEnabledExpression(String)
      * @see org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage#getSliderDescription_IsEnabledExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsEnabledExpression();
 
@@ -135,9 +135,10 @@ public interface SliderDescription extends WidgetDescription {
      * Sets the value of the '{@link org.eclipse.sirius.web.customwidgets.SliderDescription#getIsEnabledExpression
      * <em>Is Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Is Enabled Expression</em>' attribute.
      * @see #getIsEnabledExpression()
+     * @generated
      */
     void setIsEnabledExpression(String value);
 

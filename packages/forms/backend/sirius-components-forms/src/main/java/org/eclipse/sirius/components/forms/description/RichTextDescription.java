@@ -85,6 +85,8 @@ public final class RichTextDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> idProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> iconURLProvider = variableManager -> null;
@@ -109,6 +111,11 @@ public final class RichTextDescription extends AbstractWidgetDescription {
 
         public Builder idProvider(Function<VariableManager, String> idProvider) {
             this.idProvider = Objects.requireNonNull(idProvider);
+            return this;
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;
         }
 
@@ -160,6 +167,7 @@ public final class RichTextDescription extends AbstractWidgetDescription {
         public RichTextDescription build() {
             RichTextDescription richtextDescription = new RichTextDescription();
             richtextDescription.id = Objects.requireNonNull(this.id);
+            richtextDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             richtextDescription.idProvider = Objects.requireNonNull(this.idProvider);
             richtextDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             richtextDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);

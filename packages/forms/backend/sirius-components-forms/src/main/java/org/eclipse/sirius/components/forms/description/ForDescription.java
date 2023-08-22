@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ public final class ForDescription extends AbstractControlDescription {
 
     private Function<VariableManager, List<?>> iterableProvider;
 
-    private List<IfDescription> ifDescriptions;
+    private List<AbstractControlDescription> controlDescriptions;
 
     private ForDescription() {
         // Prevent instantiation
@@ -46,8 +46,8 @@ public final class ForDescription extends AbstractControlDescription {
         return this.iterableProvider;
     }
 
-    public List<IfDescription> getIfDescriptions() {
-        return this.ifDescriptions;
+    public List<AbstractControlDescription> getControlDescriptions() {
+        return this.controlDescriptions;
     }
 
     public static Builder newForDescription(String id) {
@@ -69,14 +69,21 @@ public final class ForDescription extends AbstractControlDescription {
     public static final class Builder {
         private String id;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private String iterator;
 
         private Function<VariableManager, List<?>> iterableProvider;
 
-        private List<IfDescription> ifDescriptions;
+        private List<AbstractControlDescription> controlDescriptions;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
+            return this;
         }
 
         public Builder iterator(String iterator) {
@@ -89,17 +96,18 @@ public final class ForDescription extends AbstractControlDescription {
             return this;
         }
 
-        public Builder ifDescriptions(List<IfDescription> ifDescriptions) {
-            this.ifDescriptions = Objects.requireNonNull(ifDescriptions);
+        public Builder controlDescriptions(List<AbstractControlDescription> controlDescriptions) {
+            this.controlDescriptions = Objects.requireNonNull(controlDescriptions);
             return this;
         }
 
         public ForDescription build() {
             ForDescription forDescription = new ForDescription();
             forDescription.id = Objects.requireNonNull(this.id);
+            forDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             forDescription.iterator = Objects.requireNonNull(this.iterator);
             forDescription.iterableProvider = Objects.requireNonNull(this.iterableProvider);
-            forDescription.ifDescriptions = Objects.requireNonNull(this.ifDescriptions);
+            forDescription.controlDescriptions = Objects.requireNonNull(this.controlDescriptions);
             return forDescription;
         }
     }

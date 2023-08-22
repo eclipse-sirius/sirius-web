@@ -49,17 +49,19 @@ public class PageComponent implements IComponent {
             VariableManager pageVariableManager = variableManager.createChild();
             pageVariableManager.put(VariableManager.SELF, semanticElement);
 
-            String id = pageDescription.getIdProvider().apply(pageVariableManager);
             String label = pageDescription.getLabelProvider().apply(pageVariableManager);
+            String id = pageDescription.getIdProvider().apply(pageVariableManager);
 
             List<Element> pageChildren = new ArrayList<>();
+            VariableManager childrenVariableManager = pageVariableManager.createChild();
+            childrenVariableManager.put(FormComponent.PARENT_ELEMENT_ID, id);
 
             pageDescription.getToolbarActionDescriptions().stream()
-                    .map(toolbarActionDescription -> new Element(ToolbarActionComponent.class, new ToolbarActionComponentProps(pageVariableManager, toolbarActionDescription)))
+                    .map(toolbarActionDescription -> new Element(ToolbarActionComponent.class, new ToolbarActionComponentProps(childrenVariableManager, toolbarActionDescription)))
                     .forEach(pageChildren::add);
 
             pageDescription.getGroupDescriptions().stream()
-                    .map(groupDescription -> new Element(GroupComponent.class, new GroupComponentProps(pageVariableManager, groupDescription, this.props.getWidgetDescriptors())))
+                    .map(groupDescription -> new Element(GroupComponent.class, new GroupComponentProps(childrenVariableManager, groupDescription, this.props.getWidgetDescriptors())))
                     .forEach(pageChildren::add);
 
             PageElementProps pageElementProps = PageElementProps.newPageElementProps(id)

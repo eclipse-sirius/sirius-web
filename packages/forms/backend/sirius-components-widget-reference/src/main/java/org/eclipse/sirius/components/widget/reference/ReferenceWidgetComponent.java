@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.forms.ClickEventKind;
+import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -45,8 +46,14 @@ public class ReferenceWidgetComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         ReferenceWidgetDescription referenceDescription = this.props.getReferenceWidgetDescription();
 
-        String id = referenceDescription.getIdProvider().apply(variableManager);
         String label = referenceDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, referenceDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, referenceDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = referenceDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = referenceDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = referenceDescription.getIsReadOnlyProvider().apply(variableManager);
         String ownerId = referenceDescription.getOwnerIdProvider().apply(variableManager);

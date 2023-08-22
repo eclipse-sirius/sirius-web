@@ -53,12 +53,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//GroupDescription/displayMode"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//GroupDescription/semanticCandidatesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/toolbarActions"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/widgets"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/children"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/borderStyle"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//GroupDescription/conditionalBorderStyles"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="form.ecore#//FormElementDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FormElementDescription/name"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="form.ecore#//WidgetDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetDescription/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetDescription/labelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//WidgetDescription/helpExpression"/>
     </genClasses>
@@ -234,5 +236,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//ContainerBorderStyle/borderLineStyle"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//ConditionalContainerBorderStyle"/>
+    <genClasses ecoreClass="form.ecore#//FormElementFor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FormElementFor/iterator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FormElementFor/iterableExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormElementFor/children"/>
+    </genClasses>
+    <genClasses ecoreClass="form.ecore#//FormElementIf">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//FormElementIf/predicateExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//FormElementIf/children"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -48,9 +48,9 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBorderColor()
      * @generated
      * @ordered
-     * @see #getBorderColor()
      */
     protected UserColor borderColor;
 
@@ -58,9 +58,9 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBorderRadius()
      * @generated
      * @ordered
-     * @see #getBorderRadius()
      */
     protected static final int BORDER_RADIUS_EDEFAULT = 3;
 
@@ -68,9 +68,9 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
+     * @see #getBorderRadius()
      * @generated
      * @ordered
-     * @see #getBorderRadius()
      */
     protected int borderRadius = BORDER_RADIUS_EDEFAULT;
 
@@ -78,9 +78,9 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBorderSize()
      * @generated
      * @ordered
-     * @see #getBorderSize()
      */
     protected static final int BORDER_SIZE_EDEFAULT = 1;
 
@@ -88,9 +88,9 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getBorderSize()
      * @generated
      * @ordered
-     * @see #getBorderSize()
      */
     protected int borderSize = BORDER_SIZE_EDEFAULT;
 
@@ -108,9 +108,9 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
      * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getBorderLineStyle()
      * @generated
      * @ordered
-     * @see #getBorderLineStyle()
      */
     protected ContainerBorderLineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
 
@@ -297,7 +297,7 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
-                this.setBorderColor(null);
+                this.setBorderColor((UserColor) null);
                 return;
             case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
@@ -390,14 +390,15 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (borderRadius: " +
-                this.borderRadius +
-                ", borderSize: " +
-                this.borderSize +
-                ", borderLineStyle: " +
-                this.borderLineStyle +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (borderRadius: ");
+        result.append(this.borderRadius);
+        result.append(", borderSize: ");
+        result.append(this.borderSize);
+        result.append(", borderLineStyle: ");
+        result.append(this.borderLineStyle);
+        result.append(')');
+        return result.toString();
     }
 
 } // ConditionalContainerBorderStyleImpl

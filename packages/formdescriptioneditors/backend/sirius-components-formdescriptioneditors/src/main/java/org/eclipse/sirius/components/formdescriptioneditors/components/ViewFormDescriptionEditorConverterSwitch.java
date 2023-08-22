@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.TextfieldStyle;
+import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.description.ChartWidgetDescription;
@@ -106,6 +107,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         TextfieldDescription.Builder builder = TextfieldDescription.newTextfieldDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewTextfieldDescription, "Textfield"))
                 .valueProvider(vm -> "")
                 .newValueHandler((vm, value) -> new Success())
@@ -135,6 +137,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         CheckboxDescription.Builder builder = CheckboxDescription.newCheckboxDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewCheckboxDescription, "Checkbox"))
                 .valueProvider(vm -> true)
                 .newValueHandler((vm, value) -> new Success())
@@ -164,6 +167,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         SelectDescription.Builder builder = SelectDescription.newSelectDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewSelectDescription, "Select"))
                 .valueProvider(vm -> "")
                 .optionIdProvider(vm -> "")
@@ -197,6 +201,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         TextareaDescription.Builder builder = TextareaDescription.newTextareaDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewTextareaDescription, "Textarea"))
                 .valueProvider(vm -> "")
                 .newValueHandler((vm, value) -> new Success())
@@ -226,6 +231,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         MultiSelectDescription.Builder builder = MultiSelectDescription.newMultiSelectDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewMultiSelectDescription, "MultiSelect"))
                 .valuesProvider(vm -> List.of())
                 .optionIdProvider(vm -> "")
@@ -259,6 +265,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         RadioDescription.Builder builder = RadioDescription.newRadioDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewRadioDescription, "Radio"))
                 .optionIdProvider(vm -> "")
                 .optionLabelProvider(vm -> "")
@@ -283,7 +290,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         FlexDirection flexDirection = FlexDirection.valueOf(viewFlexboxContainerDescription.getFlexDirection().getName());
-        List<AbstractWidgetDescription> children = new ArrayList<>();
+        List<AbstractControlDescription> children = new ArrayList<>();
         viewFlexboxContainerDescription.getChildren().forEach(viewWidgetDescription -> {
             children.add(ViewFormDescriptionEditorConverterSwitch.this.doSwitch(viewWidgetDescription));
 
@@ -298,6 +305,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         FlexboxContainerDescription.Builder builder = FlexboxContainerDescription.newFlexboxContainerDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewFlexboxContainerDescription, "FlexboxContainer"))
                 .flexDirection(flexDirection)
                 .children(children)
@@ -327,6 +335,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         ButtonDescription.Builder builder = ButtonDescription.newButtonDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewButtonDescription, "Button"))
                 .buttonLabelProvider(vm -> viewButtonDescription.getButtonLabelExpression())
                 .imageURLProvider(vm -> viewButtonDescription.getImageExpression())
@@ -357,6 +366,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         LabelDescription.Builder builder = LabelDescription.newLabelDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewLabelDescription, "Label"))
                 .valueProvider(vm -> "")
                 .diagnosticsProvider(vm -> List.of())
@@ -385,6 +395,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         LinkDescription.Builder builder = LinkDescription.newLinkDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewLinkDescription, "Link"))
                 .urlProvider(vm -> "")
                 .diagnosticsProvider(vm -> List.of())
@@ -413,6 +424,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         ListDescription.Builder builder = ListDescription.newListDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewListDescription, "List"))
                 .itemsProvider(vm -> List.of())
                 .itemKindProvider(vm -> "")
@@ -440,6 +452,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         ImageDescription.Builder builder = ImageDescription.newImageDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewImageDescription, "Image"))
                 .urlProvider(vm -> Optional.ofNullable(viewImageDescription.getUrlExpression()).orElse(""))
                 .maxWidthProvider(vm -> viewImageDescription.getMaxWidthExpression())
@@ -459,6 +472,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         RichTextDescription.Builder builder = RichTextDescription.newRichTextDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(viewRichTextDescription, "RichText"))
                 .valueProvider(vm -> "")
                 .newValueHandler((vm, value) -> new Success())
@@ -523,6 +537,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         ChartWidgetDescription.Builder builder = ChartWidgetDescription.newChartWidgetDescription(chartDescription.getId())
                 .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(widgetDescription, "Chart"))
                 .chartDescription(chartDescription)
                 .diagnosticsProvider(vm -> List.of())

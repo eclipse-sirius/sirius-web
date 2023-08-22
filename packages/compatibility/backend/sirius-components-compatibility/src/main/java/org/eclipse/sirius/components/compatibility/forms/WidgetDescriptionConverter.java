@@ -66,12 +66,17 @@ public class WidgetDescriptionConverter {
 
     private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
     public WidgetDescriptionConverter(AQLInterpreter interpreter, IObjectService objectService, IIdentifierProvider identifierProvider,
             IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
+        this.semanticTargetIdProvider = variableManager -> {
+            return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
+        };
     }
 
     public Optional<AbstractWidgetDescription> convert(WidgetDescription controlDescription) {
@@ -104,6 +109,7 @@ public class WidgetDescriptionConverter {
 
         // @formatter:off
         return TextfieldDescription.newTextfieldDescription(this.identifierProvider.getIdentifier(textDescription))
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)
@@ -135,6 +141,7 @@ public class WidgetDescriptionConverter {
 
         // @formatter:off
         return TextareaDescription.newTextareaDescription(this.identifierProvider.getIdentifier(textAreaDescription))
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)
@@ -210,6 +217,7 @@ public class WidgetDescriptionConverter {
         // @formatter:off
         return RadioDescription.newRadioDescription(this.identifierProvider.getIdentifier(radioDescription))
                 .idProvider(new WidgetIdProvider())
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)
                 .optionIdProvider(optionIdProvider)
@@ -263,6 +271,7 @@ public class WidgetDescriptionConverter {
         // @formatter:off
         return SelectDescription.newSelectDescription(this.identifierProvider.getIdentifier(selectDescription))
                 .idProvider(new WidgetIdProvider())
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)
@@ -301,6 +310,7 @@ public class WidgetDescriptionConverter {
         //@formatter:off
         return CheckboxDescription.newCheckboxDescription(this.identifierProvider.getIdentifier(checkboxDescription))
                 .idProvider(new WidgetIdProvider())
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)
                 .valueProvider(valueProvider)

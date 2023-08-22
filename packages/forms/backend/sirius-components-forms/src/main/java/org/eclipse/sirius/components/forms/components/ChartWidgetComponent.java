@@ -51,8 +51,14 @@ public class ChartWidgetComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         ChartWidgetDescription chartWidgetDescription = this.props.getChartWidgetDescription();
 
-        String id = chartWidgetDescription.getIdProvider().apply(variableManager);
         String label = chartWidgetDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, chartWidgetDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, chartWidgetDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = chartWidgetDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = chartWidgetDescription.getIconURLProvider().apply(variableManager);
         IChartDescription chartDescription = chartWidgetDescription.getChartDescription();
 

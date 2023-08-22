@@ -68,6 +68,7 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID.toString())
                 .label(FORM_TITLE)
                 .idProvider(new GetOrCreateRandomIdProvider())
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> FORM_TITLE)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)

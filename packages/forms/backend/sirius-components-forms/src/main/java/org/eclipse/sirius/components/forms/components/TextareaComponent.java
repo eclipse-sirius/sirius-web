@@ -46,8 +46,14 @@ public class TextareaComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         TextareaDescription textareaDescription = this.props.getTextareaDescription();
 
-        String id = textareaDescription.getIdProvider().apply(variableManager);
         String label = textareaDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, textareaDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, textareaDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = textareaDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = textareaDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = textareaDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = textareaDescription.getValueProvider().apply(variableManager);

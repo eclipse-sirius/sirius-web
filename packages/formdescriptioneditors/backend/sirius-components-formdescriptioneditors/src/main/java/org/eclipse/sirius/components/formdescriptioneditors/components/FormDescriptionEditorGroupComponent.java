@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.formdescriptioneditors.components;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
@@ -29,7 +30,10 @@ import org.eclipse.sirius.components.forms.elements.GroupElementProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * The component used to render the form description editor group.
@@ -67,19 +71,33 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, viewToolbarActionDescription);
             AbstractWidgetDescription toolbarActionDescription = this.converter.doSwitch(viewToolbarActionDescription);
-            if (toolbarActionDescription instanceof ButtonDescription) {
-                ToolbarActionComponentProps toolbarActionComponentProps = new ToolbarActionComponentProps(childVariableManager, (ButtonDescription) toolbarActionDescription);
+            if (toolbarActionDescription instanceof ButtonDescription buttonDescription) {
+                ToolbarActionComponentProps toolbarActionComponentProps = new ToolbarActionComponentProps(childVariableManager, buttonDescription);
                 childrenWidgets.add(new Element(ToolbarActionComponent.class, toolbarActionComponentProps));
             }
         });
 
-        groupDescription.getWidgets().forEach(viewWidgetDescription -> {
-            VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, viewWidgetDescription);
-            AbstractWidgetDescription widgetDescription = this.converter.doSwitch(viewWidgetDescription);
-            WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childVariableManager, widgetDescription, this.props.getWidgetDescriptors());
-            childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
-        });
+        groupDescription.getChildren().stream()
+            .flatMap(controlDescription -> {
+                Stream<WidgetDescription> widgets = Stream.empty();
+                if (controlDescription instanceof WidgetDescription viewWidgetDescription) {
+                    widgets = Stream.of(viewWidgetDescription);
+                } else if (controlDescription instanceof FormElementFor formElementFor) {
+                    widgets = formElementFor.getChildren().stream()
+                            .filter(FormElementIf.class::isInstance).map(FormElementIf.class::cast)
+                            .flatMap(formElementIf -> formElementIf.getChildren().stream())
+                            .filter(WidgetDescription.class::isInstance)
+                            .map(WidgetDescription.class::cast);
+                }
+                return widgets;
+            })
+            .forEach(viewWidgetDescription -> {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VariableManager.SELF, viewWidgetDescription);
+                AbstractWidgetDescription widgetDescription = this.converter.doSwitch(viewWidgetDescription);
+                WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childVariableManager, widgetDescription, this.props.getWidgetDescriptors());
+                childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
+            });
 
         GroupElementProps.Builder groupElementPropsBuilder = GroupElementProps.newGroupElementProps(id)
                 .label(label)

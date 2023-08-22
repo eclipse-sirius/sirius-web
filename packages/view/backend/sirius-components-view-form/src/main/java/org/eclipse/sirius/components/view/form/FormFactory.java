@@ -402,6 +402,22 @@ public interface FormFactory extends EFactory {
     ConditionalContainerBorderStyle createConditionalContainerBorderStyle();
 
     /**
+     * Returns a new object of class '<em>Element For</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Element For</em>'.
+     * @generated
+     */
+    FormElementFor createFormElementFor();
+
+    /**
+     * Returns a new object of class '<em>Element If</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Element If</em>'.
+     * @generated
+     */
+    FormElementIf createFormElementIf();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

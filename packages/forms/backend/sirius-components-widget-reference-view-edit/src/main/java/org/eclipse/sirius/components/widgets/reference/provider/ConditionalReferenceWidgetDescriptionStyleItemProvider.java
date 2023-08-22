@@ -29,16 +29,15 @@ import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
+ * {@link org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
 public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends ConditionalItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -47,8 +46,7 @@ public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends Cond
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -68,104 +66,74 @@ public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends Cond
     }
 
     /**
-     * This adds a property descriptor for the Font Size feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Font Size feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addFontSizePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_LabelStyle_fontSize_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature",
-                                "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false,
-                        ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_fontSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Italic feature. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Italic feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_LabelStyle_italic_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature",
-                                "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false,
-                        ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_italic_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Bold feature. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Bold feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_LabelStyle_bold_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature",
-                                "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false,
-                        ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_bold_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Underline feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Underline feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addUnderlinePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_LabelStyle_underline_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature",
-                                "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false,
-                        ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_underline_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Strike Through feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Strike Through feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_LabelStyle_strikeThrough_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature",
-                                "_UI_LabelStyle_type"),
-                        ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false,
-                        ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Color feature. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_ReferenceWidgetDescriptionStyle_color_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_ReferenceWidgetDescriptionStyle_color_feature",
-                        "_UI_ReferenceWidgetDescriptionStyle_type"),
-                ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR, true, false, true, null, null,
-                null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ReferenceWidgetDescriptionStyle_color_feature", "_UI_ReferenceWidgetDescriptionStyle_type"),
+                ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR, true, false, true, null, null, null));
     }
 
     /**
-     * This returns ConditionalReferenceWidgetDescriptionStyle.gif. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns ConditionalReferenceWidgetDescriptionStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -185,8 +153,7 @@ public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends Cond
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -198,9 +165,9 @@ public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends Cond
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
@@ -221,9 +188,8 @@ public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends Cond
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -233,8 +199,7 @@ public class ConditionalReferenceWidgetDescriptionStyleItemProvider extends Cond
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

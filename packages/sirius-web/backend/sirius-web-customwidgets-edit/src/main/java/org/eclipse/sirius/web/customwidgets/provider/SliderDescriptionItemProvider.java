@@ -108,10 +108,10 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_SliderDescription_isEnabledExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_isEnabledExpression_feature", "_UI_SliderDescription_type"),
-                        CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SliderDescription_isEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SliderDescription_isEnabledExpression_feature", "_UI_SliderDescription_type"),
+                CustomwidgetsPackage.Literals.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**

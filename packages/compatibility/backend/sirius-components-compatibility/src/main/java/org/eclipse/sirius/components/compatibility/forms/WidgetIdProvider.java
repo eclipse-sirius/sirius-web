@@ -12,13 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.forms;
 
-import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.forms.components.FormComponent;
-import org.eclipse.sirius.components.forms.components.WidgetIdCounter;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -30,24 +27,19 @@ public class WidgetIdProvider implements Function<VariableManager, String> {
 
     @Override
     public String apply(VariableManager variableManager) {
-        // @formatter:off
-        var optionalEObject = Optional.of(variableManager.getVariables().get(VariableManager.SELF))
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast);
-
-        Optional<WidgetIdCounter> optionalCounter = Optional.of(variableManager.getVariables().get(FormComponent.WIDGET_ID_PROVIDER_COUNTER))
-                .filter(WidgetIdCounter.class::isInstance)
-                .map(WidgetIdCounter.class::cast);
-        // @formatter:on
-
-        if (optionalCounter.isPresent() && optionalEObject.isPresent()) {
-            WidgetIdCounter counter = optionalCounter.get();
-            EObject eObject = optionalEObject.get();
-            String id = EcoreUtil.getURI(eObject).toString() + "#" + counter.getCounter();
-            counter.increment();
-            return id;
+        var optionalParentElementId = variableManager.get(FormComponent.PARENT_ELEMENT_ID, String.class);
+        var optionalControlDescriptionId = variableManager.get(FormComponent.CONTROL_DESCRIPTION_ID, String.class);
+        var optionalTargetObjectId = variableManager.get(FormComponent.TARGET_OBJECT_ID, String.class);
+        var optionalWidgetLabel = variableManager.get(FormComponent.WIDGET_LABEL, String.class);
+        if (optionalParentElementId.isPresent() && optionalControlDescriptionId.isPresent() && optionalTargetObjectId.isPresent() && optionalWidgetLabel.isPresent()) {
+            return this.computeWidgetId(optionalParentElementId.get(), optionalControlDescriptionId.get(), optionalTargetObjectId.get(), optionalWidgetLabel.get());
         }
         return "";
+    }
+
+    private String computeWidgetId(String parentElementId, String controlDescriptionId, String targetObjectId, String label) {
+        String rawIdentifier = parentElementId + controlDescriptionId + targetObjectId + label;
+        return UUID.nameUUIDFromBytes(rawIdentifier.getBytes()).toString();
     }
 
 }

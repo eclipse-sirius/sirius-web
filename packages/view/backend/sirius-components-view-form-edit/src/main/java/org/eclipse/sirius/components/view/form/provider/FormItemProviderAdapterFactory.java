@@ -1113,6 +1113,7 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
      * @generated
      */
     protected ContainerBorderStyleItemProvider containerBorderStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle} instances. <!-- begin-user-doc
@@ -1150,6 +1151,52 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
         }
 
         return this.conditionalContainerBorderStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormElementFor}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FormElementForItemProvider formElementForItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.FormElementFor}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFormElementForAdapter() {
+        if (this.formElementForItemProvider == null) {
+            this.formElementForItemProvider = new FormElementForItemProvider(this);
+        }
+
+        return this.formElementForItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormElementIf}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected FormElementIfItemProvider formElementIfItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.FormElementIf}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createFormElementIfAdapter() {
+        if (this.formElementIfItemProvider == null) {
+            this.formElementIfItemProvider = new FormElementIfItemProvider(this);
+        }
+
+        return this.formElementIfItemProvider;
     }
 
     /**
@@ -1369,6 +1416,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.containerBorderStyleItemProvider.dispose();
         if (this.conditionalContainerBorderStyleItemProvider != null)
             this.conditionalContainerBorderStyleItemProvider.dispose();
+        if (this.formElementForItemProvider != null)
+            this.formElementForItemProvider.dispose();
+        if (this.formElementIfItemProvider != null)
+            this.formElementIfItemProvider.dispose();
     }
 
     /**

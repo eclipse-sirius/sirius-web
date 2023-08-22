@@ -49,8 +49,14 @@ public class TreeComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         TreeDescription treeDescription = this.props.getTreeDescription();
 
-        String id = treeDescription.getIdProvider().apply(variableManager);
         String label = treeDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, treeDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, treeDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = treeDescription.getIdProvider().apply(idVariableManager);
+
         String iconURL = treeDescription.getIconURLProvider().apply(variableManager);
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(treeDescription, variableManager)));
 

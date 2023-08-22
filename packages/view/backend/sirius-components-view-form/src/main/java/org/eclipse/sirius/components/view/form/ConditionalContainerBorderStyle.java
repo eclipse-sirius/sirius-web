@@ -18,9 +18,10 @@ import org.eclipse.sirius.components.view.Conditional;
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Conditional Container Border Style</b></em>'.
  * <!-- end-user-doc -->
  *
+ *
+ * @see org.eclipse.sirius.components.view.form.FormPackage#getConditionalContainerBorderStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.form.FormPackage#getConditionalContainerBorderStyle()
  */
 public interface ConditionalContainerBorderStyle extends Conditional, ContainerBorderStyle {
 } // ConditionalContainerBorderStyle

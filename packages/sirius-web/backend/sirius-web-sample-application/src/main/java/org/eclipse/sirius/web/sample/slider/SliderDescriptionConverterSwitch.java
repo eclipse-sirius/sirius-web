@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -52,10 +53,13 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public SliderDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IFeedbackMessageService feedbackMessageService) {
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
+    public SliderDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
 
     @Override
@@ -70,6 +74,7 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
         Function<VariableManager, IStatus> newValueHandler = this.getOperationsHandler(viewSliderDescription.getBody());
 
         var builder = org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(descriptionId)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .isReadOnlyProvider(isReadOnlyProvider)

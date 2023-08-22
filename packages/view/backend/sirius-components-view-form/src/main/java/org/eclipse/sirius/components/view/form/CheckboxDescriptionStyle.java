@@ -27,9 +27,9 @@ import org.eclipse.sirius.components.view.UserColor;
  * Placement</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.form.FormPackage#getCheckboxDescriptionStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.form.FormPackage#getCheckboxDescriptionStyle()
  */
 public interface CheckboxDescriptionStyle extends WidgetDescriptionStyle {
 
@@ -73,10 +73,11 @@ public interface CheckboxDescriptionStyle extends WidgetDescriptionStyle {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle#getLabelPlacement
      * <em>Label Placement</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value the new value of the '<em>Label Placement</em>' attribute.
-     * @generated
+     * @param value
+     *            the new value of the '<em>Label Placement</em>' attribute.
      * @see org.eclipse.sirius.components.view.form.LabelPlacement
      * @see #getLabelPlacement()
+     * @generated
      */
     void setLabelPlacement(LabelPlacement value);
 

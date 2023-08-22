@@ -42,6 +42,7 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
                 var builder =  org.eclipse.sirius.web.sample.slider.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
                         .idProvider(vm -> id)
+                        .targetObjectIdProvider(vm -> "")
                         .labelProvider(vm -> SliderDescriptionPreviewConverterProvider.this.getWidgetLabel(sliderDescription, "Slider"))
                         .minValueProvider(vm -> 0)
                         .maxValueProvider(vm -> 100)

@@ -26,10 +26,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Group Description</b></em>'. <!-- end-user-doc
@@ -144,14 +144,14 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
     protected EList<ButtonDescription> toolbarActions;
 
     /**
-     * The cached value of the '{@link #getWidgets() <em>Widgets</em>}' containment reference list. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getChildren()
      * @generated
      * @ordered
-     * @see #getWidgets()
      */
-    protected EList<WidgetDescription> widgets;
+    protected EList<FormElementDescription> children;
 
     /**
      * The cached value of the '{@link #getBorderStyle() <em>Border Style</em>}' containment reference. <!--
@@ -167,9 +167,9 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
      * The cached value of the '{@link #getConditionalBorderStyles() <em>Conditional Border Styles</em>}' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getConditionalBorderStyles()
      * @generated
      * @ordered
-     * @see #getConditionalBorderStyles()
      */
     protected EList<ConditionalContainerBorderStyle> conditionalBorderStyles;
 
@@ -304,11 +304,11 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
      * @generated
      */
     @Override
-    public EList<WidgetDescription> getWidgets() {
-        if (this.widgets == null) {
-            this.widgets = new EObjectContainmentEList<>(WidgetDescription.class, this, FormPackage.GROUP_DESCRIPTION__WIDGETS);
+    public EList<FormElementDescription> getChildren() {
+        if (this.children == null) {
+            this.children = new EObjectContainmentEList<>(FormElementDescription.class, this, FormPackage.GROUP_DESCRIPTION__CHILDREN);
         }
-        return this.widgets;
+        return this.children;
     }
 
     /**
@@ -367,8 +367,7 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<ConditionalContainerBorderStyle> getConditionalBorderStyles() {
         if (this.conditionalBorderStyles == null) {
-            this.conditionalBorderStyles = new EObjectContainmentEList<>(ConditionalContainerBorderStyle.class, this,
-                    FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
+            this.conditionalBorderStyles = new EObjectContainmentEList<>(ConditionalContainerBorderStyle.class, this, FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
         }
         return this.conditionalBorderStyles;
     }
@@ -383,8 +382,8 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
         switch (featureID) {
             case FormPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
                 return ((InternalEList<?>) this.getToolbarActions()).basicRemove(otherEnd, msgs);
-            case FormPackage.GROUP_DESCRIPTION__WIDGETS:
-                return ((InternalEList<?>) this.getWidgets()).basicRemove(otherEnd, msgs);
+            case FormPackage.GROUP_DESCRIPTION__CHILDREN:
+                return ((InternalEList<?>) this.getChildren()).basicRemove(otherEnd, msgs);
             case FormPackage.GROUP_DESCRIPTION__BORDER_STYLE:
                 return this.basicSetBorderStyle(null, msgs);
             case FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
@@ -411,8 +410,8 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
                 return this.getSemanticCandidatesExpression();
             case FormPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
                 return this.getToolbarActions();
-            case FormPackage.GROUP_DESCRIPTION__WIDGETS:
-                return this.getWidgets();
+            case FormPackage.GROUP_DESCRIPTION__CHILDREN:
+                return this.getChildren();
             case FormPackage.GROUP_DESCRIPTION__BORDER_STYLE:
                 return this.getBorderStyle();
             case FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
@@ -446,9 +445,9 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
                 this.getToolbarActions().clear();
                 this.getToolbarActions().addAll((Collection<? extends ButtonDescription>) newValue);
                 return;
-            case FormPackage.GROUP_DESCRIPTION__WIDGETS:
-                this.getWidgets().clear();
-                this.getWidgets().addAll((Collection<? extends WidgetDescription>) newValue);
+            case FormPackage.GROUP_DESCRIPTION__CHILDREN:
+                this.getChildren().clear();
+                this.getChildren().addAll((Collection<? extends FormElementDescription>) newValue);
                 return;
             case FormPackage.GROUP_DESCRIPTION__BORDER_STYLE:
                 this.setBorderStyle((ContainerBorderStyle) newValue);
@@ -484,11 +483,11 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
             case FormPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
                 this.getToolbarActions().clear();
                 return;
-            case FormPackage.GROUP_DESCRIPTION__WIDGETS:
-                this.getWidgets().clear();
+            case FormPackage.GROUP_DESCRIPTION__CHILDREN:
+                this.getChildren().clear();
                 return;
             case FormPackage.GROUP_DESCRIPTION__BORDER_STYLE:
-                this.setBorderStyle(null);
+                this.setBorderStyle((ContainerBorderStyle) null);
                 return;
             case FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
                 this.getConditionalBorderStyles().clear();
@@ -515,8 +514,8 @@ public class GroupDescriptionImpl extends MinimalEObjectImpl.Container implement
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case FormPackage.GROUP_DESCRIPTION__TOOLBAR_ACTIONS:
                 return this.toolbarActions != null && !this.toolbarActions.isEmpty();
-            case FormPackage.GROUP_DESCRIPTION__WIDGETS:
-                return this.widgets != null && !this.widgets.isEmpty();
+            case FormPackage.GROUP_DESCRIPTION__CHILDREN:
+                return this.children != null && !this.children.isEmpty();
             case FormPackage.GROUP_DESCRIPTION__BORDER_STYLE:
                 return this.borderStyle != null;
             case FormPackage.GROUP_DESCRIPTION__CONDITIONAL_BORDER_STYLES:

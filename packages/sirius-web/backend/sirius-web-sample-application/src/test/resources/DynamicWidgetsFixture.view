@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:customwidgets="http://www.eclipse.org/sirius-web/customwidgets" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:reference="https://www.eclipse.org/sirius/widgets/reference" xmlns:view="http://www.eclipse.org/sirius-web/view">
+  <descriptions xmi:type="form:FormDescription" name="Test: Single If" domainType="flow::System" titleExpression="Test: Single If">
+    <pages>
+      <groups>
+        <children xmi:type="form:FormElementIf" name="System name check" predicateExpression="aql:self.name.contains(' ')">
+          <children xmi:type="form:LabelDescription" name="Error message" labelExpression="Error" valueExpression="The system name should not contain space characters"/>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+  <descriptions xmi:type="form:FormDescription" name="Test: Simple For" domainType="flow::System" titleExpression="Test: Simple For">
+    <pages>
+      <groups>
+        <children xmi:type="form:FormElementFor" name="For on two fixed values" iterator="prefix" iterableExpression="aql:Sequence{'foo', 'bar'}">
+          <children xmi:type="form:LabelDescription" name="Label using iteration variable" labelExpression="Label using iteration variable" valueExpression="aql:prefix + ':' + self.name"/>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+  <descriptions xmi:type="form:FormDescription" name="Test: For with two Ifs" domainType="flow::System" titleExpression="Test: For with two Ifs">
+    <pages>
+      <groups name="">
+        <children xmi:type="form:FormElementFor" name="For on two fixed values" iterableExpression="aql:Sequence{'foo', 'bar'}">
+          <children xmi:type="form:FormElementIf" predicateExpression="aql:it = 'foo'">
+            <children xmi:type="form:LabelDescription" name="got foo" labelExpression="got foo" valueExpression="got foo"/>
+          </children>
+          <children xmi:type="form:FormElementIf" predicateExpression="aql:true">
+            <children xmi:type="form:LabelDescription" name="" labelExpression="aql:'Name for it = ' + it" valueExpression="aql:it + ':' + self.name"/>
+          </children>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+  <descriptions xmi:type="form:FormDescription" name="Test: nested For" domainType="flow::System" titleExpression="Test: nested For">
+    <pages>
+      <groups>
+        <children xmi:type="form:FormElementFor" name="Level 1 For" iterator="x" iterableExpression="aql:Sequence{'a', 'b', 'c'}">
+          <children xmi:type="form:FormElementFor" name="Level 2 For" iterator="y" iterableExpression="aql:Sequence{'a', 'b', 'c'}">
+            <children xmi:type="form:FormElementIf" name="Diagonal element" predicateExpression="aql: x = y">
+              <children xmi:type="form:LabelDescription" name="Diagonal element" labelExpression="aql:'Label for (x, y) = (' + x + ', ' + y + ')'" valueExpression="aql:'(' + x + ', ' + y + ')'"/>
+            </children>
+          </children>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+  <descriptions xmi:type="form:FormDescription" name="Test: for each letter" domainType="flow::System" titleExpression="Test: for each letter">
+    <pages>
+      <groups>
+        <children xmi:type="form:FormElementFor" name="for each letter" iterator="letter" iterableExpression="aql:self.name.characters()">
+          <children xmi:type="form:LabelDescription" name="Letter" labelExpression="aql:'Label for letter ' + letter" valueExpression="aql:letter"/>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+  <descriptions xmi:type="form:FormDescription" name="Test: nested If">
+    <pages>
+      <groups>
+        <children xmi:type="form:FormElementIf" name="name length > 5" predicateExpression="aql:self.name.size() > 5">
+          <children xmi:type="form:FormElementIf" name="name contains 'e'" predicateExpression="aql:self.name.contains('e')">
+            <children xmi:type="form:LabelDescription" name="Label" labelExpression="Name" valueExpression="aql:self.name"/>
+          </children>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+  <descriptions xmi:type="form:FormDescription" name="Test: Flexbox" titleExpression="Test: Flexbox">
+    <pages>
+      <groups>
+        <children xmi:type="form:FlexboxContainerDescription">
+          <children xmi:type="form:FormElementFor" name="axis" iterator="axis" iterableExpression="aql:Sequence{'h', 'v'}">
+            <children xmi:type="form:FormElementIf" name="vertical" predicateExpression="aql:axis = 'v'">
+              <children xmi:type="form:FlexboxContainerDescription" name="column flexbox" flexDirection="column">
+                <children xmi:type="form:LabelDescription" name="system name" labelExpression="Name" valueExpression="aql:self.name">
+                  <style/>
+                </children>
+                <children xmi:type="form:ButtonDescription" name="button below" labelExpression="button below" buttonLabelExpression="button">
+                  <style/>
+                </children>
+              </children>
+            </children>
+            <children xmi:type="form:FormElementIf" name="horizontal" predicateExpression="aql:axis = 'h'">
+              <children xmi:type="form:FlexboxContainerDescription" name="row flexbox">
+                <children xmi:type="form:LabelDescription" name="system name" labelExpression="name" valueExpression="aql:self.name">
+                  <style/>
+                </children>
+                <children xmi:type="form:ButtonDescription" name="button to the right" labelExpression="button to the right" buttonLabelExpression="button">
+                  <style/>
+                </children>
+              </children>
+            </children>
+          </children>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+</view:View>
