@@ -14,6 +14,7 @@ export interface DiagramDirectEditInputProps {
   labelId: string;
   editingKey: string | null;
   onClose: () => void;
+  transform: string;
 }
 
 export interface DiagramDirectEditInputState {

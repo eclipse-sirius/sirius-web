@@ -62,7 +62,8 @@ const isErrorPayload = (payload: GQLRenameElementPayload): payload is GQLErrorPa
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLRenameElementPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
-export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: DiagramDirectEditInputProps) => {
+
+export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform }: DiagramDirectEditInputProps) => {
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
   const [state, setState] = useState<DiagramDirectEditInputState>({
     newLabel: initialLabel,
@@ -171,6 +172,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
         onBlur={doRename}
         autoFocus
         data-testid="name-edit"
+        style={{ transform }}
       />
     </>
   );

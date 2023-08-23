@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { memo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getSmoothStepPath } from 'reactflow';
-import { EdgeLabel } from './EdgeLabel';
+import { Label } from '../Label';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 export const MultiLabelEdge = memo(
@@ -45,13 +45,25 @@ export const MultiLabelEdge = memo(
         <BaseEdge id={id} path={edgePath} style={style} markerEnd={markerEnd} markerStart={markerStart} />
         <EdgeLabelRenderer>
           {beginLabel && (
-            <EdgeLabel transform={`translate(2%, 0%) translate(${sourceX}px,${sourceY}px)`} label={beginLabel} />
+            <Label
+              transform={`translate(2%, 0%) translate(${sourceX}px,${sourceY}px)`}
+              label={beginLabel}
+              faded={false}
+            />
           )}
           {centerLabel && (
-            <EdgeLabel transform={`translate(-50%, 0%) translate(${sourceX}px,${sourceY}px)`} label={centerLabel} />
+            <Label
+              transform={`translate(-50%, 0%) translate(${sourceX}px,${sourceY}px)`}
+              label={centerLabel}
+              faded={false}
+            />
           )}
           {endLabel && (
-            <EdgeLabel transform={`translate(2%, -100%) translate(${targetX}px,${targetY}px)`} label={endLabel} />
+            <Label
+              transform={`translate(2%, -100%) translate(${targetX}px,${targetY}px)`}
+              label={endLabel}
+              faded={false}
+            />
           )}
         </EdgeLabelRenderer>
       </>

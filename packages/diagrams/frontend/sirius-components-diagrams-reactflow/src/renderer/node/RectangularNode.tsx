@@ -57,7 +57,7 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`Rectangle - ${data?.label?.text}`}>
-        {data.label ? <Label label={data.label} faded={data.faded} /> : null}
+        {data.label ? <Label label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <NodePalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
         <Handle id="source" type="source" position={Position.Left} isConnectable={isConnectable} />
         <Handle id="target" type="target" position={Position.Right} isConnectable={isConnectable} />

@@ -60,7 +60,7 @@ As a result the development of applications consuming Sirius Components packages
 - https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296] [diagram] Add "export to SVG" action in the diagram panel of the react-flow prototype
 - https://github.com/eclipse-sirius/sirius-web/issues/2298[#2298] [diagram] Support keyboard shortcut for "Delete from model" action on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2231[#2231] [diagram] Extract the support for fullscreen in a dedicated hook
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2295[#2295] [diagram] Support direct edit on edges labels (center, start, end) on react-flow diagrams
 
 == v2023.8.0
 
