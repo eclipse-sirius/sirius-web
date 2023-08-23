@@ -27,6 +27,7 @@ It is not available for applications anymore, and thus, applications that need a
 All of its remaining content was only relevant inside of Sirius Web and it has thus been migrated to this location
 - [releng] Stop minifying the code of Sirius Components packages.
 As a result the development of applications consuming Sirius Components packages will be easier and it will be the responsability of the application to minify everything (which they should already be doing).
+- https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296] [diagram] `sirius-components-diagrams-reactflow` now depends on `html-to-image` node package.
 
 === Dependency update
 
@@ -40,6 +41,8 @@ As a result the development of applications consuming Sirius Components packages
 - [releng] Switch to `reactflow` 11.8.1
 - [releng] Switch to Spring Boot 3.1.2
 - [releng] Switch to Sirius Desktop 7.2.0
+- [frontend] The frontend now depends on `html-to-image` to support the "export to SVG" action in the diagram panel of the react-flow prototype (see https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296]).
+
 
 === Bug fixes
 

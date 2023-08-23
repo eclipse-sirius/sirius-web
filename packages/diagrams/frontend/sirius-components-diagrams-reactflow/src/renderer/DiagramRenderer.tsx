@@ -28,7 +28,6 @@ import {
   useNodesState,
   useStoreApi,
 } from 'reactflow';
-import { DiagramPanel } from './DiagramPanel';
 import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
 import { ImageNode } from './ImageNode';
 import { ListNode } from './ListNode';
@@ -42,6 +41,7 @@ import { CustomEdgeData } from './edge/CustomEdge.types';
 import { useLayout } from './layout/useLayout';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
+import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
 import 'reactflow/dist/style.css';
