@@ -19,11 +19,12 @@ import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/li
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Edge, Node, ReactFlowProvider } from 'reactflow';
-import { Diagram } from '../DiagramRenderer.types';
+import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
+import { RectangularNode } from '../node/RectangularNode';
 import { RectangularNodeData } from '../node/RectangularNode.types';
 import { LayoutEngine } from './LayoutEngine';
 
@@ -41,9 +42,17 @@ const emptyListNodeProps = {
   type: 'listNode',
 };
 
+const emptyRectangularNodeProps = {
+  ...emptyNodeProps,
+  type: 'rectangularNode',
+};
+
 const elk = new ELK();
 
-export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void): HTMLDivElement => {
+const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
+const isRectangularNode = (node: Node<NodeData>): node is Node<RectangularNodeData> => node.type === 'rectangularNode';
+
+export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void, httpOrigin: string): HTMLDivElement => {
   const hiddenContainer: HTMLDivElement = document.createElement('div');
   hiddenContainer.id = 'hidden-container';
   hiddenContainer.style.display = 'inline-block';
@@ -55,6 +64,12 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void):
   const visibleNodes = diagram.nodes.filter((node) => !node.hidden);
 
   // Render all label first
+  /**
+   * WARN: The height label computed in the hidden-container will be slightly different from the label rendered in the reactflow diagram.
+   * This difference is due to the line-height which is set in `variables.css` to 1.5 globaly but in `reset.css` the line-height is
+   * overridden to `normal` for element with [role=button] which seem to be the case for all reactflow nodes.
+   * That should not impact the node size since it is calculated with the higher value of line-height.
+   */
   const labelElements: JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
     if (hiddenContainer && node.data.label) {
@@ -90,37 +105,50 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void):
   });
   elements.push(labelContainerElement);
 
-  // then, render list node with list item only
-  const listNodeElements: JSX.Element[] = [];
+  const nodeElements: JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
-    if (hiddenContainer && node.type === 'listNode') {
-      const data = node.data as ListNodeData;
-      const listNode = createElement(ListNode, {
-        ...emptyListNodeProps,
-        id: node.id,
-        data,
-        key: `${node.id}-${index}`,
-      });
-
-      const element: JSX.Element = createElement('div', {
-        id: `${node.id}-${index}`,
-        key: node.id,
-        children: listNode,
-      });
-      listNodeElements.push(element);
+    if (hiddenContainer && node) {
+      const children: JSX.Element[] = [];
+      if (isRectangularNode(node)) {
+        const element = createElement(RectangularNode, {
+          ...emptyRectangularNodeProps,
+          id: node.id,
+          data: node.data,
+          key: `${node.id}-${index}`,
+        });
+        children.push(element);
+      }
+      if (isListNode(node)) {
+        const element = createElement(ListNode, {
+          ...emptyListNodeProps,
+          id: node.id,
+          data: node.data,
+          key: `${node.id}-${index}`,
+        });
+        children.push(element);
+      }
+      if (children.length > 0) {
+        const elementWrapper: JSX.Element = createElement('div', {
+          id: `${node.id}-${node.type}-${index}`,
+          key: node.id,
+          children,
+        });
+        nodeElements.push(elementWrapper);
+      }
     }
   });
-  const nodeListContainerElement: JSX.Element = createElement('div', {
-    id: 'hidden-nodeList-container',
-    key: 'hidden-nodeList-container',
+
+  const nodeContainerElement: JSX.Element = createElement('div', {
+    id: 'hidden-node-container',
+    key: 'hidden-node-container',
     style: {
       display: 'flex',
       flexWrap: 'wrap',
       alignItems: 'flex-start',
     },
-    children: listNodeElements,
+    children: nodeElements,
   });
-  elements.push(nodeListContainerElement);
+  elements.push(nodeContainerElement);
 
   const hiddenContainerContentElements: JSX.Element = createElement(Fragment, { children: elements });
 
@@ -128,7 +156,7 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void):
     <ReactFlowProvider>
       <ApolloProvider client={new ApolloClient({ cache: new InMemoryCache(), uri: '' })}>
         <ThemeProvider theme={theme}>
-          <ServerContext.Provider value={{ httpOrigin: '' }}>
+          <ServerContext.Provider value={{ httpOrigin }}>
             <ToastContext.Provider value={{ enqueueSnackbar: (_body: string, _options?: MessageOptions) => {} }}>
               <DiagramDirectEditContextProvider>{hiddenContainerContentElements}</DiagramDirectEditContextProvider>
             </ToastContext.Provider>

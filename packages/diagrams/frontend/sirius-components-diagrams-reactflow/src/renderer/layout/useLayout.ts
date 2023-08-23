@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useEffect, useState } from 'react';
+import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect, useState } from 'react';
 import { Diagram } from '../DiagramRenderer.types';
 import { cleanLayoutArea, layout, performDefaultAutoLayout, prepareLayoutArea } from './layout';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
@@ -26,6 +27,7 @@ const initialState: UseLayoutState = {
 };
 
 export const useLayout = (): UseLayoutValue => {
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [state, setState] = useState<UseLayoutState>(initialState);
 
   const layoutAreaPrepared = () => {
@@ -51,7 +53,7 @@ export const useLayout = (): UseLayoutValue => {
 
   useEffect(() => {
     if (state.currentStep === 'BEFORE_LAYOUT' && !state.hiddenContainer && state.diagramToLayout) {
-      const layoutArea = prepareLayoutArea(state.diagramToLayout, layoutAreaPrepared);
+      const layoutArea = prepareLayoutArea(state.diagramToLayout, layoutAreaPrepared, httpOrigin);
       setState((prevState) => ({
         ...prevState,
         hiddenContainer: layoutArea,
