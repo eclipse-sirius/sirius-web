@@ -17,10 +17,10 @@ import ReactDOM from 'react-dom';
 import { Box, Edge, Node, ReactFlowProvider, Rect, boxToRect, rectToBox } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
-import { ListNode } from '../ListNode';
-import { ListNodeData } from '../ListNode.types';
-import { RectangularNodeData } from '../RectangularNode.types';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
+import { ListNode } from '../node/ListNode';
+import { ListNodeData } from '../node/ListNode.types';
+import { RectangularNodeData } from '../node/RectangularNode.types';
 
 const emptyNodeProps = {
   selected: false,

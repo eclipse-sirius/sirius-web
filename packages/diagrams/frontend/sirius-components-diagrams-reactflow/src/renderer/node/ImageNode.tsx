@@ -15,8 +15,8 @@ import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-compon
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { NodePalette } from '../palette/NodePalette';
 import { ImageNodeData } from './ImageNode.types';
-import { NodePalette } from './palette/NodePalette';
 
 const imageNodeStyle = (
   theme: Theme,

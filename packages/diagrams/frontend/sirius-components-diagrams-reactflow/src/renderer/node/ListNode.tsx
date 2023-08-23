@@ -14,10 +14,10 @@
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
-import { Label } from './Label';
+import { Label } from '../Label';
+import { useDrop } from '../drop/useDrop';
+import { NodePalette } from '../palette/NodePalette';
 import { ListNodeData } from './ListNode.types';
-import { useDrop } from './drop/useDrop';
-import { NodePalette } from './palette/NodePalette';
 
 const listNodeStyle = (
   theme: Theme,
