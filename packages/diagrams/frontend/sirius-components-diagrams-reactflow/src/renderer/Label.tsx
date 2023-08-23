@@ -22,9 +22,10 @@ const labelStyle = (
   theme: Theme,
   style: React.CSSProperties,
   faded: Boolean,
-  transform: string
+  transform: string,
+  hasIcon: boolean
 ): React.CSSProperties => {
-  return {
+  const labelStyle: React.CSSProperties = {
     transform,
     opacity: faded ? '0.4' : '',
     pointerEvents: 'all',
@@ -35,6 +36,12 @@ const labelStyle = (
     ...style,
     color: style.color ? getCSSColor(String(style.color), theme) : undefined,
   };
+
+  if (hasIcon) {
+    labelStyle.gap = '8px';
+  }
+
+  return labelStyle;
 };
 
 export const Label = memo(({ diagramElementId, label, faded, transform }: LabelProps) => {
@@ -59,12 +66,13 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
       <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} transform={transform} />
     );
   }
+
   return (
     <div
       data-id={label.id}
       data-testid={`Label - ${label.text}`}
       onDoubleClick={handleDoubleClick}
-      style={labelStyle(theme, label.style, faded, transform)}
+      style={labelStyle(theme, label.style, faded, transform, !!label.iconURL)}
       className="nopan">
       {label.iconURL ? <img src={httpOrigin + label.iconURL} /> : ''}
       {label.text}

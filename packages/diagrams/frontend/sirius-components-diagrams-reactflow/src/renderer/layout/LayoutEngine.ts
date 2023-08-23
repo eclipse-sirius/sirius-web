@@ -14,6 +14,7 @@
 import { Node } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { IconLabelNodeLayoutHandler } from './IconLabelNodeLayoutHandler';
 import { ImageNodeLayoutHandler } from './ImageNodeLayoutHandler';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
@@ -24,6 +25,7 @@ export class LayoutEngine implements ILayoutEngine {
     new RectangleNodeLayoutHandler(),
     new ListNodeLayoutHandler(),
     new ImageNodeLayoutHandler(),
+    new IconLabelNodeLayoutHandler(),
   ];
 
   public layoutNodes(

@@ -19,7 +19,6 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 
 const gap = 20;
 const rectangularNodePadding = 8;
-const borderLeftAndRight = 2;
 const defaultWidth = 150;
 const defaultHeight = 70;
 
@@ -35,10 +34,14 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[]
   ) {
+    const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
+    const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
+    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
+
     if (directChildren.length > 0) {
-      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren);
+      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, borderWidth);
     } else {
-      this.handleLeafNode(previousDiagram, node, visibleNodes);
+      this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth);
     }
   }
 
@@ -47,7 +50,8 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     previousDiagram: Diagram | null,
     node: Node<RectangularNodeData, 'rectangularNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[]
+    directChildren: Node<NodeData, DiagramNodeType>[],
+    borderWidth: number
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren);
 
@@ -72,21 +76,23 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     const childrenAwareNodeWidth = childrenFootprint.x + childrenFootprint.width + rectangularNodePadding;
     const labelOnlyWidth =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
-    const nodeWidth = Math.max(childrenAwareNodeWidth, labelOnlyWidth);
-    node.width = this.getNodeOrMinWidth(nodeWidth + borderLeftAndRight);
+    const nodeWidth = Math.max(childrenAwareNodeWidth, labelOnlyWidth) + borderWidth * 2;
+    node.width = this.getNodeOrMinWidth(nodeWidth);
     node.height = this.getNodeOrMinHeight(
       rectangularNodePadding +
         (labelElement?.getBoundingClientRect().height ?? 0) +
         rectangularNodePadding +
         childrenFootprint.height +
-        rectangularNodePadding
+        rectangularNodePadding +
+        borderWidth * 2
     );
   }
 
   private handleLeafNode(
     previousDiagram: Diagram | null,
     node: Node<RectangularNodeData, 'rectangularNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[]
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    borderWidth: number
   ) {
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
@@ -95,7 +101,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       rectangularNodePadding +
       (labelElement?.getBoundingClientRect().width ?? 0) +
       rectangularNodePadding +
-      borderLeftAndRight;
+      borderWidth * 2;
     const labelHeight =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
     const nodeWidth = this.getNodeOrMinWidth(labelWidth);

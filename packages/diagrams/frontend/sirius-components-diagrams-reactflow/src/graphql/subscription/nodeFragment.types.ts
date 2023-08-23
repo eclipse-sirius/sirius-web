@@ -61,4 +61,6 @@ export interface GQLImageNodeStyle extends GQLNodeStyle {
   imageURL: string;
 }
 
-export interface GQLIconLabelNodeStyle extends GQLNodeStyle {}
+export interface GQLIconLabelNodeStyle extends GQLNodeStyle {
+  backgroundColor: string;
+}

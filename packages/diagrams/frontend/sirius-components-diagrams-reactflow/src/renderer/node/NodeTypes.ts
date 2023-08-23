@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { IconLabelNode } from './IconLabelNode';
 import { ImageNode } from './ImageNode';
 import { ListNode } from './ListNode';
 import { DiagramNodeTypes } from './NodeTypes.types';
@@ -20,4 +21,5 @@ export const nodeTypes: DiagramNodeTypes = {
   rectangularNode: RectangularNode,
   imageNode: ImageNode,
   listNode: ListNode,
+  iconLabelNode: IconLabelNode,
 };

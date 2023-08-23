@@ -61,15 +61,6 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
         onDrop={handleOnDrop}
         data-testid={`Rectangle - ${data?.label?.text}`}>
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
-        <div>
-          {data.listItems.map((listItem) => {
-            return (
-              <div key={listItem.id} style={listItem.style}>
-                {listItem.label.text}
-              </div>
-            );
-          })}
-        </div>
         {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id ?? null} /> : null}
         <Handle id={`handle--${id}--top`} type="source" position={Position.Top} isConnectable={isConnectable} />
         <Handle id={`handle--${id}--left`} type="source" position={Position.Left} isConnectable={isConnectable} />

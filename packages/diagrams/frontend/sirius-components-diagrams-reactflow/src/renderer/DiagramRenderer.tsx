@@ -39,7 +39,9 @@ import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
+import { useLayout } from './layout/useLayout';
 import { nodeTypes } from './node/NodeTypes';
+import { DiagramNodeType } from './node/NodeTypes.types';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { useEdgePalette } from './palette/useEdgePalette';
@@ -47,8 +49,6 @@ import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
 import 'reactflow/dist/style.css';
-import { useLayout } from './layout/useLayout';
-import { DiagramNodeType } from './node/NodeTypes.types';
 
 const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';

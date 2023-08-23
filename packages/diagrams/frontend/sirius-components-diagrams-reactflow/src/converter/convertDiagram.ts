@@ -15,6 +15,7 @@ import { Edge, Node, XYPosition } from 'reactflow';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import {
+  GQLIconLabelNodeStyle,
   GQLImageNodeStyle,
   GQLNode,
   GQLRectangularNodeStyle,
@@ -22,8 +23,9 @@ import {
 } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
+import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { ImageNodeData } from '../renderer/node/ImageNode.types';
-import { ListItemData, ListNodeData } from '../renderer/node/ListNode.types';
+import { ListNodeData } from '../renderer/node/ListNode.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
 
@@ -105,34 +107,50 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
   return node;
 };
 
+const toIconLabelNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<IconLabelNodeData> => {
+  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
+  const style = gqlNode.style as GQLIconLabelNodeStyle;
+  const { id, label } = gqlNode;
+  const labelStyle = label.style;
+
+  const data: IconLabelNodeData = {
+    targetObjectId,
+    targetObjectLabel,
+    targetObjectKind,
+    style: {
+      textAlign: 'left',
+      backgroundColor: style.backgroundColor,
+    },
+    label: {
+      id: label.id,
+      text: label.text,
+      style: {
+        ...convertLabelStyle(labelStyle),
+      },
+      iconURL: labelStyle.iconURL,
+    },
+    faded: gqlNode.state === GQLViewModifier.Faded,
+  };
+
+  const node: Node<IconLabelNodeData> = {
+    id,
+    type: 'iconLabelNode',
+    data,
+    position: defaultPosition,
+    hidden: gqlNode.state === GQLViewModifier.Hidden,
+  };
+
+  if (gqlParentNode) {
+    node.parentNode = gqlParentNode.id;
+    node.extent = 'parent';
+  }
+
+  return node;
+};
+
 const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
   const labelStyle = gqlNode.label.style;
-
-  const listItems: ListItemData[] = (gqlNode.childNodes ?? []).map((gqlChildNode) => {
-    const { id, label } = gqlChildNode;
-    return {
-      id,
-      label: {
-        id: label.id,
-        text: label.text,
-        iconURL: null,
-        style: {
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          gap: '8px',
-          padding: '4px 8px',
-        },
-      },
-      style: {
-        textAlign: 'left',
-        ...convertLabelStyle(label.style),
-      },
-      hidden: gqlChildNode.state === GQLViewModifier.Hidden,
-    };
-  });
 
   const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
   const data: ListNodeData = {
@@ -155,14 +173,12 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
         padding: '8px 16px',
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
     },
     faded: gqlNode.state === GQLViewModifier.Faded,
-    listItems,
   };
 
   if (style.withHeader && data.label) {
@@ -235,7 +251,6 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
         padding: '8px 16px',
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
@@ -283,6 +298,8 @@ const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[]
 
     (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
     (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+  } else if (gqlNode.style.__typename === 'IconLabelNodeStyle') {
+    nodes.push(toIconLabelNode(gqlNode, parentNode));
   }
 };
 
