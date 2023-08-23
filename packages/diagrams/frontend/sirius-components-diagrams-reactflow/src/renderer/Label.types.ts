@@ -16,4 +16,5 @@ import { Label } from './DiagramRenderer.types';
 export interface LabelProps {
   label: Label;
   faded: boolean;
+  transform: string;
 }

@@ -52,6 +52,10 @@ export interface NodeData {
   faded: boolean;
 }
 
+export interface EdgeData {
+  label: Label | null;
+}
+
 export interface Label {
   id: string;
   text: string;

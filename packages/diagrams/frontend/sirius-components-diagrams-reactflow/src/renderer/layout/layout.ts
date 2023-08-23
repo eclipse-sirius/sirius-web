@@ -54,7 +54,7 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void):
   visibleNodes.forEach((node, index) => {
     if (hiddenContainer && node.data.label) {
       const children: JSX.Element[] = [
-        createElement(Label, { label: node.data.label, faded: false, key: node.data.label.id }),
+        createElement(Label, { label: node.data.label, faded: false, transform: '', key: node.data.label.id }),
       ];
       const element: JSX.Element = createElement('div', {
         id: `${node.id}-label-${index}`,
