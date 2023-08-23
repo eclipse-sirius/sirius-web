@@ -24,7 +24,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
   const nodes = useNodes<NodeData>();
 
-  const onKeyDown = useCallback(
+  const onDirectEdit = useCallback(
     (event: React.KeyboardEvent<Element>) => {
       const { key } = event;
       /*If a modifier key is hit alone, do nothing*/
@@ -53,6 +53,6 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
     editingKey,
     setCurrentlyEditedLabelId,
     resetDirectEdit,
-    onKeyDown,
+    onDirectEdit,
   };
 };
