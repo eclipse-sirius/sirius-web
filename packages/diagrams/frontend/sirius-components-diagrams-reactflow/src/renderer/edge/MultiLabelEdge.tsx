@@ -12,10 +12,10 @@
  *******************************************************************************/
 import { memo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getSmoothStepPath } from 'reactflow';
-import { CustomEdgeData } from './CustomEdge.types';
 import { EdgeLabel } from './EdgeLabel';
+import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
-export const CustomEdge = memo(
+export const MultiLabelEdge = memo(
   ({
     id,
     sourceX,
@@ -28,7 +28,7 @@ export const CustomEdge = memo(
     style,
     markerEnd,
     markerStart,
-  }: EdgeProps<CustomEdgeData>) => {
+  }: EdgeProps<MultiLabelEdgeData>) => {
     const [edgePath] = getSmoothStepPath({
       sourceX,
       sourceY,

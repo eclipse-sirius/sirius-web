@@ -13,5 +13,5 @@
 
 export interface UseFullscreenValue {
   fullscreen: boolean;
-  handleFullscreen: (fullscreen: boolean) => void;
+  onFullscreen: (fullscreen: boolean) => void;
 }

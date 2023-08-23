@@ -40,7 +40,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid, onArrangeAll }: Diagram
     dialogOpen: null,
   });
 
-  const { fullscreen, handleFullscreen } = useFullscreen();
+  const { fullscreen, onFullscreen } = useFullscreen();
 
   const reactFlow = useReactFlow();
   const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
@@ -66,11 +66,11 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid, onArrangeAll }: Diagram
       <Panel position="top-left">
         <Paper>
           {fullscreen ? (
-            <IconButton size="small" onClick={() => handleFullscreen(false)}>
+            <IconButton size="small" onClick={() => onFullscreen(false)}>
               <FullscreenExitIcon />
             </IconButton>
           ) : (
-            <IconButton size="small" onClick={() => handleFullscreen(true)}>
+            <IconButton size="small" onClick={() => onFullscreen(true)}>
               <FullscreenIcon />
             </IconButton>
           )}

@@ -24,7 +24,7 @@ import { Diagram, Label } from '../renderer/DiagramRenderer.types';
 import { ImageNodeData } from '../renderer/ImageNode.types';
 import { ListItemData, ListNodeData } from '../renderer/ListNode.types';
 import { RectangularNodeData } from '../renderer/RectangularNode.types';
-import { CustomEdgeData } from '../renderer/edge/CustomEdge.types';
+import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -344,7 +344,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
     const zIndex = Math.max(nodeId2Depth.get(gqlEdge.sourceId) ?? -1, nodeId2Depth.get(gqlEdge.targetId) ?? -1);
 
-    const data: CustomEdgeData = {};
+    const data: MultiLabelEdgeData = {};
     if (gqlEdge.beginLabel) {
       data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
     }
@@ -357,7 +357,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
 
     return {
       id: gqlEdge.id,
-      type: 'customEdge',
+      type: 'multiLabelEdge',
       source: gqlEdge.sourceId,
       target: gqlEdge.targetId,
       markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
