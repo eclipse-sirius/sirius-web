@@ -55,6 +55,7 @@ As a result the development of applications consuming Sirius Components packages
 - [releng] Add some automatic checks to simplify code reviews
 - [releng] Make some cypress tests more robust
 - https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296] [diagram] Add "export to SVG" action in the diagram panel of the react-flow prototype
+- https://github.com/eclipse-sirius/sirius-web/issues/2298[#2298] [diagram] Support keyboard shortcut for "Delete from model" action on react-flow diagrams
 
 
 == v2023.8.0

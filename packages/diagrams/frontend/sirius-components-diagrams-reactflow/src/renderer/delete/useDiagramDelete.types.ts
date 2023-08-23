@@ -10,17 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-import { DirectEditTrigger } from './DiagramDirectEditContext.types';
-
-export interface UseDiagramDirectEditValue {
-  onDirectEdit: (event: React.KeyboardEvent<Element>) => void;
-  currentlyEditedLabelId: string | null;
-  editingKey: string | null;
-  setCurrentlyEditedLabelId: (
-    directEditTrigger: DirectEditTrigger,
-    currentlyEditedLabelId: string,
-    editingKey: string | null
-  ) => void;
-  resetDirectEdit: () => void;
+export interface UseDiagramDeleteValue {
+  onDelete: (event: React.KeyboardEvent<Element>) => void;
 }

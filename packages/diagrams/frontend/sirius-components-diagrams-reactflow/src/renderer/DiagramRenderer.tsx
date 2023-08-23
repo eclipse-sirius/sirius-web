@@ -35,6 +35,7 @@ import { ListNode } from './ListNode';
 import { RectangularNode } from './RectangularNode';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
+import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { CustomEdge } from './edge/CustomEdge';
@@ -60,7 +61,9 @@ const isSelectChange = (change: NodeChange): change is NodeSelectionChange => ch
 
 export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRendererProps) => {
   const store = useStoreApi();
-  const { onKeyDown } = useDiagramDirectEdit();
+  const { onDirectEdit } = useDiagramDirectEdit();
+  const { onDelete } = useDiagramDelete();
+
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
     fullscreen: false,
@@ -167,6 +170,11 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     autoLayout(nodes, edges).then(({ nodes }) => {
       setNodes(nodes);
     });
+  };
+
+  const onKeyDown = (event: React.KeyboardEvent<Element>) => {
+    onDirectEdit(event);
+    onDelete(event);
   };
 
   return (
