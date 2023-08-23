@@ -21,10 +21,10 @@ import {
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, Label } from '../renderer/DiagramRenderer.types';
-import { ImageNodeData } from '../renderer/ImageNode.types';
-import { ListItemData, ListNodeData } from '../renderer/ListNode.types';
-import { RectangularNodeData } from '../renderer/RectangularNode.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
+import { ImageNodeData } from '../renderer/node/ImageNode.types';
+import { ListItemData, ListNodeData } from '../renderer/node/ListNode.types';
+import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 

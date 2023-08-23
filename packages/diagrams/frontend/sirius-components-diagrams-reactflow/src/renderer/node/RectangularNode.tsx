@@ -11,15 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { memo } from 'react';
-import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
-import { RectangularNodeData } from './RectangularNode.types';
-
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React from 'react';
-import { Label } from './Label';
-import { useDrop } from './drop/useDrop';
-import { NodePalette } from './palette/NodePalette';
+import React, { memo } from 'react';
+import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { Label } from '../Label';
+import { useDrop } from '../drop/useDrop';
+import { NodePalette } from '../palette/NodePalette';
+import { RectangularNodeData } from './RectangularNode.types';
 
 const rectangularNodeStyle = (
   theme: Theme,

@@ -11,9 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeData } from './DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 
-export interface ImageNodeData extends NodeData {
-  imageURL: string;
+export interface RectangularNodeData extends NodeData {
   style: React.CSSProperties;
 }

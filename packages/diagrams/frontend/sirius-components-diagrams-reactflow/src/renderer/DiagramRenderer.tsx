@@ -29,9 +29,6 @@ import {
   useStoreApi,
 } from 'reactflow';
 import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
-import { ImageNode } from './ImageNode';
-import { ListNode } from './ListNode';
-import { RectangularNode } from './RectangularNode';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
@@ -40,6 +37,9 @@ import { useDrop } from './drop/useDrop';
 import { MultiLabelEdge } from './edge/MultiLabelEdge';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useLayout } from './layout/useLayout';
+import { ImageNode } from './node/ImageNode';
+import { ListNode } from './node/ListNode';
+import { RectangularNode } from './node/RectangularNode';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
