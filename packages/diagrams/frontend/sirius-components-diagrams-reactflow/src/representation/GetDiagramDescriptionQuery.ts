@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { gql } from '@apollo/client';
 
-export interface DiagramPanelProps {
-  snapToGrid: boolean;
-  isAutoLayout: boolean;
-  onSnapToGrid: (snapToGrid: boolean) => void;
-}
-
-export interface DiagramPanelState {
-  dialogOpen: DiagramPanelDialog | null;
-}
-
-export type DiagramPanelDialog = 'Share';
+export const getDiagramDescriptionQuery = gql`
+  query getDiagramDescription($editingContextId: ID!, $diagramId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $diagramId) {
+          description {
+            ... on DiagramDescription {
+              autoLayout
+            }
+          }
+        }
+      }
+    }
+  }
+`;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { OnDataOptions, gql, useSubscription } from '@apollo/client';
-import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
+import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
@@ -33,11 +33,22 @@ import {
   GQLDiagramEventData,
   GQLDiagramEventVariables,
 } from './DiagramRepresentation.types';
+import { getDiagramDescriptionQuery } from './GetDiagramDescriptionQuery';
+import {
+  GQLGetDiagramDescriptionData,
+  GQLGetDiagramDescriptionDiagramDescription,
+  GQLGetDiagramDescriptionRepresentationDescription,
+} from './GetDiagramDescriptionQuery.types';
 
 const subscription = gql(diagramEventSubscription);
 
 const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
   payload.__typename === 'DiagramRefreshedEventPayload';
+
+const isDiagramDescription = (
+  representationDescription: GQLGetDiagramDescriptionRepresentationDescription
+): representationDescription is GQLGetDiagramDescriptionDiagramDescription =>
+  representationDescription.__typename === 'DiagramDescription';
 
 export const DiagramRepresentation = ({
   editingContextId,
@@ -50,6 +61,7 @@ export const DiagramRepresentation = ({
     diagramRefreshedEventPayload: null,
     complete: false,
     message: null,
+    autoLayout: false,
   });
 
   const variables: GQLDiagramEventVariables = {
@@ -59,32 +71,58 @@ export const DiagramRepresentation = ({
       diagramId: representationId,
     },
   };
+  const { addErrorMessage } = useMultiToast();
 
-  const onData = ({ data }: OnDataOptions<GQLDiagramEventData>) => {
-    if (data.data) {
-      const { diagramEvent } = data.data;
-      if (isDiagramRefreshedEventPayload(diagramEvent)) {
-        setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: diagramEvent }));
+  const {
+    loading: diagramDescriptionLoading,
+    data: diagramDescriptionData,
+    error: diagramDescriptionError,
+    subscribeToMore,
+  } = useQuery<GQLGetDiagramDescriptionData>(getDiagramDescriptionQuery, {
+    fetchPolicy: 'network-only',
+    variables: {
+      editingContextId,
+      diagramId: representationId,
+    },
+  });
+
+  useEffect(() => {
+    subscribeToMore<GQLDiagramEventData, GQLDiagramEventVariables>({
+      document: subscription,
+      variables: variables,
+      onError(error) {
+        setState((prevState) => ({ ...prevState, message: error.message }));
+      },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (subscriptionData.data) {
+          const { diagramEvent } = subscriptionData.data;
+          if (isDiagramRefreshedEventPayload(diagramEvent)) {
+            setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: diagramEvent }));
+          }
+        }
+        return prev;
+      },
+    });
+  }, [subscribeToMore]);
+
+  useEffect(() => {
+    if (diagramDescriptionError) {
+      const { message } = diagramDescriptionError;
+      addErrorMessage(message);
+    }
+    if (!diagramDescriptionLoading && diagramDescriptionData) {
+      const representationDescription = diagramDescriptionData.viewer?.editingContext?.representation?.description;
+      if (representationDescription && isDiagramDescription(representationDescription)) {
+        setState((prevState) => ({ ...prevState, autoLayout: representationDescription.autoLayout }));
       }
     }
-  };
-
-  const onComplete = () => {
-    setState((prevState) => ({ ...prevState, diagram: null, complete: true }));
-  };
-
-  const { error } = useSubscription<GQLDiagramEventData>(subscription, {
-    variables,
-    fetchPolicy: 'no-cache',
-    onData,
-    onComplete,
-  });
+  }, [diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError]);
 
   if (state.message) {
     return <div>{state.message}</div>;
   }
-  if (error) {
-    return <div>{error.message}</div>;
+  if (diagramDescriptionError) {
+    return <div>{diagramDescriptionError.message}</div>;
   }
   if (state.complete) {
     return <div>The representation is not available anymore</div>;
@@ -108,6 +146,7 @@ export const DiagramRepresentation = ({
                       diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
                       selection={selection}
                       setSelection={setSelection}
+                      isAutoLayout={state.autoLayout}
                     />
                   </FullscreenContextProvider>
                 </div>

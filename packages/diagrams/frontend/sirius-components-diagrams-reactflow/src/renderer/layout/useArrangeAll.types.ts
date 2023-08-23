@@ -10,15 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-export interface DiagramPanelProps {
-  snapToGrid: boolean;
-  isAutoLayout: boolean;
-  onSnapToGrid: (snapToGrid: boolean) => void;
+import { Edge, Node } from 'reactflow';
+export interface UseArrangeAllValue {
+  onArrangeAll: (nodes: Node[], edges: Edge[]) => void;
 }
-
-export interface DiagramPanelState {
-  dialogOpen: DiagramPanelDialog | null;
-}
-
-export type DiagramPanelDialog = 'Share';

@@ -34,7 +34,8 @@ const defaultPosition: XYPosition = { x: 0, y: 0 };
 const toRectangularNode = (
   gqlNode: GQLNode,
   gqlParentNode: GQLNode | null,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  isAutoLayout: boolean
 ): Node<RectangularNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
   const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
@@ -64,6 +65,7 @@ const toRectangularNode = (
     faded: gqlNode.state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    shouldResize: !isAutoLayout && !isBorderNode,
   };
 
   const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
@@ -145,6 +147,7 @@ const toIconLabelNode = (
     },
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    shouldResize: !isBorderNode,
     faded: gqlNode.state === GQLViewModifier.Faded,
   };
 
@@ -164,7 +167,12 @@ const toIconLabelNode = (
   return node;
 };
 
-const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNode: boolean): Node<ListNodeData> => {
+const toListNode = (
+  gqlNode: GQLNode,
+  gqlParentNode: GQLNode | null,
+  isBorderNode: boolean,
+  isAutoLayout: boolean
+): Node<ListNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
   const labelStyle = gqlNode.label.style;
 
@@ -198,6 +206,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: gqlNode.state === GQLViewModifier.Faded,
+    shouldResize: !isAutoLayout && !isBorderNode,
   };
 
   if (style.withHeader && data.label) {
@@ -252,7 +261,12 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
   return node;
 };
 
-const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNode: boolean): Node<ImageNodeData> => {
+const toImageNode = (
+  gqlNode: GQLNode,
+  gqlParentNode: GQLNode | null,
+  isBorderNode: boolean,
+  isAutoLayout: boolean
+): Node<ImageNodeData> => {
   const style = gqlNode.style as GQLImageNodeStyle;
   const labelStyle = gqlNode.label.style;
   const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
@@ -281,6 +295,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNo
     faded: gqlNode.state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    shouldResize: !isAutoLayout && !isBorderNode,
   };
 
   const node: Node<ImageNodeData> = {
@@ -299,26 +314,26 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNo
   return node;
 };
 
-const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[]): void => {
+const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[], isAutoLayout: boolean): void => {
   const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(gqlNode.id);
 
   if (gqlNode.style.__typename === 'RectangularNodeStyle') {
     const isList = gqlNode.childrenLayoutStrategy?.kind === 'List';
     if (!isList) {
-      nodes.push(toRectangularNode(gqlNode, parentNode, isBorderNode));
-      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
-      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+      nodes.push(toRectangularNode(gqlNode, parentNode, isBorderNode, isAutoLayout));
+      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes, isAutoLayout));
+      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes, isAutoLayout));
     } else {
-      nodes.push(toListNode(gqlNode, parentNode, isBorderNode));
+      nodes.push(toListNode(gqlNode, parentNode, isBorderNode, isAutoLayout));
 
-      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
-      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes, isAutoLayout));
+      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes, isAutoLayout));
     }
   } else if (gqlNode.style.__typename === 'ImageNodeStyle') {
-    nodes.push(toImageNode(gqlNode, parentNode, isBorderNode));
+    nodes.push(toImageNode(gqlNode, parentNode, isBorderNode, isAutoLayout));
 
-    (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
-    (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+    (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes, isAutoLayout));
+    (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes, isAutoLayout));
   } else if (gqlNode.style.__typename === 'IconLabelNodeStyle') {
     nodes.push(toIconLabelNode(gqlNode, parentNode, isBorderNode));
   }
@@ -383,9 +398,9 @@ const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties =>
   return style;
 };
 
-export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
+export const convertDiagram = (gqlDiagram: GQLDiagram, isAutoLayout: boolean): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
-  gqlDiagram.nodes.forEach((gqlNode) => convertNode(gqlNode, null, nodes));
+  gqlDiagram.nodes.forEach((gqlNode) => convertNode(gqlNode, null, nodes, isAutoLayout));
 
   const nodeId2node = new Map<string, Node>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));

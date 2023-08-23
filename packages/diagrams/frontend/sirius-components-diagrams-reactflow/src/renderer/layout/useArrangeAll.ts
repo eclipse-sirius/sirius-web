@@ -10,15 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Edge, Node, useReactFlow } from 'reactflow';
+import { UseArrangeAllValue } from './useArrangeAll.types';
+import { useLayout } from './useLayout';
 
-export interface DiagramPanelProps {
-  snapToGrid: boolean;
-  isAutoLayout: boolean;
-  onSnapToGrid: (snapToGrid: boolean) => void;
-}
+export const useArrangeAll = (): UseArrangeAllValue => {
+  const { autoLayout } = useLayout();
+  const { setNodes, getZoom } = useReactFlow();
 
-export interface DiagramPanelState {
-  dialogOpen: DiagramPanelDialog | null;
-}
+  const layoutDiagram = (nodes: Node[], edges: Edge[]) => {
+    autoLayout(nodes, edges, getZoom()).then(({ nodes }) => {
+      setNodes(nodes);
+    });
+  };
 
-export type DiagramPanelDialog = 'Share';
+  return {
+    onArrangeAll: layoutDiagram,
+  };
+};

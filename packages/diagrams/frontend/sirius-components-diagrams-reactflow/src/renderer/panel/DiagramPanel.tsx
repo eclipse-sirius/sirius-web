@@ -32,18 +32,18 @@ import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
-import { useLayout } from '../layout/useLayout';
+import { useArrangeAll } from '../layout/useArrangeAll';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 
-export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) => {
+export const DiagramPanel = ({ snapToGrid, onSnapToGrid, isAutoLayout }: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
   });
 
   const nodes = useNodes<NodeData>();
   const edges = useEdges<EdgeData>();
-  const { autoLayout } = useLayout();
+
   const { fullscreen, onFullscreen } = useFullscreen();
 
   const reactFlow = useReactFlow<NodeData, EdgeData>();
@@ -53,7 +53,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
   const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
   const handleCloseDialog = () => setState((prevState) => ({ ...prevState, dialogOpen: null }));
-
+  const { onArrangeAll } = useArrangeAll();
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
 
@@ -63,13 +63,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   const { exportToImage } = useExportToImage();
 
   const getAllElementsIds = () => {
-    return [...reactFlow.getNodes().map((elem) => elem.id), ...reactFlow.getEdges().map((elem) => elem.id)];
-  };
-
-  const handleArrangeAll = () => {
-    autoLayout(nodes, edges, reactFlow.getZoom()).then(({ nodes }) => {
-      reactFlow.setNodes(nodes);
-    });
+    return [...nodes.map((elem) => elem.id), ...edges.map((elem) => elem.id)];
   };
 
   return (
@@ -114,9 +108,13 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
               <GridOnIcon />
             </IconButton>
           )}
-          <IconButton size="small" onClick={() => handleArrangeAll()}>
-            <AccountTreeIcon />
-          </IconButton>
+          {!isAutoLayout ? (
+            <IconButton size="small" onClick={() => onArrangeAll(nodes, edges)}>
+              <AccountTreeIcon />
+            </IconButton>
+          ) : (
+            ''
+          )}
           <IconButton
             size="small"
             aria-label="reveal hidden elements"

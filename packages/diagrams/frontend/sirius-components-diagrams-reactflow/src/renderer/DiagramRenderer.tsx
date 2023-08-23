@@ -25,9 +25,11 @@ import {
   OnEdgesChange,
   OnNodesChange,
   ReactFlow,
+  ReactFlowState,
   useEdgesState,
   useNodesState,
   useReactFlow,
+  useStore,
   useStoreApi,
 } from 'reactflow';
 import { convertDiagram } from '../converter/convertDiagram';
@@ -49,23 +51,35 @@ import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
 import 'reactflow/dist/style.css';
+import { useArrangeAll } from './layout/useArrangeAll';
 
 const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';
+const getNodesLength = (state: ReactFlowState) => Array.from(state.nodeInternals.values()).length || 0;
 
-export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSelection }: DiagramRendererProps) => {
+export const DiagramRenderer = ({
+  diagramRefreshedEventPayload,
+  isAutoLayout,
+  selection,
+  setSelection,
+}: DiagramRendererProps) => {
   const store = useStoreApi();
+
+  const nodesLength = useStore(getNodesLength);
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
 
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
     snapToGrid: false,
+    shouldAutoLayout: false,
     fitviewLifecycle: 'neverRendered',
   });
 
   const { layout } = useLayout();
+  const { onArrangeAll } = useArrangeAll();
 
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onDiagramElementClick } = useDiagramElementPalette();
@@ -76,10 +90,9 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
-
   useEffect(() => {
     const { diagram } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(diagram);
+    const convertedDiagram: Diagram = convertDiagram(diagram, isAutoLayout);
 
     const previousDiagram: Diagram = {
       metadata: { ...convertedDiagram.metadata },
@@ -91,18 +104,28 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       setNodes(laidOutDiagram.nodes);
       setEdges(laidOutDiagram.edges);
       hideDiagramPalette();
-      if (state.fitviewLifecycle === 'neverRendered') {
+      if (state.fitviewLifecycle === 'neverRendered' && !isAutoLayout) {
         setState((prevState) => ({ ...prevState, fitviewLifecycle: 'shouldFitview' }));
+      }
+      if (isAutoLayout) {
+        setState((prevState) => ({ ...prevState, shouldAutoLayout: true }));
       }
     });
   }, [diagramRefreshedEventPayload]);
 
   useEffect(() => {
-    if (state.fitviewLifecycle === 'shouldFitview') {
+    if (state.shouldAutoLayout && nodesLength > 0) {
+      onArrangeAll(nodes, edges);
+      setState((prevState) => ({ ...prevState, shouldAutoLayout: false, fitviewLifecycle: 'shouldFitview' }));
+    }
+  }, [state.shouldAutoLayout, nodesLength]);
+
+  useEffect(() => {
+    if (state.fitviewLifecycle === 'shouldFitview' && !state.shouldAutoLayout) {
       reactFlowInstance.fitView({ minZoom: 0.5 });
       setState((prevState) => ({ ...prevState, fitviewLifecycle: 'viewfit' }));
     }
-  }, [state.fitviewLifecycle]);
+  }, [state.fitviewLifecycle, state.shouldAutoLayout]);
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
@@ -226,7 +249,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   };
 
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
-
   const onKeyDown = (event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
     onDelete(event);
@@ -254,6 +276,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={state.snapToGrid}
+      nodesDraggable={!isAutoLayout}
       snapGrid={[10, 10]}
       connectionMode={ConnectionMode.Loose}
       ref={ref}>
@@ -271,7 +294,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       ) : (
         <Background style={{ backgroundColor: '#ffffff' }} variant={BackgroundVariant.Lines} color="#ffffff" />
       )}
-      <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} />
+      <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} isAutoLayout={isAutoLayout} />
       <DiagramPalette targetObjectId={diagramRefreshedEventPayload.diagram.id} />
       <ConnectorContextualMenu />
     </ReactFlow>

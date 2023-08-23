@@ -56,7 +56,7 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
 
   return (
     <>
-      <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => !data.isBorderNode} />
+      <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => data.shouldResize} />
       <div
         style={{
           ...listNodeStyle(theme, data.style, selected, data.faded),

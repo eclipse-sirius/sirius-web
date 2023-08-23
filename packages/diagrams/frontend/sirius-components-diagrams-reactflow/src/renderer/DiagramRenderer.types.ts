@@ -21,12 +21,13 @@ export type FitViewLifecycle = 'neverRendered' | 'shouldFitview' | 'viewfit';
 
 export interface DiagramRendererProps {
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload;
+  isAutoLayout: boolean;
   selection: Selection;
   setSelection: (selection: Selection) => void;
 }
-
 export interface DiagramRendererState {
   snapToGrid: boolean;
+  shouldAutoLayout: boolean;
   fitviewLifecycle: FitViewLifecycle;
 }
 
@@ -58,6 +59,7 @@ export interface NodeData {
   faded: boolean;
   isBorderNode: boolean;
   borderNodePosition: BorderNodePositon | null;
+  shouldResize: boolean;
 }
 
 export enum BorderNodePositon {

@@ -46,7 +46,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
 
   return (
     <>
-      <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => !data.isBorderNode} />
+      <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => data.shouldResize} />
       <img
         src={httpOrigin + data.imageURL}
         style={{

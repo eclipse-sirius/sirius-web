@@ -240,6 +240,7 @@ export const performDefaultAutoLayout = (
     'elk.spacing.nodeNode': '80',
     'elk.direction': 'DOWN',
     'elk.layered.spacing.edgeNodeBetweenLayers': '30',
+    'org.eclipse.elk.expandNodes': 'true',
   };
   return performAutoLayout(nodes, edges, layoutOptions, zoomLevel);
 };
@@ -280,7 +281,6 @@ export const performAutoLayout = (
           height: label.getBoundingClientRect().height / zoomLevel,
           text: rectangularNodeData.label?.text,
         };
-
         elkNode.labels?.push(elkLabel);
       }
     }
