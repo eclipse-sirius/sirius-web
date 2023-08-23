@@ -34,6 +34,7 @@
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "graphql": "16.8.0",
+    "html-to-image": "1.11.11",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "reactflow": "11.8.1"
