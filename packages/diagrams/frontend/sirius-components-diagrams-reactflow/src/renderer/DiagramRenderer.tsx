@@ -37,8 +37,8 @@ import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
-import { CustomEdge } from './edge/CustomEdge';
-import { CustomEdgeData } from './edge/CustomEdge.types';
+import { MultiLabelEdge } from './edge/MultiLabelEdge';
+import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useLayout } from './layout/useLayout';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
@@ -54,7 +54,7 @@ const nodeTypes: NodeTypes = {
 };
 
 const edgeTypes: EdgeTypes = {
-  customEdge: CustomEdge,
+  multiLabelEdge: MultiLabelEdge,
 };
 
 const isSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
@@ -75,7 +75,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const { onDrop, onDragOver } = useDrop();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>(diagram.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<CustomEdgeData>(diagram.edges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>(diagram.edges);
 
   useEffect(() => {
     setNodes(diagram.nodes);

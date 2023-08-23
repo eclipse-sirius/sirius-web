@@ -13,7 +13,7 @@
 
 import { Label } from '../DiagramRenderer.types';
 
-export interface CustomEdgeData {
+export interface MultiLabelEdgeData {
   beginLabel?: Label;
   centerLabel?: Label;
   endLabel?: Label;

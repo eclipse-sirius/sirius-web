@@ -28,7 +28,7 @@ export const useFullscreen = (): UseFullscreenValue => {
     return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
   }, []);
 
-  const handleFullscreen = useCallback(
+  const onFullscreen = useCallback(
     (fullscreen: boolean) => {
       if (domNode) {
         if (fullscreen) {
@@ -43,6 +43,6 @@ export const useFullscreen = (): UseFullscreenValue => {
 
   return {
     fullscreen,
-    handleFullscreen,
+    onFullscreen,
   };
 };

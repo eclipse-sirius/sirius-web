@@ -13,7 +13,7 @@
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node } from 'reactflow';
-import { CustomEdgeData } from './edge/CustomEdge.types';
+import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 
 export interface DiagramRendererProps {
   diagram: Diagram;
@@ -34,7 +34,7 @@ export interface DiagramPaletteState {
 export interface Diagram {
   metadata: DiagramMetadata;
   nodes: Node<NodeData>[];
-  edges: Edge<CustomEdgeData>[];
+  edges: Edge<MultiLabelEdgeData>[];
 }
 
 export interface DiagramMetadata {
