@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ApolloProvider } from '@apollo/client';
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import {
   Representation,
   RepresentationComponent,
@@ -53,6 +54,11 @@ import { ToastProvider } from './toast/ToastProvider';
 import './variables.css';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
+
+if (process.env.NODE_ENV !== 'production') {
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 const baseTheme = createTheme({
   ...theme,
