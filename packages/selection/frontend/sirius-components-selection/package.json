@@ -1,11 +1,11 @@
 {
   "name": "@eclipse-sirius/sirius-components-selection",
-  "version": "2023.8.0",
+  "version": "2023.8.1",
   "author": "Eclipse Sirius",
   "license": "EPL-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eclipse-sirius/sirius-components"
+    "url": "https://github.com/eclipse-sirius/sirius-web"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

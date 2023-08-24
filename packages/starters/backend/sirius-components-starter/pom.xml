@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-starter</artifactId>
-	<version>2023.8.0</version>
+	<version>2023.8.1</version>
 	<name>sirius-components-starter</name>
 	<description>Sirius Components Starter</description>
 
@@ -35,7 +35,7 @@
 		<repository>
 			<id>github</id>
 			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
 		</repository>
 	</distributionManagement>
 
@@ -63,22 +63,22 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-charts</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-web</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-layout</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
@@ -98,27 +98,27 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-forms</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-selection</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-validation</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
@@ -128,42 +128,42 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-graphql</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-formdescriptioneditors-graphql</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-selection-graphql</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees-graphql</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-validation-graphql</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-emf</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
