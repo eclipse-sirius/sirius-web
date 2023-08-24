@@ -11,6 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ApolloClient, InMemoryCache } from '@apollo/client/core';
+import { ApolloProvider } from '@apollo/client/react';
+import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
+import { ThemeProvider } from '@material-ui/core/styles';
 import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
@@ -112,14 +116,38 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void):
   elements.push(nodeListContainerElement);
 
   const hiddenContainerContentElements: JSX.Element = createElement(Fragment, { children: elements });
+
   const diagramDirectEditContextProvider = createElement(DiagramDirectEditContextProvider, {
     children: hiddenContainerContentElements,
   });
-  ReactDOM.render(
-    createElement(ReactFlowProvider, { children: diagramDirectEditContextProvider }),
-    hiddenContainer,
-    renderCallback
-  );
+
+  const enqueueSnackbar = (_body: string, _options?: MessageOptions) => {};
+  const toastContext: JSX.Element = createElement(ToastContext.Provider, {
+    value: {
+      enqueueSnackbar,
+    },
+    children: diagramDirectEditContextProvider,
+  });
+
+  const serveurContext: JSX.Element = createElement(ServerContext.Provider, {
+    value: {
+      httpOrigin: '',
+    },
+    children: toastContext,
+  });
+
+  const themeProvider: JSX.Element = createElement(ThemeProvider, {
+    children: serveurContext,
+    theme: theme,
+  });
+
+  const cache = new InMemoryCache();
+  const apolloProvider: JSX.Element = createElement(ApolloProvider, {
+    client: new ApolloClient({ cache: cache, uri: '' }),
+    children: themeProvider,
+  });
+
+  ReactDOM.render(createElement(ReactFlowProvider, { children: apolloProvider }), hiddenContainer, renderCallback);
   return hiddenContainer;
 };
 
