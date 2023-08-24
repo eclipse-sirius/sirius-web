@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-charts</artifactId>
-	<version>2023.8.0</version>
+	<version>2023.8.1</version>
 	<name>sirius-components-charts</name>
 	<description>Sirius Components Charts</description>
 
@@ -36,17 +36,13 @@
 			<id>Central</id>
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
-		<repository>
-			<id>github-sirius-components</id>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
-		</repository>
 	</repositories>
 
 	<distributionManagement>
 		<repository>
 			<id>github</id>
 			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
+			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
 		</repository>
 	</distributionManagement>
 
@@ -54,7 +50,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -64,7 +60,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2023.8.0</version>
+			<version>2023.8.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
