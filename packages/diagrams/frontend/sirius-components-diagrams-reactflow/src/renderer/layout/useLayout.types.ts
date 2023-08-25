@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Edge, Node } from 'reactflow';
-import { Diagram } from '../DiagramRenderer.types';
+import { Diagram, NodeData } from '../DiagramRenderer.types';
 
 export interface UseLayoutValue {
   layout: (
@@ -20,7 +20,7 @@ export interface UseLayoutValue {
     diagramToLayout: Diagram,
     callback: (laidoutDiagram: Diagram) => void
   ) => void;
-  autoLayout: (nodes: Node[], edges: Edge[]) => Promise<{ nodes: Node[] }>;
+  autoLayout: (nodes: Node<NodeData>[], edges: Edge[]) => Promise<{ nodes: Node<NodeData>[] }>;
 }
 
 export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';

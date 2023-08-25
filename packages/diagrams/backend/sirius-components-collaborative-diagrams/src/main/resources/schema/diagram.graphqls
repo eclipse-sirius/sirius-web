@@ -44,9 +44,20 @@ type Node {
   position: Position!
   state: ViewModifier!
   style: INodeStyle!
+  childrenLayoutStrategy: ILayoutStrategy
   borderNodes: [Node!]!
   childNodes: [Node!]!
 }
+
+type FreeFormLayoutStrategy {
+  kind: String!
+}
+
+type ListLayoutStrategy {
+  kind: String!
+}
+
+union ILayoutStrategy = FreeFormLayoutStrategy | ListLayoutStrategy
 
 type Label {
   id: ID!

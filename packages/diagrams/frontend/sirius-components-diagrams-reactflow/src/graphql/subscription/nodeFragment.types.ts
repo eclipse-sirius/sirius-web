@@ -22,10 +22,24 @@ export interface GQLNode {
   state: GQLViewModifier;
   label: GQLLabel;
   style: GQLNodeStyle;
+  childrenLayoutStrategy?: ILayoutStrategy;
   borderNodes: GQLNode[] | undefined;
   childNodes: GQLNode[] | undefined;
   position: GQLPosition;
   size: GQLSize;
+}
+
+export interface ILayoutStrategy {
+  __typename: string;
+  kind: string;
+}
+
+export interface ListLayoutStrategy extends ILayoutStrategy {
+  kind: 'List';
+}
+
+export interface FreeFormLayoutStrategy extends ILayoutStrategy {
+  kind: 'FreeForm';
 }
 
 export enum GQLViewModifier {

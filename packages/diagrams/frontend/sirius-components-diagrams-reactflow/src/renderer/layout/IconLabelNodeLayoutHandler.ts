@@ -16,6 +16,8 @@ import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 
+const rectangularNodePadding = 8;
+
 export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelNodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'iconLabelNode';
@@ -25,12 +27,15 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
     _previousDiagram: Diagram | null,
     node: Node<IconLabelNodeData>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
-    _directChildren: Node<NodeData, DiagramNodeType>[]
+    _directChildren: Node<NodeData, DiagramNodeType>[],
+    forceWidth?: number
   ) {
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    node.width = labelElement?.getBoundingClientRect().width;
+    node.width =
+      forceWidth ??
+      rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
     node.height = labelElement?.getBoundingClientRect().height;
   }
 
