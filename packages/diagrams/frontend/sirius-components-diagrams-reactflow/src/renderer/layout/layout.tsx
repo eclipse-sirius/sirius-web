@@ -47,10 +47,10 @@ const emptyRectangularNodeProps = {
   type: 'rectangularNode',
 };
 
-const elk = new ELK();
-
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
 const isRectangularNode = (node: Node<NodeData>): node is Node<RectangularNodeData> => node.type === 'rectangularNode';
+
+const elk = new ELK();
 
 export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void, httpOrigin: string): HTMLDivElement => {
   const hiddenContainer: HTMLDivElement = document.createElement('div');
@@ -205,7 +205,10 @@ const layoutDiagram = (previousDiagram: Diagram | null, diagram: Diagram) => {
   });
 };
 
-export const performDefaultAutoLayout = (nodes: Node[], edges: Edge[]): Promise<{ nodes: Node[] }> => {
+export const performDefaultAutoLayout = (
+  nodes: Node<NodeData>[],
+  edges: Edge[]
+): Promise<{ nodes: Node<NodeData>[] }> => {
   const layoutOptions: LayoutOptions = {
     'elk.algorithm': 'layered',
     'elk.layered.spacing.nodeNodeBetweenLayers': '100',
@@ -219,10 +222,10 @@ export const performDefaultAutoLayout = (nodes: Node[], edges: Edge[]): Promise<
 };
 
 export const performAutoLayout = (
-  nodes: Node[],
+  nodes: Node<NodeData>[],
   edges: Edge[],
   layoutOptions: LayoutOptions
-): Promise<{ nodes: Node[] }> => {
+): Promise<{ nodes: Node<NodeData>[] }> => {
   const graph: ElkNode = {
     id: 'root',
     layoutOptions,
@@ -243,8 +246,8 @@ export const performAutoLayout = (
         'nodeLabels.placement': '[H_CENTER, V_TOP, INSIDE]',
       },
     };
-    if (node.type === 'rectangularNode') {
-      const rectangularNodeData: RectangularNodeData = node.data as RectangularNodeData;
+    if (isRectangularNode(node)) {
+      const rectangularNodeData: RectangularNodeData = node.data;
 
       const label = document.querySelector<HTMLDivElement>(`[data-id="${rectangularNodeData.label?.id}"]`);
       if (label) {

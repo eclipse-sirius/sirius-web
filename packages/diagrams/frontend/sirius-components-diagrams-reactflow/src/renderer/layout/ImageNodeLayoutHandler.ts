@@ -30,9 +30,10 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     previousDiagram: Diagram | null,
     node: Node<ImageNodeData, 'imageNode'>,
     _visibleNodes: Node<NodeData, DiagramNodeType>[],
-    _directChildren: Node<NodeData, DiagramNodeType>[]
+    _directChildren: Node<NodeData, DiagramNodeType>[],
+    forceWidth?: number
   ) {
-    node.width = defaultWidth;
+    node.width = forceWidth ?? defaultWidth;
     node.height = defaultHeight;
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);

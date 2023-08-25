@@ -279,9 +279,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<Imag
 
 const convertNode = (gqlNode: GQLNode, parentNode: GQLNode | null, nodes: Node[]): void => {
   if (gqlNode.style.__typename === 'RectangularNodeStyle') {
-    const isList =
-      (gqlNode.childNodes ?? []).filter((gqlChildNode) => gqlChildNode.style.__typename === 'IconLabelNodeStyle')
-        .length > 0;
+    const isList = gqlNode.childrenLayoutStrategy?.kind === 'List';
     if (!isList) {
       nodes.push(toRectangularNode(gqlNode, parentNode));
 

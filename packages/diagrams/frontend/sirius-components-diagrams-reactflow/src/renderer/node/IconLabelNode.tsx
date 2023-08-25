@@ -26,7 +26,6 @@ const iconlabelStyle = (
 ): React.CSSProperties => {
   const iconLabelNodeStyle: React.CSSProperties = {
     opacity: faded ? '0.4' : '',
-    marginLeft: '8px',
     ...style,
   };
 
@@ -40,9 +39,13 @@ const iconlabelStyle = (
 export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNodeData>) => {
   const theme = useTheme();
   return (
-    <div style={iconlabelStyle(data.style, theme, selected, data.faded)}>
-      {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
-      {selected ? <NodePalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}
+    <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
+      <div
+        style={iconlabelStyle(data.style, theme, selected, data.faded)}
+        data-testid={`IconLabel - ${data?.label?.text}`}>
+        {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
+        {selected ? <NodePalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}
+      </div>
     </div>
   );
 });

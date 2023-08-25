@@ -17,7 +17,6 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 
-const rectangularNodePadding = 8;
 const defaultWidth = 150;
 const defaultHeight = 70;
 
@@ -31,26 +30,32 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     previousDiagram: Diagram | null,
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[]
+    directChildren: Node<NodeData, DiagramNodeType>[],
+    forceWidth?: number
   ) {
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-listNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
     if (directChildren.length > 0) {
-      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, borderWidth);
+      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, borderWidth, forceWidth);
     } else {
-      this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth);
+      this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceWidth);
     }
   }
   handleLeafNode(
     _previousDiagram: Diagram | null,
     node: Node<ListNodeData, 'listNode'>,
-    _visibleNodes: Node<NodeData, DiagramNodeType>[],
-    _borderWidth: number
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    borderWidth: number,
+    forceWidth?: number
   ) {
-    node.width = this.getNodeOrMinWidth(undefined);
-    node.height = this.getNodeOrMinHeight(undefined);
+    const labelElement = document.getElementById(`${node.id}-label-${this.findNodeIndex(visibleNodes, node.id)}`);
+
+    const nodeWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
+    const nodeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
+    node.width = forceWidth ?? this.getNodeOrMinWidth(nodeWidth);
+    node.height = this.getNodeOrMinHeight(nodeHeight);
   }
   private handleParentNode(
     layoutEngine: ILayoutEngine,
@@ -58,48 +63,40 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
-    borderWidth: number
+    borderWidth: number,
+    forceWidth?: number
   ) {
-    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren);
+    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, forceWidth);
 
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    const iconLabelNodes = directChildren.filter((child) => child.type === 'iconLabelNode');
-    iconLabelNodes.forEach((child, index) => {
+    if (!forceWidth) {
+      const widerWidth = directChildren.reduce<number>(
+        (widerWidth, child) => Math.max(child.width ?? 0, widerWidth),
+        labelElement?.getBoundingClientRect().width ?? 0
+      );
+
+      layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, widerWidth);
+    }
+
+    directChildren.forEach((child, index) => {
       child.position = {
-        x: 0,
-        y: (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding,
+        x: borderWidth,
+        y: borderWidth + (labelElement?.getBoundingClientRect().height ?? 0),
       };
-      const previousSibling = iconLabelNodes[index - 1];
+      const previousSibling = directChildren[index - 1];
       if (previousSibling) {
         child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) };
       }
     });
 
-    const childrenFootprint = this.getChildrenFootprint(iconLabelNodes);
-    const childrenAwareNodeWidth = childrenFootprint.x + childrenFootprint.width + rectangularNodePadding;
-    const labelOnlyWidth =
-      rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
-    const nodeWidth = Math.max(childrenAwareNodeWidth, labelOnlyWidth) + borderWidth * 2;
-    node.width = this.getNodeOrMinWidth(nodeWidth);
-    node.height = this.getNodeOrMinHeight(
-      (labelElement?.getBoundingClientRect().height ?? 0) +
-        rectangularNodePadding +
-        childrenFootprint.height +
-        borderWidth * 2
-    );
-
-    if (nodeWidth > childrenAwareNodeWidth) {
-      // we need to adjust the width of children
-      iconLabelNodes.forEach((child) => {
-        child.width = nodeWidth;
-        child.style = {
-          ...child.style,
-          width: `${nodeWidth}px`,
-        };
-      });
-    }
+    const childrenFootprint = this.getChildrenFootprint(directChildren);
+    const labelOnlyWidth = labelElement?.getBoundingClientRect().width ?? 0;
+    const nodeWidth = Math.max(childrenFootprint.width, labelOnlyWidth) + borderWidth * 2;
+    const nodeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + childrenFootprint.height + borderWidth * 2;
+    node.width = forceWidth ?? this.getNodeOrMinWidth(nodeWidth);
+    node.height = this.getNodeOrMinHeight(nodeHeight);
   }
 
   private findNodeIndex(nodes: Node<NodeData>[], nodeId: string): number {

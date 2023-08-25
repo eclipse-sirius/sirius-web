@@ -59,7 +59,7 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
         style={listNodeStyle(theme, data.style, selected, data.faded)}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`Rectangle - ${data?.label?.text}`}>
+        data-testid={`List - ${data?.label?.text}`}>
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id ?? null} /> : null}
         <Handle id={`handle--${id}--top`} type="source" position={Position.Top} isConnectable={isConnectable} />

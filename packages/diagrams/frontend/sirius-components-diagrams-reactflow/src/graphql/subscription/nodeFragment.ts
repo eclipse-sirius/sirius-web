@@ -44,6 +44,15 @@ fragment nodeFragment on Node {
       backgroundColor
     }
   }
+  childrenLayoutStrategy {
+    __typename
+    ... on ListLayoutStrategy {
+      kind
+    }
+    ... on FreeFormLayoutStrategy {
+      kind
+    }
+  }
   userResizable
 }
 `;

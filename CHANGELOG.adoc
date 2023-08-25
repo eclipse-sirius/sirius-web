@@ -44,7 +44,7 @@ This coupling will be removed in the near future as a consequence, the dependenc
 - https://github.com/eclipse-sirius/sirius-web/issues/2380[#2380] [diagram] Add typing to reactflow hooks
 - https://github.com/eclipse-sirius/sirius-web/issues/2430[#2430] [diagram] Improve fit to screen feature to zoom on selected nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/2288[#2288] [diagram] Make IconLabel a react flow node
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2289[#2289] [diagram] Use the layout strategy to layout icon label nodes
 
 == v2023.10.0
 
