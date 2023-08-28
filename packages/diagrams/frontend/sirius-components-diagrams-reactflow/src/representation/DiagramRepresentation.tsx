@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { OnSubscriptionDataOptions, gql, useSubscription } from '@apollo/client';
+import { OnDataOptions, gql, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
@@ -68,9 +68,9 @@ export const DiagramRepresentation = ({
     setState((prevState) => ({ ...prevState, diagram: laidoutDiagram }));
   };
 
-  const onSubscriptionData = ({ subscriptionData }: OnSubscriptionDataOptions<GQLDiagramEventData>) => {
-    if (subscriptionData.data) {
-      const { diagramEvent } = subscriptionData.data;
+  const onData = ({ data }: OnDataOptions<GQLDiagramEventData>) => {
+    if (data.data) {
+      const { diagramEvent } = data.data;
       if (isDiagramRefreshedEventPayload(diagramEvent)) {
         const { diagram } = diagramEvent;
         const convertedDiagram: Diagram = convertDiagram(diagram);
@@ -80,15 +80,15 @@ export const DiagramRepresentation = ({
     }
   };
 
-  const onSubscriptionComplete = () => {
+  const onComplete = () => {
     setState((prevState) => ({ ...prevState, diagram: null, complete: true }));
   };
 
   const { error } = useSubscription<GQLDiagramEventData>(subscription, {
     variables,
     fetchPolicy: 'no-cache',
-    onSubscriptionData,
-    onSubscriptionComplete,
+    onData,
+    onComplete,
   });
 
   if (state.message) {

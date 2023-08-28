@@ -104,14 +104,14 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
     },
     fetchPolicy: 'no-cache',
     skip: navbar === 'complete',
-    onSubscriptionData: ({ subscriptionData }) => {
+    onData: ({ data }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
+        result: data,
       };
       dispatch(handleDataEvent);
     },
-    onSubscriptionComplete: () => {
+    onComplete: () => {
       const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
       dispatch(completeEvent);
     },

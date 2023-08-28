@@ -15,7 +15,6 @@ import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Tree } from '../trees/Tree';
-import { getTreeEventSubscription } from './getTreeEventSubscription';
 import {
   GQLGetExpandAllTreePathData,
   GQLGetExpandAllTreePathVariables,
@@ -42,6 +41,7 @@ import {
   TreeViewEvent,
   treeViewMachine,
 } from './TreeViewMachine';
+import { getTreeEventSubscription } from './getTreeEventSubscription';
 
 const getTreePathQuery = gql`
   query getTreePath($editingContextId: ID!, $treeId: ID!, $selectionEntryIds: [ID!]!) {
@@ -165,14 +165,14 @@ export const TreeView = ({
     },
     fetchPolicy: 'no-cache',
     skip: treeView === 'complete',
-    onSubscriptionData: ({ subscriptionData }) => {
+    onData: ({ data }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
+        result: data,
       };
       dispatch(handleDataEvent);
     },
-    onSubscriptionComplete: () => {
+    onComplete: () => {
       const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
       dispatch(completeEvent);
     },

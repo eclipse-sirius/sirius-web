@@ -168,14 +168,14 @@ export const FormDescriptionEditorRepresentation = ({
       variables,
       fetchPolicy: 'no-cache',
       skip: formDescriptionEditorRepresentation !== 'ready',
-      onSubscriptionData: ({ subscriptionData }) => {
+      onData: ({ data }) => {
         const handleDataEvent: HandleSubscriptionResultEvent = {
           type: 'HANDLE_SUBSCRIPTION_RESULT',
-          result: subscriptionData,
+          result: data,
         };
         dispatch(handleDataEvent);
       },
-      onSubscriptionComplete: () => {
+      onComplete: () => {
         dispatch({ type: 'HANDLE_COMPLETE' });
       },
     }

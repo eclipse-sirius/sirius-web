@@ -102,14 +102,14 @@ export const RepresentationsView = ({
       },
       fetchPolicy: 'no-cache',
       skip: representationsView === 'empty' || representationsView === 'unsupportedSelection',
-      onSubscriptionData: ({ subscriptionData }) => {
+      onData: ({ data }) => {
         const handleDataEvent: HandleSubscriptionResultEvent = {
           type: 'HANDLE_SUBSCRIPTION_RESULT',
-          result: subscriptionData,
+          result: data,
         };
         dispatch(handleDataEvent);
       },
-      onSubscriptionComplete: () => {
+      onComplete: () => {
         const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
         dispatch(completeEvent);
       },
