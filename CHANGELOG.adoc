@@ -105,6 +105,9 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2314[#2314] [diagram] Add feedback on edge selection on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2313[#2313] [diagram] Support edge palette on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2350[#2350] [form] Change the default tab width in form to fit the page label length.
+- https://github.com/eclipse-sirius/sirius-web/issues/2208[#2208] [diagram] Add Cypress tests for React Flow
+- https://github.com/eclipse-sirius/sirius-web/issues/2258[#2258] [diagram] Add support for image node labels
+
 
 == v2023.8.0
 
