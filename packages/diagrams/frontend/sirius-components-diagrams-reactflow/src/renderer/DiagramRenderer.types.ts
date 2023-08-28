@@ -53,7 +53,11 @@ export interface NodeData {
 }
 
 export interface EdgeData {
+  targetObjectId: string;
+  targetObjectKind: string;
+  targetObjectLabel: string;
   label: Label | null;
+  faded: boolean;
 }
 
 export interface Label {

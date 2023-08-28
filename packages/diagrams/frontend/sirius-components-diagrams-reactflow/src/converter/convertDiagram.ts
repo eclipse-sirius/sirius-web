@@ -57,12 +57,12 @@ const toRectangularNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Nod
   };
 
   const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
-  const horitonzalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
+  const horizontalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
   const verticalAlignment = gqlNode.label.type.substring(
     verticalAlignmentIndex + 'v_'.length,
-    horitonzalAlignmentIndex
+    horizontalAlignmentIndex
   );
-  const horizontalAliment = gqlNode.label.type.substring(horitonzalAlignmentIndex + '-h_'.length);
+  const horizontalAliment = gqlNode.label.type.substring(horizontalAlignmentIndex + '-h_'.length);
 
   if (data.label) {
     if (verticalAlignment === 'top') {
@@ -169,12 +169,12 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
   }
 
   const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
-  const horitonzalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
+  const horizontalAlignmentIndex = gqlNode.label.type.indexOf('-h_');
   const verticalAlignment = gqlNode.label.type.substring(
     verticalAlignmentIndex + 'v_'.length,
-    horitonzalAlignmentIndex
+    horizontalAlignmentIndex
   );
-  const horizontalAliment = gqlNode.label.type.substring(horitonzalAlignmentIndex + '-h_'.length);
+  const horizontalAlignment = gqlNode.label.type.substring(horizontalAlignmentIndex + '-h_'.length);
 
   if (data.label) {
     if (verticalAlignment === 'top') {
@@ -185,12 +185,12 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
       data.label.style.alignSelf = 'flex-end';
     }
 
-    if (horizontalAliment === 'start') {
+    if (horizontalAlignment === 'start') {
       data.label.style.marginRight = 'auto';
-    } else if (horizontalAliment === 'center') {
+    } else if (horizontalAlignment === 'center') {
       data.label.style.marginLeft = 'auto';
       data.label.style.marginRight = 'auto';
-    } else if (horizontalAliment === 'end') {
+    } else if (horizontalAlignment === 'end') {
       data.label.style.marginLeft = 'auto';
     }
 
@@ -304,11 +304,9 @@ const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties =>
   if (gqlLabelStyle.bold) {
     style.fontWeight = 'bold';
   }
-
   if (gqlLabelStyle.italic) {
     style.fontStyle = 'italic';
   }
-
   if (gqlLabelStyle.fontSize) {
     style.fontSize = gqlLabelStyle.fontSize;
   }
@@ -344,12 +342,18 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
     const zIndex = Math.max(nodeId2Depth.get(gqlEdge.sourceId) ?? -1, nodeId2Depth.get(gqlEdge.targetId) ?? -1);
 
-    const data: MultiLabelEdgeData = {};
+    const data: MultiLabelEdgeData = {
+      targetObjectId: gqlEdge.targetObjectId,
+      targetObjectKind: gqlEdge.targetObjectKind,
+      targetObjectLabel: gqlEdge.targetObjectLabel,
+      label: null,
+      faded: gqlEdge.state === GQLViewModifier.Faded,
+    };
     if (gqlEdge.beginLabel) {
       data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
     }
     if (gqlEdge.centerLabel) {
-      data.centerLabel = convertEdgeLabel(gqlEdge.centerLabel);
+      data.label = convertEdgeLabel(gqlEdge.centerLabel);
     }
     if (gqlEdge.endLabel) {
       data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
