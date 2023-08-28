@@ -36,6 +36,9 @@ import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
@@ -89,14 +92,14 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         IPayload payload = new ErrorPayload(formDescriptionEditorInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
 
-        if (formDescriptionEditorInput instanceof AddWidgetInput) {
-            String containerId = ((AddWidgetInput) formDescriptionEditorInput).containerId();
-            String kind = ((AddWidgetInput) formDescriptionEditorInput).kind();
-            int index = ((AddWidgetInput) formDescriptionEditorInput).index();
-            boolean addWidget = this.addWidget(editingContext, formDescriptionEditorContext, containerId, kind, index);
-            if (addWidget) {
-                payload = new SuccessPayload(formDescriptionEditorInput.id());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), formDescriptionEditorInput);
+        if (formDescriptionEditorInput instanceof AddWidgetInput addWidgetInput) {
+            String containerId = addWidgetInput.containerId();
+            String kind = addWidgetInput.kind();
+            int index = addWidgetInput.index();
+            boolean widgetAdded = this.addWidget(editingContext, containerId, kind, index);
+            if (widgetAdded) {
+                payload = new SuccessPayload(addWidgetInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formDescriptionEditorInput.representationId(), addWidgetInput);
             }
         }
 
@@ -104,24 +107,32 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private boolean addWidget(IEditingContext editingContext, IFormDescriptionEditorContext formDescriptionEditorContext, String containerId, String kind, int index) {
+    private boolean addWidget(IEditingContext editingContext, String containerId, String kind, int index) {
         boolean success = false;
         var optionalSelf = this.objectService.getObject(editingContext, containerId);
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
             EClassifier eClassifier = this.getWidgetDescriptionType(kind);
             if (eClassifier instanceof EClass eClass) {
-                var widgetDescription = EcoreUtil.create(eClass);
-                if (widgetDescription instanceof FlexboxContainerDescription) {
-                    ((FlexboxContainerDescription) widgetDescription).setFlexDirection(FlexDirection.get(kind));
+                var newElement = EcoreUtil.create(eClass);
+                if (newElement instanceof FlexboxContainerDescription flexboxContainerDescription) {
+                    flexboxContainerDescription.setFlexDirection(FlexDirection.get(kind));
                 }
-                if (widgetDescription instanceof WidgetDescription) {
-                    this.createStyle((WidgetDescription) widgetDescription);
-                    if (container instanceof GroupDescription) {
-                        ((GroupDescription) container).getChildren().add(index, (WidgetDescription) widgetDescription);
+                if (newElement instanceof FormElementDescription formElementDescription) {
+                    if (newElement instanceof WidgetDescription widgetDescription) {
+                        this.createStyle(widgetDescription);
+                    }
+                    if (container instanceof GroupDescription groupDescription) {
+                        groupDescription.getChildren().add(index, formElementDescription);
                         success = true;
-                    } else if (container instanceof FlexboxContainerDescription) {
-                        ((FlexboxContainerDescription) container).getChildren().add(index, (WidgetDescription) widgetDescription);
+                    } else if (container instanceof FlexboxContainerDescription flexboxContainerDescription) {
+                        flexboxContainerDescription.getChildren().add(index, formElementDescription);
+                        success = true;
+                    } else if (container instanceof FormElementFor formElementFor) {
+                        formElementFor.getChildren().add(index, formElementDescription);
+                        success = true;
+                    } else if (container instanceof FormElementIf formElementIf) {
+                        formElementIf.getChildren().add(index, formElementDescription);
                         success = true;
                     }
                 }
@@ -138,7 +149,16 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                 return optionalType.get();
             }
         }
-        return FormPackage.eINSTANCE.getEClassifier(kind + "Description");
+
+        EClassifier result = null;
+        if (Objects.equals(FormPackage.Literals.FORM_ELEMENT_IF.getName(), kind)) {
+            result = FormPackage.Literals.FORM_ELEMENT_IF;
+        } else if (Objects.equals(FormPackage.Literals.FORM_ELEMENT_FOR.getName(), kind)) {
+            result = FormPackage.Literals.FORM_ELEMENT_FOR;
+        } else {
+            result = FormPackage.eINSTANCE.getEClassifier(kind + "Description");
+        }
+        return result;
     }
 
     private void createStyle(WidgetDescription widgetDescription) {

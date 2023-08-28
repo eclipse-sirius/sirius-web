@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 import java.util.List;
 
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
+import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorForElementProps;
+import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorIfElementProps;
 import org.eclipse.sirius.components.forms.renderer.FormInstancePropsValidator;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IInstancePropsValidator;
@@ -39,6 +41,10 @@ public class FormDescriptionEditorInstancePropsValidator implements IInstancePro
 
         if (FormDescriptionEditorElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof FormDescriptionEditorElementProps;
+        } else if (FormDescriptionEditorForElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof FormDescriptionEditorForElementProps;
+        } else if (FormDescriptionEditorIfElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof FormDescriptionEditorIfElementProps;
         } else {
             checkValidProps = this.formInstancePropsValidator.validateInstanceProps(type, props);
         }

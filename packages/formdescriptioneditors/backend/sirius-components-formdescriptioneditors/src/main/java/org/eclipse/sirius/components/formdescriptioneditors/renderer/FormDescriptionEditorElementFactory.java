@@ -15,7 +15,12 @@ package org.eclipse.sirius.components.formdescriptioneditors.renderer;
 import java.util.List;
 
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
+import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorFor;
+import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditorIf;
 import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorElementProps;
+import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorForElementProps;
+import org.eclipse.sirius.components.formdescriptioneditors.elements.FormDescriptionEditorIfElementProps;
+import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.renderer.FormElementFactory;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
@@ -40,6 +45,10 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
         Object object = null;
         if (FormDescriptionEditorElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorElementProps) {
             object = this.instantiateFormDescriptionEditor((FormDescriptionEditorElementProps) props, children);
+        } else if (FormDescriptionEditorForElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorForElementProps) {
+            object = this.instantiateFormDescriptionEditorFor((FormDescriptionEditorForElementProps) props, children);
+        } else if (FormDescriptionEditorIfElementProps.TYPE.equals(type) && props instanceof FormDescriptionEditorIfElementProps) {
+            object = this.instantiateFormDescriptionEditorIf((FormDescriptionEditorIfElementProps) props, children);
         } else {
             object = this.formElementFactory.instantiateElement(type, props, children);
         }
@@ -60,4 +69,29 @@ public class FormDescriptionEditorElementFactory implements IElementFactory {
                 .build();
     }
 
+    private FormDescriptionEditorFor instantiateFormDescriptionEditorFor(FormDescriptionEditorForElementProps props, List<Object> children) {
+        List<AbstractWidget> widgets = children.stream()
+                .filter(AbstractWidget.class::isInstance)
+                .map(AbstractWidget.class::cast)
+                .toList();
+
+        return FormDescriptionEditorFor.newFormDescriptionEditorFor(props.getId())
+                .label(props.getLabel())
+                .diagnostics(List.of())
+                .children(widgets)
+                .build();
+    }
+
+    private FormDescriptionEditorIf instantiateFormDescriptionEditorIf(FormDescriptionEditorIfElementProps props, List<Object> children) {
+        List<AbstractWidget> widgets = children.stream()
+                .filter(AbstractWidget.class::isInstance)
+                .map(AbstractWidget.class::cast)
+                .toList();
+
+        return FormDescriptionEditorIf.newFormDescriptionEditorIf(props.getId())
+                .label(props.getLabel())
+                .diagnostics(List.of())
+                .children(widgets)
+                .build();
+    }
 }

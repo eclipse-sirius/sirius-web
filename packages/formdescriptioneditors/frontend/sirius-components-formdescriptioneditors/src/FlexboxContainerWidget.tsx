@@ -188,7 +188,7 @@ export const FlexboxContainerWidget = ({
       return;
     }
 
-    let index = widget.children.length;
+    let index = widget.children.length || 0;
     if (isKind(id) || propertySectionsRegistry.getWidgetContributions().find((contrib) => contrib.name === id)) {
       const addWidgetInput: GQLAddWidgetInput = {
         id: crypto.randomUUID(),
@@ -257,7 +257,7 @@ export const FlexboxContainerWidget = ({
       </div>
       <div className={classes.container}>{children}</div>
       <div
-        data-testid={`FlexboxContainer-Widgets-DropArea-${widget.id}`}
+        data-testid={`${widget.__typename}-Widgets-DropArea-${widget.id}`}
         className={classes.bottomDropArea}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}

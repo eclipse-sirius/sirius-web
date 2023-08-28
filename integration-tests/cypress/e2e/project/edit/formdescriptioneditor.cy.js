@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
@@ -297,5 +298,53 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('FlexboxContainerDescription-more').click();
     createBorderStyleAndCheckProperties('Conditional Border Styles Conditional Container Border Style');
     cy.getByTestId('Condition').should('exist');
+  });
+
+  it('can create For and If elements inside Groups/Flexbox/For/If', () => {
+    function createControl(controlType, targetId, targetIndex) {
+      const dataTransfer = new DataTransfer();
+      cy.getByTestId(`FormDescriptionEditor-${controlType}`).trigger('dragstart', { dataTransfer });
+      cy.get(`[data-testid^="${targetId}-"]`).eq(targetIndex).trigger('drop', { dataTransfer });
+    }
+
+    // Create top-level If, For and Flexbox inside the Group
+    createControl('FormElementIf', 'Group-Widgets-DropArea', 0);
+    cy.get('[title="FormDescriptionEditorIf"]').eq(0).should('be.visible');
+    createControl('FormElementFor', 'Group-Widgets-DropArea', 0);
+    cy.get('[title="FormDescriptionEditorFor"]').eq(0).should('be.visible');
+    createControl('FlexboxContainer', 'Group-Widgets-DropArea', 0);
+    cy.get('[title="FlexboxContainer"]').eq(0).should('be.visible');
+
+    // NOTE: the indexes for the target drop-area depend on the order in which the
+    // widgets of the same kind were created and appear before on the page.
+
+    // If, For, Flexbox and Label widget inside an If
+    createControl('FormElementIf', 'FormDescriptionEditorIf-Widgets-DropArea', 0);
+    cy.get('[title="FormDescriptionEditorIf"]').should('have.lengthOf', 2);
+    createControl('FormElementFor', 'FormDescriptionEditorIf-Widgets-DropArea', 1);
+    cy.get('[title="FormDescriptionEditorFor"]').should('have.lengthOf', 2);
+    createControl('FlexboxContainer', 'FormDescriptionEditorIf-Widgets-DropArea', 1);
+    cy.get('[title="FlexboxContainer"]').should('have.lengthOf', 2);
+    createControl('Label', 'FormDescriptionEditorIf-Widgets-DropArea', 1);
+    cy.get('[title="LabelWidget"]').should('have.lengthOf', 1);
+
+    // The same, but inside the For
+    createControl('FormElementIf', 'FormDescriptionEditorFor-Widgets-DropArea', 1);
+    cy.get('[title="FormDescriptionEditorIf"]').should('have.lengthOf', 3);
+    createControl('FormElementFor', 'FormDescriptionEditorFor-Widgets-DropArea', 1);
+    cy.get('[title="FormDescriptionEditorFor"]').should('have.lengthOf', 3);
+    createControl('FlexboxContainer', 'FormDescriptionEditorFor-Widgets-DropArea', 2);
+    cy.get('[title="FlexboxContainer"]').should('have.lengthOf', 3);
+    createControl('Label', 'FormDescriptionEditorFor-Widgets-DropArea', 2);
+    cy.get('[title="LabelWidget"]').should('have.lengthOf', 2);
+    // The same, but inside the flexbox container
+    createControl('FormElementIf', 'FlexboxContainer-Widgets-DropArea', 2);
+    cy.get('[title="FormDescriptionEditorIf"]').should('have.lengthOf', 4);
+    createControl('FormElementFor', 'FlexboxContainer-Widgets-DropArea', 2);
+    cy.get('[title="FormDescriptionEditorFor"]').should('have.lengthOf', 4);
+    createControl('FlexboxContainer', 'FlexboxContainer-Widgets-DropArea', 2);
+    cy.get('[title="FlexboxContainer"]').should('have.lengthOf', 4);
+    createControl('Label', 'FlexboxContainer-Widgets-DropArea', 3);
+    cy.get('[title="LabelWidget"]').should('have.lengthOf', 2);
   });
 });

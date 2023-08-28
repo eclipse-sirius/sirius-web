@@ -26,36 +26,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author arichard
  */
-public class FormDescriptionEditorGroupComponentProps implements IProps {
+public record FormDescriptionEditorGroupComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription, List<IWidgetDescriptor> widgetDescriptors,
+        List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) implements IProps {
 
-    private final VariableManager variableManager;
-
-    private final FormDescriptionEditorDescription formDescriptionEditorDescription;
-
-    private final List<IWidgetDescriptor> widgetDescriptors;
-
-    private final List<IWidgetPreviewConverterProvider> customWidgetConverterProviders;
-
-    public FormDescriptionEditorGroupComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) {
+    public FormDescriptionEditorGroupComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription, List<IWidgetDescriptor> widgetDescriptors,
+            List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.formDescriptionEditorDescription = Objects.requireNonNull(formDescriptionEditorDescription);
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
     }
 
-    public VariableManager getVariableManager() {
-        return this.variableManager;
-    }
-
-    public FormDescriptionEditorDescription getFormDescriptionEditorDescription() {
-        return this.formDescriptionEditorDescription;
-    }
-
-    public List<IWidgetPreviewConverterProvider> getCustomWidgetConverterProviders() {
-        return this.customWidgetConverterProviders;
-    }
-
-    public List<IWidgetDescriptor> getWidgetDescriptors() {
-        return this.widgetDescriptors;
-    }
 }

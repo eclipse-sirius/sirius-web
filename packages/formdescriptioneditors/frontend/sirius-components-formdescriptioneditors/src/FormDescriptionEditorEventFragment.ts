@@ -11,11 +11,65 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { flexboxContainerFields, WidgetContribution, widgetFields } from '@eclipse-sirius/sirius-components-forms';
+import { WidgetContribution, widgetFields } from '@eclipse-sirius/sirius-components-forms';
 
-export const formDescriptionEditorEventSubscription = (contributions: Array<WidgetContribution>) => `
+const widgetContainerContent = (depth: number) => {
+  if (depth === 0) {
+    return '...widgetFields';
+  } else {
+    const children = widgetContainerContent(depth - 1);
+    return `
+      ...widgetFields
+      ... on FlexboxContainer {
+        ...flexboxContainerProperFields
+        children {
+          ${children}
+        }
+      }
+      ... on FormDescriptionEditorIf {
+        ...ifProperFields
+        children {
+          ${children}
+        }
+      }
+      ... on FormDescriptionEditorFor {
+        ...forProperFields
+        children {
+          ${children}
+        }
+      }
+    `;
+  }
+};
+
+export const formDescriptionEditorEventSubscription = (contributions: WidgetContribution[]) => {
+  return `
   ${widgetFields(contributions)}
-  ${flexboxContainerFields(contributions)}
+
+  fragment ifProperFields on FormDescriptionEditorIf {
+    ...commonFields
+    label
+  }
+
+  fragment forProperFields on FormDescriptionEditorFor {
+    ...commonFields
+    label
+  }
+
+  fragment flexboxContainerProperFields on FlexboxContainer {
+    ...commonFields
+    label
+    flexDirection
+    flexWrap
+    flexGrow
+    borderStyle {
+      color
+      lineStyle
+      size
+      radius
+    }
+  }
+
   subscription formDescriptionEditorEvent($input: FormDescriptionEditorEventInput!) {
     formDescriptionEditorEvent(input: $input) {
       __typename
@@ -44,21 +98,18 @@ export const formDescriptionEditorEventSubscription = (contributions: Array<Widg
               id
               label
               displayMode
-              toolbarActions {
-                ...commonFields
-                ...toolbarActionFields
-              }
-              widgets {
-                ...widgetFields
-                ... on FlexboxContainer {
-                  ...flexboxContainerFields
-                }
-              }
               borderStyle {
                 color
                 lineStyle
                 size
                 radius
+              }
+              toolbarActions {
+                ...commonFields
+                ...toolbarActionFields
+              }
+              widgets {
+                ${widgetContainerContent(4)}
               }
             }
           }
@@ -67,6 +118,7 @@ export const formDescriptionEditorEventSubscription = (contributions: Array<Widg
     }
   }
 `;
+};
 
 export const addGroupMutation = gql`
   mutation addGroup($input: AddGroupInput!) {

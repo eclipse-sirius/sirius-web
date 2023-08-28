@@ -362,12 +362,16 @@ export interface GQLLabelWidgetStyle {
   underline: boolean | null;
   strikeThrough: boolean | null;
 }
-export interface GQLFlexboxContainer extends GQLWidget {
+
+export interface GQLContainer extends GQLWidget {
+  children: GQLWidget[];
+}
+
+export interface GQLFlexboxContainer extends GQLContainer {
   flexDirection: GQLFlexDirection;
   flexWrap: GQLFlexWrap;
   flexGrow: number;
-  children: GQLWidget[];
-  borderStyle: GQLContainerBorderStyle;
+  borderStyle?: GQLContainerBorderStyle;
 }
 
 export type GQLFlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';

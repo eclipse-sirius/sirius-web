@@ -40,11 +40,11 @@ public class FormDescriptionEditorComponent implements IComponent {
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
+        VariableManager variableManager = this.props.variableManager();
         var formDescription = variableManager.get(VariableManager.SELF, FormDescription.class).get();
 
-        FormDescriptionEditorDescription formDescriptionEditorDescription = this.props.getFormDescriptionEditorDescription();
-        var optionalPreviousFormDescriptionEditor = this.props.getOptionalPreviousFormDescriptionEditor();
+        FormDescriptionEditorDescription formDescriptionEditorDescription = this.props.formDescriptionEditorDescription();
+        var optionalPreviousFormDescriptionEditor = this.props.optionalPreviousFormDescriptionEditor();
 
         String id = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getId).orElseGet(() -> UUID.randomUUID().toString());
         String label = optionalPreviousFormDescriptionEditor.map(FormDescriptionEditor::getLabel)
@@ -57,10 +57,10 @@ public class FormDescriptionEditorComponent implements IComponent {
         formDescription.getPages().forEach(viewPageDescription -> {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, viewPageDescription);
-            FormDescriptionEditorPageComponentProps formDescriptionEditorPageComponentProps = new FormDescriptionEditorPageComponentProps(childVariableManager,
-                    this.props.getFormDescriptionEditorDescription(),
-                    this.props.getWidgetDescriptors(),
-                    this.props.getCustomWidgetConverterProviders());
+            var formDescriptionEditorPageComponentProps = new FormDescriptionEditorPageComponentProps(childVariableManager,
+                    this.props.formDescriptionEditorDescription(),
+                    this.props.widgetDescriptors(),
+                    this.props.customWidgetConverterProviders());
             childrenWidgets.add(new Element(FormDescriptionEditorPageComponent.class, formDescriptionEditorPageComponentProps));
         });
 

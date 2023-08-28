@@ -15,25 +15,19 @@ package org.eclipse.sirius.components.formdescriptioneditors.components;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.forms.GroupDisplayMode;
 import org.eclipse.sirius.components.forms.components.ToolbarActionComponent;
 import org.eclipse.sirius.components.forms.components.ToolbarActionComponentProps;
-import org.eclipse.sirius.components.forms.components.WidgetComponent;
-import org.eclipse.sirius.components.forms.components.WidgetComponentProps;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
 import org.eclipse.sirius.components.forms.elements.GroupElementProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.view.form.FormElementFor;
-import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.GroupDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * The component used to render the form description editor group.
@@ -50,20 +44,20 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
 
     public FormDescriptionEditorGroupComponent(FormDescriptionEditorGroupComponentProps props) {
         this.props = props;
-        List<Switch<AbstractWidgetDescription>> widgetConverters = this.props.getCustomWidgetConverterProviders().stream()
-                .map(provider -> provider.getWidgetConverter(props.getFormDescriptionEditorDescription(), props.getVariableManager()))
+        List<Switch<AbstractWidgetDescription>> widgetConverters = this.props.customWidgetConverterProviders().stream()
+                .map(provider -> provider.getWidgetConverter(props.formDescriptionEditorDescription(), props.variableManager()))
                 .toList();
         Collection<Switch<AbstractWidgetDescription>> switches = new ArrayList<>();
-        switches.add(new ViewFormDescriptionEditorConverterSwitch(props.getFormDescriptionEditorDescription(), props.getVariableManager(), new ComposedSwitch<>(widgetConverters)));
+        switches.add(new ViewFormDescriptionEditorConverterSwitch(props.formDescriptionEditorDescription(), props.variableManager(), new ComposedSwitch<>(widgetConverters)));
         switches.addAll(widgetConverters);
         this.converter = new ComposedSwitch<>(switches);
     }
 
     @Override
     public Element render() {
-        VariableManager variableManager = this.props.getVariableManager();
+        VariableManager variableManager = this.props.variableManager();
         var groupDescription = variableManager.get(VariableManager.SELF, GroupDescription.class).get();
-        String id = this.props.getFormDescriptionEditorDescription().getTargetObjectIdProvider().apply(variableManager);
+        String id = this.props.formDescriptionEditorDescription().getTargetObjectIdProvider().apply(variableManager);
         String label = this.getGroupLabel(groupDescription, "Group");
         List<Element> childrenWidgets = new ArrayList<>();
 
@@ -77,27 +71,13 @@ public class FormDescriptionEditorGroupComponent implements IComponent {
             }
         });
 
-        groupDescription.getChildren().stream()
-            .flatMap(controlDescription -> {
-                Stream<WidgetDescription> widgets = Stream.empty();
-                if (controlDescription instanceof WidgetDescription viewWidgetDescription) {
-                    widgets = Stream.of(viewWidgetDescription);
-                } else if (controlDescription instanceof FormElementFor formElementFor) {
-                    widgets = formElementFor.getChildren().stream()
-                            .filter(FormElementIf.class::isInstance).map(FormElementIf.class::cast)
-                            .flatMap(formElementIf -> formElementIf.getChildren().stream())
-                            .filter(WidgetDescription.class::isInstance)
-                            .map(WidgetDescription.class::cast);
-                }
-                return widgets;
-            })
-            .forEach(viewWidgetDescription -> {
-                VariableManager childVariableManager = variableManager.createChild();
-                childVariableManager.put(VariableManager.SELF, viewWidgetDescription);
-                AbstractWidgetDescription widgetDescription = this.converter.doSwitch(viewWidgetDescription);
-                WidgetComponentProps widgetComponentProps = new WidgetComponentProps(childVariableManager, widgetDescription, this.props.getWidgetDescriptors());
-                childrenWidgets.add(new Element(WidgetComponent.class, widgetComponentProps));
-            });
+        groupDescription.getChildren().forEach(formElementDescription -> {
+            VariableManager childVariableManager = variableManager.createChild();
+            childVariableManager.put(VariableManager.SELF, formElementDescription);
+            AbstractWidgetDescription widgetDescription = this.converter.doSwitch(formElementDescription);
+            FormDescriptionEditorWidgetComponentProps widgetComponentProps = new FormDescriptionEditorWidgetComponentProps(childVariableManager, widgetDescription, this.props.widgetDescriptors());
+            childrenWidgets.add(new Element(FormDescriptionEditorWidgetComponent.class, widgetComponentProps));
+        });
 
         GroupElementProps.Builder groupElementPropsBuilder = GroupElementProps.newGroupElementProps(id)
                 .label(label)
