@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.persistence.repositories;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.eclipse.sirius.components.annotations.Audited;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.springframework.data.jpa.repository.Query;
@@ -42,6 +43,7 @@ public interface IDocumentRepository extends PagingAndSortingRepository<Document
     @Query(value = """
             SELECT * FROM Document document
             WHERE length(document.content) > 0
+            AND document.content LIKE ('%' || ?2 || '%')
             AND document.content::::jsonb @> ('{ "ns": { "' || ?1 || '": "' || ?2 ||'" } }')::::jsonb
             """, nativeQuery = true)
     List<DocumentEntity> findAllByType(String name, String uri);
