@@ -15,6 +15,7 @@ import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-compon
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { Label } from '../Label';
 import { NodePalette } from '../palette/NodePalette';
 import { ImageNodeData } from './ImageNode.types';
 
@@ -46,6 +47,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
       {selected ? <NodePalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
       <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
       <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
+      {data.label ? <Label label={data.label} faded={data.faded} transform="" /> : null}
     </>
   );
 });

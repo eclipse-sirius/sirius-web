@@ -218,13 +218,28 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ListN
 
 const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null): Node<ImageNodeData> => {
   const style = gqlNode.style as GQLImageNodeStyle;
+  const labelStyle = gqlNode.label.style;
   const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
 
   const data: ImageNodeData = {
     targetObjectId,
     targetObjectKind,
     targetObjectLabel,
-    label: null,
+    label: {
+      id: gqlNode.label.id,
+      text: gqlNode.label.text,
+      iconURL: labelStyle.iconURL,
+      style: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        padding: '8px 16px',
+        textAlign: 'center',
+        ...convertLabelStyle(labelStyle),
+      },
+    },
     imageURL: style.imageURL,
     style: {},
     faded: gqlNode.state === GQLViewModifier.Faded,
