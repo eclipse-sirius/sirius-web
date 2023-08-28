@@ -82,7 +82,7 @@ This will be fixed in the next version.
 - [releng] Make some cypress tests more robust
 - https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296] [diagram] Add "export to SVG" action in the diagram panel of the react-flow prototype
 - https://github.com/eclipse-sirius/sirius-web/issues/2298[#2298] [diagram] Support keyboard shortcut for "Delete from model" action on react-flow diagrams
-- https://github.com/eclipse-sirius/sirius-web/issues/2231[#2231] [diagram] Extract the support for fullscreen in a dedicated hook
+- https://github.com/eclipse-sirius/sirius-web/issues/2231[#2231] [diagram] Extract the support for full screen in a dedicated hook
 - https://github.com/eclipse-sirius/sirius-web/issues/2295[#2295] [diagram] Support direct edit on edges labels (center, start, end) on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2233[#2233] [diagram] Move the behavior of the arrange all in the diagram panel component
 - https://github.com/eclipse-sirius/sirius-web/issues/2311[#2311] [diagram] Ensure that the layout uses the same context as the rendering
@@ -90,6 +90,7 @@ This will be fixed in the next version.
 - https://github.com/eclipse-sirius/sirius-web/issues/2198[#2198] [view] Add a default Color Palette on View creation
 - https://github.com/eclipse-sirius/sirius-web/issues/2228[#2228] [domain] Creating a domain from the onboard area action now initialize its name.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Change the default representation in the details view for non containment reference from a select widget to a reference widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/2314[#2314] [diagram] Add feedback on edge selection on react-flow diagrams
 
 == v2023.8.0
 

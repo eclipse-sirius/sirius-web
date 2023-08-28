@@ -17,6 +17,7 @@ import {
   Background,
   BackgroundVariant,
   EdgeChange,
+  EdgeSelectionChange,
   EdgeTypes,
   NodeChange,
   NodeSelectionChange,
@@ -56,7 +57,8 @@ const edgeTypes: EdgeTypes = {
   multiLabelEdge: MultiLabelEdge,
 };
 
-const isSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
+const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
+const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';
 
 export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRendererProps) => {
   const store = useStoreApi();
@@ -83,12 +85,15 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
+    const firstSelectedEdgeId = diagram.edges
+      .filter((edge) => selectionEntryIds.includes(edge.data ? edge.data.targetObjectId : ''))
+      .map((edge) => edge.id);
     const firstSelectedNodeId = diagram.nodes
       .filter((node) => selectionEntryIds.includes(node.data.targetObjectId))
       .map((node) => node.id);
-    const reactFlowState = store.getState();
-    reactFlowState.unselectNodesAndEdges();
-    if (firstSelectedNodeId.length > 0) {
+    if (firstSelectedEdgeId.length === 0 && firstSelectedNodeId.length > 0) {
+      const reactFlowState = store.getState();
+      reactFlowState.unselectNodesAndEdges();
       // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
       reactFlowState.addSelectedNodes([firstSelectedNodeId[0]]);
     }
@@ -98,7 +103,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     onNodesChange(changes);
 
     const selectionEntries: SelectionEntry[] = changes
-      .filter(isSelectChange)
+      .filter(isNodeSelectChange)
       .filter((change) => change.selected)
       .flatMap((change) => diagram.nodes.filter((node) => node.id === change.id))
       .map((node) => {
@@ -126,6 +131,35 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
 
   const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
     onEdgesChange(changes);
+
+    const selectionEntries: SelectionEntry[] = changes
+      .filter(isEdgeSelectChange)
+      .filter((change) => change.selected)
+      .flatMap((change) => diagram.edges.filter((edge) => edge.id === change.id))
+      .map((edge) => {
+        if (edge.data) {
+          const { targetObjectId, targetObjectKind, targetObjectLabel } = edge.data;
+          return {
+            id: targetObjectId,
+            kind: targetObjectKind,
+            label: targetObjectLabel,
+          };
+        } else {
+          return { id: '', kind: '', label: '' };
+        }
+      });
+
+    const currentSelectionEntryIds = selection.entries.map((selectionEntry) => selectionEntry.id);
+    const shouldUpdateSelection =
+      selectionEntries.map((entry) => entry.id).filter((entryId) => currentSelectionEntryIds.includes(entryId))
+        .length !== selectionEntries.length;
+
+    if (selectionEntries.length > 0 && shouldUpdateSelection) {
+      setSelection({ entries: selectionEntries });
+    }
+    if (selectionEntries.length > 0) {
+      hideDiagramPalette();
+    }
   };
 
   const handlePaneClick = (event: React.MouseEvent<Element, MouseEvent>) => {

@@ -10,10 +10,29 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getSmoothStepPath } from 'reactflow';
 import { Label } from '../Label';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+
+const multiLabelEdgeStyle = (
+  theme: Theme,
+  style: React.CSSProperties | undefined,
+  selected: boolean | undefined,
+  faded: boolean | undefined
+): React.CSSProperties => {
+  const multiLabelEdgeStyle: React.CSSProperties = {
+    opacity: faded ? '0.4' : '',
+    ...style,
+  };
+
+  if (selected) {
+    multiLabelEdgeStyle.stroke = `${theme.palette.primary.main}`;
+  }
+
+  return multiLabelEdgeStyle;
+};
 
 export const MultiLabelEdge = memo(
   ({
@@ -28,7 +47,9 @@ export const MultiLabelEdge = memo(
     style,
     markerEnd,
     markerStart,
+    selected,
   }: EdgeProps<MultiLabelEdgeData>) => {
+    const theme = useTheme();
     const [edgePath, labelX, labelY] = getSmoothStepPath({
       sourceX,
       sourceY,
@@ -38,25 +59,31 @@ export const MultiLabelEdge = memo(
       targetPosition,
     });
 
-    const { beginLabel, endLabel, centerLabel } = data || {};
+    const { beginLabel, endLabel, label, faded } = data || {};
 
     return (
       <>
-        <BaseEdge id={id} path={edgePath} style={style} markerEnd={markerEnd} markerStart={markerStart} />
+        <BaseEdge
+          id={id}
+          path={edgePath}
+          style={multiLabelEdgeStyle(theme, style, selected, faded)}
+          markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
+          markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
+        />
         <EdgeLabelRenderer>
           {beginLabel && (
             <Label
               transform={`translate(2%, 0%) translate(${sourceX}px,${sourceY}px)`}
               label={beginLabel}
-              faded={false}
+              faded={faded || false}
             />
           )}
-          {centerLabel && <Label transform={`translate(${labelX}px,${labelY}px)`} label={centerLabel} faded={false} />}
+          {label && <Label transform={`translate(${labelX}px,${labelY}px)`} label={label} faded={false} />}
           {endLabel && (
             <Label
               transform={`translate(2%, -100%) translate(${targetX}px,${targetY}px)`}
               label={endLabel}
-              faded={false}
+              faded={faded || false}
             />
           )}
         </EdgeLabelRenderer>

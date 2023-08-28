@@ -24,9 +24,9 @@ import {
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { Diagram } from '../renderer/DiagramRenderer.types';
-import { MarkerDefinitions } from '../renderer/MarkerDefinitions';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
+import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
 import { useLayout } from '../renderer/layout/useLayout';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
