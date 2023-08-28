@@ -28,17 +28,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author arichard
  */
-public class FormDescriptionEditorComponentProps implements IProps {
-
-    private final VariableManager variableManager;
-
-    private final FormDescriptionEditorDescription formDescriptionEditorDescription;
-
-    private final Optional<FormDescriptionEditor> optionalPreviousFormDescriptionEditor;
-
-    private final List<IWidgetDescriptor> widgetDescriptors;
-
-    private final List<IWidgetPreviewConverterProvider> customWidgetConverterProviders;
+public record FormDescriptionEditorComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription,
+        Optional<FormDescriptionEditor> optionalPreviousFormDescriptionEditor, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders)
+        implements IProps {
 
     public FormDescriptionEditorComponentProps(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription,
             Optional<FormDescriptionEditor> optionalPreviousFormDescriptionEditor, List<IWidgetDescriptor> widgetDescriptors, List<IWidgetPreviewConverterProvider> customWidgetConverterProviders) {
@@ -47,25 +39,5 @@ public class FormDescriptionEditorComponentProps implements IProps {
         this.optionalPreviousFormDescriptionEditor = Objects.requireNonNull(optionalPreviousFormDescriptionEditor);
         this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.customWidgetConverterProviders = Objects.requireNonNull(customWidgetConverterProviders);
-    }
-
-    public VariableManager getVariableManager() {
-        return this.variableManager;
-    }
-
-    public FormDescriptionEditorDescription getFormDescriptionEditorDescription() {
-        return this.formDescriptionEditorDescription;
-    }
-
-    public Optional<FormDescriptionEditor> getOptionalPreviousFormDescriptionEditor() {
-        return this.optionalPreviousFormDescriptionEditor;
-    }
-
-    public List<IWidgetPreviewConverterProvider> getCustomWidgetConverterProviders() {
-        return this.customWidgetConverterProviders;
-    }
-
-    public List<IWidgetDescriptor> getWidgetDescriptors() {
-        return this.widgetDescriptors;
     }
 }

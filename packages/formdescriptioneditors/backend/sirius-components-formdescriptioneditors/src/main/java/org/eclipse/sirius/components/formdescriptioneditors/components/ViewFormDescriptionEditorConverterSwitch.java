@@ -25,6 +25,8 @@ import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
+import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorForDescription;
+import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorIfDescription;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.CheckboxStyle;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
@@ -58,6 +60,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.LinkDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
@@ -547,6 +551,66 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
             builder.helpTextProvider(vm -> this.getWidgetHelpText(widgetDescription));
         }
         return builder.build();
+    }
+
+    @Override
+    public AbstractWidgetDescription caseFormElementFor(FormElementFor formElementFor) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, formElementFor);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+
+        List<AbstractControlDescription> children = new ArrayList<>();
+        formElementFor.getChildren().forEach(viewWidgetDescription -> {
+            children.add(ViewFormDescriptionEditorConverterSwitch.this.doSwitch(viewWidgetDescription));
+        });
+
+        var iterator = formElementFor.getIterator();
+        if (iterator == null || iterator.isBlank()) {
+            iterator = "<no iterator>";
+        }
+        var iterable = formElementFor.getIterableExpression();
+        if (iterable == null || iterable.isBlank()) {
+            iterable = "<no iterable>";
+        }
+        var label = "for %s in %s".formatted(iterator, iterable);
+
+        return FormDescriptionEditorForDescription.newFormDescriptionEditorForDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
+                .labelProvider(vm -> label)
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
+                .children(children)
+                .build();
+    }
+
+    @Override
+    public AbstractWidgetDescription caseFormElementIf(FormElementIf formElementIf) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, formElementIf);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+
+        List<AbstractControlDescription> children = new ArrayList<>();
+        formElementIf.getChildren().forEach(viewWidgetDescription -> {
+            children.add(ViewFormDescriptionEditorConverterSwitch.this.doSwitch(viewWidgetDescription));
+        });
+
+        var predicate = formElementIf.getPredicateExpression();
+        if (predicate == null || predicate.isBlank()) {
+            predicate = "<no predicate>";
+        }
+        var label = "if %s".formatted(predicate);
+
+        return FormDescriptionEditorIfDescription.newFormDescriptionEditorIfDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
+                .labelProvider(vm -> label)
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
+                .children(children)
+                .build();
     }
 
     @Override

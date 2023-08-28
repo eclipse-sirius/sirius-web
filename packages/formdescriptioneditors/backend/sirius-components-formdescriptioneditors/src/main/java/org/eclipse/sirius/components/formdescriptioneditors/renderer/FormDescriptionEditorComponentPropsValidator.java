@@ -16,10 +16,18 @@ import java.util.List;
 
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorFlexboxContainerComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorFlexboxContainerComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorForComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorForComponentProps;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorGroupComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorGroupComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorIfComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorIfComponentProps;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorPageComponent;
 import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorPageComponentProps;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorWidgetComponent;
+import org.eclipse.sirius.components.formdescriptioneditors.components.FormDescriptionEditorWidgetComponentProps;
 import org.eclipse.sirius.components.forms.renderer.FormComponentPropsValidator;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
@@ -48,6 +56,14 @@ public class FormDescriptionEditorComponentPropsValidator implements IComponentP
             checkValidProps = props instanceof FormDescriptionEditorGroupComponentProps;
         } else if (FormDescriptionEditorPageComponent.class.equals(componentType)) {
             checkValidProps = props instanceof FormDescriptionEditorPageComponentProps;
+        } else if (FormDescriptionEditorFlexboxContainerComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorFlexboxContainerComponentProps;
+        } else if (FormDescriptionEditorForComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorForComponentProps;
+        } else if (FormDescriptionEditorIfComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorIfComponentProps;
+        } else if (FormDescriptionEditorWidgetComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof FormDescriptionEditorWidgetComponentProps;
         } else {
             checkValidProps = this.formComponentPropsValidator.validateComponentProps(componentType, props);
         }

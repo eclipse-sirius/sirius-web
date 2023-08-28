@@ -26,6 +26,26 @@ type FormDescriptionEditorDescription implements RepresentationDescription {
   label: String!
 }
 
+type FormDescriptionEditorFor implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
+  label: String!
+  iconURL: String
+  readOnly: Boolean!
+  children: [Widget!]!
+}
+
+type FormDescriptionEditorIf implements Widget {
+  id: ID!
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
+  label: String!
+  iconURL: String
+  readOnly: Boolean!
+  children: [Widget!]!
+}
+
 extend type Mutation {
   addGroup(input: AddGroupInput!): AddGroupPayload!
   deleteGroup(input: DeleteGroupInput!): DeleteGroupPayload!

@@ -28,8 +28,10 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.GroupDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -101,21 +103,35 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
         if (optionalSelf.isPresent()) {
             Object container = optionalSelf.get();
             var objectToMove = this.objectService.getObject(editingContext, widgetId);
-            if (objectToMove.filter(WidgetDescription.class::isInstance).isPresent()) {
-                WidgetDescription widgetToMove = (WidgetDescription) objectToMove.get();
+            if (objectToMove.filter(FormElementDescription.class::isInstance).isPresent()) {
+                FormElementDescription elementToMove = (FormElementDescription) objectToMove.get();
                 try {
-                    if (container instanceof GroupDescription) {
-                        if (container.equals(widgetToMove.eContainer())) {
-                            ((GroupDescription) container).getChildren().move(index, widgetToMove);
+                    if (container instanceof GroupDescription groupDescription) {
+                        if (groupDescription.equals(elementToMove.eContainer())) {
+                            groupDescription.getChildren().move(index, elementToMove);
                         } else {
-                            ((GroupDescription) container).getChildren().add(index, widgetToMove);
+                            groupDescription.getChildren().add(index, elementToMove);
                         }
                         success = true;
-                    } else if (container instanceof FlexboxContainerDescription) {
-                        if (container.equals(widgetToMove.eContainer())) {
-                            ((FlexboxContainerDescription) container).getChildren().move(index, widgetToMove);
+                    } else if (container instanceof FlexboxContainerDescription flexboxContainerDescription) {
+                        if (flexboxContainerDescription.equals(elementToMove.eContainer())) {
+                            flexboxContainerDescription.getChildren().move(index, elementToMove);
                         } else {
-                            ((FlexboxContainerDescription) container).getChildren().add(index, widgetToMove);
+                            flexboxContainerDescription.getChildren().add(index, elementToMove);
+                        }
+                        success = true;
+                    } else if (container instanceof FormElementFor formElementFor) {
+                        if (formElementFor.equals(elementToMove.eContainer())) {
+                            formElementFor.getChildren().move(index, elementToMove);
+                        } else {
+                            formElementFor.getChildren().add(index, elementToMove);
+                        }
+                        success = true;
+                    } else if (container instanceof FormElementIf formElementIf) {
+                        if (formElementIf.equals(elementToMove.eContainer())) {
+                            formElementIf.getChildren().move(index, elementToMove);
+                        } else {
+                            formElementIf.getChildren().add(index, elementToMove);
                         }
                         success = true;
                     }

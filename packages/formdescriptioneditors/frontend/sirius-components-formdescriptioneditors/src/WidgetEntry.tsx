@@ -32,6 +32,7 @@ import {
   PropertySectionContext,
   PropertySectionContextValue,
 } from '@eclipse-sirius/sirius-components-forms';
+import { GQLContainer } from '@eclipse-sirius/sirius-components-forms/src';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
 import React, { useContext, useEffect, useState } from 'react';
@@ -336,6 +337,48 @@ export const WidgetEntry = ({
         page={page}
         container={container}
         widget={widget as GQLFlexboxContainer}
+        selection={selection}
+        setSelection={setSelection}
+      />
+    );
+  } else if (widget.__typename === 'FormDescriptionEditorIf') {
+    const ifPreview: GQLFlexboxContainer = {
+      ...widget,
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      flexGrow: 1,
+      children: (widget as GQLContainer).children,
+    };
+    widgetElement = (
+      <FlexboxContainerWidget
+        data-testid={widget.id}
+        editingContextId={editingContextId}
+        representationId={representationId}
+        formDescriptionEditor={formDescriptionEditor}
+        page={page}
+        container={container}
+        widget={ifPreview}
+        selection={selection}
+        setSelection={setSelection}
+      />
+    );
+  } else if (widget.__typename === 'FormDescriptionEditorFor') {
+    const forPreview: GQLFlexboxContainer = {
+      ...widget,
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      flexGrow: 1,
+      children: (widget as GQLContainer).children,
+    };
+    widgetElement = (
+      <FlexboxContainerWidget
+        data-testid={widget.id}
+        editingContextId={editingContextId}
+        representationId={representationId}
+        formDescriptionEditor={formDescriptionEditor}
+        page={page}
+        container={container}
+        widget={forPreview}
         selection={selection}
         setSelection={setSelection}
       />

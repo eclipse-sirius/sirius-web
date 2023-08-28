@@ -51,6 +51,8 @@ import {
 } from './FormDescriptionEditorRepresentationMachine';
 import { PageList } from './PageList';
 import { Button } from './icons/Button';
+import { ForIcon } from './icons/ForIcon';
+import { IfIcon } from './icons/IfIcon';
 
 const useFormDescriptionEditorStyles = makeStyles((theme) => ({
   formDescriptionEditor: {
@@ -242,6 +244,29 @@ export const FormDescriptionEditorRepresentation = ({
               Group
             </Typography>
           </div>
+          <Typography gutterBottom>Controls</Typography>
+          <div
+            id="FormElementFor"
+            data-testid="FormDescriptionEditor-FormElementFor"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStartWidget}>
+            <ForIcon />
+            <Typography variant="caption" gutterBottom>
+              For
+            </Typography>
+          </div>
+          <div
+            id="FormElementIf"
+            data-testid="FormDescriptionEditor-FormElementIf"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStartWidget}>
+            <IfIcon />
+            <Typography variant="caption" gutterBottom>
+              If
+            </Typography>
+          </div>
           <Typography gutterBottom>Widgets</Typography>
           <div
             id="BarChart"
@@ -408,6 +433,7 @@ export const FormDescriptionEditorRepresentation = ({
               Textfield
             </Typography>
           </div>
+
           {propertySectionsRegistry.getWidgetContributions().map((customWidget) => {
             return (
               <div
