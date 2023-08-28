@@ -21,8 +21,8 @@ import {
   useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { HoverFeedbackAction, SEdge, SModelElement, SNode, SPort } from 'sprotty';
@@ -98,7 +98,6 @@ import {
   DiagramRefreshedEvent,
   DiagramRepresentationContext,
   DiagramRepresentationEvent,
-  diagramRepresentationMachine,
   HandleDiagramDescriptionResultEvent,
   HandleSelectedObjectInSelectionDialogEvent,
   HideToastEvent,
@@ -106,9 +105,9 @@ import {
   ResetSelectedObjectInSelectionDialogEvent,
   ResetToolsEvent,
   SchemaValue,
+  SelectZoomLevelEvent,
   SelectedElementEvent,
   SelectionEvent,
-  SelectZoomLevelEvent,
   SetActiveConnectorToolsEvent,
   SetActiveToolEvent,
   SetContextualMenuEvent,
@@ -118,6 +117,7 @@ import {
   ShowToastEvent,
   SubscribersUpdatedEvent,
   SwitchRepresentationEvent,
+  diagramRepresentationMachine,
 } from './DiagramRepresentationMachine';
 import { getDiagramDescriptionQuery } from './GetDiagramDescriptionQuery';
 import { GQLGetDiagramDescriptionData, GQLGetDiagramDescriptionVariables } from './GetDiagramDescriptionQuery.types';
@@ -837,9 +837,9 @@ export const DiagramRepresentation = ({
     },
     fetchPolicy: 'no-cache',
     skip: diagramRepresentation !== 'ready',
-    onSubscriptionData: ({ subscriptionData }) => {
-      if (subscriptionData?.data) {
-        const { diagramEvent } = subscriptionData.data;
+    onData: ({ data }) => {
+      if (data?.data) {
+        const { diagramEvent } = data.data;
         if (isDiagramRefreshedEventPayload(diagramEvent)) {
           const diagramRefreshedEvent: DiagramRefreshedEvent = {
             type: 'HANDLE_DIAGRAM_REFRESHED',
@@ -858,7 +858,7 @@ export const DiagramRepresentation = ({
         }
       }
     },
-    onSubscriptionComplete: () => {
+    onComplete: () => {
       dispatch({ type: 'HANDLE_COMPLETE' });
     },
   });

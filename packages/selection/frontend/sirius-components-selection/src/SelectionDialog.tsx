@@ -99,14 +99,14 @@ export const SelectionDialog = ({
     },
     fetchPolicy: 'no-cache',
     skip: selectionDialog === 'complete',
-    onSubscriptionData: ({ subscriptionData }) => {
+    onData: ({ data }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
+        result: data,
       };
       dispatch(handleDataEvent);
     },
-    onSubscriptionComplete: () => {
+    onComplete: () => {
       const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
       dispatch(completeEvent);
     },

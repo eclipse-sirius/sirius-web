@@ -122,14 +122,14 @@ export const FormBasedView = ({
       variables,
       fetchPolicy: 'no-cache',
       skip: formBasedView === 'empty' || formBasedView === 'unsupportedSelection',
-      onSubscriptionData: ({ subscriptionData }) => {
+      onData: ({ data }) => {
         const handleDataEvent: HandleSubscriptionResultEvent = {
           type: 'HANDLE_SUBSCRIPTION_RESULT',
-          result: subscriptionData.data[subscriptionName],
+          result: data.data[subscriptionName],
         };
         dispatch(handleDataEvent);
       },
-      onSubscriptionComplete: () => {
+      onComplete: () => {
         const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
         dispatch(completeEvent);
       },
