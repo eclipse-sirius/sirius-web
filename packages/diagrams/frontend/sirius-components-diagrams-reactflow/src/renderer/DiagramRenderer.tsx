@@ -28,6 +28,7 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
+  useReactFlow,
   useStoreApi,
 } from 'reactflow';
 import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
@@ -64,6 +65,7 @@ const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange =
 
 export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRendererProps) => {
   const store = useStoreApi();
+  const reactFlowInstance = useReactFlow();
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
 
@@ -96,11 +98,20 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       .filter((node) => selectionEntryIds.includes(node.data.targetObjectId))
       .map((node) => node.id);
     const firstSelectedNodeId = selectedNodeIds[0];
+
     if (selectedEdgeIds.length === 0 && firstSelectedNodeId) {
-      const reactFlowState = store.getState();
-      reactFlowState.unselectNodesAndEdges();
       // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
-      reactFlowState.addSelectedNodes([firstSelectedNodeId]);
+      const reactFlowState = store.getState();
+      const currentlySelectedNodes = reactFlowState.getNodes().filter((node) => node.selected);
+
+      const isAlreadySelected = currentlySelectedNodes.map((node) => node.id).includes(firstSelectedNodeId);
+      if (!isAlreadySelected) {
+        reactFlowState.unselectNodesAndEdges();
+        reactFlowState.addSelectedNodes([firstSelectedNodeId]);
+
+        const selectedNodes = reactFlowState.getNodes().filter((node) => firstSelectedNodeId === node.id);
+        reactFlowInstance.fitView({ nodes: selectedNodes, maxZoom: 2, duration: 1000 });
+      }
     }
   }, [selection, diagram]);
 
