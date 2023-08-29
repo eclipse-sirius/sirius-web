@@ -355,8 +355,6 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
 
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
-    const zIndex = Math.max(nodeId2Depth.get(gqlEdge.sourceId) ?? -1, nodeId2Depth.get(gqlEdge.targetId) ?? -1);
-
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
@@ -364,6 +362,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,
     };
+
     if (gqlEdge.beginLabel) {
       data.beginLabel = convertEdgeLabel(gqlEdge.beginLabel);
     }
@@ -381,7 +380,7 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       target: gqlEdge.targetId,
       markerEnd: `${gqlEdge.style.targetArrow}--${gqlEdge.id}--markerEnd`,
       markerStart: `${gqlEdge.style.sourceArrow}--${gqlEdge.id}--markerStart`,
-      zIndex,
+      zIndex: 2000,
       style: {
         stroke: gqlEdge.style.color,
         strokeWidth: gqlEdge.style.size,
