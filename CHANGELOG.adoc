@@ -109,6 +109,8 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2208[#2208] [diagram] Add Cypress tests for React Flow
 - https://github.com/eclipse-sirius/sirius-web/issues/2258[#2258] [diagram] Add support for image node labels
 - https://github.com/eclipse-sirius/sirius-web/issues/2355[#2355] [core] Remove some warnings from Apollo client since `onSubscriptionData` and `onSubscriptionComplete` are now deprecated.
+- https://github.com/eclipse-sirius/sirius-web/issues/2261[#2261] [diagram] Change the handle used by edges depending on the position of the source and target
+
 
 == v2023.8.0
 

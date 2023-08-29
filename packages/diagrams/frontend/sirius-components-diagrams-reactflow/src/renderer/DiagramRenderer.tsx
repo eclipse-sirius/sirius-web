@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Background,
   BackgroundVariant,
+  ConnectionMode,
   EdgeChange,
   EdgeSelectionChange,
   EdgeTypes,
@@ -212,6 +213,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       minZoom={0.1}
       snapToGrid={state.snapToGrid}
       snapGrid={[10, 10]}
+      connectionMode={ConnectionMode.Loose}
       ref={ref}>
       {state.snapToGrid ? (
         <>

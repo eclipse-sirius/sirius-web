@@ -11,10 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
-import { BaseEdge, EdgeLabelRenderer, EdgeProps, getSmoothStepPath } from 'reactflow';
+import { memo, useCallback } from 'react';
+import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, ReactFlowState, getSmoothStepPath, useStore } from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { EdgePalette } from '../palette/EdgePalette';
+import { getEdgeParameters } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
@@ -36,21 +38,25 @@ const multiLabelEdgeStyle = (
 };
 
 export const MultiLabelEdge = memo(
-  ({
-    id,
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-    data,
-    style,
-    markerEnd,
-    markerStart,
-    selected,
-  }: EdgeProps<MultiLabelEdgeData>) => {
+  ({ id, source, target, data, style, markerEnd, markerStart, selected }: EdgeProps<MultiLabelEdgeData>) => {
     const theme = useTheme();
+
+    const sourceNode = useStore<Node<NodeData> | undefined>(
+      useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
+    );
+    const targetNode = useStore<Node<NodeData> | undefined>(
+      useCallback((store: ReactFlowState) => store.nodeInternals.get(target), [target])
+    );
+
+    if (!sourceNode || !targetNode) {
+      return null;
+    }
+
+    const { sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition } = getEdgeParameters(
+      sourceNode,
+      targetNode
+    );
+
     const [edgePath, labelX, labelY] = getSmoothStepPath({
       sourceX,
       sourceY,
