@@ -45,8 +45,10 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />
       {selected ? <NodePalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
-      <Handle type="source" position={Position.Left} isConnectable={isConnectable} />
-      <Handle type="target" position={Position.Right} isConnectable={isConnectable} />
+      <Handle id="top" type="source" position={Position.Top} isConnectable={isConnectable} />
+      <Handle id="right" type="source" position={Position.Right} isConnectable={isConnectable} />
+      <Handle id="bottom" type="source" position={Position.Bottom} isConnectable={isConnectable} />
+      <Handle id="left" type="source" position={Position.Left} isConnectable={isConnectable} />
       {data.label ? <Label label={data.label} faded={data.faded} transform="" /> : null}
     </>
   );
