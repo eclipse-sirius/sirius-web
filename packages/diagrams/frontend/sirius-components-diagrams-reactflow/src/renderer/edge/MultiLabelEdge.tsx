@@ -14,6 +14,7 @@ import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, EdgeProps, getSmoothStepPath } from 'reactflow';
 import { Label } from '../Label';
+import { EdgePalette } from '../palette/EdgePalette';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
@@ -70,6 +71,7 @@ export const MultiLabelEdge = memo(
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
         />
+        {selected ? <EdgePalette edgeId={id} labelId={label ? label.id : null} /> : null}
         <EdgeLabelRenderer>
           {beginLabel && (
             <Label

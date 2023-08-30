@@ -12,12 +12,13 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
-import { DiagramPaletteProps } from './DiagramPalette.types';
-import { DiagramPalettePortal } from './DiagramPalettePortal';
+import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
+import { EdgePaletteProps } from './EdgePalette.types';
+import { EdgePalettePortal } from './EdgePalettePortal';
 import { Palette } from './Palette';
-import { useDiagramPalette } from './useDiagramPalette';
+import { useEdgePalette } from './useEdgePalette';
 
-const useDiagramPaletteStyle = makeStyles((theme) => ({
+const useEdgePaletteStyle = makeStyles((theme) => ({
   toolbar: {
     background: theme.palette.background.paper,
     border: '1px solid #d1dadb',
@@ -30,15 +31,22 @@ const useDiagramPaletteStyle = makeStyles((theme) => ({
   },
 }));
 
-export const DiagramPalette = ({ targetObjectId }: DiagramPaletteProps) => {
-  const { x, y, isOpened } = useDiagramPalette();
-  const classes = useDiagramPaletteStyle();
+export const EdgePalette = ({ edgeId, labelId }: EdgePaletteProps) => {
+  const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
+  const { x, y, isOpened } = useEdgePalette();
+  const classes = useEdgePaletteStyle();
+
+  const handleDirectEditClick = () => {
+    if (labelId) {
+      setCurrentlyEditedLabelId('palette', labelId, null);
+    }
+  };
 
   return isOpened && x && y ? (
-    <DiagramPalettePortal>
+    <EdgePalettePortal>
       <div className={classes.toolbar} style={{ position: 'absolute', left: x, top: y }}>
-        <Palette diagramElementId={targetObjectId} onDirectEditClick={() => {}} isDiagramElementPalette={false} />
+        <Palette diagramElementId={edgeId} onDirectEditClick={handleDirectEditClick} isDiagramElementPalette={true} />
       </div>
-    </DiagramPalettePortal>
+    </EdgePalettePortal>
   ) : null;
 };

@@ -18,7 +18,7 @@ export interface ContextualPaletteStyleProps {
 export interface PaletteProps {
   diagramElementId: string;
   onDirectEditClick: () => void;
-  isNodePalette: boolean;
+  isDiagramElementPalette: boolean;
 }
 
 export interface GQLErrorPayload

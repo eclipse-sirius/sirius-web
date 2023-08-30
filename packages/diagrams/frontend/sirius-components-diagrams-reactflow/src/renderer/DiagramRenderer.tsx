@@ -42,6 +42,7 @@ import { ListNode } from './node/ListNode';
 import { RectangularNode } from './node/RectangularNode';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
+import { useEdgePalette } from './palette/useEdgePalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
@@ -70,6 +71,8 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     snapToGrid: false,
   });
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
+  const { onEdgeClick } = useEdgePalette();
+
   const { onConnect } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
@@ -177,6 +180,10 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     onDiagramBackgroundClick(event);
   };
 
+  const handleEdgeClick = (event: React.MouseEvent<Element, MouseEvent>) => {
+    onEdgeClick(event);
+  };
+
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
 
   const onKeyDown = (event: React.KeyboardEvent<Element>) => {
@@ -196,6 +203,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
       onEdgesChange={handleEdgesChange}
       onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
+      onEdgeClick={handleEdgeClick}
       onMove={() => hideDiagramPalette()}
       onDrop={onDrop}
       onDragOver={onDragOver}

@@ -91,6 +91,7 @@ This will be fixed in the next version.
 - https://github.com/eclipse-sirius/sirius-web/issues/2228[#2228] [domain] Creating a domain from the onboard area action now initialize its name.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Change the default representation in the details view for non containment reference from a select widget to a reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/2314[#2314] [diagram] Add feedback on edge selection on react-flow diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/2313[#2313] [diagram] Support edge palette on react-flow diagrams
 
 == v2023.8.0
 

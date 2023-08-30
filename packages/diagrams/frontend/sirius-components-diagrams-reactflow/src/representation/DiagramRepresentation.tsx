@@ -30,6 +30,7 @@ import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
 import { useLayout } from '../renderer/layout/useLayout';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
+import { EdgePaletteContextProvider } from '../renderer/palette/EdgePaletteContext';
 import {
   DiagramRepresentationState,
   GQLDiagramEventData,
@@ -108,14 +109,16 @@ export const DiagramRepresentation = ({
       <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
         <DiagramDirectEditContextProvider>
           <DiagramPaletteContextProvider>
-            <ConnectorContextProvider>
-              <div style={{ display: 'inline-block', position: 'relative' }}>
-                <MarkerDefinitions />
-                <FullscreenContextProvider>
-                  <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
-                </FullscreenContextProvider>
-              </div>
-            </ConnectorContextProvider>
+            <EdgePaletteContextProvider>
+              <ConnectorContextProvider>
+                <div style={{ display: 'inline-block', position: 'relative' }}>
+                  <MarkerDefinitions />
+                  <FullscreenContextProvider>
+                    <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+                  </FullscreenContextProvider>
+                </div>
+              </ConnectorContextProvider>
+            </EdgePaletteContextProvider>
           </DiagramPaletteContextProvider>
         </DiagramDirectEditContextProvider>
       </DiagramContext.Provider>
