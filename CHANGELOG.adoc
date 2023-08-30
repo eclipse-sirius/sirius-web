@@ -43,7 +43,7 @@ It's now possible to provide _referenceKind_ to only get the `ChildCreationDescr
 - https://github.com/eclipse-sirius/sirius-web/issues/2253[#2253] [diagram] The indroduction of ToolSection in palette, change the _DiagramDescription_ structure by adding a new level _Palette_ instead of _[ToolSection]_.
 Note that _palette_ will be removed in short-term from the _DiagramDescription_.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Split of `sirius-components-widget-reference` to extract EMF-related code into a new module `sirius-components-collaborative-widget-reference`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2252[#2252] [diagram] The support for React Flow based diagrams now require a `DiagramPaletteToolContext` in order to contribute custom palette tool.
 
 === Dependency update
 
@@ -85,6 +85,8 @@ They can however also be used independently (e.g. a single _If_ outside of a _Fo
 Note that this first version has a known limitation: _FormDescriptions_ which use _For_ or _If_ elements can not be reliably edited using the _Form Description Editor_.
 This will be fixed in the next version.
 - https://github.com/eclipse-sirius/sirius-web/issues/2254[#2254] [diagram] Add the possibility to specify precondition on diagram tools
+- https://github.com/eclipse-sirius/sirius-web/issues/2252[#2252] [diagram] It's now possible to contribute custom frontend-defined tools in a React Flow diagram palette.
+To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_, it's available only on _OperationalActivity_ and it simply opens a dialog with the node label content.
 
 === Improvements
 

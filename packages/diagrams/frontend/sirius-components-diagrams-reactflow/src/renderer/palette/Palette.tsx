@@ -16,13 +16,16 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useEdges, useNodes } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { Tool } from '../Tool';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { Tool } from '../Tool';
+import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
+import { DiagramPaletteToolContext } from './DiagramPaletteToolContext';
+import { DiagramPaletteToolContributionComponentProps } from './DiagramPaletteToolContribution.types';
 import {
   ContextualPaletteStyleProps,
   GQLCollapsingState,
@@ -166,13 +169,19 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
   const edges = useEdges();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
+  const diagramPaletteToolComponents = useContext<DiagramPaletteToolContextValue>(DiagramPaletteToolContext)
+    .filter((contribution) => contribution.props.canHandle(diagramId, diagramElementId))
+    .map((contribution) => contribution.props.component);
+
   const toolCount =
     (palette
       ? palette.tools.filter(isSingleClickOnDiagramElementTool).length +
         palette.toolSections.filter(
           (toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0
         ).length
-      : 0) + (isDiagramElementPalette ? 2 : 0);
+      : 0) +
+    (isDiagramElementPalette ? 2 : 0) +
+    diagramPaletteToolComponents.length;
   const classes = usePaletteStyle({ toolCount });
 
   const [getPalette, { loading: paletteLoading, data: paletteData, error: paletteError }] = useLazyQuery<
@@ -322,6 +331,13 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
       {palette?.toolSections.map((toolSection) => (
         <ToolSection toolSection={toolSection} onToolClick={handleToolClick} key={toolSection.id} />
       ))}
+      {diagramPaletteToolComponents.map((component, index) => {
+        const props: DiagramPaletteToolContributionComponentProps = {
+          diagramElementId,
+          key: index.toString(),
+        };
+        return React.createElement(component, props);
+      })}
       {isDiagramElementPalette ? (
         <>
           <IconButton
