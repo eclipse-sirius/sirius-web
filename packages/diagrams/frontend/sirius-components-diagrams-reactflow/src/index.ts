@@ -12,3 +12,8 @@
  *******************************************************************************/
 
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
+export { DiagramPaletteToolContext } from './renderer/palette/DiagramPaletteToolContext';
+export type { DiagramPaletteToolContextValue } from './renderer/palette/DiagramPalette.types';
+export { DiagramPaletteToolContribution } from './renderer/palette/DiagramPaletteToolContribution';
+export type { DiagramPaletteToolContributionComponentProps } from './renderer/palette/DiagramPaletteToolContribution.types';
+export type { NodeData } from './renderer/DiagramRenderer.types';
