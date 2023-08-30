@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ModelBrowserTreePathProvider implements ITreePathProvider {
+
     private final IObjectService objectService;
 
     public ModelBrowserTreePathProvider(IObjectService objectService) {
@@ -46,7 +47,8 @@ public class ModelBrowserTreePathProvider implements ITreePathProvider {
 
     @Override
     public boolean canHandle(Tree tree) {
-        return tree != null && Objects.equals(ModelBrowserDescriptionProvider.DESCRIPTION_ID, tree.getDescriptionId());
+        return tree != null && List.of(ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID, ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID)
+                .contains(tree.getDescriptionId());
     }
 
     @Override
@@ -70,12 +72,13 @@ public class ModelBrowserTreePathProvider implements ITreePathProvider {
         if (optionalSemanticObject.isPresent()) {
             // The first parent of a semantic object item is the item for its actual container
             optionalObject = optionalSemanticObject.filter(EObject.class::isInstance).map(EObject.class::cast)
-                    .map(eObject -> Optional.<Object> ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
+                    .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
         }
 
         while (optionalObject.isPresent()) {
             ancestorsIds.add(this.getItemId(optionalObject.get()));
-            optionalObject = optionalObject.filter(EObject.class::isInstance).map(EObject.class::cast).map(eObject -> Optional.<Object> ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
+            optionalObject = optionalObject.filter(EObject.class::isInstance).map(EObject.class::cast)
+                    .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
         }
         return ancestorsIds;
     }

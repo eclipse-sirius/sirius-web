@@ -21,5 +21,6 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author frouene
  */
-public record EditingContextChildObjectCreationDescriptionsInput(UUID id, String editingContextId, String kindArgument) implements IInput {
+public record EditingContextChildObjectCreationDescriptionsInput(UUID id, String editingContextId, String kindArgument, String referenceKind) implements IInput {
+
 }

@@ -41,6 +41,7 @@ export interface GQLGetRootObjectCreationDescriptionsQueryVariables {
   editingContextId: string;
   domainId: string;
   suggested: boolean;
+  referenceKind?: string;
 }
 
 export interface GQLGetRootObjectCreationDescriptionsQueryData {

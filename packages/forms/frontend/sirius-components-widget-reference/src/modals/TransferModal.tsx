@@ -187,6 +187,10 @@ export const TransferModal = ({ editingContextId, widget, onClose }: TransferMod
                 setSelection={handleLeftSelection}
                 widget={widget}
                 markedItemIds={state.right.map((entry) => entry.id)}
+                enableMultiSelection={widget.reference.manyValued}
+                title={'Choices'}
+                leafType={'reference'}
+                typeName={widget.reference.typeName}
               />
             </div>
           </Grid>

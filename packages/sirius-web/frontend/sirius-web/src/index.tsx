@@ -179,6 +179,7 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
                reference {
                  typeName
                  referenceName
+                 referenceKind
                  containment
                  manyValued
                }

@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -46,6 +47,7 @@ export const ValuedReferenceAutocomplete = ({
   onDragOver,
   onDrop,
   onMoreClick,
+  onCreateClick,
   editReference,
   optionClickHandler,
 }: ValuedReferenceAutocompleteProps) => {
@@ -61,7 +63,7 @@ export const ValuedReferenceAutocomplete = ({
   const classes = useStyles(props);
 
   const handleAutocompleteChange = (_event, newValue) => {
-    let newValueIds = newValue.map((value) => value.id);
+    let newValueIds: string[] = newValue.map((value: GQLReferenceValue) => value.id);
     if (!widget.reference.manyValued && widget.referenceValues.length > 0) {
       // For mono-valued reference, we only keep the new one
       newValueIds = newValueIds.filter((newValue) => widget.referenceValues.some((value) => value.id !== newValue));
@@ -150,6 +152,15 @@ export const ValuedReferenceAutocomplete = ({
                     data-testid={`${widget.label}-more`}
                     onClick={onMoreClick}>
                     <MoreHorizIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="add"
+                    size="small"
+                    title="Create an object"
+                    disabled={readOnly || widget.readOnly}
+                    data-testid={`${widget.label}-add`}
+                    onClick={onCreateClick}>
+                    <AddIcon />
                   </IconButton>
                   <IconButton
                     aria-label="clear"

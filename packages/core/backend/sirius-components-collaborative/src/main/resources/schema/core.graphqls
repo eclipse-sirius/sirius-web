@@ -18,8 +18,8 @@ type EditingContext {
   representations: EditingContextRepresentationConnection!
   representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!
   stereotypeDescriptions: EditingContextStereotypeDescriptionConnection!
-  rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!): [ChildCreationDescription!]!
-  childCreationDescriptions(kind: ID!): [ChildCreationDescription!]!
+  rootObjectCreationDescriptions(domainId: ID!, suggested: Boolean!, referenceKind: String): [ChildCreationDescription!]!
+  childCreationDescriptions(kind: ID!, referenceKind: String): [ChildCreationDescription!]!
   queryBasedString(query: String!): String
   queryBasedInt(query: String!): Int
   queryBasedBoolean(query: String!): Boolean
@@ -125,39 +125,39 @@ type Diagnostic {
 
 
 type ErrorPayload {
-    id: ID!
-    message: String!
-    messages: [Message]!
+  id: ID!
+  message: String!
+  messages: [Message]!
 }
 
 type SuccessPayload {
-    id: ID!
-    messages: [Message]!
+  id: ID!
+  messages: [Message]!
 }
 
 type Message {
-    body: String!
-    level: Level!
+  body: String!
+  level: Level!
 }
 
 enum Level {
-    SUCCESS
-    INFO
-    WARNING
-    ERROR
+  SUCCESS
+  INFO
+  WARNING
+  ERROR
 }
 
 "Information about pagination in a connection."
 type PageInfo {
-    count: Int!
-    "When paginating forwards, the cursor to continue."
-    endCursor: String
-    "When paginating forwards, are there more items?"
-    hasNextPage: Boolean!
-    "When paginating backwards, are there more items?"
-    hasPreviousPage: Boolean!
-    "When paginating backwards, the cursor to continue."
-    startCursor: String
+  count: Int!
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+  "When paginating forwards, are there more items?"
+  hasNextPage: Boolean!
+  "When paginating backwards, are there more items?"
+  hasPreviousPage: Boolean!
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
 }
 
 type Subscription {

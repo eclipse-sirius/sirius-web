@@ -48,6 +48,10 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
             setSelection={setBrowserSelection}
             widget={widget}
             markedItemIds={[]}
+            enableMultiSelection={widget.reference.manyValued}
+            title={'Choices'}
+            leafType={'reference'}
+            typeName={widget.reference.typeName}
           />
         </DialogContent>
         <DialogActions>

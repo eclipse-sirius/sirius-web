@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class URLParser implements IURLParser {
     public Map<String, List<String>> getParameterValues(String kind) {
         Map<String, List<String>> parameterValues = new HashMap<>();
 
-        List<String> queryParameters = Arrays.asList(URI.create(kind).getQuery().split("&"));
+        String[] queryParameters = URI.create(kind).getRawQuery().split("&");
         for (String queryParameter : queryParameters) {
             String[] data = queryParameter.split("=");
             if (data.length == 2 && !data[0].isBlank() && !data[1].isBlank()) {

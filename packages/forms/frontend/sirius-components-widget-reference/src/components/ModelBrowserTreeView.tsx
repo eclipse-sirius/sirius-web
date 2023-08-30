@@ -35,6 +35,10 @@ export const ModelBrowserTreeView = ({
   setSelection,
   widget,
   markedItemIds,
+  enableMultiSelection,
+  title,
+  leafType,
+  typeName,
 }: ModelBrowserTreeViewProps) => {
   const classes = useTreeStyle();
 
@@ -47,15 +51,17 @@ export const ModelBrowserTreeView = ({
         onTextClear={() => setState({ filterBarText: '' })}
         text={state.filterBarText}
       />
-      <span className={classes.title}>Choices</span>
+      <span className={classes.title}>{title}</span>
       <div className={classes.borderStyle}>
         <TreeView
           editingContextId={editingContextId}
           readOnly={true}
           selection={selection}
           setSelection={setSelection}
-          treeId={`modelBrowser://reference?typeName=${widget.reference.typeName}&featureName=${widget.reference.referenceName}&ownerId=${widget.ownerId}`}
-          enableMultiSelection={widget.reference.manyValued}
+          treeId={`modelBrowser://${leafType}?typeName=${encodeURIComponent(typeName)}&featureName=${
+            widget.reference.referenceName
+          }&ownerId=${widget.ownerId}`}
+          enableMultiSelection={enableMultiSelection}
           synchronizedWithSelection={true}
           textToFilter={state.filterBarText}
           textToHighlight={state.filterBarText}
