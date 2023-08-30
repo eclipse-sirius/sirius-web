@@ -44,6 +44,7 @@ import graphql.schema.DataFetchingEnvironment;
 public class EditingContextChildCreationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<ChildCreationDescription>>> {
 
     private static final String KIND_ARGUMENT = "kind";
+    private static final String REFERENCE_KIND_ARGUMENT = "referenceKind";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
@@ -55,7 +56,9 @@ public class EditingContextChildCreationDescriptionsDataFetcher implements IData
     public CompletableFuture<List<ChildCreationDescription>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
         String kindArgument = environment.getArgument(KIND_ARGUMENT);
-        EditingContextChildObjectCreationDescriptionsInput input = new EditingContextChildObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, kindArgument);
+        String referenceKind = environment.getArgument(REFERENCE_KIND_ARGUMENT);
+        EditingContextChildObjectCreationDescriptionsInput input = new EditingContextChildObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, kindArgument,
+                referenceKind);
 
         return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                 .filter(EditingContextChildObjectCreationDescriptionsPayload.class::isInstance)

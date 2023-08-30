@@ -54,6 +54,7 @@ As a result the development of applications consuming Sirius Components packages
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2185[#2185] [diagram] Add support for drop tool from the explorer with React Flow.
 - https://github.com/eclipse-sirius/sirius-web/issues/2117[#2117] [form] Add a modal to select new values for multi-valued references
+- https://github.com/eclipse-sirius/sirius-web/issues/2118[#2118] [form] Add a modal to create new objects on a widget reference
 
 === Improvements
 

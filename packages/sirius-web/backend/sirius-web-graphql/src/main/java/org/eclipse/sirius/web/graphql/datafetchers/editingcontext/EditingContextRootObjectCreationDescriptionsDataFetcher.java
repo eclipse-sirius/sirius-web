@@ -47,6 +47,8 @@ public class EditingContextRootObjectCreationDescriptionsDataFetcher implements 
 
     private static final String SUGGESTED_ARGUMENT = "suggested";
 
+    private static final String REFERENCE_KIND_ARGUMENT = "referenceKind";
+
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     public EditingContextRootObjectCreationDescriptionsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
@@ -58,8 +60,10 @@ public class EditingContextRootObjectCreationDescriptionsDataFetcher implements 
         String editingContextId = environment.getSource();
         String domainId = environment.getArgument(DOMAIN_ID_ARGUMENT);
         Boolean suggested = environment.getArgument(SUGGESTED_ARGUMENT);
+        String referenceKind = environment.getArgument(REFERENCE_KIND_ARGUMENT);
 
-        EditingContextRootObjectCreationDescriptionsInput input = new EditingContextRootObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, domainId, suggested);
+        EditingContextRootObjectCreationDescriptionsInput input = new EditingContextRootObjectCreationDescriptionsInput(UUID.randomUUID(), editingContextId, domainId, suggested,
+                referenceKind);
 
         return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                 .filter(EditingContextRootObjectCreationDescriptionsPayload.class::isInstance)

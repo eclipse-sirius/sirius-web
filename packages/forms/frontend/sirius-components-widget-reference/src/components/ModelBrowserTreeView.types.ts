@@ -19,6 +19,10 @@ export interface ModelBrowserTreeViewProps {
   setSelection: (selection: Selection) => void;
   widget: GQLReferenceWidget;
   markedItemIds: string[];
+  enableMultiSelection: boolean;
+  title: string;
+  leafType: 'reference' | 'container';
+  typeName: string;
 }
 
 export interface ModelBrowserTreeViewState {

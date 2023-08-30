@@ -21,6 +21,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { ValuedReferenceAutocomplete } from './components/ValuedReferenceAutocomplete';
 import { BrowseModal } from './modals/BrowseModal';
+import { CreateModal } from './modals/CreateModal';
 import { TransferModal } from './modals/TransferModal';
 import {
   GQLClickReferenceValueMutationData,
@@ -221,30 +222,57 @@ export const ReferencePropertySection = ({
     setModalDisplayed('browse');
   };
 
+  const onCreate = () => {
+    setModalDisplayed('create');
+  };
+
+  const addSelectedElements = (selectedElementIds: string[]): void => {
+    setModalDisplayed(null);
+    if (selectedElementIds) {
+      let newValueIds = [...selectedElementIds];
+
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          newValueIds,
+        },
+      };
+      editReference({ variables });
+    }
+  };
+
+  const addNewElement = (selectedElementId: string): void => {
+    setModalDisplayed(null);
+    if (selectedElementId) {
+      let newValueIds = widget.reference.manyValued
+        ? [...widget.referenceValues.map((value) => value.id), selectedElementId]
+        : [selectedElementId];
+
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          newValueIds,
+        },
+      };
+      editReference({ variables });
+    }
+  };
+
   let modal: JSX.Element | null = null;
   if (modalDisplayed === 'browse') {
-    const addSelectedElements = (selectedElementIds: string[]): void => {
-      setModalDisplayed(null);
-      if (selectedElementIds) {
-        let newValueIds = [...selectedElementIds];
-
-        const variables = {
-          input: {
-            id: crypto.randomUUID(),
-            editingContextId,
-            representationId: formId,
-            referenceWidgetId: widget.id,
-            newValueIds,
-          },
-        };
-        editReference({ variables });
-      }
-    };
     modal = widget.reference.manyValued ? (
       <TransferModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
     ) : (
       <BrowseModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
     );
+  } else if (modalDisplayed === 'create') {
+    modal = <CreateModal editingContextId={editingContextId} onClose={addNewElement} widget={widget} />;
   }
 
   return (
@@ -267,6 +295,7 @@ export const ReferencePropertySection = ({
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           onMoreClick={onBrowse}
+          onCreateClick={onCreate}
           optionClickHandler={clickHandler}
         />
       </div>

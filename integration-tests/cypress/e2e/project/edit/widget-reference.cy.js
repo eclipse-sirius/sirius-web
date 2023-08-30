@@ -183,4 +183,143 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('reference-value-standard').should('exist');
     cy.getByTestId('reference-value-unused').should('exist');
   });
+
+  it('check widget reference containment', () => {
+    // Create the view
+    cy.createProjectFromTemplate('blank-studio-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
+      const view_document_id = 'ea57f74d-bc7b-3a7a-81e0-8aef4ee85770';
+      cy.createDocument(projectId, view_document_id, 'ViewDocument').then(() => {
+        cy.visit(`/projects/${projectId}/edit`);
+      });
+    });
+    cy.getByTestId('ViewDocument').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.getByTestId('View-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('create-object').should('be.enabled');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Form Description"]').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('New Form Description').click();
+    cy.getByTestId('Domain Type').type('flow::System');
+    cy.getByTestId('Name').type('{selectall}').type('WidgetRefRepresentation');
+    cy.getByTestId('Title Expression').type('{selectall}').type('WidgetRefRepresentation');
+    cy.getByTestId('WidgetRefRepresentation').dblclick();
+    cy.getByTestId('PageDescription').dblclick();
+    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="Widgets Reference Widget Description"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Reference Name Expression').should('exist');
+    cy.getByTestId('Label Expression').type('Test Widget Reference');
+    cy.getByTestId('Reference Name Expression').find('textarea').eq(0).type('powerOutputs');
+
+    cy.get('[title="Back to the homepage"]').click();
+
+    // Create the instance
+    cy.getByTestId('create-template-Flow').click();
+    cy.getByTestId('NewSystem-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('WidgetRefRepresentation').should('exist').click();
+    cy.getByTestId('create-representation').click();
+    cy.getByTestId('Test Widget Reference-add').should('exist');
+    cy.getByTestId('1000').should('not.exist');
+    cy.getByTestId('Test Widget Reference-add').click();
+    cy.getByTestId('create-modal').should('exist');
+    cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
+    cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value]')
+      .should('have.length', 1)
+      .get('[data-value="Power Output"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-modal').findByTestId('create-object').click();
+    cy.getByTestId('reference-value-1000').should('exist');
+    cy.getByTestId('1000').should('exist');
+  });
+
+  it('check widget reference non containment', () => {
+    // Create the view
+    cy.createProjectFromTemplate('blank-studio-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
+      const view_document_id = 'ea57f74d-bc7b-3a7a-81e0-8aef4ee85770';
+      cy.createDocument(projectId, view_document_id, 'ViewDocument').then(() => {
+        cy.visit(`/projects/${projectId}/edit`);
+      });
+    });
+    cy.getByTestId('ViewDocument').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.getByTestId('View-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('create-object').should('be.enabled');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Form Description"]').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('New Form Description').click();
+    cy.getByTestId('Domain Type').type('flow::CompositeProcessor');
+    cy.getByTestId('Name').type('{selectall}').type('WidgetRefRepresentation');
+    cy.getByTestId('Title Expression').type('{selectall}').type('WidgetRefRepresentation');
+    cy.getByTestId('WidgetRefRepresentation').dblclick();
+    cy.getByTestId('PageDescription').dblclick();
+    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="Widgets Reference Widget Description"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Reference Name Expression').should('exist');
+    cy.getByTestId('Label Expression').type('Test Widget Reference');
+    cy.getByTestId('Reference Name Expression').find('textarea').eq(0).type('incomingFlows');
+
+    cy.get('[title="Back to the homepage"]').click();
+
+    // Create the instance
+    cy.getByTestId('create-template-Flow').click();
+    cy.getByTestId('NewSystem').click();
+    cy.getByTestId('CompositeProcessor1-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('WidgetRefRepresentation').should('exist').click();
+    cy.getByTestId('create-representation').click();
+    cy.getByTestId('Test Widget Reference-add').should('exist');
+    cy.getByTestId('Test Widget Reference-add').click();
+    cy.getByTestId('create-modal').should('exist');
+    cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('exist');
+    cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
+    cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('exist');
+    cy.getByTestId('create-modal').findByTestId('FlowNewModel').should('exist');
+    cy.getByTestId('create-modal').findByTestId('FlowNewModel').click();
+    cy.getByTestId('create-modal').findByTestId('expand-all').click();
+    cy.getByTestId('create-modal').findByTestId('NewSystem').should('exist');
+    cy.getByTestId('create-modal').findByTestId('DataSource1').should('exist');
+    cy.getByTestId('create-modal').findByTestId('CompositeProcessor1').should('exist');
+    cy.getByTestId('create-modal').findByTestId('standard').should('not.exist');
+    cy.getByTestId('create-modal').findByTestId('CompositeProcessor1').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription')
+      .get('[data-value]')
+      .should('have.length', 2)
+      .get('[data-value="Elements Data Flow"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-modal').findByTestId('create-object').click();
+    cy.getByTestId('reference-value-unused').should('exist');
+    cy.getByTestId('unused').should('exist');
+  });
 });

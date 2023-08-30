@@ -73,12 +73,10 @@ public class EditService implements IEditService {
         String ePackageName = this.emfKindService.getEPackageName(kind);
         String eClassName = this.emfKindService.getEClassName(kind);
 
-        // @formatter:off
         return this.emfKindService.findEPackage(ePackageRegistry, ePackageName)
                 .map(ePackage -> ePackage.getEClassifier(eClassName))
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast);
-        // @formatter:on
     }
 
     private Optional<EPackage.Registry> getPackageRegistry(IEditingContext editingContext) {
@@ -91,7 +89,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind) {
+    public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind) {
         List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
 
         this.getPackageRegistry(editingContext).ifPresent(ePackageRegistry -> {
@@ -102,10 +100,16 @@ public class EditService implements IEditService {
             Resource resource = new JsonResourceImpl(URI.createURI("inmemory"), Map.of());
             resourceSet.getResources().add(resource);
 
-            // @formatter:off
             var optionalEClass = this.getEClass(ePackageRegistry, kind)
                     .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
-            // @formatter:on
+
+            Optional<EClass> optionalEClassReference;
+            if (referenceKind != null) {
+                optionalEClassReference = this.getEClass(ePackageRegistry, referenceKind);
+            } else {
+                optionalEClassReference = Optional.empty();
+            }
+
 
             if (optionalEClass.isPresent()) {
                 EClass eClass = optionalEClass.get();
@@ -114,12 +118,12 @@ public class EditService implements IEditService {
 
                 Collection<?> newChildDescriptors = editingDomain.getNewChildDescriptors(eObject, null);
 
-                // @formatter:off
                 List<CommandParameter> commandParameters = newChildDescriptors.stream()
                         .filter(CommandParameter.class::isInstance)
                         .map(CommandParameter.class::cast)
+                        .filter(commandParameter -> optionalEClassReference.map(eClassReference -> eClassReference.isInstance(commandParameter.getValue()))
+                                .orElse(true))
                         .toList();
-                // @formatter:on
 
                 Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
 
@@ -206,7 +210,7 @@ public class EditService implements IEditService {
     }
 
     @Override
-    public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested) {
+    public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind) {
         List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
 
         this.getPackageRegistry(editingContext).ifPresent(ePackageRegistry -> {
@@ -223,7 +227,10 @@ public class EditService implements IEditService {
                     classes = this.getConcreteClasses(ePackage);
                 }
                 for (EClass suggestedClass : classes) {
-                    rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName()));
+                    if (referenceKind == null || this.getEClass(ePackageRegistry, referenceKind).map(eClassReference -> eClassReference.isSuperTypeOf(suggestedClass))
+                            .orElse(true)) {
+                        rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName()));
+                    }
                 }
             }
         });

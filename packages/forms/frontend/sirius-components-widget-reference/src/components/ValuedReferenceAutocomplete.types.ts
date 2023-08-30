@@ -28,6 +28,7 @@ export interface ValuedReferenceAutocompleteProps {
   onDragOver: (event: React.DragEvent<HTMLDivElement>) => void;
   onDrop: (event: React.DragEvent<HTMLDivElement>) => void;
   onMoreClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
+  onCreateClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
   editReference: MutationFunction<GQLEditReferenceData, GQLEditReferenceVariables>;
   optionClickHandler: (element: GQLReferenceValue) => void;
 }

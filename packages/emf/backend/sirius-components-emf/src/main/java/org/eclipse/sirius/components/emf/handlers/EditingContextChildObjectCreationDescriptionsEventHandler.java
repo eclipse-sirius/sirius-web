@@ -51,7 +51,8 @@ public class EditingContextChildObjectCreationDescriptionsEventHandler implement
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         List<ChildCreationDescription> childCreationDescriptions = List.of();
         if (input instanceof EditingContextChildObjectCreationDescriptionsInput editingContextChildObjectCreationDescriptionsInput) {
-            childCreationDescriptions = editService.getChildCreationDescriptions(editingContext, editingContextChildObjectCreationDescriptionsInput.kindArgument());
+            childCreationDescriptions = this.editService.getChildCreationDescriptions(editingContext, editingContextChildObjectCreationDescriptionsInput.kindArgument(),
+                    editingContextChildObjectCreationDescriptionsInput.referenceKind());
         }
         payloadSink.tryEmitValue(new EditingContextChildObjectCreationDescriptionsPayload(input.id(), childCreationDescriptions));
     }

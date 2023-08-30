@@ -28,6 +28,7 @@ export interface ChildCreationDescription {
 export interface GQLGetChildCreationDescriptionsQueryVariables {
   editingContextId: string;
   kind: string;
+  referenceKind?: string;
 }
 
 export interface GQLGetChildCreationDescriptionsQueryData {

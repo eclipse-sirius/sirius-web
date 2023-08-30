@@ -23,9 +23,9 @@ import java.util.UUID;
  */
 public interface IEditService {
 
-    List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested);
+    List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind);
 
-    List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind);
+    List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind);
 
     Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
 
@@ -43,12 +43,12 @@ public interface IEditService {
     class NoOp implements IEditService {
 
         @Override
-        public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested) {
+        public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind) {
             return List.of();
         }
 
         @Override
-        public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String classId) {
+        public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String classId, String referenceName) {
             return List.of();
         }
 

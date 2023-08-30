@@ -21,5 +21,6 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author frouene
  */
-public record EditingContextRootObjectCreationDescriptionsInput(UUID id, String editingContextId, String domainId, Boolean suggested) implements IInput {
+public record EditingContextRootObjectCreationDescriptionsInput(UUID id, String editingContextId, String domainId, Boolean suggested, String referenceKind) implements IInput {
+
 }
