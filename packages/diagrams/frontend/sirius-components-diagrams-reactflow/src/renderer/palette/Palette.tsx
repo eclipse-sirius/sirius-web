@@ -17,11 +17,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { useEdges, useNodes } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { Tool } from '../Tool';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
-import { Tool } from '../Tool';
 import {
   ContextualPaletteStyleProps,
   GQLCollapsingState,
@@ -157,10 +158,12 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: PaletteProps) => {
+export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementPalette }: PaletteProps) => {
   const [palette, setPalette] = useState<GQLPalette | undefined>(undefined);
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
+  const nodes = useNodes();
+  const edges = useEdges();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const toolCount =
@@ -169,7 +172,7 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: 
         palette.toolSections.filter(
           (toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0
         ).length
-      : 0) + (isNodePalette ? 2 : 0);
+      : 0) + (isDiagramElementPalette ? 2 : 0);
   const classes = usePaletteStyle({ toolCount });
 
   const [getPalette, { loading: paletteLoading, data: paletteData, error: paletteError }] = useLazyQuery<
@@ -235,14 +238,26 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: 
     ]
   );
 
-  const invokeDelete = useCallback(
-    (nodeIds: string[], deletionPolicy: GQLDeletionPolicy) => {
+  const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
+    const nodeId = nodes.find((node) => node.id === diagramElementId);
+    if (nodeId) {
+      invokeDeleteMutation([diagramElementId], [], deletionPolicy);
+    } else {
+      const edgeId = edges.find((edge) => edge.id === diagramElementId);
+      if (edgeId) {
+        invokeDeleteMutation([], [diagramElementId], deletionPolicy);
+      }
+    }
+  };
+
+  const invokeDeleteMutation = useCallback(
+    (nodeIds: string[], edgeIds: string[], deletionPolicy: GQLDeletionPolicy) => {
       const input: GQLDeleteFromDiagramInput = {
         id: crypto.randomUUID(),
         editingContextId,
         representationId: diagramId,
         nodeIds,
-        edgeIds: [],
+        edgeIds,
         deletionPolicy,
       };
       deleteElementsMutation({ variables: { input } });
@@ -274,10 +289,10 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: 
         onDirectEditClick();
         break;
       case 'semantic-delete':
-        invokeDelete([diagramElementId], GQLDeletionPolicy.SEMANTIC);
+        invokeDelete(diagramElementId, GQLDeletionPolicy.SEMANTIC);
         break;
       case 'graphical-delete':
-        invokeDelete([diagramElementId], GQLDeletionPolicy.GRAPHICAL);
+        invokeDelete(diagramElementId, GQLDeletionPolicy.GRAPHICAL);
         break;
       case 'expand':
         collapseExpandElement(diagramElementId, GQLCollapsingState.EXPANDED);
@@ -307,7 +322,7 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: 
       {palette?.toolSections.map((toolSection) => (
         <ToolSection toolSection={toolSection} onToolClick={handleToolClick} key={toolSection.id} />
       ))}
-      {isNodePalette ? (
+      {isDiagramElementPalette ? (
         <>
           <IconButton
             className={classes.toolIcon}
