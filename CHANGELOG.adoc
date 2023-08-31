@@ -67,7 +67,7 @@ As a result the development of applications consuming Sirius Components packages
 - https://github.com/eclipse-sirius/sirius-web/issues/2233[#2233] [diagram] Move the behavior of the arrange all in the diagram panel component
 - https://github.com/eclipse-sirius/sirius-web/issues/2311[2311] [diagram] Ensure that the layout uses the same context as the rendering
 - https://github.com/eclipse-sirius/sirius-web/issues/2208[#2208] [diagram] Add Cypress tests for React Flow.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2198[2198] [view] Add a default Color Palette on View creation 
 
 == v2023.8.0
 
