@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -54,6 +56,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ColorPalette;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
@@ -376,7 +379,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .itemIdProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getId).orElse(""))
                 .itemKindProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getKind).orElse(""))
                 .itemLabelProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getLabel).orElse(""))
-                .itemImageURLProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getImagePath).orElse(""))
+                .itemImageURLProvider(variableManager -> {
+                    return variableManager.get(ReferenceWidgetComponent.ITEM_VARIABLE, FixedColor.class).map(color -> {
+                        String urlSafeValue = URLEncoder.encode(color.getValue(), StandardCharsets.UTF_8);
+                        return "/color/%s".formatted(urlSafeValue);
+                    }).orElse("");
+                })
                 .settingProvider(variableManager -> this.resolveSetting(variableManager, feature))
                 .styleProvider(variableManager -> null)
                 .ownerIdProvider(variableManager -> variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse(""))
