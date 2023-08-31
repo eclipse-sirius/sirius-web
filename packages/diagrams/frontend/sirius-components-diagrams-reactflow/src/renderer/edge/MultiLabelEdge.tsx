@@ -29,7 +29,7 @@ export const MultiLabelEdge = memo(
     markerEnd,
     markerStart,
   }: EdgeProps<MultiLabelEdgeData>) => {
-    const [edgePath] = getSmoothStepPath({
+    const [edgePath, labelX, labelY] = getSmoothStepPath({
       sourceX,
       sourceY,
       sourcePosition,
@@ -51,13 +51,7 @@ export const MultiLabelEdge = memo(
               faded={false}
             />
           )}
-          {centerLabel && (
-            <Label
-              transform={`translate(-50%, 0%) translate(${sourceX}px,${sourceY}px)`}
-              label={centerLabel}
-              faded={false}
-            />
-          )}
+          {centerLabel && <Label transform={`translate(${labelX}px,${labelY}px)`} label={centerLabel} faded={false} />}
           {endLabel && (
             <Label
               transform={`translate(2%, -100%) translate(${targetX}px,${targetY}px)`}
