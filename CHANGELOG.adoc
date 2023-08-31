@@ -62,6 +62,7 @@ A suitable implementation is to get the id of the `self` object using `IObjectSe
 - https://github.com/eclipse-sirius/sirius-web/issues/2345[#2345] [diagram] Fix a issue on React Flow diagram when opening a palette with toolSection without nodeTool.
 - https://github.com/eclipse-sirius/sirius-web/issues/2192[#2192] [view] Fix an issue where the _Shape_ property of an ImageNodeStyle was not mandatory.
 An error message is now displayed if the _Shape_ is not set. 
+- https://github.com/eclipse-sirius/sirius-web/issues/2309[#2309] [diagram] Fix an issue where the edge labels where not always centered on react-flow diagrams
 
 === New Features
 
