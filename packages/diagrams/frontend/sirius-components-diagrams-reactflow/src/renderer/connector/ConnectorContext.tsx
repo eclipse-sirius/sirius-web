@@ -18,11 +18,16 @@ import {
   ConnectorContextProviderState,
   ConnectorContextValue,
 } from './ConnectorContext.types';
+import { GQLNodeDescription } from './useConnector.types';
 
 const defaultValue: ConnectorContextValue = {
   connection: null,
+  candidates: [],
+  isNewConnection: false,
   setConnection: () => {},
+  setCandidates: () => {},
   resetConnection: () => {},
+  setIsNewConnection: () => {},
 };
 
 export const ConnectorContext = React.createContext<ConnectorContextValue>(defaultValue);
@@ -30,16 +35,42 @@ export const ConnectorContext = React.createContext<ConnectorContextValue>(defau
 export const ConnectorContextProvider = ({ children }: ConnectorContextProviderProps) => {
   const [state, setState] = useState<ConnectorContextProviderState>({
     connection: null,
+    candidates: [],
+    isNewConnection: false,
   });
 
-  const setConnection = (connection: Connection) => setState((prevState) => ({ ...prevState, connection }));
+  const setConnection = (connection: Connection) => {
+    setState((prevState) => ({ ...prevState, connection }));
+  };
+
+  const setCandidates = (candidates: GQLNodeDescription[]) => {
+    setState((prevState) => ({ ...prevState, candidates }));
+  };
+
+  const setIsNewConnection = (isNewConnection: boolean) => {
+    setState((prevState) => ({ ...prevState, isNewConnection }));
+  };
 
   const resetConnection = () => {
-    setState((prevState) => ({ ...prevState, connection: null }));
+    setState((prevState) => ({
+      ...prevState,
+      connection: null,
+      targetCandidates: [],
+      isNewConnection: false,
+    }));
   };
 
   return (
-    <ConnectorContext.Provider value={{ connection: state.connection, setConnection, resetConnection }}>
+    <ConnectorContext.Provider
+      value={{
+        connection: state.connection,
+        candidates: state.candidates,
+        isNewConnection: state.isNewConnection,
+        setConnection,
+        setCandidates,
+        resetConnection,
+        setIsNewConnection,
+      }}>
       {children}
     </ConnectorContext.Provider>
   );

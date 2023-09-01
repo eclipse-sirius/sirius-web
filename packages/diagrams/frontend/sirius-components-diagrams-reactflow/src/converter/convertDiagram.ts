@@ -37,13 +37,14 @@ const toRectangularNode = (
   isBorderNode: boolean
 ): Node<RectangularNodeData> => {
   const style = gqlNode.style as GQLRectangularNodeStyle;
-  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
   const labelStyle = gqlNode.label.style;
 
   const data: RectangularNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
+    descriptionId,
     style: {
       backgroundColor: style.color,
       borderColor: style.borderColor,
@@ -120,7 +121,7 @@ const toIconLabelNode = (
   gqlParentNode: GQLNode | null,
   isBorderNode: boolean
 ): Node<IconLabelNodeData> => {
-  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
   const style = gqlNode.style as GQLIconLabelNodeStyle;
   const { id, label } = gqlNode;
   const labelStyle = label.style;
@@ -129,6 +130,7 @@ const toIconLabelNode = (
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
+    descriptionId,
     style: {
       textAlign: 'left',
       backgroundColor: style.backgroundColor,
@@ -166,11 +168,12 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
   const style = gqlNode.style as GQLRectangularNodeStyle;
   const labelStyle = gqlNode.label.style;
 
-  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
   const data: ListNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
+    descriptionId,
     style: {
       backgroundColor: style.color,
       borderColor: style.borderColor,
@@ -252,12 +255,13 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
 const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNode: boolean): Node<ImageNodeData> => {
   const style = gqlNode.style as GQLImageNodeStyle;
   const labelStyle = gqlNode.label.style;
-  const { targetObjectId, targetObjectLabel, targetObjectKind } = gqlNode;
+  const { targetObjectId, targetObjectLabel, targetObjectKind, descriptionId } = gqlNode;
 
   const data: ImageNodeData = {
     targetObjectId,
-    targetObjectKind,
     targetObjectLabel,
+    targetObjectKind,
+    descriptionId,
     label: {
       id: gqlNode.label.id,
       text: gqlNode.label.text,

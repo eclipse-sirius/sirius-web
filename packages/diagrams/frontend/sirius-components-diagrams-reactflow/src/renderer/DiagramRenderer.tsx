@@ -70,7 +70,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onEdgeClick } = useEdgePalette();
 
-  const { onConnect } = useConnector();
+  const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
 
@@ -245,6 +245,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       edgeTypes={edgeTypes}
       onKeyDown={onKeyDown}
       onConnect={onConnect}
+      onConnectStart={onConnectStart}
+      onConnectEnd={onConnectEnd}
       onEdgesChange={handleEdgesChange}
       onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
