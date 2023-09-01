@@ -86,6 +86,7 @@ This will be fixed in the next version.
 - https://github.com/eclipse-sirius/sirius-web/issues/2208[#2208] [diagram] Add Cypress tests for React Flow.
 - https://github.com/eclipse-sirius/sirius-web/issues/2198[#2198] [view] Add a default Color Palette on View creation
 - https://github.com/eclipse-sirius/sirius-web/issues/2228[#2228] [domain] Creating a domain from the onboard area action now initialize its name.
+- https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Change the default representation in the details view for non containment reference from a select widget to a reference widget.
 
 == v2023.8.0
 

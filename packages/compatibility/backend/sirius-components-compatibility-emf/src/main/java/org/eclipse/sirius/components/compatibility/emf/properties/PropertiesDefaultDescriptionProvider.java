@@ -137,8 +137,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
             List<Object> objects = new ArrayList<>();
 
             Object self = variableManager.getVariables().get(VariableManager.SELF);
-            if (self instanceof EObject) {
-                EObject eObject = (EObject) self;
+            if (self instanceof EObject eObject) {
 
                 // @formatter:off
                 List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class))
@@ -162,8 +161,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
         ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.semanticTargetIdProvider).getIfDescription());
 
         // @formatter:off
         var numericDataTypes = List.of(

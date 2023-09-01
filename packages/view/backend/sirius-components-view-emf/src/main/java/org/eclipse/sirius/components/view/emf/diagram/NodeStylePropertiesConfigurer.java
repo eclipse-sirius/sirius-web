@@ -27,6 +27,9 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -65,6 +68,8 @@ import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescriptio
 import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.springframework.stereotype.Component;
 
 /**
@@ -174,20 +179,11 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                     style -> ((NodeStyleDescription) style).isShowIcon(),
                                     (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
                                     DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
-                this.createUserColorSelectionField("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR
-                        , NodeStyleDescription.class
-                        , NodeStyleDescription::getLabelColor
-                        , NodeStyleDescription::setLabelColor),
-                this.createUserColorSelectionField("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR
-                        , NodeStyleDescription.class
-                        , NodeStyleDescription::getColor
-                        , NodeStyleDescription::setColor),
-                this.createUserColorSelectionField("nodestyle.borderColor"
+                this.createUserColorReferenceWidget("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
+                this.createUserColorReferenceWidget("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR),
+                this.createUserColorReferenceWidget("nodestyle.borderColor"
                         , "Border Color"
-                        , DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR
-                        , BorderStyle.class
-                        , BorderStyle::getBorderColor
-                        , BorderStyle::setBorderColor),
+                        , DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR),
                 this.createTextField("nodestyle.borderRadius", "Border Radius",
                                      style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
                                      (style, newBorderRadius) -> {
@@ -369,59 +365,71 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         // @formatter:on
     }
 
-    private <T> SelectDescription createUserColorSelectionField(String id, String label, Object feature, Class<T> styleType
-            , Function<T, UserColor> colorGetter, BiConsumer<T, UserColor> colorSetter) {
-        return SelectDescription.newSelectDescription(id)
-                                .idProvider(variableManager -> id)
-                                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                                .labelProvider(variableManager -> label)
-                                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, styleType)
-                                                                                 .map(colorGetter)
-                                                                                 .map(UserColor::getName)
-                                                                                 .orElse(EMPTY))
-                                .optionsProvider(variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList())
-                                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, UserColor.class)
-                                                                                    .map(UserColor::getName)
-                                                                                    .orElse(EMPTY))
-                                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, UserColor.class)
-                                                                                       .map(UserColor::getName)
-                                                                                       .orElse(EMPTY))
-                                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
-                                .newValueHandler((variableManager, newValue) ->
-                                                         variableManager.get(VariableManager.SELF, styleType)
-                                                                        .<IStatus>map((style) -> {
-                                                                            if (newValue != null) {
-                                                                                this.getColorsFromColorPalettesStream(variableManager)
-                                                                                    .filter(userColor -> newValue.equals(userColor.getName()))
-                                                                                    .findFirst()
-                                                                                    .ifPresentOrElse(userColor -> colorSetter.accept(style, userColor), () -> colorSetter.accept(style, null));
-                                                                            }
-                                                                            return new Success();
-                                                                        }).orElseGet(() -> new Failure(""))
-                                )
-                                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
-                                .kindProvider(this::kindProvider)
-                                .messageProvider(this::messageProvider)
-                                .build();
+    private <T> ReferenceWidgetDescription createUserColorReferenceWidget(String id, String label, Object feature) {
+        return ReferenceWidgetDescription.newReferenceWidgetDescription(id)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .idProvider(variableManager -> id)
+                .labelProvider(variableManager -> label)
+                .optionsProvider(variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList())
+                .iconURLProvider(variableManager -> "")
+                .itemsProvider(variableManager -> this.getReferenceValue(variableManager, feature))
+                .itemIdProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getId).orElse(""))
+                .itemKindProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getKind).orElse(""))
+                .itemLabelProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getLabel).orElse(""))
+                .itemImageURLProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getImagePath).orElse(""))
+                .settingProvider(variableManager -> this.resolveSetting(variableManager, feature))
+                .styleProvider(variableManager -> null)
+                .ownerIdProvider(variableManager -> variableManager.get(VariableManager.SELF, EObject.class).map(this.objectService::getId).orElse(""))
+                .diagnosticsProvider(this.getDiagnosticsProvider(feature))
+                .kindProvider(this::kindProvider)
+                .messageProvider(this::messageProvider)
+                .build();
+    }
+
+    private Optional<Object> getItem(VariableManager variableManager) {
+        return variableManager.get(ReferenceWidgetComponent.ITEM_VARIABLE, Object.class);
+    }
+
+    private List<?> getReferenceValue(VariableManager variableManager, Object feature) {
+        List<?> value = List.of();
+        EStructuralFeature.Setting setting = this.resolveSetting(variableManager, feature);
+        if (setting != null) {
+            var rawValue = setting.get(true);
+            if (rawValue != null) {
+                value = List.of(rawValue);
+            } else {
+                value = List.of();
+            }
+        }
+        return value;
+    }
+
+    private EStructuralFeature.Setting resolveSetting(VariableManager variableManager, Object feature) {
+        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        if (referenceOwner != null && feature instanceof EReference reference) {
+            return ((InternalEObject) referenceOwner).eSetting(reference);
+        } else {
+            return null;
+        }
     }
 
     private Stream<UserColor> getColorsFromColorPalettesStream(VariableManager variableManager) {
         return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                              .filter(EditingContext.class::isInstance)
-                              .map(EditingContext.class::cast)
-                              .map(EditingContext::getDomain)
-                              .map(EditingDomain::getResourceSet)
-                              .map(ResourceSet::getResources)
-                              .stream()
-                              .flatMap(EList::stream)
-                              .map(Resource::getContents)
-                              .flatMap(EList::stream)
-                              .filter(View.class::isInstance)
-                              .map(View.class::cast)
-                              .map(View::getColorPalettes)
-                              .flatMap(EList::stream)
-                              .map(ColorPalette::getColors)
-                              .flatMap(EList::stream);
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain)
+                .map(EditingDomain::getResourceSet)
+                .map(ResourceSet::getResources)
+                .stream()
+                .flatMap(EList::stream)
+                .map(Resource::getContents)
+                .flatMap(EList::stream)
+                .filter(View.class::isInstance)
+                .map(View.class::cast)
+                .map(View::getColorPalettes)
+                .flatMap(EList::stream)
+                .map(ColorPalette::getColors)
+                .flatMap(EList::stream);
     }
 
     private SelectDescription createShapeSelectionField(Object feature) {

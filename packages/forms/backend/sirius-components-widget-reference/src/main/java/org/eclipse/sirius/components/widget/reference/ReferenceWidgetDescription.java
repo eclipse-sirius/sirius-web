@@ -164,6 +164,12 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, String> ownerIdProvider;
 
+        private Function<VariableManager, List<?>> diagnosticsProvider;
+
+        private Function<Object, String> kindProvider;
+
+        private Function<Object, String> messageProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -248,6 +254,21 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder diagnosticsProvider(Function<VariableManager, List<?>> diagnosticsProvider) {
+            this.diagnosticsProvider = Objects.requireNonNull(diagnosticsProvider);
+            return this;
+        }
+
+        public Builder kindProvider(Function<Object, String> kindProvider) {
+            this.kindProvider = Objects.requireNonNull(kindProvider);
+            return this;
+        }
+
+        public Builder messageProvider(Function<Object, String> messageProvider) {
+            this.messageProvider = Objects.requireNonNull(messageProvider);
+            return this;
+        }
+
         public ReferenceWidgetDescription build() {
             ReferenceWidgetDescription referenceWidgetDescription = new ReferenceWidgetDescription();
             referenceWidgetDescription.id = Objects.requireNonNull(this.id);
@@ -267,6 +288,9 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemClickHandlerProvider = this.itemClickHandlerProvider; // Optional on purpose
             referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             referenceWidgetDescription.ownerIdProvider = Objects.requireNonNull(this.ownerIdProvider);
+            referenceWidgetDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
+            referenceWidgetDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
+            referenceWidgetDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             return referenceWidgetDescription;
         }
     }

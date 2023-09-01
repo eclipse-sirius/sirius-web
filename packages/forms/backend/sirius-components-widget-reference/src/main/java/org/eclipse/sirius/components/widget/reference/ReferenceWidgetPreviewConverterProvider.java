@@ -44,36 +44,43 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, referenceDescription);
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-                var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
-                        .idProvider(vm -> id)
-                        .targetObjectIdProvider(vm -> "")
-                        .labelProvider(vm -> ReferenceWidgetPreviewConverterProvider.this.getWidgetLabel(referenceDescription, "Reference"))
-                        .iconURLProvider(variableManager -> "")
-                        .isReadOnlyProvider(variableManager -> false)
-                        .itemsProvider(variableManager -> List.of())
-                        .optionsProvider(variableManager -> List.of())
-                        .itemIdProvider(variableManager -> "")
-                        .itemKindProvider(variableManager -> "")
-                        .itemLabelProvider(variableManager -> "")
-                        .itemKindProvider(variableManager -> "")
-                        .itemLabelProvider(variableManager -> "")
-                        .itemImageURLProvider(variableManager -> "")
-                        .settingProvider(variableManager -> {
-                            // We need a non-null Setting instance which does not depend on any actual instance model.
-                            EObject owner = EcorePackage.Literals.ECLASS;
-                            return ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
-                        })
-                        .ownerIdProvider(variableManager -> "")
-                        .itemClickHandlerProvider(variableManager -> new Success())
-                        .styleProvider(variableManager -> ReferenceWidgetPreviewConverterProvider.this.getWidgetStyle(referenceDescription, variableManager));
+                var builder = ReferenceWidgetPreviewConverterProvider.this.getReferenceWidgetDescriptionBuilder(referenceDescription, id);
                 if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
                     String helpText = ReferenceWidgetPreviewConverterProvider.this.getWidgetHelpText(referenceDescription);
                     builder.helpTextProvider(variableManager -> helpText);
                 }
                 return builder.build();
             }
-
         };
+    }
+
+    public ReferenceWidgetDescription.Builder getReferenceWidgetDescriptionBuilder(org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription referenceDescription,
+            String id) {
+        return ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
+                        .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Reference"))
+                .iconURLProvider(variableManager -> "")
+                .isReadOnlyProvider(variableManager -> false)
+                .itemsProvider(variableManager -> List.of())
+                .optionsProvider(variableManager -> List.of())
+                .itemIdProvider(variableManager -> "")
+                .itemKindProvider(variableManager -> "")
+                .itemLabelProvider(variableManager -> "")
+                .itemKindProvider(variableManager -> "")
+                .itemLabelProvider(variableManager -> "")
+                .itemImageURLProvider(variableManager -> "")
+                .settingProvider(variableManager -> {
+                    // We need a non-null Setting instance which does not depend on any actual instance model.
+                    EObject owner = EcorePackage.Literals.ECLASS;
+                    return ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
+                })
+                .ownerIdProvider(variableManager -> "")
+                .itemClickHandlerProvider(variableManager -> new Success())
+                .styleProvider(variableManager -> ReferenceWidgetPreviewConverterProvider.this.getWidgetStyle(referenceDescription, variableManager))
+                .diagnosticsProvider(variableManager -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "");
     }
 
     public String getWidgetLabel(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, String defaultLabel) {

@@ -1,0 +1,9 @@
+= sirius-components-collaborative-widget-reference
+
+== Goal
+
+This project provides support for collaborative edition layer.
+
+== Dependencies
+
+- sirius-components-widget-reference
