@@ -203,7 +203,7 @@ export const Workbench = ({
         leftContributions={workbenchViewLeftSideContributions}
         leftPanelInitialSize={300}
         rightContributions={workbenchViewRightSideContributions}
-        rightPanelInitialSize={300}
+        rightPanelInitialSize={450}
         mainArea={main}
       />
       <Toast

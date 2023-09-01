@@ -39,5 +39,6 @@
 		<module>sirius-components-widget-reference</module>
 		<module>sirius-components-widget-reference-view</module>
 		<module>sirius-components-widget-reference-view-edit</module>
-	</modules>
+        <module>sirius-components-collaborative-widget-reference</module>
+    </modules>
 </project>

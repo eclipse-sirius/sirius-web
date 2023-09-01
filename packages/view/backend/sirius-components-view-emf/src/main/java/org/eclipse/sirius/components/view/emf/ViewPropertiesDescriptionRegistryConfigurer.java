@@ -33,8 +33,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.compatibility.emf.properties.EBooleanIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.EEnumIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.EStringIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.MonoValuedNonContainmentReferenceIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.MultiValuedNonContainmentReferenceIfDescriptionProvider;
+import org.eclipse.sirius.components.compatibility.emf.properties.NonContainmentReferenceIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.NumberIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -194,8 +193,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
         ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new MonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
-        ifDescriptions.add(new MultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.semanticTargetIdProvider).getIfDescription());
 
         var numericDataTypes = List.of(
                 EcorePackage.Literals.EINT,
@@ -209,7 +207,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
                 EcorePackage.Literals.ESHORT,
                 EcorePackage.Literals.ESHORT_OBJECT,
                 ViewPackage.Literals.LENGTH
-                );
+        );
         for (var dataType : numericDataTypes) {
             ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider).getIfDescription());
         }

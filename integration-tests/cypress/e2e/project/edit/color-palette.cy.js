@@ -54,6 +54,7 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('Name').clear().type('OtherColorPalette{enter}');
     cy.getByTestId('OtherColorPalette-more').click();
     cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click().get('[data-value="Fixed Color"]').should('exist');
   });
 
@@ -63,9 +64,12 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.get('[title="diagram::DiagramDescription"]').dblclick();
     cy.getByTestId('Entity1 Node-toggle').click();
     cy.get('[title="diagram::RectangularNodeStyleDescription"]').click();
-    cy.getByTestId('Label Color').click().get('[data-value="color_dark"]').should('exist').click();
-    cy.getByTestId('Color').click().get('[data-value="color_dark"]').should('exist').click();
-    cy.getByTestId('Border Color').click().get('[data-value="border_blue"]').should('exist').click();
+    cy.getByTestId('Label Color').click();
+    cy.getByTestId('option-color_dark').should('exist').click();
+    cy.getByTestId('Color').click();
+    cy.getByTestId('option-color_dark').should('exist').click();
+    cy.getByTestId('Border Color').click();
+    cy.getByTestId('option-border_green').should('exist').click();
   });
 
   it('can select color from color palette in edge style properties', () => {
@@ -75,7 +79,6 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('LinkedTo Edge-toggle').click();
     cy.get('[title="diagram::EdgeStyle"]').click();
     cy.getByTestId('Color').click();
-    cy.contains('FixedColor color_blue').click();
+    cy.getByTestId('option-color_blue').should('exist').click();
   });
 });
-
