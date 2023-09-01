@@ -42,6 +42,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextActionHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
@@ -57,6 +58,7 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.sample.configuration.SampleDomainNameProvider;
 import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewProvider;
 import org.slf4j.Logger;
@@ -77,8 +79,14 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private static final List<String> HANDLED_ACTIONS = List.of(EMPTY_ACTION_ID, EMPTY_FLOW_ID, ROBOT_FLOW_ID, BIG_GUY_FLOW_ID,
             EMPTY_DOMAIN_ID, PAPAYA_DOMAIN_ID, EMPTY_VIEW_ID, PAPAYA_VIEW_ID);
+
     private final Logger logger = LoggerFactory.getLogger(EditingContextActionHandler.class);
 
+    private final SampleDomainNameProvider domainNameProvider;
+
+    public EditingContextActionHandler() {
+        this.domainNameProvider = new SampleDomainNameProvider();
+    }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String actionId) {
@@ -131,7 +139,9 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private void createEmptyDomainResource(ResourceSet resourceSet) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
-        resource.getContents().add(DomainFactory.eINSTANCE.createDomain());
+        Domain domain = DomainFactory.eINSTANCE.createDomain();
+        domain.setName(this.domainNameProvider.getSampleDomainName());
+        resource.getContents().add(domain);
         resource.eAdapters().add(new ResourceMetadataAdapter("Domain"));
         resourceSet.getResources().add(resource);
     }

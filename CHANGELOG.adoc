@@ -45,7 +45,6 @@ As a result the development of applications consuming Sirius Components packages
 - [releng] The frontend now depends on `html-to-image` to support the "export to SVG" action in the diagram panel of the react-flow prototype (see https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296])
 - [releng] Switch to `org.apache.xmlgraphics:batik-bridge` 1.17
 
-
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-components/issues/2222[#2222] [tree] Fix an issue where all the tree items where editable, even for elements that have no label.
@@ -65,9 +64,10 @@ As a result the development of applications consuming Sirius Components packages
 - https://github.com/eclipse-sirius/sirius-web/issues/2231[#2231] [diagram] Extract the support for fullscreen in a dedicated hook
 - https://github.com/eclipse-sirius/sirius-web/issues/2295[#2295] [diagram] Support direct edit on edges labels (center, start, end) on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2233[#2233] [diagram] Move the behavior of the arrange all in the diagram panel component
-- https://github.com/eclipse-sirius/sirius-web/issues/2311[2311] [diagram] Ensure that the layout uses the same context as the rendering
+- https://github.com/eclipse-sirius/sirius-web/issues/2311[#2311] [diagram] Ensure that the layout uses the same context as the rendering
 - https://github.com/eclipse-sirius/sirius-web/issues/2208[#2208] [diagram] Add Cypress tests for React Flow.
-- https://github.com/eclipse-sirius/sirius-web/issues/2198[2198] [view] Add a default Color Palette on View creation 
+- https://github.com/eclipse-sirius/sirius-web/issues/2198[#2198] [view] Add a default Color Palette on View creation
+- https://github.com/eclipse-sirius/sirius-web/issues/2228[#2228] [domain] Creating a domain from the onboard area action now initialize its name.
 
 == v2023.8.0
 
