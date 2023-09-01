@@ -12,10 +12,15 @@
  *******************************************************************************/
 
 import { Connection } from 'reactflow';
+import { GQLNodeDescription } from './useConnector.types';
 
 export interface ConnectorContextValue {
   connection: Connection | null;
+  candidates: GQLNodeDescription[];
+  isNewConnection: boolean;
   setConnection: (connection: Connection) => void;
+  setCandidates: (candidates: GQLNodeDescription[]) => void;
+  setIsNewConnection: (isNewConnection: boolean) => void;
   resetConnection: () => void;
 }
 
@@ -25,4 +30,6 @@ export interface ConnectorContextProviderProps {
 
 export interface ConnectorContextProviderState {
   connection: Connection | null;
+  candidates: GQLNodeDescription[];
+  isNewConnection: boolean;
 }

@@ -11,10 +11,79 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, OnConnect } from 'reactflow';
+import { Connection, OnConnect, OnConnectEnd, OnConnectStart } from 'reactflow';
 
 export interface UseConnectorValue {
   onConnect: OnConnect;
+  onConnectStart: OnConnectStart;
+  onConnectEnd: OnConnectEnd;
   onConnectorContextualMenuClose: () => void;
+  onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  newConnectionStyleProvider: NodeStyleProvider;
   connection: Connection | null;
+}
+
+export interface NodeStyleProvider {
+  getNodeStyle: (id: string) => React.CSSProperties;
+  getHandleStyle: (id: string) => React.CSSProperties;
+}
+export interface GQLGetToolSectionsData {
+  viewer: GQLViewer;
+}
+export interface GQLGetToolSectionsVariables {
+  editingContextId: string;
+  diagramId: string;
+  diagramElementId: string;
+}
+export interface GQLViewer {
+  editingContext: GQLEditingContext;
+}
+
+export interface GQLEditingContext {
+  representation: GQLRepresentationMetadata;
+}
+
+export interface GQLRepresentationMetadata {
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
+  __typename: string;
+}
+
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  palette: GQLPalette;
+}
+
+export interface GQLPalette {
+  id: string;
+  tools: GQLTool[];
+  toolSections: GQLToolSection[];
+}
+
+export interface GQLToolSection {
+  id: string;
+  label: string;
+  imageURL: string;
+  tools: GQLTool[];
+  __typename: string;
+}
+
+export interface GQLTool {
+  id: string;
+  label: string;
+  imageURL: string;
+  __typename: string;
+}
+export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
+  candidates: GQLSingleClickOnTwoDiagramElementsCandidate[];
+}
+export interface GQLSingleClickOnTwoDiagramElementsCandidate {
+  sources: GQLNodeDescription[];
+  targets: GQLNodeDescription[];
+}
+
+export interface GQLNodeDescription {
+  id: string;
 }

@@ -16,6 +16,7 @@ import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { Label } from '../Label';
+import { useConnector } from '../connector/useConnector';
 import { NodePalette } from '../palette/NodePalette';
 import { ImageNodeData } from './ImageNode.types';
 
@@ -41,19 +42,52 @@ const imageNodeStyle = (
 export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<ImageNodeData>) => {
   const theme = useTheme();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { onConnectionStartElementClick, newConnectionStyleProvider } = useConnector();
+
   return (
     <>
       <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => !data.isBorderNode} />
       <img
         src={httpOrigin + data.imageURL}
-        style={imageNodeStyle(theme, data.style, selected, data.faded)}
+        style={{
+          ...imageNodeStyle(theme, data.style, selected, data.faded),
+          ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
+        }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />
       {selected ? <NodePalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
-      <Handle id={`handle--${id}--top`} type="source" position={Position.Top} isConnectable={isConnectable} />
-      <Handle id={`handle--${id}--left`} type="source" position={Position.Left} isConnectable={isConnectable} />
-      <Handle id={`handle--${id}--right`} type="source" position={Position.Right} isConnectable={isConnectable} />
-      <Handle id={`handle--${id}--bottom`} type="source" position={Position.Bottom} isConnectable={isConnectable} />
+      <Handle
+        id={`handle--${id}--top`}
+        type="source"
+        position={Position.Top}
+        isConnectable={isConnectable}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        onMouseDown={onConnectionStartElementClick}
+      />
+      <Handle
+        id={`handle--${id}--left`}
+        type="source"
+        position={Position.Left}
+        isConnectable={isConnectable}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        onMouseDown={onConnectionStartElementClick}
+      />
+      <Handle
+        id={`handle--${id}--right`}
+        type="source"
+        position={Position.Right}
+        isConnectable={isConnectable}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        onMouseDown={onConnectionStartElementClick}
+      />
+      <Handle
+        id={`handle--${id}--bottom`}
+        type="source"
+        position={Position.Bottom}
+        isConnectable={isConnectable}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        onMouseDown={onConnectionStartElementClick}
+      />
       {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
     </>
   );
