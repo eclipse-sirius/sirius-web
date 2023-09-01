@@ -125,7 +125,7 @@ const getDomainsQuery = gql`
   query getDomains($editingContextId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        domains {
+        domains(rootDomainsOnly: false) {
           id
           label
         }

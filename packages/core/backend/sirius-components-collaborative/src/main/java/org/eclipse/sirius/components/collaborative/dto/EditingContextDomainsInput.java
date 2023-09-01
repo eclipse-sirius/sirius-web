@@ -21,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author frouene
  */
-public record EditingContextDomainsInput(UUID id, String editingContextId) implements IInput {
+public record EditingContextDomainsInput(UUID id, String editingContextId, boolean rootDomainsOnly) implements IInput {
 }

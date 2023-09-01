@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.handlers;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextDomainsInput;
@@ -22,10 +25,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Sinks;
 
-import java.util.List;
-import java.util.Objects;
+import reactor.core.publisher.Sinks;
 
 /**
  * Event handler to find/compute all the domains accessible from a given editing context.
@@ -49,8 +50,12 @@ public class EditingContextDomainsEventHandler implements IEditingContextEventHa
     @Override
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         List<Domain> domains = List.of();
-        if (input instanceof EditingContextDomainsInput) {
-            domains = domainSearchService.findAllByEditingContext(editingContext);
+        if (input instanceof EditingContextDomainsInput domainsInput) {
+            if (domainsInput.rootDomainsOnly()) {
+                domains = this.domainSearchService.findRootDomainsByEditingContext(editingContext);
+            } else {
+                domains = this.domainSearchService.findAllByEditingContext(editingContext);
+            }
         }
         payloadSink.tryEmitValue(new EditingContextDomainsPayload(input.id(), domains));
     }

@@ -29,8 +29,8 @@ import { useMachine } from '@xstate/react';
 import { useContext, useEffect } from 'react';
 import {
   GQLCreateRootObjectMutationData,
-  GQLGetDomainsQueryData,
-  GQLGetDomainsQueryVariables,
+  GQLGetRootDomainsQueryData,
+  GQLGetRootDomainsQueryVariables,
   GQLGetRootObjectCreationDescriptionsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryVariables,
   NewRootObjectModalProps,
@@ -69,11 +69,11 @@ const createRootObjectMutation = gql`
   }
 `;
 
-const getDomainsQuery = gql`
-  query getDomains($editingContextId: ID!) {
+const getRootDomainsQuery = gql`
+  query getRootDomains($editingContextId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        domains {
+        domains(rootDomainsOnly: true) {
           id
           label
         }
@@ -135,7 +135,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
     loading: domainsLoading,
     data: domainsData,
     error: domainsError,
-  } = useQuery<GQLGetDomainsQueryData, GQLGetDomainsQueryVariables>(getDomainsQuery, {
+  } = useQuery<GQLGetRootDomainsQueryData, GQLGetRootDomainsQueryVariables>(getRootDomainsQuery, {
     variables: { editingContextId },
   });
   useEffect(() => {

@@ -13,7 +13,7 @@ interface Viewer {
 
 type EditingContext {
   id: ID!
-  domains: [Domain!]!
+  domains(rootDomainsOnly: Boolean!): [Domain!]!
   representation(representationId: ID!): RepresentationMetadata
   representations: EditingContextRepresentationConnection!
   representationDescriptions(objectId: ID!): EditingContextRepresentationDescriptionConnection!

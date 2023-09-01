@@ -22,6 +22,10 @@
 
 UI is unchanged except that we removed the transactional behavior of the _TransferModal_ component which is now performing operations live. This means that changes are no longer done when the modal is close (using the _Apply_ button) but as soon as the user interacts with elements (adding or removing values, changing order).
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2269[#2269] [core] The GraphQL field `EditingContext#domains` has been modified.
+A new parameter `rootDomainsOnly: Boolean` has been added, allowing to remove domains not compatible with root objects.
+For example, Diagram & Form domains are not root domains because `DiagramDescription` and `FormDescription` are not root objects valid candidates.
+
 === Dependency update
 
 
@@ -29,6 +33,7 @@ UI is unchanged except that we removed the transactional behavior of the _Transf
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2360[#2360] [form] Fix an issue that prevent creation of new object on some containment reference with the reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [form] Fix an issue that prevent creation of new object on mono valued and containment reference when a value is already set with the reference widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/2269[#2269] [view] Fix an issue where it was possible to create a DiagramDescription or a FormDescription as a root object of a resource.
 
 === New Features
 
