@@ -301,7 +301,7 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: 
         <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
       ))}
       {palette?.toolSections.map((toolSection) => (
-        <ToolSection toolSection={toolSection} onToolClick={handleToolClick} />
+        <ToolSection toolSection={toolSection} onToolClick={handleToolClick} key={toolSection.id} />
       ))}
       {isNodePalette ? (
         <>

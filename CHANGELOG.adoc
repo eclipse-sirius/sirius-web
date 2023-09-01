@@ -58,6 +58,7 @@ A suitable implementation is to get the id of the `self` object using `IObjectSe
 
 - https://github.com/eclipse-sirius/sirius-components/issues/2222[#2222] [tree] Fix an issue where all the tree items where editable, even for elements that have no label.
 - https://github.com/eclipse-sirius/sirius-web/issues/2245[#2245] [sirius-web] Fix an issue when triggering expandAll on models with multiple root objects.
+- https://github.com/eclipse-sirius/sirius-web/issues/2333[#2333] [diagram] Fix a warning console when opening a palette on a diagram.
 
 === New Features
 
