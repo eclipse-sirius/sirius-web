@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.core.api.Domain;
 import org.eclipse.sirius.components.core.api.IDomainSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.form.FormPackage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,6 +46,25 @@ public class DomainSearchService implements IDomainSearchService {
                 .stream()
                 .filter(EPackage.class::isInstance)
                 .map(EPackage.class::cast)
+                .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
+                .sorted()
+                .toList();
+    }
+
+    @Override
+    public List<Domain> findRootDomainsByEditingContext(IEditingContext editingContext) {
+        return Optional.of(editingContext)
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain)
+                .map(EditingDomain::getResourceSet)
+                .map(ResourceSet::getPackageRegistry)
+                .map(EPackage.Registry::values)
+                .orElse(List.of())
+                .stream()
+                .filter(EPackage.class::isInstance)
+                .map(EPackage.class::cast)
+                .filter(ePackage -> !List.of(DiagramPackage.eNS_URI, FormPackage.eNS_URI).contains(ePackage.getNsURI()))
                 .map(ePackage -> new Domain(ePackage.getNsURI(), ePackage.getNsURI()))
                 .sorted()
                 .toList();

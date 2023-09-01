@@ -42,6 +42,9 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "EditingContext", field = "domains")
 public class EditingContextDomainsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<Domain>>> {
+
+    private static final String ROOT_DOMAINS_ONLY_ARGUMENT = "rootDomainsOnly";
+
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     public EditingContextDomainsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
@@ -51,8 +54,9 @@ public class EditingContextDomainsDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public CompletableFuture<List<Domain>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
+        boolean rootDomainsOnlyArgument = environment.getArgument(ROOT_DOMAINS_ONLY_ARGUMENT);
 
-        EditingContextDomainsInput input = new EditingContextDomainsInput(UUID.randomUUID(), editingContextId);
+        EditingContextDomainsInput input = new EditingContextDomainsInput(UUID.randomUUID(), editingContextId, rootDomainsOnlyArgument);
 
         return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                 .filter(EditingContextDomainsPayload.class::isInstance)

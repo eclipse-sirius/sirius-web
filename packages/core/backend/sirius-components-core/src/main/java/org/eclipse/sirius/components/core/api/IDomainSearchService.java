@@ -21,4 +21,5 @@ import java.util.List;
  */
 public interface IDomainSearchService {
     List<Domain> findAllByEditingContext(IEditingContext editingContext);
+    List<Domain> findRootDomainsByEditingContext(IEditingContext editingContext);
 }

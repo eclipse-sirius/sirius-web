@@ -30,11 +30,11 @@ export interface ChildCreationDescription {
   iconURL: string;
 }
 
-export interface GQLGetDomainsQueryVariables {
+export interface GQLGetRootDomainsQueryVariables {
   editingContextId: string;
 }
 
-export interface GQLGetDomainsQueryData {
+export interface GQLGetRootDomainsQueryData {
   viewer: GQLViewer;
 }
 
