@@ -1867,13 +1867,22 @@ public interface DiagramPackage extends EPackage {
     int TOOL__NAME = 0;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL__PRECONDITION_EXPRESSION = 1;
+
+    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TOOL__BODY = 1;
+    int TOOL__BODY = 2;
 
     /**
      * The number of structural features of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1881,7 +1890,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TOOL_FEATURE_COUNT = 2;
+    int TOOL_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1908,6 +1917,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1954,6 +1972,15 @@ public interface DiagramPackage extends EPackage {
     int DROP_TOOL__NAME = TOOL__NAME;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1996,6 +2023,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2051,6 +2087,15 @@ public interface DiagramPackage extends EPackage {
     int EDGE_RECONNECTION_TOOL__NAME = TOOL__NAME;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_RECONNECTION_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -2094,6 +2139,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LABEL_EDIT_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2147,6 +2201,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -2203,6 +2266,15 @@ public interface DiagramPackage extends EPackage {
     int SOURCE_EDGE_END_RECONNECTION_TOOL__NAME = EDGE_RECONNECTION_TOOL__NAME;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL__PRECONDITION_EXPRESSION = EDGE_RECONNECTION_TOOL__PRECONDITION_EXPRESSION;
+
+    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -2247,6 +2319,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TARGET_EDGE_END_RECONNECTION_TOOL__NAME = EDGE_RECONNECTION_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL__PRECONDITION_EXPRESSION = EDGE_RECONNECTION_TOOL__PRECONDITION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -3629,6 +3710,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getTool_Name();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.Tool#getPreconditionExpression <em>Precondition
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Tool#getPreconditionExpression()
+     * @see #getTool()
+     * @generated
+     */
+    EAttribute getTool_PreconditionExpression();
+
+    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.diagram.Tool#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -4767,6 +4860,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute TOOL__NAME = eINSTANCE.getTool_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TOOL__PRECONDITION_EXPRESSION = eINSTANCE.getTool_PreconditionExpression();
 
         /**
          * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--

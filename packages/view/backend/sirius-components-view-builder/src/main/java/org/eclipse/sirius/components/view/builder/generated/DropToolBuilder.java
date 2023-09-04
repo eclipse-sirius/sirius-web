@@ -52,6 +52,16 @@ public class DropToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public DropToolBuilder preconditionExpression(java.lang.String value) {
+        this.getDropTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated

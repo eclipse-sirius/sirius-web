@@ -76,6 +76,7 @@ Both constructs are commonly combined together, with e.g. _For_ iterating on the
 They can however also be used independently (e.g. a single _If_ outside of a _For_ to make the presence of a widget conditional) and combined in arbitrary ways (e.g. nested loops or conditionals).
 Note that this first version has a known limitation: _FormDescriptions_ which use _For_ or _If_ elements can not be reliably edited using the _Form Description Editor_.
 This will be fixed in the next version.
+- https://github.com/eclipse-sirius/sirius-web/issues/2254[#2254] [diagram] Add the possibility to specify precondition on diagram tools
 
 === Improvements
 

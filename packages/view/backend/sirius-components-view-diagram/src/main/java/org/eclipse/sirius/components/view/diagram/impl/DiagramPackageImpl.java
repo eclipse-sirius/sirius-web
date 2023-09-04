@@ -1248,8 +1248,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getTool_PreconditionExpression() {
+        return (EAttribute) this.toolEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getTool_Body() {
-        return (EReference) this.toolEClass.getEStructuralFeatures().get(1);
+        return (EReference) this.toolEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1743,6 +1753,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.toolEClass = this.createEClass(TOOL);
         this.createEAttribute(this.toolEClass, TOOL__NAME);
+        this.createEAttribute(this.toolEClass, TOOL__PRECONDITION_EXPRESSION);
         this.createEReference(this.toolEClass, TOOL__BODY);
 
         this.deleteToolEClass = this.createEClass(DELETE_TOOL);
@@ -2027,6 +2038,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.toolEClass, Tool.class, "Tool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTool_Name(), theViewPackage.getIdentifier(), "name", "Tool", 1, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTool_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTool_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

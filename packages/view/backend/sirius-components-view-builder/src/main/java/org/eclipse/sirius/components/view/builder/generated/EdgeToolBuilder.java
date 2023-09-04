@@ -52,6 +52,16 @@ public class EdgeToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public EdgeToolBuilder preconditionExpression(java.lang.String value) {
+        this.getEdgeTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated

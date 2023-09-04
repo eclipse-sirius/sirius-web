@@ -52,6 +52,16 @@ public class LabelEditToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public LabelEditToolBuilder preconditionExpression(java.lang.String value) {
+        this.getLabelEditTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated

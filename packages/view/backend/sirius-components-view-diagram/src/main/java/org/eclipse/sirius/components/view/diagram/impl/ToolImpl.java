@@ -34,6 +34,8 @@ import org.eclipse.sirius.components.view.diagram.Tool;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -59,6 +61,26 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
      * @ordered
      */
     protected String name = NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
@@ -118,6 +140,29 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
      * @generated
      */
     @Override
+    public String getPreconditionExpression() {
+        return this.preconditionExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPreconditionExpression(String newPreconditionExpression) {
+        String oldPreconditionExpression = this.preconditionExpression;
+        this.preconditionExpression = newPreconditionExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.TOOL__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<Operation> getBody() {
         if (this.body == null) {
             this.body = new EObjectContainmentEList<>(Operation.class, this, DiagramPackage.TOOL__BODY);
@@ -149,6 +194,8 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
         switch (featureID) {
             case DiagramPackage.TOOL__NAME:
                 return this.getName();
+            case DiagramPackage.TOOL__PRECONDITION_EXPRESSION:
+                return this.getPreconditionExpression();
             case DiagramPackage.TOOL__BODY:
                 return this.getBody();
         }
@@ -166,6 +213,9 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
         switch (featureID) {
             case DiagramPackage.TOOL__NAME:
                 this.setName((String) newValue);
+                return;
+            case DiagramPackage.TOOL__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression((String) newValue);
                 return;
             case DiagramPackage.TOOL__BODY:
                 this.getBody().clear();
@@ -186,6 +236,9 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
             case DiagramPackage.TOOL__NAME:
                 this.setName(NAME_EDEFAULT);
                 return;
+            case DiagramPackage.TOOL__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+                return;
             case DiagramPackage.TOOL__BODY:
                 this.getBody().clear();
                 return;
@@ -203,6 +256,8 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
         switch (featureID) {
             case DiagramPackage.TOOL__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case DiagramPackage.TOOL__PRECONDITION_EXPRESSION:
+                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case DiagramPackage.TOOL__BODY:
                 return this.body != null && !this.body.isEmpty();
         }
@@ -222,6 +277,8 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (name: ");
         result.append(this.name);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
         result.append(')');
         return result.toString();
     }

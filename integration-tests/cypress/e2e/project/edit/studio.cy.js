@@ -111,4 +111,52 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.get('[data-value="Source Edge End Reconnection Tool"]').should('not.exist');
     cy.get('[data-value="Target Edge End Reconnection Tool"]').should('not.exist');
   });
+
+  it('Check the precondition on tools', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.getByTestId('DiagramPalette-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Node Tool"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Precondition Expression').should('exist');
+    cy.getByTestId('Precondition Expression').type('aql:self.eAllContents()->size()>0');
+    cy.getByTestId('Name').clear();
+    cy.getByTestId('Name').type('TestTool');
+
+    cy.get('[title="Back to the homepage"]').click();
+    // Check the diagram representation
+
+    cy.getByTestId('create').click();
+    cy.getByTestId('name').type('Instance');
+    cy.getByTestId('create-project').click();
+    cy.getByTestId('empty').click();
+    cy.getByTestId('Others...-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
+    cy.getByTestId('domain').click();
+    cy.getByTestId('domain').get('[data-value^="domain://"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+
+    cy.getByTestId('Root-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('representationDescription').click();
+    cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
+    cy.getByTestId('create-representation').click();
+    cy.getByTestId('Diagram').should('exist');
+    cy.getByTestId('Diagram').click();
+    cy.getByTestId('New Entity1 - Tool').should('exist');
+    cy.getByTestId('New Entity2 - Tool').should('exist');
+    cy.getByTestId('TestTool - Tool').should('not.exist');
+    cy.getByTestId('New Entity1 - Tool').click();
+    cy.getByTestId('Diagram').click();
+    cy.getByTestId('New Entity1 - Tool').should('exist');
+    cy.getByTestId('New Entity2 - Tool').should('exist');
+    cy.getByTestId('TestTool - Tool').should('exist');
+  });
 });

@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
  * @author frouene
  */
 @Service
-public class ViewReconnectionToolsExecutorParameters {
+public class ViewPaletteToolsConfiguration {
 
     private final IURLParser urlParser;
 
@@ -36,7 +36,7 @@ public class ViewReconnectionToolsExecutorParameters {
 
     private final IObjectService objectService;
 
-    public ViewReconnectionToolsExecutorParameters(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService) {
+    public ViewPaletteToolsConfiguration(IURLParser urlParser, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);

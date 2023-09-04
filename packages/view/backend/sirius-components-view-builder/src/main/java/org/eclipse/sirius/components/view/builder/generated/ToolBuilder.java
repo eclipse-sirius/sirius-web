@@ -36,6 +36,16 @@ public abstract class ToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public ToolBuilder preconditionExpression(java.lang.String value) {
+        this.getTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated
