@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.compatibility.api.IAQLInterpreterFactory;
 import org.eclipse.sirius.components.compatibility.api.IIdentifierProvider;
 import org.eclipse.sirius.components.compatibility.services.api.IODesignRegistry;
 import org.eclipse.sirius.components.core.api.Environment;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -84,7 +85,7 @@ public class CompatibilityPaletteProvider implements IPaletteProvider {
     }
 
     @Override
-    public Palette handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription) {
+    public Palette handle(Object targetElement, Object diagramElement, Object diagramElementDescription, DiagramDescription diagramDescription, IEditingContext editingContext) {
         var optionalVsmElementId = this.identifierProvider.findVsmElementId(diagramDescription.getId());
 
         var optionalSiriusDiagramDescription = this.odesignRegistry.getODesigns().stream()

@@ -61,6 +61,7 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
             super.getPropertyDescriptors(object);
 
             this.addNamePropertyDescriptor(object);
+            this.addPreconditionExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -74,6 +75,18 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Tool_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Tool_name_feature", "_UI_Tool_type"), DiagramPackage.Literals.TOOL__NAME, true,
                 false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPreconditionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Tool_preconditionExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Tool_preconditionExpression_feature", "_UI_Tool_type"),
+                DiagramPackage.Literals.TOOL__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -140,6 +153,7 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
 
         switch (notification.getFeatureID(Tool.class)) {
             case DiagramPackage.TOOL__NAME:
+            case DiagramPackage.TOOL__PRECONDITION_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.TOOL__BODY:

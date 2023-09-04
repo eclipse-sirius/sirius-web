@@ -24,6 +24,8 @@ import org.eclipse.sirius.components.view.Operation;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.Tool#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.Tool#getPreconditionExpression <em>Precondition
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.Tool#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -54,6 +56,29 @@ public interface Tool extends EObject {
      * @generated
      */
     void setName(String value);
+
+    /**
+     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Precondition Expression</em>' attribute.
+     * @see #setPreconditionExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getTool_PreconditionExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getPreconditionExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.Tool#getPreconditionExpression
+     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Precondition Expression</em>' attribute.
+     * @see #getPreconditionExpression()
+     * @generated
+     */
+    void setPreconditionExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type

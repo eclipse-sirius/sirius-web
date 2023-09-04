@@ -38,7 +38,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.configuration.ViewReconnectionToolsExecutorParameters;
+import org.eclipse.sirius.components.view.emf.configuration.ViewPaletteToolsConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -70,8 +70,8 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private final Logger logger = LoggerFactory.getLogger(ViewReconnectionToolsExecutor.class);
 
-    public ViewReconnectionToolsExecutor(ViewReconnectionToolsExecutorParameters parameters, IEditService editService, List<IJavaServiceProvider> javaServiceProviders,
-                                         ApplicationContext applicationContext, IFeedbackMessageService feedbackMessageService) {
+    public ViewReconnectionToolsExecutor(ViewPaletteToolsConfiguration parameters, IEditService editService, List<IJavaServiceProvider> javaServiceProviders,
+            ApplicationContext applicationContext, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(parameters.getObjectService());
         this.editService = Objects.requireNonNull(editService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(parameters.getViewRepresentationDescriptionSearchService());

@@ -1096,12 +1096,14 @@ export const DiagramRepresentation = ({
           diagramServer.actionDispatcher.dispatch(sourceElementAction);
         }
       }
-      const setDefaultToolEvent: SetDefaultToolEvent = {
-        type: 'SET_DEFAULT_TOOL',
-        defaultTool: tool,
-        toolSection: toolSection,
-      };
-      dispatch(setDefaultToolEvent);
+      if (toolSection) {
+        const setDefaultToolEvent: SetDefaultToolEvent = {
+          type: 'SET_DEFAULT_TOOL',
+          defaultTool: tool,
+          toolSection: toolSection,
+        };
+        dispatch(setDefaultToolEvent);
+      }
     };
     const invokeConnectorToolFromContextualPalette = (palette: GQLPalette) => {
       resetTools();

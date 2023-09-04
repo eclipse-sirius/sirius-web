@@ -146,6 +146,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//Tool">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/preconditionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//Tool/body"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//DeleteTool"/>

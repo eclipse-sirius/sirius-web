@@ -52,6 +52,16 @@ public class NodeToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public NodeToolBuilder preconditionExpression(java.lang.String value) {
+        this.getNodeTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated

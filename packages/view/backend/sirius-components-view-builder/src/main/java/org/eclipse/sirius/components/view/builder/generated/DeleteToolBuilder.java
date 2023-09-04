@@ -52,6 +52,16 @@ public class DeleteToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public DeleteToolBuilder preconditionExpression(java.lang.String value) {
+        this.getDeleteTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated

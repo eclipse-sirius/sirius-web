@@ -36,6 +36,16 @@ public abstract class EdgeReconnectionToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public EdgeReconnectionToolBuilder preconditionExpression(java.lang.String value) {
+        this.getEdgeReconnectionTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated

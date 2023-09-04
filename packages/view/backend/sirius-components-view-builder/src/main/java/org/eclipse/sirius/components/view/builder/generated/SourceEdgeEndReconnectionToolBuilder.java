@@ -52,6 +52,16 @@ public class SourceEdgeEndReconnectionToolBuilder {
         return this;
     }
     /**
+     * Setter for PreconditionExpression.
+     *
+     * @generated
+     */
+    public SourceEdgeEndReconnectionToolBuilder preconditionExpression(java.lang.String value) {
+        this.getSourceEdgeEndReconnectionTool().setPreconditionExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated
