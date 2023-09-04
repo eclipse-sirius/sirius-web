@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
@@ -67,28 +68,25 @@ public class DiagramDescriptionValidator implements EValidator {
     @Override
     public boolean validate(EClass eClass, EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
         boolean isValid = true;
-        if (eObject instanceof DiagramDescription) {
-            DiagramDescription diagramDescription = (DiagramDescription) eObject;
+        if (eObject instanceof DiagramDescription diagramDescription) {
             isValid = this.hasProperDomainType(diagramDescription, diagnostics) && isValid;
         }
-        if (eObject instanceof DiagramElementDescription) {
-            DiagramElementDescription diagramElementDescription = (DiagramElementDescription) eObject;
+        if (eObject instanceof DiagramElementDescription diagramElementDescription) {
             isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
         }
-        if (eObject instanceof NodeStyleDescription) {
-            NodeStyleDescription nodeStyle = (NodeStyleDescription) eObject;
+        if (eObject instanceof NodeStyleDescription nodeStyle) {
             isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
         }
-        if (eObject instanceof Conditional) {
-            Conditional conditional = (Conditional) eObject;
+        if (eObject instanceof ImageNodeStyleDescription imageNodeStyle) {
+            isValid = this.hasProperShape(imageNodeStyle, diagnostics) && isValid;
+        }
+        if (eObject instanceof Conditional conditional) {
             isValid = this.conditionIsPresent(conditional, diagnostics) && isValid;
         }
-        if (eObject instanceof ConditionalNodeStyle) {
-            ConditionalNodeStyle conditionalNodeStyle = (ConditionalNodeStyle) eObject;
+        if (eObject instanceof ConditionalNodeStyle conditionalNodeStyle) {
             isValid = this.conditionalStyleIsPresent(conditionalNodeStyle, diagnostics) && isValid;
         }
-        if (eObject instanceof CreateInstance) {
-            CreateInstance createInstance = (CreateInstance) eObject;
+        if (eObject instanceof CreateInstance createInstance) {
             isValid = this.hasProperDomainType(createInstance, diagnostics) && isValid;
         }
         return isValid;
@@ -103,7 +101,6 @@ public class DiagramDescriptionValidator implements EValidator {
         boolean isValid = !conditional.getCondition().isBlank();
 
         if (!isValid && diagnostics != null) {
-            // @formatter:off
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
@@ -112,7 +109,6 @@ public class DiagramDescriptionValidator implements EValidator {
                         conditional,
                         ViewPackage.Literals.CONDITIONAL__CONDITION,
                     });
-            // @formatter:on
 
             diagnostics.add(basicDiagnostic);
         }
@@ -124,7 +120,6 @@ public class DiagramDescriptionValidator implements EValidator {
         boolean isValid = conditionalNodeStyle.getStyle() != null;
 
         if (!isValid && diagnostics != null) {
-            // @formatter:off
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
@@ -133,7 +128,6 @@ public class DiagramDescriptionValidator implements EValidator {
                         conditionalNodeStyle,
                         DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                     });
-            // @formatter:on
 
             diagnostics.add(basicDiagnostic);
         }
@@ -145,7 +139,6 @@ public class DiagramDescriptionValidator implements EValidator {
         boolean isValid = Objects.nonNull(nodeStyle.getColor());
 
         if (!isValid && diagnostics != null) {
-            // @formatter:off
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
@@ -154,7 +147,25 @@ public class DiagramDescriptionValidator implements EValidator {
                         nodeStyle,
                         DiagramPackage.Literals.STYLE__COLOR,
                     });
-            // @formatter:on
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean hasProperShape(ImageNodeStyleDescription imageNodeStyle, DiagnosticChain diagnostics) {
+        boolean isValid = Objects.nonNull(imageNodeStyle.getShape());
+
+        if (!isValid && diagnostics != null) {
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_COMPONENTS_EMF_PACKAGE,
+                    0,
+                    "The shape should not be empty",
+                    new Object [] {
+                        imageNodeStyle,
+                        DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE,
+                    });
 
             diagnostics.add(basicDiagnostic);
         }
@@ -172,18 +183,15 @@ public class DiagramDescriptionValidator implements EValidator {
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
-            // @formatter:off
             isValid = ePackages.stream()
                     .map(EPackage::getEClassifiers)
                     .flatMap(Collection::stream)
                     .filter(EClass.class::isInstance)
                     .map(EClass.class::cast)
                     .anyMatch(classifier -> new DomainClassPredicate(domainType).test(classifier));
-            // @formatter:off
         }
 
         if (!isValid && diagnostics != null) {
-            // @formatter:off
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
@@ -192,7 +200,6 @@ public class DiagramDescriptionValidator implements EValidator {
                         diagramDescription,
                         ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE,
                     });
-            // @formatter:on
 
             diagnostics.add(basicDiagnostic);
         }
@@ -210,18 +217,15 @@ public class DiagramDescriptionValidator implements EValidator {
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
-            // @formatter:off
             isValid = ePackages.stream()
                     .map(EPackage::getEClassifiers)
                     .flatMap(Collection::stream)
                     .filter(EClass.class::isInstance)
                     .map(EClass.class::cast)
                     .anyMatch(classifier -> new DomainClassPredicate(domainType).test(classifier));
-            // @formatter:off
         }
 
         if (!isValid && diagnostics != null) {
-            // @formatter:off
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
@@ -230,7 +234,6 @@ public class DiagramDescriptionValidator implements EValidator {
                         diagramElementDescription,
                         DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
                     });
-            // @formatter:on
 
             diagnostics.add(basicDiagnostic);
         }
@@ -248,18 +251,15 @@ public class DiagramDescriptionValidator implements EValidator {
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
-            // @formatter:off
             isValid = ePackages.stream()
                     .map(EPackage::getEClassifiers)
                     .flatMap(Collection::stream)
                     .filter(EClass.class::isInstance)
                     .map(EClass.class::cast)
                     .anyMatch(classifier -> new DomainClassPredicate(domainType).test(classifier));
-            // @formatter:off
         }
 
         if (!isValid && diagnostics != null) {
-            // @formatter:off
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
@@ -268,7 +268,6 @@ public class DiagramDescriptionValidator implements EValidator {
                         createInstance,
                         ViewPackage.Literals.CREATE_INSTANCE__TYPE_NAME,
                     });
-            // @formatter:on
 
             diagnostics.add(basicDiagnostic);
         }
@@ -288,7 +287,6 @@ public class DiagramDescriptionValidator implements EValidator {
     }
 
     private List<Entity> getDomainEntitiesFromResourceSet(ResourceSet resourceSet) {
-        // @formatter:off
         return resourceSet.getResources().stream()
                 .map(Resource::getContents)
                 .flatMap(Collection::stream)
@@ -297,13 +295,11 @@ public class DiagramDescriptionValidator implements EValidator {
                 .map(Domain::getTypes)
                 .flatMap(Collection::stream)
                 .toList();
-        // @formatter:on
     }
 
     private List<EPackage> getEPackagesFromRegistry(EPackage.Registry ePackageRegistry) {
         List<EPackage> allEPackage = new ArrayList<>();
 
-        // @formatter:off
         List<EPackage> ePackages = ePackageRegistry.entrySet().stream()
                 .map(Entry::getValue)
                 .filter(EPackage.class::isInstance)
@@ -314,7 +310,7 @@ public class DiagramDescriptionValidator implements EValidator {
         ePackages.stream()
                 .map(this::getSubPackages)
                 .forEach(allEPackage::addAll);
-        // @formatter:on
+
         return allEPackage;
     }
 
@@ -324,11 +320,9 @@ public class DiagramDescriptionValidator implements EValidator {
         EList<EPackage> eSubpackages = ePackage.getESubpackages();
         allEPackage.addAll(eSubpackages);
 
-        // @formatter:off
         eSubpackages.stream()
             .map(this::getSubPackages)
             .forEach(allEPackage::addAll);
-        // @formatter:on
 
         return allEPackage;
     }
