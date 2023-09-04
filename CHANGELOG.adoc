@@ -6,6 +6,7 @@
 
 - Add tool sections in the View DSL
 - Add support for Precondition Expressions in Tools
+- Add customizability to the reference widget
 
 === Architectural decision records
 
