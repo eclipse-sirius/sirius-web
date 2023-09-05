@@ -51,6 +51,7 @@ export interface GQLEditingContext {
 export interface GQLChildCreationDescription {
   id: string;
   label: string;
+  iconURL: string;
 }
 
 export interface GQLCreateRootObjectMutationData {
@@ -92,6 +93,7 @@ export interface GQLRootEditingContext {
 export interface GQLRootChildCreationDescription {
   id: string;
   label: string;
+  iconURL: string;
 }
 
 export interface GQLDomain {
@@ -117,6 +119,7 @@ export interface GQLCreateChildSuccessPayload extends GQLCreateChildPayload {
 export interface ChildCreationDescription {
   id: string;
   label: string;
+  iconURL: string;
 }
 
 export interface GQLObject {

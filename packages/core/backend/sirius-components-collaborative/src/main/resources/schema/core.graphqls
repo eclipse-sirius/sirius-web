@@ -59,6 +59,7 @@ type StereotypeDescription {
 type ChildCreationDescription {
   id: ID!
   label: String!
+  iconURL: String!
 }
 
 type EditingContextRepresentationConnection {

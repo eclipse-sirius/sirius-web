@@ -11,17 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Selection, ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   CreateModalProps,
@@ -58,6 +60,13 @@ const useStyle = makeStyles((theme) => ({
   title: {
     opacity: 0.6,
     fontSize: theme.typography.caption.fontSize,
+  },
+  select: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  iconRoot: {
+    minWidth: theme.spacing(3),
   },
 }));
 
@@ -104,6 +113,7 @@ const getChildCreationDescriptionsQuery = gql`
         childCreationDescriptions(kind: $kind, referenceKind: $referenceKind) {
           id
           label
+          iconURL
         }
       }
     }
@@ -122,6 +132,7 @@ const getRootObjectCreationDescriptionsQuery = gql`
         rootObjectCreationDescriptions(domainId: $domainId, suggested: $suggested, referenceKind: $referenceKind) {
           id
           label
+          iconURL
         }
       }
     }
@@ -146,6 +157,7 @@ const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayl
 
 export const CreateModal = ({ editingContextId, widget, onClose }: CreateModalProps) => {
   const classes = useStyle();
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { addErrorMessage } = useMultiToast();
   const [{ value, context }, dispatch] = useMachine<CreateModalContext, CreateModalEvent>(createModalMachine);
   const { createModal } = value as SchemaValue;
@@ -402,6 +414,7 @@ export const CreateModal = ({ editingContextId, widget, onClose }: CreateModalPr
           )}
           <span className={classes.title}>Select the object type</span>
           <Select
+            classes={{ select: classes.select }}
             value={selectedChildCreationDescriptionId}
             onChange={onChildCreationDescriptionChange}
             disabled={createModal !== 'validForChild' && createModal !== 'validForRoot'}
@@ -410,7 +423,17 @@ export const CreateModal = ({ editingContextId, widget, onClose }: CreateModalPr
             data-testid="childCreationDescription">
             {creationDescriptions.map((creationDescription) => (
               <MenuItem value={creationDescription.id} key={creationDescription.id}>
-                {creationDescription.label}
+                {creationDescription.iconURL && (
+                  <ListItemIcon className={classes.iconRoot}>
+                    <img
+                      height="16"
+                      width="16"
+                      alt={creationDescription.label}
+                      src={httpOrigin + creationDescription.iconURL}
+                    />
+                  </ListItemIcon>
+                )}
+                <ListItemText primary={creationDescription.label} />
               </MenuItem>
             ))}
           </Select>

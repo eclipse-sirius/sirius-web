@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,11 +20,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import {
   GQLCreateRootObjectMutationData,
   GQLGetDomainsQueryData,
@@ -44,9 +46,9 @@ import {
   HideToastEvent,
   NewRootObjectModalContext,
   NewRootObjectModalEvent,
+  newRootObjectModalMachine,
   SchemaValue,
   ShowToastEvent,
-  newRootObjectModalMachine,
 } from './NewRootObjectModalMachine';
 
 const createRootObjectMutation = gql`
@@ -87,6 +89,7 @@ const getRootObjectCreationDescriptionsQuery = gql`
         rootObjectCreationDescriptions(domainId: $domainId, suggested: $suggested) {
           id
           label
+          iconURL
         }
       }
     }
@@ -101,10 +104,18 @@ const useNewRootObjectModalStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(1),
     },
   },
+  select: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  iconRoot: {
+    minWidth: theme.spacing(3),
+  },
 }));
 
 export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewRootObjectModalProps) => {
   const classes = useNewRootObjectModalStyles();
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [{ value, context }, dispatch] = useMachine<NewRootObjectModalContext, NewRootObjectModalEvent>(
     newRootObjectModalMachine
   );
@@ -262,6 +273,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
             </Select>
             <InputLabel id="rootObjectCreationDescriptionsLabel">Object type</InputLabel>
             <Select
+              classes={{ select: classes.select }}
               value={selectedRootObjectCreationDescriptionId}
               onChange={onRootObjectCreationDescriptionChange}
               disabled={newRootObjectModal !== 'valid'}
@@ -270,7 +282,17 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
               data-testid="type">
               {rootObjectCreationDescriptions.map((rootObjectCreationDescription) => (
                 <MenuItem value={rootObjectCreationDescription.id} key={rootObjectCreationDescription.id}>
-                  {rootObjectCreationDescription.label}
+                  {rootObjectCreationDescription.iconURL && (
+                    <ListItemIcon className={classes.iconRoot}>
+                      <img
+                        height="16"
+                        width="16"
+                        alt={rootObjectCreationDescription.label}
+                        src={httpOrigin + rootObjectCreationDescription.iconURL}
+                      />
+                    </ListItemIcon>
+                  )}
+                  <ListItemText primary={rootObjectCreationDescription.label} />
                 </MenuItem>
               ))}
             </Select>

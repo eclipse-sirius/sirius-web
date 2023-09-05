@@ -27,6 +27,7 @@ export interface Domain {
 export interface ChildCreationDescription {
   id: string;
   label: string;
+  iconURL: string;
 }
 
 export interface GQLGetDomainsQueryVariables {

@@ -44,6 +44,7 @@ import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.springframework.stereotype.Service;
@@ -63,10 +64,13 @@ public class EditService implements IEditService {
 
     private final ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider;
 
-    public EditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider) {
+    private final IObjectService objectService;
+
+    public EditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider, IObjectService objectService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.suggestedRootObjectTypesProvider = Objects.requireNonNull(suggestedRootObjectsProvider);
+        this.objectService = Objects.requireNonNull(objectService);
     }
 
     private Optional<EClass> getEClass(EPackage.Registry ePackageRegistry, String kind) {
@@ -131,7 +135,8 @@ public class EditService implements IEditService {
                     if (editingDomainItemProvider instanceof Helper helper) {
                         for (CommandParameter commandParameter : commandParameters) {
                             String text = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
-                            ChildCreationDescription childCreationDescription = new ChildCreationDescription(text, text);
+                            String iconURL = this.objectService.getImagePath(commandParameter.getValue());
+                            ChildCreationDescription childCreationDescription = new ChildCreationDescription(text, text, iconURL);
                             childCreationDescriptions.add(childCreationDescription);
                         }
                     }
@@ -229,7 +234,8 @@ public class EditService implements IEditService {
                 for (EClass suggestedClass : classes) {
                     if (referenceKind == null || this.getEClass(ePackageRegistry, referenceKind).map(eClassReference -> eClassReference.isSuperTypeOf(suggestedClass))
                             .orElse(true)) {
-                        rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName()));
+                        String iconURL = this.objectService.getImagePath(EcoreUtil.create(suggestedClass));
+                        rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName(), iconURL));
                     }
                 }
             }
