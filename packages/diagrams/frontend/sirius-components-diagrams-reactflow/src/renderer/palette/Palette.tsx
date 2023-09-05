@@ -164,8 +164,12 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isNodePalette }: 
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const toolCount =
-    (palette ? palette.tools.filter(isSingleClickOnDiagramElementTool).length + palette.toolSections.length : 0) +
-    (isNodePalette ? 2 : 0);
+    (palette
+      ? palette.tools.filter(isSingleClickOnDiagramElementTool).length +
+        palette.toolSections.filter(
+          (toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0
+        ).length
+      : 0) + (isNodePalette ? 2 : 0);
   const classes = usePaletteStyle({ toolCount });
 
   const [getPalette, { loading: paletteLoading, data: paletteData, error: paletteError }] = useLazyQuery<
