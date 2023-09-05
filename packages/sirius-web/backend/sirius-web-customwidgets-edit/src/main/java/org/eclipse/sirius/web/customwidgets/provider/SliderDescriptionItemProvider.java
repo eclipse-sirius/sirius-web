@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.customwidgets.SliderDescription;
  * @generated
  */
 public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -147,11 +148,11 @@ public class SliderDescriptionItemProvider extends WidgetDescriptionItemProvider
     /**
      * This returns SliderDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SliderDescription"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SliderDescription.svg"));
     }
 
     /**

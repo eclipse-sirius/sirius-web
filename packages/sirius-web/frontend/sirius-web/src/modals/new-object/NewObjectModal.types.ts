@@ -23,6 +23,7 @@ export interface NewObjectModalProps {
 export interface ChildCreationDescription {
   id: string;
   label: string;
+  iconURL: string;
 }
 
 export interface GQLGetChildCreationDescriptionsQueryVariables {
@@ -46,6 +47,7 @@ export interface GQLEditingContext {
 export interface GQLChildCreationDescription {
   id: string;
   label: string;
+  iconURL: string;
 }
 
 export interface GQLCreateChildMutationData {

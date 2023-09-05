@@ -11,18 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
@@ -39,9 +41,9 @@ import {
   HideToastEvent,
   NewObjectModalContext,
   NewObjectModalEvent,
+  newObjectModalMachine,
   SchemaValue,
   ShowToastEvent,
-  newObjectModalMachine,
 } from './NewObjectModalMachine';
 
 const createChildMutation = gql`
@@ -69,6 +71,7 @@ const getChildCreationDescriptionsQuery = gql`
         childCreationDescriptions(kind: $kind) {
           id
           label
+          iconURL
         }
       }
     }
@@ -83,6 +86,13 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(1),
     },
   },
+  select: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  iconRoot: {
+    minWidth: theme.spacing(3),
+  },
 }));
 
 const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
@@ -90,6 +100,7 @@ const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayl
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const classes = useNewObjectModalStyles();
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
   const { newObjectModal, toast } = value as SchemaValue;
   const { selectedChildCreationDescriptionId, childCreationDescriptions, objectToSelect, message } = context;
@@ -171,7 +182,6 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
       onObjectCreated({ entries: [objectToSelect] });
     }
   }, [newObjectModal, onObjectCreated, objectToSelect]);
-
   return (
     <>
       <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
@@ -180,6 +190,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
           <div className={classes.form}>
             <InputLabel id="newObjectModalChildCreationDescriptionLabel">Object type</InputLabel>
             <Select
+              classes={{ select: classes.select }}
               value={selectedChildCreationDescriptionId}
               onChange={onChildCreationDescriptionChange}
               disabled={newObjectModal === 'loading' || newObjectModal === 'creatingChild'}
@@ -188,7 +199,17 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
               data-testid="childCreationDescription">
               {childCreationDescriptions.map((childCreationDescription) => (
                 <MenuItem value={childCreationDescription.id} key={childCreationDescription.id}>
-                  {childCreationDescription.label}
+                  {childCreationDescription.iconURL && (
+                    <ListItemIcon className={classes.iconRoot}>
+                      <img
+                        height="16"
+                        width="16"
+                        alt={childCreationDescription.label}
+                        src={httpOrigin + childCreationDescription.iconURL}
+                      />
+                    </ListItemIcon>
+                  )}
+                  <ListItemText primary={childCreationDescription.label} />
                 </MenuItem>
               ))}
             </Select>

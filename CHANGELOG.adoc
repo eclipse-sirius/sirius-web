@@ -44,6 +44,7 @@ It's now possible to provide _referenceKind_ to only get the `ChildCreationDescr
 Note that _palette_ will be removed in short-term from the _DiagramDescription_.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Split of `sirius-components-widget-reference` to extract EMF-related code into a new module `sirius-components-collaborative-widget-reference`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2252[#2252] [diagram] The support for React Flow based diagrams now require a `DiagramPaletteToolContext` in order to contribute custom palette tool.
+- https://github.com/eclipse-sirius/sirius-web/issues/2343[#2343] [sirius-web] Add iconURL field on `ChildCreationDescription` type.
 
 === Dependency update
 
@@ -113,6 +114,7 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2265[#2265] [diagram] Update the viewport to show the current state of the selection
 - https://github.com/eclipse-sirius/sirius-web/issues/2368[#2368] [form] Remove useless reference to the GraphQL version of Google Guava
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2343[#2343] [emf] Add icon for type selection in new object modal.
 
 == v2023.8.0
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,13 +21,17 @@ import java.util.Objects;
  * @author sbegaudeau
  */
 public class ChildCreationDescription {
+
     private final String id;
 
     private final String label;
 
-    public ChildCreationDescription(String id, String label) {
+    private final String iconURL;
+
+    public ChildCreationDescription(String id, String label, String iconURL) {
         this.id = Objects.requireNonNull(id);
         this.label = Objects.requireNonNull(label);
+        this.iconURL = Objects.requireNonNull(iconURL);
     }
 
     public String getId() {
@@ -36,6 +40,10 @@ public class ChildCreationDescription {
 
     public String getLabel() {
         return this.label;
+    }
+
+    public String getIconURL() {
+        return this.iconURL;
     }
 
     @Override
