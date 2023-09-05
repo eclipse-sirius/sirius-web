@@ -1,0 +1,115 @@
+= ADR-110 - Color Management in View
+
+== Context
+
+It is possible to set `None` for color properties of a Node/Edge Description.
+Depending on the case, `None` means `black`, `white` or `transparent`.
+
+It is possible to set `None` for color properties of a Form Widget Description.
+Depending on the case, `None` means `theme.primary`, `theme.secondary` or `transparent`.
+
+Some color properties of a Node/Edge/Widget Description are mandatory, which means when `None` is selected, an error message is displayed.
+
+The result for color properties of a Node/Edge/Widget Description is that there is no other options than `None`. 
+
+== Decision
+
+`None` doesn't exist anymore as a possible value for color properties.
+
+All color properties are mandatory.
+
+They are accessible in the Reference widget of color properties by default.
+In a first version, those color palettes are created along with the View (they are visible in the Explorer view) and can be modified/deleted.
+In a second version, those color palettes are created with the ResourceSet (they are not visible in the Explorer view) and cannot be modified/deleted.
+
+Default color palettes will contain the following colors:
+
+* some special colors like "transparent", "inherit", "none" and use some of them as default values when we are creating new elements
+* every single one of the raw MUI colors like https://mui.com/material-ui/customization/color/#color-palette[here] in various palettes (red, pink, blue, etc) with their proper name
+* some https://mui.com/material-ui/customization/palette/[theme colors] like palette.primary.light, palette.secondary.dark etc to create theme independent representations (for example a for with buttons matching the palette.error.main color to perform destructive actions)
+
+=== Backend
+
+=== Default Color Palettes
+
+The default color palettes will be defined in `sirius-components-view-builder`.
+
+[source,java]
+----
+public class DefaultColorPalettesProvider {
+
+    public List<ColorPalette> getDefaultColorPalettes() {
+        List<ColorPalette> colorPalettes = new ArrayList<>();
+        colorPalettes.add(this.getSpecialColorsPalette());
+        colorPalettes.add(this.getThemeColorsPalette());
+        colorPalettes.add(this.getMUIRedColorsPalette());
+        ...
+        return colorPalettes;
+    }
+
+    private ColorPalette getSpecialColorsPalette() {
+        ColorPalette colorPalette = ViewFactory.eINSTANCE.createColorPalette();
+        colorPalette.setName("Special Colors Palette");
+        FixedColor transparent = ViewFactory.eINSTANCE.createFixedColor();
+        transparent.setName("transparent");
+        transparent.setValue("transparent");
+        colorPalette.getColors().add(transparent);
+        ...
+        return colorPalette;
+    }
+    ...
+}
+----
+
+=== Validation rules
+
+The validation rules for color properties will be updated in `org.eclipse.sirius.components.view.emf.diagram.DiagramDescriptionValidator`.
+A validation rule class for color properties will be created in `org.eclipse.sirius.components.view.emf.form.FormDescriptionValidator`.
+All View color properties are now mandatory.
+
+=== Read-only palettes
+
+In a first version, those color palettes are created along with the View (they are visible in the Explorer view) and can be modified/deleted.
+In a second version, those color palettes are created with the ResourceSet (they are not visible in the Explorer view) and cannot be modified/deleted.
+
+=== Frontend
+
+A new utility method will be introduced in `sirius-components-core` to handle the special color values (e.g.: `red[500]`, `theme.palette.primary.light`, ...).
+This method will be used by `sirius-components-diagrams`, `sirius-components-forms`, ...
+
+[source, ts]
+---
+import red from '@material-ui/core/colors/red';
+import { Theme } from '@material-ui/core/styles';
+
+export const getCSSColor = (colorValue: string, theme: Theme): string => {
+  let cssColor: string = value;
+  if (colorValue) {
+    if (colorValue.startsWith('theme.palette.primary.main')) {
+      cssColor = theme.palette.primary.main;
+    } else if (colorValue.startsWith('theme.palette.primary.light')) {
+      cssColor = theme.palette.primary.light;
+    } else if (colorValue.startsWith('theme.palette.primary.dark')) {
+      cssColor = theme.palette.primary.dark;
+    // Handle other theme colors
+    ...  
+    } else {
+      const colorName: string = value.substring(0, value.indexOf('['));
+      const colorValue: string = value.substring(value.indexOf('[') + 1, value.length - 1);
+      if (colorName && colorValue) {
+        cssColor = muiColors[colorName][colorValue];
+      }
+    }
+  }
+  return cssColor;
+};
+---
+
+== Status
+
+To be reviewed
+
+== Consequences
+
+Specifier always know which color will be displayed at the end, corresponding exactly to what is set for each color property.
+A set of predefined colors is accessible in color properties.
