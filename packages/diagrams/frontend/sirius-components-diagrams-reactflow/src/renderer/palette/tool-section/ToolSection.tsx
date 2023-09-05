@@ -88,10 +88,12 @@ export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
   const anchorRef = useRef<HTMLDivElement | null>(null);
   return (
     <>
-      <div className={classes.toolSection} ref={anchorRef}>
-        <Tool tool={defaultTool} onClick={() => onToolClick(defaultTool)} thumbnail />
-        {caretContent}
-      </div>
+      {defaultTool && (
+        <div className={classes.toolSection} ref={anchorRef}>
+          <Tool tool={defaultTool} onClick={() => onToolClick(defaultTool)} thumbnail />
+          {caretContent}
+        </div>
+      )}
       <Popper open={expanded} anchorEl={anchorRef.current} transition disablePortal>
         {({ TransitionProps, placement }) => (
           <Grow
