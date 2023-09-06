@@ -15,9 +15,6 @@ package org.eclipse.sirius.components.widget.reference;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
@@ -70,13 +67,19 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 .itemKindProvider(variableManager -> "")
                 .itemLabelProvider(variableManager -> "")
                 .itemImageURLProvider(variableManager -> "")
-                .settingProvider(variableManager -> {
-                    // We need a non-null Setting instance which does not depend on any actual instance model.
-                    EObject owner = EcorePackage.Literals.ECLASS;
-                    return ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
-                })
+                .ownerKindProvider(variableManager -> "")
+                .referenceKindProvider(variableManager -> "")
+                .isContainmentProvider(variableManager -> false)
+                .isManyProvider(variableManager -> false)
                 .ownerIdProvider(variableManager -> "")
                 .itemClickHandlerProvider(variableManager -> new Success())
+                .ownerIdProvider(variableManager -> "")
+                .clearHandlerProvider(variableManager -> new Success())
+                .itemRemoveHandlerProvider(variableManager -> new Success())
+                .setHandlerProvider(variableManager -> new Success())
+                .addHandlerProvider(variableManager -> new Success())
+                .createElementHandlerProvider(variableManager -> new Success())
+                .moveHandlerProvider(variableManager -> new Success())
                 .styleProvider(variableManager -> ReferenceWidgetPreviewConverterProvider.this.getWidgetStyle(referenceDescription, variableManager))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")
@@ -111,5 +114,4 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
         }
         return new ReferenceWidgetStyleProvider(style).apply(variableManager);
     }
-
 }

@@ -16,5 +16,5 @@ import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 export interface BrowseModalProps {
   editingContextId: string;
   widget: GQLReferenceWidget;
-  onClose: (selectedElementIds: string[]) => void;
+  onClose: (selectedElementId: string) => void;
 }

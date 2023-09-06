@@ -10,14 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { MutationFunction } from '@apollo/client';
 import React from 'react';
-import {
-  GQLEditReferenceData,
-  GQLEditReferenceVariables,
-  GQLReferenceValue,
-  GQLReferenceWidget,
-} from '../ReferenceWidgetFragment.types';
+import { GQLReferenceValue, GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 
 export interface ValuedReferenceAutocompleteProps {
   editingContextId: string;
@@ -29,8 +23,11 @@ export interface ValuedReferenceAutocompleteProps {
   onDrop: (event: React.DragEvent<HTMLDivElement>) => void;
   onMoreClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
   onCreateClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
-  editReference: MutationFunction<GQLEditReferenceData, GQLEditReferenceVariables>;
   optionClickHandler: (element: GQLReferenceValue) => void;
+  clearReference: () => void;
+  removeReferenceValue: (valueId: string) => void;
+  addReferenceValues: (newValueIds: string[]) => void;
+  setReferenceValue: (newValueId: string) => void;
 }
 
 export interface ValuedReferenceAutocompleteState {

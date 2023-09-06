@@ -18,7 +18,10 @@ export interface TransferModalProps {
   editingContextId: string;
   formId: string;
   widget: GQLReferenceWidget;
-  onClose: (selectedElementIds: string[]) => void;
+  onClose: () => void;
+  addElements: (elementIds: string[]) => void;
+  removeElement: (elementId: string) => void;
+  moveElement: (elementId: string, fromIndex: number, toIndex: number) => void;
 }
 
 export interface TransferModalState {

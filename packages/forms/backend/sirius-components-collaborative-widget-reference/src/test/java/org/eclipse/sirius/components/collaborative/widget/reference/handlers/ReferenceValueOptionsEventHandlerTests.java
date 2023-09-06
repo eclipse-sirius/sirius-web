@@ -52,6 +52,7 @@ public class ReferenceValueOptionsEventHandlerTests {
     private static final UUID FORM_ID = UUID.randomUUID();
 
     private static final String REF_WIDGET_ID = "RefWidget id";
+
     private static final String CHANGE_DESCRIPTION_PARAMETER_KEY = "change_description_parameter_key";
 
     @Test
@@ -61,7 +62,6 @@ public class ReferenceValueOptionsEventHandlerTests {
 
         var input = new ReferenceValueOptionsQueryInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID()
                 .toString(), REF_WIDGET_ID);
-
 
         ReferenceValue referenceValue = ReferenceValue.newReferenceValue(referenceValueId)
                 .label("")
@@ -77,8 +77,12 @@ public class ReferenceValueOptionsEventHandlerTests {
                 .referenceOptionsProvider(() -> List.of(referenceValue))
                 .label("")
                 .readOnly(false)
-                .setting(setting)
+                .descriptionId("")
                 .ownerId("")
+                .ownerKind("")
+                .referenceKind("")
+                .many(false)
+                .containment(false)
                 .build();
 
         Group group = Group.newGroup("groupId")

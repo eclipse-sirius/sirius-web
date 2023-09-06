@@ -12,6 +12,15 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2386[#2386] [form] Reference widget structure has changed, `referenceOptions` has been removed to be lazily loaded.
+- https://github.com/eclipse-sirius/sirius-web/issues/2329[#2335] [form] The general mutation `editReference` has been removed from the reference widget. This mutation has been replaced by finer grain mutations:
+  ** _clearReference_ mutation: to reset the content references (set the value to `null` for mono-valued references and to an empty list for multi-valued ones).  
+  ** _addReferenceValues_ mutation: to several reference values to a reference (only used with mutli-valued references)
+  ** _setReferenceValue_ mutation: to set the value of mono-valued references
+  ** _removeReferenceValue_ mutation: to remove a given value from a reference (in case of mono-valued references, this mutation is equivalent to _clearReference_)
+  ** _createElementInReference_ mutation: to create a new element (used in the context of a reference widget)
+  ** _moveReferenceValue_ mutation: to reorder the list of values in multi-valued references
+
+UI is unchanged except that we removed the transactional behavior of the _TransferModal_ component which is now performing operations live. This means that changes are no longer done when the modal is close (using the _Apply_ button) but as soon as the user interacts with elements (adding or removing values, changing order). 
 
 === Dependency update
 
@@ -27,6 +36,9 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/2386[#2386] [form] Reference widget candidates are now lazily loaded when necessary.
 - https://github.com/eclipse-sirius/sirius-web/issues/2424[#2424] [view] Align the format of description id used in Form generated from View with the one used in diagram.
 As a result, the identifier of a form description created from a view model will not be an UUID anymore but instead an URL based identifier
+- https://github.com/eclipse-sirius/sirius-web/issues/2335[#2335] [form] Change the capabilities of the reference widget to open it to more customization.
+In order to provide a first version of those capabilities, some additional coupling has been created between the reference widget and its use in Sirius Web which may prevent its use in other applications.
+This coupling will be removed in the near future as a consequence, the dependencies of this code will change and some APIs of the reference widget will be broken in the near future.
 
 
 == v2023.10.0

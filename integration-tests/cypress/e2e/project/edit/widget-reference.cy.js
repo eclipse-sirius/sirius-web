@@ -160,7 +160,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
       .findByTestId('selected-items-list')
       .trigger('drop', { dataTransfer: dataTransferStandard });
     cy.getByTestId('transfer-modal').findByTestId('selected-items-list').findByTestId('standard').should('exist');
-    cy.getByTestId('apply-change').click();
+    cy.getByTestId('close-transfer-modal').click();
     cy.getByTestId('reference-value-standard').should('exist');
     cy.getByTestId('Test Widget Reference-clear').click();
     cy.getByTestId('reference-value-standard').should('not.exist');

@@ -75,7 +75,15 @@ const isFormDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLFormDescription => representationDescription.__typename === 'FormDescription';
 
-export const TransferModal = ({ editingContextId, formId, widget, onClose }: TransferModalProps) => {
+export const TransferModal = ({
+  editingContextId,
+  formId,
+  widget,
+  onClose,
+  addElements,
+  removeElement,
+  moveElement,
+}: TransferModalProps) => {
   const classes = useStyles();
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<TransferModalState>({
@@ -121,6 +129,18 @@ export const TransferModal = ({ editingContextId, formId, widget, onClose }: Tra
     }
   }, [childReferenceValueOptionsLoading, childReferenceValueOptionsData, childReferenceValueOptionsError]);
 
+  useEffect(() => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        rightSelection: prevState.rightSelection.filter((sel) =>
+          widget.referenceValues.map((ref) => ref.id).includes(sel.id)
+        ),
+        right: widget.referenceValues,
+      };
+    });
+  }, [widget.referenceValues]);
+
   const handleLeftSelection = (selection) => {
     setState((prevState) => {
       return {
@@ -138,13 +158,7 @@ export const TransferModal = ({ editingContextId, formId, widget, onClose }: Tra
   const handleDropLeft = (event: React.DragEvent) => {
     event.preventDefault();
     if (state.draggingRightItemId) {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          right: prevState.right.filter((entry) => prevState.draggingRightItemId !== entry.id),
-          leftSelection: [],
-        };
-      });
+      removeElement(state.draggingRightItemId);
     }
   };
 
@@ -173,17 +187,10 @@ export const TransferModal = ({ editingContextId, formId, widget, onClose }: Tra
       const sources = JSON.parse(dragSourcesStringified);
       if (Array.isArray(sources) && sources.length > 0) {
         const entriesDragged = sources as SelectionEntry[];
-        setState((prevState) => {
-          return {
-            ...prevState,
-            right: prevState.right.concat(
-              entriesDragged.filter(
-                (newEntry) => !prevState.right.some((existingEntry) => existingEntry.id === newEntry.id)
-              )
-            ),
-            leftSelection: [],
-          };
-        });
+        const newElementIds = entriesDragged
+          .filter((newEntry) => !state.right.some((existingEntry) => existingEntry.id === newEntry.id))
+          .map((element) => element.id);
+        addElements(newElementIds);
       }
     }
   };
@@ -214,34 +221,17 @@ export const TransferModal = ({ editingContextId, formId, widget, onClose }: Tra
   };
 
   const handleDispatchRight = () => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        right: prevState.right.concat(
-          prevState.leftSelection.filter(
-            (newEntry) => !prevState.right.some((existingEntry) => existingEntry.id === newEntry.id)
-          )
-        ),
-        leftSelection: [],
-      };
-    });
+    addElements(state.leftSelection.map((element) => element.id));
   };
 
   const handleDispatchLeft = () => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        right: prevState.right.filter((entry) => prevState.rightSelection.find((selected) => selected.id !== entry.id)),
-        rightSelection: [],
-        leftSelection: [],
-      };
-    });
+    state.rightSelection.forEach((element) => removeElement(element.id));
   };
 
   return (
     <Dialog
       open={true}
-      onClose={() => onClose(null)}
+      onClose={() => onClose()}
       aria-labelledby="dialog-title"
       maxWidth={false}
       data-testid="transfer-modal">
@@ -259,7 +249,7 @@ export const TransferModal = ({ editingContextId, formId, widget, onClose }: Tra
                 enableMultiSelection={widget.reference.manyValued}
                 title={'Choices'}
                 leafType={'reference'}
-                typeName={widget.reference.typeName}
+                ownerKind={widget.reference.ownerKind}
               />
             </div>
           </Grid>
@@ -305,6 +295,7 @@ export const TransferModal = ({ editingContextId, formId, widget, onClose }: Tra
                 handleDropNewItem={handleDropRight}
                 onClick={onClick}
                 selectedItems={state.rightSelection}
+                moveElement={moveElement}
               />
             </div>
           </Grid>
@@ -315,11 +306,9 @@ export const TransferModal = ({ editingContextId, formId, widget, onClose }: Tra
           variant="contained"
           color="primary"
           type="button"
-          data-testid="apply-change"
-          onClick={() => {
-            onClose(state.right.map((entry) => entry.id));
-          }}>
-          Apply
+          data-testid="close-transfer-modal"
+          onClick={() => onClose()}>
+          close
         </Button>
       </DialogActions>
     </Dialog>

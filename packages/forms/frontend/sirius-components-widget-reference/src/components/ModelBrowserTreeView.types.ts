@@ -22,7 +22,7 @@ export interface ModelBrowserTreeViewProps {
   enableMultiSelection: boolean;
   title: string;
   leafType: 'reference' | 'container';
-  typeName: string;
+  ownerKind: string;
 }
 
 export interface ModelBrowserTreeViewState {

@@ -15,18 +15,11 @@ import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 export interface CreateModalProps {
   editingContextId: string;
   widget: GQLReferenceWidget;
+  formId: string;
   onClose: (newElementId: string) => void;
 }
 
-export interface GQLCreateChildMutationData {
-  createChild: GQLCreateChildPayload;
-}
-
-export interface GQLCreateChildPayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLCreateChildPayload {
+export interface GQLErrorPayload extends GQLCreateElementInReferencePayload {
   message: string;
 }
 
@@ -52,14 +45,6 @@ export interface GQLChildCreationDescription {
   id: string;
   label: string;
   iconURL: string;
-}
-
-export interface GQLCreateRootObjectMutationData {
-  createRootObject: GQLCreateRootObjectPayload;
-}
-
-export interface GQLCreateRootObjectPayload {
-  __typename: string;
 }
 
 export interface GQLGetDomainsQueryVariables {
@@ -101,19 +86,9 @@ export interface GQLDomain {
   label: string;
 }
 
-export interface GQLCreateRootObjectSuccessPayload extends GQLCreateRootObjectPayload {
-  id: string;
-  object: GQLObject;
-}
-
 export interface Domain {
   id: string;
   label: string;
-}
-
-export interface GQLCreateChildSuccessPayload extends GQLCreateChildPayload {
-  id: string;
-  object: GQLObject;
 }
 
 export interface ChildCreationDescription {
@@ -126,4 +101,31 @@ export interface GQLObject {
   id: string;
   label: string;
   kind: string;
+}
+
+export interface GQLCreateElementInReferenceMutationVariables {
+  input: GQLCreateElementInReferenceInput;
+}
+
+export interface GQLCreateElementInReferenceInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  referenceWidgetId: string;
+  containerId: string;
+  domainId: string | null;
+  creationDescriptionId: string;
+}
+
+export interface GQLCreateElementInReferenceMutationData {
+  createElementInReference: GQLCreateElementInReferencePayload;
+}
+
+export interface GQLCreateElementInReferencePayload {
+  __typename: string;
+}
+
+export interface GQLCreateElementInReferenceSuccessPayload extends GQLCreateElementInReferencePayload {
+  id: string;
+  object: GQLObject;
 }

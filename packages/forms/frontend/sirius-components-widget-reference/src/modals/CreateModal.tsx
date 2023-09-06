@@ -27,9 +27,10 @@ import { useContext, useEffect } from 'react';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   CreateModalProps,
-  GQLCreateChildMutationData,
-  GQLCreateChildPayload,
-  GQLCreateRootObjectMutationData,
+  GQLCreateElementInReferenceInput,
+  GQLCreateElementInReferenceMutationData,
+  GQLCreateElementInReferenceMutationVariables,
+  GQLCreateElementInReferencePayload,
   GQLErrorPayload,
   GQLGetChildCreationDescriptionsQueryData,
   GQLGetChildCreationDescriptionsQueryVariables,
@@ -46,14 +47,13 @@ import {
   CreateChildEvent,
   CreateModalContext,
   CreateModalEvent,
-  createModalMachine,
   CreateRootEvent,
   FetchedChildCreationDescriptionsEvent,
   FetchedDomainsEvent,
   FetchedRootObjectCreationDescriptionsEvent,
-  HandleCreateChildResponseEvent,
-  HandleCreateRootResponseEvent,
+  HandleCreateElementResponseEvent,
   SchemaValue,
+  createModalMachine,
 } from './CreateModalMachine';
 
 const useStyle = makeStyles((theme) => ({
@@ -70,29 +70,11 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const createChildMutation = gql`
-  mutation createChild($input: CreateChildInput!) {
-    createChild(input: $input) {
+const createElementInReferenceMutation = gql`
+  mutation createElementInReference($input: CreateElementInReferenceInput!) {
+    createElementInReference(input: $input) {
       __typename
-      ... on CreateChildSuccessPayload {
-        object {
-          id
-          label
-          kind
-        }
-      }
-      ... on ErrorPayload {
-        message
-      }
-    }
-  }
-`;
-
-const createRootObjectMutation = gql`
-  mutation createRootObject($input: CreateRootObjectInput!) {
-    createRootObject(input: $input) {
-      __typename
-      ... on CreateRootObjectSuccessPayload {
+      ... on CreateElementInReferenceSuccessPayload {
         object {
           id
           label
@@ -152,10 +134,10 @@ const getDomainsQuery = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLCreateElementInReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const CreateModal = ({ editingContextId, widget, onClose }: CreateModalProps) => {
+export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const classes = useStyle();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { addErrorMessage } = useMultiToast();
@@ -176,7 +158,7 @@ export const CreateModal = ({ editingContextId, widget, onClose }: CreateModalPr
   useEffect(() => {
     const changeContainmentModeEvent: ChangeContainmentModeEvent = {
       containment: widget.reference.containment,
-      containerKind: widget.reference.containment ? widget.reference.typeName : null,
+      containerKind: widget.reference.containment ? widget.reference.ownerKind : null,
       containerId: widget.reference.containment ? widget.ownerId : null,
       type: 'CHANGE_CONTAINMENT_MODE',
     };
@@ -253,71 +235,60 @@ export const CreateModal = ({ editingContextId, widget, onClose }: CreateModalPr
     }
   }, [childCreationDescriptionsLoading, childCreationDescriptionsData, childCreationDescriptionsError]);
 
-  const [createChild, { loading: createChildLoading, data: createChildData, error: createChildError }] =
-    useMutation<GQLCreateChildMutationData>(createChildMutation);
+  const [
+    createElementInReference,
+    { loading: createElementLoading, error: createElementError, data: createElementData },
+  ] = useMutation<GQLCreateElementInReferenceMutationData, GQLCreateElementInReferenceMutationVariables>(
+    createElementInReferenceMutation
+  );
 
   useEffect(() => {
-    if (!createChildLoading) {
-      if (createChildError) {
+    if (!createElementLoading) {
+      if (createElementError) {
         addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
-      if (createChildData) {
-        const handleResponseEvent: HandleCreateChildResponseEvent = {
-          type: 'HANDLE_CHILD_CREATE_RESPONSE',
-          data: createChildData,
+      if (createElementData) {
+        const handleResponseEvent: HandleCreateElementResponseEvent = {
+          type: 'HANDLE_CREATE_ELEMENT_RESPONSE',
+          data: createElementData,
         };
         dispatch(handleResponseEvent);
 
-        const { createChild } = createChildData;
-        if (isErrorPayload(createChild)) {
-          const { message } = createChild;
+        const { createElementInReference } = createElementData;
+        if (isErrorPayload(createElementInReference)) {
+          const { message } = createElementInReference;
           addErrorMessage(message);
         }
       }
     }
-  }, [createChildLoading, createChildData, createChildError]);
-
-  const [
-    createRootObject,
-    { loading: createRootObjectLoading, data: createRootObjectData, error: createRootObjectError },
-  ] = useMutation<GQLCreateRootObjectMutationData>(createRootObjectMutation);
-
-  useEffect(() => {
-    if (!createRootObjectLoading) {
-      if (createRootObjectError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (createRootObjectData) {
-        const handleResponseEvent: HandleCreateRootResponseEvent = {
-          type: 'HANDLE_ROOT_CREATE_RESPONSE',
-          data: createRootObjectData,
-        };
-        dispatch(handleResponseEvent);
-      }
-    }
-  }, [createRootObjectLoading, createRootObjectError, createRootObjectData]);
+  }, [createElementLoading, createElementData, createElementError]);
 
   const onCreateObject = () => {
+    let input: GQLCreateElementInReferenceInput | null = null;
     if (createModal === 'validForChild') {
       dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
-      const input = {
+      input = {
         id: crypto.randomUUID(),
         editingContextId,
-        objectId: containerId,
-        childCreationDescriptionId: selectedChildCreationDescriptionId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+        containerId,
+        domainId: null,
+        creationDescriptionId: selectedChildCreationDescriptionId,
       };
-      createChild({ variables: { input } });
     } else if (createModal === 'validForRoot') {
       dispatch({ type: 'CREATE_ROOT' } as CreateRootEvent);
-      const input = {
+      input = {
         id: crypto.randomUUID(),
         editingContextId,
-        documentId: containerId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+        containerId,
         domainId: selectedDomainId,
-        rootObjectCreationDescriptionId: selectedChildCreationDescriptionId,
+        creationDescriptionId: selectedChildCreationDescriptionId,
       };
-      createRootObject({ variables: { input } });
     }
+    createElementInReference({ variables: { input } });
   };
 
   const onDomainChange = (event) => {
@@ -391,7 +362,7 @@ export const CreateModal = ({ editingContextId, widget, onClose }: CreateModalPr
               enableMultiSelection={false}
               title={'Select the container'}
               leafType={'container'}
-              typeName={widget.reference.referenceKind}
+              ownerKind={widget.reference.referenceKind}
             />
           )}
           {containerKind === 'siriusWeb://document' && (

@@ -17,49 +17,42 @@ import {
   PropertySectionLabel,
   useClickHandler,
 } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
+import {
+  GQLAddReferenceValuesMutationData,
+  GQLAddReferenceValuesMutationVariables,
+  GQLAddReferenceValuesPayload,
+  GQLClearReferenceMutationData,
+  GQLClearReferenceMutationVariables,
+  GQLClearReferencePayload,
+  GQLClickReferenceValueMutationData,
+  GQLClickReferenceValueMutationVariables,
+  GQLClickReferenceValuePayload,
+  GQLErrorPayload,
+  GQLMoveReferenceValueMutationData,
+  GQLMoveReferenceValueMutationVariables,
+  GQLMoveReferenceValuePayload,
+  GQLReferenceValue,
+  GQLReferenceWidget,
+  GQLRemoveReferenceValueMutationData,
+  GQLRemoveReferenceValueMutationVariables,
+  GQLRemoveReferenceValuePayload,
+  GQLSetReferenceValueMutationData,
+  GQLSetReferenceValueMutationVariables,
+  GQLSetReferenceValuePayload,
+  GQLSuccessPayload,
+} from './ReferenceWidgetFragment.types';
 import { ValuedReferenceAutocomplete } from './components/ValuedReferenceAutocomplete';
 import { BrowseModal } from './modals/BrowseModal';
 import { CreateModal } from './modals/CreateModal';
 import { TransferModal } from './modals/TransferModal';
-import {
-  GQLClickReferenceValueMutationData,
-  GQLClickReferenceValueMutationVariables,
-  GQLEditReferenceData,
-  GQLEditReferencePayload,
-  GQLEditReferenceVariables,
-  GQLErrorPayload,
-  GQLReferenceValue,
-  GQLReferenceWidget,
-  GQLSuccessPayload,
-} from './ReferenceWidgetFragment.types';
 
 const useStyles = makeStyles<Theme>(() => ({
   root: {
     overflow: 'hidden',
   },
 }));
-
-export const editReferenceMutation = gql`
-  mutation editReference($input: EditReferenceInput!) {
-    editReference(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-      ... on SuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
 
 export const clickReferenceValueMutation = gql`
   mutation clickReferenceValue($input: ClickReferenceValueInput!) {
@@ -81,10 +74,124 @@ export const clickReferenceValueMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLEditReferencePayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLEditReferencePayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
+export const clearReferenceMutation = gql`
+  mutation clearReference($input: ClearReferenceInput!) {
+    clearReference(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+export const removeReferenceValueMutation = gql`
+  mutation removeReferenceValue($input: RemoveReferenceValueInput!) {
+    removeReferenceValue(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+export const setReferenceValueMutation = gql`
+  mutation setReferenceValue($input: SetReferenceValueInput!) {
+    setReferenceValue(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+export const addReferenceValuesMutation = gql`
+  mutation addReferenceValues($input: AddReferenceValuesInput!) {
+    addReferenceValues(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+export const moveReferenceValueMutation = gql`
+  mutation moveReferenceValue($input: MoveReferenceValueInput!) {
+    moveReferenceValue(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+const isErrorPayload = (
+  payload:
+    | GQLClickReferenceValuePayload
+    | GQLClearReferencePayload
+    | GQLRemoveReferenceValuePayload
+    | GQLSetReferenceValuePayload
+    | GQLAddReferenceValuesPayload
+    | GQLMoveReferenceValuePayload
+): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (
+  payload:
+    | GQLClickReferenceValuePayload
+    | GQLClearReferencePayload
+    | GQLRemoveReferenceValuePayload
+    | GQLSetReferenceValuePayload
+    | GQLAddReferenceValuesPayload
+    | GQLMoveReferenceValuePayload
+): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
 export const ReferencePropertySection = ({
   editingContextId,
@@ -96,14 +203,35 @@ export const ReferencePropertySection = ({
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
   const classes = useStyles();
 
-  const [editReference, { loading, error, data }] = useMutation<GQLEditReferenceData, GQLEditReferenceVariables>(
-    editReferenceMutation
-  );
+  const [clearReference, { loading: clearLoading, error: clearError, data: clearData }] = useMutation<
+    GQLClearReferenceMutationData,
+    GQLClearReferenceMutationVariables
+  >(clearReferenceMutation);
 
   const [clickReferenceValue, { loading: clickLoading, error: clickError, data: clickData }] = useMutation<
     GQLClickReferenceValueMutationData,
     GQLClickReferenceValueMutationVariables
   >(clickReferenceValueMutation);
+
+  const [removeReferenceValue, { loading: removeLoading, error: removeError, data: removeData }] = useMutation<
+    GQLRemoveReferenceValueMutationData,
+    GQLRemoveReferenceValueMutationVariables
+  >(removeReferenceValueMutation);
+
+  const [setReferenceValue, { loading: setLoading, error: setError, data: setData }] = useMutation<
+    GQLSetReferenceValueMutationData,
+    GQLSetReferenceValueMutationVariables
+  >(setReferenceValueMutation);
+
+  const [addReferenceValues, { loading: addLoading, error: addError, data: addData }] = useMutation<
+    GQLAddReferenceValuesMutationData,
+    GQLAddReferenceValuesMutationVariables
+  >(addReferenceValuesMutation);
+
+  const [moveReferenceValue, { loading: moveLoading, error: moveError, data: moveData }] = useMutation<
+    GQLMoveReferenceValueMutationData,
+    GQLMoveReferenceValueMutationVariables
+  >(moveReferenceValueMutation);
 
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
     const { id, label, kind } = item;
@@ -143,19 +271,7 @@ export const ReferencePropertySection = ({
   const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);
 
   const { addErrorMessage, addMessages } = useMultiToast();
-  useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editReference: editMultiValuedReference } = data;
-        if (isErrorPayload(editMultiValuedReference) || isSuccessPayload(editMultiValuedReference)) {
-          addMessages(editMultiValuedReference.messages);
-        }
-      }
-    }
-  }, [loading, error, data]);
+
   useEffect(() => {
     if (!clickLoading) {
       if (clickError) {
@@ -169,6 +285,147 @@ export const ReferencePropertySection = ({
       }
     }
   }, [clickLoading, clickError, clickData]);
+  useEffect(() => {
+    if (!clearLoading) {
+      if (clearError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (clearData) {
+        const { clearReference } = clearData;
+        if (isErrorPayload(clearReference) || isSuccessPayload(clearReference)) {
+          addMessages(clearReference.messages);
+        }
+      }
+    }
+  }, [clearLoading, clearError, clearData]);
+  useEffect(() => {
+    if (!removeLoading) {
+      if (removeError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (removeData) {
+        const { removeReferenceValue } = removeData;
+        if (isErrorPayload(removeReferenceValue) || isSuccessPayload(removeReferenceValue)) {
+          addMessages(removeReferenceValue.messages);
+        }
+      }
+    }
+  }, [removeLoading, removeError, removeData]);
+  useEffect(() => {
+    if (!setLoading) {
+      if (setError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (setData) {
+        const { setReferenceValue } = setData;
+        if (isErrorPayload(setReferenceValue) || isSuccessPayload(setReferenceValue)) {
+          addMessages(setReferenceValue.messages);
+        }
+      }
+    }
+  }, [setLoading, setError, setData]);
+  useEffect(() => {
+    if (!addLoading) {
+      if (addError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (addData) {
+        const { addReferenceValues } = addData;
+        if (isErrorPayload(addReferenceValues) || isSuccessPayload(addReferenceValues)) {
+          addMessages(addReferenceValues.messages);
+        }
+      }
+    }
+  }, [addLoading, addError, addData]);
+  useEffect(() => {
+    if (!moveLoading) {
+      if (moveError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (moveData) {
+        const { moveReferenceValue } = moveData;
+        if (isErrorPayload(moveReferenceValue) || isSuccessPayload(moveReferenceValue)) {
+          addMessages(moveReferenceValue.messages);
+        }
+      }
+    }
+  }, [moveLoading, moveError, moveData]);
+
+  const callClearReference = () => {
+    const variables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+      },
+    };
+    clearReference({ variables });
+  };
+
+  const callSetReferenceValue = (newValueId: string) => {
+    if (newValueId) {
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          newValueId: newValueId,
+        },
+      };
+      setReferenceValue({ variables });
+    }
+  };
+
+  const callAddReferenceValues = (newValueIds: string[]) => {
+    if (newValueIds) {
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          newValueIds,
+        },
+      };
+      addReferenceValues({ variables });
+    }
+  };
+
+  const callRemoveReferenceValue = (valueId) => {
+    if (valueId) {
+      const variables: GQLRemoveReferenceValueMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          referenceValueId: valueId,
+        },
+      };
+      removeReferenceValue({ variables });
+    }
+  };
+
+  const callMoveReferenceValue = (valueId: string, fromIndex: number, toIndex: number) => {
+    if (valueId && fromIndex !== -1 && toIndex !== -1) {
+      if (valueId) {
+        const variables: GQLMoveReferenceValueMutationVariables = {
+          input: {
+            id: crypto.randomUUID(),
+            editingContextId,
+            representationId: formId,
+            referenceWidgetId: widget.id,
+            referenceValueId: valueId,
+            fromIndex,
+            toIndex,
+          },
+        };
+        moveReferenceValue({ variables });
+      }
+    }
+  };
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -191,26 +448,16 @@ export const ReferencePropertySection = ({
           const semanticElementIds = entries
             .filter((entry) => entry.kind.startsWith('siriusComponents://semantic?'))
             .map((entry) => entry.id);
-          const valueIds = widget.referenceValues.map((referenceValue) => referenceValue.id);
-
-          let newValueIds;
           if (widget.reference.manyValued) {
-            newValueIds = [...valueIds, ...semanticElementIds];
+            callAddReferenceValues([...semanticElementIds]);
           } else {
-            // We let the backend decide how to handle it if there are multiple values.
-            newValueIds = [...semanticElementIds];
+            // mono-valued reference could not receive multiple elements
+            if (semanticElementIds.length > 1) {
+              addErrorMessage('Single-valued reference can only accept a single value');
+            } else {
+              callSetReferenceValue(semanticElementIds[0]);
+            }
           }
-
-          const variables = {
-            input: {
-              id: crypto.randomUUID(),
-              editingContextId,
-              representationId: formId,
-              referenceWidgetId: widget.id,
-              newValueIds,
-            },
-          };
-          editReference({ variables });
         }
       }
     }
@@ -226,41 +473,21 @@ export const ReferencePropertySection = ({
     setModalDisplayed('create');
   };
 
-  const addSelectedElements = (selectedElementIds: string[]): void => {
+  const setSelectedElement = (selectedElementId: string) => {
     setModalDisplayed(null);
-    if (selectedElementIds) {
-      let newValueIds = [...selectedElementIds];
-
-      const variables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          newValueIds,
-        },
-      };
-      editReference({ variables });
+    if (selectedElementId && selectedElementId.length > 0) {
+      callSetReferenceValue(selectedElementId);
     }
   };
 
   const addNewElement = (selectedElementId: string): void => {
     setModalDisplayed(null);
     if (selectedElementId) {
-      let newValueIds = widget.reference.manyValued
-        ? [...widget.referenceValues.map((value) => value.id), selectedElementId]
-        : [selectedElementId];
-
-      const variables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          newValueIds,
-        },
-      };
-      editReference({ variables });
+      if (widget.reference.manyValued) {
+        callAddReferenceValues([selectedElementId]);
+      } else {
+        callSetReferenceValue(selectedElementId);
+      }
     }
   };
 
@@ -270,14 +497,17 @@ export const ReferencePropertySection = ({
       <TransferModal
         editingContextId={editingContextId}
         formId={formId}
-        onClose={addSelectedElements}
+        onClose={() => setModalDisplayed(null)}
+        addElements={callAddReferenceValues}
+        removeElement={callRemoveReferenceValue}
+        moveElement={callMoveReferenceValue}
         widget={widget}
       />
     ) : (
-      <BrowseModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
+      <BrowseModal editingContextId={editingContextId} onClose={setSelectedElement} widget={widget} />
     );
   } else if (modalDisplayed === 'create') {
-    modal = <CreateModal editingContextId={editingContextId} onClose={addNewElement} widget={widget} />;
+    modal = <CreateModal editingContextId={editingContextId} onClose={addNewElement} widget={widget} formId={formId} />;
   }
 
   return (
@@ -288,20 +518,23 @@ export const ReferencePropertySection = ({
           formId={formId}
           widget={widget}
           subscribers={subscribers}
-          data-testid={widget.label + '_' + widget.reference.typeName + '.' + widget.reference.referenceName}
+          data-testid={widget.label + '_' + widget.reference.referenceKind}
         />
         <ValuedReferenceAutocomplete
           editingContextId={editingContextId}
           formId={formId}
           widget={widget}
           readOnly={readOnly}
-          editReference={editReference}
           onDragEnter={handleDragEnter}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           onMoreClick={onBrowse}
           onCreateClick={onCreate}
           optionClickHandler={clickHandler}
+          clearReference={callClearReference}
+          removeReferenceValue={callRemoveReferenceValue}
+          addReferenceValues={callAddReferenceValues}
+          setReferenceValue={callSetReferenceValue}
         />
       </div>
       {modal}

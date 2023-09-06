@@ -12,9 +12,9 @@
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
 import {
-  getCSSColor,
   ServerContext,
   ServerContextValue,
+  getCSSColor,
   theme,
   useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
@@ -22,8 +22,8 @@ import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-fo
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -97,8 +97,11 @@ export const ValuedReferenceAutocomplete = ({
   onDrop,
   onMoreClick,
   onCreateClick,
-  editReference,
   optionClickHandler,
+  clearReference,
+  removeReferenceValue,
+  addReferenceValues,
+  setReferenceValue,
 }: ValuedReferenceAutocompleteProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const props: GQLReferenceWidgetStyle = {
@@ -158,35 +161,35 @@ export const ValuedReferenceAutocomplete = ({
     }
   }, [loading]);
 
-  const handleAutocompleteChange = (_event, newValue) => {
-    let newValueIds: string[] = newValue.map((value: GQLReferenceValue) => value.id);
-    if (!widget.reference.manyValued && widget.referenceValues.length > 0) {
-      // For mono-valued reference, we only keep the new one
-      newValueIds = newValueIds.filter((newValue) => widget.referenceValues.some((value) => value.id !== newValue));
-    }
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        newValueIds,
-      },
-    };
-    editReference({ variables });
+  const handleRemoveReferenceValue = (updatedValues: GQLReferenceValue[]) => {
+    widget.referenceValues.forEach((value) => {
+      if (!updatedValues.find((updateValue) => updateValue.id === value.id)) {
+        removeReferenceValue(value.id); // this should only be called once, since we can remove only one chip at a time
+      }
+    });
   };
 
-  const handleClearClick = () => {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        newValueIds: [],
-      },
-    };
-    editReference({ variables });
+  const getOnlyNewValueIds = (updatedValues) => {
+    if (widget.referenceValues?.length > 0) {
+      return updatedValues
+        .filter((updatedValue) => widget.referenceValues.some((value) => value.id !== updatedValue.id))
+        .map((value) => value.id);
+    } else {
+      return updatedValues.map((value) => value.id);
+    }
+  };
+
+  const handleAutocompleteChange = (_event, updatedValues, reason) => {
+    if (reason === 'remove-option') {
+      handleRemoveReferenceValue(updatedValues);
+    } else {
+      const newValueIds = getOnlyNewValueIds(updatedValues);
+      if (widget.reference.manyValued) {
+        addReferenceValues(newValueIds);
+      } else {
+        setReferenceValue(newValueIds[0]);
+      }
+    }
   };
 
   useEffect(() => {
@@ -296,7 +299,7 @@ export const ValuedReferenceAutocomplete = ({
                     title="Clear"
                     disabled={readOnly || widget.readOnly}
                     data-testid={`${widget.label}-clear`}
-                    onClick={handleClearClick}>
+                    onClick={clearReference}>
                     <DeleteIcon />
                   </IconButton>
                 </InputAdornment>

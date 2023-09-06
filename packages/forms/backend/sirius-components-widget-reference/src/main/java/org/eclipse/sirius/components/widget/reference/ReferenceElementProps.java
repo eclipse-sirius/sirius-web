@@ -15,12 +15,15 @@ package org.eclipse.sirius.components.widget.reference;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.widget.reference.dto.CreateElementInReferenceHandlerParameters;
+import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerParameters;
 
 /**
  * The properties for the multi-valued reference widget element.
@@ -46,13 +49,31 @@ public final class ReferenceElementProps implements IProps {
 
     private Supplier<List<ReferenceValue>> optionsProvider;
 
-    private Setting setting;
+    private String ownerKind;
+
+    private String referenceKind;
+
+    private boolean containment;
+
+    private String descriptionId;
+
+    private boolean many;
 
     private ReferenceWidgetStyle style;
 
     private String ownerId;
 
     private List<Element> children;
+
+    private Supplier<IStatus> clearHandler;
+
+    private Function<Object, IStatus> setHandler;
+
+    private Function<List<?>, IStatus> addHandler;
+
+    private Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler;
+
+    private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
     private ReferenceElementProps() {
         // Prevent instantiation
@@ -90,8 +111,24 @@ public final class ReferenceElementProps implements IProps {
         return this.optionsProvider;
     }
 
-    public Setting getSetting() {
-        return this.setting;
+    public String getOwnerKind() {
+        return this.ownerKind;
+    }
+
+    public String getReferenceKind() {
+        return this.referenceKind;
+    }
+
+    public boolean isContainment() {
+        return this.containment;
+    }
+
+    public boolean isMany() {
+        return this.many;
+    }
+
+    public String getDescriptionId() {
+        return this.descriptionId;
     }
 
     public ReferenceWidgetStyle getStyle() {
@@ -100,6 +137,26 @@ public final class ReferenceElementProps implements IProps {
 
     public String getOwnerId() {
         return this.ownerId;
+    }
+
+    public Supplier<IStatus> getClearHandler() {
+        return this.clearHandler;
+    }
+
+    public Function<Object, IStatus> getSetHandler() {
+        return this.setHandler;
+    }
+
+    public Function<List<?>, IStatus> getAddHandler() {
+        return this.addHandler;
+    }
+
+    public Function<CreateElementInReferenceHandlerParameters, Object> getCreateElementHandler() {
+        return this.createElementHandler;
+    }
+
+    public Function<MoveReferenceValueHandlerParameters, IStatus> getMoveHandler() {
+        return this.moveHandler;
     }
 
     @Override
@@ -133,13 +190,31 @@ public final class ReferenceElementProps implements IProps {
 
         private Supplier<List<ReferenceValue>> optionsProvider;
 
-        private Setting setting;
+        private String ownerKind;
+
+        private String referenceKind;
+
+        private boolean containment;
+
+        private boolean many;
 
         private ReferenceWidgetStyle style;
 
         private String ownerId;
 
         private List<Element> children;
+
+        private Supplier<IStatus> clearHandler;
+
+        private Function<Object, IStatus> setHandler;
+
+        private Function<List<?>, IStatus> addHandler;
+
+        private Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler;
+
+        private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
+
+        private String descriptionId;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -175,8 +250,23 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder setting(Setting setting) {
-            this.setting = Objects.requireNonNull(setting);
+        public Builder ownerKind(String ownerKind) {
+            this.ownerKind = Objects.requireNonNull(ownerKind);
+            return this;
+        }
+
+        public Builder referenceKind(String referenceKind) {
+            this.referenceKind = Objects.requireNonNull(referenceKind);
+            return this;
+        }
+
+        public Builder containment(boolean containment) {
+            this.containment = containment;
+            return this;
+        }
+
+        public Builder many(boolean many) {
+            this.many = many;
             return this;
         }
 
@@ -195,19 +285,58 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder clearHandler(Supplier<IStatus> clearHandler) {
+            this.clearHandler = Objects.requireNonNull(clearHandler);
+            return this;
+        }
+
+        public Builder setHandler(Function<Object, IStatus> setHandler) {
+            this.setHandler = Objects.requireNonNull(setHandler);
+            return this;
+        }
+
+        public Builder addHandler(Function<List<?>, IStatus> addHandler) {
+            this.addHandler = Objects.requireNonNull(addHandler);
+            return this;
+        }
+
+        public Builder createElementHandler(Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler) {
+            this.createElementHandler = Objects.requireNonNull(createElementHandler);
+            return this;
+        }
+
+        public Builder moveHandler(Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler) {
+            this.moveHandler = Objects.requireNonNull(moveHandler);
+            return this;
+        }
+
+        public Builder descriptionId(String descriptionId) {
+            this.descriptionId = Objects.requireNonNull(descriptionId);
+            return this;
+        }
+
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
+            referenceElementProps.descriptionId = Objects.requireNonNull(this.descriptionId);
             referenceElementProps.label = Objects.requireNonNull(this.label);
             referenceElementProps.iconURL = this.iconURL;
             referenceElementProps.readOnly = this.readOnly;
             referenceElementProps.values = Objects.requireNonNull(this.values);
             referenceElementProps.optionsProvider = Objects.requireNonNull(this.optionsProvider);
-            referenceElementProps.setting = Objects.requireNonNull(this.setting);
+            referenceElementProps.ownerKind = Objects.requireNonNull(this.ownerKind);
+            referenceElementProps.referenceKind = Objects.requireNonNull(this.referenceKind);
+            referenceElementProps.containment = this.containment;
+            referenceElementProps.many = this.many;
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
             referenceElementProps.children = Objects.requireNonNull(this.children);
+            referenceElementProps.clearHandler = this.clearHandler; // Optional on purpose
+            referenceElementProps.setHandler = this.setHandler; // Optional on purpose
+            referenceElementProps.addHandler = this.addHandler; // Optional on purpose
+            referenceElementProps.createElementHandler = this.createElementHandler;  // Optional on purpose
+            referenceElementProps.moveHandler = this.moveHandler;  // Optional on purpose
             return referenceElementProps;
         }
     }

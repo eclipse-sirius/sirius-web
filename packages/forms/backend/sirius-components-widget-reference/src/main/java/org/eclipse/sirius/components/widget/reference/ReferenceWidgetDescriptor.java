@@ -68,14 +68,23 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
 
         if (Objects.equals(type, ReferenceElementProps.TYPE) && elementProps instanceof ReferenceElementProps props) {
             var builder = ReferenceWidget.newReferenceWidget(props.getId())
+                    .descriptionId(props.getDescriptionId())
                     .label(props.getLabel())
                     .iconURL(props.getIconURL())
                     .diagnostics(diagnostics)
                     .readOnly(props.isReadOnly())
-                    .setting(props.getSetting())
+                    .ownerKind(props.getOwnerKind())
+                    .referenceKind(props.getReferenceKind())
+                    .containment(props.isContainment())
+                    .many(props.isMany())
                     .referenceValues(props.getValues())
                     .referenceOptionsProvider(props.getOptionsProvider())
-                    .ownerId(props.getOwnerId());
+                    .ownerId(props.getOwnerId())
+                    .clearHandler(props.getClearHandler())
+                    .setHandler(props.getSetHandler())
+                    .addHandler(props.getAddHandler())
+                    .createElementHandler(props.getCreateElementHandler())
+                    .moveHandler(props.getMoveHandler());
             if (props.getHelpTextProvider() != null) {
                 builder.helpTextProvider(props.getHelpTextProvider());
             }

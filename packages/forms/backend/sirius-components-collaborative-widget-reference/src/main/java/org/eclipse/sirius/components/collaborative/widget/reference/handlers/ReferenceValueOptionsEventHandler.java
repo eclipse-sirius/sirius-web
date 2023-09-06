@@ -74,7 +74,6 @@ public class ReferenceValueOptionsEventHandler implements IFormEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
         if (formInput instanceof ReferenceValueOptionsQueryInput input) {
-
             var optionalReferenceWidget = this.formQueryService.findWidget(form, input.referenceWidgetId())
                     .filter(ReferenceWidget.class::isInstance)
                     .map(ReferenceWidget.class::cast);
