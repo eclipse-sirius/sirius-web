@@ -19,12 +19,12 @@ To test _Sirius Web_ you have two possible options:
 
 If you want a quick overview of how Sirius Web looks and feels like without building the sample application yourself, you will simply need:
 
-* Java 17
-* Docker, or an existing PostgreSQL 12 (or later) installation with a DB user that has admin rights on the database (those are needed by the application to create its schema on first startup).
+* https://adoptium.net/temurin/releases/[Java 17]
+* https://www.docker.com/[Docker], or an existing PostgreSQL 12 (or later) installation with a DB user that has admin rights on the database (those are needed by the application to create its schema on first startup).
 
 Then, download the latest pre-built JAR:
 
-. Go to the packages of the project and look for `sirius-web-sample-application`.
+. Go to the link:../../packages?tab=packages&q=+org.eclipse.sirius.sirius-web-sample-application[packages tab of the github project] and look for `sirius-web-sample-application`.
 . Download the latest jar available
 
 This is a single "fat JAR" named `sirius-web-sample-application.jar` which contains the complete sample application with all its dependencies.
@@ -55,6 +55,9 @@ java -jar sirius-web-sample-application.jar \
           --spring.datasource.password=dbpwd \
           --spring.liquibase.change-log=classpath:db/changelog/sirius-web.db.changelog.xml
 ----
++
+WARNING: If you encounter an error similar to `org.postgresql.util.PSQLException: FATAL: authentification`, check if your 5433 port is already used by another application. If so, change the command lines for docker and the application java launcher with 5434 or any other free port.
+
 3. Point your browser at http://localhost:8080 and enjoy!
 +
 WARNING: The initial version of Sirius Web has some known issues with Firefox.
@@ -73,19 +76,21 @@ To build the components in this repository on your own, you will need the follow
 
 * Git, and a GitHub account
 * To build the backend components:
-** Java 17
-** https://maven.apache.org[Apache Maven 3.6.3]
+** https://adoptium.net/temurin/releases/[Java 17]
+** https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/[Apache Maven 3.6.3]
 * To build the frontend components:
-** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 18.7.0 is required along with npm >= 8.15.0.
+** LTS versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 18.7.0 is required along with npm >= 8.15.0.
 ** https://turbo.build[TurboRepo] (`npm install -g turbo`)
 
 WARNING: Note that there are issues with NPM under Windows Subsystem for Linux (WSL).
 If you use WSL and encounter error messages like _"Maximum call stack size exceeded"_ when running NPM, switch to plain Windows where this should work.
 
+For Windows users: Due to the Maximum Path Length Limitation of Windows, you may exceed the limit of 260 characters in your PATH. To remove this limitation, apply the https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=powershell[this procedure] with this command line in PowerShell (`New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force`), then active the longpath option in Git in a command line with administrator rights (`git config --system core.longpaths true`).
+
 === GitHub Access Token
 
 The backend components of this repository depends on https://github.com/eclipse-sirius/sirius-emf-json[`sirius-emf-json`], which is published as Maven artifacts in _GitHub Packages_.
-To build `sirius-components` locally, you need a _GitHub Access Token_ so that Maven can download the `sirius-emf-json` and `Flow-Designer` artifacts.
+To build `sirius-web` locally, you need a _GitHub Access Token_ so that Maven can download the `sirius-emf-json` and `Flow-Designer` artifacts.
 
 . Create a personal token with a scope of `read:package` by following https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[the GitHub documentation] if you do not have one already.
 +
@@ -141,7 +146,7 @@ For Windows users, according to the link:https://docs.npmjs.com/cli/v8/using-npm
 Then you can set the `script-shell` configuration with the following command:
 [source,sh]
 ----
-npm config set script-shell "path\to\bash.exe"
+npm config set script-shell "C:\Program Files\Git\bin\bash.exe"
 ----
 ====
 
@@ -168,7 +173,7 @@ In this case you need to explicitly disable CheckStyle from the build: `mvn clea
 You could publish those to your maven or npm repository to consume them in other applications.
 We are already publishing those components in the NPM and maven repositories of our Github organization.
 +
-Using these instructions, we can find a Spring Boot "fat JAR" in `backend/sirius-web-sample-application/target/sirius-web-sample-application-{YEAR.MONTH.COUNT-SNAPSHOT}.jar`.
+Using these instructions, we can find a Spring Boot "fat JAR" in `packages/sirius-web/backend/sirius-web-sample-application/target/sirius-web-sample-application-{YEAR.MONTH.COUNT-SNAPSHOT}.jar`.
 Refer to the instructions in the "Quick Start" section above to launch it.
 
 == License
