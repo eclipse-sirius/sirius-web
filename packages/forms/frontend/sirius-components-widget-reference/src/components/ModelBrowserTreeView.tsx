@@ -58,9 +58,9 @@ export const ModelBrowserTreeView = ({
           readOnly={true}
           selection={selection}
           setSelection={setSelection}
-          treeId={`modelBrowser://${leafType}?typeName=${encodeURIComponent(typeName)}&featureName=${
-            widget.reference.referenceName
-          }&ownerId=${widget.ownerId}`}
+          treeId={`modelBrowser://${leafType}?typeName=${encodeURIComponent(typeName)}&targetType=${encodeURIComponent(
+            widget.reference.referenceKind
+          )}&ownerId=${widget.ownerId}`}
           enableMultiSelection={enableMultiSelection}
           synchronizedWithSelection={true}
           textToFilter={state.filterBarText}

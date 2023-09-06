@@ -18,6 +18,6 @@ package org.eclipse.sirius.components.widget.reference;
  *
  * @author pcdavid
  */
-public record Reference(String typeName, String referenceName, String referenceKind, boolean containment, boolean manyValued) {
+public record Reference(String typeName, String referenceKind, boolean containment, boolean manyValued) {
 
 }

@@ -23,7 +23,6 @@ type ReferenceWidgetStyle {
 
 type Reference {
   typeName: String!
-  referenceName: String!
   referenceKind: String!
   containment: Boolean!
   manyValued: Boolean!

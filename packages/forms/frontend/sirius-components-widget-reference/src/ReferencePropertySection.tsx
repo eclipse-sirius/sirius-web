@@ -277,13 +277,12 @@ export const ReferencePropertySection = ({
 
   return (
     <>
-      <div className={classes.root}>
+      <div className={classes.root} data-testid={widget.label}>
         <PropertySectionLabel
           editingContextId={editingContextId}
           formId={formId}
           widget={widget}
           subscribers={subscribers}
-          data-testid={widget.label + '_' + widget.reference.typeName + '.' + widget.reference.referenceName}
         />
         <ValuedReferenceAutocomplete
           editingContextId={editingContextId}

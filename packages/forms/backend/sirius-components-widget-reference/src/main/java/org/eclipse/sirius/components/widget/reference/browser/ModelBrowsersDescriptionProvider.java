@@ -27,7 +27,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
@@ -95,8 +94,8 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
                         .map(treeId -> treeId.startsWith("modelBrowser://reference"))
                         .orElse(false),
                 variableManager -> {
-                    EReference reference = this.resolveReference(variableManager).orElse(null);
-                    return this.isReferenceSelectable(variableManager, reference);
+                    EClass targetType = this.resolveTargetType(variableManager).orElse(null);
+                    return this.isTypeSelectable(variableManager, targetType);
                 }));
     }
 
@@ -143,10 +142,10 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         return isSelectable;
     }
 
-    private boolean isReferenceSelectable(VariableManager variableManager, EReference reference) {
+    private boolean isTypeSelectable(VariableManager variableManager, EClass targetType) {
         var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
-        if (optionalSelf.isPresent() && reference != null) {
-            return reference.getEType().isInstance(optionalSelf.get()) && this.resolveOwnerEObject(variableManager)
+        if (optionalSelf.isPresent() && targetType != null) {
+            return targetType.isInstance(optionalSelf.get()) && this.resolveOwnerEObject(variableManager)
                     .map(eObject -> !EcoreUtil.isAncestor(optionalSelf.get(), eObject))
                     .orElse(true);
         } else {
@@ -170,13 +169,13 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
     private Optional<EClass> resolveReferenceEClass(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
-        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith("modelBrowser://") && optionalEditingContext.isPresent()) {
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
-            String kind = parameters.get("typeName").get(0);
+            String refContainer = parameters.get("typeName").get(0);
 
-            String ePackageName = this.emfKindService.getEPackageName(kind);
-            String eClassName = this.emfKindService.getEClassName(kind);
+            String ePackageName = this.emfKindService.getEPackageName(refContainer);
+            String eClassName = this.emfKindService.getEClassName(refContainer);
 
             return this.findEPackage(ePackageRegistry, ePackageName)
                     .map(ePackage -> ePackage.getEClassifier(eClassName))
@@ -187,25 +186,21 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         }
     }
 
-    private Optional<EReference> resolveReference(VariableManager variableManager) {
+    private Optional<EClass> resolveTargetType(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
-            String kind = parameters.get("typeName").get(0);
+            String kind = parameters.get("targetType").get(0);
 
             String ePackageName = this.emfKindService.getEPackageName(kind);
             String eClassName = this.emfKindService.getEClassName(kind);
-            String referenceName = parameters.get("featureName").get(0);
 
             return this.findEPackage(ePackageRegistry, ePackageName)
                     .map(ePackage -> ePackage.getEClassifier(eClassName))
                     .filter(EClass.class::isInstance)
-                    .map(EClass.class::cast)
-                    .map(klass -> klass.getEStructuralFeature(referenceName))
-                    .filter(EReference.class::isInstance)
-                    .map(EReference.class::cast);
+                    .map(EClass.class::cast);
         } else {
             return Optional.empty();
         }

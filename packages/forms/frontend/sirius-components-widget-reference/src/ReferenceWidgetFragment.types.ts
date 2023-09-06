@@ -34,7 +34,6 @@ export interface GQLReferenceWidgetStyle {
 export interface GQLReference {
   typeName: string;
   referenceKind: string;
-  referenceName: string;
   containment: boolean;
   manyValued: boolean;
 }

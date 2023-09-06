@@ -43,7 +43,6 @@ public class ReferenceWidgetReferenceDataFetcher implements IDataFetcherWithFiel
         ReferenceWidget referenceWidget = environment.getSource();
         var feature = referenceWidget.getSetting().getEStructuralFeature();
         return new Reference(this.emfKindService.getKind(feature.getEContainingClass()),
-                feature.getName(),
                 this.emfKindService.getKind(((EReference) feature).getEReferenceType()),
                 ((EReference) feature).isContainment(),
                 feature.isMany());
