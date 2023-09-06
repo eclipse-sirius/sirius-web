@@ -119,6 +119,8 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
       />
     );
   }
+  const maxWidth: number = state.pages.length > 1 ? 100 : 390; // 390 is the maxWidth to fit to the default Details view
+  const variant: 'scrollable' | 'standard' = state.pages.length > 1 ? 'scrollable' : 'standard';
   return (
     <div data-testid="form" className={classes.form}>
       <div className={classes.pagesListAndToolbar}>
@@ -126,7 +128,7 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
           classes={{ root: classes.tabsRoot }}
           value={state.selectedPage.id}
           onChange={onChangeTab}
-          variant="scrollable"
+          variant={variant}
           scrollButtons="on"
           textColor="primary"
           indicatorColor="primary">
@@ -135,7 +137,9 @@ export const Form = ({ editingContextId, form, widgetSubscriptions, setSelection
               <Tab
                 {...a11yProps(page.id)}
                 classes={{ root: classes.tabRoot }}
+                style={{ minWidth: 1, maxWidth: maxWidth }} // Set minWidth to one to force tab width to fit the page label length
                 value={page.id}
+                title={page.label}
                 label={
                   <div className={classes.tabLabel}>
                     <div className={classes.tabLabelText}>{page.label}</div>
