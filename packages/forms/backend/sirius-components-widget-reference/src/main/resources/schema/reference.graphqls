@@ -4,6 +4,7 @@ extend type FormDescription {
 
 type ReferenceWidget implements Widget {
   id: ID!
+  descriptionId: String!
   diagnostics: [Diagnostic!]!
   label: String!
   iconURL: String
@@ -25,8 +26,7 @@ type ReferenceWidgetStyle {
 }
 
 type Reference {
-  typeName: String!
-  referenceName: String!
+  ownerKind: String!
   referenceKind: String!
   containment: Boolean!
   manyValued: Boolean!
@@ -41,19 +41,14 @@ type ReferenceValue {
 }
 
 extend type Mutation {
-  editReference(input: EditReferenceInput): EditReferencePayload!
   clickReferenceValue(input: ClickReferenceValueInput!): ClickReferenceValuePayload!
+  clearReference(input: ClearReferenceInput!): ClearReferencePayload!
+  removeReferenceValue(input: RemoveReferenceValueInput!): RemoveReferenceValuePayload!
+  setReferenceValue(input: SetReferenceValueInput!): SetReferenceValuePayload!
+  addReferenceValues(input: AddReferenceValuesInput!): AddReferenceValuesPayload!
+  createElementInReference(input: CreateElementInReferenceInput!): CreateElementInReferencePayload!
+  moveReferenceValue(input: MoveReferenceValueInput!): MoveReferenceValuePayload!
 }
-
-input EditReferenceInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  referenceWidgetId: ID!
-  newValueIds: [ID!]!
-}
-
-union EditReferencePayload = SuccessPayload | ErrorPayload
 
 input ClickReferenceValueInput {
   id: ID!
@@ -64,5 +59,75 @@ input ClickReferenceValueInput {
   clickEventKind: ClickEventKind!
 }
 
-
 union ClickReferenceValuePayload = ErrorPayload | SuccessPayload
+
+input ClearReferenceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+}
+
+union ClearReferencePayload = ErrorPayload | SuccessPayload
+
+input RemoveReferenceValueInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  referenceValueId: ID!
+}
+
+union RemoveReferenceValuePayload = ErrorPayload | SuccessPayload
+
+input SetReferenceValueInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  newValueId: ID!
+}
+
+union SetReferenceValuePayload = ErrorPayload | SuccessPayload
+
+input AddReferenceValuesInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  newValueIds: [ID!]!
+}
+
+union AddReferenceValuesPayload = ErrorPayload | SuccessPayload
+
+input CreateElementInReferenceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  containerId: ID!
+  """
+  domainId is not null when creating a root element
+  """
+  domainId: ID
+  creationDescriptionId: ID!
+}
+
+union CreateElementInReferencePayload = CreateElementInReferenceSuccessPayload | ErrorPayload
+
+type CreateElementInReferenceSuccessPayload {
+  id: ID!
+  object: Object!
+}
+
+input MoveReferenceValueInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  referenceValueId: ID!
+  fromIndex: Int!
+  toIndex: Int!
+}
+
+union MoveReferenceValuePayload = ErrorPayload | SuccessPayload

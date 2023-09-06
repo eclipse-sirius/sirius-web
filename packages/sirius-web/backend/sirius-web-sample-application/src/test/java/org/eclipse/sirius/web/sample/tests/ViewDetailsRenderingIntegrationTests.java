@@ -37,7 +37,9 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.URLParser;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
@@ -65,6 +67,7 @@ import org.eclipse.sirius.components.view.emf.AQLTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.DomainTypeTextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.ITextfieldCustomizer;
 import org.eclipse.sirius.components.view.emf.ViewPropertiesDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.view.emf.configuration.ViewPropertiesDescriptionServiceConfiguration;
 import org.eclipse.sirius.components.view.form.util.FormAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewAdapterFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,7 +107,9 @@ public class ViewDetailsRenderingIntegrationTests {
 
         this.view = this.loadFixture("ViewCompletionFixture.xmi");
 
-        IObjectService objectService = new ObjectService(new EMFKindService(new URLParser()), composedAdapterFactory, new LabelFeatureProviderRegistry());
+        EMFKindService emfKindService = new EMFKindService(new URLParser());
+        IObjectService objectService = new ObjectService(emfKindService, composedAdapterFactory, new LabelFeatureProviderRegistry());
+        ViewPropertiesDescriptionServiceConfiguration parameters = new ViewPropertiesDescriptionServiceConfiguration(objectService, new IEditService.NoOp(), emfKindService, new IFeedbackMessageService.NoOp());
 
         // @formatter:off
         List<ITextfieldCustomizer> customizers = List.of(
@@ -115,7 +120,7 @@ public class ViewDetailsRenderingIntegrationTests {
 
         // @formatter:off
         new ViewPropertiesDescriptionRegistryConfigurer(
-                objectService,
+                parameters,
                 composedAdapterFactory,
                 new IPropertiesValidationProvider.NoOp(),
                 new IEMFMessageService.NoOp(),

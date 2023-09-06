@@ -40,16 +40,16 @@ import {
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloGraphQLClient } from './ApolloGraphQLClient';
+import './Sprotty.css';
 import { httpOrigin } from './core/URL';
 import './fonts.css';
 import { Main } from './main/Main';
 import './reset.css';
-import './Sprotty.css';
 import { ToastProvider } from './toast/ToastProvider';
 import './variables.css';
 import { SliderPreview } from './widgets/SliderPreview';
@@ -176,9 +176,9 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
       fields: `label
                iconURL
                ownerId
+               descriptionId
                reference {
-                 typeName
-                 referenceName
+                 ownerKind
                  referenceKind
                  containment
                  manyValued

@@ -12,18 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.handlers;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
-import org.eclipse.sirius.components.collaborative.widget.reference.dto.EditReferenceInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.MoveReferenceValueInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -34,6 +33,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerParameters;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -42,57 +42,61 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handler invoked when the end-user requests changes to a reference.
+ * The handler of the move reference value event.
  *
- * @author pcdavid
+ * @author Jerome Gout
  */
 @Service
-public class EditReferenceEventHandler implements IFormEventHandler {
+public class MoveReferenceValueEventHandler implements IFormEventHandler {
 
-    private final IFormQueryService formQueryService;
-
-    private final ICollaborativeFormMessageService messageService;
-
-    private final IObjectService objectService;
+    private final IReferenceMessageService messageService;
 
     private final Counter counter;
 
-    public EditReferenceEventHandler(IFormQueryService formQueryService, ICollaborativeFormMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry) {
+    private final IFormQueryService formQueryService;
+
+    private final IObjectService objectService;
+
+    public MoveReferenceValueEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
         this.objectService = Objects.requireNonNull(objectService);
 
-        this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
+        this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
+                .tag(Monitoring.NAME, this.getClass().getSimpleName())
+                .register(meterRegistry);
     }
 
     @Override
     public boolean canHandle(IFormInput formInput) {
-        return formInput instanceof EditReferenceInput;
+        return formInput instanceof MoveReferenceValueInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Form form, IFormInput formInput) {
         this.counter.increment();
-        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), EditReferenceInput.class.getSimpleName());
+
+        String message = this.messageService.invalidInput(formInput.getClass().getSimpleName(), MoveReferenceValueInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(formInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, formInput.representationId(), formInput);
 
-        if (formInput instanceof EditReferenceInput input) {
-
-            var optionalWidget = this.formQueryService.findWidget(form, input.referenceWidgetId()).filter(ReferenceWidget.class::isInstance).map(ReferenceWidget.class::cast);
+        if (formInput instanceof MoveReferenceValueInput input) {
+            var optionalReferenceWidget = this.formQueryService.findWidget(form, input.referenceWidgetId())
+                    .filter(ReferenceWidget.class::isInstance)
+                    .map(ReferenceWidget.class::cast);
 
             IStatus status;
-            if (optionalWidget.isPresent() && optionalWidget.get().isReadOnly()) {
-                status = new Failure("Read-only widget can not be edited");
+            if (optionalReferenceWidget.map(ReferenceWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
+                status = new Failure(this.messageService.unableToEditReadOnlyWidget());
             } else {
-                status = optionalWidget.map(ReferenceWidget::getSetting)
-                        .map(setting -> this.editSetting(editingContext, setting, input.newValueIds()))
+                Optional<MoveReferenceValueHandlerParameters> handlerInput = this.getHandlerInput(editingContext, input);
+                status = optionalReferenceWidget.map(ReferenceWidget::getMoveHandler)
+                        .map(handler -> handler.apply(handlerInput.get()))
                         .orElse(new Failure(""));
             }
-
             if (status instanceof Success success) {
+                changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
             } else if (status instanceof Failure failure) {
                 payload = new ErrorPayload(formInput.id(), failure.getMessages());
             }
@@ -102,32 +106,10 @@ public class EditReferenceEventHandler implements IFormEventHandler {
         payloadSink.tryEmitValue(payload);
     }
 
-    private IStatus editSetting(IEditingContext editingContext, Setting setting, List<String> newValueIds) {
-        IStatus result = new Success();
-
-        List<Object> values = this.resolve(editingContext, newValueIds);
-        if (values.size() != newValueIds.size()) {
-            result = new Failure("Invalid id(s).");
-        } else if (!values.stream().allMatch(value -> this.isCompatible(setting, value))) {
-            result = new Failure("Incompatible values.");
-        } else if (setting.getEStructuralFeature().isMany()) {
-            setting.set(values);
-        } else if (newValueIds.isEmpty()) {
-            setting.unset();
-        } else if (values.size() == 1) {
-            setting.set(values.get(0));
-        } else {
-            result = new Failure("Single-valued reference can only accept a single value");
-        }
-        return result;
-    }
-
-    private List<Object> resolve(IEditingContext editingContext, List<String> ids) {
-        return ids.stream().flatMap(id -> this.objectService.getObject(editingContext, id).stream()).toList();
-    }
-
-    private boolean isCompatible(Setting setting, Object value) {
-        return setting.getEStructuralFeature().getEType().isInstance(value);
+    private Optional<MoveReferenceValueHandlerParameters> getHandlerInput(IEditingContext editingContext, MoveReferenceValueInput input) {
+        return this.objectService.getObject(editingContext, input.referenceValueId()).flatMap(value -> {
+            return Optional.of(new MoveReferenceValueHandlerParameters(value, input.fromIndex(), input.toIndex()));
+        });
     }
 
 }

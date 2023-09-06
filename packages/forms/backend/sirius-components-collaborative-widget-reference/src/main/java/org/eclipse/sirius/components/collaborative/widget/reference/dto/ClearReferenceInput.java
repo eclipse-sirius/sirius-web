@@ -12,16 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.dto;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 
 /**
- * Input object for the mutation to edit the content of a multi-valued reference.
+ * Input object for the mutation to clear the content of a reference.
  *
- * @author pcdavid
+ * @author Jerome Gout
  */
-public record EditReferenceInput(UUID id, String editingContextId, String representationId, String referenceWidgetId, List<String> newValueIds) implements IFormInput {
+public record ClearReferenceInput(UUID id, String editingContextId, String representationId, String referenceWidgetId) implements IFormInput {
 
 }

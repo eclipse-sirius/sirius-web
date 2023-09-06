@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -50,13 +49,31 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> itemImageURLProvider;
 
-    private Function<VariableManager, Setting> settingProvider;
+    private Function<VariableManager, String> ownerKindProvider;
+
+    private Function<VariableManager, String> referenceKindProvider;
+
+    private Function<VariableManager, Boolean> isContainmentProvider;
+
+    private Function<VariableManager, Boolean> isManyProvider;
 
     private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
     private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
 
     private Function<VariableManager, String> ownerIdProvider;
+
+    private Function<VariableManager, IStatus> clearHandlerProvider;
+
+    private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
+
+    private Function<VariableManager, IStatus> setHandlerProvider;
+
+    private Function<VariableManager, IStatus> addHandlerProvider;
+
+    private Function<VariableManager, Object> createElementHandlerProvider;
+
+    private Function<VariableManager, IStatus> moveHandlerProvider;
 
     private ReferenceWidgetDescription() {
         // Prevent instantiation
@@ -102,8 +119,20 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.itemImageURLProvider;
     }
 
-    public Function<VariableManager, Setting> getSettingProvider() {
-        return this.settingProvider;
+    public Function<VariableManager, String> getOwnerKindProvider() {
+        return this.ownerKindProvider;
+    }
+
+    public Function<VariableManager, String> getReferenceKindProvider() {
+        return this.referenceKindProvider;
+    }
+
+    public Function<VariableManager, Boolean> getIsContainmentProvider() {
+        return this.isContainmentProvider;
+    }
+
+    public Function<VariableManager, Boolean> getIsManyProvider() {
+        return this.isManyProvider;
     }
 
     public Function<VariableManager, IStatus> getItemClickHandlerProvider() {
@@ -116,6 +145,30 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     public Function<VariableManager, String> getOwnerIdProvider() {
         return this.ownerIdProvider;
+    }
+
+    public Function<VariableManager, IStatus> getClearHandlerProvider() {
+        return this.clearHandlerProvider;
+    }
+
+    public Function<VariableManager, IStatus> getItemRemoveHandlerProvider() {
+        return this.itemRemoveHandlerProvider;
+    }
+
+    public Function<VariableManager, IStatus> getSetHandlerProvider() {
+        return this.setHandlerProvider;
+    }
+
+    public Function<VariableManager, IStatus> getAddHandlerProvider() {
+        return this.addHandlerProvider;
+    }
+
+    public Function<VariableManager, Object> getCreateElementHandlerProvider() {
+        return this.createElementHandlerProvider;
+    }
+
+    public Function<VariableManager, IStatus> getMoveHandlerProvider() {
+        return this.moveHandlerProvider;
     }
 
     @Override
@@ -154,7 +207,13 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, String> itemImageURLProvider;
 
-        private Function<VariableManager, Setting> settingProvider;
+        private Function<VariableManager, String> ownerKindProvider;
+
+        private Function<VariableManager, String> referenceKindProvider;
+
+        private Function<VariableManager, Boolean> isContainmentProvider;
+
+        private Function<VariableManager, Boolean> isManyProvider;
 
         private Function<VariableManager, String> helpTextProvider;
 
@@ -169,6 +228,18 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
+
+        private Function<VariableManager, IStatus> clearHandlerProvider;
+
+        private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
+
+        private Function<VariableManager, IStatus> setHandlerProvider;
+
+        private Function<VariableManager, IStatus> addHandlerProvider;
+
+        private Function<VariableManager, Object> createElementHandlerProvider;
+
+        private Function<VariableManager, IStatus> moveHandlerProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -229,8 +300,23 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder settingProvider(Function<VariableManager, Setting> settingProvider) {
-            this.settingProvider = Objects.requireNonNull(settingProvider);
+        public Builder ownerKindProvider(Function<VariableManager, String> ownerKindProvider) {
+            this.ownerKindProvider = Objects.requireNonNull(ownerKindProvider);
+            return this;
+        }
+
+        public Builder referenceKindProvider(Function<VariableManager, String> referenceKindProvider) {
+            this.referenceKindProvider = Objects.requireNonNull(referenceKindProvider);
+            return this;
+        }
+
+        public Builder isContainmentProvider(Function<VariableManager, Boolean> isContainmentProvider) {
+            this.isContainmentProvider = Objects.requireNonNull(isContainmentProvider);
+            return this;
+        }
+
+        public Builder isManyProvider(Function<VariableManager, Boolean> isManyProvider) {
+            this.isManyProvider = Objects.requireNonNull(isManyProvider);
             return this;
         }
 
@@ -269,6 +355,36 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder clearHandlerProvider(Function<VariableManager, IStatus> clearHandlerProvider) {
+            this.clearHandlerProvider = Objects.requireNonNull(clearHandlerProvider);
+            return this;
+        }
+
+        public Builder itemRemoveHandlerProvider(Function<VariableManager, IStatus> itemRemoveHandlerProvider) {
+            this.itemRemoveHandlerProvider = Objects.requireNonNull(itemRemoveHandlerProvider);
+            return this;
+        }
+
+        public Builder setHandlerProvider(Function<VariableManager, IStatus> setHandlerProvider) {
+            this.setHandlerProvider = Objects.requireNonNull(setHandlerProvider);
+            return this;
+        }
+
+        public Builder addHandlerProvider(Function<VariableManager, IStatus> addHandlerProvider) {
+            this.addHandlerProvider = Objects.requireNonNull(addHandlerProvider);
+            return this;
+        }
+
+        public Builder createElementHandlerProvider(Function<VariableManager, Object> createElementHandlerProvider) {
+            this.createElementHandlerProvider = Objects.requireNonNull(createElementHandlerProvider);
+            return this;
+        }
+
+        public Builder moveHandlerProvider(Function<VariableManager, IStatus> moveHandlerProvider) {
+            this.moveHandlerProvider = Objects.requireNonNull(moveHandlerProvider);
+            return this;
+        }
+
         public ReferenceWidgetDescription build() {
             ReferenceWidgetDescription referenceWidgetDescription = new ReferenceWidgetDescription();
             referenceWidgetDescription.id = Objects.requireNonNull(this.id);
@@ -283,7 +399,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);
             referenceWidgetDescription.itemKindProvider = Objects.requireNonNull(this.itemKindProvider);
             referenceWidgetDescription.itemImageURLProvider = Objects.requireNonNull(this.itemImageURLProvider);
-            referenceWidgetDescription.settingProvider = Objects.requireNonNull(this.settingProvider);
+            referenceWidgetDescription.ownerKindProvider = Objects.requireNonNull(this.ownerKindProvider);
+            referenceWidgetDescription.referenceKindProvider = Objects.requireNonNull(this.referenceKindProvider);
+            referenceWidgetDescription.isContainmentProvider = Objects.requireNonNull(this.isContainmentProvider);
+            referenceWidgetDescription.isManyProvider = Objects.requireNonNull(this.isManyProvider);
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidgetDescription.itemClickHandlerProvider = this.itemClickHandlerProvider; // Optional on purpose
             referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
@@ -291,6 +410,12 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             referenceWidgetDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             referenceWidgetDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            referenceWidgetDescription.clearHandlerProvider = this.clearHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.itemRemoveHandlerProvider = this.itemRemoveHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.setHandlerProvider = this.setHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.addHandlerProvider = this.addHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.createElementHandlerProvider = this.createElementHandlerProvider;  // Optional on purpose
+            referenceWidgetDescription.moveHandlerProvider = this.moveHandlerProvider;  // Optional on purpose
             return referenceWidgetDescription;
         }
     }

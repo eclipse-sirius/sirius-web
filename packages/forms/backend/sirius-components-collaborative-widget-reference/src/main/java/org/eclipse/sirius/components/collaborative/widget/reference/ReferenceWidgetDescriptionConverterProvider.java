@@ -38,13 +38,16 @@ public class ReferenceWidgetDescriptionConverterProvider implements IWidgetConve
 
     private final IFormIdProvider formIdProvider;
 
+    private final IEMFKindService emfKindService;
+
     public ReferenceWidgetDescriptionConverterProvider(ComposedAdapterFactory composedAdapterFactory, IEMFKindService emfKindService, IFormIdProvider formIdProvider) {
         this.composedAdapterFactory = composedAdapterFactory;
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
+        this.emfKindService = emfKindService;
     }
 
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, feedbackMessageService, this.composedAdapterFactory, this.formIdProvider);
+        return new ReferenceWidgetDescriptionConverterSwitch(interpreter, objectService, editService, this.emfKindService, feedbackMessageService, this.composedAdapterFactory, this.formIdProvider);
     }
 }

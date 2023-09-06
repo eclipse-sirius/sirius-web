@@ -23,15 +23,11 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClickReferenceValueInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -60,6 +56,7 @@ public class ClickReferenceValueEventHandlerTests {
     private static final UUID FORM_ID = UUID.randomUUID();
 
     private static final String REF_WIDGET_ID = "RefWidget id";
+
     private static final String CHANGE_DESCRIPTION_PARAMETER_KEY = "change_description_parameter_key";
 
     @Test
@@ -84,17 +81,18 @@ public class ClickReferenceValueEventHandlerTests {
                 .clickHandler(clickHandler)
                 .build();
 
-        EObject owner = EcorePackage.Literals.ECLASS;
-        EStructuralFeature.Setting setting = ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
-
-        ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
+        ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(REF_WIDGET_ID)
                 .diagnostics(Collections.emptyList())
                 .referenceValues(Collections.singletonList(referenceValue))
                 .referenceOptionsProvider(List::of)
+                .descriptionId("")
                 .label("")
                 .readOnly(false)
-                .setting(setting)
                 .ownerId("")
+                .ownerKind("")
+                .referenceKind("")
+                .many(false)
+                .containment(false)
                 .build();
 
         Group group = Group.newGroup("groupId")
@@ -121,7 +119,7 @@ public class ClickReferenceValueEventHandlerTests {
             }
         };
 
-        ClickReferenceValueEventHandler handler = new ClickReferenceValueEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
+        ClickReferenceValueEventHandler handler = new ClickReferenceValueEventHandler(formQueryService, new IReferenceMessageService.NoOp(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -162,16 +160,17 @@ public class ClickReferenceValueEventHandlerTests {
                 .clickHandler(clickHandler)
                 .build();
 
-        EObject owner = EcorePackage.Literals.ECLASS;
-        EStructuralFeature.Setting setting = ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
-
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
                 .diagnostics(Collections.emptyList())
                 .referenceValues(Collections.singletonList(referenceValue))
                 .referenceOptionsProvider(List::of)
                 .label("")
+                .descriptionId("")
                 .readOnly(true)
-                .setting(setting)
+                .ownerKind("")
+                .referenceKind("")
+                .many(false)
+                .containment(false)
                 .ownerId("")
                 .build();
 
@@ -199,7 +198,14 @@ public class ClickReferenceValueEventHandlerTests {
             }
         };
 
-        ClickReferenceValueEventHandler handler = new ClickReferenceValueEventHandler(formQueryService, new ICollaborativeFormMessageService.NoOp(), new SimpleMeterRegistry());
+        IReferenceMessageService messageService = new IReferenceMessageService.NoOp() {
+            @Override
+            public String unableToEditReadOnlyWidget() {
+                return "Read-only widget can not be edited";
+            }
+        };
+
+        ClickReferenceValueEventHandler handler = new ClickReferenceValueEventHandler(formQueryService, messageService, new SimpleMeterRegistry());
         assertThat(handler.canHandle(input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
