@@ -88,17 +88,18 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
-    const firstSelectedEdgeId = diagram.edges
+    const selectedEdgeIds = diagram.edges
       .filter((edge) => selectionEntryIds.includes(edge.data ? edge.data.targetObjectId : ''))
       .map((edge) => edge.id);
-    const firstSelectedNodeId = diagram.nodes
+    const selectedNodeIds = diagram.nodes
       .filter((node) => selectionEntryIds.includes(node.data.targetObjectId))
       .map((node) => node.id);
-    if (firstSelectedEdgeId.length === 0 && firstSelectedNodeId.length > 0) {
+    const firstSelectedNodeId = selectedNodeIds[0];
+    if (selectedEdgeIds.length === 0 && firstSelectedNodeId) {
       const reactFlowState = store.getState();
       reactFlowState.unselectNodesAndEdges();
       // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
-      reactFlowState.addSelectedNodes([firstSelectedNodeId[0]]);
+      reactFlowState.addSelectedNodes([firstSelectedNodeId]);
     }
   }, [selection, diagram]);
 

@@ -50,7 +50,7 @@ const markerSelector = (state: ReactFlowState): MarkerProps[] => {
 const equalityFunction = (oldMarkerProps: MarkerProps[], newMarkerProps: MarkerProps[]) => {
   return !(
     oldMarkerProps.length !== newMarkerProps.length ||
-    oldMarkerProps.some((edge, index) => edge.id !== newMarkerProps[index].id)
+    oldMarkerProps.some((edge, index) => !!newMarkerProps[index] && edge.id !== newMarkerProps[index]?.id)
   );
 };
 

@@ -145,7 +145,7 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
 
         const isEqual =
           context.selection.entries.length === selection.entries.length &&
-          context.selection.entries.every((value, index) => value.id === selection.entries[index].id);
+          context.selection.entries.every((value, index) => value.id === selection.entries[index]?.id);
 
         const isSelectedRepresentationDisplayed =
           context.displayedRepresentation &&
@@ -215,8 +215,9 @@ export const workbenchMachine = Machine<WorkbenchContext, WorkbenchStateSchema, 
           const representations = context.representations;
 
           for (var i = 0; i < representations.length; i++) {
-            if (representations[i].id === representationId) {
-              representations[i].label = newLabel;
+            const representation = representations[i];
+            if (!!representation && representation.id === representationId) {
+              representation.label = newLabel;
             }
           }
 

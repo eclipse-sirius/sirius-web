@@ -162,8 +162,8 @@ const layoutDiagram = (diagram: Diagram) => {
   // Update position of root nodes
   nodesToLayout.forEach((rootNode, index) => {
     rootNode.position = { x: 0, y: 0 };
-    if (index > 0) {
-      const previousSibling = nodesToLayout[index - 1];
+    const previousSibling = nodesToLayout[index - 1];
+    if (previousSibling) {
       rootNode.position = { x: previousSibling.position.x + (previousSibling.width ?? 0) + gap, y: 0 };
     }
   });
@@ -186,8 +186,8 @@ const layoutNodes = (allVisibleNodes: Node[], nodesToLayout: Node<NodeData>[]) =
             x: rectangularNodePadding,
             y: rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding,
           };
-          if (index > 0) {
-            const previousSibling = directChildren[index - 1];
+          const previousSibling = directChildren[index - 1];
+          if (previousSibling) {
             child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
           }
         });

@@ -191,7 +191,7 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   }
 
   useEffect(() => {
-    if (!invokeSingleClickOnTwoDiagramElementToolCalled && connectorTools.length === 1) {
+    if (!invokeSingleClickOnTwoDiagramElementToolCalled && connectorTools.length === 1 && connectorTools[0]) {
       invokeTool(connectorTools[0]);
     }
   }, [connectorTools]);

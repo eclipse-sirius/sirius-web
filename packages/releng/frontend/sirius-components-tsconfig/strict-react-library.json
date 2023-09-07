@@ -4,6 +4,7 @@
   "extends": "./react-library.json",
   "compilerOptions": {
     "strict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true
   }
 }
