@@ -26,7 +26,7 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
 
     @Override
     protected String getProjectRootPackage() {
-        return ArchitectureConstants.SIRIUS_COMPONENTS_COLLABORATIVE_FORMS_ROOT_PACKAGE;
+        return ArchitectureConstants.SIRIUS_COMPONENTS_COLLABORATIVE_WIDGET_REFERENCE_ROOT_PACKAGE;
     }
 
     @Override

@@ -23,13 +23,13 @@ import com.tngtech.archunit.core.importer.ImportOption;
  */
 public final class ArchitectureConstants {
 
-    public static final String SIRIUS_COMPONENTS_FORMS_ROOT_PACKAGE = "org.eclipse.sirius.components.widget.reference..";
+    public static final String SIRIUS_COMPONENTS_WIDGET_REFERENCE_ROOT_PACKAGE = "org.eclipse.sirius.components.widget.reference..";
 
     // @formatter:off
     public static final JavaClasses CLASSES = new ClassFileImporter()
             .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_JARS)
             .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
-            .importPackages(SIRIUS_COMPONENTS_FORMS_ROOT_PACKAGE);
+            .importPackages(SIRIUS_COMPONENTS_WIDGET_REFERENCE_ROOT_PACKAGE);
     // @formatter:on
 
     private ArchitectureConstants() {
