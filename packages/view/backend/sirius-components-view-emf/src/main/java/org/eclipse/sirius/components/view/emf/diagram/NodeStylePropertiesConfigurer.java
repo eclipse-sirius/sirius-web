@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
@@ -119,11 +120,10 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         List<AbstractControlDescription> controls = new ArrayList<>();
         controls.add(this.createShapeSelectionField(DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE));
         controls.add(this.createShapePreviewField());
-        controls.addAll(this.getGeneralControlDescription());
+        controls.addAll(this.getGeneralControlDescription(NodeType.NODE_IMAGE));
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
-        // @formatter:off
         Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
                     .filter(ImageNodeStyleDescription.class::isInstance)
                     .isPresent();
@@ -134,7 +134,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private PageDescription getIconLabelNodeStyleProperties() {
         String id = UUID.nameUUIDFromBytes("iconlabelnodestyle".getBytes()).toString();
 
-        List<AbstractControlDescription> controls = this.getGeneralControlDescription();
+        List<AbstractControlDescription> controls = this.getGeneralControlDescription(NodeType.NODE_ICON_LABEL);
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
@@ -154,7 +154,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
                 (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
                 DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER));
-        controls.addAll(this.getGeneralControlDescription());
+        controls.addAll(this.getGeneralControlDescription(NodeType.NODE_RECTANGLE));
 
         GroupDescription groupDescription = this.createSimpleGroupDescription(controls);
 
@@ -165,76 +165,104 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         return this.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
 
-    private List<AbstractControlDescription> getGeneralControlDescription() {
-        return List.of(
-                this.createExpressionField("nodestyle.widthExpression", "Width Expression",
-                        style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
-                        (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
-                        DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION),
-                this.createExpressionField("nodestyle.heightExpression", "Height Expression",
-                                           style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
-                                           (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
-                                           DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION),
-                this.createCheckbox("nodestyle.showIcon", "Show Icon",
-                                    style -> ((NodeStyleDescription) style).isShowIcon(),
-                                    (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
-                                    DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON),
-                this.createUserColorReferenceWidget("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR),
-                this.createUserColorReferenceWidget("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR),
-                this.createUserColorReferenceWidget("nodestyle.borderColor"
-                        , "Border Color"
-                        , DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR),
-                this.createTextField("nodestyle.borderRadius", "Border Radius",
-                                     style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
-                                     (style, newBorderRadius) -> {
-                                         try {
-                                             ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
-                                         } catch (NumberFormatException nfe) {
-                                             // Ignore.
-                                         }
-                                     },
-                                     DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS),
-                this.createTextField("nodestyle.borderSize", "Border Size",
-                                     style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
-                                     (style, newBorderSize) -> {
-                                         try {
-                                             ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
-                                         } catch (NumberFormatException nfe) {
-                                             // Ignore.
-                                         }
-                                     },
-                                     DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE),
-                this.createBorderLineStyleSelectionField("nodestyle.borderstyle", DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE),
-                this.createTextField("nodestyle.fontSize", "Font Size",
-                                     style -> String.valueOf(((LabelStyle) style).getFontSize()),
-                                     (style, newColor) -> {
-                                         try {
-                                             ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
-                                         } catch (NumberFormatException nfe) {
-                                             // Ignore.
-                                         }
-                                     },
-                                     ViewPackage.Literals.LABEL_STYLE__FONT_SIZE),
-                this.createCheckbox("nodestyle.italic", "Italic",
-                                    style -> ((LabelStyle) style).isItalic(),
-                                    (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
-                                    ViewPackage.Literals.LABEL_STYLE__ITALIC),
-                this.createCheckbox("nodestyle.bold", "Bold",
-                                    style -> ((LabelStyle) style).isBold(),
-                                    (style, newBold) -> ((LabelStyle) style).setBold(newBold),
-                                    ViewPackage.Literals.LABEL_STYLE__BOLD),
-                this.createCheckbox("nodestyle.underline", "Underline",
-                                    style -> ((LabelStyle) style).isUnderline(),
-                                    (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
-                                    ViewPackage.Literals.LABEL_STYLE__UNDERLINE),
-                this.createCheckbox("nodestyle.strikeThrough", "Strike Through",
-                                    style -> ((LabelStyle) style).isStrikeThrough(),
-                                    (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
-                                    ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH));
+    private List<AbstractControlDescription> getGeneralControlDescription(String nodeType) {
+        List<AbstractControlDescription> controls = new ArrayList<>();
+
+        var widthExpression = this.createExpressionField("nodestyle.widthExpression", "Width Expression",
+                style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
+                (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION);
+        controls.add(widthExpression);
+
+        var heightExpression = this.createExpressionField("nodestyle.heightExpression", "Height Expression",
+                                   style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
+                                   (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
+                                   DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
+        controls.add(heightExpression);
+
+        var showIcon = this.createCheckbox("nodestyle.showIcon", "Show Icon",
+                            style -> ((NodeStyleDescription) style).isShowIcon(),
+                            (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
+                            DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON);
+        controls.add(showIcon);
+
+        var labelColor = this.createUserColorReferenceWidget("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR);
+        controls.add(labelColor);
+
+        if (!Objects.equals(nodeType, NodeType.NODE_IMAGE)) {
+            var color = this.createUserColorReferenceWidget("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR);
+            controls.add(color);
+        }
+        var borderColor = this.createUserColorReferenceWidget("nodestyle.borderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR);
+        controls.add(borderColor);
+
+        var bordeRadius = this.createTextField("nodestyle.borderRadius", "Border Radius",
+                             style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
+                             (style, newBorderRadius) -> {
+                                 try {
+                                     ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                                 } catch (NumberFormatException nfe) {
+                                     // Ignore.
+                                 }
+                             },
+                             DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS);
+        controls.add(bordeRadius);
+
+        var borderSize = this.createTextField("nodestyle.borderSize", "Border Size",
+                             style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
+                             (style, newBorderSize) -> {
+                                 try {
+                                     ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
+                                 } catch (NumberFormatException nfe) {
+                                     // Ignore.
+                                 }
+                             },
+                             DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE);
+        controls.add(borderSize);
+
+        var borderStyle = this.createBorderLineStyleSelectionField("nodestyle.borderstyle", DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE);
+        controls.add(borderStyle);
+
+        var fontSize = this.createTextField("nodestyle.fontSize", "Font Size",
+                             style -> String.valueOf(((LabelStyle) style).getFontSize()),
+                             (style, newColor) -> {
+                                 try {
+                                     ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
+                                 } catch (NumberFormatException nfe) {
+                                     // Ignore.
+                                 }
+                             },
+                             ViewPackage.Literals.LABEL_STYLE__FONT_SIZE);
+        controls.add(fontSize);
+
+        var italic = this.createCheckbox("nodestyle.italic", "Italic",
+                            style -> ((LabelStyle) style).isItalic(),
+                            (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
+                            ViewPackage.Literals.LABEL_STYLE__ITALIC);
+        controls.add(italic);
+
+        var bold = this.createCheckbox("nodestyle.bold", "Bold",
+                            style -> ((LabelStyle) style).isBold(),
+                            (style, newBold) -> ((LabelStyle) style).setBold(newBold),
+                            ViewPackage.Literals.LABEL_STYLE__BOLD);
+        controls.add(bold);
+
+        var underline = this.createCheckbox("nodestyle.underline", "Underline",
+                            style -> ((LabelStyle) style).isUnderline(),
+                            (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
+                            ViewPackage.Literals.LABEL_STYLE__UNDERLINE);
+        controls.add(underline);
+
+        var strikeThrough = this.createCheckbox("nodestyle.strikeThrough", "Strike Through",
+                            style -> ((LabelStyle) style).isStrikeThrough(),
+                            (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
+                            ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH);
+        controls.add(strikeThrough);
+
+        return controls;
     }
 
     private PageDescription createSimplePageDescription(String id, GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
-        // @formatter:off
         return PageDescription.newPageDescription(id)
                 .idProvider(variableManager -> "page")
                 .labelProvider(variableManager -> "Properties")
@@ -242,18 +270,15 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .canCreatePredicate(canCreatePredicate)
                 .groupDescriptions(List.of(groupDescription))
                 .build();
-        // @formatter:on
     }
 
     private GroupDescription createSimpleGroupDescription(List<AbstractControlDescription> controls) {
-        // @formatter:off
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
                 .labelProvider(variableManager -> "General")
                 .semanticElementsProvider(this.semanticElementsProvider)
                 .controlDescriptions(controls)
                 .build();
-        // @formatter:on
     }
 
     private TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
@@ -268,7 +293,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
             }
         };
 
-        // @formatter:off
         return TextfieldDescription.newTextfieldDescription(id)
                 .idProvider(variableManager -> id)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -279,7 +303,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();
-        // @formatter:on
     }
 
     private TextareaDescription createExpressionField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
@@ -294,7 +317,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
             }
         };
 
-        // @formatter:off
         return TextareaDescription.newTextareaDescription(id)
                 .idProvider(variableManager -> id)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -307,7 +329,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();
-        // @formatter:on
     }
 
     private CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer, Object feature) {
@@ -321,7 +342,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 return new Failure("");
             }
         };
-        // @formatter:off
         return CheckboxDescription.newCheckboxDescription(id)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(variableManager -> id)
@@ -332,11 +352,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();
-        // @formatter:on
     }
 
     private SelectDescription createBorderLineStyleSelectionField(String id, Object feature) {
-        // @formatter:off
         return SelectDescription.newSelectDescription(id)
                                 .idProvider(variableManager -> id)
                                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -362,7 +380,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                                 .kindProvider(this::kindProvider)
                                 .messageProvider(this::messageProvider)
                                 .build();
-        // @formatter:on
     }
 
     private <T> ReferenceWidgetDescription createUserColorReferenceWidget(String id, String label, Object feature) {
@@ -433,7 +450,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private SelectDescription createShapeSelectionField(Object feature) {
-        // @formatter:off
         return SelectDescription.newSelectDescription("nodestyle.shapeSelector")
                 .idProvider(variableManager -> "nodestyle.shapeSelector")
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
@@ -465,11 +481,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();
-        // @formatter:on
     }
 
     private ImageDescription createShapePreviewField() {
-        // @formatter:off
         return ImageDescription.newImageDescription("nodestyle.shapePreview")
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(variableManager -> "nodestyle.shapePreview")
@@ -486,7 +500,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
                 .build();
-        // @formatter:on
     }
 
     private BiFunction<VariableManager, String, IStatus> getNewShapeValueHandler() {
