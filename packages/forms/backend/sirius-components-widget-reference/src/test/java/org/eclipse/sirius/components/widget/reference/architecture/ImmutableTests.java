@@ -25,7 +25,7 @@ public class ImmutableTests extends AbstractImmutableTests {
 
     @Override
     protected String getProjectRootPackage() {
-        return ArchitectureConstants.SIRIUS_COMPONENTS_FORMS_ROOT_PACKAGE;
+        return ArchitectureConstants.SIRIUS_COMPONENTS_WIDGET_REFERENCE_ROOT_PACKAGE;
     }
 
     @Override

@@ -42,6 +42,8 @@ A suitable implementation is to get the id of the `self` object using `IObjectSe
 It's now possible to provide _referenceKind_ to only get the `ChildCreationDescription` matching this _reference_.
 - https://github.com/eclipse-sirius/sirius-web/issues/2253[#2253] [diagram] The indroduction of ToolSection in palette, change the _DiagramDescription_ structure by adding a new level _Palette_ instead of _[ToolSection]_.
 Note that _palette_ will be removed in short-term from the _DiagramDescription_.
+- https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Split of `sirius-components-widget-reference` to extract EMF-related code into a new module `sirius-components-collaborative-widget-reference`.
+
 
 === Dependency update
 
