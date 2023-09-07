@@ -38,6 +38,10 @@ See [ADR-107] _Add support for dynamic and conditional widgets in Forms_ for the
 Also, all widget descriptions now have a `Function<VariableManager, String> targetObjectIdProvider`, needed to compute the widget instance's id.
 The new `targetObjectIdProvider` is required to be non-null, so any code which programmatically builds core Form Descriptions (not View-based ones), needs to pass a non-null provider.
 A suitable implementation is to get the id of the `self` object using `IObjectService.getId()`.
+- https://github.com/eclipse-sirius/sirius-web/issues/2118[#2118] [form] The introduction of the new modal for create objects with the reference widget, apply changes for two queries `rootObjectCreationDescriptions` and `childCreationDescriptions`.
+It's now possible to provide _referenceKind_ to only get the `ChildCreationDescription` matching this _reference_.
+- https://github.com/eclipse-sirius/sirius-web/issues/2253[#2253] [diagram] The indroduction of ToolSection in palette, change the _DiagramDescription_ structure by adding a new level _Palette_ instead of _[ToolSection]_.
+Note that _palette_ will be removed in short-term from the _DiagramDescription_.
 
 === Dependency update
 
@@ -61,7 +65,7 @@ A suitable implementation is to get the id of the `self` object using `IObjectSe
 - https://github.com/eclipse-sirius/sirius-web/issues/2333[#2333] [diagram] Fix a warning console when opening a palette on a diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/2345[#2345] [diagram] Fix a issue on React Flow diagram when opening a palette with toolSection without nodeTool.
 - https://github.com/eclipse-sirius/sirius-web/issues/2192[#2192] [view] Fix an issue where the _Shape_ property of an ImageNodeStyle was not mandatory.
-An error message is now displayed if the _Shape_ is not set. 
+An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2309[#2309] [diagram] Fix an issue where the edge labels where not always centered on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2195[#2195] [view] Fix an issue where a border color set to _None_ would set the color to a default color, not none.
 
@@ -89,8 +93,8 @@ This will be fixed in the next version.
 - https://github.com/eclipse-sirius/sirius-web/issues/2233[#2233] [diagram] Move the behavior of the arrange all in the diagram panel component
 - https://github.com/eclipse-sirius/sirius-web/issues/2311[#2311] [diagram] Ensure that the layout uses the same context as the rendering
 - https://github.com/eclipse-sirius/sirius-web/issues/2208[#2208] [diagram] Add Cypress tests for React Flow.
-- https://github.com/eclipse-sirius/sirius-web/issues/2198[#2198] [view] Add a default Color Palette on View creation
-- https://github.com/eclipse-sirius/sirius-web/issues/2228[#2228] [domain] Creating a domain from the onboard area action now initialize its name.
+- https://github.com/eclipse-sirius/sirius-web/issues/2198[#2198] [sirius-web] Add a default Color Palette on View creation
+- https://github.com/eclipse-sirius/sirius-web/issues/2228[#2228] [sirius-web] Creating a domain from the onboard area action now initialize its name.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Change the default representation in the details view for non containment reference from a select widget to a reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/2314[#2314] [diagram] Add feedback on edge selection on react-flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2313[#2313] [diagram] Support edge palette on react-flow diagrams
