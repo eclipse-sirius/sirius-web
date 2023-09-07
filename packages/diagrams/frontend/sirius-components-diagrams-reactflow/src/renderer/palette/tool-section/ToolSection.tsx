@@ -84,7 +84,7 @@ export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
       />
     );
   }
-  let defaultTool: GQLTool = tools[0];
+  const defaultTool: GQLTool | undefined = tools[0];
   const anchorRef = useRef<HTMLDivElement | null>(null);
   return (
     <>
