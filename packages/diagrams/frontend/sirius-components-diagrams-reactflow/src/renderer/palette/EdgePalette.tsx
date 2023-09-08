@@ -33,12 +33,13 @@ const useEdgePaletteStyle = makeStyles((theme) => ({
 
 export const EdgePalette = ({ edgeId, labelId }: EdgePaletteProps) => {
   const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
-  const { x, y, isOpened } = useEdgePalette();
+  const { x, y, isOpened, hideEdgePalette } = useEdgePalette();
   const classes = useEdgePaletteStyle();
 
   const handleDirectEditClick = () => {
     if (labelId) {
       setCurrentlyEditedLabelId('palette', labelId, null);
+      hideEdgePalette();
     }
   };
 

@@ -181,7 +181,9 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   };
 
   const handleEdgeClick = (event: React.MouseEvent<Element, MouseEvent>) => {
-    onEdgeClick(event);
+    if (event.target instanceof SVGElement && event.target.classList.contains('react-flow__edge-interaction')) {
+      onEdgeClick(event);
+    }
   };
 
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
