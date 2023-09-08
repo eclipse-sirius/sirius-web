@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widget.reference;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.forms.ClickEventKind;
@@ -72,6 +73,7 @@ public class ReferenceWidgetComponent implements IComponent {
                     String itemImageURL = referenceDescription.getItemImageURLProvider().apply(childVariables);
                     String itemKind = referenceDescription.getItemKindProvider().apply(childVariables);
                     Function<VariableManager, IStatus> clickHandlerProvider = referenceDescription.getItemClickHandlerProvider();
+                    Function<VariableManager, IStatus> removeHandlerProvider = referenceDescription.getItemRemoveHandlerProvider();
 
                     var referenceValueBuilder = ReferenceValue.newReferenceValue(itemId)
                             .label(itemLabel)
@@ -84,6 +86,12 @@ public class ReferenceWidgetComponent implements IComponent {
                             return clickHandlerProvider.apply(clickHandlerVariableManager);
                         };
                         referenceValueBuilder.clickHandler(clickHandler);
+                    }
+                    if (removeHandlerProvider != null) {
+                        Supplier<IStatus> removeHandler = () -> {
+                            return removeHandlerProvider.apply(childVariables);
+                        };
+                        referenceValueBuilder.removeHandler(removeHandler);
                     }
                     return referenceValueBuilder.build();
                 })

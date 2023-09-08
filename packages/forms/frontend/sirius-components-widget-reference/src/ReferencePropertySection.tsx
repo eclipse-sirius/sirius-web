@@ -30,6 +30,8 @@ import {
   GQLErrorPayload,
   GQLReferenceValue,
   GQLReferenceWidget,
+  GQLRemoveReferenceValueMutationData,
+  GQLRemoveReferenceValueMutationVariables,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
 import { ValuedReferenceAutocomplete } from './components/ValuedReferenceAutocomplete';
@@ -103,6 +105,26 @@ export const clearReferenceMutation = gql`
   }
 `;
 
+export const removeReferenceValueMutation = gql`
+  mutation removeReferenceValue($input: RemoveReferenceValueInput!) {
+    removeReferenceValue(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
 const isErrorPayload = (payload: GQLEditReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLEditReferencePayload): payload is GQLSuccessPayload =>
@@ -131,6 +153,11 @@ export const ReferencePropertySection = ({
     GQLClickReferenceValueMutationData,
     GQLClickReferenceValueMutationVariables
   >(clickReferenceValueMutation);
+
+  const [removeReferenceValue, { loading: removeLoading, error: removeError, data: removeData }] = useMutation<
+    GQLRemoveReferenceValueMutationData,
+    GQLRemoveReferenceValueMutationVariables
+  >(removeReferenceValueMutation);
 
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
     const { id, label, kind } = item;
@@ -209,6 +236,19 @@ export const ReferencePropertySection = ({
       }
     }
   }, [clearLoading, clearError, clearData]);
+  useEffect(() => {
+    if (!removeLoading) {
+      if (removeError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (removeData) {
+        const { removeReferenceValue } = removeData;
+        if (isErrorPayload(removeReferenceValue) || isSuccessPayload(removeReferenceValue)) {
+          addMessages(removeReferenceValue.messages);
+        }
+      }
+    }
+  }, [removeLoading, removeError, removeData]);
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -337,6 +377,7 @@ export const ReferencePropertySection = ({
           onCreateClick={onCreate}
           optionClickHandler={clickHandler}
           clearReference={clearReference}
+          removeReferenceValue={removeReferenceValue}
         />
       </div>
       {modal}

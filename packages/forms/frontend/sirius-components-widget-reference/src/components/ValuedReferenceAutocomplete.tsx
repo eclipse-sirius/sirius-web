@@ -22,7 +22,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useContext } from 'react';
-import { GQLReferenceValue, GQLReferenceWidgetStyle } from '../ReferenceWidgetFragment.types';
+import {
+  GQLReferenceValue,
+  GQLReferenceWidgetStyle,
+  GQLRemoveReferenceValueMutationVariables,
+} from '../ReferenceWidgetFragment.types';
 import { ValuedReferenceAutocompleteProps } from './ValuedReferenceAutocomplete.types';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
@@ -51,6 +55,7 @@ export const ValuedReferenceAutocomplete = ({
   editReference,
   optionClickHandler,
   clearReference,
+  removeReferenceValue,
 }: ValuedReferenceAutocompleteProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const props: GQLReferenceWidgetStyle = {
@@ -63,22 +68,45 @@ export const ValuedReferenceAutocomplete = ({
   };
   const classes = useStyles(props);
 
-  const handleAutocompleteChange = (_event, newValue) => {
-    let newValueIds: string[] = newValue.map((value: GQLReferenceValue) => value.id);
-    if (!widget.reference.manyValued && widget.referenceValues.length > 0) {
-      // For mono-valued reference, we only keep the new one
-      newValueIds = newValueIds.filter((newValue) => widget.referenceValues.some((value) => value.id !== newValue));
+  const handleRemoveReferenceValue = (updatedValues) => {
+    // looking for the missing one
+    const removedValues = widget.referenceValues.filter(
+      (value) => !updatedValues.find((n: GQLReferenceValue) => n.id === value.id)
+    );
+    if (removedValues.length == 1) {
+      const variables: GQLRemoveReferenceValueMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          referenceValueId: removedValues[0].id,
+        },
+      };
+      removeReferenceValue({ variables });
     }
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        newValueIds,
-      },
-    };
-    editReference({ variables });
+  };
+
+  const handleAutocompleteChange = (_event, newValue, reason) => {
+    if (reason === 'remove-option') {
+      handleRemoveReferenceValue(newValue);
+    } else {
+      let newValueIds: string[] = newValue.map((value: GQLReferenceValue) => value.id);
+      if (!widget.reference.manyValued && widget.referenceValues.length > 0) {
+        // For mono-valued reference, we only keep the new one
+        newValueIds = newValueIds.filter((newValue) => widget.referenceValues.some((value) => value.id !== newValue));
+      }
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          newValueIds,
+        },
+      };
+      editReference({ variables });
+    }
   };
 
   const handleClearClick = () => {

@@ -19,6 +19,8 @@ import {
   GQLEditReferenceVariables,
   GQLReferenceValue,
   GQLReferenceWidget,
+  GQLRemoveReferenceValueMutationData,
+  GQLRemoveReferenceValueMutationVariables,
 } from '../ReferenceWidgetFragment.types';
 
 export interface ValuedReferenceAutocompleteProps {
@@ -34,4 +36,5 @@ export interface ValuedReferenceAutocompleteProps {
   editReference: MutationFunction<GQLEditReferenceData, GQLEditReferenceVariables>;
   optionClickHandler: (element: GQLReferenceValue) => void;
   clearReference: MutationFunction<GQLClearReferenceMutationData, GQLClearReferenceMutationVariables>;
+  removeReferenceValue: MutationFunction<GQLRemoveReferenceValueMutationData, GQLRemoveReferenceValueMutationVariables>;
 }

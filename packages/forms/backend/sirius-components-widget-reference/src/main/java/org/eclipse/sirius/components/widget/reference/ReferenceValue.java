@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widget.reference;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.ClickEventKind;
@@ -37,6 +38,8 @@ public final class ReferenceValue {
     private String iconURL;
 
     private Function<ClickEventKind, IStatus> clickHandler;
+
+    private Supplier<IStatus> removeHandler;
 
     private ReferenceValue() {
         // Prevent instantiation
@@ -66,6 +69,10 @@ public final class ReferenceValue {
         return this.clickHandler;
     }
 
+    public Supplier<IStatus> getRemoveHandler() {
+        return this.removeHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}, imageURL: {4}'}'";
@@ -89,6 +96,8 @@ public final class ReferenceValue {
         private String iconURL;
 
         private Function<ClickEventKind, IStatus> clickHandler;
+
+        private Supplier<IStatus> removeHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -114,6 +123,11 @@ public final class ReferenceValue {
             return this;
         }
 
+        public Builder removeHandler(Supplier<IStatus> removeHandler) {
+            this.removeHandler = Objects.requireNonNull(removeHandler);
+            return this;
+        }
+
         public ReferenceValue build() {
             ReferenceValue referenceValue = new ReferenceValue();
             referenceValue.id = Objects.requireNonNull(this.id);
@@ -121,6 +135,7 @@ public final class ReferenceValue {
             referenceValue.kind = Objects.requireNonNull(this.kind);
             referenceValue.iconURL = this.iconURL;
             referenceValue.clickHandler = this.clickHandler; // Optional on purpose
+            referenceValue.removeHandler = this.removeHandler; // Optional on purpose
             return referenceValue;
         }
     }
