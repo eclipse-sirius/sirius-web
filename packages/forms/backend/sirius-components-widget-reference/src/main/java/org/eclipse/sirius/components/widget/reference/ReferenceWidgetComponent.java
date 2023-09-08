@@ -19,6 +19,8 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.components.FormComponent;
+import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
+import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -106,14 +108,16 @@ public class ReferenceWidgetComponent implements IComponent {
                 })
                 .toList();
 
+        List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(referenceDescription, variableManager)));
+
         var builder = ReferenceElementProps.newReferenceElementProps(id)
                 .label(label)
                 .iconURL(iconURL)
-                .diagnostics(List.of())
                 .values(items)
                 .options(options)
                 .setting(setting)
-                .ownerId(ownerId);
+                .ownerId(ownerId)
+                .children(children);
         if (referenceDescription.getHelpTextProvider() != null) {
             builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
         }

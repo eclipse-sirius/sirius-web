@@ -322,4 +322,19 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('reference-value-unused').should('exist');
     cy.getByTestId('unused').should('exist');
   });
+
+  it('check diagnostic messages are display on widget reference', () => {
+    cy.createProjectFromTemplate('flow-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
+      cy.visit(`/projects/${projectId}/edit`);
+    });
+
+    cy.getByTestId('explorer://').findByTestId('FlowNewModel').dblclick();
+    cy.getByTestId('explorer://').findByTestId('NewSystem').dblclick();
+    cy.getByTestId('explorer://').findByTestId('DataSource1').dblclick();
+    cy.getByTestId('explorer://').findByTestId('standard').click();
+    cy.getByTestId('Target').find('p[class*="Mui-error"]').should('not.exist');
+    cy.getByTestId('Target-clear').click();
+    cy.getByTestId('Target').find('p[class*="Mui-error"]').should('exist');
+  });
 });

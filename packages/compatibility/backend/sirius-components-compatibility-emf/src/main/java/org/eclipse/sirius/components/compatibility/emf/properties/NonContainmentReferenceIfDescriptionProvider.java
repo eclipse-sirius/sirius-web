@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.IfDescription;
@@ -44,11 +45,14 @@ public class NonContainmentReferenceIfDescriptionProvider {
 
     private final IObjectService objectService;
 
+    private final IPropertiesValidationProvider propertiesValidationProvider;
+
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, Function<VariableManager, String> semanticTargetIdProvider) {
+    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService, IPropertiesValidationProvider propertiesValidationProvider, Function<VariableManager, String> semanticTargetIdProvider) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.objectService = Objects.requireNonNull(objectService);
+        this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
     }
 
@@ -82,9 +86,9 @@ public class NonContainmentReferenceIfDescriptionProvider {
                 .settingProvider(this::resolveSetting)
                 .styleProvider(variableManager -> null)
                 .ownerIdProvider(this::getOwnerId)
-                .diagnosticsProvider(variableManager -> List.of())
-                .kindProvider(object -> "")
-                .messageProvider(object -> "")
+                .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
+                .kindProvider(this.propertiesValidationProvider.getKindProvider())
+                .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .build();
     }
 
