@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useCallback, useContext } from 'react';
-import { useNodes } from 'reactflow';
+import { useEdges, useNodes } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
+import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
 import { DiagramDirectEditContext } from './DiagramDirectEditContext';
 import { DiagramDirectEditContextValue } from './DiagramDirectEditContext.types';
 import { UseDiagramDirectEditValue } from './useDiagramDirectEdit.types';
@@ -23,6 +24,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
   const nodes = useNodes<NodeData>();
+  const edges = useEdges<MultiLabelEdgeData>();
 
   const onDirectEdit = useCallback(
     (event: React.KeyboardEvent<Element>) => {
@@ -36,7 +38,11 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       event.preventDefault();
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
-      const currentlyEditedLabelId: string | undefined | null = nodes.find((node) => node.selected)?.data.label?.id;
+      let currentlyEditedLabelId: string | undefined | null = nodes.find((node) => node.selected)?.data.label?.id;
+      if (!currentlyEditedLabelId) {
+        currentlyEditedLabelId = edges.find((edge) => edge.selected)?.data?.label?.id;
+      }
+
       if (currentlyEditedLabelId) {
         if (validFirstInputChar) {
           setCurrentlyEditedLabelId('keyDown', currentlyEditedLabelId, key);

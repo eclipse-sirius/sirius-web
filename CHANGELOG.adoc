@@ -116,6 +116,7 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2368[#2368] [form] Remove useless reference to the GraphQL version of Google Guava
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2343[#2343] [emf] Add icon for type selection in new object modal.
+- https://github.com/eclipse-sirius/sirius-web/issues/2365[#2365] [diagram] Support key down and F2 to enable direct edit on edges on react-flow diagrams.
 
 == v2023.8.0
 
