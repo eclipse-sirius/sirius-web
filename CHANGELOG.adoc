@@ -117,6 +117,7 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2343[#2343] [emf] Add icon for type selection in new object modal.
 - https://github.com/eclipse-sirius/sirius-web/issues/2365[#2365] [diagram] Support key down and F2 to enable direct edit on edges on react-flow diagrams.
+- https://github.com/eclipse-sirius/sirius-web/issues/2358[#2358] [form] Adds diagnostic messages to the reference widget.
 
 == v2023.8.0
 

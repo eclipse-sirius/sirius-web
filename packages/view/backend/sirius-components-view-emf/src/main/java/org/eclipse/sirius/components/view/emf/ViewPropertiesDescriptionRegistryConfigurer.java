@@ -193,7 +193,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
         ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
         var numericDataTypes = List.of(
                 EcorePackage.Literals.EINT,

@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.forms.validation.Diagnostic;
+import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
 /**
@@ -38,8 +38,6 @@ public final class ReferenceElementProps implements IProps {
 
     private String iconURL;
 
-    private List<Diagnostic> diagnostics;
-
     private Supplier<String> helpTextProvider;
 
     private boolean readOnly;
@@ -53,6 +51,8 @@ public final class ReferenceElementProps implements IProps {
     private ReferenceWidgetStyle style;
 
     private String ownerId;
+
+    private List<Element> children;
 
     private ReferenceElementProps() {
         // Prevent instantiation
@@ -72,10 +72,6 @@ public final class ReferenceElementProps implements IProps {
 
     public String getIconURL() {
         return this.iconURL;
-    }
-
-    public List<Diagnostic> getDiagnostics() {
-        return this.diagnostics;
     }
 
     public Supplier<String> getHelpTextProvider() {
@@ -107,6 +103,11 @@ public final class ReferenceElementProps implements IProps {
     }
 
     @Override
+    public List<Element> getChildren() {
+        return this.children;
+    }
+
+    @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
@@ -128,8 +129,6 @@ public final class ReferenceElementProps implements IProps {
         private boolean readOnly;
         private Supplier<String> helpTextProvider;
 
-        private List<Diagnostic> diagnostics;
-
         private List<ReferenceValue> values;
 
         private List<ReferenceValue> options;
@@ -139,6 +138,8 @@ public final class ReferenceElementProps implements IProps {
         private ReferenceWidgetStyle style;
 
         private String ownerId;
+
+        private List<Element> children;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -161,11 +162,6 @@ public final class ReferenceElementProps implements IProps {
 
         public Builder readOnly(boolean readOnly) {
             this.readOnly = readOnly;
-            return this;
-        }
-
-        public Builder diagnostics(List<Diagnostic> diagnostics) {
-            this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
         }
 
@@ -194,12 +190,16 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder children(List<Element> children) {
+            this.children = Objects.requireNonNull(children);
+            return this;
+        }
+
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
             referenceElementProps.label = Objects.requireNonNull(this.label);
             referenceElementProps.iconURL = this.iconURL;
-            referenceElementProps.diagnostics = this.diagnostics;
             referenceElementProps.readOnly = this.readOnly;
             referenceElementProps.values = Objects.requireNonNull(this.values);
             referenceElementProps.options = Objects.requireNonNull(this.options);
@@ -207,6 +207,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
+            referenceElementProps.children = Objects.requireNonNull(this.children);
             return referenceElementProps;
         }
     }

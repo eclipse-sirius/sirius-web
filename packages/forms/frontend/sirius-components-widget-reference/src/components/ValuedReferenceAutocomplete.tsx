@@ -138,6 +138,8 @@ export const ValuedReferenceAutocomplete = ({
           {...params}
           variant="standard"
           placeholder={placeholder}
+          error={widget.diagnostics.length > 0}
+          helperText={widget.diagnostics[0]?.message}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
+import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -59,11 +60,17 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
     @Override
     public Optional<Object> instanciate(String type, IProps elementProps, List<Object> children) {
         Optional<Object> result = Optional.empty();
+
+        List<Diagnostic> diagnostics = children.stream()
+                .filter(Diagnostic.class::isInstance)
+                .map(Diagnostic.class::cast)
+                .toList();
+
         if (Objects.equals(type, ReferenceElementProps.TYPE) && elementProps instanceof ReferenceElementProps props) {
             var builder = ReferenceWidget.newReferenceWidget(props.getId())
                     .label(props.getLabel())
                     .iconURL(props.getIconURL())
-                    .diagnostics(props.getDiagnostics())
+                    .diagnostics(diagnostics)
                     .readOnly(props.isReadOnly())
                     .setting(props.getSetting())
                     .referenceValues(props.getValues())
