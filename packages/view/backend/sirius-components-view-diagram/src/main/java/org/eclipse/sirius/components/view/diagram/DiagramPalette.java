@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropTool <em>Drop Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropNodeTool <em>Drop Node Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
@@ -54,6 +55,29 @@ public interface DiagramPalette extends EObject {
      * @generated
      */
     void setDropTool(DropTool value);
+
+    /**
+     * Returns the value of the '<em><b>Drop Node Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Drop Node Tool</em>' containment reference.
+     * @see #setDropNodeTool(DropNodeTool)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramPalette_DropNodeTool()
+     * @model containment="true"
+     * @generated
+     */
+    DropNodeTool getDropNodeTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropNodeTool <em>Drop
+     * Node Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Drop Node Tool</em>' containment reference.
+     * @see #getDropNodeTool()
+     * @generated
+     */
+    void setDropNodeTool(DropNodeTool value);
 
     /**
      * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type

@@ -77,6 +77,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__DELETE_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS);
@@ -141,6 +142,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
         switch (notification.getFeatureID(NodePalette.class)) {
             case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
             case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
+            case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
             case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
             case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
             case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
@@ -163,6 +165,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DELETE_TOOL, defaultToolsFactory.createDefaultDeleteTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultLabelEditTool()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL, DiagramFactory.eINSTANCE.createDropNodeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS, defaultToolsFactory.createDefaultNodeCreationTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS, defaultToolsFactory.createDefaultEdgeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getDeleteTool <em>Delete Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getLabelEditTool <em>Label Edit Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getDropNodeTool <em>Drop Node Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getEdgeTools <em>Edge Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodePalette#getToolSections <em>Tool Sections</em>}</li>
@@ -79,6 +80,29 @@ public interface NodePalette extends EObject {
      * @generated
      */
     void setLabelEditTool(LabelEditTool value);
+
+    /**
+     * Returns the value of the '<em><b>Drop Node Tool</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Drop Node Tool</em>' reference.
+     * @see #setDropNodeTool(DropNodeTool)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodePalette_DropNodeTool()
+     * @model
+     * @generated
+     */
+    DropNodeTool getDropNodeTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getDropNodeTool <em>Drop
+     * Node Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Drop Node Tool</em>' containment reference.
+     * @see #getDropNodeTool()
+     * @generated
+     */
+    void setDropNodeTool(DropNodeTool value);
 
     /**
      * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type

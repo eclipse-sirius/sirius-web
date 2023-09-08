@@ -162,6 +162,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="DiagramPalette">
     <eStructuralFeatures xsi:type="ecore:EReference" name="dropTool" eType="#//DropTool"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dropNodeTool" eType="#//DropNodeTool"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
         eType="#//NodeTool" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toolSections" upperBound="-1"
@@ -171,6 +173,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="labelEditTool" eType="#//LabelEditTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dropNodeTool" eType="#//DropNodeTool"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
         eType="#//NodeTool" containment="true"/>
@@ -261,5 +265,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="EdgeToolSection" eSuperTypes="#//ToolSection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeTools" upperBound="-1"
         eType="#//NodeTool" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DropNodeTool" eSuperTypes="#//Tool">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="acceptedNodeTypes" upperBound="-1"
+        eType="#//NodeDescription"/>
   </eClassifiers>
 </ecore:EPackage>

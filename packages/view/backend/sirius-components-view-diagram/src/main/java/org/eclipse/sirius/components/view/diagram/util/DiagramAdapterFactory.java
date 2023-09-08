@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
@@ -281,6 +282,11 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEdgeToolSection(EdgeToolSection object) {
             return DiagramAdapterFactory.this.createEdgeToolSectionAdapter();
+        }
+
+        @Override
+        public Adapter caseDropNodeTool(DropNodeTool object) {
+            return DiagramAdapterFactory.this.createDropNodeToolAdapter();
         }
 
         @Override
@@ -804,6 +810,20 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEdgeToolSectionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.DropNodeTool
+     * <em>Drop Node Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.DropNodeTool
+     * @generated
+     */
+    public Adapter createDropNodeToolAdapter() {
         return null;
     }
 

@@ -127,12 +127,14 @@
     <genClasses ecoreClass="diagram.ecore#//ConditionalEdgeStyle"/>
     <genClasses ecoreClass="diagram.ecore#//DiagramPalette">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/dropTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/dropNodeTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/nodeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramPalette/toolSections"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//NodePalette">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/deleteTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/labelEditTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/dropNodeTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/nodeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/edgeTools"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodePalette/toolSections"/>
@@ -191,6 +193,9 @@
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//EdgeToolSection">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeToolSection/nodeTools"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//DropNodeTool">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//DropNodeTool/acceptedNodeTypes"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

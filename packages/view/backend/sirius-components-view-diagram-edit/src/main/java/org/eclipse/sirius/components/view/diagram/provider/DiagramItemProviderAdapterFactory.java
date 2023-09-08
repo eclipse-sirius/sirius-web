@@ -729,6 +729,29 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.DropNodeTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DropNodeToolItemProvider dropNodeToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DropNodeTool}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDropNodeToolAdapter() {
+        if (this.dropNodeToolItemProvider == null) {
+            this.dropNodeToolItemProvider = new DropNodeToolItemProvider(this);
+        }
+
+        return this.dropNodeToolItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -882,6 +905,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.nodeToolSectionItemProvider.dispose();
         if (this.edgeToolSectionItemProvider != null)
             this.edgeToolSectionItemProvider.dispose();
+        if (this.dropNodeToolItemProvider != null)
+            this.dropNodeToolItemProvider.dispose();
     }
 
     /**

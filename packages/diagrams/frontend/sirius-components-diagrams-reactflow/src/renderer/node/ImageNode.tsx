@@ -17,6 +17,7 @@ import { memo, useContext } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
+import { useDropNode } from '../dropNode/useDropNode';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ImageNodeData } from './ImageNode.types';
 
@@ -41,6 +42,7 @@ const imageNodeStyle = (
 
 export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<ImageNodeData>) => {
   const theme = useTheme();
+  const { dropFeedbackStyleProvider } = useDropNode();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { onConnectionStartElementClick, newConnectionStyleProvider } = useConnector();
 
@@ -52,6 +54,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         style={{
           ...imageNodeStyle(theme, data.style, selected, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
+          ...dropFeedbackStyleProvider.getNodeStyle(id),
         }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />

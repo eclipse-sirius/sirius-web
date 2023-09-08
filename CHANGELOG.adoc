@@ -39,6 +39,8 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2214[#2214] [diagram] Add support for borders nodes with React Flow.
 - https://github.com/eclipse-sirius/sirius-web/issues/2264[#2264] [diagram] Add feedback for edge reconnection with React Flow.
+- https://github.com/eclipse-sirius/sirius-web/issues/288[#288] [diagram] Add support for drag and drop of nodes inside diagrams.
+The behavior is controlled by the new _Drop Node_ tools defined on the target element, which can be either a node or the diagram itself (when dropping on the diagram's background).
 
 === Improvements
 

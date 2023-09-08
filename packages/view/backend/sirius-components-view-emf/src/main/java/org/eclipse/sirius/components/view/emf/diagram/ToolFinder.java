@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
@@ -57,6 +58,14 @@ public class ToolFinder {
             result = Optional.of(edgeDescription).map(EdgeDescription::getPalette).map(EdgePalette::getDeleteTool);
         }
         return result;
+    }
+
+    public Optional<DropNodeTool> findDropNodeTool(NodeDescription nodeDescription) {
+        return Optional.ofNullable(nodeDescription).map(NodeDescription::getPalette).map(NodePalette::getDropNodeTool);
+    }
+
+    public Optional<DropNodeTool> findDropNodeTool(DiagramDescription diagramDescription) {
+        return Optional.ofNullable(diagramDescription).map(DiagramDescription::getPalette).map(DiagramPalette::getDropNodeTool);
     }
 
     public Optional<LabelEditTool> findNodeLabelEditTool(NodeDescription nodeDescription) {

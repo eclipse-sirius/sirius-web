@@ -18,6 +18,7 @@ import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
+import { useDropNode } from '../dropNode/useDropNode';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ListNodeData } from './ListNode.types';
 
@@ -49,6 +50,7 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { onConnectionStartElementClick, newConnectionStyleProvider } = useConnector();
+  const { dropFeedbackStyleProvider } = useDropNode();
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -61,6 +63,7 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
         style={{
           ...listNodeStyle(theme, data.style, selected, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
+          ...dropFeedbackStyleProvider.getNodeStyle(id),
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}

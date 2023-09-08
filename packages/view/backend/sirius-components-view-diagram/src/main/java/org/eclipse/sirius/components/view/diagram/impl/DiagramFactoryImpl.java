@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
@@ -147,6 +148,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createNodeToolSection();
             case DiagramPackage.EDGE_TOOL_SECTION:
                 return this.createEdgeToolSection();
+            case DiagramPackage.DROP_NODE_TOOL:
+                return this.createDropNodeTool();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -493,6 +496,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public EdgeToolSection createEdgeToolSection() {
         EdgeToolSectionImpl edgeToolSection = new EdgeToolSectionImpl();
         return edgeToolSection;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DropNodeTool createDropNodeTool() {
+        DropNodeToolImpl dropNodeTool = new DropNodeToolImpl();
+        return dropNodeTool;
     }
 
     /**
