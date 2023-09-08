@@ -30,11 +30,17 @@ const labelStyle = (style: React.CSSProperties, faded: Boolean, transform: strin
   };
 };
 
-export const Label = memo(({ label, faded, transform }: LabelProps) => {
+export const Label = memo(({ diagramElementId, label, faded, transform }: LabelProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } = useDiagramDirectEdit();
 
-  const handleClose = () => resetDirectEdit();
+  const handleClose = () => {
+    resetDirectEdit();
+    const diagramElement = document.querySelector(`[data-id="${diagramElementId}"]`);
+    if (diagramElement instanceof HTMLElement) {
+      diagramElement.focus();
+    }
+  };
 
   const handleDoubleClick = () => {
     setCurrentlyEditedLabelId('doubleClick', label.id, null);

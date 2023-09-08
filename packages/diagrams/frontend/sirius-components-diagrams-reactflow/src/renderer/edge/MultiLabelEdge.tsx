@@ -67,7 +67,6 @@ export const MultiLabelEdge = memo(
     });
 
     const { beginLabel, endLabel, label, faded } = data || {};
-
     return (
       <>
         <BaseEdge
@@ -81,14 +80,18 @@ export const MultiLabelEdge = memo(
         <EdgeLabelRenderer>
           {beginLabel && (
             <Label
+              diagramElementId={id}
               transform={`translate(2%, 0%) translate(${sourceX}px,${sourceY}px)`}
               label={beginLabel}
               faded={faded || false}
             />
           )}
-          {label && <Label transform={`translate(${labelX}px,${labelY}px)`} label={label} faded={false} />}
+          {label && (
+            <Label diagramElementId={id} transform={`translate(${labelX}px,${labelY}px)`} label={label} faded={false} />
+          )}
           {endLabel && (
             <Label
+              diagramElementId={id}
               transform={`translate(2%, -100%) translate(${targetX}px,${targetY}px)`}
               label={endLabel}
               faded={faded || false}
