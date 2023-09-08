@@ -42,7 +42,7 @@ public class ReferenceWidgetReferenceDataFetcher implements IDataFetcherWithFiel
     public Reference get(DataFetchingEnvironment environment) throws Exception {
         ReferenceWidget referenceWidget = environment.getSource();
         var feature = referenceWidget.getSetting().getEStructuralFeature();
-        return new Reference(this.emfKindService.getKind(feature.getEContainingClass()),
+        return new Reference(this.emfKindService.getKind(referenceWidget.getSetting().getEObject().eClass()),
                 feature.getName(),
                 this.emfKindService.getKind(((EReference) feature).getEReferenceType()),
                 ((EReference) feature).isContainment(),
