@@ -87,7 +87,6 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
   });
 
   const [renameElement, { data: editLabelData, error: editLabelError }] = useMutation(editLabelMutationOp);
-
   useEffect(() => {
     if (editLabelError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');

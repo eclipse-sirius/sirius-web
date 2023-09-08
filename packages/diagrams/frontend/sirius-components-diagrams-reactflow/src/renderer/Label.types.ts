@@ -14,6 +14,7 @@
 import { Label } from './DiagramRenderer.types';
 
 export interface LabelProps {
+  diagramElementId: string;
   label: Label;
   faded: boolean;
   transform: string;
