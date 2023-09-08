@@ -17,13 +17,11 @@ import {
   PropertySectionLabel,
   useClickHandler,
 } from '@eclipse-sirius/sirius-components-forms';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
-import { ValuedReferenceAutocomplete } from './components/ValuedReferenceAutocomplete';
-import { BrowseModal } from './modals/BrowseModal';
-import { CreateModal } from './modals/CreateModal';
-import { TransferModal } from './modals/TransferModal';
 import {
+  GQLClearReferenceMutationData,
+  GQLClearReferenceMutationVariables,
   GQLClickReferenceValueMutationData,
   GQLClickReferenceValueMutationVariables,
   GQLEditReferenceData,
@@ -34,6 +32,10 @@ import {
   GQLReferenceWidget,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
+import { ValuedReferenceAutocomplete } from './components/ValuedReferenceAutocomplete';
+import { BrowseModal } from './modals/BrowseModal';
+import { CreateModal } from './modals/CreateModal';
+import { TransferModal } from './modals/TransferModal';
 
 const useStyles = makeStyles<Theme>(() => ({
   root: {
@@ -81,6 +83,26 @@ export const clickReferenceValueMutation = gql`
   }
 `;
 
+export const clearReferenceMutation = gql`
+  mutation clearReference($input: ClearReferenceInput!) {
+    clearReference(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
 const isErrorPayload = (payload: GQLEditReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLEditReferencePayload): payload is GQLSuccessPayload =>
@@ -99,6 +121,11 @@ export const ReferencePropertySection = ({
   const [editReference, { loading, error, data }] = useMutation<GQLEditReferenceData, GQLEditReferenceVariables>(
     editReferenceMutation
   );
+
+  const [clearReference, { loading: clearLoading, error: clearError, data: clearData }] = useMutation<
+    GQLClearReferenceMutationData,
+    GQLClearReferenceMutationVariables
+  >(clearReferenceMutation);
 
   const [clickReferenceValue, { loading: clickLoading, error: clickError, data: clickData }] = useMutation<
     GQLClickReferenceValueMutationData,
@@ -169,6 +196,19 @@ export const ReferencePropertySection = ({
       }
     }
   }, [clickLoading, clickError, clickData]);
+  useEffect(() => {
+    if (!clearLoading) {
+      if (clearError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (clearData) {
+        const { clearReference } = clearData;
+        if (isErrorPayload(clearReference) || isSuccessPayload(clearReference)) {
+          addMessages(clearReference.messages);
+        }
+      }
+    }
+  }, [clearLoading, clearError, clearData]);
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -296,6 +336,7 @@ export const ReferencePropertySection = ({
           onMoreClick={onBrowse}
           onCreateClick={onCreate}
           optionClickHandler={clickHandler}
+          clearReference={clearReference}
         />
       </div>
       {modal}

@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
+import org.eclipse.sirius.components.representations.IStatus;
 
 /**
  * A widget to view/edit an EMF reference.
@@ -39,6 +40,8 @@ public final class ReferenceWidget extends AbstractWidget {
     private ReferenceWidgetStyle style;
 
     private String ownerId;
+
+    private Supplier<IStatus> clearHandler;
 
     private ReferenceWidget() {
         // Prevent instantiation
@@ -66,6 +69,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public String getOwnerId() {
         return this.ownerId;
+    }
+
+    public Supplier<IStatus> getClearHandler() {
+        return this.clearHandler;
     }
 
     @Override
@@ -101,6 +108,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private ReferenceWidgetStyle style;
 
         private String ownerId;
+
+        private Supplier<IStatus> clearHandler;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -156,6 +165,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder clearHandler(Supplier<IStatus> clearHandler) {
+            this.clearHandler = Objects.requireNonNull(clearHandler);
+            return this;
+        }
+
         public ReferenceWidget build() {
             ReferenceWidget referenceWidget = new ReferenceWidget();
             referenceWidget.id = Objects.requireNonNull(this.id);
@@ -169,6 +183,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.readOnly = this.readOnly;
             referenceWidget.style = this.style; // Optional on purpose
             referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
+            referenceWidget.clearHandler = Objects.requireNonNull(this.clearHandler);
             return referenceWidget;
         }
     }

@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IProps;
+import org.eclipse.sirius.components.representations.IStatus;
 
 /**
  * The properties for the multi-valued reference widget element.
@@ -53,6 +54,8 @@ public final class ReferenceElementProps implements IProps {
     private ReferenceWidgetStyle style;
 
     private String ownerId;
+
+    private Supplier<IStatus> clearHandler;
 
     private ReferenceElementProps() {
         // Prevent instantiation
@@ -106,6 +109,10 @@ public final class ReferenceElementProps implements IProps {
         return this.ownerId;
     }
 
+    public Supplier<IStatus> getClearHandler() {
+        return this.clearHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -139,6 +146,8 @@ public final class ReferenceElementProps implements IProps {
         private ReferenceWidgetStyle style;
 
         private String ownerId;
+
+        private Supplier<IStatus> clearHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -194,6 +203,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder clearHandler(Supplier<IStatus> clearHandler) {
+            this.clearHandler = Objects.requireNonNull(clearHandler);
+            return this;
+        }
+
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
@@ -207,6 +221,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
+            referenceElementProps.clearHandler = Objects.requireNonNull(this.clearHandler);
             return referenceElementProps;
         }
     }

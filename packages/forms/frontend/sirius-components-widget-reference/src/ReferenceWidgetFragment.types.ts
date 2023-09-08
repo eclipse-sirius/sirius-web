@@ -94,3 +94,22 @@ export interface GQLClickReferenceValueInput {
   referenceValueId: string;
   clickEventKind: 'SINGLE_CLICK' | 'DOUBLE_CLICK';
 }
+
+export interface GQLClearReferenceMutationData {
+  clearReference: GQLClearReferencePayload;
+}
+
+export interface GQLClearReferencePayload {
+  __typename: string;
+}
+
+export interface GQLClearReferenceMutationVariables {
+  input: GQLClearReferenceInput;
+}
+
+export interface GQLClearReferenceInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  referenceWidgetId: string;
+}

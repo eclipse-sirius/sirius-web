@@ -110,6 +110,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .itemImageURLProvider(this::getItemIconURL)
                 .settingProvider(variableManager -> this.resolveSetting(referenceDescription, variableManager))
                 .ownerIdProvider(variableManager -> this.getOwnerId(referenceDescription, variableManager))
+                .clearHandlerProvider(variableManager -> this.handleClearReference(variableManager, referenceDescription))
                 .styleProvider(styleProvider);
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
@@ -246,5 +247,24 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
 
     private boolean matches(String condition, VariableManager variableManager) {
         return this.interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
+    }
+
+    private IStatus handleClearReference(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            if (reference.isMany()) {
+                ((List<?>) owner.eGet(reference)).clear();
+            } else {
+                owner.eUnset(reference);
+            }
+        } else {
+            List<Message> errorMessages = new ArrayList<>();
+            errorMessages.add(new Message("Something went wrong while clearing the reference.", MessageLevel.ERROR));
+            errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
+            return new Failure(errorMessages);
+        }
+        return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
 }

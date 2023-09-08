@@ -39,6 +39,7 @@ type ReferenceValue {
 extend type Mutation {
   editReference(input: EditReferenceInput): EditReferencePayload!
   clickReferenceValue(input: ClickReferenceValueInput!): ClickReferenceValuePayload!
+  clearReference(input: ClearReferenceInput!): ClearReferencePayload!
 }
 
 input EditReferenceInput {
@@ -62,3 +63,12 @@ input ClickReferenceValueInput {
 
 
 union ClickReferenceValuePayload = ErrorPayload | SuccessPayload
+
+input ClearReferenceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+}
+
+union ClearReferencePayload = ErrorPayload | SuccessPayload

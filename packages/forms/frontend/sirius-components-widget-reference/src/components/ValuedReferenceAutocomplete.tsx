@@ -15,8 +15,8 @@ import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-fo
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -50,6 +50,7 @@ export const ValuedReferenceAutocomplete = ({
   onCreateClick,
   editReference,
   optionClickHandler,
+  clearReference,
 }: ValuedReferenceAutocompleteProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const props: GQLReferenceWidgetStyle = {
@@ -87,10 +88,9 @@ export const ValuedReferenceAutocomplete = ({
         editingContextId,
         representationId: formId,
         referenceWidgetId: widget.id,
-        newValueIds: [],
       },
     };
-    editReference({ variables });
+    clearReference({ variables });
   };
 
   let placeholder: string;

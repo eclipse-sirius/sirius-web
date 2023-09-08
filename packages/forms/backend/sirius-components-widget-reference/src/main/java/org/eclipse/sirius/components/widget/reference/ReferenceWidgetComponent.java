@@ -113,7 +113,10 @@ public class ReferenceWidgetComponent implements IComponent {
                 .values(items)
                 .options(options)
                 .setting(setting)
-                .ownerId(ownerId);
+                .ownerId(ownerId)
+                .clearHandler(() -> {
+                    return referenceDescription.getClearHandlerProvider().apply(variableManager);
+                });
         if (referenceDescription.getHelpTextProvider() != null) {
             builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
         }
