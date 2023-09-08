@@ -64,6 +64,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
@@ -128,10 +129,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         // Nodes must be fully converted first.
         List<NodeDescription> nodeDescriptions = viewDiagramDescription.getNodeDescriptions().stream().map(node -> this.convert(node, converterContext)).toList();
         List<EdgeDescription> edgeDescriptions = viewDiagramDescription.getEdgeDescriptions().stream().map(edge -> this.convert(edge, converterContext)).toList();
-        // @formatter:off
         var toolConverter = new ToolConverter(this.objectService, this.editService, this.viewToolImageProvider, this.feedbackMessageService);
 
-        return DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
+        var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                 .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
                 .canCreatePredicate(new IViewDiagramCreationPredicate() {
@@ -150,9 +150,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .nodeDescriptions(nodeDescriptions)
                 .edgeDescriptions(edgeDescriptions)
                 .palettes(toolConverter.createPaletteBasedToolSections(viewDiagramDescription, converterContext))
-                .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
-                .build();
-        // @formatter:on
+                .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext));
+
+        new ToolFinder().findDropNodeTool(viewDiagramDescription).ifPresent(dropNoteTool -> {
+            builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));
+        });
+
+        return builder.build();
     }
 
     private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription,
@@ -251,7 +255,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return result.asBoolean().orElse(true);
         };
 
-        NodeDescription result = NodeDescription.newNodeDescription(this.diagramIdProvider.getId(viewNodeDescription))
+        NodeDescription.Builder builder = NodeDescription.newNodeDescription(this.diagramIdProvider.getId(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
                 .targetObjectLabelProvider(this.semanticTargetLabelProvider)
@@ -270,9 +274,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .userResizable(viewNodeDescription.isUserResizable())
                 .labelEditHandler(this.createNodeLabelEditHandler(viewNodeDescription, converterContext))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
-                .shouldRenderPredicate(shouldRenderPredicate)
-                .build();
+                .shouldRenderPredicate(shouldRenderPredicate);
         // @formatter:on
+        new ToolFinder().findDropNodeTool(viewNodeDescription).ifPresent(dropNoteTool -> {
+            builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));
+        });
+        NodeDescription result = builder.build();
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
     }
@@ -585,6 +592,26 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             public boolean hasLabelEditTool(EdgeLabelKind labelKind) {
                 return new ToolFinder().findLabelEditTool(edgeDescription, labelKind).isPresent();
             }
+        };
+    }
+
+    private Function<VariableManager, IStatus> createDiagramDropNodeHandler(DropNodeTool dropNodeTool, ViewDiagramDescriptionConverterContext converterContext) {
+        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
+        return variableManager -> {
+            VariableManager child = variableManager.createChild();
+            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes,
+                    this.feedbackMessageService).executeTool(dropNodeTool, child);
+        };
+    }
+
+    private Function<VariableManager, IStatus> createDropNodeHandler(DropNodeTool dropNodeTool, ViewDiagramDescriptionConverterContext converterContext) {
+        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
+        return variableManager -> {
+            VariableManager child = variableManager.createChild();
+            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes,
+                    this.feedbackMessageService).executeTool(dropNodeTool, child);
         };
     }
 

@@ -218,8 +218,15 @@ type DiagramDescription implements RepresentationDescription {
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementId: ID!): Palette!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
+  dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   debug: Boolean
+}
+
+type DropNodeCompatibilityEntry {
+  droppedNodeDescriptionId: ID!
+  droppableOnDiagram: Boolean!
+  droppableOnNodeTypes: [ID!]!
 }
 
 interface DiagramElementDescription {
@@ -255,11 +262,20 @@ extend type Mutation {
   updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
   updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
+  dropNode(input: DropNodeInput!): DropNodePayload!
   updateEdgeRoutingPoints(input: UpdateEdgeRoutingPointsInput!): UpdateEdgeRoutingPointsPayload!
   reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
   hideDiagramElement(input: HideDiagramElementInput!): HideDiagramElementPayload!
   fadeDiagramElement(input: FadeDiagramElementInput!): FadeDiagramElementPayload!
   updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
+}
+
+input DropNodeInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  droppedElementId: ID! 
+  targetElementId: ID
 }
 
 input ArrangeAllInput {
@@ -396,6 +412,8 @@ type DropOnDiagramSuccessPayload {
   id: ID!
   diagram: Diagram!
 }
+
+union DropNodePayload = ErrorPayload | SuccessPayload
 
 input UpdateEdgeRoutingPointsInput {
   id: ID!

@@ -37,6 +37,7 @@ import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
+import { useDropNode } from './dropNode/useDropNode';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useLayout } from './layout/useLayout';
@@ -49,6 +50,8 @@ import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
 import 'reactflow/dist/style.css';
+
+const GRID_STEP: number = 10;
 
 const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';
@@ -232,6 +235,10 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
     onDelete(event);
   };
 
+  const { onNodeDragStart, onNodeDrag, onNodeDragStop, dropFeedbackStyleProvider } = useDropNode();
+
+  const { backgroundColor, smallGridColor, largeGridColor } = dropFeedbackStyleProvider.getDiagramBackgroundStyle();
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -251,25 +258,34 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       onMove={() => hideDiagramPalette()}
       onDrop={onDrop}
       onDragOver={onDragOver}
+      onNodeDrag={onNodeDrag}
+      onNodeDragStart={onNodeDragStart}
+      onNodeDragStop={onNodeDragStop}
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={state.snapToGrid}
-      snapGrid={[10, 10]}
+      snapGrid={[GRID_STEP, GRID_STEP]}
       connectionMode={ConnectionMode.Loose}
       ref={ref}>
       {state.snapToGrid ? (
         <>
           <Background
             id="small-grid"
-            style={{ backgroundColor: '#ffffff' }}
+            style={{ backgroundColor }}
             variant={BackgroundVariant.Lines}
-            gap={10}
-            color="#f1f1f1"
+            gap={GRID_STEP}
+            color={smallGridColor}
           />
-          <Background id="large-grid" variant={BackgroundVariant.Lines} gap={100} offset={1} color="#cccccc" />
+          <Background
+            id="large-grid"
+            variant={BackgroundVariant.Lines}
+            gap={10 * GRID_STEP}
+            offset={1}
+            color={largeGridColor}
+          />
         </>
       ) : (
-        <Background style={{ backgroundColor: '#ffffff' }} variant={BackgroundVariant.Lines} color="#ffffff" />
+        <Background style={{ backgroundColor }} color={backgroundColor} />
       )}
       <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} />
       <DiagramPalette targetObjectId={diagramRefreshedEventPayload.diagram.id} />

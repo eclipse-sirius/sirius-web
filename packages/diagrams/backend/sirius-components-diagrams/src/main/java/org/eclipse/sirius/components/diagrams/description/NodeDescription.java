@@ -74,6 +74,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, IStatus> deleteHandler;
 
+    private Function<VariableManager, IStatus> dropNodeHandler;
+
     private NodeDescription() {
         // Prevent instantiation
     }
@@ -155,6 +157,10 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.deleteHandler;
     }
 
+    public Function<VariableManager, IStatus> getDropNodeHandler() {
+        return this.dropNodeHandler;
+    }
+
     public BiFunction<VariableManager, String, IStatus> getLabelEditHandler() {
         return this.labelEditHandler;
     }
@@ -220,6 +226,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, IStatus> deleteHandler;
 
+        private Function<VariableManager, IStatus> dropNodeHandler;
+
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -244,6 +252,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.labelEditHandler = nodeDescription.getLabelEditHandler();
             this.deleteHandler = nodeDescription.getDeleteHandler();
             this.shouldRenderPredicate = nodeDescription.getShouldRenderPredicate();
+            this.dropNodeHandler = nodeDescription.getDropNodeHandler();
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -341,6 +350,11 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder dropNodeHandler(Function<VariableManager, IStatus> dropNodeHandler) {
+            this.dropNodeHandler = Objects.requireNonNull(dropNodeHandler);
+            return this;
+        }
+
         public NodeDescription build() {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
@@ -363,6 +377,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.reusedChildNodeDescriptionIds = Objects.requireNonNull(this.reusedChildNodeDescriptionIds);
             nodeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);
             nodeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
+            nodeDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
             return nodeDescription;
         }
     }

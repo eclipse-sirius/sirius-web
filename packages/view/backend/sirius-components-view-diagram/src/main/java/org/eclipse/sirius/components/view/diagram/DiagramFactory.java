@@ -253,6 +253,14 @@ public interface DiagramFactory extends EFactory {
     EdgeToolSection createEdgeToolSection();
 
     /**
+     * Returns a new object of class '<em>Drop Node Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Drop Node Tool</em>'.
+     * @generated
+     */
+    DropNodeTool createDropNodeTool();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

@@ -1701,13 +1701,22 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_PALETTE__DROP_TOOL = 0;
 
     /**
+     * The feature id for the '<em><b>Drop Node Tool</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_PALETTE__DROP_NODE_TOOL = 1;
+
+    /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_PALETTE__NODE_TOOLS = 1;
+    int DIAGRAM_PALETTE__NODE_TOOLS = 2;
 
     /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1716,7 +1725,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_PALETTE__TOOL_SECTIONS = 2;
+    int DIAGRAM_PALETTE__TOOL_SECTIONS = 3;
 
     /**
      * The number of structural features of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1724,7 +1733,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int DIAGRAM_PALETTE_FEATURE_COUNT = 3;
+    int DIAGRAM_PALETTE_FEATURE_COUNT = 4;
 
     /**
      * The number of operations of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1763,13 +1772,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_PALETTE__LABEL_EDIT_TOOL = 1;
 
     /**
+     * The feature id for the '<em><b>Drop Node Tool</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_PALETTE__DROP_NODE_TOOL = 2;
+
+    /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_PALETTE__NODE_TOOLS = 2;
+    int NODE_PALETTE__NODE_TOOLS = 3;
 
     /**
      * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1778,7 +1796,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_PALETTE__EDGE_TOOLS = 3;
+    int NODE_PALETTE__EDGE_TOOLS = 4;
 
     /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1787,7 +1805,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_PALETTE__TOOL_SECTIONS = 4;
+    int NODE_PALETTE__TOOL_SECTIONS = 5;
 
     /**
      * The number of structural features of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1796,7 +1814,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_PALETTE_FEATURE_COUNT = 5;
+    int NODE_PALETTE_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2751,6 +2769,68 @@ public interface DiagramPackage extends EPackage {
     int EDGE_TOOL_SECTION_OPERATION_COUNT = TOOL_SECTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DropNodeToolImpl <em>Drop Node
+     * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.DropNodeToolImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDropNodeTool()
+     * @generated
+     */
+    int DROP_NODE_TOOL = 35;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL__NAME = TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Accepted Node Types</b></em>' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Drop Node Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Drop Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow Style</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2758,7 +2838,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 35;
+    int ARROW_STYLE = 36;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutDirection <em>Layout
@@ -2768,7 +2848,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 36;
+    int LAYOUT_DIRECTION = 37;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LineStyle <em>Line Style</em>}'
@@ -2778,7 +2858,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 37;
+    int LINE_STYLE = 38;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeContainmentKind <em>Node
@@ -2788,7 +2868,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 38;
+    int NODE_CONTAINMENT_KIND = 39;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.SynchronizationPolicy
@@ -2798,7 +2878,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 39;
+    int SYNCHRONIZATION_POLICY = 40;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -3573,6 +3653,18 @@ public interface DiagramPackage extends EPackage {
     EReference getDiagramPalette_DropTool();
 
     /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropNodeTool <em>Drop Node Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Drop Node Tool</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPalette#getDropNodeTool()
+     * @see #getDiagramPalette()
+     * @generated
+     */
+    EReference getDiagramPalette_DropNodeTool();
+
+    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramPalette#getNodeTools <em>Node Tools</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -3629,6 +3721,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getNodePalette_LabelEditTool();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodePalette#getDropNodeTool <em>Drop Node Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Drop Node Tool</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodePalette#getDropNodeTool()
+     * @see #getNodePalette()
+     * @generated
+     */
+    EReference getNodePalette_DropNodeTool();
 
     /**
      * Returns the meta object for the containment reference list
@@ -4147,6 +4251,28 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getEdgeToolSection_NodeTools();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DropNodeTool <em>Drop Node
+     * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Drop Node Tool</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DropNodeTool
+     * @generated
+     */
+    EClass getDropNodeTool();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.DropNodeTool#getAcceptedNodeTypes <em>Accepted Node
+     * Types</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Accepted Node Types</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DropNodeTool#getAcceptedNodeTypes()
+     * @see #getDropNodeTool()
+     * @generated
+     */
+    EReference getDropNodeTool_AcceptedNodeTypes();
 
     /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow
@@ -4800,6 +4926,14 @@ public interface DiagramPackage extends EPackage {
         EReference DIAGRAM_PALETTE__DROP_TOOL = eINSTANCE.getDiagramPalette_DropTool();
 
         /**
+         * The meta object literal for the '<em><b>Drop Node Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DIAGRAM_PALETTE__DROP_NODE_TOOL = eINSTANCE.getDiagramPalette_DropNodeTool();
+
+        /**
          * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4840,6 +4974,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_PALETTE__LABEL_EDIT_TOOL = eINSTANCE.getNodePalette_LabelEditTool();
+
+        /**
+         * The meta object literal for the '<em><b>Drop Node Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_PALETTE__DROP_NODE_TOOL = eINSTANCE.getNodePalette_DropNodeTool();
 
         /**
          * The meta object literal for the '<em><b>Node Tools</b></em>' containment reference list feature. <!--
@@ -5247,6 +5389,24 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference EDGE_TOOL_SECTION__NODE_TOOLS = eINSTANCE.getEdgeToolSection_NodeTools();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.DropNodeToolImpl
+         * <em>Drop Node Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.DropNodeToolImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDropNodeTool()
+         * @generated
+         */
+        EClass DROP_NODE_TOOL = eINSTANCE.getDropNodeTool();
+
+        /**
+         * The meta object literal for the '<em><b>Accepted Node Types</b></em>' reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = eINSTANCE.getDropNodeTool_AcceptedNodeTypes();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow

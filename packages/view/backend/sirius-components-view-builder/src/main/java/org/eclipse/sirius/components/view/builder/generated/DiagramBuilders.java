@@ -289,5 +289,15 @@ public class DiagramBuilders {
         return new EdgeToolSectionBuilder();
     }
 
+    /**
+     * Instantiate a DropNodeToolBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DropNodeToolBuilder newDropNodeTool() {
+        return new DropNodeToolBuilder();
+    }
+
 
 }

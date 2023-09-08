@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 
@@ -36,6 +37,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl#getDropTool <em>Drop Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl#getDropNodeTool <em>Drop Node
+ * Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl#getNodeTools <em>Node Tools</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl#getToolSections <em>Tool
  * Sections</em>}</li>
@@ -53,6 +56,16 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
      * @ordered
      */
     protected DropTool dropTool;
+
+    /**
+     * The cached value of the '{@link #getDropNodeTool() <em>Drop Node Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDropNodeTool()
+     * @generated
+     * @ordered
+     */
+    protected DropNodeTool dropNodeTool;
 
     /**
      * The cached value of the '{@link #getNodeTools() <em>Node Tools</em>}' containment reference list. <!--
@@ -147,6 +160,54 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
      * @generated
      */
     @Override
+    public DropNodeTool getDropNodeTool() {
+        return this.dropNodeTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetDropNodeTool(DropNodeTool newDropNodeTool, NotificationChain msgs) {
+        DropNodeTool oldDropNodeTool = this.dropNodeTool;
+        this.dropNodeTool = newDropNodeTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL, oldDropNodeTool, newDropNodeTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDropNodeTool(DropNodeTool newDropNodeTool) {
+        if (newDropNodeTool != this.dropNodeTool) {
+            NotificationChain msgs = null;
+            if (this.dropNodeTool != null)
+                msgs = ((InternalEObject) this.dropNodeTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL, null, msgs);
+            if (newDropNodeTool != null)
+                msgs = ((InternalEObject) newDropNodeTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL, null, msgs);
+            msgs = this.basicSetDropNodeTool(newDropNodeTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL, newDropNodeTool, newDropNodeTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EList<NodeTool> getNodeTools() {
         if (this.nodeTools == null) {
             this.nodeTools = new EObjectContainmentEList<>(NodeTool.class, this, DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS);
@@ -177,6 +238,8 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
         switch (featureID) {
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
                 return this.basicSetDropTool(null, msgs);
+            case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
+                return this.basicSetDropNodeTool(null, msgs);
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
             case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
@@ -195,6 +258,8 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
         switch (featureID) {
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
                 return this.getDropTool();
+            case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
+                return this.getDropNodeTool();
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 return this.getNodeTools();
             case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
@@ -214,6 +279,9 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
         switch (featureID) {
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
                 this.setDropTool((DropTool) newValue);
+                return;
+            case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
+                this.setDropNodeTool((DropNodeTool) newValue);
                 return;
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 this.getNodeTools().clear();
@@ -238,6 +306,9 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
                 this.setDropTool((DropTool) null);
                 return;
+            case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
+                this.setDropNodeTool((DropNodeTool) null);
+                return;
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 this.getNodeTools().clear();
                 return;
@@ -258,6 +329,8 @@ public class DiagramPaletteImpl extends MinimalEObjectImpl.Container implements 
         switch (featureID) {
             case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
                 return this.dropTool != null;
+            case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
+                return this.dropNodeTool != null;
             case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
                 return this.nodeTools != null && !this.nodeTools.isEmpty();
             case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:

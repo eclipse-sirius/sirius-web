@@ -108,9 +108,6 @@ const toRectangularNode = (
 
   if (gqlParentNode) {
     node.parentNode = gqlParentNode.id;
-    if (!isBorderNode) {
-      node.extent = 'parent';
-    }
   }
 
   return node;
@@ -158,7 +155,6 @@ const toIconLabelNode = (
 
   if (gqlParentNode) {
     node.parentNode = gqlParentNode.id;
-    node.extent = 'parent';
   }
 
   return node;
@@ -246,7 +242,6 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
 
   if (gqlParentNode) {
     node.parentNode = gqlParentNode.id;
-    node.extent = 'parent';
   }
 
   return node;
@@ -293,7 +288,6 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNo
 
   if (gqlParentNode) {
     node.parentNode = gqlParentNode.id;
-    node.extent = 'parent';
   }
 
   return node;

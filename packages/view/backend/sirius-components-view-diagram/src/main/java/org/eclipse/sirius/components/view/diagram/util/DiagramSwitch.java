@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
@@ -432,6 +433,15 @@ public class DiagramSwitch<T> extends Switch<T> {
                 T result = this.caseEdgeToolSection(edgeToolSection);
                 if (result == null)
                     result = this.caseToolSection(edgeToolSection);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.DROP_NODE_TOOL: {
+                DropNodeTool dropNodeTool = (DropNodeTool) theEObject;
+                T result = this.caseDropNodeTool(dropNodeTool);
+                if (result == null)
+                    result = this.caseTool(dropNodeTool);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -947,6 +957,21 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEdgeToolSection(EdgeToolSection object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Drop Node Tool</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Drop Node Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDropNodeTool(DropNodeTool object) {
         return null;
     }
 

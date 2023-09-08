@@ -52,6 +52,16 @@ public class DiagramPaletteBuilder {
         return this;
     }
     /**
+     * Setter for DropNodeTool.
+     *
+     * @generated
+     */
+    public DiagramPaletteBuilder dropNodeTool(org.eclipse.sirius.components.view.diagram.DropNodeTool value) {
+        this.getDiagramPalette().setDropNodeTool(value);
+        return this;
+    }
+
+    /**
      * Setter for NodeTools.
      *
      * @generated
