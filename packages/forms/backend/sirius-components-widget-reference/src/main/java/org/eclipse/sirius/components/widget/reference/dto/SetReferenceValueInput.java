@@ -10,11 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.widget.reference.dto;
 
-import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
+import java.util.UUID;
 
-export interface BrowseModalProps {
-  editingContextId: string;
-  widget: GQLReferenceWidget;
-  onClose: (selectedElementId: string) => void;
+import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
+
+/**
+ * Input object for the mutation to handle the setting of a reference value (used only for mono-valued references).
+ *
+ * @author Jerome Gout
+ */
+public record SetReferenceValueInput(UUID id, String editingContextId, String representationId, String referenceWidgetId, String newValueId) implements IFormInput {
+
 }

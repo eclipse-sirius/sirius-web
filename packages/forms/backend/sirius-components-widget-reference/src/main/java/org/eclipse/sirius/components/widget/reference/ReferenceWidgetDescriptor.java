@@ -69,7 +69,8 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .referenceValues(props.getValues())
                     .referenceOptions(props.getOptions())
                     .ownerId(props.getOwnerId())
-                    .clearHandler(props.getClearHandler());
+                    .clearHandler(props.getClearHandler())
+                    .setHandler(props.getSetHandler());
             if (props.getHelpTextProvider() != null) {
                 builder.helpTextProvider(props.getHelpTextProvider());
             }

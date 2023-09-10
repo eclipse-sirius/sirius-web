@@ -133,3 +133,23 @@ export interface GQLRemoveReferenceValueInput {
   referenceWidgetId: string;
   referenceValueId: string;
 }
+
+export interface GQLSetReferenceValueMutationData {
+  setReferenceValue: GQLSetReferenceValuePayload;
+}
+
+export interface GQLSetReferenceValuePayload {
+  __typename: string;
+}
+
+export interface GQLSetReferenceValueMutationVariables {
+  input: GQLSetReferenceValueInput;
+}
+
+export interface GQLSetReferenceValueInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  referenceWidgetId: string;
+  newValueId: string;
+}

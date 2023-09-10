@@ -32,6 +32,8 @@ import {
   GQLReferenceWidget,
   GQLRemoveReferenceValueMutationData,
   GQLRemoveReferenceValueMutationVariables,
+  GQLSetReferenceValueMutationData,
+  GQLSetReferenceValueMutationVariables,
   GQLSuccessPayload,
 } from './ReferenceWidgetFragment.types';
 import { ValuedReferenceAutocomplete } from './components/ValuedReferenceAutocomplete';
@@ -125,6 +127,26 @@ export const removeReferenceValueMutation = gql`
   }
 `;
 
+export const setReferenceValueMutation = gql`
+  mutation setReferenceValue($input: SetReferenceValueInput!) {
+    setReferenceValue(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
 const isErrorPayload = (payload: GQLEditReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLEditReferencePayload): payload is GQLSuccessPayload =>
@@ -158,6 +180,11 @@ export const ReferencePropertySection = ({
     GQLRemoveReferenceValueMutationData,
     GQLRemoveReferenceValueMutationVariables
   >(removeReferenceValueMutation);
+
+  const [setReferenceValue, { loading: setLoading, error: setError, data: setData }] = useMutation<
+    GQLSetReferenceValueMutationData,
+    GQLSetReferenceValueMutationVariables
+  >(setReferenceValueMutation);
 
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
     const { id, label, kind } = item;
@@ -249,6 +276,44 @@ export const ReferencePropertySection = ({
       }
     }
   }, [removeLoading, removeError, removeData]);
+  useEffect(() => {
+    if (!setLoading) {
+      if (setError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (setData) {
+        const { setReferenceValue } = setData;
+        if (isErrorPayload(setReferenceValue) || isSuccessPayload(setReferenceValue)) {
+          addMessages(setReferenceValue.messages);
+        }
+      }
+    }
+  }, [setLoading, setError, setData]);
+
+  const callSetReference = (newValueId) => {
+    const variables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+        newValueId: newValueId,
+      },
+    };
+    setReferenceValue({ variables });
+  };
+  const callEditReference = (newValueIds) => {
+    const variables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+        newValueIds,
+      },
+    };
+    editReference({ variables });
+  };
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -273,24 +338,16 @@ export const ReferencePropertySection = ({
             .map((entry) => entry.id);
           const valueIds = widget.referenceValues.map((referenceValue) => referenceValue.id);
 
-          let newValueIds;
           if (widget.reference.manyValued) {
-            newValueIds = [...valueIds, ...semanticElementIds];
+            callEditReference([...valueIds, ...semanticElementIds]);
           } else {
-            // We let the backend decide how to handle it if there are multiple values.
-            newValueIds = [...semanticElementIds];
+            // mono-valued reference could not receive multiple elements
+            if (semanticElementIds.length > 1) {
+              addErrorMessage('Single-valued reference can only accept a single value');
+            } else {
+              callSetReference(semanticElementIds[0]);
+            }
           }
-
-          const variables = {
-            input: {
-              id: crypto.randomUUID(),
-              editingContextId,
-              representationId: formId,
-              referenceWidgetId: widget.id,
-              newValueIds,
-            },
-          };
-          editReference({ variables });
         }
       }
     }
@@ -309,38 +366,25 @@ export const ReferencePropertySection = ({
   const addSelectedElements = (selectedElementIds: string[]): void => {
     setModalDisplayed(null);
     if (selectedElementIds) {
-      let newValueIds = [...selectedElementIds];
+      callEditReference([...selectedElementIds]);
+    }
+  };
 
-      const variables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          newValueIds,
-        },
-      };
-      editReference({ variables });
+  const setSelectedElement = (selectedElementId: string) => {
+    setModalDisplayed(null);
+    if (selectedElementId && selectedElementId.length > 0) {
+      callSetReference(selectedElementId);
     }
   };
 
   const addNewElement = (selectedElementId: string): void => {
     setModalDisplayed(null);
     if (selectedElementId) {
-      let newValueIds = widget.reference.manyValued
-        ? [...widget.referenceValues.map((value) => value.id), selectedElementId]
-        : [selectedElementId];
-
-      const variables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          newValueIds,
-        },
-      };
-      editReference({ variables });
+      callEditReference(
+        widget.reference.manyValued
+          ? [...widget.referenceValues.map((value) => value.id), selectedElementId]
+          : [selectedElementId]
+      );
     }
   };
 
@@ -349,7 +393,7 @@ export const ReferencePropertySection = ({
     modal = widget.reference.manyValued ? (
       <TransferModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
     ) : (
-      <BrowseModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
+      <BrowseModal editingContextId={editingContextId} onClose={setSelectedElement} widget={widget} />
     );
   } else if (modalDisplayed === 'create') {
     modal = <CreateModal editingContextId={editingContextId} onClose={addNewElement} widget={widget} />;

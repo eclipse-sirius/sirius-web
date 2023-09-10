@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widget.reference;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
@@ -56,6 +57,8 @@ public final class ReferenceElementProps implements IProps {
     private String ownerId;
 
     private Supplier<IStatus> clearHandler;
+
+    private Function<Object, IStatus> setHandler;
 
     private ReferenceElementProps() {
         // Prevent instantiation
@@ -113,6 +116,10 @@ public final class ReferenceElementProps implements IProps {
         return this.clearHandler;
     }
 
+    public Function<Object, IStatus> getSetHandler() {
+        return this.setHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -148,6 +155,8 @@ public final class ReferenceElementProps implements IProps {
         private String ownerId;
 
         private Supplier<IStatus> clearHandler;
+
+        private Function<Object, IStatus> setHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -208,6 +217,10 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public void setHandler(Function<Object, IStatus> setHandler) {
+            this.setHandler = setHandler;
+        }
+
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
@@ -222,6 +235,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
             referenceElementProps.clearHandler = Objects.requireNonNull(this.clearHandler);
+            referenceElementProps.setHandler = this.setHandler; // Optional on purpose
             return referenceElementProps;
         }
     }

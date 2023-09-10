@@ -62,6 +62,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
 
+    private Function<VariableManager, IStatus> setHandlerProvider;
+
     private ReferenceWidgetDescription() {
         // Prevent instantiation
     }
@@ -130,6 +132,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.itemRemoveHandlerProvider;
     }
 
+    public Function<VariableManager, IStatus> getSetHandlerProvider() {
+        return this.setHandlerProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -179,6 +185,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, IStatus> clearHandlerProvider;
 
         private Function<VariableManager, IStatus> itemRemoveHandlerProvider;
+
+        private Function<VariableManager, IStatus> setHandlerProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -274,6 +282,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder setHandlerProvider(Function<VariableManager, IStatus> setHandlerProvider) {
+            this.setHandlerProvider = Objects.requireNonNull(setHandlerProvider);
+            return this;
+        }
+
         public ReferenceWidgetDescription build() {
             ReferenceWidgetDescription referenceWidgetDescription = new ReferenceWidgetDescription();
             referenceWidgetDescription.id = Objects.requireNonNull(this.id);
@@ -295,6 +308,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.ownerIdProvider = Objects.requireNonNull(this.ownerIdProvider);
             referenceWidgetDescription.clearHandlerProvider = Objects.requireNonNull(this.clearHandlerProvider);
             referenceWidgetDescription.itemRemoveHandlerProvider = this.itemRemoveHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.setHandlerProvider = this.setHandlerProvider; // Optional on purpose
             return referenceWidgetDescription;
         }
     }

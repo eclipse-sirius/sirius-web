@@ -112,6 +112,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .ownerIdProvider(variableManager -> this.getOwnerId(referenceDescription, variableManager))
                 .clearHandlerProvider(variableManager -> this.handleClearReference(variableManager, referenceDescription))
                 .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(variableManager, referenceDescription))
+                .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, referenceDescription))
                 .styleProvider(styleProvider);
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
@@ -250,6 +251,13 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         return this.interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 
+    private IStatus createErrorStatus(String message) {
+        List<Message> errorMessages = new ArrayList<>();
+        errorMessages.add(new Message(message, MessageLevel.ERROR));
+        errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
+        return new Failure(errorMessages);
+    }
+
     private IStatus handleClearReference(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
         EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
         String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
@@ -261,10 +269,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 owner.eUnset(reference);
             }
         } else {
-            List<Message> errorMessages = new ArrayList<>();
-            errorMessages.add(new Message("Something went wrong while clearing the reference.", MessageLevel.ERROR));
-            errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-            return new Failure(errorMessages);
+            return this.createErrorStatus("Something went wrong while clearing the reference.");
         }
         return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
     }
@@ -281,11 +286,26 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 owner.eUnset(reference);
             }
         } else {
-            List<Message> errorMessages = new ArrayList<>();
-            errorMessages.add(new Message("Something went wrong while clearing the reference.", MessageLevel.ERROR));
-            errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
-            return new Failure(errorMessages);
+            return this.createErrorStatus("Something went wrong while removing a reference value.");
         }
         return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+    }
+
+    private IStatus handleSetReference(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        Optional<Object> item = this.getItem(variableManager);
+
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            if (reference.isMany()) {
+                result = this.createErrorStatus("Unable to set a multi-valued reference.");
+            } else {
+                owner.eSet(reference, item.get());
+            }
+        } else {
+            result = this.createErrorStatus("Something went wrong while setting the reference value.");
+        }
+        return result;
     }
 }

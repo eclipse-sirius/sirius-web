@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widget.reference;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
@@ -42,6 +43,8 @@ public final class ReferenceWidget extends AbstractWidget {
     private String ownerId;
 
     private Supplier<IStatus> clearHandler;
+
+    private Function<Object, IStatus> setHandler;
 
     private ReferenceWidget() {
         // Prevent instantiation
@@ -73,6 +76,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public Supplier<IStatus> getClearHandler() {
         return this.clearHandler;
+    }
+
+    public Function<Object, IStatus> getSetHandler() {
+        return this.setHandler;
     }
 
     @Override
@@ -110,6 +117,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private String ownerId;
 
         private Supplier<IStatus> clearHandler;
+
+        private Function<Object, IStatus> setHandler;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -170,6 +179,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder setHandler(Function<Object, IStatus> setHandler) {
+            this.setHandler = setHandler;
+            return this;
+        }
+
         public ReferenceWidget build() {
             ReferenceWidget referenceWidget = new ReferenceWidget();
             referenceWidget.id = Objects.requireNonNull(this.id);
@@ -184,6 +198,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.style = this.style; // Optional on purpose
             referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
             referenceWidget.clearHandler = Objects.requireNonNull(this.clearHandler);
+            referenceWidget.setHandler = this.setHandler; // Optional on purpose
             return referenceWidget;
         }
     }

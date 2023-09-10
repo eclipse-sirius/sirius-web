@@ -61,7 +61,10 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
             type="button"
             data-testid="select-value"
             onClick={() => {
-              onClose(browserSelection.entries.map((entry) => entry.id));
+              const selectedElement = browserSelection?.entries.length > 0 ? browserSelection.entries[0] : null;
+              if (selectedElement) {
+                onClose(selectedElement.id);
+              }
             }}>
             Select
           </Button>
