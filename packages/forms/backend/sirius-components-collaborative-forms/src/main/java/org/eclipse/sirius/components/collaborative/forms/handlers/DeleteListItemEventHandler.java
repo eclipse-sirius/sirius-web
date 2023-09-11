@@ -87,7 +87,7 @@ public class DeleteListItemEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalList.map(List::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
                 var optionalListItem = optionalList
                         .stream()

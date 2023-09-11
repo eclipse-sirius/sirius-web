@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export * from './color/getCSSColor';
 export * from './contexts/ServerContext';
 export * from './contexts/ServerContext.types';
 export * from './contexts/ToastContext';

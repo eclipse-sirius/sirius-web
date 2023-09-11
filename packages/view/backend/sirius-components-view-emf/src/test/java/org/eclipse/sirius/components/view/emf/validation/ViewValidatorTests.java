@@ -75,7 +75,6 @@ public class ViewValidatorTests {
         conditionalNodeStyle.setStyle(DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription());
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        // @formatter:off
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
@@ -84,7 +83,6 @@ public class ViewValidatorTests {
                     conditionalNodeStyle,
                     ViewPackage.Literals.CONDITIONAL__CONDITION,
                 }));
-        // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
@@ -98,7 +96,6 @@ public class ViewValidatorTests {
         ConditionalNodeStyle conditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        // @formatter:off
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
@@ -107,7 +104,6 @@ public class ViewValidatorTests {
                     conditionalNodeStyle,
                     DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                 }));
-        // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
@@ -121,7 +117,6 @@ public class ViewValidatorTests {
         RectangularNodeStyleDescription conditionalNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
-        // @formatter:off
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
@@ -130,8 +125,22 @@ public class ViewValidatorTests {
                     conditionalNodeStyle,
                     DiagramPackage.Literals.STYLE__COLOR,
                 }));
-        // @formatter:on
-
+        expected.add(new BasicDiagnostic(Diagnostic.ERROR,
+                SIRIUS_COMPONENTS_EMF_PACKAGE,
+                0,
+                "The label color should not be empty",
+                new Object [] {
+                    conditionalNodeStyle,
+                    DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
+                }));
+        expected.add(new BasicDiagnostic(Diagnostic.ERROR,
+                SIRIUS_COMPONENTS_EMF_PACKAGE,
+                0,
+                "The border color should not be empty",
+                new Object [] {
+                    conditionalNodeStyle,
+                    DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR,
+                }));
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
         assertThat(validationResult).isFalse();
@@ -149,7 +158,6 @@ public class ViewValidatorTests {
         resourceSet.getResources().add(xmiResource);
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
-        // @formatter:off
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
@@ -158,8 +166,6 @@ public class ViewValidatorTests {
                     nodeDescription,
                     DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
                 }));
-
-        // @formatter:on
 
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
         boolean validationResult = new DiagramDescriptionValidator().validate(nodeDescription.eClass(), nodeDescription, diagnosticChain, defaultContext);

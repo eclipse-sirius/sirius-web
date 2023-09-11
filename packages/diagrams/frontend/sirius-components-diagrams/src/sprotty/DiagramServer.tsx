@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Theme } from '@material-ui/core/styles';
 import {
   ActionHandlerRegistry,
   ApplyLabelEditAction,
@@ -152,8 +153,8 @@ export class DiagramServer extends ModelSource {
   // Used to store the edge source element.
   diagramSource: SourceElement | null;
   currentRoot: Root = INITIAL_ROOT;
-
   httpOrigin: string;
+  theme: Theme;
 
   firstOpen: boolean = true;
   getCursorOn: (element: any, diagramServer: DiagramServer) => CursorValue;
@@ -381,7 +382,7 @@ export class DiagramServer extends ModelSource {
   handleSiriusUpdateModelAction(action: SiriusUpdateModelAction) {
     const { diagram, diagramDescription, readOnly } = action;
     if (diagram) {
-      const convertedDiagram = convertDiagram(diagram, diagramDescription, this.httpOrigin, readOnly);
+      const convertedDiagram = convertDiagram(diagram, diagramDescription, this.httpOrigin, readOnly, this.theme);
       const sprottyModel = this.modelFactory.createRoot(convertedDiagram);
       this.actionDispatcher.request<SelectionResult>(GetSelectionAction.create()).then((selectionResult) => {
         (sprottyModel as any).cursor = 'pointer';
@@ -698,6 +699,10 @@ export class DiagramServer extends ModelSource {
 
   setHttpOrigin(httpOrigin: string) {
     this.httpOrigin = httpOrigin;
+  }
+
+  setTheme(theme: Theme) {
+    this.theme = theme;
   }
 
   setActiveToolListener(setActiveTool) {

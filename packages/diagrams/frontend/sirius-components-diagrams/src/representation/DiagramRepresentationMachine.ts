@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Theme } from '@material-ui/core/styles';
 import { MutableRefObject } from 'react';
 import { MousePositionTracker, SModelElement, TYPES } from 'sprotty';
 import { Point } from 'sprotty-protocol';
@@ -152,6 +153,7 @@ export type InitializeRepresentationEvent = {
   updateRoutingPointsListener: (routingPoints: Point[], edgeId: string) => void;
   httpOrigin: string;
   editingContextId: string;
+  theme: Theme;
 };
 
 export type DiagramRepresentationEvent =
@@ -426,6 +428,7 @@ export const diagramRepresentationMachine = Machine<
           updateRoutingPointsListener,
           httpOrigin,
           editingContextId,
+          theme,
         } = event as InitializeRepresentationEvent;
 
         const container = createDependencyInjectionContainer(
@@ -452,6 +455,7 @@ export const diagramRepresentationMachine = Machine<
         diagramServer.setContextualPaletteListener(setContextualPalette);
         diagramServer.setContextualMenuListener(setContextualMenu);
         diagramServer.setHttpOrigin(httpOrigin);
+        diagramServer.setTheme(theme);
         diagramServer.setActiveToolListener(setActiveTool);
         diagramServer.setOnSelectElementListener(onSelectElement);
         diagramServer.setUpdateRoutingPointsListener(updateRoutingPointsListener);

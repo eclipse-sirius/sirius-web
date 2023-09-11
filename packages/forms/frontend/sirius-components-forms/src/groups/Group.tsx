@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -27,7 +27,7 @@ const useGroupStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
     margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
     padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
     borderWidth: ({ borderStyle }) => borderStyle?.size || 0,
-    borderColor: ({ borderStyle }) => borderStyle?.color || 'transparent',
+    borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'transparent',
     borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
     borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
   },

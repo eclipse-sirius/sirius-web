@@ -22,10 +22,9 @@ import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRe
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
-import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.builder.providers.DefaultColorPalettesProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
@@ -82,12 +81,16 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private final SampleDomainNameProvider domainNameProvider;
 
+    private final DefaultColorPalettesProvider defaultColorPalettesProvider;
+
     private final boolean studiosEnabled;
 
     public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
         this.studiosEnabled = studiosEnabled;
         this.domainNameProvider = new SampleDomainNameProvider();
+        this.defaultColorPalettesProvider = new DefaultColorPalettesProvider();
+
     }
 
     @Override
@@ -120,33 +123,8 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
         DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("New Diagram Description");
         newView.getDescriptions().add(diagramDescription);
-        ColorPalette colorPalette = ViewFactory.eINSTANCE.createColorPalette();
-        colorPalette.setName("Color Palette");
-        FixedColor themePrimaryMain = ViewFactory.eINSTANCE.createFixedColor();
-        themePrimaryMain.setName("theme_primary_main");
-        themePrimaryMain.setValue("#BE1A78");
-        colorPalette.getColors().add(themePrimaryMain);
-        FixedColor themePrimaryDark = ViewFactory.eINSTANCE.createFixedColor();
-        themePrimaryDark.setName("theme_primary_dark");
-        themePrimaryDark.setValue("#851254");
-        colorPalette.getColors().add(themePrimaryDark);
-        FixedColor themePrimaryLight = ViewFactory.eINSTANCE.createFixedColor();
-        themePrimaryLight.setName("theme_primary_light");
-        themePrimaryLight.setValue("#CB4793");
-        colorPalette.getColors().add(themePrimaryLight);
-        FixedColor themeSecondaryMain = ViewFactory.eINSTANCE.createFixedColor();
-        themeSecondaryMain.setName("theme_secondary_main");
-        themeSecondaryMain.setValue("#261E58");
-        colorPalette.getColors().add(themeSecondaryMain);
-        FixedColor themeSecondaryDark = ViewFactory.eINSTANCE.createFixedColor();
-        themeSecondaryDark.setName("theme_secondary_dark");
-        themeSecondaryDark.setValue("#1A153D");
-        colorPalette.getColors().add(themeSecondaryDark);
-        FixedColor themeSecondaryLight = ViewFactory.eINSTANCE.createFixedColor();
-        themeSecondaryLight.setName("theme_secondary_light");
-        themeSecondaryLight.setValue("#514B79");
-        colorPalette.getColors().add(themeSecondaryLight);
-        newView.getColorPalettes().add(colorPalette);
+        newView.getColorPalettes().addAll(this.defaultColorPalettesProvider.getDefaultColorPalettes());
+
         return this.stereotypeBuilder.getStereotypeBody(List.of(newView));
     }
 

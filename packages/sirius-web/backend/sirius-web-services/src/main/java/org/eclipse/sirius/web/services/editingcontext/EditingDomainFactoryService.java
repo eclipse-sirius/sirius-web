@@ -28,6 +28,8 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.adapters.DiagramColorAdapter;
+import org.eclipse.sirius.components.view.form.adapters.FormColorAdapter;
 import org.eclipse.sirius.web.services.api.projects.Nature;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
@@ -76,6 +78,10 @@ public class EditingDomainFactoryService implements IEditingDomainFactoryService
                 .forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         resourceSet.setPackageRegistry(ePackageRegistry);
 
+        if (isStudioProjectNature) {
+            resourceSet.eAdapters().add(new DiagramColorAdapter());
+            resourceSet.eAdapters().add(new FormColorAdapter());
+        }
         this.optionalResourceFactoryRegistry.ifPresent(resourceSet::setResourceFactoryRegistry);
 
         return editingDomain;
