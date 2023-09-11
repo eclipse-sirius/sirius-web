@@ -19,8 +19,6 @@ import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionPr
 import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 import org.springframework.stereotype.Service;
 
-import graphql.com.google.common.base.Objects;
-
 /**
  * The IWidgetDescriptionProvider for the Reference widget.
  *
@@ -31,7 +29,7 @@ public class ReferenceWidgetDescriptionProvider implements IWidgetDescriptionPro
 
     @Override
     public Optional<EClass> getWidgetDescriptionType(String widgetKind) {
-        if (Objects.equal(widgetKind, ReferenceWidgetDescriptor.TYPE)) {
+        if (ReferenceWidgetDescriptor.TYPE.equals(widgetKind)) {
             return Optional.of(ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION);
         } else {
             return Optional.empty();
