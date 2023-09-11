@@ -21,8 +21,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.images.ICustomImageContentService;
@@ -40,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * The entry point of the HTTP API to get images.
@@ -85,6 +84,8 @@ public class ImagesController {
 
     private static final String CUSTOM_IMAGE_PREFIX = "/custom/";
 
+    private static final String COLOR_PREFIX = "/color/";
+
     private static final MediaType IMAGE_SVG = MediaType.valueOf("image/svg+xml");
 
     private static final String TIMER = "siriusweb_images";
@@ -123,6 +124,8 @@ public class ImagesController {
             }
         } else if (imagePath.startsWith(CUSTOM_IMAGE_PREFIX)) {
             response = this.getCustomImage(imagePath);
+        } else if (imagePath.startsWith(COLOR_PREFIX)) {
+            response = this.getColorPreview(imagePath);
         }
 
         long end = System.currentTimeMillis();
@@ -147,6 +150,19 @@ public class ImagesController {
             response = new ResponseEntity<>(resource, headers, HttpStatus.OK);
         }
         return response;
+    }
+
+    private ResponseEntity<Resource> getColorPreview(String imagePath) {
+        String colorDescriptor = imagePath.substring(COLOR_PREFIX.length());
+        String svg = """
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
+                   <circle style='fill:%s' cx='12' cy='12' r='10'/>
+                </svg>
+                """.formatted(colorDescriptor);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(IMAGE_SVG);
+        Resource resource = new ByteArrayResource(svg.getBytes());
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
     private MediaType getContentType(String imagePath) {
