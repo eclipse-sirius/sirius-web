@@ -46,6 +46,8 @@ public final class ReferenceWidget extends AbstractWidget {
 
     private Function<Object, IStatus> setHandler;
 
+    private Function<List<?>, IStatus> addHandler;
+
     private ReferenceWidget() {
         // Prevent instantiation
     }
@@ -80,6 +82,10 @@ public final class ReferenceWidget extends AbstractWidget {
 
     public Function<Object, IStatus> getSetHandler() {
         return this.setHandler;
+    }
+
+    public Function<List<?>, IStatus> getAddHandler() {
+        return this.addHandler;
     }
 
     @Override
@@ -119,6 +125,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private Supplier<IStatus> clearHandler;
 
         private Function<Object, IStatus> setHandler;
+
+        private Function<List<?>, IStatus> addHandler;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -180,7 +188,12 @@ public final class ReferenceWidget extends AbstractWidget {
         }
 
         public Builder setHandler(Function<Object, IStatus> setHandler) {
-            this.setHandler = setHandler;
+            this.setHandler = Objects.requireNonNull(setHandler);
+            return this;
+        }
+
+        public Builder addHandler(Function<List<?>, IStatus> addHandler) {
+            this.addHandler = Objects.requireNonNull(addHandler);
             return this;
         }
 
@@ -199,6 +212,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.ownerId = Objects.requireNonNull(this.ownerId);
             referenceWidget.clearHandler = Objects.requireNonNull(this.clearHandler);
             referenceWidget.setHandler = this.setHandler; // Optional on purpose
+            referenceWidget.addHandler = this.addHandler; // Optional on purpose
             return referenceWidget;
         }
     }

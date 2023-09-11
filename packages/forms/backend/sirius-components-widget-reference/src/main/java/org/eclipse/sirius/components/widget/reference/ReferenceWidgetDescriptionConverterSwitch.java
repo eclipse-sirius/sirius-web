@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
@@ -113,6 +114,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .clearHandlerProvider(variableManager -> this.handleClearReference(variableManager, referenceDescription))
                 .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(variableManager, referenceDescription))
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, referenceDescription))
+                .addHandlerProvider(variableManager -> this.handleAddReference(variableManager, referenceDescription))
                 .styleProvider(styleProvider);
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
@@ -295,11 +297,11 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
         EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
         String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
-        Optional<Object> item = this.getItem(variableManager);
+        Optional<Object> item = variableManager.get(ViewFormDescriptionConverter.NEW_VALUE, Object.class);
 
         if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
             if (reference.isMany()) {
-                result = this.createErrorStatus("Unable to set a multi-valued reference.");
+                result = this.createErrorStatus("Multiple-valued reference can only accept a list of values");
             } else {
                 owner.eSet(reference, item.get());
             }
@@ -308,4 +310,26 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         }
         return result;
     }
+
+    @SuppressWarnings("unchecked")
+    private IStatus handleAddReference(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        Optional<List<Object>> newValues = variableManager.get(ViewFormDescriptionConverter.NEW_VALUE, (Class<List<Object>>) (Class<?>) List.class);
+
+        if (newValues.isEmpty()) {
+            result = this.createErrorStatus("Something went wrong while adding reference values.");
+        } else if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            if (reference.isMany()) {
+                ((List<Object>) owner.eGet(reference)).addAll(newValues.get());
+            } else {
+                new Failure("Single-valued reference can only accept a single value");
+            }
+        } else {
+            result = this.createErrorStatus("Something went wrong while adding reference values.");
+        }
+        return result;
+    }
+
 }

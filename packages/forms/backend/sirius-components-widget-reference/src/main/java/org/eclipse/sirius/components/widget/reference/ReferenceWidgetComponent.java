@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 
 /**
  * The component to render a reference widget.
@@ -131,10 +132,18 @@ public class ReferenceWidgetComponent implements IComponent {
         if (referenceDescription.getSetHandlerProvider() != null) {
             Function<Object, IStatus> setHandler = object -> {
                 VariableManager childVariables = variableManager.createChild();
-                childVariables.put(ReferenceWidgetComponent.ITEM_VARIABLE, object);
+                childVariables.put(ViewFormDescriptionConverter.NEW_VALUE, object);
                 return referenceDescription.getSetHandlerProvider().apply(childVariables);
             };
             builder.setHandler(setHandler);
+        }
+        if (referenceDescription.getAddHandlerProvider() != null) {
+            Function<List<?>, IStatus> addHandler = newValuesObjects -> {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(ViewFormDescriptionConverter.NEW_VALUE, newValuesObjects);
+                return referenceDescription.getAddHandlerProvider().apply(childVariableManager);
+            };
+            builder.addHandler(addHandler);
         }
 
         if (readOnly != null) {

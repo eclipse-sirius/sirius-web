@@ -153,3 +153,23 @@ export interface GQLSetReferenceValueInput {
   referenceWidgetId: string;
   newValueId: string;
 }
+
+export interface GQLAddReferenceValuesMutationData {
+  addReferenceValues: GQLAddReferenceValuesPayload;
+}
+
+export interface GQLAddReferenceValuesPayload {
+  __typename: string;
+}
+
+export interface GQLAddReferenceValuesMutationVariables {
+  input: GQLAddReferenceValuesInput;
+}
+
+export interface GQLAddReferenceValuesInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  referenceWidgetId: string;
+  newValueIds: Array<string>;
+}

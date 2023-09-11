@@ -60,6 +60,8 @@ public final class ReferenceElementProps implements IProps {
 
     private Function<Object, IStatus> setHandler;
 
+    private Function<List<?>, IStatus> addHandler;
+
     private ReferenceElementProps() {
         // Prevent instantiation
     }
@@ -120,6 +122,10 @@ public final class ReferenceElementProps implements IProps {
         return this.setHandler;
     }
 
+    public Function<List<?>, IStatus> getAddHandler() {
+        return this.addHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -157,6 +163,8 @@ public final class ReferenceElementProps implements IProps {
         private Supplier<IStatus> clearHandler;
 
         private Function<Object, IStatus> setHandler;
+
+        private Function<List<?>, IStatus> addHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -217,8 +225,14 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public void setHandler(Function<Object, IStatus> setHandler) {
-            this.setHandler = setHandler;
+        public Builder setHandler(Function<Object, IStatus> setHandler) {
+            this.setHandler = Objects.requireNonNull(setHandler);
+            return this;
+        }
+
+        public Builder addHandler(Function<List<?>, IStatus> addHandler) {
+            this.addHandler = Objects.requireNonNull(addHandler);
+            return this;
         }
 
         public ReferenceElementProps build() {
@@ -236,6 +250,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);
             referenceElementProps.clearHandler = Objects.requireNonNull(this.clearHandler);
             referenceElementProps.setHandler = this.setHandler; // Optional on purpose
+            referenceElementProps.addHandler = this.addHandler; // Optional on purpose
             return referenceElementProps;
         }
     }

@@ -20,6 +20,8 @@ import {
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import {
+  GQLAddReferenceValuesMutationData,
+  GQLAddReferenceValuesMutationVariables,
   GQLClearReferenceMutationData,
   GQLClearReferenceMutationVariables,
   GQLClickReferenceValueMutationData,
@@ -147,6 +149,26 @@ export const setReferenceValueMutation = gql`
   }
 `;
 
+export const addReferenceValuesMutation = gql`
+  mutation addReferenceValues($input: AddReferenceValuesInput!) {
+    addReferenceValues(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
 const isErrorPayload = (payload: GQLEditReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLEditReferencePayload): payload is GQLSuccessPayload =>
@@ -185,6 +207,11 @@ export const ReferencePropertySection = ({
     GQLSetReferenceValueMutationData,
     GQLSetReferenceValueMutationVariables
   >(setReferenceValueMutation);
+
+  const [addReferenceValues, { loading: addLoading, error: addError, data: addData }] = useMutation<
+    GQLAddReferenceValuesMutationData,
+    GQLAddReferenceValuesMutationVariables
+  >(addReferenceValuesMutation);
 
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
     const { id, label, kind } = item;
@@ -289,6 +316,19 @@ export const ReferencePropertySection = ({
       }
     }
   }, [setLoading, setError, setData]);
+  useEffect(() => {
+    if (!addLoading) {
+      if (addError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (addData) {
+        const { addReferenceValues } = addData;
+        if (isErrorPayload(addReferenceValues) || isSuccessPayload(addReferenceValues)) {
+          addMessages(addReferenceValues.messages);
+        }
+      }
+    }
+  }, [addLoading, addError, addData]);
 
   const callSetReference = (newValueId) => {
     const variables = {
@@ -314,6 +354,18 @@ export const ReferencePropertySection = ({
     };
     editReference({ variables });
   };
+  const callAddReferenceValues = (newValueIds) => {
+    const variables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+        newValueIds,
+      },
+    };
+    addReferenceValues({ variables });
+  };
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -336,10 +388,8 @@ export const ReferencePropertySection = ({
           const semanticElementIds = entries
             .filter((entry) => entry.kind.startsWith('siriusComponents://semantic?'))
             .map((entry) => entry.id);
-          const valueIds = widget.referenceValues.map((referenceValue) => referenceValue.id);
-
           if (widget.reference.manyValued) {
-            callEditReference([...valueIds, ...semanticElementIds]);
+            callAddReferenceValues([...semanticElementIds]);
           } else {
             // mono-valued reference could not receive multiple elements
             if (semanticElementIds.length > 1) {
@@ -366,7 +416,7 @@ export const ReferencePropertySection = ({
   const addSelectedElements = (selectedElementIds: string[]): void => {
     setModalDisplayed(null);
     if (selectedElementIds) {
-      callEditReference([...selectedElementIds]);
+      callAddReferenceValues([...selectedElementIds]);
     }
   };
 
