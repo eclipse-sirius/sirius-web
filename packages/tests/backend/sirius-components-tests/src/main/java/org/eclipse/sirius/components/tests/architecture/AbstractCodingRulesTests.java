@@ -40,6 +40,9 @@ import org.junit.jupiter.api.Test;
  * @author sbegaudeau
  */
 public abstract class AbstractCodingRulesTests {
+
+    private static final String GRAPHQL_GUAVA = "graphql.com.google..";
+
     private static final String GUAVA_ANNOTATIONS = "com.google.common.annotations..";
 
     private static final String GUAVA_BASE = "com.google.common.base..";
@@ -89,6 +92,18 @@ public abstract class AbstractCodingRulesTests {
     protected abstract String getProjectRootPackage();
 
     protected abstract JavaClasses getClasses();
+
+    @Test
+    public void noClassesShouldUseGraphQLGuava() {
+        ArchRule rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(GRAPHQL_GUAVA);
+
+        rule.check(this.getClasses());
+    }
 
     @Test
     public void noClassesShouldUseGuava() {
