@@ -112,7 +112,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.get('[data-value="Target Edge End Reconnection Tool"]').should('not.exist');
   });
 
-  it.only('Check the precondition on tools', () => {
+  it('Check the precondition on tools', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
@@ -127,13 +127,18 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('Name').clear();
     cy.getByTestId('Name').type('TestTool');
 
-    cy.get('[title="Back to the homepage"]').click();
-    cy.url().should('eq', Cypress.config().baseUrl + '/projects');
-    cy.getByTestId('create').click();
-
-    cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
-    cy.getByTestId('name').type('Instance');
-    cy.getByTestId('create-project').click();
+    cy.get('[title="Back to the homepage"]')
+      .click()
+      .then(() => {
+        cy.url().should('eq', Cypress.config().baseUrl + '/projects');
+      });
+    cy.getByTestId('create')
+      .click()
+      .then(() => {
+        cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
+        cy.getByTestId('name').type('Instance');
+        cy.getByTestId('create-project').click();
+      });
 
     cy.getByTestId('empty').click();
     cy.getByTestId('Others...-more').click();
@@ -152,7 +157,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('create-representation').click();
     cy.getByTestId('Diagram').should('exist');
     cy.getByTestId('Diagram')
-      .click()
+      .click('left')
       .then(() => {
         cy.getByTestId('New Entity1 - Tool').should('exist');
         cy.getByTestId('New Entity2 - Tool').should('exist');
@@ -160,11 +165,103 @@ describe('/projects/:projectId/edit - Studio', () => {
         cy.getByTestId('New Entity1 - Tool').click();
       });
     cy.getByTestId('Diagram')
-      .click()
+      .click('center')
       .then(() => {
         cy.getByTestId('New Entity1 - Tool').should('exist');
         cy.getByTestId('New Entity2 - Tool').should('exist');
         cy.getByTestId('TestTool - Tool').should('exist');
       });
+  });
+
+  it('Check node style description has default colors', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.get('[data-testid$=" Diagram Description-more"]').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Node').dblclick();
+    cy.getByTestId('1').click();
+    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
+    cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
+    cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
+  });
+
+  it('Check edge style description has default colors', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.get('[data-testid$=" Diagram Description-more"]').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Edge Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Edge').dblclick();
+    cy.getByTestId('EdgeStyle').click();
+
+    cy.getByTestId('Color').findByTestId('reference-value-black').should('exist');
+  });
+
+  it('Check textfield widget style description has default colors', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Form Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('New Form Description').dblclick();
+    cy.getByTestId('PageDescription').dblclick();
+    cy.getByTestId('GroupDescription').dblclick();
+    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription')
+      .get('[data-value="Widgets Textfield Description"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('TextfieldDescription-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription')
+      .get('[data-value="Style Textfield Description Style"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('TextfieldDescriptionStyle').click();
+
+    cy.getByTestId('Background Color').findByTestId('reference-value-transparent').should('exist');
+    cy.getByTestId('Foreground Color').findByTestId('reference-value-theme.palette.text.primary').should('exist');
+  });
+
+  it('Check default color palettes', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.getByTestId('Theme Colors Palette').dblclick();
+    cy.getByTestId('theme.palette.primary.main').should('exist');
+    cy.getByTestId('Special Colors Palette').dblclick();
+    cy.getByTestId('black').should('exist');
+    cy.getByTestId('Amber Colors Palette').dblclick();
+    cy.getByTestId('amber 50').should('exist');
+    cy.getByTestId('Blue Colors Palette').should('exist');
+    cy.getByTestId('BlueGrey Colors Palette').should('exist');
+    cy.getByTestId('Brown Colors Palette').should('exist');
+    cy.getByTestId('Cyan Colors Palette').should('exist');
+    cy.getByTestId('DeepOrange Colors Palette').should('exist');
+    cy.getByTestId('DeepPurple Colors Palette').should('exist');
+    cy.getByTestId('Green Colors Palette').should('exist');
+    cy.getByTestId('Grey Colors Palette').should('exist');
+    cy.getByTestId('Indigo Colors Palette').should('exist');
+    cy.getByTestId('LightBlue Colors Palette').should('exist');
+    cy.getByTestId('LightGreen Colors Palette').should('exist');
+    cy.getByTestId('Lime Colors Palette').should('exist');
+    cy.getByTestId('Orange Colors Palette').should('exist');
+    cy.getByTestId('Pink Colors Palette').should('exist');
+    cy.getByTestId('Purple Colors Palette').should('exist');
+    cy.getByTestId('Red Colors Palette').should('exist');
+    cy.getByTestId('Teal Colors Palette').should('exist');
+    cy.getByTestId('Yellow Colors Palette').should('exist');
   });
 });

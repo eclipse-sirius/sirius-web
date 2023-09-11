@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, TextfieldStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -20,8 +21,8 @@ import { TextareaWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
   style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : null),
-    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : null),
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
+    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),

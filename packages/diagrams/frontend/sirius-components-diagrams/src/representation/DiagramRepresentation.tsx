@@ -22,6 +22,7 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import Typography from '@material-ui/core/Typography';
+import { Theme, useTheme } from '@material-ui/core/styles';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useMachine } from '@xstate/react';
 import { useCallback, useContext, useEffect, useRef } from 'react';
@@ -346,6 +347,7 @@ export const DiagramRepresentation = ({
   selection,
   setSelection,
 }: RepresentationComponentProps) => {
+  const theme: Theme = useTheme();
   const diagramDomElement = useRef<HTMLDivElement | null>(null);
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const classes = useDiagramRepresentationStyle();
@@ -791,6 +793,7 @@ export const DiagramRepresentation = ({
         updateRoutingPointsListener,
         httpOrigin,
         editingContextId,
+        theme,
       };
       dispatch(initializeRepresentationEvent);
     }
@@ -813,6 +816,7 @@ export const DiagramRepresentation = ({
     dispatch,
     readOnly,
     updateRoutingPointsListener,
+    theme,
   ]);
 
   useEffect(() => {

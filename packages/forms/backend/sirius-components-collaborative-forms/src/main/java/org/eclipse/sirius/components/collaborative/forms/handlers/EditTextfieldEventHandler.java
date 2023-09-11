@@ -84,7 +84,7 @@ public class EditTextfieldEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalText.map(AbstractWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
                 status = optionalText
                         .map(widget -> {

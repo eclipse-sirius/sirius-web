@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, RadioStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
@@ -22,7 +23,7 @@ import { RadioWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, RadioStyleProps>((theme) => ({
   style: {
-    color: ({ color }) => (color ? color : null),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),

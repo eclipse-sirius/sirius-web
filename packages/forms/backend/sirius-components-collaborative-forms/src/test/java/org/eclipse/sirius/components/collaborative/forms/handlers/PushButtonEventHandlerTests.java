@@ -166,7 +166,7 @@ public class PushButtonEventHandlerTests {
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(ErrorPayload.class);
-        assertThat(((ErrorPayload) payload).message()).isEqualTo("Read-only widget can not be edited");
+        assertThat(((ErrorPayload) payload).message()).isEqualTo("Read-only widget cannot be edited");
         assertThat(hasBeenExecuted.get()).isFalse();
     }
 }

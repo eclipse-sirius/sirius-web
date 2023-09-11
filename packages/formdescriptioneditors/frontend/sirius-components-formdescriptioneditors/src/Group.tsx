@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
   PropertySectionContext,
@@ -64,7 +64,7 @@ const useGroupEntryStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
     flexDirection: 'column',
     flexGrow: 1,
     borderWidth: ({ borderStyle }) => (borderStyle ? borderStyle.size : 1),
-    borderColor: ({ borderStyle }) => (borderStyle ? borderStyle?.color || 'transparent' : 'gray'),
+    borderColor: ({ borderStyle }) => (borderStyle ? getCSSColor(borderStyle?.color, theme) || 'transparent' : 'gray'),
     borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
     borderRadius: ({ borderStyle }) => (borderStyle ? borderStyle.radius : 10),
     paddingTop: '1px',

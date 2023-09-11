@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   FlexboxContainerPropertySectionProps,
@@ -24,7 +25,7 @@ const useFlexboxContainerPropertySectionStyles = makeStyles<Theme, FlexboxContai
       margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
       padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
       borderWidth: ({ borderStyle }) => borderStyle?.size || 0,
-      borderColor: ({ borderStyle }) => borderStyle?.color || 'transparent',
+      borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'transparent',
       borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
       borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
     },

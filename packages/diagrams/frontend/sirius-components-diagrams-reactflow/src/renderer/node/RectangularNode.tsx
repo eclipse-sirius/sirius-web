@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
@@ -32,6 +33,7 @@ const rectangularNodeStyle = (
     height: '100%',
     opacity: faded ? '0.4' : '',
     ...style,
+    backgroundColor: getCSSColor(String(style.backgroundColor), theme),
   };
 
   if (selected) {

@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, LabelStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -19,7 +20,7 @@ import { LabelWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, LabelStyleProps>((theme) => ({
   style: {
-    color: ({ color }) => (color ? color : null),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),

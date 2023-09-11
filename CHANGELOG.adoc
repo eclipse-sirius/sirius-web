@@ -48,6 +48,9 @@ Note that _palette_ will be removed in short-term from the _DiagramDescription_.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Split of `sirius-components-widget-reference` to extract EMF-related code into a new module `sirius-components-collaborative-widget-reference`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2252[#2252] [diagram] The support for React Flow based diagrams now require a `DiagramPaletteToolContext` in order to contribute custom palette tool.
 - https://github.com/eclipse-sirius/sirius-web/issues/2343[#2343] [sirius-web] Add iconURL field on `ChildCreationDescription` type.
+- https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Colors are now required everywhere.
+We will not hardcoded decisions in our application, instead all the references to a color should be configured.
+In the near future, the GraphQL schema and the frontend of `sirius-components-forms` will thus be updated to reflect this new change.
 
 === Dependency update
 
@@ -125,6 +128,8 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2365[#2365] [diagram] Support key down and F2 to enable direct edit on edges on react-flow diagrams.
 - https://github.com/eclipse-sirius/sirius-web/issues/2358[#2358] [form] Adds diagnostic messages to the reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/2260[#2260] [diagram] Keep the layout stable over time
+- https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new default color palettes along with the creation of a view (theme colors, mui colors...).
+- https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new validation rules about colors for View diagrams & forms.
 
 == v2023.8.0
 

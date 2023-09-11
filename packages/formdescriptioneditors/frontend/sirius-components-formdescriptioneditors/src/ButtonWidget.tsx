@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { ButtonStyleProps, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -22,15 +22,17 @@ import { ButtonWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.light),
-    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+    backgroundColor: ({ backgroundColor }) =>
+      backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
+    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     '&:hover': {
-      backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.main),
-      color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+      backgroundColor: ({ backgroundColor }) =>
+        backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
+      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
       fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
       fontStyle: ({ italic }) => (italic ? 'italic' : null),
       fontWeight: ({ bold }) => (bold ? 'bold' : null),

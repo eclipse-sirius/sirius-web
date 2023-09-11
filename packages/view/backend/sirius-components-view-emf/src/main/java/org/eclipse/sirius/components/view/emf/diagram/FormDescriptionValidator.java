@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -38,23 +39,22 @@ import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormPackage;
+import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 
 /**
- * The validator for {@link DiagramDescription}.
+ * The validator for {@link FormDescription}.
  *
- * @author gcoutable
+ * @author arichard
  */
-public class DiagramDescriptionValidator implements EValidator {
+public class FormDescriptionValidator implements EValidator {
 
-    public static final String DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The diagram description \"%1$s\" does not have a valid domain class";
+    public static final String FORM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The form description \"%1$s\" does not have a valid domain class";
 
-    public static final String DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The element description \"%1$s\" does not have a valid domain class";
+    public static final String FORM_PAGE_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The element description \"%1$s\" does not have a valid domain class";
 
     public static final String CREATE_INSTANCE_INVALID_DOMAIN_TYPE_ERROR_MESSAGE = "The create instance operation \"%1$s\" does not have a valid domain class";
 
@@ -68,26 +68,22 @@ public class DiagramDescriptionValidator implements EValidator {
     @Override
     public boolean validate(EClass eClass, EObject eObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
         boolean isValid = true;
-        if (eObject instanceof DiagramDescription diagramDescription) {
-            isValid = this.hasProperDomainType(diagramDescription, diagnostics) && isValid;
+        if (eObject instanceof FormDescription formDescription) {
+            isValid = this.hasProperDomainType(formDescription, diagnostics) && isValid;
         }
-        if (eObject instanceof DiagramElementDescription diagramElementDescription) {
-            isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
+        if (eObject instanceof PageDescription pageDescription) {
+            isValid = this.hasProperDomainType(pageDescription, diagnostics) && isValid;
         }
-        if (eObject instanceof NodeStyleDescription nodeStyle) {
-            isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
-            isValid = this.hasProperLabelColor(nodeStyle, diagnostics) && isValid;
-            isValid = this.hasProperBorderColor(nodeStyle, diagnostics) && isValid;
-
+        if (eObject instanceof WidgetDescriptionStyle widgetDescriptionStyle) {
+            isValid = this.hasProperBackgroundColor(widgetDescriptionStyle, diagnostics) && isValid;
+            isValid = this.hasProperForegroundColor(widgetDescriptionStyle, diagnostics) && isValid;
+            isValid = this.hasProperColor(widgetDescriptionStyle, diagnostics) && isValid;
         }
-        if (eObject instanceof ImageNodeStyleDescription imageNodeStyle) {
-            isValid = this.hasProperShape(imageNodeStyle, diagnostics) && isValid;
+        if (eObject instanceof ContainerBorderStyle containerBorderStyle) {
+            isValid = this.hasProperBorderColor(containerBorderStyle, diagnostics) && isValid;
         }
         if (eObject instanceof Conditional conditional) {
             isValid = this.conditionIsPresent(conditional, diagnostics) && isValid;
-        }
-        if (eObject instanceof ConditionalNodeStyle conditionalNodeStyle) {
-            isValid = this.conditionalStyleIsPresent(conditionalNodeStyle, diagnostics) && isValid;
         }
         if (eObject instanceof CreateInstance createInstance) {
             isValid = this.hasProperDomainType(createInstance, diagnostics) && isValid;
@@ -119,17 +115,18 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean conditionalStyleIsPresent(ConditionalNodeStyle conditionalNodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = conditionalNodeStyle.getStyle() != null;
+    private boolean hasProperBackgroundColor(WidgetDescriptionStyle widgetDescriptionStyle, DiagnosticChain diagnostics) {
+        EStructuralFeature backgroundColor = widgetDescriptionStyle.eClass().getEStructuralFeature("backgroundColor");
+        boolean isValid = Objects.isNull(backgroundColor) || Objects.nonNull(widgetDescriptionStyle.eGet(backgroundColor));
 
         if (!isValid && diagnostics != null) {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
-                    "The style should not be empty",
+                    "The background color should not be empty",
                     new Object [] {
-                        conditionalNodeStyle,
-                        DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        widgetDescriptionStyle,
+                        backgroundColor,
                     });
 
             diagnostics.add(basicDiagnostic);
@@ -138,8 +135,29 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = Objects.nonNull(nodeStyle.getColor());
+    private boolean hasProperForegroundColor(WidgetDescriptionStyle widgetDescriptionStyle, DiagnosticChain diagnostics) {
+        EStructuralFeature foregroundColor = widgetDescriptionStyle.eClass().getEStructuralFeature("foregroundColor");
+        boolean isValid = Objects.isNull(foregroundColor) || Objects.nonNull(widgetDescriptionStyle.eGet(foregroundColor));
+
+        if (!isValid && diagnostics != null) {
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_COMPONENTS_EMF_PACKAGE,
+                    0,
+                    "The foreground color should not be empty",
+                    new Object [] {
+                        widgetDescriptionStyle,
+                        foregroundColor,
+                    });
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean hasProperColor(WidgetDescriptionStyle widgetDescriptionStyle, DiagnosticChain diagnostics) {
+        EStructuralFeature color = widgetDescriptionStyle.eClass().getEStructuralFeature("color");
+        boolean isValid = Objects.isNull(color) || Objects.nonNull(widgetDescriptionStyle.eGet(color));
 
         if (!isValid && diagnostics != null) {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
@@ -147,8 +165,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     "The color should not be empty",
                     new Object [] {
-                        nodeStyle,
-                        DiagramPackage.Literals.STYLE__COLOR,
+                        widgetDescriptionStyle,
+                        color,
                     });
 
             diagnostics.add(basicDiagnostic);
@@ -157,27 +175,8 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperLabelColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = Objects.nonNull(nodeStyle.getLabelColor());
-
-        if (!isValid && diagnostics != null) {
-            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
-                    SIRIUS_COMPONENTS_EMF_PACKAGE,
-                    0,
-                    "The label color should not be empty",
-                    new Object [] {
-                        nodeStyle,
-                        DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
-                    });
-
-            diagnostics.add(basicDiagnostic);
-        }
-
-        return isValid;
-    }
-
-    private boolean hasProperBorderColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = Objects.nonNull(nodeStyle.getBorderColor());
+    private boolean hasProperBorderColor(ContainerBorderStyle containerBorderStyle, DiagnosticChain diagnostics) {
+        boolean isValid = Objects.nonNull(containerBorderStyle.getBorderColor());
 
         if (!isValid && diagnostics != null) {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
@@ -185,8 +184,8 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     "The border color should not be empty",
                     new Object [] {
-                        nodeStyle,
-                        DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR,
+                        containerBorderStyle,
+                        FormPackage.Literals.CONTAINER_BORDER_STYLE__BORDER_COLOR,
                     });
 
             diagnostics.add(basicDiagnostic);
@@ -195,32 +194,13 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperShape(ImageNodeStyleDescription imageNodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = Objects.nonNull(imageNodeStyle.getShape());
-
-        if (!isValid && diagnostics != null) {
-            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
-                    SIRIUS_COMPONENTS_EMF_PACKAGE,
-                    0,
-                    "The shape should not be empty",
-                    new Object [] {
-                        imageNodeStyle,
-                        DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE,
-                    });
-
-            diagnostics.add(basicDiagnostic);
-        }
-
-        return isValid;
-    }
-
-    private boolean hasProperDomainType(DiagramDescription diagramDescription, DiagnosticChain diagnostics) {
+    private boolean hasProperDomainType(FormDescription formDescription, DiagnosticChain diagnostics) {
         boolean isValid = false;
-        ResourceSet resourceSet = diagramDescription.eResource().getResourceSet();
+        ResourceSet resourceSet = formDescription.eResource().getResourceSet();
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
         List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
-        String domainType = Optional.ofNullable(diagramDescription.getDomainType()).orElse("");
+        String domainType = Optional.ofNullable(formDescription.getDomainType()).orElse("");
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
@@ -236,9 +216,9 @@ public class DiagramDescriptionValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
-                    String.format(DIAGRAM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
+                    String.format(FORM_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
-                        diagramDescription,
+                        formDescription,
                         ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE,
                     });
 
@@ -248,13 +228,13 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperDomainType(DiagramElementDescription diagramElementDescription, DiagnosticChain diagnostics) {
+    private boolean hasProperDomainType(PageDescription pageDescription, DiagnosticChain diagnostics) {
         boolean isValid = false;
-        ResourceSet resourceSet = diagramElementDescription.eResource().getResourceSet();
+        ResourceSet resourceSet = pageDescription.eResource().getResourceSet();
         List<Entity> entities = this.getDomainEntitiesFromResourceSet(resourceSet);
         List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());
 
-        String domainType = Optional.ofNullable(diagramElementDescription.getDomainType()).orElse("");
+        String domainType = Optional.ofNullable(pageDescription.getDomainType()).orElse("");
         isValid = entities.stream().anyMatch(entity -> this.describesEntity(domainType, entity));
 
         if (!isValid && !domainType.isBlank()) {
@@ -270,10 +250,10 @@ public class DiagramDescriptionValidator implements EValidator {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
                     0,
-                    String.format(DIAGRAM_ELEMENT_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
+                    String.format(FORM_PAGE_DESCRIPTION_INVALID_DOMAIN_TYPE_ERROR_MESSAGE, domainType),
                     new Object [] {
-                        diagramElementDescription,
-                        DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE,
+                        pageDescription,
+                        FormPackage.Literals.PAGE_DESCRIPTION__DOMAIN_TYPE,
                     });
 
             diagnostics.add(basicDiagnostic);

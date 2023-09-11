@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
@@ -26,13 +27,15 @@ const listNodeStyle = (
   faded: boolean
 ): React.CSSProperties => {
   const listNodeStyle: React.CSSProperties = {
+    ...style,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
     width: '100%',
     height: '100%',
     opacity: faded ? '0.4' : '',
-    ...style,
+    backgroundColor: getCSSColor(String(style.backgroundColor), theme),
+    borderColor: getCSSColor(String(style.borderColor), theme),
   };
   if (selected) {
     listNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;

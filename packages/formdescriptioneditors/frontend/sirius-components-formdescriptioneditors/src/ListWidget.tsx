@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue, ListStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -27,7 +28,7 @@ import { ListWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
   style: {
-    color: ({ color }) => (color ? color : null),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),

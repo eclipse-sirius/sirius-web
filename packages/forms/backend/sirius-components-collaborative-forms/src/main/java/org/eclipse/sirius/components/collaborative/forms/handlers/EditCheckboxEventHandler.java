@@ -83,7 +83,7 @@ public class EditCheckboxEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalCheckbox.map(Checkbox::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
                 status = optionalCheckbox.map(Checkbox::getNewValueHandler)
                         .map(handler -> handler.apply(input.newValue()))

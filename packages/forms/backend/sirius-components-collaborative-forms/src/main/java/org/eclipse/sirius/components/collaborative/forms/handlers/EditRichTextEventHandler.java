@@ -83,7 +83,7 @@ public class EditRichTextEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalRichText.map(RichText::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
                 status = optionalRichText
                         .map(RichText::getNewValueHandler)

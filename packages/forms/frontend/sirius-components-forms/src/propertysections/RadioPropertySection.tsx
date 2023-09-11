@@ -22,6 +22,7 @@ import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditRadioInput,
@@ -72,12 +73,12 @@ export const updateWidgetFocusMutation = gql`
   }
 `;
 
-const useRadioPropertySectionStyles = makeStyles<Theme, RadioStyleProps>(() => ({
+const useRadioPropertySectionStyles = makeStyles<Theme, RadioStyleProps>((theme) => ({
   radioGroupRoot: {
     flexDirection: 'row',
   },
   style: {
-    color: ({ color }) => (color ? color : null),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),

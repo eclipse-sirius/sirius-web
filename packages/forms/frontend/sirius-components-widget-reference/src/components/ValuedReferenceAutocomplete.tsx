@@ -10,13 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue, theme } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, getCSSColor, theme } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -30,7 +30,7 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
     paddingLeft: theme.spacing(0.5),
   },
   referenceValueStyle: {
-    color: ({ color }) => (color ? color : null),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),

@@ -20,6 +20,7 @@ import { GQLTextarea, GQLWidget } from '../form/FormEventFragments.types';
 import { GQLSuccessPayload } from './ListPropertySection.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { ProposalsList } from './ProposalsList';
 import {
@@ -51,10 +52,10 @@ import {
   textfieldPropertySectionMachine,
 } from './TextfieldPropertySectionMachine';
 
-const useStyle = makeStyles<Theme, TextfieldStyleProps>(() => ({
+const useStyle = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
   style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : null),
-    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : null),
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
+    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
