@@ -43,8 +43,8 @@ import { useLayout } from './layout/useLayout';
 import { nodeTypes } from './node/NodeTypes';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { DiagramPalette } from './palette/DiagramPalette';
+import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
-import { useEdgePalette } from './palette/useEdgePalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
@@ -68,7 +68,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const { layout } = useLayout();
 
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
-  const { onEdgeClick } = useEdgePalette();
+  const { onDiagramElementClick } = useDiagramElementPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
@@ -225,10 +225,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
     onDiagramBackgroundClick(event);
   };
 
-  const handleEdgeClick = (event: React.MouseEvent<Element, MouseEvent>) => {
-    onEdgeClick(event);
-  };
-
   const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
 
   const onKeyDown = (event: React.KeyboardEvent<Element>) => {
@@ -250,7 +246,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       onEdgesChange={handleEdgesChange}
       onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
-      onEdgeClick={handleEdgeClick}
+      onEdgeClick={onDiagramElementClick}
+      onNodeClick={onDiagramElementClick}
       onMove={() => hideDiagramPalette()}
       onDrop={onDrop}
       onDragOver={onDragOver}

@@ -26,8 +26,8 @@ import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
+import { DiagramElementPaletteContextProvider } from '../renderer/palette/DiagramElementPaletteContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
-import { EdgePaletteContextProvider } from '../renderer/palette/EdgePaletteContext';
 import {
   DiagramRepresentationState,
   GQLDiagramEventData,
@@ -98,7 +98,7 @@ export const DiagramRepresentation = ({
       <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
         <DiagramDirectEditContextProvider>
           <DiagramPaletteContextProvider>
-            <EdgePaletteContextProvider>
+            <DiagramElementPaletteContextProvider>
               <ConnectorContextProvider>
                 <div style={{ display: 'inline-block', position: 'relative' }}>
                   <MarkerDefinitions />
@@ -112,7 +112,7 @@ export const DiagramRepresentation = ({
                   </FullscreenContextProvider>
                 </div>
               </ConnectorContextProvider>
-            </EdgePaletteContextProvider>
+            </DiagramElementPaletteContextProvider>
           </DiagramPaletteContextProvider>
         </DiagramDirectEditContextProvider>
       </DiagramContext.Provider>

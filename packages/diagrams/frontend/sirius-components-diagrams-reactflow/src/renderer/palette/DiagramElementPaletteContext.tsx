@@ -13,23 +13,23 @@
 
 import React, { useCallback, useState } from 'react';
 import {
-  EdgePaletteContextProviderProps,
-  EdgePaletteContextProviderState,
-  EdgePaletteContextValue,
-} from './EdgePaletteContext.types';
+  DiagramElementPaletteContextProviderProps,
+  DiagramElementPaletteContextProviderState,
+  DiagramElementPaletteContextValue,
+} from './DiagramElementPaletteContext.types';
 
-const defaultValue: EdgePaletteContextValue = {
+const defaultValue: DiagramElementPaletteContextValue = {
   x: null,
   y: null,
   isOpened: false,
-  hideEdgePalette: () => {},
-  showEdgePalette: () => {},
+  hideDiagramElementPalette: () => {},
+  showDiagramElementPalette: () => {},
 };
 
-export const EdgePaletteContext = React.createContext<EdgePaletteContextValue>(defaultValue);
+export const DiagramElementPaletteContext = React.createContext<DiagramElementPaletteContextValue>(defaultValue);
 
-export const EdgePaletteContextProvider = ({ children }: EdgePaletteContextProviderProps) => {
-  const [state, setState] = useState<EdgePaletteContextProviderState>({
+export const DiagramElementPaletteContextProvider = ({ children }: DiagramElementPaletteContextProviderProps) => {
+  const [state, setState] = useState<DiagramElementPaletteContextProviderState>({
     x: null,
     y: null,
     isOpened: false,
@@ -44,15 +44,15 @@ export const EdgePaletteContextProvider = ({ children }: EdgePaletteContextProvi
   }, []);
 
   return (
-    <EdgePaletteContext.Provider
+    <DiagramElementPaletteContext.Provider
       value={{
         x: state.x,
         y: state.y,
         isOpened: state.isOpened,
-        showEdgePalette: showPalette,
-        hideEdgePalette: hidePalette,
+        showDiagramElementPalette: showPalette,
+        hideDiagramElementPalette: hidePalette,
       }}>
       {children}
-    </EdgePaletteContext.Provider>
+    </DiagramElementPaletteContext.Provider>
   );
 };

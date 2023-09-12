@@ -48,6 +48,7 @@ This coupling will be removed in the near future as a consequence, the dependenc
 - https://github.com/eclipse-sirius/sirius-web/issues/2288[#2288] [diagram] Make IconLabel a react flow node
 - https://github.com/eclipse-sirius/sirius-web/issues/2289[#2289] [diagram] Use the layout strategy to layout icon label nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/2410[#2410] [diagram] Do a fit to screen on a diagram opening
+- https://github.com/eclipse-sirius/sirius-web/issues/2268[#2268] [diagram] Create child nodes where the user has clicked.
 
 == v2023.10.0
 

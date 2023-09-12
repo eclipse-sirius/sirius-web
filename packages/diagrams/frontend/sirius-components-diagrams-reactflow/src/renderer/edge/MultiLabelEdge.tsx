@@ -26,7 +26,7 @@ import {
 } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
-import { EdgePalette } from '../palette/EdgePalette';
+import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getEdgeParameters } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
@@ -115,7 +115,7 @@ export const MultiLabelEdge = memo(
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 1)}--selected)` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 1)}--selected)` : markerStart}
         />
-        {selected ? <EdgePalette edgeId={id} labelId={label ? label.id : null} /> : null}
+        {selected ? <DiagramElementPalette diagramElementId={id} labelId={label ? label.id : null} /> : null}
         <EdgeLabelRenderer>
           {beginLabel && (
             <Label

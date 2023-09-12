@@ -17,7 +17,7 @@ import { memo, useContext } from 'react';
 import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
-import { NodePalette } from '../palette/NodePalette';
+import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ImageNodeData } from './ImageNode.types';
 
 const imageNodeStyle = (
@@ -55,7 +55,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />
-      {selected ? <NodePalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
+      {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
       <Handle
         id={`handle--${id}--top`}
         type="source"

@@ -11,7 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface EdgePaletteProps {
-  edgeId: string;
-  labelId: string | null;
+export interface UseEdgePaletteValue {
+  x: number | null;
+  y: number | null;
+  isOpened: boolean;
+  hideDiagramElementPalette: () => void;
+  showDiagramElementPalette: (x: number, y: number) => void;
+  onDiagramElementClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
 }
