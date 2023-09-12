@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -114,7 +116,9 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
             Result newValue = this.interpreter.evaluateExpression(this.variableManager.getVariables(), setValueOperation.getValueExpression());
             Object instance = null;
             if (newValue.asObject().isPresent()) {
-                instance = this.ecore.eAdd(optionalSelf.get(), setValueOperation.getFeatureName(), newValue.asObject().get());
+                if (!this.wouldCreateCycles(optionalSelf.get(), setValueOperation.getFeatureName(), newValue.asObject().get())) {
+                    instance = this.ecore.eAdd(optionalSelf.get(), setValueOperation.getFeatureName(), newValue.asObject().get());
+                }
             } else {
                 instance = this.ecore.eClear(optionalSelf.get(), setValueOperation.getFeatureName());
             }
@@ -123,6 +127,18 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
             }
         }
         return Optional.empty();
+    }
+
+    private boolean wouldCreateCycles(EObject eObject, String featureName, Object newValue) {
+        boolean result = false;
+        if (eObject.eClass().getEStructuralFeature(featureName) instanceof EReference eReference && eReference.isContainment()) {
+            if (newValue instanceof Collection<?> collection) {
+                result = collection.stream().filter(EObject.class::isInstance).map(EObject.class::cast).anyMatch(obj -> EcoreUtil.isAncestor(obj, eObject));
+            } else if (newValue instanceof EObject obj) {
+                result = EcoreUtil.isAncestor(obj, eObject);
+            }
+        }
+        return result;
     }
 
     @Override
