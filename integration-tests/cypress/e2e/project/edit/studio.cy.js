@@ -112,7 +112,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.get('[data-value="Target Edge End Reconnection Tool"]').should('not.exist');
   });
 
-  it('Check the precondition on tools', () => {
+  it.only('Check the precondition on tools', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
@@ -128,11 +128,13 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('Name').type('TestTool');
 
     cy.get('[title="Back to the homepage"]').click();
-    // Check the diagram representation
-
+    cy.url().should('eq', Cypress.config().baseUrl + '/projects');
     cy.getByTestId('create').click();
+
+    cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
     cy.getByTestId('name').type('Instance');
     cy.getByTestId('create-project').click();
+
     cy.getByTestId('empty').click();
     cy.getByTestId('Others...-more').click();
     cy.getByTestId('new-object').click();
