@@ -46,6 +46,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DynamicRepresentationDescriptionService implements IDynamicRepresentationDescriptionService {
+
     private final Logger logger = LoggerFactory.getLogger(DynamicRepresentationDescriptionService.class);
 
     private final IDocumentRepository documentRepository;
@@ -74,11 +75,9 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
                 Resource resource = this.loadDocumentAsEMF(documentEntity, resourceSet);
                 views.addAll(this.getViewDefinitions(resource).toList());
             });
-            // @formatter:off
-            views.forEach(view -> this.viewConverter.convert(views, accessibleEPackages).stream()
+            this.viewConverter.convert(views, accessibleEPackages).stream()
                     .filter(Objects::nonNull)
-                    .forEach(dynamicRepresentationDescriptions::add));
-            // @formatter:on
+                    .forEach(dynamicRepresentationDescriptions::add);
         }
         return dynamicRepresentationDescriptions;
     }
