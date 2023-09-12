@@ -12,27 +12,28 @@
  *******************************************************************************/
 
 import { useCallback, useContext } from 'react';
-import { useStoreApi } from 'reactflow';
-import { EdgePaletteContext } from './EdgePaletteContext';
-import { EdgePaletteContextValue } from './EdgePaletteContext.types';
-import { UseEdgePaletteValue } from './useEdgePalette.types';
+import { XYPosition, useStoreApi } from 'reactflow';
+import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
+import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
+import { UseEdgePaletteValue } from './useDiagramElementPalette.types';
 
-const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined) => {
+const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
   return {
     x: event.clientX - (bounds?.left ?? 0),
     y: event.clientY - (bounds?.top ?? 0),
   };
 };
 
-export const useEdgePalette = (): UseEdgePaletteValue => {
-  const { x, y, isOpened, hideEdgePalette, showEdgePalette } = useContext<EdgePaletteContextValue>(EdgePaletteContext);
+export const useDiagramElementPalette = (): UseEdgePaletteValue => {
+  const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
+    useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
   const { domNode } = useStoreApi().getState();
   const element = domNode?.getBoundingClientRect();
 
-  const onEdgeClick = useCallback(
+  const onDiagramElementClick = useCallback(
     (event: React.MouseEvent<Element, MouseEvent>) => {
       const palettePosition = computePalettePosition(event, element);
-      showEdgePalette(palettePosition.x, palettePosition.y);
+      showDiagramElementPalette(palettePosition.x, palettePosition.y);
     },
     [element]
   );
@@ -41,8 +42,8 @@ export const useEdgePalette = (): UseEdgePaletteValue => {
     x,
     y,
     isOpened,
-    hideEdgePalette,
-    showEdgePalette,
-    onEdgeClick,
+    hideDiagramElementPalette,
+    showDiagramElementPalette,
+    onDiagramElementClick,
   };
 };

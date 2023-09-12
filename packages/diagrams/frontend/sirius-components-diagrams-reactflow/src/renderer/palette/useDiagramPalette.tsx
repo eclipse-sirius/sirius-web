@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { useCallback, useContext } from 'react';
-import { useStoreApi } from 'reactflow';
+import { XYPosition, useStoreApi } from 'reactflow';
 import { DiagramPaletteContext } from './DiagramPaletteContext';
 import { DiagramPaletteContextValue } from './DiagramPaletteContext.types';
 import { UseDiagramPaletteValue } from './useDiagramPalette.types';
 
-const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: DOMRect) => {
+const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: DOMRect): XYPosition => {
   return {
     x: event.clientX - (bounds?.left ?? 0),
     y: event.clientY - (bounds?.top ?? 0),

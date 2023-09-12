@@ -16,7 +16,7 @@ import { ReactFlowState, useStore } from 'reactflow';
 
 const selector = (state: ReactFlowState) => state.domNode?.querySelector('.react-flow__renderer');
 
-export const EdgePalettePortal = ({ children }: { children: ReactNode }) => {
+export const DiagramElementPalettePortal = ({ children }: { children: ReactNode }) => {
   const wrapperRef = useStore(selector);
 
   if (!wrapperRef) {

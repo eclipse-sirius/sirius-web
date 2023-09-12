@@ -15,7 +15,7 @@ import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
-import { NodePalette } from '../palette/NodePalette';
+import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
 
 const iconlabelStyle = (
@@ -44,7 +44,7 @@ export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNo
         style={iconlabelStyle(data.style, theme, selected, data.faded)}
         data-testid={`IconLabel - ${data?.label?.text}`}>
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
-        {selected ? <NodePalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}
+        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}
       </div>
     </div>
   );

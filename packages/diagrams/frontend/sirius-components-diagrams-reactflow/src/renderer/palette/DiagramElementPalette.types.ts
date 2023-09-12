@@ -11,20 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface EdgePaletteContextValue {
-  x: number | null;
-  y: number | null;
-  isOpened: boolean;
-  showEdgePalette: (x: number, y: number) => void;
-  hideEdgePalette: () => void;
-}
-
-export interface EdgePaletteContextProviderProps {
-  children: React.ReactNode;
-}
-
-export interface EdgePaletteContextProviderState {
-  x: number | null;
-  y: number | null;
-  isOpened: boolean;
+export interface DiagramElementPaletteProps {
+  diagramElementId: string;
+  labelId: string | null;
 }

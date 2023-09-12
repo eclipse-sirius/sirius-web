@@ -12,12 +12,13 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
-import { NodeToolbar, Position } from 'reactflow';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
-import { NodePaletteProps } from './NodePalette.types';
+import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
+import { DiagramElementPalettePortal } from './DiagramElementPalettePortal';
 import { Palette } from './Palette';
+import { useDiagramElementPalette } from './useDiagramElementPalette';
 
-const useNodePaletteStyle = makeStyles((theme) => ({
+const useEdgePaletteStyle = makeStyles((theme) => ({
   toolbar: {
     background: theme.palette.background.paper,
     border: '1px solid #d1dadb',
@@ -30,9 +31,10 @@ const useNodePaletteStyle = makeStyles((theme) => ({
   },
 }));
 
-export const NodePalette = ({ diagramElementId, labelId }: NodePaletteProps) => {
+export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
-  const classes = useNodePaletteStyle();
+  const { x, y, isOpened } = useDiagramElementPalette();
+  const classes = useEdgePaletteStyle();
 
   const handleDirectEditClick = () => {
     if (labelId) {
@@ -40,13 +42,15 @@ export const NodePalette = ({ diagramElementId, labelId }: NodePaletteProps) => 
     }
   };
 
-  return (
-    <NodeToolbar className={classes.toolbar} position={Position.Top}>
-      <Palette
-        diagramElementId={diagramElementId}
-        onDirectEditClick={handleDirectEditClick}
-        isDiagramElementPalette={true}
-      />
-    </NodeToolbar>
-  );
+  return isOpened && x && y ? (
+    <DiagramElementPalettePortal>
+      <div className={classes.toolbar} style={{ position: 'absolute', left: x, top: y }}>
+        <Palette
+          diagramElementId={diagramElementId}
+          onDirectEditClick={handleDirectEditClick}
+          isDiagramElementPalette={true}
+        />
+      </div>
+    </DiagramElementPalettePortal>
+  ) : null;
 };
