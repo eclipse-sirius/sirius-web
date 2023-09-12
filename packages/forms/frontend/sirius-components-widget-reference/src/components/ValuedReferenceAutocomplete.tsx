@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, theme } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
@@ -35,6 +35,16 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+  },
+  endAdornmentButton: {
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    display: 'flex',
+    right: theme.spacing(2.5),
+    '& > *': {
+      padding: 0,
+    },
   },
 }));
 
@@ -142,10 +152,11 @@ export const ValuedReferenceAutocomplete = ({
           helperText={widget.diagnostics[0]?.message}
           InputProps={{
             ...params.InputProps,
+            style: { paddingRight: theme.spacing(10) },
             endAdornment: (
               <>
                 {params.InputProps.endAdornment}
-                <InputAdornment position="end">
+                <InputAdornment position="end" className={classes.endAdornmentButton}>
                   <IconButton
                     aria-label="edit"
                     size="small"

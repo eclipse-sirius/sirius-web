@@ -75,6 +75,7 @@ An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2357[#2357] [view] Fix an issue where the color property was displayed in the Details view for an `ImageNodeStyle` though it has no impact for this type of style.
 - https://github.com/eclipse-sirius/sirius-web/issues/2266[#2266] [diagram] Keep edges visible when nodes are selected
 - https://github.com/eclipse-sirius/sirius-web/issues/2162[#2162] [diagram] Fix an issue when performing two chained direct-edit on nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/2348[#2348] [form] Fix a layout issue with the widget reference that can lead to the partial disappearance of action buttons.
 
 === New Features
 
