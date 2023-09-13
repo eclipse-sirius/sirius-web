@@ -16,12 +16,9 @@ import { assign, Machine } from 'xstate';
 import {
   ChildCreationDescription,
   Domain,
-  GQLCreateChildMutationData,
-  GQLCreateChildPayload,
-  GQLCreateChildSuccessPayload,
-  GQLCreateRootObjectMutationData,
-  GQLCreateRootObjectPayload,
-  GQLCreateRootObjectSuccessPayload,
+  GQLCreateElementMutationData,
+  GQLCreateElementPayload,
+  GQLCreateElementSuccessPayload,
   GQLGetChildCreationDescriptionsQueryData,
   GQLGetDomainsQueryData,
   GQLGetRootObjectCreationDescriptionsQueryData,
@@ -101,11 +98,11 @@ export type ChangeDomainEvent = {
 
 export type CreateChildEvent = { type: 'CREATE_CHILD' };
 export type CreateRootEvent = { type: 'CREATE_ROOT' };
-export type HandleCreateChildResponseEvent = { type: 'HANDLE_CHILD_CREATE_RESPONSE'; data: GQLCreateChildMutationData };
-export type HandleCreateRootResponseEvent = {
-  type: 'HANDLE_ROOT_CREATE_RESPONSE';
-  data: GQLCreateRootObjectMutationData;
+export type HandleCreateElementResponseEvent = {
+  type: 'HANDLE_CREATE_ELEMENT_RESPONSE';
+  data: GQLCreateElementMutationData;
 };
+
 export type CreateModalEvent =
   | FetchedDomainsEvent
   | FetchedRootObjectCreationDescriptionsEvent
@@ -115,18 +112,13 @@ export type CreateModalEvent =
   | ChangeChildCreationDescriptionEvent
   | CreateChildEvent
   | CreateRootEvent
-  | HandleCreateChildResponseEvent
-  | HandleCreateRootResponseEvent
+  | HandleCreateElementResponseEvent
   | ChangeContainerSelectionEvent;
 
-const isCreateChildSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateChildSuccessPayload => {
-  return payload.__typename === 'CreateChildSuccessPayload';
+const isCreateElementSuccessPayload = (payload: GQLCreateElementPayload): payload is GQLCreateElementSuccessPayload => {
+  return payload.__typename === 'CreateElementSuccessPayload';
 };
-const isCreateRootSuccessPayload = (
-  payload: GQLCreateRootObjectPayload
-): payload is GQLCreateRootObjectSuccessPayload => {
-  return payload.__typename === 'CreateRootObjectSuccessPayload';
-};
+
 export const createModalMachine = Machine<CreateModalContext, CreateModalStateSchema, CreateModalEvent>(
   {
     id: 'CreateModal',
@@ -295,11 +287,11 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
           },
           creatingChild: {
             on: {
-              HANDLE_CHILD_CREATE_RESPONSE: [
+              HANDLE_CREATE_ELEMENT_RESPONSE: [
                 {
-                  cond: 'isResponseCreateChildSuccessful',
+                  cond: 'isResponseCreateElementSuccessful',
                   target: 'success',
-                  actions: 'updateNewChildId',
+                  actions: 'updateNewElementId',
                 },
                 {
                   target: 'validForChild',
@@ -309,11 +301,11 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
           },
           creatingRoot: {
             on: {
-              HANDLE_ROOT_CREATE_RESPONSE: [
+              HANDLE_CREATE_ELEMENT_RESPONSE: [
                 {
-                  cond: 'isResponseCreateRootSuccessful',
+                  cond: 'isResponseCreateElementSuccessful',
                   target: 'success',
-                  actions: 'updateNewRootId',
+                  actions: 'updateNewElementId',
                 },
                 {
                   target: 'validForRoot',
@@ -330,13 +322,9 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
   },
   {
     guards: {
-      isResponseCreateChildSuccessful: (_, event) => {
-        const { data } = event as HandleCreateChildResponseEvent;
-        return data.createChild.__typename === 'CreateChildSuccessPayload';
-      },
-      isResponseCreateRootSuccessful: (_, event) => {
-        const { data } = event as HandleCreateRootResponseEvent;
-        return data.createRootObject.__typename === 'CreateRootObjectSuccessPayload';
+      isResponseCreateElementSuccessful: (_, event) => {
+        const { data } = event as HandleCreateElementResponseEvent;
+        return data.createElement.__typename === 'CreateElementSuccessPayload';
       },
       isContainmentReference: (_, event) => {
         const { containment } = event as ChangeContainmentModeEvent;
@@ -391,18 +379,10 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
           containerKind: container.entries[0]?.kind,
         };
       }),
-      updateNewChildId: assign((_, event) => {
-        const { data } = event as HandleCreateChildResponseEvent;
-        if (isCreateChildSuccessPayload(data.createChild)) {
-          const { object } = data.createChild;
-          return { newObjectId: object.id };
-        }
-        return {};
-      }),
-      updateNewRootId: assign((_, event) => {
-        const { data } = event as HandleCreateRootResponseEvent;
-        if (isCreateRootSuccessPayload(data.createRootObject)) {
-          const { object } = data.createRootObject;
+      updateNewElementId: assign((_, event) => {
+        const { data } = event as HandleCreateElementResponseEvent;
+        if (isCreateElementSuccessPayload(data.createElement)) {
+          const { object } = data.createElement;
           return { newObjectId: object.id };
         }
         return {};

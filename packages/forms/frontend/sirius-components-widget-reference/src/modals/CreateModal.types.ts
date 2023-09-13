@@ -15,18 +15,11 @@ import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 export interface CreateModalProps {
   editingContextId: string;
   widget: GQLReferenceWidget;
+  representationId: string;
   onClose: (newElementId: string) => void;
 }
 
-export interface GQLCreateChildMutationData {
-  createChild: GQLCreateChildPayload;
-}
-
-export interface GQLCreateChildPayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLCreateChildPayload {
+export interface GQLErrorPayload extends GQLCreateElementPayload {
   message: string;
 }
 
@@ -51,14 +44,6 @@ export interface GQLEditingContext {
 export interface GQLChildCreationDescription {
   id: string;
   label: string;
-}
-
-export interface GQLCreateRootObjectMutationData {
-  createRootObject: GQLCreateRootObjectPayload;
-}
-
-export interface GQLCreateRootObjectPayload {
-  __typename: string;
 }
 
 export interface GQLGetDomainsQueryVariables {
@@ -99,19 +84,9 @@ export interface GQLDomain {
   label: string;
 }
 
-export interface GQLCreateRootObjectSuccessPayload extends GQLCreateRootObjectPayload {
-  id: string;
-  object: GQLObject;
-}
-
 export interface Domain {
   id: string;
   label: string;
-}
-
-export interface GQLCreateChildSuccessPayload extends GQLCreateChildPayload {
-  id: string;
-  object: GQLObject;
 }
 
 export interface ChildCreationDescription {
@@ -123,4 +98,31 @@ export interface GQLObject {
   id: string;
   label: string;
   kind: string;
+}
+
+export interface GQLCreateElementMutationVariables {
+  input: GQLCreateElementInput;
+}
+
+export interface GQLCreateElementInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  referenceWidgetId: string;
+  containerId: string;
+  domainId: string;
+  creationDescriptionId: string;
+}
+
+export interface GQLCreateElementMutationData {
+  createElement: GQLCreateElementPayload;
+}
+
+export interface GQLCreateElementPayload {
+  __typename: string;
+}
+
+export interface GQLCreateElementSuccessPayload extends GQLCreateElementPayload {
+  id: string;
+  object: GQLObject;
 }

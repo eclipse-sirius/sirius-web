@@ -43,6 +43,7 @@ extend type Mutation {
   removeReferenceValue(input: RemoveReferenceValueInput!): RemoveReferenceValuePayload!
   setReferenceValue(input: SetReferenceValueInput!): SetReferenceValuePayload!
   addReferenceValues(input: AddReferenceValuesInput!): AddReferenceValuesPayload!
+  createElement(input: CreateElementInput!): CreateElementPayload!
 }
 
 input EditReferenceInput {
@@ -104,3 +105,23 @@ input AddReferenceValuesInput {
 }
 
 union AddReferenceValuesPayload = ErrorPayload | SuccessPayload
+
+input CreateElementInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  containerId: ID!
+  """
+  domainId is not null when creating a root element
+  """
+  domainId: ID
+  creationDescriptionId: ID!
+}
+
+union CreateElementPayload = CreateElementSuccessPayload | ErrorPayload
+
+type CreateElementSuccessPayload {
+  id: ID!
+  object: Object!
+}

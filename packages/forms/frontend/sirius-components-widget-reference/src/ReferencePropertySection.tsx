@@ -342,18 +342,7 @@ export const ReferencePropertySection = ({
     };
     setReferenceValue({ variables });
   };
-  const callEditReference = (newValueIds) => {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        newValueIds,
-      },
-    };
-    editReference({ variables });
-  };
+
   const callAddReferenceValues = (newValueIds) => {
     const variables = {
       input: {
@@ -430,11 +419,11 @@ export const ReferencePropertySection = ({
   const addNewElement = (selectedElementId: string): void => {
     setModalDisplayed(null);
     if (selectedElementId) {
-      callEditReference(
-        widget.reference.manyValued
-          ? [...widget.referenceValues.map((value) => value.id), selectedElementId]
-          : [selectedElementId]
-      );
+      if (widget.reference.manyValued) {
+        callAddReferenceValues([selectedElementId]);
+      } else {
+        callSetReference(selectedElementId);
+      }
     }
   };
 
@@ -446,7 +435,14 @@ export const ReferencePropertySection = ({
       <BrowseModal editingContextId={editingContextId} onClose={setSelectedElement} widget={widget} />
     );
   } else if (modalDisplayed === 'create') {
-    modal = <CreateModal editingContextId={editingContextId} onClose={addNewElement} widget={widget} />;
+    modal = (
+      <CreateModal
+        editingContextId={editingContextId}
+        onClose={addNewElement}
+        widget={widget}
+        representationId={formId}
+      />
+    );
   }
 
   return (

@@ -66,6 +66,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, IStatus> addHandlerProvider;
 
+    private Function<VariableManager, Object> createElementHandlerProvider;
+
     private ReferenceWidgetDescription() {
         // Prevent instantiation
     }
@@ -142,6 +144,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.addHandlerProvider;
     }
 
+    public Function<VariableManager, Object> getCreateElementHandlerProvider() {
+        return this.createElementHandlerProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -195,6 +201,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, IStatus> setHandlerProvider;
 
         private Function<VariableManager, IStatus> addHandlerProvider;
+
+        private Function<VariableManager, Object> createElementHandlerProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -300,6 +308,11 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
+        public Builder createElementHandlerProvider(Function<VariableManager, Object> createElementHandlerProvider) {
+            this.createElementHandlerProvider = Objects.requireNonNull(createElementHandlerProvider);
+            return this;
+        }
+
         public ReferenceWidgetDescription build() {
             ReferenceWidgetDescription referenceWidgetDescription = new ReferenceWidgetDescription();
             referenceWidgetDescription.id = Objects.requireNonNull(this.id);
@@ -323,6 +336,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemRemoveHandlerProvider = this.itemRemoveHandlerProvider; // Optional on purpose
             referenceWidgetDescription.setHandlerProvider = this.setHandlerProvider; // Optional on purpose
             referenceWidgetDescription.addHandlerProvider = this.addHandlerProvider; // Optional on purpose
+            referenceWidgetDescription.createElementHandlerProvider = this.createElementHandlerProvider;  // Optional on purpose
             return referenceWidgetDescription;
         }
     }

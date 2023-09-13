@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.widget.reference.dto.CreateElementHandlerInput;
 
 /**
  * A widget to view/edit an EMF reference.
@@ -47,6 +48,8 @@ public final class ReferenceWidget extends AbstractWidget {
     private Function<Object, IStatus> setHandler;
 
     private Function<List<?>, IStatus> addHandler;
+
+    private Function<CreateElementHandlerInput, Object> createElementHandler;
 
     private ReferenceWidget() {
         // Prevent instantiation
@@ -88,6 +91,10 @@ public final class ReferenceWidget extends AbstractWidget {
         return this.addHandler;
     }
 
+    public Function<CreateElementHandlerInput, Object> getCreateElementHandler() {
+        return this.createElementHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -127,6 +134,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private Function<Object, IStatus> setHandler;
 
         private Function<List<?>, IStatus> addHandler;
+
+        private Function<CreateElementHandlerInput, Object> createElementHandler;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -197,6 +206,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder createElementHandler(Function<CreateElementHandlerInput, Object> createElementHandler) {
+            this.createElementHandler = Objects.requireNonNull(createElementHandler);
+            return this;
+        }
+
         public ReferenceWidget build() {
             ReferenceWidget referenceWidget = new ReferenceWidget();
             referenceWidget.id = Objects.requireNonNull(this.id);
@@ -213,6 +227,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.clearHandler = Objects.requireNonNull(this.clearHandler);
             referenceWidget.setHandler = this.setHandler; // Optional on purpose
             referenceWidget.addHandler = this.addHandler; // Optional on purpose
+            referenceWidget.createElementHandler = this.createElementHandler; // Optional on purpose
             return referenceWidget;
         }
     }

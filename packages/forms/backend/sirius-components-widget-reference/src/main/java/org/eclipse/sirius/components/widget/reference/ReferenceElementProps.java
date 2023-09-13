@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.widget.reference.dto.CreateElementHandlerInput;
 
 /**
  * The properties for the multi-valued reference widget element.
@@ -61,6 +62,8 @@ public final class ReferenceElementProps implements IProps {
     private Function<Object, IStatus> setHandler;
 
     private Function<List<?>, IStatus> addHandler;
+
+    private Function<CreateElementHandlerInput, Object> createElementHandler;
 
     private ReferenceElementProps() {
         // Prevent instantiation
@@ -126,6 +129,10 @@ public final class ReferenceElementProps implements IProps {
         return this.addHandler;
     }
 
+    public Function<CreateElementHandlerInput, Object> getCreateElementHandler() {
+        return this.createElementHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -165,6 +172,8 @@ public final class ReferenceElementProps implements IProps {
         private Function<Object, IStatus> setHandler;
 
         private Function<List<?>, IStatus> addHandler;
+
+        private Function<CreateElementHandlerInput, Object> createElementHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -235,6 +244,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder createElementHandler(Function<CreateElementHandlerInput, Object> createElementHandler) {
+            this.createElementHandler = Objects.requireNonNull(createElementHandler);
+            return this;
+        }
+
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
@@ -251,6 +265,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.clearHandler = Objects.requireNonNull(this.clearHandler);
             referenceElementProps.setHandler = this.setHandler; // Optional on purpose
             referenceElementProps.addHandler = this.addHandler; // Optional on purpose
+            referenceElementProps.createElementHandler = this.createElementHandler;  // Optional on purpose
             return referenceElementProps;
         }
     }

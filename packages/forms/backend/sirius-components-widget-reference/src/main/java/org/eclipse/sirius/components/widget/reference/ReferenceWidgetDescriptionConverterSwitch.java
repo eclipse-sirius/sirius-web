@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -72,7 +73,8 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory) {
+    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService,
+            ComposedAdapterFactory composedAdapterFactory) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = editService;
@@ -86,36 +88,26 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         String descriptionId = this.getDescriptionId(referenceDescription);
 
         Function<VariableManager, ReferenceWidgetStyle> styleProvider = variableManager -> {
-            var effectiveStyle = referenceDescription.getConditionalStyles().stream()
-                    .filter(style -> this.matches(style.getCondition(), variableManager))
-                    .map(ReferenceWidgetDescriptionStyle.class::cast)
-                    .findFirst()
-                    .orElseGet(referenceDescription::getStyle);
+            var effectiveStyle = referenceDescription.getConditionalStyles().stream().filter(style -> this.matches(style.getCondition(), variableManager))
+                    .map(ReferenceWidgetDescriptionStyle.class::cast).findFirst().orElseGet(referenceDescription::getStyle);
             if (effectiveStyle == null) {
                 return null;
             }
             return new ReferenceWidgetStyleProvider(effectiveStyle).apply(variableManager);
         };
 
-        var builder = org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId)
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .idProvider(new WidgetIdProvider())
-                .labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager))
-                .iconURLProvider(variableManager -> "")
+        var builder = org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId).targetObjectIdProvider(this.semanticTargetIdProvider)
+                .idProvider(new WidgetIdProvider()).labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager)).iconURLProvider(variableManager -> "")
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))
                 .itemsProvider(variableManager -> this.getReferenceValue(referenceDescription, variableManager))
-                .optionsProvider(variableManager -> this.getReferenceOptions(referenceDescription, variableManager))
-                .itemIdProvider(this::getItemId)
-                .itemKindProvider(this::getItemKind)
-                .itemLabelProvider(this::getItemLabel)
-                .itemImageURLProvider(this::getItemIconURL)
-                .settingProvider(variableManager -> this.resolveSetting(referenceDescription, variableManager))
+                .optionsProvider(variableManager -> this.getReferenceOptions(referenceDescription, variableManager)).itemIdProvider(this::getItemId).itemKindProvider(this::getItemKind)
+                .itemLabelProvider(this::getItemLabel).itemImageURLProvider(this::getItemIconURL).settingProvider(variableManager -> this.resolveSetting(referenceDescription, variableManager))
                 .ownerIdProvider(variableManager -> this.getOwnerId(referenceDescription, variableManager))
                 .clearHandlerProvider(variableManager -> this.handleClearReference(variableManager, referenceDescription))
                 .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(variableManager, referenceDescription))
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, referenceDescription))
                 .addHandlerProvider(variableManager -> this.handleAddReference(variableManager, referenceDescription))
-                .styleProvider(styleProvider);
+                .createElementHandlerProvider(variableManager -> this.handleCreateElement(variableManager, referenceDescription)).styleProvider(styleProvider);
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(referenceDescription.getHelpExpression()));
@@ -184,9 +176,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
                 List<?> referenceOptions;
                 if (descriptor != null) {
-                    referenceOptions = descriptor.getChoiceOfValues(eObject).stream()
-                            .filter(Objects::nonNull)
-                            .toList();
+                    referenceOptions = descriptor.getChoiceOfValues(eObject).stream().filter(Objects::nonNull).toList();
                 } else {
                     referenceOptions = Arrays.asList(ItemPropertyDescriptor.getReachableObjectsOfType(eObject, eReference.getEReferenceType()).toArray());
                 }
@@ -330,6 +320,24 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
             result = this.createErrorStatus("Something went wrong while adding reference values.");
         }
         return result;
+    }
+
+    private Object handleCreateElement(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        Optional<Object> result = Optional.empty();
+        Optional<Boolean> optionalIsChild = variableManager.get(ReferenceWidgetComponent.IS_CHILD_CREATION_VARIABLE, Boolean.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        String creationDescriptionId = variableManager.get(ReferenceWidgetComponent.CREATION_DESCRIPTION_ID_VARIABLE, String.class).orElse("");
+        if (optionalIsChild.isPresent() && optionalEditingContext.isPresent()) {
+            if (optionalIsChild.get()) {
+                EObject parent = variableManager.get(ReferenceWidgetComponent.PARENT_VARIABLE, EObject.class).orElse(null);
+                result = this.editService.createChild(optionalEditingContext.get(), parent, creationDescriptionId);
+            } else {
+                UUID documentId = variableManager.get(ReferenceWidgetComponent.DOCUMENT_ID_VARIABLE, UUID.class).orElse(UUID.randomUUID());
+                String domainId = variableManager.get(ReferenceWidgetComponent.DOMAIN_ID_VARIABLE, String.class).orElse("");
+                result = this.editService.createRootObject(optionalEditingContext.get(), documentId, domainId, creationDescriptionId);
+            }
+        }
+        return result.orElse(null);
     }
 
 }
