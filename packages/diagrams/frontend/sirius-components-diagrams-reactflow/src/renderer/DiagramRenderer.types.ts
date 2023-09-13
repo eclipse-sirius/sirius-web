@@ -13,10 +13,12 @@
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node } from 'reactflow';
+import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
+import { DiagramNodeType } from './node/NodeTypes.types';
 
 export interface DiagramRendererProps {
-  diagram: Diagram;
+  diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload;
   selection: Selection;
   setSelection: (selection: Selection) => void;
 }
@@ -33,7 +35,7 @@ export interface DiagramPaletteState {
 
 export interface Diagram {
   metadata: DiagramMetadata;
-  nodes: Node<NodeData>[];
+  nodes: Node<NodeData, DiagramNodeType>[];
   edges: Edge<MultiLabelEdgeData>[];
 }
 

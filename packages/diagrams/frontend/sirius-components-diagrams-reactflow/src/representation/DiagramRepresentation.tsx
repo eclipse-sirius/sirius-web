@@ -16,19 +16,16 @@ import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-
 import { useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
-import { convertDiagram } from '../converter/convertDiagram';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
-import { Diagram } from '../renderer/DiagramRenderer.types';
 import { ConnectorContextProvider } from '../renderer/connector/ConnectorContext';
 import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/DiagramDirectEditContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
-import { useLayout } from '../renderer/layout/useLayout';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
 import { EdgePaletteContextProvider } from '../renderer/palette/EdgePaletteContext';
 import {
@@ -50,11 +47,10 @@ export const DiagramRepresentation = ({
 }: RepresentationComponentProps) => {
   const [state, setState] = useState<DiagramRepresentationState>({
     id: crypto.randomUUID(),
-    diagram: null,
+    diagramRefreshedEventPayload: null,
     complete: false,
     message: null,
   });
-  const { layout } = useLayout();
 
   const variables: GQLDiagramEventVariables = {
     input: {
@@ -64,18 +60,11 @@ export const DiagramRepresentation = ({
     },
   };
 
-  const onDiagramLaidout = (laidoutDiagram: Diagram) => {
-    setState((prevState) => ({ ...prevState, diagram: laidoutDiagram }));
-  };
-
   const onData = ({ data }: OnDataOptions<GQLDiagramEventData>) => {
     if (data.data) {
       const { diagramEvent } = data.data;
       if (isDiagramRefreshedEventPayload(diagramEvent)) {
-        const { diagram } = diagramEvent;
-        const convertedDiagram: Diagram = convertDiagram(diagram);
-        const previousLayoutedDiagram: Diagram | null = state.diagram;
-        layout(previousLayoutedDiagram, convertedDiagram, onDiagramLaidout);
+        setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: diagramEvent }));
       }
     }
   };
@@ -100,7 +89,7 @@ export const DiagramRepresentation = ({
   if (state.complete) {
     return <div>The representation is not available anymore</div>;
   }
-  if (!state.diagram) {
+  if (!state.diagramRefreshedEventPayload) {
     return <div></div>;
   }
 
@@ -114,7 +103,11 @@ export const DiagramRepresentation = ({
                 <div style={{ display: 'inline-block', position: 'relative' }}>
                   <MarkerDefinitions />
                   <FullscreenContextProvider>
-                    <DiagramRenderer diagram={state.diagram} selection={selection} setSelection={setSelection} />
+                    <DiagramRenderer
+                      diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+                      selection={selection}
+                      setSelection={setSelection}
+                    />
                   </FullscreenContextProvider>
                 </div>
               </ConnectorContextProvider>

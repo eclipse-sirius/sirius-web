@@ -18,13 +18,14 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
-import { Box, Edge, Node, ReactFlowProvider, Rect, boxToRect, rectToBox } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { Edge, Node, ReactFlowProvider } from 'reactflow';
+import { Diagram } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
+import { LayoutEngine } from './LayoutEngine';
 
 const emptyNodeProps = {
   selected: false,
@@ -148,139 +149,32 @@ export const cleanLayoutArea = (container: HTMLDivElement) => {
 };
 
 const gap = 20;
-const rectangularNodePadding = 8;
-const defaultWidth = 150;
-const defaultHeight = 70;
-const borderLeftAndRight = 2;
 
-export const layout = (diagram: Diagram): Diagram => {
-  layoutDiagram(diagram);
+export const layout = (previousDiagram: Diagram | null, diagram: Diagram): Diagram => {
+  layoutDiagram(previousDiagram, diagram);
   return diagram;
 };
 
-const findNodeIndex = (nodes: Node[], refNodeId: string): number => nodes.findIndex((node) => node.id === refNodeId);
-
-const layoutDiagram = (diagram: Diagram) => {
+const layoutDiagram = (previousDiagram: Diagram | null, diagram: Diagram) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentNode);
 
-  layoutNodes(allVisibleNodes, nodesToLayout);
+  new LayoutEngine().layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout);
+
   // Update position of root nodes
-  nodesToLayout.forEach((rootNode, index) => {
-    rootNode.position = { x: 0, y: 0 };
-    const previousSibling = nodesToLayout[index - 1];
-    if (previousSibling) {
-      rootNode.position = { x: previousSibling.position.x + (previousSibling.width ?? 0) + gap, y: 0 };
-    }
-  });
-};
+  nodesToLayout.forEach((node, index) => {
+    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
 
-const layoutNodes = (allVisibleNodes: Node[], nodesToLayout: Node<NodeData>[]) => {
-  nodesToLayout.forEach((nodeToLayout) => {
-    const directChildren = allVisibleNodes.filter((node) => node.parentNode === nodeToLayout.id);
-    if (nodeToLayout.type === 'rectangularNode') {
-      if (directChildren.length > 0) {
-        layoutNodes(allVisibleNodes, directChildren);
-
-        const labelElement = document.getElementById(
-          `${nodeToLayout.id}-label-${findNodeIndex(allVisibleNodes, nodeToLayout.id)}`
-        );
-
-        // Update children position to be under the label and at the right padding.
-        directChildren.forEach((child, index) => {
-          child.position = {
-            x: rectangularNodePadding,
-            y: rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding,
-          };
-          const previousSibling = directChildren[index - 1];
-          if (previousSibling) {
-            child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
-          }
-        });
-
-        // Update node to layout size
-        // WARN: We suppose label are always on top of children (that wrong)
-        const childrenFootprint = getChildrenFootprint(directChildren);
-        const childrenAwareNodeWidth = childrenFootprint.x + childrenFootprint.width + rectangularNodePadding;
-        const labelOnlyWidth =
-          rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
-        const nodeWidth = Math.max(childrenAwareNodeWidth, labelOnlyWidth);
-        nodeToLayout.width = getNodeOrMinWidth(nodeWidth + borderLeftAndRight);
-        nodeToLayout.height = getNodeOrMinHeight(
-          rectangularNodePadding +
-            (labelElement?.getBoundingClientRect().height ?? 0) +
-            rectangularNodePadding +
-            childrenFootprint.height +
-            rectangularNodePadding
-        );
-      } else {
-        const labelElement = document.getElementById(
-          `${nodeToLayout.id}-label-${findNodeIndex(allVisibleNodes, nodeToLayout.id)}`
-        );
-
-        const labelWidth =
-          rectangularNodePadding +
-          (labelElement?.getBoundingClientRect().width ?? 0) +
-          rectangularNodePadding +
-          borderLeftAndRight;
-        const labelHeight =
-          rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
-        const nodeWidth = getNodeOrMinWidth(labelWidth);
-        const nodeHeight = getNodeOrMinHeight(labelHeight);
-        nodeToLayout.width = nodeWidth;
-        nodeToLayout.height = nodeHeight;
+    if (previousNode) {
+      node.position = previousNode.position;
+    } else {
+      node.position = { x: 0, y: 0 };
+      const previousSibling = nodesToLayout[index - 1];
+      if (previousSibling) {
+        node.position = { x: previousSibling.position.x + (previousSibling.width ?? 0) + gap, y: 0 };
       }
-    } else if (nodeToLayout.type === 'imageNode') {
-      nodeToLayout.width = defaultWidth;
-      nodeToLayout.height = defaultHeight;
-    } else if (nodeToLayout.type === 'listNode') {
-      const nodeList = document.getElementById(`${nodeToLayout.id}-${findNodeIndex(allVisibleNodes, nodeToLayout.id)}`)
-        ?.children[0];
-
-      nodeToLayout.width = getNodeOrMinWidth(nodeList?.getBoundingClientRect().width);
-      nodeToLayout.height = getNodeOrMinHeight(nodeList?.getBoundingClientRect().height);
     }
-    nodeToLayout.style = {
-      ...nodeToLayout.style,
-      width: `${nodeToLayout.width}px`,
-      height: `${nodeToLayout.height}px`,
-    };
   });
-};
-
-const getNodeOrMinWidth = (nodeWidth: number | undefined): number => {
-  return Math.max(nodeWidth ?? -Infinity, defaultWidth);
-};
-
-const getNodeOrMinHeight = (nodeHeight: number | undefined): number => {
-  return Math.max(nodeHeight ?? -Infinity, defaultHeight);
-};
-
-const getChildrenFootprint = (children: Node[]): Rect => {
-  const footPrint: Box = children.reduce(
-    (currentFootPrint, node) => {
-      const { x, y } = node.position;
-      const nodeBox = rectToBox({
-        x,
-        y,
-        width: node.width ?? 0,
-        height: node.height ?? 0,
-      });
-
-      return getBoundsOfBoxes(currentFootPrint, nodeBox);
-    },
-    { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity }
-  );
-  return boxToRect(footPrint);
-};
-
-const getBoundsOfBoxes = (box1: Box, box2: Box): Box => {
-  return {
-    x: Math.min(box1.x, box2.x),
-    y: Math.min(box1.y, box2.y),
-    x2: Math.max(box1.x2, box2.x2),
-    y2: Math.max(box1.y2, box2.y2),
-  };
 };
 
 export const performDefaultAutoLayout = (nodes: Node[], edges: Edge[]): Promise<{ nodes: Node[] }> => {

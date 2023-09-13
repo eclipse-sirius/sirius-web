@@ -19,6 +19,7 @@ import { UseLayoutState, UseLayoutValue } from './useLayout.types';
 const initialState: UseLayoutState = {
   currentStep: 'INITIAL_STEP',
   hiddenContainer: null,
+  previousDiagram: null,
   diagramToLayout: null,
   laidoutDiagram: null,
   onLaidoutDiagram: () => {},
@@ -33,7 +34,7 @@ export const useLayout = (): UseLayoutValue => {
   };
 
   const layoutDiagram = (
-    _previousLaidoutDiagram: Diagram | null,
+    previousLaidoutDiagram: Diagram | null,
     diagramToLayout: Diagram,
     callback: (laidoutDiagram: Diagram) => void
   ) => {
@@ -41,6 +42,7 @@ export const useLayout = (): UseLayoutValue => {
       setState((prevState) => ({
         ...prevState,
         currentStep: 'BEFORE_LAYOUT',
+        previousDiagram: previousLaidoutDiagram,
         diagramToLayout,
         onLaidoutDiagram: callback,
       }));
@@ -55,7 +57,7 @@ export const useLayout = (): UseLayoutValue => {
         hiddenContainer: layoutArea,
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
-      const laidoutDiagram = layout(state.diagramToLayout);
+      const laidoutDiagram = layout(state.previousDiagram, state.diagramToLayout);
       setState((prevState) => ({
         ...prevState,
         diagramToLayout: null,

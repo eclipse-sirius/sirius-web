@@ -11,12 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLDiagramEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
-import { Diagram } from '../renderer/DiagramRenderer.types';
+import {
+  GQLDiagramEventPayload,
+  GQLDiagramRefreshedEventPayload,
+} from '../graphql/subscription/diagramEventSubscription.types';
 
 export interface DiagramRepresentationState {
   id: string;
-  diagram: Diagram | null;
+  diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload | null;
   complete: boolean;
   message: string | null;
 }
