@@ -76,6 +76,7 @@ An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2266[#2266] [diagram] Keep edges visible when nodes are selected
 - https://github.com/eclipse-sirius/sirius-web/issues/2162[#2162] [diagram] Fix an issue when performing two chained direct-edit on nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/2348[#2348] [form] Fix a layout issue with the widget reference that can lead to the partial disappearance of action buttons.
+- https://github.com/eclipse-sirius/sirius-web/issues/2381[#2381] [diagram] Fix an issue where the handleId of an edge was undefined.
 
 === New Features
 

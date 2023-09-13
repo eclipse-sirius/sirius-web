@@ -49,5 +49,5 @@ export enum GQLReconnectKind {
 }
 
 export interface GQLErrorPayload extends GQLReconnectEdgePayload {
-  messages: string;
+  message: string;
 }

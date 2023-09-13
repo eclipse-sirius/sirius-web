@@ -11,9 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useCallback } from 'react';
-import { BaseEdge, EdgeLabelRenderer, EdgeProps, Node, ReactFlowState, getSmoothStepPath, useStore } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
+import { memo, useCallback, useEffect } from 'react';
+import {
+  BaseEdge,
+  Edge,
+  EdgeLabelRenderer,
+  EdgeProps,
+  Node,
+  ReactFlowState,
+  getSmoothStepPath,
+  useReactFlow,
+  useStore,
+} from 'reactflow';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { EdgePalette } from '../palette/EdgePalette';
 import { getEdgeParameters } from './EdgeLayout';
@@ -38,7 +48,18 @@ const multiLabelEdgeStyle = (
 };
 
 export const MultiLabelEdge = memo(
-  ({ id, source, target, data, style, markerEnd, markerStart, selected }: EdgeProps<MultiLabelEdgeData>) => {
+  ({
+    id,
+    source,
+    target,
+    data,
+    style,
+    markerEnd,
+    markerStart,
+    selected,
+    sourceHandleId,
+    targetHandleId,
+  }: EdgeProps<MultiLabelEdgeData>) => {
     const theme = useTheme();
 
     const sourceNode = useStore<Node<NodeData> | undefined>(
@@ -67,6 +88,22 @@ export const MultiLabelEdge = memo(
     });
 
     const { beginLabel, endLabel, label, faded } = data || {};
+
+    const reactFlowInstance = useReactFlow();
+    useEffect(() => {
+      if (sourceHandleId?.split('--')[2] !== sourcePosition || targetHandleId?.split('--')[2] !== targetPosition) {
+        reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
+          edges.map((edge) => {
+            if (edge.id === id) {
+              edge.sourceHandle = `handle--${edge.source}--${sourcePosition}`;
+              edge.targetHandle = `handle--${edge.target}--${targetPosition}`;
+            }
+            return edge;
+          })
+        );
+      }
+    }, [sourcePosition, targetPosition]);
+
     return (
       <>
         <BaseEdge
