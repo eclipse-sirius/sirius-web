@@ -19,10 +19,9 @@ import {
   ConnectionMode,
   EdgeChange,
   EdgeSelectionChange,
-  EdgeTypes,
+  Node,
   NodeChange,
   NodeSelectionChange,
-  NodeTypes,
   OnEdgesChange,
   OnNodesChange,
   ReactFlow,
@@ -31,17 +30,16 @@ import {
   useReactFlow,
   useStoreApi,
 } from 'reactflow';
-import { DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
+import { convertDiagram } from '../converter/convertDiagram';
+import { Diagram, DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
-import { MultiLabelEdge } from './edge/MultiLabelEdge';
+import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
-import { ImageNode } from './node/ImageNode';
-import { ListNode } from './node/ListNode';
-import { RectangularNode } from './node/RectangularNode';
+import { nodeTypes } from './node/NodeTypes';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { useEdgePalette } from './palette/useEdgePalette';
@@ -49,21 +47,13 @@ import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 
 import 'reactflow/dist/style.css';
-
-const nodeTypes: NodeTypes = {
-  rectangularNode: RectangularNode,
-  imageNode: ImageNode,
-  listNode: ListNode,
-};
-
-const edgeTypes: EdgeTypes = {
-  multiLabelEdge: MultiLabelEdge,
-};
+import { useLayout } from './layout/useLayout';
+import { DiagramNodeType } from './node/NodeTypes.types';
 
 const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';
 
-export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRendererProps) => {
+export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSelection }: DiagramRendererProps) => {
   const store = useStoreApi();
   const reactFlowInstance = useReactFlow();
   const { onDirectEdit } = useDiagramDirectEdit();
@@ -73,6 +63,9 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const [state, setState] = useState<DiagramRendererState>({
     snapToGrid: false,
   });
+
+  const { layout } = useLayout();
+
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onEdgeClick } = useEdgePalette();
 
@@ -80,40 +73,62 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>(diagram.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>(diagram.edges);
+  const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
 
   useEffect(() => {
-    setNodes(diagram.nodes);
-    setEdges(diagram.edges);
-    hideDiagramPalette();
-  }, [diagram]);
+    const { diagram } = diagramRefreshedEventPayload;
+    const convertedDiagram: Diagram = convertDiagram(diagram);
+
+    const previousDiagram: Diagram = {
+      metadata: { ...convertedDiagram.metadata },
+      nodes: nodes as Node<NodeData, DiagramNodeType>[],
+      edges,
+    };
+
+    layout(previousDiagram, convertedDiagram, (laidOutDiagram) => {
+      setNodes(laidOutDiagram.nodes);
+      setEdges(laidOutDiagram.edges);
+      hideDiagramPalette();
+    });
+  }, [diagramRefreshedEventPayload]);
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
-    const selectedEdgeIds = diagram.edges
-      .filter((edge) => selectionEntryIds.includes(edge.data ? edge.data.targetObjectId : ''))
-      .map((edge) => edge.id);
-    const selectedNodeIds = diagram.nodes
-      .filter((node) => selectionEntryIds.includes(node.data.targetObjectId))
-      .map((node) => node.id);
-    const firstSelectedNodeId = selectedNodeIds[0];
+    const edgesMatchingWorkbenchSelection = edges.filter((edge) =>
+      selectionEntryIds.includes(edge.data ? edge.data.targetObjectId : '')
+    );
+    const nodesMatchingWorkbenchSelection = nodes.filter((node) =>
+      selectionEntryIds.includes(node.data.targetObjectId)
+    );
 
-    if (selectedEdgeIds.length === 0 && firstSelectedNodeId) {
+    const alreadySelectedNodesMatchingWorkbenchSelection = nodesMatchingWorkbenchSelection.filter(
+      (node) => node.selected
+    );
+    const firstNodeMatchingWorkbenchSelection =
+      alreadySelectedNodesMatchingWorkbenchSelection[0] ?? nodesMatchingWorkbenchSelection[0];
+
+    if (edgesMatchingWorkbenchSelection.length === 0 && firstNodeMatchingWorkbenchSelection) {
+      const firstNodeIdMatchingWorkbenchSelection = firstNodeMatchingWorkbenchSelection.id;
+
       // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
       const reactFlowState = store.getState();
       const currentlySelectedNodes = reactFlowState.getNodes().filter((node) => node.selected);
 
-      const isAlreadySelected = currentlySelectedNodes.map((node) => node.id).includes(firstSelectedNodeId);
+      const isAlreadySelected = currentlySelectedNodes
+        .map((node) => node.id)
+        .includes(firstNodeIdMatchingWorkbenchSelection);
       if (!isAlreadySelected) {
         reactFlowState.unselectNodesAndEdges();
-        reactFlowState.addSelectedNodes([firstSelectedNodeId]);
+        reactFlowState.addSelectedNodes([firstNodeIdMatchingWorkbenchSelection]);
 
-        const selectedNodes = reactFlowState.getNodes().filter((node) => firstSelectedNodeId === node.id);
+        const selectedNodes = reactFlowState
+          .getNodes()
+          .filter((node) => firstNodeIdMatchingWorkbenchSelection === node.id);
         reactFlowInstance.fitView({ nodes: selectedNodes, maxZoom: 2, duration: 1000 });
       }
     }
-  }, [selection, diagram]);
+  }, [selection]);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
     onNodesChange(changes);
@@ -121,7 +136,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     const selectionEntries: SelectionEntry[] = changes
       .filter(isNodeSelectChange)
       .filter((change) => change.selected)
-      .flatMap((change) => diagram.nodes.filter((node) => node.id === change.id))
+      .flatMap((change) => nodes.filter((node) => node.id === change.id))
       .map((node) => {
         const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
         return {
@@ -151,7 +166,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
     const selectionEntries: SelectionEntry[] = changes
       .filter(isEdgeSelectChange)
       .filter((change) => change.selected)
-      .flatMap((change) => diagram.edges.filter((edge) => edge.id === change.id))
+      .flatMap((change) => edges.filter((edge) => edge.id === change.id))
       .map((edge) => {
         if (edge.data) {
           const { targetObjectId, targetObjectKind, targetObjectLabel } = edge.data;
@@ -179,12 +194,18 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
   };
 
   const handlePaneClick = (event: React.MouseEvent<Element, MouseEvent>) => {
+    const {
+      diagram: {
+        id,
+        metadata: { kind, label },
+      },
+    } = diagramRefreshedEventPayload;
     const selection: Selection = {
       entries: [
         {
-          id: diagram.metadata.id,
-          kind: diagram.metadata.kind,
-          label: diagram.metadata.label,
+          id,
+          kind,
+          label,
         },
       ],
     };
@@ -241,7 +262,7 @@ export const DiagramRenderer = ({ diagram, selection, setSelection }: DiagramRen
         <Background style={{ backgroundColor: '#ffffff' }} variant={BackgroundVariant.Lines} color="#ffffff" />
       )}
       <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} />
-      <DiagramPalette targetObjectId={diagram.metadata.id} />
+      <DiagramPalette targetObjectId={diagramRefreshedEventPayload.diagram.id} />
       <ConnectorContextualMenu />
     </ReactFlow>
   );

@@ -20,10 +20,11 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { Diagram, Label } from '../renderer/DiagramRenderer.types';
+import { Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { ImageNodeData } from '../renderer/node/ImageNode.types';
 import { ListItemData, ListNodeData } from '../renderer/node/ListNode.types';
+import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
@@ -345,7 +346,7 @@ const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties =>
 };
 
 export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
-  const nodes: Node[] = [];
+  const nodes: Node<NodeData, DiagramNodeType>[] = [];
   gqlDiagram.nodes.forEach((gqlNode) => convertNode(gqlNode, null, nodes));
 
   const nodeId2node = new Map<string, Node>();

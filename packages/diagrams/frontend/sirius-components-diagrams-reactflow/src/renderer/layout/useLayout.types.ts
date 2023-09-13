@@ -28,6 +28,7 @@ export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';
 export interface UseLayoutState {
   hiddenContainer: HTMLDivElement | null;
   currentStep: Step;
+  previousDiagram: Diagram | null;
   diagramToLayout: Diagram | null;
   laidoutDiagram: Diagram | null;
   onLaidoutDiagram: (laidoutDiagram: Diagram) => void;
