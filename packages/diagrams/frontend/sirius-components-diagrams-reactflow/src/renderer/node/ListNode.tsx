@@ -68,10 +68,10 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
           })}
         </div>
         {selected ? <NodePalette diagramElementId={id} labelId={data.label?.id ?? null} /> : null}
-        <Handle id="top" type="source" position={Position.Top} isConnectable={isConnectable} />
-        <Handle id="right" type="source" position={Position.Right} isConnectable={isConnectable} />
-        <Handle id="bottom" type="source" position={Position.Bottom} isConnectable={isConnectable} />
-        <Handle id="left" type="source" position={Position.Left} isConnectable={isConnectable} />
+        <Handle id={`handle--${id}--top`} type="source" position={Position.Top} isConnectable={isConnectable} />
+        <Handle id={`handle--${id}--left`} type="source" position={Position.Left} isConnectable={isConnectable} />
+        <Handle id={`handle--${id}--right`} type="source" position={Position.Right} isConnectable={isConnectable} />
+        <Handle id={`handle--${id}--bottom`} type="source" position={Position.Bottom} isConnectable={isConnectable} />
       </div>
     </>
   );

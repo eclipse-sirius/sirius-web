@@ -71,7 +71,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
     if (reconnectEdgeData) {
       const { reconnectEdge } = reconnectEdgeData;
       if (isErrorPayload(reconnectEdge)) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addErrorMessage(reconnectEdge.message);
       }
     }
   }, [reconnectEdgeData, reconnectEdgeError]);
