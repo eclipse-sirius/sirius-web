@@ -151,14 +151,20 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
     cy.getByTestId('create-representation').click();
     cy.getByTestId('Diagram').should('exist');
-    cy.getByTestId('Diagram').click();
-    cy.getByTestId('New Entity1 - Tool').should('exist');
-    cy.getByTestId('New Entity2 - Tool').should('exist');
-    cy.getByTestId('TestTool - Tool').should('not.exist');
-    cy.getByTestId('New Entity1 - Tool').click();
-    cy.getByTestId('Diagram').click();
-    cy.getByTestId('New Entity1 - Tool').should('exist');
-    cy.getByTestId('New Entity2 - Tool').should('exist');
-    cy.getByTestId('TestTool - Tool').should('exist');
+    cy.getByTestId('Diagram')
+      .click()
+      .then(() => {
+        cy.getByTestId('New Entity1 - Tool').should('exist');
+        cy.getByTestId('New Entity2 - Tool').should('exist');
+        cy.getByTestId('TestTool - Tool').should('not.exist');
+        cy.getByTestId('New Entity1 - Tool').click();
+      });
+    cy.getByTestId('Diagram')
+      .click()
+      .then(() => {
+        cy.getByTestId('New Entity1 - Tool').should('exist');
+        cy.getByTestId('New Entity2 - Tool').should('exist');
+        cy.getByTestId('TestTool - Tool').should('exist');
+      });
   });
 });
