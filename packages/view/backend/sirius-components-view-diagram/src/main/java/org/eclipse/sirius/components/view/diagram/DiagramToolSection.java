@@ -24,9 +24,9 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramToolSection#getNodeTools <em>Node Tools</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramToolSection()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramToolSection()
  */
 public interface DiagramToolSection extends ToolSection {
 
@@ -35,9 +35,9 @@ public interface DiagramToolSection extends ToolSection {
      * {@link org.eclipse.sirius.components.view.diagram.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Node Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramToolSection_NodeTools()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramToolSection_NodeTools()
      */
     EList<NodeTool> getNodeTools();
 

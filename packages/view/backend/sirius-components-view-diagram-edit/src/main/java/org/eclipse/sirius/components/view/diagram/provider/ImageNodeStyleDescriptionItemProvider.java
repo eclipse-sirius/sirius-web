@@ -17,13 +17,14 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.provider.LabelStyleItemProvider;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription}
@@ -31,7 +32,7 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
  *
  * @generated
  */
-public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
+public class ImageNodeStyleDescriptionItemProvider extends LabelStyleItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -51,11 +52,6 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addFontSizePropertyDescriptor(object);
-            this.addItalicPropertyDescriptor(object);
-            this.addBoldPropertyDescriptor(object);
-            this.addUnderlinePropertyDescriptor(object);
-            this.addStrikeThroughPropertyDescriptor(object);
             this.addBorderColorPropertyDescriptor(object);
             this.addBorderRadiusPropertyDescriptor(object);
             this.addBorderSizePropertyDescriptor(object);
@@ -68,61 +64,6 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
             this.addShapePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Font Size feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addFontSizePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Italic feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_italic_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Bold feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_bold_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Underline feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addUnderlinePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Strike Through feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addStrikeThroughPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -286,11 +227,6 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(ImageNodeStyleDescription.class)) {
-            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE:
-            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC:
-            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD:
-            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE:
-            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
@@ -316,6 +252,16 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
+    }
+
+    /**
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return DiagramEditPlugin.INSTANCE;
     }
 
 }

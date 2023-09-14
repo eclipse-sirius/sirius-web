@@ -28,7 +28,7 @@ package org.eclipse.sirius.components.view.diagram;
  * @model
  * @generated
  */
-public interface RectangularNodeStyleDescription extends NodeStyleDescription {
+public interface RectangularNodeStyleDescription extends Style, NodeStyleDescription {
     /**
      * Returns the value of the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

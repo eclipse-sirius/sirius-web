@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Icon Label Node Style Description</b></em>'.
@@ -930,6 +931,22 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                     return -1;
             }
         }
+        if (baseClass == NodeStyleDescription.class) {
+            switch (derivedFeatureID) {
+                case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
+                    return DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR;
+                case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
+                    return DiagramPackage.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
+                case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
+                    return DiagramPackage.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
+                case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
+                    return DiagramPackage.NODE_STYLE_DESCRIPTION__SHOW_ICON;
+                case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                    return DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_ICON;
+                default:
+                    return -1;
+            }
+        }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
@@ -966,6 +983,22 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
                     return DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE;
                 case DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE:
                     return DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+                default:
+                    return -1;
+            }
+        }
+        if (baseClass == NodeStyleDescription.class) {
+            switch (baseFeatureID) {
+                case DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR:
+                    return DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR;
+                case DiagramPackage.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
+                    return DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
+                case DiagramPackage.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
+                    return DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
+                case DiagramPackage.NODE_STYLE_DESCRIPTION__SHOW_ICON:
+                    return DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON;
+                case DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_ICON:
+                    return DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON;
                 default:
                     return -1;
             }
