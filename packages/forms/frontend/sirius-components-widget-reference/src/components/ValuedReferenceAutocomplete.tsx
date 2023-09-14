@@ -11,19 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
-import {
-  ServerContext,
-  ServerContextValue,
-  getCSSColor,
-  theme,
-  useMultiToast,
-} from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -52,8 +46,6 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   },
   endAdornmentButton: {
     position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
     display: 'flex',
     right: theme.spacing(2.5),
     '& > *': {
@@ -113,6 +105,7 @@ export const ValuedReferenceAutocomplete = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyles(props);
+  const theme = useTheme();
 
   const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<ValuedReferenceAutocompleteState>({ open: false, options: null });
@@ -270,7 +263,7 @@ export const ValuedReferenceAutocomplete = ({
           helperText={widget.diagnostics[0]?.message}
           InputProps={{
             ...params.InputProps,
-            style: { paddingRight: theme.spacing(10) },
+            style: { paddingRight: theme.spacing(10) }, // Offset required to prevent values from being displayed below the buttons
             endAdornment: (
               <>
                 {params.InputProps.endAdornment}
