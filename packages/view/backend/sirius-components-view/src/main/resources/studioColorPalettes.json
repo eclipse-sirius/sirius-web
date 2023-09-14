@@ -1,0 +1,1780 @@
+{
+  "json": { "version": "1.0", "encoding": "utf-8" },
+  "ns": {
+    "view": "http://www.eclipse.org/sirius-web/view"
+  },
+  "content": [
+    {
+      "id": "dd837bf0-1823-4888-92aa-7b853ccebd3a",
+      "eClass": "view:View",
+      "data": {
+        "colorPalettes": [
+          {
+            "id": "b0971296-e6bb-4c59-85ae-a5ac64f4fb4f",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Theme Colors Palette",
+              "colors": [
+                {
+                  "id": "8e618fd2-7f1e-436f-b5f5-19c51f082cb5",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.primary.main",
+                    "value": "theme.palette.primary.main"
+                  }
+                },
+                {
+                  "id": "3f9463e4-e54c-40f7-8fa6-9d36a4142973",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.primary.light",
+                    "value": "theme.palette.primary.light"
+                  }
+                },
+                {
+                  "id": "14398b67-64ec-4f93-94df-630ff06b9a92",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.primary.dark",
+                    "value": "theme.palette.primary.dark"
+                  }
+                },
+                {
+                  "id": "697996ce-7943-4a25-8d04-bf0672f67edf",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.secondary.main",
+                    "value": "theme.palette.secondary.main"
+                  }
+                },
+                {
+                  "id": "8162c0cd-43a1-4952-b883-84389073d861",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.secondary.light",
+                    "value": "theme.palette.secondary.light"
+                  }
+                },
+                {
+                  "id": "cb6e51b6-776d-4a1a-8060-7f87ec4a8990",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.secondary.dark",
+                    "value": "theme.palette.secondary.dark"
+                  }
+                },
+                {
+                  "id": "420f1e4d-f7b8-4b5a-a7fc-757828da2b8c",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.text.primary",
+                    "value": "theme.palette.text.primary"
+                  }
+                },
+                {
+                  "id": "42246c40-26c2-4ef8-8bd4-7d9514771311",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.text.disabled",
+                    "value": "theme.palette.text.disabled"
+                  }
+                },
+                {
+                  "id": "5b005db8-faa7-459b-96fa-7bef5eb1bf73",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.text.hint",
+                    "value": "theme.palette.text.hint"
+                  }
+                },
+                {
+                  "id": "75b9a29e-9960-4f26-a86f-c09941bc2441",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.error.main",
+                    "value": "theme.palette.error.main"
+                  }
+                },
+                {
+                  "id": "589c2f00-1cbd-4c52-9d6b-bf5d2f6fe33f",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.error.light",
+                    "value": "theme.palette.error.light"
+                  }
+                },
+                {
+                  "id": "04121685-2faf-4249-ac9f-04873fc84449",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "theme.palette.error.dark",
+                    "value": "theme.palette.error.dark"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "733f29f1-2350-4e71-a44f-9448b6a25cdc",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Special Colors Palette",
+              "colors": [
+                {
+                  "id": "c24dfb04-0d0d-4ca1-be01-ab3b6716fe22",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "black", "value": "#000000" }
+                },
+                {
+                  "id": "0afc1183-89e0-4854-8578-884dccce74b7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "white", "value": "#ffffff" }
+                },
+                {
+                  "id": "64d28a0d-fe62-4922-859c-f2305ad10fcc",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "transparent", "value": "transparent" }
+                },
+                {
+                  "id": "95004d29-809b-44bd-9566-3b59b88d5605",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "inherit", "value": "inherit" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "fe6a6d6c-aa43-43ce-b3fb-ea65823141eb",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Amber Colors Palette",
+              "colors": [
+                {
+                  "id": "f0490391-ce74-4caf-865c-5ec3db217c43",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 50", "value": "amber[50]" }
+                },
+                {
+                  "id": "42534740-81dd-4256-9517-fc03d061e2aa",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 100", "value": "amber[100]" }
+                },
+                {
+                  "id": "560b5d84-b8a0-4f1f-8dfb-5c0540baacb6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 200", "value": "amber[200]" }
+                },
+                {
+                  "id": "89bcc7ef-36d9-4d6b-b027-e7cf23977198",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 300", "value": "amber[300]" }
+                },
+                {
+                  "id": "68f26193-2d9a-4cc5-b166-5abed84a6a08",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 400", "value": "amber[400]" }
+                },
+                {
+                  "id": "3c612972-e2fe-4fcc-a05b-c190fc831b66",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 500", "value": "amber[500]" }
+                },
+                {
+                  "id": "0e0a00cb-45d8-41a5-84e0-8a485368b465",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 600", "value": "amber[600]" }
+                },
+                {
+                  "id": "95c5ab90-e988-4183-ba77-a37831657b19",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 700", "value": "amber[700]" }
+                },
+                {
+                  "id": "169bd914-a052-4903-bb00-047ff2489d1e",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 800", "value": "amber[800]" }
+                },
+                {
+                  "id": "7d1326b3-c33a-4487-8d4a-b123bb550853",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber 900", "value": "amber[900]" }
+                },
+                {
+                  "id": "1f4421c6-1bb6-40bf-bc57-089e4a30d3bd",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber A100", "value": "amber[A100]" }
+                },
+                {
+                  "id": "7d17b253-c01d-4e68-ab26-0960dbec4070",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber A200", "value": "amber[A200]" }
+                },
+                {
+                  "id": "2af7040f-d10f-4a1c-b002-f1c7fa4d9b3f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber A400", "value": "amber[A400]" }
+                },
+                {
+                  "id": "084434e6-7731-4837-8ca0-bcdda412a6b2",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "amber A700", "value": "amber[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "fb514b50-e91e-4c85-8957-b180ca484b20",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Blue Colors Palette",
+              "colors": [
+                {
+                  "id": "58900d7d-2b92-451b-9ce1-ffe3f6cb8777",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 50", "value": "blue[50]" }
+                },
+                {
+                  "id": "b036d38e-aae1-41bd-8001-feb6f96f69dd",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 100", "value": "blue[100]" }
+                },
+                {
+                  "id": "baf7f1cd-8bc9-452a-8bb8-ba34be017591",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 200", "value": "blue[200]" }
+                },
+                {
+                  "id": "b74b027a-6d45-40f9-96f3-e7406964c8e3",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 300", "value": "blue[300]" }
+                },
+                {
+                  "id": "01a04c50-16d4-41cc-ab93-8ee0e091cd9b",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 400", "value": "blue[400]" }
+                },
+                {
+                  "id": "e5238843-8a23-4ee5-ac39-51a6ed8f9099",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 500", "value": "blue[500]" }
+                },
+                {
+                  "id": "12ce0d80-e38d-4213-ac16-bb38221872ec",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 600", "value": "blue[600]" }
+                },
+                {
+                  "id": "0defec95-a755-45c7-99fb-5e093f7cfb62",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 700", "value": "blue[700]" }
+                },
+                {
+                  "id": "40f02644-c077-45e2-8851-c35880695ba8",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 800", "value": "blue[800]" }
+                },
+                {
+                  "id": "69f41c64-e1a8-4971-afa5-85477364e1e4",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue 900", "value": "blue[900]" }
+                },
+                {
+                  "id": "18447884-47de-445c-a13e-63986a04f7fc",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue A100", "value": "blue[A100]" }
+                },
+                {
+                  "id": "6586a2a7-1d64-4435-9e5b-2468dee9c040",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue A200", "value": "blue[A200]" }
+                },
+                {
+                  "id": "778ccd01-8a8a-4e1c-a478-bc50e1aafa13",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue A400", "value": "blue[A400]" }
+                },
+                {
+                  "id": "3613037b-709a-40dd-ac17-423b73caad55",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blue A700", "value": "blue[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "63ff6acd-49b8-4465-b30d-18194fe70ac4",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "BlueGrey Colors Palette",
+              "colors": [
+                {
+                  "id": "657141b4-4482-4039-91ba-c424f9da6aaa",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 50", "value": "blueGrey[50]" }
+                },
+                {
+                  "id": "81871038-7860-4477-9cfc-b72dd0f7734f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 100", "value": "blueGrey[100]" }
+                },
+                {
+                  "id": "80025e3b-667b-46fc-b947-31d1798dffeb",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 200", "value": "blueGrey[200]" }
+                },
+                {
+                  "id": "2deeae39-2188-499a-936c-9c5068560d3e",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 300", "value": "blueGrey[300]" }
+                },
+                {
+                  "id": "aae61334-bb97-4a19-ab6a-c2b073c41a16",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 400", "value": "blueGrey[400]" }
+                },
+                {
+                  "id": "7835081e-e5ad-4ea8-8829-5fd552708d1c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 500", "value": "blueGrey[500]" }
+                },
+                {
+                  "id": "137df633-5895-4ba2-83d7-95b55fa144d8",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 600", "value": "blueGrey[600]" }
+                },
+                {
+                  "id": "cec3ef3b-0396-40b3-b594-dca31e27052a",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 700", "value": "blueGrey[700]" }
+                },
+                {
+                  "id": "e53c0398-31c9-49c1-a987-5fba481e2a4f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 800", "value": "blueGrey[800]" }
+                },
+                {
+                  "id": "ef176638-ac46-458f-b657-3e8e84e8063b",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey 900", "value": "blueGrey[900]" }
+                },
+                {
+                  "id": "f13a7e03-2473-4731-9b78-ecaf3f266cfb",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey A100", "value": "blueGrey[A100]" }
+                },
+                {
+                  "id": "6a1684d2-a62d-4975-bd97-057bcbfe89ee",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey A200", "value": "blueGrey[A200]" }
+                },
+                {
+                  "id": "f9dfda37-b365-404e-b37b-6623f4539cac",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey A400", "value": "blueGrey[A400]" }
+                },
+                {
+                  "id": "ac6e4e46-c5b1-4d1d-bd96-f1f74819beb3",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "blueGrey A700", "value": "blueGrey[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "b3eff176-c565-4f24-8d66-7846cf8a5323",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Brown Colors Palette",
+              "colors": [
+                {
+                  "id": "aa85a7ca-b677-4bc1-a842-e77ad69aefc2",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 50", "value": "brown[50]" }
+                },
+                {
+                  "id": "0d90e861-1c30-4319-8cfa-572e25e182d1",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 100", "value": "brown[100]" }
+                },
+                {
+                  "id": "6a3d4d9c-6756-47c9-b84b-83b881dcffa8",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 200", "value": "brown[200]" }
+                },
+                {
+                  "id": "6577a987-ac36-4c92-9145-6d3da49d1d14",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 300", "value": "brown[300]" }
+                },
+                {
+                  "id": "08411d29-f0ed-4540-b4cf-e7e0cfba52a9",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 400", "value": "brown[400]" }
+                },
+                {
+                  "id": "cc6ab985-3682-4379-acd0-f4d2f66588a0",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 500", "value": "brown[500]" }
+                },
+                {
+                  "id": "600455ab-10e5-47b9-b1c2-127887f82f0b",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 600", "value": "brown[600]" }
+                },
+                {
+                  "id": "a6ecbaad-e89c-46d2-8a23-e9e497caa344",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 700", "value": "brown[700]" }
+                },
+                {
+                  "id": "ddbe2e35-6e7d-4e57-8416-ef958fe4bacf",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 800", "value": "brown[800]" }
+                },
+                {
+                  "id": "4c4ff673-8448-4300-b772-98c35ac13eed",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown 900", "value": "brown[900]" }
+                },
+                {
+                  "id": "14cb6594-6833-429c-9526-43a190c77c0e",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown A100", "value": "brown[A100]" }
+                },
+                {
+                  "id": "df5e250a-f381-4cd8-9b0d-6bcd582c547c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown A200", "value": "brown[A200]" }
+                },
+                {
+                  "id": "ab03935e-8285-49c9-9837-2007cdc5a8d6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown A400", "value": "brown[A400]" }
+                },
+                {
+                  "id": "7f0c1918-6716-4efa-9014-2017234a0675",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "brown A700", "value": "brown[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "f381016b-8553-40e6-8cc9-901028938f09",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Cyan Colors Palette",
+              "colors": [
+                {
+                  "id": "44fd72be-c0f2-4b06-a3cc-f56014b2a785",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 50", "value": "cyan[50]" }
+                },
+                {
+                  "id": "8c0034d2-3d64-4408-bfd3-a9410fe49ac5",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 100", "value": "cyan[100]" }
+                },
+                {
+                  "id": "42f0f901-e4e0-4e0e-b879-81459737b26f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 200", "value": "cyan[200]" }
+                },
+                {
+                  "id": "7e65bd42-0e55-4262-be7e-492755abbbfa",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 300", "value": "cyan[300]" }
+                },
+                {
+                  "id": "7770cb0f-786a-4b43-ae89-d607da9f3887",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 400", "value": "cyan[400]" }
+                },
+                {
+                  "id": "a6c417ff-7a62-4be0-925b-fe9828021c8d",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 500", "value": "cyan[500]" }
+                },
+                {
+                  "id": "d2fce0f8-7c8a-4e05-b574-199d181e6a0c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 600", "value": "cyan[600]" }
+                },
+                {
+                  "id": "0f470407-091d-44d4-8def-46329691895e",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 700", "value": "cyan[700]" }
+                },
+                {
+                  "id": "1086021a-2f72-432b-ad06-4479cad3d849",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 800", "value": "cyan[800]" }
+                },
+                {
+                  "id": "9c2d3733-fe8e-40bc-a849-548f65558300",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan 900", "value": "cyan[900]" }
+                },
+                {
+                  "id": "d88a9bdb-33fd-4078-a356-4b479bfc46c9",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan A100", "value": "cyan[A100]" }
+                },
+                {
+                  "id": "dd6bf74b-e74d-41f9-81ec-51d8c055d82c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan A200", "value": "cyan[A200]" }
+                },
+                {
+                  "id": "694ae834-04e9-46b0-8266-1ab7c63084ea",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan A400", "value": "cyan[A400]" }
+                },
+                {
+                  "id": "1a41ef19-609c-47ce-a65f-88903b9725d2",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "cyan A700", "value": "cyan[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "629fa8f2-a68b-4b71-99fe-325f01dc2790",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "DeepOrange Colors Palette",
+              "colors": [
+                {
+                  "id": "e1cdcdcd-de09-4720-b6f3-31cc98859ee5",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "deepOrange 50", "value": "deepOrange[50]" }
+                },
+                {
+                  "id": "97037146-d1a9-4001-9d9f-f559ad8989d0",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 100",
+                    "value": "deepOrange[100]"
+                  }
+                },
+                {
+                  "id": "333339e7-acfd-4c7b-9ee3-512297cdd842",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 200",
+                    "value": "deepOrange[200]"
+                  }
+                },
+                {
+                  "id": "2b9a088b-1e64-43cb-b4ae-1134ad00ee93",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 300",
+                    "value": "deepOrange[300]"
+                  }
+                },
+                {
+                  "id": "85e08b85-dd5b-4977-bfd5-f52184e4860d",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 400",
+                    "value": "deepOrange[400]"
+                  }
+                },
+                {
+                  "id": "92dc3835-1db8-4e1b-baf2-f24cd05998e0",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 500",
+                    "value": "deepOrange[500]"
+                  }
+                },
+                {
+                  "id": "f755274a-042a-4e60-8c1f-9f7399a728bb",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 600",
+                    "value": "deepOrange[600]"
+                  }
+                },
+                {
+                  "id": "cf4b15ec-533d-402a-a5dc-2aa4505cfdfb",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 700",
+                    "value": "deepOrange[700]"
+                  }
+                },
+                {
+                  "id": "f3fad6ee-356d-4a62-9c6e-6aea3e8cd84a",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 800",
+                    "value": "deepOrange[800]"
+                  }
+                },
+                {
+                  "id": "4d2a5ce3-a87f-47d3-811e-31e32c562122",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange 900",
+                    "value": "deepOrange[900]"
+                  }
+                },
+                {
+                  "id": "0ce82151-53f0-493d-9a12-226e3dd62009",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange A100",
+                    "value": "deepOrange[A100]"
+                  }
+                },
+                {
+                  "id": "b6734796-ce06-48a1-a6a2-3725dc4fed0f",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange A200",
+                    "value": "deepOrange[A200]"
+                  }
+                },
+                {
+                  "id": "41d0fc9b-1b58-4c19-8b40-0321b8def914",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange A400",
+                    "value": "deepOrange[A400]"
+                  }
+                },
+                {
+                  "id": "41d8bf19-3ecb-4b7e-8e70-30425c44b9f0",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepOrange A700",
+                    "value": "deepOrange[A700]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "ac8e4e04-5165-4b24-91b3-032b0825278d",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "DeepPurple Colors Palette",
+              "colors": [
+                {
+                  "id": "badff105-215d-437a-abc3-5c9d2a5dadad",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "deepPurple 50", "value": "deepPurple[50]" }
+                },
+                {
+                  "id": "5cbc051e-71e7-427c-8f6a-e0c262e7c08e",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 100",
+                    "value": "deepPurple[100]"
+                  }
+                },
+                {
+                  "id": "ca6254a3-99b2-4787-891a-646fdd8c77ca",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 200",
+                    "value": "deepPurple[200]"
+                  }
+                },
+                {
+                  "id": "c1204649-c5a8-44dd-9afa-4aea270bbbb8",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 300",
+                    "value": "deepPurple[300]"
+                  }
+                },
+                {
+                  "id": "74dd5bb1-6698-4c77-9e93-ed595557642f",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 400",
+                    "value": "deepPurple[400]"
+                  }
+                },
+                {
+                  "id": "a23ce48f-0eff-4520-a8aa-4f9fe9c7e193",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 500",
+                    "value": "deepPurple[500]"
+                  }
+                },
+                {
+                  "id": "a507b94e-9abb-4331-b3f2-360a851bd863",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 600",
+                    "value": "deepPurple[600]"
+                  }
+                },
+                {
+                  "id": "4a2b75af-6c46-4439-af0a-c96d0982e31b",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 700",
+                    "value": "deepPurple[700]"
+                  }
+                },
+                {
+                  "id": "844cb1a3-8783-4f63-abea-fe6a048a2b52",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 800",
+                    "value": "deepPurple[800]"
+                  }
+                },
+                {
+                  "id": "1c2dc364-f063-4e2c-9c55-8cfb3905f23d",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple 900",
+                    "value": "deepPurple[900]"
+                  }
+                },
+                {
+                  "id": "372fcd71-e5fd-4284-af61-7ddfde622d18",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple A100",
+                    "value": "deepPurple[A100]"
+                  }
+                },
+                {
+                  "id": "e5829927-8685-4c5e-b672-d6c97d8caccd",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple A200",
+                    "value": "deepPurple[A200]"
+                  }
+                },
+                {
+                  "id": "fd9818a2-3fca-46a0-9930-cb84f148e7a7",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple A400",
+                    "value": "deepPurple[A400]"
+                  }
+                },
+                {
+                  "id": "27b3b81e-c7bd-4cef-8b6e-8349c927b469",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "deepPurple A700",
+                    "value": "deepPurple[A700]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "44f5a743-d749-4a65-b839-ad5f671366cc",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Green Colors Palette",
+              "colors": [
+                {
+                  "id": "c7cec1c1-da02-4960-b44f-531a8c715f3c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 50", "value": "green[50]" }
+                },
+                {
+                  "id": "be264454-bb4a-49c0-baf8-e3ab280fcf09",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 100", "value": "green[100]" }
+                },
+                {
+                  "id": "cda01879-39bb-4621-a4a7-55011290a8c7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 200", "value": "green[200]" }
+                },
+                {
+                  "id": "e1085f7b-6f49-4e42-aff7-c7f1bf438def",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 300", "value": "green[300]" }
+                },
+                {
+                  "id": "6b6807ad-5838-4152-afd5-7cb1c960afdb",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 400", "value": "green[400]" }
+                },
+                {
+                  "id": "c333c7ac-193a-41df-ab56-89bed7c0feb4",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 500", "value": "green[500]" }
+                },
+                {
+                  "id": "79adbc39-b839-47c3-acdd-aac3c7dba68a",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 600", "value": "green[600]" }
+                },
+                {
+                  "id": "990d8082-f72a-4eaa-af21-8dc19c6b5862",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 700", "value": "green[700]" }
+                },
+                {
+                  "id": "44c1c61b-ccdc-401f-afb8-3fd9d9dbdd81",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 800", "value": "green[800]" }
+                },
+                {
+                  "id": "cb926dcb-0e7b-4eff-b26c-e50dd7102aa0",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green 900", "value": "green[900]" }
+                },
+                {
+                  "id": "011c21f9-2edb-4118-b56d-4f55679732cd",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green A100", "value": "green[A100]" }
+                },
+                {
+                  "id": "dda2665f-9283-41b1-b950-c2055477f31b",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green A200", "value": "green[A200]" }
+                },
+                {
+                  "id": "f005a9ca-789e-484f-b5f3-e8818cfb2381",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green A400", "value": "green[A400]" }
+                },
+                {
+                  "id": "9de94ce3-fddf-4ef1-8e81-cda4f06ade71",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "green A700", "value": "green[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "6ba80ff8-ea9f-444e-bb68-c7dd87c3425e",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Grey Colors Palette",
+              "colors": [
+                {
+                  "id": "67fbe69b-4bd2-491e-8b33-872edf10d8f6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 50", "value": "grey[50]" }
+                },
+                {
+                  "id": "e6ffde7d-c1f4-45ad-8ea7-386cdb4af5a6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 100", "value": "grey[100]" }
+                },
+                {
+                  "id": "85f4c209-72b4-439b-8afe-9f769d2b03b6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 200", "value": "grey[200]" }
+                },
+                {
+                  "id": "b79d824d-bd89-4abc-85e6-9ae3db90a223",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 300", "value": "grey[300]" }
+                },
+                {
+                  "id": "34d3e1f0-0a48-47fc-bce6-71a06a010d3d",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 400", "value": "grey[400]" }
+                },
+                {
+                  "id": "24b30023-f1d8-4caf-b30e-eb4ca8eaf359",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 500", "value": "grey[500]" }
+                },
+                {
+                  "id": "89353937-8b07-4c3f-b63f-2e975a495750",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 600", "value": "grey[600]" }
+                },
+                {
+                  "id": "26219914-2a4f-4cad-a3f9-e891d88b51a5",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 700", "value": "grey[700]" }
+                },
+                {
+                  "id": "7170c431-c5dc-4e40-bfe0-d5ca0855a227",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 800", "value": "grey[800]" }
+                },
+                {
+                  "id": "fa6ddf42-1431-44d6-8cb8-a870f4eb2b34",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey 900", "value": "grey[900]" }
+                },
+                {
+                  "id": "618cce58-43f8-4325-8b62-ee87b15f0268",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey A100", "value": "grey[A100]" }
+                },
+                {
+                  "id": "80342a0b-c3a2-4364-a77b-66fdabb37ca1",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey A200", "value": "grey[A200]" }
+                },
+                {
+                  "id": "f177bd71-9433-47ed-89d7-f9dc9d1fa12f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey A400", "value": "grey[A400]" }
+                },
+                {
+                  "id": "a4b298c2-f890-4345-bd04-e159ab0757c7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "grey A700", "value": "grey[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "b6ca9a2a-7cf2-4f21-aa3e-6795dd566bbf",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Indigo Colors Palette",
+              "colors": [
+                {
+                  "id": "74953fd3-48d3-4e57-ab4a-adc0272bab85",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 50", "value": "indigo[50]" }
+                },
+                {
+                  "id": "ca728caf-f72e-4c49-96a2-9d5dd89792c6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 100", "value": "indigo[100]" }
+                },
+                {
+                  "id": "c9f7b94a-81ae-4931-84e8-9dab7444e941",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 200", "value": "indigo[200]" }
+                },
+                {
+                  "id": "e351b159-4fa3-429d-8b4a-ea9694c3158c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 300", "value": "indigo[300]" }
+                },
+                {
+                  "id": "2f7c0d41-be67-4d80-9b79-29b553a99e60",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 400", "value": "indigo[400]" }
+                },
+                {
+                  "id": "dc0bebb7-57f7-4542-9462-393970445626",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 500", "value": "indigo[500]" }
+                },
+                {
+                  "id": "49fb83e3-2711-4608-99e8-27a5ebb858d6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 600", "value": "indigo[600]" }
+                },
+                {
+                  "id": "ac40fe62-00c9-46d3-96c1-ee5fc94402e7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 700", "value": "indigo[700]" }
+                },
+                {
+                  "id": "210f81c4-0738-4a9a-9c1d-84e834722a1f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 800", "value": "indigo[800]" }
+                },
+                {
+                  "id": "565ebba7-9fd8-49f3-9c03-92c1985ce4b3",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo 900", "value": "indigo[900]" }
+                },
+                {
+                  "id": "a85b1d9d-c63a-4a12-a61e-3b85316008e4",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo A100", "value": "indigo[A100]" }
+                },
+                {
+                  "id": "65394a09-23dd-476a-8507-06adf70117f8",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo A200", "value": "indigo[A200]" }
+                },
+                {
+                  "id": "a8504df5-6e9d-46e6-a87e-8e6dc687df8b",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo A400", "value": "indigo[A400]" }
+                },
+                {
+                  "id": "886394e1-99e8-434e-aaf0-a9ee29ee6a6f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "indigo A700", "value": "indigo[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "c72cfb10-eafe-4670-8ebf-891bd3cbce28",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "LightBlue Colors Palette",
+              "colors": [
+                {
+                  "id": "220148b8-6b9e-406d-989a-61b8c0da6111",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 50", "value": "lightBlue[50]" }
+                },
+                {
+                  "id": "861ae310-f201-4e1b-96f7-c571e6a98808",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 100", "value": "lightBlue[100]" }
+                },
+                {
+                  "id": "71a8ae9f-03df-489f-ae0c-7d920ca38ca1",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 200", "value": "lightBlue[200]" }
+                },
+                {
+                  "id": "fdc3e7ec-d2f4-4d32-87ce-5efcc2d078dd",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 300", "value": "lightBlue[300]" }
+                },
+                {
+                  "id": "7d73c987-39b3-421c-a7b1-963e6b59466c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 400", "value": "lightBlue[400]" }
+                },
+                {
+                  "id": "8a8dcd73-749a-4379-8ecd-fbbabfc49e10",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 500", "value": "lightBlue[500]" }
+                },
+                {
+                  "id": "e52226e8-5792-4ef2-8b6f-6358d149b337",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 600", "value": "lightBlue[600]" }
+                },
+                {
+                  "id": "c82a10f2-4984-437e-b7e7-250be7f185db",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 700", "value": "lightBlue[700]" }
+                },
+                {
+                  "id": "6174906c-0c63-4ec4-b89a-ace11cf59d2e",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 800", "value": "lightBlue[800]" }
+                },
+                {
+                  "id": "e2fa39d6-34ef-4163-84a5-0518f98039ee",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightBlue 900", "value": "lightBlue[900]" }
+                },
+                {
+                  "id": "f780400a-067c-47c4-a6b9-8f6aeb4c2bd5",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightBlue A100",
+                    "value": "lightBlue[A100]"
+                  }
+                },
+                {
+                  "id": "1010361c-8cf0-4c5b-874a-93ea3983b47b",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightBlue A200",
+                    "value": "lightBlue[A200]"
+                  }
+                },
+                {
+                  "id": "176ba3b2-0788-429d-8520-0d208275a654",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightBlue A400",
+                    "value": "lightBlue[A400]"
+                  }
+                },
+                {
+                  "id": "d8f721cf-1153-459d-9c32-0888ec1ecc28",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightBlue A700",
+                    "value": "lightBlue[A700]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "1e0d6cd4-33fe-4d1e-b9c6-c963c3ed43f3",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "LightGreen Colors Palette",
+              "colors": [
+                {
+                  "id": "ee8df3a3-39db-4a9b-b366-d65a3fb830aa",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lightGreen 50", "value": "lightGreen[50]" }
+                },
+                {
+                  "id": "6aa5b4f7-29e4-4fe0-bcc1-108e01e44a56",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 100",
+                    "value": "lightGreen[100]"
+                  }
+                },
+                {
+                  "id": "2059597d-5d43-4f27-b59d-e397fb83147d",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 200",
+                    "value": "lightGreen[200]"
+                  }
+                },
+                {
+                  "id": "46f54d49-e15f-4430-976c-b6581afd8899",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 300",
+                    "value": "lightGreen[300]"
+                  }
+                },
+                {
+                  "id": "adb32efc-48ac-4b8a-8846-cffdec8d5126",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 400",
+                    "value": "lightGreen[400]"
+                  }
+                },
+                {
+                  "id": "290ad614-97e4-4f5c-bdcb-d89ee53249d8",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 500",
+                    "value": "lightGreen[500]"
+                  }
+                },
+                {
+                  "id": "3274159c-f07f-492c-83cb-42f123098664",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 600",
+                    "value": "lightGreen[600]"
+                  }
+                },
+                {
+                  "id": "4a4b69f5-c439-4bc2-b48f-06c01e8a8906",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 700",
+                    "value": "lightGreen[700]"
+                  }
+                },
+                {
+                  "id": "f97def6b-dec6-4f26-be0e-8e89c06c3f2f",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 800",
+                    "value": "lightGreen[800]"
+                  }
+                },
+                {
+                  "id": "730ea832-bb37-4556-afce-e6e89f7eea2a",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen 900",
+                    "value": "lightGreen[900]"
+                  }
+                },
+                {
+                  "id": "97a4fe3a-ff1a-45bd-956e-b2705a6a83a6",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen A100",
+                    "value": "lightGreen[A100]"
+                  }
+                },
+                {
+                  "id": "e68193f3-ac1f-4c12-8c21-467edfef0e2d",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen A200",
+                    "value": "lightGreen[A200]"
+                  }
+                },
+                {
+                  "id": "b5170f1a-be0e-4e38-98bd-147d5ff668d7",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen A400",
+                    "value": "lightGreen[A400]"
+                  }
+                },
+                {
+                  "id": "1689a67a-f7f6-4a3e-8723-64b7279106b2",
+                  "eClass": "view:FixedColor",
+                  "data": {
+                    "name": "lightGreen A700",
+                    "value": "lightGreen[A700]"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "b3e26e2b-f31d-434b-b1b7-5efb2b8fa6f7",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Lime Colors Palette",
+              "colors": [
+                {
+                  "id": "4c7cf765-8fe6-4d39-ad8c-1bfd107102f7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 50", "value": "lime[50]" }
+                },
+                {
+                  "id": "37d182a6-e4c3-4125-b6b0-435aa3c6e3cb",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 100", "value": "lime[100]" }
+                },
+                {
+                  "id": "7a4e3ab6-ed5a-44a3-a1cd-4c900d81bd8f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 200", "value": "lime[200]" }
+                },
+                {
+                  "id": "58057dbf-0ac2-4379-83ea-c493a3707c20",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 300", "value": "lime[300]" }
+                },
+                {
+                  "id": "9ba39e85-5c21-4bbb-8e78-dbcf7f954c31",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 400", "value": "lime[400]" }
+                },
+                {
+                  "id": "b7f29cb2-2aaf-4d95-ac58-81822dd90234",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 500", "value": "lime[500]" }
+                },
+                {
+                  "id": "fc34b368-bc90-4a99-986e-b71bbc442cf1",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 600", "value": "lime[600]" }
+                },
+                {
+                  "id": "df431329-6c87-4a84-aae7-c8804b21442a",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 700", "value": "lime[700]" }
+                },
+                {
+                  "id": "0ed6a663-dd3b-46b0-822c-9b7f4d7da6cc",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 800", "value": "lime[800]" }
+                },
+                {
+                  "id": "35d3eb05-91bb-4e3e-af51-5d542cbe96cf",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime 900", "value": "lime[900]" }
+                },
+                {
+                  "id": "7fd965a2-a37a-488e-82b7-0f00408c5804",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime A100", "value": "lime[A100]" }
+                },
+                {
+                  "id": "ebe605d6-ad4c-42b9-8ec5-56d215a59fab",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime A200", "value": "lime[A200]" }
+                },
+                {
+                  "id": "b5f47944-8a5c-4a65-8c98-1e49ae6a403f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime A400", "value": "lime[A400]" }
+                },
+                {
+                  "id": "e4e306b0-a801-4933-b301-67f421c5433b",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "lime A700", "value": "lime[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "436f21c9-c91c-43f8-8533-fc9720364bce",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Orange Colors Palette",
+              "colors": [
+                {
+                  "id": "16379eb6-42a4-452c-84ea-52da555b6c5a",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 50", "value": "orange[50]" }
+                },
+                {
+                  "id": "741930d5-90a0-4e02-ac14-8808aa541ace",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 100", "value": "orange[100]" }
+                },
+                {
+                  "id": "9dd89dcc-2f94-4d7a-a169-5b8b35236d3d",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 200", "value": "orange[200]" }
+                },
+                {
+                  "id": "065ba6b1-7e18-463d-825f-b36d5c7a6c70",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 300", "value": "orange[300]" }
+                },
+                {
+                  "id": "5d5f6498-279e-436e-8a68-906917868541",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 400", "value": "orange[400]" }
+                },
+                {
+                  "id": "b1cdbb27-8dd2-4c56-8b30-2f554d08e746",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 500", "value": "orange[500]" }
+                },
+                {
+                  "id": "ddf817c5-1c64-4c50-948c-cc39940982d9",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 600", "value": "orange[600]" }
+                },
+                {
+                  "id": "836aeede-176d-49f3-afed-73f06cbb4fd6",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 700", "value": "orange[700]" }
+                },
+                {
+                  "id": "38f959e3-52b3-4c8b-b428-d41dcb7f2859",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 800", "value": "orange[800]" }
+                },
+                {
+                  "id": "fa778ea0-afb4-400d-af63-686138e5a7b2",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange 900", "value": "orange[900]" }
+                },
+                {
+                  "id": "d30318ea-c680-439b-b74d-000acc175ef8",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange A100", "value": "orange[A100]" }
+                },
+                {
+                  "id": "e6a13cc7-3fbc-46c5-ac4c-82635c8e2286",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange A200", "value": "orange[A200]" }
+                },
+                {
+                  "id": "b74a08a3-b523-4bec-bec9-68386257d5af",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange A400", "value": "orange[A400]" }
+                },
+                {
+                  "id": "9e7a55b8-2efb-4d5d-ac68-bd2bc582447f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "orange A700", "value": "orange[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "f939d645-de62-4a55-ac0e-e28aae011d48",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Pink Colors Palette",
+              "colors": [
+                {
+                  "id": "11d3f786-9d85-4a3e-995a-78a40df68221",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 50", "value": "pink[50]" }
+                },
+                {
+                  "id": "1e24ea79-2464-4a84-8828-aa12f76fb83c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 100", "value": "pink[100]" }
+                },
+                {
+                  "id": "45ad9825-b3d2-4244-b61b-49daa99be35b",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 200", "value": "pink[200]" }
+                },
+                {
+                  "id": "98110fa7-9791-441b-bda6-3143cddcb810",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 300", "value": "pink[300]" }
+                },
+                {
+                  "id": "5ef02dd8-a6f3-4451-abf3-b0828360a0db",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 400", "value": "pink[400]" }
+                },
+                {
+                  "id": "0666a91c-b184-4b4c-bc5c-bf5a3434bcce",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 500", "value": "pink[500]" }
+                },
+                {
+                  "id": "ada5ebaa-ff29-436c-8100-bdc27f376ecf",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 600", "value": "pink[600]" }
+                },
+                {
+                  "id": "aef932c8-ff02-4fdd-8045-e269f5599757",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 700", "value": "pink[700]" }
+                },
+                {
+                  "id": "60967449-1ff0-4653-9000-550dc9ee0e19",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 800", "value": "pink[800]" }
+                },
+                {
+                  "id": "448184f8-0255-4a64-9e13-7f421c3f4122",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink 900", "value": "pink[900]" }
+                },
+                {
+                  "id": "df0dcb68-0d0a-4d28-8f56-6c7fb1b7f1a3",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink A100", "value": "pink[A100]" }
+                },
+                {
+                  "id": "7bf85b72-c70c-47c2-ab9e-3f73916d13d8",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink A200", "value": "pink[A200]" }
+                },
+                {
+                  "id": "957e856f-868a-4006-8164-5881f2ea9392",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink A400", "value": "pink[A400]" }
+                },
+                {
+                  "id": "76dda020-d41a-43f4-9a2c-1868319d1038",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "pink A700", "value": "pink[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "d34337a6-fb55-4781-b6c8-869f4bead739",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Purple Colors Palette",
+              "colors": [
+                {
+                  "id": "e3909d93-8136-4862-bac9-d27fd99b3ff4",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 50", "value": "purple[50]" }
+                },
+                {
+                  "id": "57f68be0-fdc4-4b4e-9d38-8cfd86ef1b83",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 100", "value": "purple[100]" }
+                },
+                {
+                  "id": "3bbf75b9-b11d-4251-81a7-8d8befea4422",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 200", "value": "purple[200]" }
+                },
+                {
+                  "id": "1c94d628-8188-4406-badd-b36a9b324b4d",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 300", "value": "purple[300]" }
+                },
+                {
+                  "id": "4c71f485-80e0-4451-9560-36d0d9919e20",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 400", "value": "purple[400]" }
+                },
+                {
+                  "id": "e48d96a4-8ab1-4c07-873e-44ed50de6374",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 500", "value": "purple[500]" }
+                },
+                {
+                  "id": "9eece187-06e2-4d39-8f10-56915c41a187",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 600", "value": "purple[600]" }
+                },
+                {
+                  "id": "81180ac4-cc19-4454-a150-c6f886b03366",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 700", "value": "purple[700]" }
+                },
+                {
+                  "id": "d9059dcc-2620-46ab-abba-e69d3c130d56",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 800", "value": "purple[800]" }
+                },
+                {
+                  "id": "17fc18c3-d7e0-4786-9900-ac5996607920",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple 900", "value": "purple[900]" }
+                },
+                {
+                  "id": "79573058-9929-4be7-a0c7-cac72b626457",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple A100", "value": "purple[A100]" }
+                },
+                {
+                  "id": "444375d8-cf33-4686-a7f5-70f7c95237ce",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple A200", "value": "purple[A200]" }
+                },
+                {
+                  "id": "a9d17362-f50d-4c31-8d60-e7f3d9023eaa",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple A400", "value": "purple[A400]" }
+                },
+                {
+                  "id": "155d042a-0101-4119-91df-64f94bacb24a",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "purple A700", "value": "purple[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "191f9de8-df80-4fd0-84d3-ced812031654",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Red Colors Palette",
+              "colors": [
+                {
+                  "id": "ef02889a-d665-484e-9303-71334b981223",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 50", "value": "red[50]" }
+                },
+                {
+                  "id": "1d21126e-75b8-4eff-85a0-cba2780ef047",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 100", "value": "red[100]" }
+                },
+                {
+                  "id": "a61ce489-63ed-49c9-9910-e33e8b563d18",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 200", "value": "red[200]" }
+                },
+                {
+                  "id": "8d13d0ab-cc71-4ebe-a9fa-04b4ba3cbe12",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 300", "value": "red[300]" }
+                },
+                {
+                  "id": "0bc6d8b4-67cd-4118-b77c-9b9683737985",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 400", "value": "red[400]" }
+                },
+                {
+                  "id": "961c3e3e-0ae7-4cd1-9a46-59379a44e75c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 500", "value": "red[500]" }
+                },
+                {
+                  "id": "075a3f6f-75e7-45be-b5ca-e2edf00a3c54",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 600", "value": "red[600]" }
+                },
+                {
+                  "id": "918a06ac-d1d4-4291-a556-bee7af554515",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 700", "value": "red[700]" }
+                },
+                {
+                  "id": "91868a87-80ef-4d66-89e4-7bb52e6c94d0",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 800", "value": "red[800]" }
+                },
+                {
+                  "id": "e1b9768f-2256-4f38-a5e4-3ab0f404d64f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red 900", "value": "red[900]" }
+                },
+                {
+                  "id": "2557d807-d21d-45f6-b9db-e45b34d46dd7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red A100", "value": "red[A100]" }
+                },
+                {
+                  "id": "5ebf9d2b-9583-4e07-a603-a71dcbf564a1",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red A200", "value": "red[A200]" }
+                },
+                {
+                  "id": "d1ea8095-b0f1-4e83-b781-d8ff79e08df1",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red A400", "value": "red[A400]" }
+                },
+                {
+                  "id": "c96adb04-28d2-43a5-beb9-0d5e5871d3d5",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "red A700", "value": "red[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "ad5f302d-2727-4bad-ac9b-132e77036ec3",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Teal Colors Palette",
+              "colors": [
+                {
+                  "id": "1c683672-46b6-4a75-a56c-5fdc1c1a5eea",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 50", "value": "teal[50]" }
+                },
+                {
+                  "id": "ac654e0c-07bb-4ff5-9474-b0d5e84d6dea",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 100", "value": "teal[100]" }
+                },
+                {
+                  "id": "48edef95-9452-4545-8c7e-1a1f9caca9e7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 200", "value": "teal[200]" }
+                },
+                {
+                  "id": "d2254cc4-7ec7-4a1f-974c-f700c873f387",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 300", "value": "teal[300]" }
+                },
+                {
+                  "id": "b676377d-498a-4d51-a38d-c30af0aa6e5c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 400", "value": "teal[400]" }
+                },
+                {
+                  "id": "265fad34-a2b9-4a6e-83c2-fd1670072cac",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 500", "value": "teal[500]" }
+                },
+                {
+                  "id": "0d368620-f095-4adb-9901-fb367f712f21",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 600", "value": "teal[600]" }
+                },
+                {
+                  "id": "e0c04abc-ee5f-4721-aa04-8c77417ee10f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 700", "value": "teal[700]" }
+                },
+                {
+                  "id": "2634a0dc-4ac8-42b5-988c-e54887b858ca",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 800", "value": "teal[800]" }
+                },
+                {
+                  "id": "a2627862-b585-409a-a2e1-764ab23cfd20",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal 900", "value": "teal[900]" }
+                },
+                {
+                  "id": "4aab1d5d-9c25-4a31-96ce-b054ae36d0e3",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal A100", "value": "teal[A100]" }
+                },
+                {
+                  "id": "97ddf858-4d0e-4434-830d-48f61ead54be",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal A200", "value": "teal[A200]" }
+                },
+                {
+                  "id": "fa566109-4756-45a9-b6ee-a5a3339fe37f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal A400", "value": "teal[A400]" }
+                },
+                {
+                  "id": "1b8c7a23-e7b5-4d2a-bd61-14ae55d76bcb",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "teal A700", "value": "teal[A700]" }
+                }
+              ]
+            }
+          },
+          {
+            "id": "da06c5db-f15c-4788-a1c1-a2ad4e7e3351",
+            "eClass": "view:ColorPalette",
+            "data": {
+              "name": "Yellow Colors Palette",
+              "colors": [
+                {
+                  "id": "aaac1595-ece1-46a2-bd61-15eabbfdaeb9",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 50", "value": "yellow[50]" }
+                },
+                {
+                  "id": "738bf1a1-5c39-44b2-b5d2-96d01954f8f5",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 100", "value": "yellow[100]" }
+                },
+                {
+                  "id": "f004a338-4224-493c-9fec-4ebfc8e9313e",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 200", "value": "yellow[200]" }
+                },
+                {
+                  "id": "2289b0a3-d3e8-499f-9248-2607380c05c7",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 300", "value": "yellow[300]" }
+                },
+                {
+                  "id": "eed17117-6453-4272-9f9b-a55e90236925",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 400", "value": "yellow[400]" }
+                },
+                {
+                  "id": "ddc0ccb9-b347-46c1-a552-6b8dfc3c08d1",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 500", "value": "yellow[500]" }
+                },
+                {
+                  "id": "93023b91-a859-4a84-97dc-9d536b8e9b25",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 600", "value": "yellow[600]" }
+                },
+                {
+                  "id": "889d9e07-913b-4fdf-baf4-d4062ec888be",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 700", "value": "yellow[700]" }
+                },
+                {
+                  "id": "da85fc64-92dc-4b01-8865-9cb293163346",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 800", "value": "yellow[800]" }
+                },
+                {
+                  "id": "c2d575a3-1d45-4340-9f1d-73dfe386826c",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow 900", "value": "yellow[900]" }
+                },
+                {
+                  "id": "f6e3d2b6-73fd-43c1-8c63-b84432a9792f",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow A100", "value": "yellow[A100]" }
+                },
+                {
+                  "id": "1cc978be-1ae9-4449-8bfd-8b173516a6ae",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow A200", "value": "yellow[A200]" }
+                },
+                {
+                  "id": "093e3dd3-ee9e-47e6-8217-66771753c9d4",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow A400", "value": "yellow[A400]" }
+                },
+                {
+                  "id": "e123b3bd-5d84-4310-a1af-75754ff2cb63",
+                  "eClass": "view:FixedColor",
+                  "data": { "name": "yellow A700", "value": "yellow[A700]" }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

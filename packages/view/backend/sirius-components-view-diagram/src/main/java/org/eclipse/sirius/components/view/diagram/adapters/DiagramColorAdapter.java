@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.diagram.adapters;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -32,8 +33,8 @@ public class DiagramColorAdapter extends EContentAdapter {
 
     private ColorPaletteService colorPaletteService;
 
-    public DiagramColorAdapter() {
-        this.colorPaletteService = new ColorPaletteService();
+    public DiagramColorAdapter(View colorPalettesView) {
+        this.colorPaletteService = new ColorPaletteService(colorPalettesView);
     }
 
     @Override

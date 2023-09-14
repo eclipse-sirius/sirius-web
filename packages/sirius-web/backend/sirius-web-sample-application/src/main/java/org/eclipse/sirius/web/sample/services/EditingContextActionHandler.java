@@ -53,7 +53,6 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.builder.providers.DefaultColorPalettesProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -83,12 +82,8 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private final SampleDomainNameProvider domainNameProvider;
 
-    private final DefaultColorPalettesProvider defaultColorPalettesProvider;
-
     public EditingContextActionHandler() {
         this.domainNameProvider = new SampleDomainNameProvider();
-        this.defaultColorPalettesProvider = new DefaultColorPalettesProvider();
-
     }
 
     @Override
@@ -161,7 +156,6 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
         DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("New Diagram Description");
         newView.getDescriptions().add(diagramDescription);
-        newView.getColorPalettes().addAll(this.defaultColorPalettesProvider.getDefaultColorPalettes());
 
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         resource.getContents().add(newView);

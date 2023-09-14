@@ -22,12 +22,14 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -79,11 +81,9 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         if (editingContext instanceof EditingContext) {
             List<DocumentEntity> documentEntities = this.persistResources((EditingContext) editingContext);
             List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).toList();
-            // @formatter:off
             new IDParser().parse(editingContext.getId())
                 .map(editingContextId -> new DocumentsModifiedEvent(editingContextId, documents))
                 .ifPresent(this.applicationEventPublisher::publishEvent);
-            // @formatter:on
         }
 
         long end = System.currentTimeMillis();
@@ -93,16 +93,15 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     private List<DocumentEntity> persistResources(EditingContext editingContext) {
         List<DocumentEntity> result = new ArrayList<>();
 
-        // @formatter:off
         List<Resource> resources = editingContext.getDomain().getResourceSet().getResources().stream()
             .filter(res -> {
-                if (res.getURI() != null) {
-                    return EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme());
+                URI uri = res.getURI();
+                if (uri != null && !ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.equals(uri.toString())) {
+                    return EditingContext.RESOURCE_SCHEME.equals(uri.scheme());
                 }
                 return false;
             })
             .toList();
-        // @formatter:on
 
         for (Resource resource : resources) {
             this.save(resource, editingContext.getId()).ifPresent(result::add);
@@ -130,15 +129,13 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
             var optionalResourceUUID = new IDParser().parse(resource.getURI().path().substring(1));
 
-            // @formatter:off
             result = optionalResourceUUID
                     .flatMap(this.documentRepository::findById)
-                    .or(() -> createNewDocumentEntityWithoutContent(resource, editingContextId, optionalResourceUUID))
+                    .or(() -> this.createNewDocumentEntityWithoutContent(resource, editingContextId, optionalResourceUUID))
                     .map(entity -> {
                         entity.setContent(content);
                         return this.documentRepository.save(entity);
                     });
-            // @formatter:on
 
         } catch (IllegalArgumentException | IOException exception) {
             this.logger.warn(exception.getMessage(), exception);

@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.form.adapters;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
@@ -53,8 +54,8 @@ public class FormColorAdapter extends EContentAdapter {
 
     private FormStyleSwitch formStyleSwitch;
 
-    public FormColorAdapter() {
-        this.formStyleSwitch = new FormStyleSwitch();
+    public FormColorAdapter(View colorPalettesView) {
+        this.formStyleSwitch = new FormStyleSwitch(colorPalettesView);
     }
 
     @Override
@@ -115,8 +116,8 @@ public class FormColorAdapter extends EContentAdapter {
 
         private ColorPaletteService colorPaletteService;
 
-        public FormStyleSwitch() {
-            this.colorPaletteService = new ColorPaletteService();
+        public FormStyleSwitch(View colorPalettesView) {
+            this.colorPaletteService = new ColorPaletteService(colorPalettesView);
         }
 
         @Override

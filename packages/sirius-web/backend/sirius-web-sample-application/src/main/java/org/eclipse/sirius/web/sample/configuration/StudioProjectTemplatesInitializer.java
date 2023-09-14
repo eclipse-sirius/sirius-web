@@ -46,7 +46,6 @@ import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.builder.providers.DefaultColorPalettesProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -96,8 +95,6 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private final StereotypeBuilder stereotypeBuilder;
 
-    private final DefaultColorPalettesProvider defaultColorPalettesProvider;
-
     public StudioProjectTemplatesInitializer(IProjectRepository projectRepository, IDocumentRepository documentRepository,
                                              IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService,
                                              IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry) {
@@ -107,7 +104,6 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.stereotypeBuilder = new StereotypeBuilder("studio-template-initializer", meterRegistry);
-        this.defaultColorPalettesProvider = new DefaultColorPalettesProvider();
     }
 
     @Override
@@ -269,7 +265,6 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         view.getDescriptions().add(viewDiagramDescription);
 
         view.getColorPalettes().add(this.createColorPalette());
-        view.getColorPalettes().addAll(this.defaultColorPalettesProvider.getDefaultColorPalettes());
 
         NodeDescription entity1Node = DiagramFactory.eINSTANCE.createNodeDescription();
         entity1Node.setName("Entity1 Node");

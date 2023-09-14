@@ -26,7 +26,27 @@ import org.eclipse.sirius.components.view.View;
  */
 public class ColorPaletteService {
 
-    public UserColor getColorFromPalette(View view, String colorName) {
+    /**
+     * Studio color palettes don't need to be display in the explorer view.
+     */
+    public static final String SIRIUS_STUDIO_COLOR_PALETTES_URI = "sirius:///1952d117-7d88-32c4-a839-3858e5e779ae";
+
+    private View colorPalettesView;
+
+    public ColorPaletteService(View colorPalettesView) {
+        this.colorPalettesView = colorPalettesView;
+    }
+
+    public UserColor getColorFromPalette(Object object, String colorName) {
+        UserColor color = this.getColorFromPalette(this.colorPalettesView, colorName);
+
+        if (color == null && object instanceof EObject eObject) {
+            color = this.getColorFromPalette(this.getView(object), colorName);
+        }
+        return color;
+    }
+
+    private UserColor getColorFromPalette(View view, String colorName) {
         return view.getColorPalettes()
                 .stream()
                 .map(ColorPalette::getColors)
@@ -36,12 +56,13 @@ public class ColorPaletteService {
                 .orElse(null);
     }
 
-    public UserColor getColorFromPalette(Object object, String colorName) {
-        if (object instanceof View view) {
-            return this.getColorFromPalette(view, colorName);
-        } else if (object instanceof EObject eObject) {
-            return this.getColorFromPalette(eObject.eContainer(), colorName);
+    private View getView(Object object) {
+        View view = null;
+        if (object instanceof View v) {
+            view = v;
+        } else  if (object instanceof EObject eObject) {
+            view = this.getView(eObject.eContainer());
         }
-        return null;
+        return view;
     }
 }
