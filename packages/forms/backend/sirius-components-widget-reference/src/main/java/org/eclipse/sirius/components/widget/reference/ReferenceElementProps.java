@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.widget.reference.dto.CreateElementHandlerInput;
+import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerInput;
 
 /**
  * The properties for the multi-valued reference widget element.
@@ -64,6 +65,8 @@ public final class ReferenceElementProps implements IProps {
     private Function<List<?>, IStatus> addHandler;
 
     private Function<CreateElementHandlerInput, Object> createElementHandler;
+
+    private Function<MoveReferenceValueHandlerInput, IStatus> moveHandler;
 
     private ReferenceElementProps() {
         // Prevent instantiation
@@ -133,6 +136,10 @@ public final class ReferenceElementProps implements IProps {
         return this.createElementHandler;
     }
 
+    public Function<MoveReferenceValueHandlerInput, IStatus> getMoveHandler() {
+        return this.moveHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -174,6 +181,8 @@ public final class ReferenceElementProps implements IProps {
         private Function<List<?>, IStatus> addHandler;
 
         private Function<CreateElementHandlerInput, Object> createElementHandler;
+
+        private Function<MoveReferenceValueHandlerInput, IStatus> moveHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -249,6 +258,11 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
+        public Builder moveHandler(Function<MoveReferenceValueHandlerInput, IStatus> moveHandler) {
+            this.moveHandler = Objects.requireNonNull(moveHandler);
+            return this;
+        }
+
         public ReferenceElementProps build() {
             ReferenceElementProps referenceElementProps = new ReferenceElementProps();
             referenceElementProps.id = Objects.requireNonNull(this.id);
@@ -266,6 +280,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.setHandler = this.setHandler; // Optional on purpose
             referenceElementProps.addHandler = this.addHandler; // Optional on purpose
             referenceElementProps.createElementHandler = this.createElementHandler;  // Optional on purpose
+            referenceElementProps.moveHandler = this.moveHandler;  // Optional on purpose
             return referenceElementProps;
         }
     }

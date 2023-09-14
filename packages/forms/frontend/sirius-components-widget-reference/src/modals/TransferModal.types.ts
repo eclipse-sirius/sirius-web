@@ -20,6 +20,7 @@ export interface TransferModalProps {
   onClose: () => void;
   addElements: (elementIds: string[]) => void;
   removeElement: (elementId: string) => void;
+  moveElement: (elementId: string, fromIndex: number, toIndex: number) => void;
 }
 
 export interface TransferModalState {

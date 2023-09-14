@@ -28,6 +28,8 @@ import {
   GQLClickReferenceValueMutationVariables,
   GQLClickReferenceValuePayload,
   GQLErrorPayload,
+  GQLMoveReferenceValueMutationData,
+  GQLMoveReferenceValueMutationVariables,
   GQLReferenceValue,
   GQLReferenceWidget,
   GQLRemoveReferenceValueMutationData,
@@ -147,6 +149,26 @@ export const addReferenceValuesMutation = gql`
   }
 `;
 
+export const moveReferenceValueMutation = gql`
+  mutation moveReferenceValue($input: MoveReferenceValueInput!) {
+    moveReferenceValue(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
 const isErrorPayload = (payload: GQLClickReferenceValuePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLClickReferenceValuePayload): payload is GQLSuccessPayload =>
@@ -186,6 +208,11 @@ export const ReferencePropertySection = ({
     GQLAddReferenceValuesMutationData,
     GQLAddReferenceValuesMutationVariables
   >(addReferenceValuesMutation);
+
+  const [moveReferenceValue, { loading: moveLoading, error: moveError, data: moveData }] = useMutation<
+    GQLMoveReferenceValueMutationData,
+    GQLMoveReferenceValueMutationVariables
+  >(moveReferenceValueMutation);
 
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
     const { id, label, kind } = item;
@@ -291,6 +318,19 @@ export const ReferencePropertySection = ({
       }
     }
   }, [addLoading, addError, addData]);
+  useEffect(() => {
+    if (!moveLoading) {
+      if (moveError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (moveData) {
+        const { moveReferenceValue } = moveData;
+        if (isErrorPayload(moveReferenceValue) || isSuccessPayload(moveReferenceValue)) {
+          addMessages(moveReferenceValue.messages);
+        }
+      }
+    }
+  }, [moveLoading, moveError, moveData]);
 
   const callSetReferenceValue = (newValueId: string) => {
     if (newValueId) {
@@ -334,6 +374,25 @@ export const ReferencePropertySection = ({
         },
       };
       removeReferenceValue({ variables });
+    }
+  };
+
+  const callMoveReferenceValue = (valueId: string, fromIndex: number, toIndex: number) => {
+    if (valueId && fromIndex !== -1 && toIndex !== -1) {
+      if (valueId) {
+        const variables: GQLMoveReferenceValueMutationVariables = {
+          input: {
+            id: crypto.randomUUID(),
+            editingContextId,
+            representationId: formId,
+            referenceWidgetId: widget.id,
+            referenceValueId: valueId,
+            fromIndex,
+            toIndex,
+          },
+        };
+        moveReferenceValue({ variables });
+      }
     }
   };
 
@@ -409,6 +468,7 @@ export const ReferencePropertySection = ({
         onClose={() => setModalDisplayed(null)}
         addElements={callAddReferenceValues}
         removeElement={callRemoveReferenceValue}
+        moveElement={callMoveReferenceValue}
         widget={widget}
       />
     ) : (

@@ -22,6 +22,7 @@ export interface FilterableSortableListProps {
   handleDragItemEnd: () => void;
   handleDropNewItem: (event: React.DragEvent) => void;
   onClick: (event: React.MouseEvent<Element, MouseEvent>, item: SelectionEntry) => void;
+  moveElement: (elementId: string, fromIndex: number, toIndex: number) => void;
   selectedItems: SelectionEntry[];
 }
 
@@ -29,6 +30,8 @@ export interface FilterableSortableListState {
   filterBarText: string;
   hoveringItemId: string | undefined;
   draggingItemId: string | undefined;
+  draggingStartIndex: number;
+  draggingIndex: number;
 }
 
 export interface HighlightedLabelProps {

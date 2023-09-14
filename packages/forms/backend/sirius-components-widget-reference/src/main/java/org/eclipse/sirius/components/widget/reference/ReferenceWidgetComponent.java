@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.widget.reference.dto.CreateElementHandlerInput;
+import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerInput;
 
 /**
  * The component to render a reference widget.
@@ -35,6 +36,10 @@ import org.eclipse.sirius.components.widget.reference.dto.CreateElementHandlerIn
 public class ReferenceWidgetComponent implements IComponent {
 
     public static final String ITEM_VARIABLE = "item";
+
+    public static final String MOVE_FROM_VARIABLE = "fromIndex";
+
+    public static final String MOVE_TO_VARIABLE = "toIndex";
 
     public static final String CLICK_EVENT_KIND_VARIABLE = "onClickEventKind";
 
@@ -107,6 +112,16 @@ public class ReferenceWidgetComponent implements IComponent {
                 return referenceDescription.getAddHandlerProvider().apply(childVariableManager);
             };
             builder.addHandler(addHandler);
+        }
+        if (referenceDescription.getMoveHandlerProvider() != null) {
+            Function<MoveReferenceValueHandlerInput, IStatus> moveHandler = input -> {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(ITEM_VARIABLE, input.value());
+                childVariableManager.put(MOVE_FROM_VARIABLE, input.fromIndex());
+                childVariableManager.put(MOVE_TO_VARIABLE, input.toIndex());
+                return referenceDescription.getMoveHandlerProvider().apply(childVariableManager);
+            };
+            builder.moveHandler(moveHandler);
         }
         if (referenceDescription.getCreateElementHandlerProvider() != null) {
             Function<CreateElementHandlerInput, Object> createElementHandler = input -> {

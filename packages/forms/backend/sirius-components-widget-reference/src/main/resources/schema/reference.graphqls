@@ -43,6 +43,7 @@ extend type Mutation {
   setReferenceValue(input: SetReferenceValueInput!): SetReferenceValuePayload!
   addReferenceValues(input: AddReferenceValuesInput!): AddReferenceValuesPayload!
   createElement(input: CreateElementInput!): CreateElementPayload!
+  moveReferenceValue(input: MoveReferenceValueInput!): MoveReferenceValuePayload!
 }
 
 input ClickReferenceValueInput {
@@ -114,3 +115,15 @@ type CreateElementSuccessPayload {
   id: ID!
   object: Object!
 }
+
+input MoveReferenceValueInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  referenceValueId: ID!
+  fromIndex: Int!
+  toIndex: Int!
+}
+
+union MoveReferenceValuePayload = ErrorPayload | SuccessPayload

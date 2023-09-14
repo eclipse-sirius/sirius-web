@@ -49,6 +49,7 @@ export const TransferModal = ({
   onClose,
   addElements,
   removeElement,
+  moveElement,
 }: TransferModalProps) => {
   const classes = useStyles();
   const [state, setState] = useState<TransferModalState>({
@@ -224,6 +225,7 @@ export const TransferModal = ({
                 handleDropNewItem={handleDropRight}
                 onClick={onClick}
                 selectedItems={state.rightSelection}
+                moveElement={moveElement}
               />
             </div>
           </Grid>

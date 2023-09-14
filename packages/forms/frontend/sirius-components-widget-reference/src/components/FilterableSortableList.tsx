@@ -16,8 +16,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import React, { useContext, useState } from 'react';
 import {
@@ -99,6 +99,7 @@ export const FilterableSortableList = ({
   handleDropNewItem,
   onClick,
   selectedItems,
+  moveElement,
 }: FilterableSortableListProps) => {
   const classes = useStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
@@ -107,6 +108,8 @@ export const FilterableSortableList = ({
     filterBarText: '',
     hoveringItemId: undefined,
     draggingItemId: undefined,
+    draggingStartIndex: -1,
+    draggingIndex: -1,
   });
 
   const handleMouseEnter = (id: string) => {
@@ -131,16 +134,20 @@ export const FilterableSortableList = ({
     event.preventDefault();
   };
 
-  const handleDragStartOrder = (id: string) => {
+  const handleDragStartOrder = (id: string, index: number) => {
     setState((prevState) => {
       return {
         ...prevState,
         draggingItemId: id,
+        draggingStartIndex: index,
       };
     });
   };
 
   const handleDragEndOrder = () => {
+    if (state.draggingItemId) {
+      moveElement(state.draggingItemId, state.draggingStartIndex, state.draggingIndex);
+    }
     setState((prevState) => {
       return {
         ...prevState,
@@ -158,6 +165,12 @@ export const FilterableSortableList = ({
       newList.splice(draggedItemIndex, 1);
       newList.splice(index, 0, draggedItem);
       setItems(newList);
+      setState((prevState) => {
+        return {
+          ...prevState,
+          draggingIndex: index,
+        };
+      });
     }
   };
 
@@ -213,11 +226,13 @@ export const FilterableSortableList = ({
                   onMouseEnter={() => handleMouseEnter(id)}
                   onMouseLeave={handleMouseLeave}
                   data-testid={label}>
-                  {hover ? (
-                    <ListItemIcon draggable onDragStart={() => handleDragStartOrder(id)} onDragEnd={handleDragEndOrder}>
-                      <DragHandleIcon />
-                    </ListItemIcon>
-                  ) : null}
+                  <ListItemIcon
+                    style={{ display: `${hover ? 'block' : 'none'}` }}
+                    draggable
+                    onDragStart={() => handleDragStartOrder(id, index)}
+                    onDragEnd={handleDragEndOrder}>
+                    <DragHandleIcon />
+                  </ListItemIcon>
                   <ListItemIcon draggable onDragStart={() => handleDragItemStart(id)}>
                     {iconURL ? <img width="16" height="16" alt={''} src={httpOrigin + iconURL} /> : null}
                   </ListItemIcon>

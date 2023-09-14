@@ -22,6 +22,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
@@ -107,7 +108,8 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(variableManager, referenceDescription))
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, referenceDescription))
                 .addHandlerProvider(variableManager -> this.handleAddReference(variableManager, referenceDescription))
-                .createElementHandlerProvider(variableManager -> this.handleCreateElement(variableManager, referenceDescription)).styleProvider(styleProvider);
+                .createElementHandlerProvider(variableManager -> this.handleCreateElement(variableManager, referenceDescription)).styleProvider(styleProvider)
+                .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, referenceDescription));
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(referenceDescription.getHelpExpression()));
@@ -340,4 +342,29 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         return result.orElse(null);
     }
 
+    private IStatus handleMoveReferenceValue(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        IStatus result = this.createErrorStatus("Something went wrong while reordering reference values.");
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        Optional<Object> item = this.getItem(variableManager);
+        Optional<Integer> fromIndex = variableManager.get(ReferenceWidgetComponent.MOVE_FROM_VARIABLE, Integer.class);
+        Optional<Integer> toIndex = variableManager.get(ReferenceWidgetComponent.MOVE_TO_VARIABLE, Integer.class);
+
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            if (item.isPresent() && fromIndex.isPresent() && toIndex.isPresent()) {
+                if (reference.isMany()) {
+                    @SuppressWarnings("unchecked")
+                    List<Object> values = (List<Object>) owner.eGet(reference);
+                    var valueItem = values.get(fromIndex.get().intValue());
+                    if (valueItem != null && valueItem.equals(item.get()) && (values instanceof EList<Object> eValues)) {
+                        eValues.move(toIndex.get().intValue(), fromIndex.get().intValue());
+                        result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
+                    }
+                } else {
+                    result = this.createErrorStatus("Only values of multiple-valued references can be reordered.");
+                }
+            }
+        }
+        return result;
+    }
 }

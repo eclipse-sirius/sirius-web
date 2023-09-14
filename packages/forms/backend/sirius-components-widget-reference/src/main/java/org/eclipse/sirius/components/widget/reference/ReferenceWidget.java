@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.widget.reference.dto.CreateElementHandlerInput;
+import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerInput;
 
 /**
  * A widget to view/edit an EMF reference.
@@ -50,6 +51,8 @@ public final class ReferenceWidget extends AbstractWidget {
     private Function<List<?>, IStatus> addHandler;
 
     private Function<CreateElementHandlerInput, Object> createElementHandler;
+
+    private Function<MoveReferenceValueHandlerInput, IStatus> moveHandler;
 
     private ReferenceWidget() {
         // Prevent instantiation
@@ -95,6 +98,10 @@ public final class ReferenceWidget extends AbstractWidget {
         return this.createElementHandler;
     }
 
+    public Function<MoveReferenceValueHandlerInput, IStatus> getMoveHandler() {
+        return this.moveHandler;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -136,6 +143,8 @@ public final class ReferenceWidget extends AbstractWidget {
         private Function<List<?>, IStatus> addHandler;
 
         private Function<CreateElementHandlerInput, Object> createElementHandler;
+
+        private Function<MoveReferenceValueHandlerInput, IStatus> moveHandler;
 
         public Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -211,6 +220,11 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder moveHandler(Function<MoveReferenceValueHandlerInput, IStatus> moveHandler) {
+            this.moveHandler = Objects.requireNonNull(moveHandler);
+            return this;
+        }
+
         public ReferenceWidget build() {
             ReferenceWidget referenceWidget = new ReferenceWidget();
             referenceWidget.id = Objects.requireNonNull(this.id);
@@ -228,6 +242,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.setHandler = this.setHandler; // Optional on purpose
             referenceWidget.addHandler = this.addHandler; // Optional on purpose
             referenceWidget.createElementHandler = this.createElementHandler; // Optional on purpose
+            referenceWidget.moveHandler = this.moveHandler; // Optional on purpose
             return referenceWidget;
         }
     }
