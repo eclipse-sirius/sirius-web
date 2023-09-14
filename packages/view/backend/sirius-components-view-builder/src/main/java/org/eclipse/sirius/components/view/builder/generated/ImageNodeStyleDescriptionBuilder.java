@@ -43,15 +43,6 @@ public class ImageNodeStyleDescriptionBuilder {
     }
 
     /**
-     * Setter for Color.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder color(org.eclipse.sirius.components.view.UserColor value) {
-        this.getImageNodeStyleDescription().setColor(value);
-        return this;
-    }
-    /**
      * Setter for FontSize.
      *
      * @generated

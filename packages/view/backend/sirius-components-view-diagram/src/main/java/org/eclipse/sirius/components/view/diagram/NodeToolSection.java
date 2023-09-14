@@ -37,9 +37,9 @@ public interface NodeToolSection extends ToolSection {
      * {@link org.eclipse.sirius.components.view.diagram.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Node Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeToolSection_NodeTools()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeToolSection_NodeTools()
      */
     EList<NodeTool> getNodeTools();
 
@@ -48,9 +48,9 @@ public interface NodeToolSection extends ToolSection {
      * {@link org.eclipse.sirius.components.view.diagram.EdgeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Edge Tools</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeToolSection_EdgeTools()
      * @model containment="true"
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeToolSection_EdgeTools()
      */
     EList<EdgeTool> getEdgeTools();
 

@@ -27,15 +27,6 @@ public abstract class NodeStyleDescriptionBuilder {
     protected abstract org.eclipse.sirius.components.view.diagram.NodeStyleDescription getNodeStyleDescription();
 
     /**
-     * Setter for Color.
-     *
-     * @generated
-     */
-    public NodeStyleDescriptionBuilder color(org.eclipse.sirius.components.view.UserColor value) {
-        this.getNodeStyleDescription().setColor(value);
-        return this;
-    }
-    /**
      * Setter for FontSize.
      *
      * @generated

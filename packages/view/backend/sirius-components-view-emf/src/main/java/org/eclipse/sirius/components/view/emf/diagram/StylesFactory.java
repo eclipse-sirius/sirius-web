@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 
 /**
@@ -142,7 +143,10 @@ public final class StylesFactory {
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
                     .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
-                    .color(Optional.ofNullable(nodeStyle.getColor())
+                    .color(Optional.ofNullable(nodeStyle)
+                                   .filter(Style.class::isInstance)
+                                   .map(Style.class::cast)
+                                   .map(Style::getColor)
                                    .filter(FixedColor.class::isInstance)
                                    .map(FixedColor.class::cast)
                                    .map(FixedColor::getValue)
@@ -169,7 +173,10 @@ public final class StylesFactory {
         if (result == null) {
             result = RectangularNodeStyle.newRectangularNodeStyle()
                    .withHeader(true)
-                   .color(Optional.ofNullable(nodeStyle.getColor())
+                   .color(Optional.ofNullable(nodeStyle)
+                                  .filter(Style.class::isInstance)
+                                  .map(Style.class::cast)
+                                  .map(Style::getColor)
                                   .filter(FixedColor.class::isInstance)
                                   .map(FixedColor.class::cast)
                                   .map(FixedColor::getValue)

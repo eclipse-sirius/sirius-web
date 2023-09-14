@@ -35,7 +35,7 @@ It is not available for applications anymore, and thus, applications that need a
 - https://github.com/eclipse-sirius/sirius-web/issues/2279[#2279] [core] Remove the package `sirius-components`.
 All of its remaining content was only relevant inside of Sirius Web and it has thus been migrated to this location
 - [releng] Stop minifying the code of Sirius Components packages.
-As a result the development of applications consuming Sirius Components packages will be easier and it will be the responsability of the application to minify everything (which they should already be doing).
+As a result the development of applications consuming Sirius Components packages will be easier and it will be the responsibility of the application to minify everything (which they should already be doing).
 - https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296] [diagram] `sirius-components-diagrams-reactflow` now depends on `html-to-image` node package.
 - https://github.com/eclipse-sirius/sirius-web/issues/2236[#2236] [forms] The introduction of _ForDescription_ and _IfDescription_ elements to the Forms DSL introduced breaking changes in the metamodel.
 Existing FormDescription documents will need to be modified to load correctly, and any custom widget's metamodel will need to be regenerated using the new `form.ecore` version as reference.
@@ -45,7 +45,7 @@ The new `targetObjectIdProvider` is required to be non-null, so any code which p
 A suitable implementation is to get the id of the `self` object using `IObjectService.getId()`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2118[#2118] [form] The introduction of the new modal for create objects with the reference widget, apply changes for two queries `rootObjectCreationDescriptions` and `childCreationDescriptions`.
 It's now possible to provide _referenceKind_ to only get the `ChildCreationDescription` matching this _reference_.
-- https://github.com/eclipse-sirius/sirius-web/issues/2253[#2253] [diagram] The indroduction of ToolSection in palette, change the _DiagramDescription_ structure by adding a new level _Palette_ instead of _[ToolSection]_.
+- https://github.com/eclipse-sirius/sirius-web/issues/2253[#2253] [diagram] The introduction of ToolSection in palette, change the _DiagramDescription_ structure by adding a new level _Palette_ instead of _[ToolSection]_.
 Note that _palette_ will be removed in short-term from the _DiagramDescription_.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2329] [form] Split of `sirius-components-widget-reference` to extract EMF-related code into a new module `sirius-components-collaborative-widget-reference`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2252[#2252] [diagram] The support for React Flow based diagrams now require a `DiagramPaletteToolContext` in order to contribute custom palette tool.
@@ -56,6 +56,7 @@ In the near future, the GraphQL schema and the frontend of `sirius-components-fo
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [sirius-web] Default colors are now loaded from a default model located in `sirius-components-view/src/main/resources/studioColorPalettes.json`.
 They are loaded in every studio project but hidden in the explorer.
 They are also made readonly in the details view.
+- https://github.com/eclipse-sirius/sirius-web/issues/2191[#2191] [view] The Color property on ImageNodeStyle has been removed.
 
 === Dependency update
 
@@ -88,6 +89,7 @@ An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2162[#2162] [diagram] Fix an issue when performing two chained direct-edit on nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/2348[#2348] [form] Fix a layout issue with the widget reference that can lead to the partial disappearance of action buttons.
 - https://github.com/eclipse-sirius/sirius-web/issues/2381[#2381] [diagram] Fix an issue where the handleId of an edge was undefined.
+- https://github.com/eclipse-sirius/sirius-web/issues/2191[#2191] [view] The Color property on ImageNodeStyle has been removed.
 
 === New Features
 
@@ -196,7 +198,7 @@ An absent/empty candidates expression now simply means the widget is empty.
 - https://github.com/eclipse-sirius/sirius-components/issues/2197[#2197] [project] Fix an issue where the renaming of a project from the project page needed a refresh to be visible.
 - https://github.com/eclipse-sirius/sirius-components/issues/2194[#2194] [view] Fix an issue where it was impossible to set the None value to a color property in a View Node/Edge Description from the Details view.
 - https://github.com/eclipse-sirius/sirius-components/issues/2225[#2225] [form] Fix an issue where tabs displaying page name could be hidden.
-- https://github.com/eclipse-sirius/sirius-components/issues/2220[#2220] [vs-code] Fix an issue where some React contexts where missing, the treeID variable was missing in graphQLSubscription for the explorer and the Forms were not parts of the list of representations availables.
+- https://github.com/eclipse-sirius/sirius-components/issues/2220[#2220] [vs-code] Fix an issue where some React contexts where missing, the treeID variable was missing in graphQLSubscription for the explorer and the Forms were not parts of the list of representations available.
 - https://github.com/eclipse-sirius/sirius-components/issues/2217[#2217] [diagram] Fix the svg export when the file extension was not available.
 It falls back to the image content type to determine the image type.
 
@@ -267,7 +269,7 @@ The existing context menu contributions now only apply to the _Explorer_ view.
 - https://github.com/eclipse-sirius/sirius-components/issues/2126[#2126] [tree] Add support for multiple Explorer-like tree definitions.
 These should be registered globally like other representations using a `IRepresentationDescriptionRegistryConfigurer`.
 Their `TreeDescription.getCanCreatePredicate()` will be invoked with a `treeId` variable (a string) to test if it handles a given tree subscription requested by the front.
-For example the main _Explorer_ frontend component suscribes to the `treeEvent` subscription with a `treeId` of `'explorer://'`, and the backend `ExplorerDescriptionProvider`'s tests for `treeId.startsWith("explorer://")` to indicate it is the one to use to handle this subscription.
+For example the main _Explorer_ frontend component subscribes to the `treeEvent` subscription with a `treeId` of `'explorer://'`, and the backend `ExplorerDescriptionProvider`'s tests for `treeId.startsWith("explorer://")` to indicate it is the one to use to handle this subscription.
 - https://github.com/eclipse-sirius/sirius-components/issues/2096[#2096] [form] Add style for the reference widget.
 Use the same style properties as the list widget.
 - https://github.com/eclipse-sirius/sirius-components/issues/2175[#2175] [tree] Change tree behavior to reveal the current value(s) in the model browser.

@@ -184,8 +184,6 @@ public class DiagramSwitch<T> extends Switch<T> {
                 NodeStyleDescription nodeStyleDescription = (NodeStyleDescription) theEObject;
                 T result = this.caseNodeStyleDescription(nodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(nodeStyleDescription);
-                if (result == null)
                     result = this.caseLabelStyle(nodeStyleDescription);
                 if (result == null)
                     result = this.caseBorderStyle(nodeStyleDescription);
@@ -206,9 +204,9 @@ public class DiagramSwitch<T> extends Switch<T> {
                 RectangularNodeStyleDescription rectangularNodeStyleDescription = (RectangularNodeStyleDescription) theEObject;
                 T result = this.caseRectangularNodeStyleDescription(rectangularNodeStyleDescription);
                 if (result == null)
-                    result = this.caseNodeStyleDescription(rectangularNodeStyleDescription);
-                if (result == null)
                     result = this.caseStyle(rectangularNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(rectangularNodeStyleDescription);
                 if (result == null)
                     result = this.caseLabelStyle(rectangularNodeStyleDescription);
                 if (result == null)
@@ -223,8 +221,6 @@ public class DiagramSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(imageNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(imageNodeStyleDescription);
-                if (result == null)
                     result = this.caseLabelStyle(imageNodeStyleDescription);
                 if (result == null)
                     result = this.caseBorderStyle(imageNodeStyleDescription);
@@ -236,9 +232,9 @@ public class DiagramSwitch<T> extends Switch<T> {
                 IconLabelNodeStyleDescription iconLabelNodeStyleDescription = (IconLabelNodeStyleDescription) theEObject;
                 T result = this.caseIconLabelNodeStyleDescription(iconLabelNodeStyleDescription);
                 if (result == null)
-                    result = this.caseNodeStyleDescription(iconLabelNodeStyleDescription);
-                if (result == null)
                     result = this.caseStyle(iconLabelNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(iconLabelNodeStyleDescription);
                 if (result == null)
                     result = this.caseLabelStyle(iconLabelNodeStyleDescription);
                 if (result == null)

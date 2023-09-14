@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.view.UserColor;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
+public interface NodeStyleDescription extends LabelStyle, BorderStyle {
     /**
      * Returns the value of the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

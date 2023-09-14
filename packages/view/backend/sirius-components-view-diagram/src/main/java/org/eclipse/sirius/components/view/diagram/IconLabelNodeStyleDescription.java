@@ -21,5 +21,5 @@ package org.eclipse.sirius.components.view.diagram;
  * @model
  * @generated
  */
-public interface IconLabelNodeStyleDescription extends NodeStyleDescription {
+public interface IconLabelNodeStyleDescription extends Style, NodeStyleDescription {
 } // IconLabelNodeStyleDescription
