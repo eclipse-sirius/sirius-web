@@ -26,9 +26,7 @@ import {
   GQLClearReferenceMutationVariables,
   GQLClickReferenceValueMutationData,
   GQLClickReferenceValueMutationVariables,
-  GQLEditReferenceData,
-  GQLEditReferencePayload,
-  GQLEditReferenceVariables,
+  GQLClickReferenceValuePayload,
   GQLErrorPayload,
   GQLReferenceValue,
   GQLReferenceWidget,
@@ -48,26 +46,6 @@ const useStyles = makeStyles<Theme>(() => ({
     overflow: 'hidden',
   },
 }));
-
-export const editReferenceMutation = gql`
-  mutation editReference($input: EditReferenceInput!) {
-    editReference(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-      ... on SuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
 
 export const clickReferenceValueMutation = gql`
   mutation clickReferenceValue($input: ClickReferenceValueInput!) {
@@ -169,9 +147,9 @@ export const addReferenceValuesMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLEditReferencePayload): payload is GQLErrorPayload =>
+const isErrorPayload = (payload: GQLClickReferenceValuePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLEditReferencePayload): payload is GQLSuccessPayload =>
+const isSuccessPayload = (payload: GQLClickReferenceValuePayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
 export const ReferencePropertySection = ({
@@ -183,10 +161,6 @@ export const ReferencePropertySection = ({
   setSelection,
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
   const classes = useStyles();
-
-  const [editReference, { loading, error, data }] = useMutation<GQLEditReferenceData, GQLEditReferenceVariables>(
-    editReferenceMutation
-  );
 
   const [clearReference, { loading: clearLoading, error: clearError, data: clearData }] = useMutation<
     GQLClearReferenceMutationData,
@@ -251,19 +225,7 @@ export const ReferencePropertySection = ({
   const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);
 
   const { addErrorMessage, addMessages } = useMultiToast();
-  useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (data) {
-        const { editReference: editMultiValuedReference } = data;
-        if (isErrorPayload(editMultiValuedReference) || isSuccessPayload(editMultiValuedReference)) {
-          addMessages(editMultiValuedReference.messages);
-        }
-      }
-    }
-  }, [loading, error, data]);
+
   useEffect(() => {
     if (!clickLoading) {
       if (clickError) {
@@ -330,30 +292,49 @@ export const ReferencePropertySection = ({
     }
   }, [addLoading, addError, addData]);
 
-  const callSetReference = (newValueId) => {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        newValueId: newValueId,
-      },
-    };
-    setReferenceValue({ variables });
+  const callSetReferenceValue = (newValueId: string) => {
+    if (newValueId) {
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          newValueId: newValueId,
+        },
+      };
+      setReferenceValue({ variables });
+    }
   };
 
-  const callAddReferenceValues = (newValueIds) => {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        newValueIds,
-      },
-    };
-    addReferenceValues({ variables });
+  const callAddReferenceValues = (newValueIds: string[]) => {
+    if (newValueIds) {
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          newValueIds,
+        },
+      };
+      addReferenceValues({ variables });
+    }
+  };
+
+  const callRemoveReferenceValue = (valueId) => {
+    if (valueId) {
+      const variables: GQLRemoveReferenceValueMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          referenceValueId: valueId,
+        },
+      };
+      removeReferenceValue({ variables });
+    }
   };
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
@@ -384,7 +365,7 @@ export const ReferencePropertySection = ({
             if (semanticElementIds.length > 1) {
               addErrorMessage('Single-valued reference can only accept a single value');
             } else {
-              callSetReference(semanticElementIds[0]);
+              callSetReferenceValue(semanticElementIds[0]);
             }
           }
         }
@@ -402,17 +383,10 @@ export const ReferencePropertySection = ({
     setModalDisplayed('create');
   };
 
-  const addSelectedElements = (selectedElementIds: string[]): void => {
-    setModalDisplayed(null);
-    if (selectedElementIds) {
-      callAddReferenceValues([...selectedElementIds]);
-    }
-  };
-
   const setSelectedElement = (selectedElementId: string) => {
     setModalDisplayed(null);
     if (selectedElementId && selectedElementId.length > 0) {
-      callSetReference(selectedElementId);
+      callSetReferenceValue(selectedElementId);
     }
   };
 
@@ -422,7 +396,7 @@ export const ReferencePropertySection = ({
       if (widget.reference.manyValued) {
         callAddReferenceValues([selectedElementId]);
       } else {
-        callSetReference(selectedElementId);
+        callSetReferenceValue(selectedElementId);
       }
     }
   };
@@ -430,7 +404,13 @@ export const ReferencePropertySection = ({
   let modal: JSX.Element | null = null;
   if (modalDisplayed === 'browse') {
     modal = widget.reference.manyValued ? (
-      <TransferModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
+      <TransferModal
+        editingContextId={editingContextId}
+        onClose={() => setModalDisplayed(null)}
+        addElements={callAddReferenceValues}
+        removeElement={callRemoveReferenceValue}
+        widget={widget}
+      />
     ) : (
       <BrowseModal editingContextId={editingContextId} onClose={setSelectedElement} widget={widget} />
     );
@@ -459,7 +439,6 @@ export const ReferencePropertySection = ({
           formId={formId}
           widget={widget}
           readOnly={readOnly}
-          editReference={editReference}
           onDragEnter={handleDragEnter}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
@@ -467,7 +446,9 @@ export const ReferencePropertySection = ({
           onCreateClick={onCreate}
           optionClickHandler={clickHandler}
           clearReference={clearReference}
-          removeReferenceValue={removeReferenceValue}
+          removeReferenceValue={callRemoveReferenceValue}
+          addReferenceValues={callAddReferenceValues}
+          setReferenceValue={callSetReferenceValue}
         />
       </div>
       {modal}

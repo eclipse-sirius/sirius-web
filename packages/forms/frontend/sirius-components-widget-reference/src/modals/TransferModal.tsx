@@ -21,7 +21,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FilterableSortableList } from '../components/FilterableSortableList';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import { TransferModalProps, TransferModalState } from './TransferModal.types';
@@ -43,7 +43,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TransferModal = ({ editingContextId, widget, onClose }: TransferModalProps) => {
+export const TransferModal = ({
+  editingContextId,
+  widget,
+  onClose,
+  addElements,
+  removeElement,
+}: TransferModalProps) => {
   const classes = useStyles();
   const [state, setState] = useState<TransferModalState>({
     right: widget.referenceValues,
@@ -51,6 +57,18 @@ export const TransferModal = ({ editingContextId, widget, onClose }: TransferMod
     draggingRightItemId: undefined,
     leftSelection: [],
   });
+
+  useEffect(() => {
+    setState((prevState) => {
+      return {
+        ...prevState,
+        rightSelection: prevState.rightSelection.filter((sel) =>
+          widget.referenceValues.map((ref) => ref.id).includes(sel.id)
+        ),
+        right: widget.referenceValues,
+      };
+    });
+  }, [widget.referenceValues]);
 
   const handleLeftSelection = (selection) => {
     setState((prevState) => {
@@ -69,13 +87,7 @@ export const TransferModal = ({ editingContextId, widget, onClose }: TransferMod
   const handleDropLeft = (event: React.DragEvent) => {
     event.preventDefault();
     if (state.draggingRightItemId) {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          right: prevState.right.filter((entry) => prevState.draggingRightItemId !== entry.id),
-          leftSelection: [],
-        };
-      });
+      removeElement(state.draggingRightItemId);
     }
   };
 
@@ -104,17 +116,10 @@ export const TransferModal = ({ editingContextId, widget, onClose }: TransferMod
       const sources = JSON.parse(dragSourcesStringified);
       if (Array.isArray(sources) && sources.length > 0) {
         const entriesDragged = sources as SelectionEntry[];
-        setState((prevState) => {
-          return {
-            ...prevState,
-            right: prevState.right.concat(
-              entriesDragged.filter(
-                (newEntry) => !prevState.right.some((existingEntry) => existingEntry.id === newEntry.id)
-              )
-            ),
-            leftSelection: [],
-          };
-        });
+        const newElementIds = entriesDragged
+          .filter((newEntry) => !state.right.some((existingEntry) => existingEntry.id === newEntry.id))
+          .map((element) => element.id);
+        addElements(newElementIds);
       }
     }
   };
@@ -145,34 +150,17 @@ export const TransferModal = ({ editingContextId, widget, onClose }: TransferMod
   };
 
   const handleDispatchRight = () => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        right: prevState.right.concat(
-          prevState.leftSelection.filter(
-            (newEntry) => !prevState.right.some((existingEntry) => existingEntry.id === newEntry.id)
-          )
-        ),
-        leftSelection: [],
-      };
-    });
+    addElements(state.leftSelection.map((element) => element.id));
   };
 
   const handleDispatchLeft = () => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        right: prevState.right.filter((entry) => prevState.rightSelection.find((selected) => selected.id !== entry.id)),
-        rightSelection: [],
-        leftSelection: [],
-      };
-    });
+    state.rightSelection.forEach((element) => removeElement(element.id));
   };
 
   return (
     <Dialog
       open={true}
-      onClose={() => onClose(null)}
+      onClose={() => onClose()}
       aria-labelledby="dialog-title"
       maxWidth={false}
       data-testid="transfer-modal">
@@ -242,15 +230,8 @@ export const TransferModal = ({ editingContextId, widget, onClose }: TransferMod
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button
-          variant="contained"
-          color="primary"
-          type="button"
-          data-testid="apply-change"
-          onClick={() => {
-            onClose(state.right.map((entry) => entry.id));
-          }}>
-          Apply
+        <Button variant="contained" color="primary" type="button" data-testid="apply-change" onClick={() => onClose()}>
+          close
         </Button>
       </DialogActions>
     </Dialog>

@@ -37,7 +37,6 @@ type ReferenceValue {
 }
 
 extend type Mutation {
-  editReference(input: EditReferenceInput): EditReferencePayload!
   clickReferenceValue(input: ClickReferenceValueInput!): ClickReferenceValuePayload!
   clearReference(input: ClearReferenceInput!): ClearReferencePayload!
   removeReferenceValue(input: RemoveReferenceValueInput!): RemoveReferenceValuePayload!
@@ -45,16 +44,6 @@ extend type Mutation {
   addReferenceValues(input: AddReferenceValuesInput!): AddReferenceValuesPayload!
   createElement(input: CreateElementInput!): CreateElementPayload!
 }
-
-input EditReferenceInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  referenceWidgetId: ID!
-  newValueIds: [ID!]!
-}
-
-union EditReferencePayload = SuccessPayload | ErrorPayload
 
 input ClickReferenceValueInput {
   id: ID!

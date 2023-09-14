@@ -15,12 +15,8 @@ import React from 'react';
 import {
   GQLClearReferenceMutationData,
   GQLClearReferenceMutationVariables,
-  GQLEditReferenceData,
-  GQLEditReferenceVariables,
   GQLReferenceValue,
   GQLReferenceWidget,
-  GQLRemoveReferenceValueMutationData,
-  GQLRemoveReferenceValueMutationVariables,
 } from '../ReferenceWidgetFragment.types';
 
 export interface ValuedReferenceAutocompleteProps {
@@ -33,8 +29,9 @@ export interface ValuedReferenceAutocompleteProps {
   onDrop: (event: React.DragEvent<HTMLDivElement>) => void;
   onMoreClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
   onCreateClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
-  editReference: MutationFunction<GQLEditReferenceData, GQLEditReferenceVariables>;
   optionClickHandler: (element: GQLReferenceValue) => void;
   clearReference: MutationFunction<GQLClearReferenceMutationData, GQLClearReferenceMutationVariables>;
-  removeReferenceValue: MutationFunction<GQLRemoveReferenceValueMutationData, GQLRemoveReferenceValueMutationVariables>;
+  removeReferenceValue: (valueId: string) => void;
+  addReferenceValues: (newValueIds: string[]) => void;
+  setReferenceValue: (newValueId: string) => void;
 }

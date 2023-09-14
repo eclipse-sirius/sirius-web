@@ -22,11 +22,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useContext } from 'react';
-import {
-  GQLReferenceValue,
-  GQLReferenceWidgetStyle,
-  GQLRemoveReferenceValueMutationVariables,
-} from '../ReferenceWidgetFragment.types';
+import { GQLReferenceValue, GQLReferenceWidgetStyle } from '../ReferenceWidgetFragment.types';
 import { ValuedReferenceAutocompleteProps } from './ValuedReferenceAutocomplete.types';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
@@ -52,10 +48,11 @@ export const ValuedReferenceAutocomplete = ({
   onDrop,
   onMoreClick,
   onCreateClick,
-  editReference,
   optionClickHandler,
   clearReference,
   removeReferenceValue,
+  addReferenceValues,
+  setReferenceValue,
 }: ValuedReferenceAutocompleteProps) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const props: GQLReferenceWidgetStyle = {
@@ -68,44 +65,26 @@ export const ValuedReferenceAutocomplete = ({
   };
   const classes = useStyles(props);
 
-  const handleRemoveReferenceValue = (updatedValues) => {
-    // looking for the missing one
-    const removedValues = widget.referenceValues.filter(
-      (value) => !updatedValues.find((n: GQLReferenceValue) => n.id === value.id)
-    );
-    if (removedValues.length == 1) {
-      const variables: GQLRemoveReferenceValueMutationVariables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          referenceValueId: removedValues[0].id,
-        },
-      };
-      removeReferenceValue({ variables });
-    }
+  const handleRemoveReferenceValue = (updatedValues: GQLReferenceValue[]) => {
+    widget.referenceValues.forEach((value) => {
+      if (!updatedValues.find((updateValue) => updateValue.id === value.id)) {
+        removeReferenceValue(value.id); // this should only be called once, since we can remove only one chip at a time
+      }
+    });
   };
 
-  const handleAutocompleteChange = (_event, newValue, reason) => {
+  const handleAutocompleteChange = (_event, updatedValues, reason) => {
     if (reason === 'remove-option') {
-      handleRemoveReferenceValue(newValue);
+      handleRemoveReferenceValue(updatedValues);
     } else {
-      let newValueIds: string[] = newValue.map((value: GQLReferenceValue) => value.id);
-      if (!widget.reference.manyValued && widget.referenceValues.length > 0) {
-        // For mono-valued reference, we only keep the new one
-        newValueIds = newValueIds.filter((newValue) => widget.referenceValues.some((value) => value.id !== newValue));
+      const newValueIds = updatedValues
+        .filter((updatedValue) => widget.referenceValues.some((value) => value.id !== updatedValue.id))
+        .map((value) => value.id);
+      if (widget.reference.manyValued) {
+        addReferenceValues(newValueIds);
+      } else {
+        setReferenceValue(newValueIds[0]);
       }
-      const variables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          newValueIds,
-        },
-      };
-      editReference({ variables });
     }
   };
 

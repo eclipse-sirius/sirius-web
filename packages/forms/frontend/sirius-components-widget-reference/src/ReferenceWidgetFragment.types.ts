@@ -46,32 +46,12 @@ export interface GQLReferenceValue {
   hasClickAction: boolean;
 }
 
-export interface GQLEditReferencePayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLEditReferencePayload {
+export interface GQLErrorPayload extends GQLClickReferenceValuePayload {
   messages: GQLMessage[];
 }
 
-export interface GQLSuccessPayload extends GQLEditReferencePayload {
+export interface GQLSuccessPayload extends GQLClickReferenceValuePayload {
   messages: GQLMessage[];
-}
-
-export interface GQLEditReferenceVariables {
-  input: GQLEditReferenceInput;
-}
-
-export interface GQLEditReferenceInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  referenceWidgetId: string;
-  newValueIds: Array<string>;
-}
-
-export interface GQLEditReferenceData {
-  editReference: GQLEditReferencePayload;
 }
 
 export interface GQLClickReferenceValueMutationData {

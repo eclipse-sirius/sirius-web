@@ -17,7 +17,9 @@ import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 export interface TransferModalProps {
   editingContextId: string;
   widget: GQLReferenceWidget;
-  onClose: (selectedElementIds: string[]) => void;
+  onClose: () => void;
+  addElements: (elementIds: string[]) => void;
+  removeElement: (elementId: string) => void;
 }
 
 export interface TransferModalState {
