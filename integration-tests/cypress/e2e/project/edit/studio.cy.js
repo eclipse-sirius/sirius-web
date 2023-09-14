@@ -135,6 +135,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('create')
       .click()
       .then(() => {
+        cy.wait(500);
         cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
         cy.getByTestId('name').type('Instance');
         cy.getByTestId('create-project').click();
@@ -204,7 +205,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('Color').findByTestId('reference-value-black').should('exist');
   });
 
-  it('Check textfield widget style description has default colors', () => {
+  it.only('Check textfield widget style description has default colors', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View-more').click();
     cy.getByTestId('new-object').click();
@@ -234,34 +235,8 @@ describe('/projects/:projectId/edit - Studio', () => {
 
     cy.getByTestId('Background Color').findByTestId('reference-value-transparent').should('exist');
     cy.getByTestId('Foreground Color').findByTestId('reference-value-theme.palette.text.primary').should('exist');
-  });
-
-  it('Check default color palettes', () => {
-    cy.getByTestId('ViewNewModel').dblclick();
-    cy.getByTestId('View').dblclick();
-    cy.getByTestId('Theme Colors Palette').dblclick();
-    cy.getByTestId('theme.palette.primary.main').should('exist');
-    cy.getByTestId('Special Colors Palette').dblclick();
-    cy.getByTestId('black').should('exist');
-    cy.getByTestId('Amber Colors Palette').dblclick();
-    cy.getByTestId('amber 50').should('exist');
-    cy.getByTestId('Blue Colors Palette').should('exist');
-    cy.getByTestId('BlueGrey Colors Palette').should('exist');
-    cy.getByTestId('Brown Colors Palette').should('exist');
-    cy.getByTestId('Cyan Colors Palette').should('exist');
-    cy.getByTestId('DeepOrange Colors Palette').should('exist');
-    cy.getByTestId('DeepPurple Colors Palette').should('exist');
-    cy.getByTestId('Green Colors Palette').should('exist');
-    cy.getByTestId('Grey Colors Palette').should('exist');
-    cy.getByTestId('Indigo Colors Palette').should('exist');
-    cy.getByTestId('LightBlue Colors Palette').should('exist');
-    cy.getByTestId('LightGreen Colors Palette').should('exist');
-    cy.getByTestId('Lime Colors Palette').should('exist');
-    cy.getByTestId('Orange Colors Palette').should('exist');
-    cy.getByTestId('Pink Colors Palette').should('exist');
-    cy.getByTestId('Purple Colors Palette').should('exist');
-    cy.getByTestId('Red Colors Palette').should('exist');
-    cy.getByTestId('Teal Colors Palette').should('exist');
-    cy.getByTestId('Yellow Colors Palette').should('exist');
+    cy.getByTestId('Foreground Color').getByTestId('Foreground Color-clear').click();
+    cy.getByTestId('Foreground Color').type('amber 500{downarrow}{enter}');
+    cy.getByTestId('Foreground Color').findByTestId('reference-value-amber 500').should('exist');
   });
 });

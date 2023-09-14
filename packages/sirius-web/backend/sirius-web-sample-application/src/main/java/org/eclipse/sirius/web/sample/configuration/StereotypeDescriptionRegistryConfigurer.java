@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.builder.providers.DefaultColorPalettesProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
@@ -81,16 +80,12 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private final SampleDomainNameProvider domainNameProvider;
 
-    private final DefaultColorPalettesProvider defaultColorPalettesProvider;
-
     private final boolean studiosEnabled;
 
     public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
         this.studiosEnabled = studiosEnabled;
         this.domainNameProvider = new SampleDomainNameProvider();
-        this.defaultColorPalettesProvider = new DefaultColorPalettesProvider();
-
     }
 
     @Override
@@ -123,7 +118,6 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
         DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName("New Diagram Description");
         newView.getDescriptions().add(diagramDescription);
-        newView.getColorPalettes().addAll(this.defaultColorPalettesProvider.getDefaultColorPalettes());
 
         return this.stereotypeBuilder.getStereotypeBody(List.of(newView));
     }

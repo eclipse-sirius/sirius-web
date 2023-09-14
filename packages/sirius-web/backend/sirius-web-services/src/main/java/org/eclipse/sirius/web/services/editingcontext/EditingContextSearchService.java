@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -99,7 +100,12 @@ public class EditingContextSearchService implements IEditingContextSearchService
         resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
-        List<DocumentEntity> documentEntities = new IDParser().parse(editingContextId).map(this.documentRepository::findAllByProjectId).orElseGet(List::of);
+        List<DocumentEntity> documentEntities = new IDParser().parse(editingContextId)
+                .map(this.documentRepository::findAllByProjectId)
+                .orElseGet(List::of)
+                .stream()
+                .filter(doc -> !ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.equals(doc.getId().toString()))
+                .toList();
         for (DocumentEntity documentEntity : documentEntities) {
             Resource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
 

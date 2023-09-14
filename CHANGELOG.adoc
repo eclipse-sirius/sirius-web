@@ -51,6 +51,9 @@ Note that _palette_ will be removed in short-term from the _DiagramDescription_.
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Colors are now required everywhere.
 We will not hardcoded decisions in our application, instead all the references to a color should be configured.
 In the near future, the GraphQL schema and the frontend of `sirius-components-forms` will thus be updated to reflect this new change.
+- https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [sirius-web] Default colors are now loaded from a default model located in `sirius-components-view/src/main/resources/studioColorPalettes.json`.
+They are loaded in every studio project but hidden in the explorer.
+They are also made readonly in the details view.
 
 === Dependency update
 
@@ -129,6 +132,7 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2358[#2358] [form] Adds diagnostic messages to the reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/2260[#2260] [diagram] Keep the layout stable over time
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new default color palettes along with the creation of a view (theme colors, mui colors...).
+These color palettes are accessible in studio projects but are not visible in the Explorer view.
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new validation rules about colors for View diagrams & forms.
 
 == v2023.8.0

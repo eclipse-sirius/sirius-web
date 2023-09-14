@@ -21,7 +21,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.sirius.web.services.api.projects.ProjectRenamedEventPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -38,6 +37,7 @@ import org.eclipse.sirius.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateService;
 import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.api.projects.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
 

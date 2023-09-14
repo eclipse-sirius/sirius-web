@@ -38,7 +38,7 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.getByTestId('create-object').click();
     cy.getByTestId('FixedColor').should('exist').click();
     cy.getByTestId('Name').type('color_test{enter}');
-    cy.get('[data-testid="Value"] > div > textarea').first().type('#e5f5f8{enter}');
+    cy.getByTestId('Value').type('#e5f5f8{enter}');
     cy.getByTestId('color_test').should('exist');
   });
 
