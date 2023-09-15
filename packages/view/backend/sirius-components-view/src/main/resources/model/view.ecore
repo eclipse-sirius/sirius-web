@@ -74,6 +74,16 @@
         eType="#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteElement" eSuperTypes="#//Operation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Let" eSuperTypes="#//Operation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="variableName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueExpression" lowerBound="1"
+        eType="#//InterpretedExpression"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="If" eSuperTypes="#//Operation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="conditionExpression" lowerBound="1"
+        eType="#//InterpretedExpression"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Conditional" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="condition" lowerBound="1"
         eType="#//InterpretedExpression" defaultValueLiteral="aql:false"/>

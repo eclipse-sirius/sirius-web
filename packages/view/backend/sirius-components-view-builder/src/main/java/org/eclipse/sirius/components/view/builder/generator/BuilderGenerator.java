@@ -55,15 +55,13 @@ public class BuilderGenerator {
 
     private static final String BUILDER_EOBJECT_NAME = "#eObjName";
 
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(BuilderGenerator.class);
 
-    private String pathToJMergeFile;
+    private final String pathToJMergeFile;
 
-    private String outputDirectory;
+    private final String outputDirectory;
 
-    private String basePackage = "fr.obeo.dsl.biblio.app.representationsbuilders.builders.test";
+    private final String basePackage;
 
     public BuilderGenerator(String pathToJMergeFile, String outputDirectory, String basePackage) {
         this.pathToJMergeFile = pathToJMergeFile;
@@ -72,9 +70,8 @@ public class BuilderGenerator {
     }
 
     public static void main(String[] args) {
-
         for (String string : args) {
-            LOGGER.error(string);
+            LOGGER.info(string);
         }
         String javaVersion = Runtime.version().toString();
         String time = LocalDateTime.now().toString();
@@ -101,7 +98,7 @@ public class BuilderGenerator {
         Resource formResource = resourceSet.getResource(formURI, true);
         allViewContent.addAll(formResource.getContents());
 
-        BuilderGenerator gen = new BuilderGenerator(args[0], args[2], args[3]);
+        var gen = new BuilderGenerator(args[0], args[2], args[3]);
 
         StreamSupport.stream(Spliterators.spliterator(allViewContent, Spliterator.ORDERED), false).filter(GenModel.class::isInstance).map(GenModel.class::cast).forEach(model -> {
             try {
@@ -113,8 +110,8 @@ public class BuilderGenerator {
         LOGGER.info("Generated!");
     }
 
-    private StringBuffer getFactoryClassBody(GenPackage pak) {
-        StringBuffer classBodies = new StringBuffer();
+    private StringBuilder getFactoryClassBody(GenPackage pak) {
+        StringBuilder classBodies = new StringBuilder();
         for (GenClass clazz : pak.getGenClasses()) {
             if (!clazz.isAbstract() && !clazz.isInterface() && clazz.hasFactoryInterfaceCreateMethod()) {
                 classBodies.append("""
@@ -135,8 +132,8 @@ public class BuilderGenerator {
         return classBodies;
     }
 
-    private StringBuffer getFactory(GenPackage pak, String builderFactoryName, StringBuffer factoryClassBody) {
-        StringBuffer factory = new StringBuffer();
+    private StringBuilder getFactory(GenPackage pak, String builderFactoryName, StringBuilder factoryClassBody) {
+        StringBuilder factory = new StringBuilder();
         factory.append("""
                 /*******************************************************************************
                  * Copyright (c) 2023 Obeo.
@@ -161,13 +158,16 @@ public class BuilderGenerator {
                 public class #factoryName {
                 #classbody
                 }
-                """.replace("#factoryName", builderFactoryName).replace(CLASSBODY, factoryClassBody).replace(PACKAGE, this.getPackageDeclaration(pak)));
+                """.replace("#factoryName", builderFactoryName)
+                .replace(CLASSBODY, factoryClassBody)
+                .replace(PACKAGE, this.getPackageDeclaration(pak)));
         return factory;
     }
 
-    private StringBuffer getBody(GenClass clazz) {
-        StringBuffer body = new StringBuffer();
+    private StringBuilder getBody(GenClass clazz) {
+        StringBuilder body = new StringBuilder();
         if (!clazz.isAbstract()) {
+            LOGGER.info(clazz.capName(clazz.getName()));
             body.append("""
                         /**
                          * Create instance #eObjType.
@@ -191,14 +191,16 @@ public class BuilderGenerator {
                             return this.get#eObjName();
                         }
 
-                    """.replace("#packageFactory", clazz.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor()).replace("#eObjType", clazz.getQualifiedInterfaceName())
-                    .replace("#eObjNameLowerCase", clazz.uncapPrefixedName(clazz.getSafeUncapName())).replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getSafeUncapName())));
+                    """.replace("#packageFactory", clazz.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor())
+                    .replace("#eObjType", clazz.getQualifiedInterfaceName())
+                    .replace("#eObjNameLowerCase", clazz.uncapPrefixedName(clazz.getSafeUncapName()))
+                    .replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getName())));
         }
 
         for (GenFeature feat : clazz.getAllGenFeatures()) {
-
             if (!feat.getEcoreFeature().isDerived() && feat.getEcoreFeature().isChangeable()) {
                 if (!feat.getEcoreFeature().isMany()) {
+                    System.out.println(clazz.capName(clazz.getName()));
                     body.append("""
                                 /**
                                  * Setter for #accessor.
@@ -209,8 +211,12 @@ public class BuilderGenerator {
                                     this.get#eObjName().set#accessor(value);
                                     return this;
                                 }
-                            """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz)).replace("#paramType", feat.getListItemType(clazz)).replace("#accessor", feat.getAccessorName())
-                            .replace("#featName", feat.getSafeName()).replace("#javadoc", this.getDocumentation(feat)).replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getSafeUncapName())));
+                            """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
+                            .replace("#paramType", feat.getListItemType(clazz))
+                            .replace("#accessor", feat.getAccessorName())
+                            .replace("#featName", feat.getSafeName())
+                            .replace("#javadoc", this.getDocumentation(feat))
+                            .replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getName())));
                 } else {
                     body.append("""
                                 /**
@@ -225,8 +231,12 @@ public class BuilderGenerator {
                                     return this;
                                 }
 
-                            """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz)).replace("#paramType", feat.getListItemType(clazz)).replace("#accessor", feat.getAccessorName())
-                            .replace("#featName", feat.getSafeName()).replace("#javadoc", this.getDocumentation(feat)).replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getSafeUncapName())));
+                            """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
+                            .replace("#paramType", feat.getListItemType(clazz))
+                            .replace("#accessor", feat.getAccessorName())
+                            .replace("#featName", feat.getSafeName())
+                            .replace("#javadoc", this.getDocumentation(feat))
+                            .replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getName())));
                 }
             }
         }
@@ -234,8 +244,8 @@ public class BuilderGenerator {
 
     }
 
-    private StringBuffer getBuilder(GenPackage pak, GenClass clazz, StringBuffer body) {
-        StringBuffer builder = new StringBuffer();
+    private StringBuilder getBuilder(GenPackage pak, GenClass clazz, StringBuilder body) {
+        StringBuilder builder = new StringBuilder();
         if (clazz.isAbstract()) {
             builder.append("""
                     /*******************************************************************************
@@ -269,8 +279,11 @@ public class BuilderGenerator {
                     #classbody
                     }
 
-                    """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz)).replace("#qualifiedType", this.qualifiedNameFromGenClass(clazz)).replace(CLASSBODY, body).replace(PACKAGE,
-                    this.getPackageDeclaration(pak)).replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getSafeUncapName())));
+                    """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
+                    .replace("#qualifiedType", this.qualifiedNameFromGenClass(clazz))
+                    .replace(CLASSBODY, body)
+                    .replace(PACKAGE, this.getPackageDeclaration(pak))
+                    .replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getName())));
         } else {
             builder.append("""
                     /*******************************************************************************
@@ -298,8 +311,10 @@ public class BuilderGenerator {
                     #classbody
                     }
 
-                    """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz)).replace("#qualifiedType", clazz.getQualifiedInterfaceName()).replace(CLASSBODY, body).replace(PACKAGE,
-                    this.getPackageDeclaration(pak)));
+                    """.replace(BUILDER_CLASSNAME, this.builderClasssName(clazz))
+                    .replace("#qualifiedType", clazz.getQualifiedInterfaceName())
+                    .replace(CLASSBODY, body)
+                    .replace(PACKAGE, this.getPackageDeclaration(pak)));
         }
         return builder;
     }
@@ -317,30 +332,23 @@ public class BuilderGenerator {
         jControlModel.initialize(facadeHelper, jmergeFile);
 
         for (GenPackage pak : model.getGenPackages()) {
-            StringBuffer factory = new StringBuffer();
             String builderFactoryName = pak.getPrefix() + "Builders";
 
-            StringBuffer factoryClassBody = new StringBuffer();
-            factoryClassBody = this.getFactoryClassBody(pak);
-            factory = this.getFactory(pak, builderFactoryName, factoryClassBody);
+            StringBuilder factoryClassBody = this.getFactoryClassBody(pak);
+            StringBuilder factory = this.getFactory(pak, builderFactoryName, factoryClassBody);
 
             String factFileName = builderFactoryName + ".java";
             this.generateOrMerge(jControlModel, this.outputDirectory, factFileName, factory.toString());
 
             for (GenClass clazz : pak.getGenClasses()) {
-
-                StringBuffer builderBody = new StringBuffer();
-                builderBody = this.getBody(clazz);
-
-                StringBuffer builder = new StringBuffer();
-                builder = this.getBuilder(pak, clazz, builderBody);
+                StringBuilder builderBody = this.getBody(clazz);
+                StringBuilder builder = this.getBuilder(pak, clazz, builderBody);
 
                 String fileName = this.builderClasssName(clazz) + ".java";
                 String contentToGenerate = builder.toString();
                 this.generateOrMerge(jControlModel, this.outputDirectory, fileName, contentToGenerate);
             }
         }
-
     }
 
     private String qualifiedNameFromGenClass(GenClass clazz) {

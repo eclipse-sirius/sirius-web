@@ -47,6 +47,10 @@
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.codegen</artifactId>
 			<version>2.23.0</version>
@@ -110,13 +114,10 @@
 					<executable>java</executable>
 					<mainClass>org.eclipse.sirius.components.view.builder.generator.BuilderGenerator</mainClass>
 					<cleanupDaemonThreads>false</cleanupDaemonThreads>
-					<property name="main.parentdir" location="./.." />
 					<arguments>
 						<argument>${project.basedir}/src/main/resources/emf-merge.xml</argument>
-						<argument>
-							${project.basedir}</argument>
-						<argument>
-							${project.basedir}/src/main/java/org/eclipse/sirius/components/view/builder/generated</argument>
+						<argument>${project.basedir}</argument>
+						<argument>${project.basedir}/src/main/java/org/eclipse/sirius/components/view/builder/generated</argument>
 						<argument>org.eclipse.sirius.components.view.builder.generated</argument>
 					</arguments>
 				</configuration>
@@ -126,11 +127,11 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.2.0</version>
 				<configuration>
-					<configLocation>
-						../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<configLocation>../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<failsOnError>true</failsOnError>
 					<consoleOutput>true</consoleOutput>
+					<excludes>**/generated/**/*</excludes>
 				</configuration>
 				<executions>
 					<execution>

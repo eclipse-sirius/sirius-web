@@ -151,6 +151,10 @@ public class OperationItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createLet()));
+
+        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

@@ -33,6 +33,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
+import org.eclipse.sirius.components.view.If;
+import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.UnsetValue;
@@ -84,6 +86,28 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
             VariableManager childVariableManager = this.variableManager.createChild();
             childVariableManager.put(VariableManager.SELF, newContext.get());
             return this.operationInterpreter.executeOperations(changeContextOperation.getChildren(), childVariableManager);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<VariableManager> caseIf(If ifOperation) {
+        Optional<Boolean> testResult = this.interpreter.evaluateExpression(this.variableManager.getVariables(), ifOperation.getConditionExpression()).asBoolean();
+        if (testResult.isPresent() && Boolean.TRUE.equals(testResult.get())) {
+            return this.operationInterpreter.executeOperations(ifOperation.getChildren(), this.variableManager);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<VariableManager> caseLet(Let object) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        Optional<Object> variableValue = this.interpreter.evaluateExpression(this.variableManager.getVariables(), object.getValueExpression()).asObject();
+        if (variableValue.isPresent()) {
+            childVariableManager.put(object.getVariableName(), variableValue.get());
+            return this.operationInterpreter.executeOperations(object.getChildren(), childVariableManager);
         } else {
             return Optional.empty();
         }

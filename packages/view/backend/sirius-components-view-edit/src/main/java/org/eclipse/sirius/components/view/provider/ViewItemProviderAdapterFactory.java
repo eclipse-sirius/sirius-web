@@ -275,6 +275,52 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.Let} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected LetItemProvider letItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.Let}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createLetAdapter() {
+        if (this.letItemProvider == null) {
+            this.letItemProvider = new LetItemProvider(this);
+        }
+
+        return this.letItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.If} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected IfItemProvider ifItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.If}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createIfAdapter() {
+        if (this.ifItemProvider == null) {
+            this.ifItemProvider = new IfItemProvider(this);
+        }
+
+        return this.ifItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -419,6 +465,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
             this.unsetValueItemProvider.dispose();
         if (this.deleteElementItemProvider != null)
             this.deleteElementItemProvider.dispose();
+        if (this.letItemProvider != null)
+            this.letItemProvider.dispose();
+        if (this.ifItemProvider != null)
+            this.ifItemProvider.dispose();
     }
 
 }

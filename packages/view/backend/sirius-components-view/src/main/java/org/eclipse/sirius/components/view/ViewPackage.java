@@ -640,6 +640,102 @@ public interface ViewPackage extends EPackage {
     int DELETE_ELEMENT_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.LetImpl <em>Let</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.LetImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLet()
+     * @generated
+     */
+    int LET = 12;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LET__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Variable Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LET__VARIABLE_NAME = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LET__VALUE_EXPRESSION = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Let</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LET_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Let</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LET_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.IfImpl <em>If</em>}' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.IfImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIf()
+     * @generated
+     */
+    int IF = 13;
+
+    /**
+     * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IF__CHILDREN = OPERATION__CHILDREN;
+
+    /**
+     * The feature id for the '<em><b>Condition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IF__CONDITION_EXPRESSION = OPERATION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>If</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IF_FEATURE_COUNT = OPERATION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>If</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IF_OPERATION_COUNT = OPERATION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.ConditionalImpl <em>Conditional</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -647,7 +743,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getConditional()
      * @generated
      */
-    int CONDITIONAL = 12;
+    int CONDITIONAL = 14;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -681,7 +777,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 13;
+    int IDENTIFIER = 15;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -691,7 +787,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 14;
+    int INTERPRETED_EXPRESSION = 16;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -700,7 +796,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 15;
+    int DOMAIN_TYPE = 17;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -709,7 +805,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 16;
+    int COLOR = 18;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -717,7 +813,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 17;
+    int LENGTH = 19;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -1113,6 +1209,59 @@ public interface ViewPackage extends EPackage {
      * @generated
      */
     EClass getDeleteElement();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Let <em>Let</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Let</em>'.
+     * @see org.eclipse.sirius.components.view.Let
+     * @generated
+     */
+    EClass getLet();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Let#getVariableName
+     * <em>Variable Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Variable Name</em>'.
+     * @see org.eclipse.sirius.components.view.Let#getVariableName()
+     * @see #getLet()
+     * @generated
+     */
+    EAttribute getLet_VariableName();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.Let#getValueExpression
+     * <em>Value Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.Let#getValueExpression()
+     * @see #getLet()
+     * @generated
+     */
+    EAttribute getLet_ValueExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.If <em>If</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>If</em>'.
+     * @see org.eclipse.sirius.components.view.If
+     * @generated
+     */
+    EClass getIf();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.If#getConditionExpression
+     * <em>Condition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Condition Expression</em>'.
+     * @see org.eclipse.sirius.components.view.If#getConditionExpression()
+     * @see #getIf()
+     * @generated
+     */
+    EAttribute getIf_ConditionExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.Conditional <em>Conditional</em>}'.
@@ -1521,6 +1670,50 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EClass DELETE_ELEMENT = eINSTANCE.getDeleteElement();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LetImpl <em>Let</em>}' class.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.LetImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLet()
+         * @generated
+         */
+        EClass LET = eINSTANCE.getLet();
+
+        /**
+         * The meta object literal for the '<em><b>Variable Name</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LET__VARIABLE_NAME = eINSTANCE.getLet_VariableName();
+
+        /**
+         * The meta object literal for the '<em><b>Value Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LET__VALUE_EXPRESSION = eINSTANCE.getLet_ValueExpression();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.IfImpl <em>If</em>}' class.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.IfImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIf()
+         * @generated
+         */
+        EClass IF = eINSTANCE.getIf();
+
+        /**
+         * The meta object literal for the '<em><b>Condition Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute IF__CONDITION_EXPRESSION = eINSTANCE.getIf_ConditionExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.ConditionalImpl
