@@ -50,7 +50,7 @@ public class ImageComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = imageDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = imageDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = imageDescription.getIconURLProvider().apply(variableManager);
         String url = imageDescription.getUrlProvider().apply(variableManager);
         String maxWidth = imageDescription.getMaxWidthProvider().apply(variableManager);
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(imageDescription, variableManager)));

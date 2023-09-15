@@ -20,12 +20,12 @@ import java.util.Objects;
  *
  * @author mcharfadi
  */
-public record SingleClickOnTwoDiagramElementsTool(String id, String label, String imageURL, List<SingleClickOnTwoDiagramElementsCandidate> candidates) implements ITool {
+public record SingleClickOnTwoDiagramElementsTool(String id, String label, List<String> iconURL, List<SingleClickOnTwoDiagramElementsCandidate> candidates) implements ITool {
 
     public SingleClickOnTwoDiagramElementsTool {
         Objects.requireNonNull(id);
         Objects.requireNonNull(label);
-        Objects.requireNonNull(imageURL);
+        Objects.requireNonNull(iconURL);
         Objects.requireNonNull(candidates);
     }
 
@@ -41,11 +41,12 @@ public record SingleClickOnTwoDiagramElementsTool(String id, String label, Strin
     @SuppressWarnings("checkstyle:HiddenField")
     @org.eclipse.sirius.components.annotations.Builder
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String imageURL;
+        private List<String> iconURL;
 
         private List<SingleClickOnTwoDiagramElementsCandidate> candidates;
 
@@ -58,8 +59,8 @@ public record SingleClickOnTwoDiagramElementsTool(String id, String label, Strin
             return this;
         }
 
-        public SingleClickOnTwoDiagramElementsTool.Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public SingleClickOnTwoDiagramElementsTool.Builder iconURL(List<String> iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -69,7 +70,7 @@ public record SingleClickOnTwoDiagramElementsTool(String id, String label, Strin
         }
 
         public SingleClickOnTwoDiagramElementsTool build() {
-            return new SingleClickOnTwoDiagramElementsTool(this.id, this.label, this.imageURL, this.candidates);
+            return new SingleClickOnTwoDiagramElementsTool(this.id, this.label, this.iconURL, this.candidates);
         }
     }
 

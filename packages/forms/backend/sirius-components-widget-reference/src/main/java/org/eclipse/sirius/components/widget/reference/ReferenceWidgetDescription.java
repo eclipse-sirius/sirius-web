@@ -35,7 +35,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, List<?>> itemsProvider;
 
@@ -47,7 +47,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> itemKindProvider;
 
-    private Function<VariableManager, String> itemImageURLProvider;
+    private Function<VariableManager, List<String>> itemImageURLProvider;
 
     private Function<VariableManager, String> ownerKindProvider;
 
@@ -91,7 +91,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -115,7 +115,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.itemKindProvider;
     }
 
-    public Function<VariableManager, String> getItemImageURLProvider() {
+    public Function<VariableManager, List<String>> getItemImageURLProvider() {
         return this.itemImageURLProvider;
     }
 
@@ -191,7 +191,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
@@ -205,7 +205,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, String> itemKindProvider;
 
-        private Function<VariableManager, String> itemImageURLProvider;
+        private Function<VariableManager, List<String>> itemImageURLProvider;
 
         private Function<VariableManager, String> ownerKindProvider;
 
@@ -260,7 +260,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
@@ -295,7 +295,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder itemImageURLProvider(Function<VariableManager, String> itemImageURLProvider) {
+        public Builder itemImageURLProvider(Function<VariableManager, List<String>> itemImageURLProvider) {
             this.itemImageURLProvider = Objects.requireNonNull(itemImageURLProvider);
             return this;
         }

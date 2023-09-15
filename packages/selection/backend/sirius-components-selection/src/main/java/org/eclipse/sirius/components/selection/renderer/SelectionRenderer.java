@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,13 +66,11 @@ public class SelectionRenderer {
     private SelectionObject renderSelectionObject(VariableManager selectionObjectVariableManager) {
         String id = this.selectionDescription.getSelectionObjectsIdProvider().apply(selectionObjectVariableManager);
         String label = this.selectionDescription.getLabelProvider().apply(selectionObjectVariableManager);
-        String iconURL = this.selectionDescription.getIconURLProvider().apply(selectionObjectVariableManager);
+        List<String> iconURL = this.selectionDescription.getIconURLProvider().apply(selectionObjectVariableManager);
 
-        // @formatter:off
         return SelectionObject.newSelectionObject(UUID.fromString(id))
                 .label(label)
                 .iconURL(iconURL)
                 .build();
-        // @formatter:on
     }
 }

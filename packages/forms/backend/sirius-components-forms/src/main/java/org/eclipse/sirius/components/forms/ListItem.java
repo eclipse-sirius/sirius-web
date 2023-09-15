@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -27,13 +28,14 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class ListItem {
+
     private String id;
 
     private String label;
 
     private String kind;
 
-    private String imageURL;
+    private List<String> iconURL;
 
     private boolean deletable;
 
@@ -43,6 +45,10 @@ public final class ListItem {
 
     private ListItem() {
         // Prevent instantiation
+    }
+
+    public static Builder newListItem(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -57,8 +63,8 @@ public final class ListItem {
         return this.kind;
     }
 
-    public String getImageURL() {
-        return this.imageURL;
+    public List<String> getIconURL() {
+        return this.iconURL;
     }
 
     public boolean isDeletable() {
@@ -73,14 +79,10 @@ public final class ListItem {
         return this.deleteHandler;
     }
 
-    public static Builder newListItem(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}, deletable: {4}, imageURL: {5}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.kind, this.deletable, this.imageURL);
+        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}, deletable: {4}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.kind, this.deletable);
     }
 
     /**
@@ -90,13 +92,14 @@ public final class ListItem {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
         private String kind;
 
-        private String imageURL;
+        private List<String> iconURL;
 
         private boolean deletable;
 
@@ -118,8 +121,8 @@ public final class ListItem {
             return this;
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder iconURL(List<String> iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -146,7 +149,7 @@ public final class ListItem {
             listItem.deletable = Objects.requireNonNull(this.deletable);
             listItem.clickHandler = Objects.requireNonNull(this.clickHandler);
             listItem.deleteHandler = Objects.requireNonNull(this.deleteHandler);
-            listItem.imageURL = Objects.requireNonNull(this.imageURL);
+            listItem.iconURL = Objects.requireNonNull(this.iconURL);
             return listItem;
         }
     }

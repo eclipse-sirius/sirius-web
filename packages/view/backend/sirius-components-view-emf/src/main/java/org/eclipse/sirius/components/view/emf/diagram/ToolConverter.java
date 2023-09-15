@@ -139,7 +139,7 @@ public class ToolConverter {
         return ToolSection.newToolSection(toolSectionId)
                 .label(toolSection.getName())
                 .tools(toolSection.getNodeTools().stream().map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true)).toList())
-                .imageURL("")
+                .iconURL(List.of())
                 .build();
     }
 
@@ -155,7 +155,7 @@ public class ToolConverter {
         return ToolSection.newToolSection(toolSectionId)
                 .label(toolSection.getName())
                 .tools(tools)
-                .imageURL("")
+                .iconURL(List.of())
                 .build();
     }
 
@@ -164,7 +164,7 @@ public class ToolConverter {
         return ToolSection.newToolSection(toolSectionId)
                 .label(toolSection.getName())
                 .tools(toolSection.getNodeTools().stream().map(nodeTool -> this.createNodeTool(nodeTool, converterContext, true)).toList())
-                .imageURL("")
+                .iconURL(List.of())
                 .build();
     }
 
@@ -173,7 +173,7 @@ public class ToolConverter {
         String toolId = this.idProvider.apply(nodeTool).toString();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(nodeTool.getName())
-                .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
+                .iconURL(List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON))
                 .handler(variableManager -> {
                     VariableManager child = variableManager.createChild();
                     child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
@@ -190,7 +190,7 @@ public class ToolConverter {
         String toolId = this.idProvider.apply(edgeTool).toString();
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(edgeTool.getName())
-                .imageURL(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON)
+                .iconURL(List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON))
                 .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                         .sources(List.of(convertedNodes.get(nodeDescription)))
                         .targets(edgeTool.getTargetElementDescriptions().stream().map(convertedNodes::get).toList())

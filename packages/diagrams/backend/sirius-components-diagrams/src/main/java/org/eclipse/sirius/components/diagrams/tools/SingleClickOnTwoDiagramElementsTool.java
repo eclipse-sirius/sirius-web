@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,9 +29,10 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class SingleClickOnTwoDiagramElementsTool implements ITool {
+
     private String id;
 
-    private String imageURL;
+    private List<String> iconURL;
 
     private String label;
 
@@ -41,6 +42,10 @@ public final class SingleClickOnTwoDiagramElementsTool implements ITool {
 
     private SingleClickOnTwoDiagramElementsTool() {
         // Prevent instantiation
+    }
+
+    public static Builder newSingleClickOnTwoDiagramElementsTool(String id) {
+        return new Builder(id);
     }
 
     public List<SingleClickOnTwoDiagramElementsCandidate> getCandidates() {
@@ -53,8 +58,8 @@ public final class SingleClickOnTwoDiagramElementsTool implements ITool {
     }
 
     @Override
-    public String getImageURL() {
-        return this.imageURL;
+    public List<String> getIconURL() {
+        return this.iconURL;
     }
 
     @Override
@@ -69,12 +74,8 @@ public final class SingleClickOnTwoDiagramElementsTool implements ITool {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, imageURL: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.imageURL);
-    }
-
-    public static Builder newSingleClickOnTwoDiagramElementsTool(String id) {
-        return new Builder(id);
+        String pattern = "{0} '{'id: {1}, label: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
     }
 
     /**
@@ -84,9 +85,10 @@ public final class SingleClickOnTwoDiagramElementsTool implements ITool {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
 
-        private String imageURL;
+        private final String id;
+
+        private List<String> iconURL;
 
         private String label;
 
@@ -98,8 +100,8 @@ public final class SingleClickOnTwoDiagramElementsTool implements ITool {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder iconURL(List<String> iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -121,7 +123,7 @@ public final class SingleClickOnTwoDiagramElementsTool implements ITool {
         public SingleClickOnTwoDiagramElementsTool build() {
             SingleClickOnTwoDiagramElementsTool tool = new SingleClickOnTwoDiagramElementsTool();
             tool.id = Objects.requireNonNull(this.id);
-            tool.imageURL = Objects.requireNonNull(this.imageURL);
+            tool.iconURL = Objects.requireNonNull(this.iconURL);
             tool.label = Objects.requireNonNull(this.label);
             tool.handler = Objects.requireNonNull(this.handler);
             tool.candidates = Objects.requireNonNull(this.candidates);

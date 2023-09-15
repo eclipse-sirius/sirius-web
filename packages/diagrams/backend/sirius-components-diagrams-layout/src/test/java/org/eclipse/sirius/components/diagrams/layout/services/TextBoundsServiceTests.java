@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.diagrams.layout.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.assertj.core.data.Offset;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
@@ -58,7 +60,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -85,7 +87,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -112,7 +114,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("big font")
+                .iconURL(List.of("big font"))
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -139,7 +141,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -166,7 +168,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -193,7 +195,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -220,7 +222,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -247,7 +249,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)
@@ -274,7 +276,7 @@ public class TextBoundsServiceTests {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         Label label = Label.newLabel(LABEL_ID)

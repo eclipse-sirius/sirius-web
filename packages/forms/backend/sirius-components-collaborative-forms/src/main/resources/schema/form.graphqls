@@ -88,7 +88,7 @@ enum ContainerBorderLineStyle {
 interface Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -97,7 +97,7 @@ interface Widget {
 type Checkbox implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -113,7 +113,7 @@ type CheckboxStyle {
 type List implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -134,14 +134,14 @@ type ListItem {
   id: ID!
   label: String!
   kind: String!
-  imageURL: String!
+  iconURL: [String!]!
   deletable: Boolean!
 }
 
 type MultiSelect implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -163,7 +163,7 @@ type MultiSelectStyle {
 type Radio implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -189,7 +189,7 @@ type RadioStyle {
 type Select implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -201,7 +201,7 @@ type Select implements Widget {
 type SelectOption {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
 }
 
 type SelectStyle {
@@ -217,7 +217,7 @@ type SelectStyle {
 type Textarea implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -239,7 +239,7 @@ type TextareaStyle {
 type Textfield implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -261,7 +261,7 @@ type TextfieldStyle {
 type LabelWidget implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -281,7 +281,7 @@ type LabelWidgetStyle {
 type Link implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -301,7 +301,7 @@ type LinkStyle {
 type Button implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   buttonLabel: String
@@ -323,7 +323,7 @@ type ButtonStyle {
 type ToolbarAction implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   buttonLabel: String
@@ -337,7 +337,7 @@ union Chart = BarChart | PieChart
 type ChartWidget implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -347,7 +347,7 @@ type ChartWidget implements Widget {
 type FlexboxContainer implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -361,7 +361,7 @@ type FlexboxContainer implements Widget {
 type TreeWidget implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -374,14 +374,14 @@ type TreeNode {
   parentId: ID
   label: String!
   kind: String!
-  imageURL: String!
+  iconURL: [String!]!
   selectable: Boolean!
 }
 
 type Image implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -392,7 +392,7 @@ type Image implements Widget {
 type RichText implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!

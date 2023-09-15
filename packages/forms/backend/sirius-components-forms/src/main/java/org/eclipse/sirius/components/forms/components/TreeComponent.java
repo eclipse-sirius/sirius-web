@@ -57,7 +57,7 @@ public class TreeComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = treeDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = treeDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = treeDescription.getIconURLProvider().apply(variableManager);
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(treeDescription, variableManager)));
 
         // Compute the recursive structure of semantic elements
@@ -117,16 +117,14 @@ public class TreeComponent implements IComponent {
         String nodeId = treeDescription.getNodeIdProvider().apply(variableManager);
         String nodeLabel = treeDescription.getNodeLabelProvider().apply(variableManager);
         String nodeKind = treeDescription.getNodeKindProvider().apply(variableManager);
-        String nodeImageURL = treeDescription.getNodeImageURLProvider().apply(variableManager);
+        List<String> nodeIconURL = treeDescription.getNodeIconURLProvider().apply(variableManager);
         boolean nodeSelectable = treeDescription.getNodeSelectableProvider().apply(variableManager);
-        // @formatter:off
         return TreeNode.newTreeNode(nodeId)
                 .parentId(parentId)
                 .label(nodeLabel)
                 .kind(nodeKind)
-                .imageURL(nodeImageURL)
+                .iconURL(nodeIconURL)
                 .selectable(nodeSelectable)
                 .build();
-        // @formatter:on
     }
 }

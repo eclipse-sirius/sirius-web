@@ -368,7 +368,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(TOOL_LABEL)
-                .imageURL(TOOL_IMAGE_URL)
+                .iconURL(List.of(TOOL_IMAGE_URL))
                 .targetDescriptions(diagramElementsDescriptions)
                 .selectionDescriptionId(null)
                 .handler(variableManager -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of()))
@@ -382,7 +382,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         var labelStyle = LabelStyle.newLabelStyle()
                 .color("#000001")
                 .fontSize(16)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
         var label = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type("labelType")
@@ -423,7 +423,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .build();
 
         var labelDescription = LabelDescription.newLabelDescription("labelDescription")
@@ -457,7 +457,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         var labelStyle = LabelStyle.newLabelStyle()
                 .color("#000002")
                 .fontSize(14)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         var label = Label.newLabel(UUID.randomUUID().toString())

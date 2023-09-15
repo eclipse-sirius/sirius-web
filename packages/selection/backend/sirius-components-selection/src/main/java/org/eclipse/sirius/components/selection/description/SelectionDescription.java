@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, String> messageProvider;
 
@@ -52,6 +52,10 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private SelectionDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newSelectionDescription(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -76,7 +80,7 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.targetObjectIdProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -97,10 +101,6 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.canCreatePredicate;
     }
 
-    public static Builder newSelectionDescription(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -114,7 +114,8 @@ public final class SelectionDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
@@ -124,7 +125,7 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
-        private Function<VariableManager, String> iconURLProvider;
+        private Function<VariableManager, List<String>> iconURLProvider;
 
         private Function<VariableManager, String> messageProvider;
 
@@ -158,7 +159,7 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

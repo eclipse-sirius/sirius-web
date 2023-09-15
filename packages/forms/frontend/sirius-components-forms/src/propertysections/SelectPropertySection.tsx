@@ -17,8 +17,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import { useContext, useEffect, useState } from 'react';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditSelectMutationData,
@@ -29,7 +30,6 @@ import {
   SelectPropertySectionProps,
   SelectStyleProps,
 } from './SelectPropertySection.types';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 const useStyle = makeStyles<Theme, SelectStyleProps>((theme) => ({
   style: {
@@ -40,12 +40,18 @@ const useStyle = makeStyles<Theme, SelectStyleProps>((theme) => ({
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
-  icon: {
+  iconRoot: {
+    minWidth: theme.spacing(3),
+  },
+  iconContainer: {
+    position: 'relative',
     width: '16px',
     height: '16px',
   },
-  iconRoot: {
-    minWidth: theme.spacing(3),
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
 }));
 
@@ -229,9 +235,20 @@ export const SelectPropertySection = ({
                   }
                 : {}
             }>
-            {option.iconURL && (
+            {option.iconURL.length > 0 && (
               <ListItemIcon className={classes.iconRoot}>
-                <img className={classes.icon} alt={option.label} src={httpOrigin + option.iconURL} />
+                <div className={classes.iconContainer}>
+                  {option.iconURL.map((icon, index) => (
+                    <img
+                      height="16"
+                      width="16"
+                      key={index}
+                      alt={option.label}
+                      src={httpOrigin + icon}
+                      className={classes.icon}
+                      style={{ zIndex: index }}></img>
+                  ))}
+                </div>
               </ListItemIcon>
             )}
 

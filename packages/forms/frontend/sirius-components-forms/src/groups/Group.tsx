@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { useContext, useEffect, useState } from 'react';
@@ -71,6 +71,14 @@ const useGroupStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
   },
   buttonIcon: {
     marginRight: theme.spacing(1),
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
   },
 }));
 
@@ -94,14 +102,20 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
         {group.widgets.map((widget) => {
           return (
             <ToggleButton className={classes.button} value={widget.id} key={widget.id}>
-              {widget.iconURL && (
-                <img
-                  className={classes.buttonIcon}
-                  height="16"
-                  width="16"
-                  alt={widget.label}
-                  src={httpOrigin + widget.iconURL}
-                />
+              {widget.iconURL.length > 0 && (
+                <div className={classes.iconContainer}>
+                  {widget.iconURL.map((icon, index) => (
+                    <img
+                      height="16"
+                      width="16"
+                      key={index}
+                      alt={widget.label}
+                      src={httpOrigin + icon}
+                      className={classes.buttonIcon}
+                      style={{ zIndex: index }}
+                    />
+                  ))}
+                </div>
               )}
               {widget.label}
             </ToggleButton>

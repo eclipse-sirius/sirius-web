@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -36,10 +37,14 @@ public final class LabelStyle {
 
     private boolean strikeThrough;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private LabelStyle() {
         // Prevent instantiation
+    }
+
+    public static Builder newLabelStyle() {
+        return new Builder();
     }
 
     public int getFontSize() {
@@ -66,12 +71,8 @@ public final class LabelStyle {
         return this.color;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
-    }
-
-    public static Builder newLabelStyle() {
-        return new Builder();
     }
 
     /**
@@ -94,7 +95,7 @@ public final class LabelStyle {
 
         private boolean strikeThrough;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private Builder() {
         }
@@ -129,7 +130,7 @@ public final class LabelStyle {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

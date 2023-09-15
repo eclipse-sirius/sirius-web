@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram.providers.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 
 /**
@@ -20,7 +22,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
  * @author sbegaudeau
  */
 public interface IViewToolImageProvider {
-    String getImage(DiagramElementDescription diagramElementDescription);
+
+    List<String> getIcon(DiagramElementDescription diagramElementDescription);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -30,8 +33,8 @@ public interface IViewToolImageProvider {
     class NoOp implements IViewToolImageProvider {
 
         @Override
-        public String getImage(DiagramElementDescription diagramElementDescription) {
-            return "";
+        public List<String> getIcon(DiagramElementDescription diagramElementDescription) {
+            return List.of();
         }
 
     }

@@ -16,7 +16,7 @@ import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLList, GQLListItem } from '../../form/FormEventFragments.types';
-import { ListPropertySection, clickListItemMutation } from '../ListPropertySection';
+import { clickListItemMutation, ListPropertySection } from '../ListPropertySection';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -32,27 +32,27 @@ const defaultListItems: GQLListItem[] = [
     id: 'item1',
     label: 'item1Label',
     kind: 'itemKind',
-    imageURL: '',
+    iconURL: [],
     deletable: true,
   },
   {
     id: 'item2',
     label: 'item2Label',
     kind: 'itemKind',
-    imageURL: '',
+    iconURL: [],
     deletable: true,
   },
   {
     id: 'item3',
     label: 'item3Label',
     kind: 'itemKind',
-    imageURL: '',
+    iconURL: [],
     deletable: true,
   },
 ];
 const defaultList: GQLList = {
   label: 'myList',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   items: defaultListItems,
   style: null,
@@ -63,7 +63,7 @@ const defaultList: GQLList = {
 
 const defaultListWithStyle: GQLList = {
   label: 'myList',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   items: defaultListItems,
   style: {
@@ -81,7 +81,7 @@ const defaultListWithStyle: GQLList = {
 
 const readOnlyList: GQLList = {
   label: 'myList',
-  iconURL: null,
+  iconURL: [],
   items: defaultListItems,
   style: null,
   __typename: 'List',

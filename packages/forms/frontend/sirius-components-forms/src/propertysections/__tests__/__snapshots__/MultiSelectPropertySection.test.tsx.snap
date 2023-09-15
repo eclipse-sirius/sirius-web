@@ -7,7 +7,7 @@ exports[`should render a readOnly multiselect from widget properties 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-33"
+        class="makeStyles-propertySectionLabel-38"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -15,7 +15,7 @@ exports[`should render a readOnly multiselect from widget properties 1`] = `
           MultiSelectLabel
         </h6>
         <div
-          class="makeStyles-subscribers-34"
+          class="makeStyles-subscribers-39"
         />
       </div>
       <div
@@ -64,7 +64,7 @@ exports[`should render the multiSelect help hint 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-26"
+        class="makeStyles-propertySectionLabel-30"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -84,7 +84,7 @@ exports[`should render the multiSelect help hint 1`] = `
           />
         </svg>
         <div
-          class="makeStyles-subscribers-27"
+          class="makeStyles-subscribers-31"
         />
       </div>
       <div
@@ -133,7 +133,7 @@ exports[`should render the multiSelect with empty style 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-19"
+        class="makeStyles-propertySectionLabel-22"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -141,7 +141,7 @@ exports[`should render the multiSelect with empty style 1`] = `
           MultiSelectLabel
         </h6>
         <div
-          class="makeStyles-subscribers-20"
+          class="makeStyles-subscribers-23"
         />
       </div>
       <div
@@ -150,7 +150,7 @@ exports[`should render the multiSelect with empty style 1`] = `
       >
         <div
           aria-haspopup="listbox"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-15 makeStyles-style-18"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-17 makeStyles-style-21"
           role="button"
           tabindex="0"
         >
@@ -190,7 +190,7 @@ exports[`should render the multiSelect with style 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-12"
+        class="makeStyles-propertySectionLabel-14"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -198,7 +198,7 @@ exports[`should render the multiSelect with style 1`] = `
           MultiSelectLabel
         </h6>
         <div
-          class="makeStyles-subscribers-13"
+          class="makeStyles-subscribers-15"
         />
       </div>
       <div
@@ -207,7 +207,7 @@ exports[`should render the multiSelect with style 1`] = `
       >
         <div
           aria-haspopup="listbox"
-          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-8 makeStyles-style-11"
+          class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input makeStyles-style-9 makeStyles-style-13"
           role="button"
           tabindex="0"
         >
@@ -247,7 +247,7 @@ exports[`should render the multiSelect without style 1`] = `
       class="MuiFormControl-root"
     >
       <div
-        class="makeStyles-propertySectionLabel-5"
+        class="makeStyles-propertySectionLabel-6"
       >
         <h6
           class="MuiTypography-root MuiTypography-subtitle2"
@@ -255,7 +255,7 @@ exports[`should render the multiSelect without style 1`] = `
           MultiSelectLabel
         </h6>
         <div
-          class="makeStyles-subscribers-6"
+          class="makeStyles-subscribers-7"
         />
       </div>
       <div

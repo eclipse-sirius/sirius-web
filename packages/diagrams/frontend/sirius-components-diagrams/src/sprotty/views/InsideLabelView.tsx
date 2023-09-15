@@ -14,6 +14,7 @@
 /** @jsxRuntime classic */
 import { setAttr, setNamespace, SLabelView, svg } from 'sprotty';
 import { getSubType } from 'sprotty-protocol';
+
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 /**
@@ -80,7 +81,27 @@ export class InsideLabelView extends SLabelView {
 
     const foreignObjectContents = (
       <div style={textStyle}>
-        {iconURL ? <img height="16" width="16" alt="" style={{ marginRight: '4px' }} src={iconURL} /> : ''}
+        {iconURL.length > 0 ? (
+          <div
+            style={{
+              position: 'relative',
+              width: '16px',
+              height: '16px',
+            }}>
+            {iconURL.map((icon, index) => (
+              <img
+                height="16"
+                width="16"
+                key={index}
+                alt={label.text}
+                style={{ position: 'absolute', top: 0, left: 0, marginRight: '4px', zIndex: index }}
+                src={icon}
+              />
+            ))}
+          </div>
+        ) : (
+          ''
+        )}
         {label.text}
       </div>
     );

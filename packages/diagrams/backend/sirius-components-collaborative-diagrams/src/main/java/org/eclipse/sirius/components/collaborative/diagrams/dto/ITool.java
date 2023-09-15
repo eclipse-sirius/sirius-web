@@ -12,13 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
+
 /**
  * Interface implemented by all tools.
  *
  * @author mcharfadi
  */
 public interface ITool {
+
     String id();
+
     String label();
-    String imageURL();
+
+    List<String> iconURL();
 }

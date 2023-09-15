@@ -54,6 +54,7 @@ import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
  * @author fbarbin
  */
 public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optional<VariableManager>> {
+
     private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
 
     private final IDiagramContext diagramContext;
@@ -71,20 +72,14 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
     /**
      * Default constructor.
      *
-     * @param variableManager
-     *            the current {@link VariableManager}.
-     * @param interpreter
-     *            the {@link AQLInterpreter}.
-     * @param objectService
-     *            the {@link IObjectService}.
-     * @param editService
-     *            the {@link IEditService}.
-     * @param diagramContext
-     *            the {@link IDiagramContext} (optional).
-     * @param operationInterpreter
-     *            the {@link IOperationInterpreter} used for delegating sub operations executions. It is the
-     *            responsibility of the {@link IOperationInterpreter} to delegate each operation execution to the
-     *            appropriate switch according to the concrete representation.
+     * @param variableManager      the current {@link VariableManager}.
+     * @param interpreter          the {@link AQLInterpreter}.
+     * @param objectService        the {@link IObjectService}.
+     * @param editService          the {@link IEditService}.
+     * @param diagramContext       the {@link IDiagramContext} (optional).
+     * @param operationInterpreter the {@link IOperationInterpreter} used for delegating sub operations executions. It is the
+     *                             responsibility of the {@link IOperationInterpreter} to delegate each operation execution to the
+     *                             appropriate switch according to the concrete representation.
      */
     public DiagramOperationInterpreterViewSwitch(VariableManager variableManager, AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IOperationInterpreter operationInterpreter) {
@@ -170,12 +165,12 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
         // future, we can create a fake node which will have the proper id in order to let the specifier
         // use nested create view model operations. The specifier should not try to do anything else
         // than that with this returned node.
-        var nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), nodeContainmentKind, targetObjectId);
+        var nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId(), nodeContainmentKind, targetObjectId);
 
         var labelStyle = LabelStyle.newLabelStyle()
                 .color("")
                 .fontSize(14)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         var insideLabel = InsideLabel.newLabel("")

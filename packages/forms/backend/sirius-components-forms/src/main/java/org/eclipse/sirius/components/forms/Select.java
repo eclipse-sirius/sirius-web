@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Select extends AbstractWidget {
+
     private List<SelectOption> options;
 
     private String value;
@@ -39,6 +40,10 @@ public final class Select extends AbstractWidget {
 
     private Select() {
         // Prevent instantiation
+    }
+
+    public static Builder newSelect(String id) {
+        return new Builder(id);
     }
 
     public List<SelectOption> getOptions() {
@@ -57,10 +62,6 @@ public final class Select extends AbstractWidget {
         return this.style;
     }
 
-    public static Builder newSelect(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, options: {4}'}'";
@@ -74,11 +75,12 @@ public final class Select extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private List<SelectOption> options;
 
@@ -103,7 +105,7 @@ public final class Select extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -147,7 +149,7 @@ public final class Select extends AbstractWidget {
             Select select = new Select();
             select.id = Objects.requireNonNull(this.id);
             select.label = Objects.requireNonNull(this.label);
-            select.iconURL = this.iconURL; // Optional on purpose
+            select.iconURL = Objects.requireNonNull(this.iconURL);
             select.options = Objects.requireNonNull(this.options);
             select.value = this.value;
             select.newValueHandler = Objects.requireNonNull(this.newValueHandler);

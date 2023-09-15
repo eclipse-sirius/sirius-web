@@ -128,7 +128,7 @@ public class MappingConverterTests {
         Boolean isUnderline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         Boolean isStrikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
-        String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
         assertThat(text).isEqualTo("secondConditionalStyle");
         assertThat(fontSize).isEqualTo(6);
@@ -137,7 +137,8 @@ public class MappingConverterTests {
         assertThat(isUnderline).isTrue();
         assertThat(isStrikeThrough).isTrue();
         assertThat(color).isEqualTo("#020202");
-        assertThat(iconURL).isEqualTo(ICON_PATH);
+        assertThat(iconURL).hasSize(1);
+        assertThat(iconURL.get(0)).isEqualTo(ICON_PATH);
     }
 
     /**
@@ -184,7 +185,7 @@ public class MappingConverterTests {
         assertThat(convertedNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_RECTANGLE);
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(RectangularNodeStyle.class);
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).asInstanceOf(InstanceOfAssertFactories.type(RectangularNodeStyle.class))
-        .matches(RectangularNodeStyle::isWithHeader);
+                .matches(RectangularNodeStyle::isWithHeader);
 
         assertThat(convertedNodeDescription.getChildNodeDescriptions()).hasSize(1);
         NodeDescription subNodeDescription = convertedNodeDescription.getChildNodeDescriptions().get(0);
@@ -256,7 +257,7 @@ public class MappingConverterTests {
         Boolean isUnderline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         Boolean isStrikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
-        String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
         assertThat(text).isEqualTo("secondConditionalStyle");
         assertThat(fontSize).isEqualTo(6);
@@ -265,7 +266,8 @@ public class MappingConverterTests {
         assertThat(isUnderline).isTrue();
         assertThat(isStrikeThrough).isTrue();
         assertThat(color).isEqualTo("#020202");
-        assertThat(iconURL).isEqualTo(ICON_PATH);
+        assertThat(iconURL).hasSize(1);
+        assertThat(iconURL.get(0)).isEqualTo(ICON_PATH);
     }
 
     private FixedColor getColor(int red, int green, int blue) {

@@ -19,6 +19,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.domain.Relation;
  * @generated
  */
 public class EntityItemProvider extends NamedElementItemProvider {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -123,6 +125,11 @@ public class EntityItemProvider extends NamedElementItemProvider {
      */
     @Override
     public Object getImage(Object object) {
+        Entity entity = (Entity) object;
+        if (entity.isAbstract()) {
+            return new ComposedImage(List.of(this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Entity.svg")), this.getResourceLocator()
+                    .getImage("full/obj16/Abstract.svg")));
+        }
         return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Entity.svg"));
     }
 
@@ -160,13 +167,13 @@ public class EntityItemProvider extends NamedElementItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Entity.class)) {
-        case DomainPackage.ENTITY__ABSTRACT:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case DomainPackage.ENTITY__ATTRIBUTES:
-        case DomainPackage.ENTITY__RELATIONS:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
+            case DomainPackage.ENTITY__ABSTRACT:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            case DomainPackage.ENTITY__ATTRIBUTES:
+            case DomainPackage.ENTITY__RELATIONS:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+                return;
         }
         super.notifyChanged(notification);
     }
@@ -189,8 +196,7 @@ public class EntityItemProvider extends NamedElementItemProvider {
         Relation newRelation = DomainFactory.eINSTANCE.createRelation();
         newRelation.setName("relation");
         newRelation.setMany(true);
-        if (object instanceof Entity) {
-            Entity owner = (Entity) object;
+        if (object instanceof Entity owner) {
             newRelation.setTargetType(owner);
         }
         newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__RELATIONS, newRelation));

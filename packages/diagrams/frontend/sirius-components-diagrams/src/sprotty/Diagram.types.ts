@@ -55,6 +55,7 @@ export class ImageNodeStyle implements INodeStyle {
   borderStyle: LineStyle;
   opacity: number;
 }
+
 export class ParametricSVGNodeStyle implements INodeStyle {
   svgURL: string;
   borderColor: string;
@@ -64,6 +65,7 @@ export class ParametricSVGNodeStyle implements INodeStyle {
   backgroundColor: string;
   opacity: number;
 }
+
 export class RectangularNodeStyle implements INodeStyle {
   color: string;
   borderColor: string;
@@ -148,7 +150,7 @@ export class LabelStyle {
   bold: boolean;
   color: string;
   fontSize: number;
-  iconURL: string;
+  iconURL: string[];
   italic: boolean;
   strikeThrough: boolean;
   underline: boolean;

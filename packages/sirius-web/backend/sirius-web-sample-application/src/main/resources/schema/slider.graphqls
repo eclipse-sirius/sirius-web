@@ -3,7 +3,7 @@ type Slider implements Widget {
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   readOnly: Boolean!
   minValue: Int!
   maxValue: Int!

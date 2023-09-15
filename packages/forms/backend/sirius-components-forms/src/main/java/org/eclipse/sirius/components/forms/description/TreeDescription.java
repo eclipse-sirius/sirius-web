@@ -32,7 +32,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, String> nodeIdProvider;
 
@@ -40,7 +40,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> nodeKindProvider;
 
-    private Function<VariableManager, String> nodeImageURLProvider;
+    private Function<VariableManager, List<String>> nodeIconURLProvider;
 
     private Function<VariableManager, Boolean> nodeSelectableProvider;
 
@@ -52,6 +52,10 @@ public final class TreeDescription extends AbstractWidgetDescription {
         // Prevent instantiation
     }
 
+    public static Builder newTreeDescription(String id) {
+        return new Builder(id);
+    }
+
     public Function<VariableManager, String> getIdProvider() {
         return this.idProvider;
     }
@@ -60,7 +64,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -80,8 +84,8 @@ public final class TreeDescription extends AbstractWidgetDescription {
         return this.nodeKindProvider;
     }
 
-    public Function<VariableManager, String> getNodeImageURLProvider() {
-        return this.nodeImageURLProvider;
+    public Function<VariableManager, List<String>> getNodeIconURLProvider() {
+        return this.nodeIconURLProvider;
     }
 
     public Function<VariableManager, Boolean> getNodeSelectableProvider() {
@@ -90,10 +94,6 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, List<String>> getExpandedNodeIdsProvider() {
         return this.expandedNodeIdsProvider;
-    }
-
-    public static Builder newTreeDescription(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -110,18 +110,12 @@ public final class TreeDescription extends AbstractWidgetDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
-
-        private Function<VariableManager, String> idProvider;
-
-        private Function<VariableManager, String> targetObjectIdProvider;
-
-        private Function<VariableManager, String> labelProvider;
-
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
-
         private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
-
+        private final String id;
+        private Function<VariableManager, String> idProvider;
+        private Function<VariableManager, String> targetObjectIdProvider;
+        private Function<VariableManager, String> labelProvider;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
         private Function<VariableManager, List<?>> childrenProvider;
 
         private Function<VariableManager, String> nodeIdProvider;
@@ -130,7 +124,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> nodeKindProvider;
 
-        private Function<VariableManager, String> nodeImageURLProvider;
+        private Function<VariableManager, List<String>> nodeIconURLProvider;
 
         private Function<VariableManager, Boolean> nodeSelectableProvider;
 
@@ -163,7 +157,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
@@ -188,8 +182,8 @@ public final class TreeDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder nodeImageURLProvider(Function<VariableManager, String> nodeImageURLProvider) {
-            this.nodeImageURLProvider = Objects.requireNonNull(nodeImageURLProvider);
+        public Builder nodeIconURLProvider(Function<VariableManager, List<String>> nodeIconURLProvider) {
+            this.nodeIconURLProvider = Objects.requireNonNull(nodeIconURLProvider);
             return this;
         }
 
@@ -235,7 +229,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
             treeDescription.nodeIdProvider = Objects.requireNonNull(this.nodeIdProvider);
             treeDescription.nodeLabelProvider = Objects.requireNonNull(this.nodeLabelProvider);
             treeDescription.nodeKindProvider = Objects.requireNonNull(this.nodeKindProvider);
-            treeDescription.nodeImageURLProvider = Objects.requireNonNull(this.nodeImageURLProvider);
+            treeDescription.nodeIconURLProvider = Objects.requireNonNull(this.nodeIconURLProvider);
             treeDescription.nodeSelectableProvider = Objects.requireNonNull(this.nodeSelectableProvider);
             treeDescription.expandedNodeIdsProvider = Objects.requireNonNull(this.expandedNodeIdsProvider);
             treeDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

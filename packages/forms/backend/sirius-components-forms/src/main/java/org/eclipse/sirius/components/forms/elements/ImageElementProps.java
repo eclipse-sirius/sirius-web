@@ -28,13 +28,14 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class ImageElementProps implements IProps {
+
     public static final String TYPE = "Image";
 
     private String id;
 
     private String label;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private Supplier<String> helpTextProvider;
 
@@ -48,6 +49,10 @@ public final class ImageElementProps implements IProps {
         // Prevent instantiation
     }
 
+    public static Builder newImageElementProps(String id) {
+        return new Builder(id);
+    }
+
     public String getId() {
         return this.id;
     }
@@ -56,7 +61,7 @@ public final class ImageElementProps implements IProps {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 
@@ -77,10 +82,6 @@ public final class ImageElementProps implements IProps {
         return this.children;
     }
 
-    public static Builder newImageElementProps(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, url: {3}'}'";
@@ -94,11 +95,12 @@ public final class ImageElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private Supplier<String> helpTextProvider;
 
@@ -117,7 +119,7 @@ public final class ImageElementProps implements IProps {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

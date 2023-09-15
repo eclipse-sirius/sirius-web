@@ -29,11 +29,12 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class ButtonDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, String> buttonLabelProvider;
 
@@ -47,6 +48,10 @@ public final class ButtonDescription extends AbstractWidgetDescription {
         // Prevent instantiation
     }
 
+    public static Builder newButtonDescription(String id) {
+        return new Builder(id);
+    }
+
     public Function<VariableManager, String> getIdProvider() {
         return this.idProvider;
     }
@@ -55,7 +60,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -75,10 +80,6 @@ public final class ButtonDescription extends AbstractWidgetDescription {
         return this.styleProvider;
     }
 
-    public static Builder newButtonDescription(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -93,7 +94,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private Function<VariableManager, String> idProvider;
 
@@ -101,7 +102,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
@@ -140,7 +141,7 @@ public final class ButtonDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

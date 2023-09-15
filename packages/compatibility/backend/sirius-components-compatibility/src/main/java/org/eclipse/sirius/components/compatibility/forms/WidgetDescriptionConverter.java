@@ -278,7 +278,7 @@ public class WidgetDescriptionConverter {
                 .optionsProvider(optionsProvider)
                 .optionIdProvider(optionIdProvider)
                 .optionLabelProvider(optionLabelProvider)
-                .optionIconURLProvider(vm -> "")
+                .optionIconURLProvider(vm -> List.of())
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(object -> "")

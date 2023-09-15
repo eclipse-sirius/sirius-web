@@ -15,15 +15,16 @@ import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { MouseEvent, useContext, useEffect } from 'react';
 import { GQLListItem } from '../form/FormEventFragments.types';
+import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
   GQLClickListItemMutationData,
   GQLClickListItemMutationVariables,
@@ -35,7 +36,6 @@ import {
   ListStyleProps,
 } from './ListPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
-import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { useClickHandler } from './useClickHandler';
 
 export const deleteListItemMutation = gql`
@@ -84,11 +84,6 @@ const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) =
     flexDirection: 'row',
     alignItems: 'center',
   },
-  icon: {
-    width: '16px',
-    height: '16px',
-    marginRight: theme.spacing(2),
-  },
   canBeSelectedItem: {
     '&:hover': {
       textDecoration: 'underline',
@@ -105,6 +100,17 @@ const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) =
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     flexGrow: 1,
+  },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+    marginRight: theme.spacing(2),
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
 }));
 
@@ -138,7 +144,7 @@ export const ListPropertySection = ({
   if (items.length === 0) {
     items.push({
       id: NONE_WIDGET_ITEM_ID,
-      imageURL: '',
+      iconURL: [],
       label: 'None',
       kind: 'Unknown',
       deletable: false,
@@ -232,8 +238,20 @@ export const ListPropertySection = ({
   const getTableCellContent = (item: GQLListItem): JSX.Element => {
     return (
       <>
-        {item.imageURL ? (
-          <img className={classes.icon} width="16" height="16" alt={''} src={httpOrigin + item.imageURL} />
+        {item.iconURL.length > 0 ? (
+          <div className={classes.iconContainer}>
+            {item.iconURL.map((icon, index) => (
+              <img
+                height="16"
+                width="16"
+                key={index}
+                alt={item.label}
+                src={httpOrigin + icon}
+                className={classes.icon}
+                style={{ zIndex: index }}
+              />
+            ))}
+          </div>
         ) : null}
         <Typography
           className={`${readOnly || widget.readOnly ? '' : classes.canBeSelectedItem} ${classes.style}`}

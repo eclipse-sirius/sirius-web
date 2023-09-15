@@ -34,6 +34,7 @@ import org.springframework.stereotype.Service;
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class DiagramElementExportService {
+
     private final IImageRegistry imageRegistry;
 
     public DiagramElementExportService(IImageRegistry imageRegistry) {
@@ -67,7 +68,7 @@ public class DiagramElementExportService {
         labelExport.append(">");
 
         if (!(style.getIconURL().isEmpty())) {
-            labelExport.append(this.exportImageElement(style.getIconURL(), -20, -12, Optional.empty(), 1));
+            style.getIconURL().forEach(icon -> labelExport.append(this.exportImageElement(icon, -20, -12, Optional.empty(), 1)));
         }
 
         labelExport.append(this.exportTextElement(label.getText(), label.getType(), style));
@@ -94,7 +95,7 @@ public class DiagramElementExportService {
         labelExport.append(">");
 
         if (!(style.getIconURL().isEmpty())) {
-            labelExport.append(this.exportImageElement(style.getIconURL(), -20, -12, Optional.empty(), 1));
+            style.getIconURL().forEach(icon -> labelExport.append(this.exportImageElement(icon, -20, -12, Optional.empty(), 1)));
         }
 
         labelExport.append(this.exportTextElement(text, type, style));
@@ -139,8 +140,7 @@ public class DiagramElementExportService {
     /**
      * Export the g element containing the position of a diagram element.
      *
-     * @param node
-     *            The diagram element
+     * @param node The diagram element
      * @return The g element containing its position
      */
     public StringBuilder exportGNodeElement(Node node) {
@@ -232,16 +232,20 @@ public class DiagramElementExportService {
         textExport.append("\">");
 
         if (!(labelStyle.getIconURL().isEmpty())) {
-            UUID symbolId = this.imageRegistry.registerImage(labelStyle.getIconURL());
-            if (symbolId != null) {
-                StringBuilder image = this.imageRegistry.getImage(symbolId);
-                textExport.append("<img ");
-                textExport.append("src=\"").append(image).append("\" ");
-                textExport.append("width=\"16\" ");
-                textExport.append("height=\"16\" ");
-                textExport.append("style=\"margin-right: 4px;\"");
-                textExport.append("/>");
-            }
+            textExport.append("<div> ");
+            labelStyle.getIconURL().forEach(icon -> {
+                UUID symbolId = this.imageRegistry.registerImage(icon);
+                if (symbolId != null) {
+                    StringBuilder image = this.imageRegistry.getImage(symbolId);
+                    textExport.append("<img ");
+                    textExport.append("src=\"").append(image).append("\" ");
+                    textExport.append("width=\"16\" ");
+                    textExport.append("height=\"16\" ");
+                    textExport.append("style=\"margin-right: 4px;\"");
+                    textExport.append("/>");
+                }
+            });
+            textExport.append("</div>");
         }
 
         textExport.append(text);

@@ -35,8 +35,8 @@ import {
   SchemaValue,
   SelectionDialogContext,
   SelectionDialogEvent,
-  ShowToastEvent,
   selectionDialogMachine,
+  ShowToastEvent,
 } from './SelectionDialogMachine';
 import { GQLSelectionEventSubscription } from './SelectionEvent.types';
 
@@ -67,6 +67,16 @@ const useSelectionObjectModalStyles = makeStyles((_theme) =>
       position: 'relative',
       overflow: 'auto',
       maxHeight: 300,
+    },
+    iconContainer: {
+      position: 'relative',
+      width: '24px',
+      height: '24px',
+    },
+    icon: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
     },
   })
 );
@@ -151,13 +161,20 @@ export const SelectionDialog = ({
                 onClick={() => handleListItemClick(selectionObject.id)}
                 data-testid={selectionObject.label}>
                 <ListItemIcon>
-                  {selectionObject.iconURL ? (
-                    <img
-                      height="24"
-                      width="24"
-                      alt={selectionObject.label}
-                      src={httpOrigin + selectionObject.iconURL}
-                    />
+                  {selectionObject.iconURL.length > 0 ? (
+                    <div className={classes.iconContainer}>
+                      {selectionObject.iconURL.map((icon, index) => (
+                        <img
+                          height="24"
+                          width="24"
+                          key={index}
+                          alt={selectionObject.label}
+                          src={httpOrigin + icon}
+                          className={classes.icon}
+                          style={{ zIndex: index }}
+                        />
+                      ))}
+                    </div>
                   ) : (
                     <CropDinIcon style={{ fontSize: 24 }} />
                   )}

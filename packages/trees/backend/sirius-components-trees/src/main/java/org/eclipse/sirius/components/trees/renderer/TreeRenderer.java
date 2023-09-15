@@ -30,9 +30,9 @@ public class TreeRenderer {
 
     public static final String EXPANDED = "expanded";
 
-    private VariableManager variableManager;
+    private final VariableManager variableManager;
 
-    private TreeDescription treeDescription;
+    private final TreeDescription treeDescription;
 
     public TreeRenderer(VariableManager variableManager, TreeDescription treeDescription) {
         this.variableManager = Objects.requireNonNull(variableManager);
@@ -51,13 +51,11 @@ public class TreeRenderer {
             childrenItems.add(this.renderTreeItem(rootElementVariableManager));
         }
 
-        // @formatter:off
         return Tree.newTree(treeId)
                 .descriptionId(this.treeDescription.getId())
                 .label(label)
                 .children(childrenItems)
                 .build();
-        // @formatter:on
     }
 
     private TreeItem renderTreeItem(VariableManager treeItemVariableManager) {
@@ -67,7 +65,7 @@ public class TreeRenderer {
         boolean editable = this.treeDescription.getEditableProvider().apply(treeItemVariableManager);
         boolean deletable = this.treeDescription.getDeletableProvider().apply(treeItemVariableManager);
         boolean selectable = this.treeDescription.getSelectableProvider().apply(treeItemVariableManager);
-        String imageURL = this.treeDescription.getImageURLProvider().apply(treeItemVariableManager);
+        List<String> iconURL = this.treeDescription.getIconURLProvider().apply(treeItemVariableManager);
         Boolean hasChildren = this.treeDescription.getHasChildrenProvider().apply(treeItemVariableManager);
 
         List<?> children = this.treeDescription.getChildrenProvider().apply(treeItemVariableManager);
@@ -79,19 +77,16 @@ public class TreeRenderer {
             childVariableManager.put(VariableManager.SELF, child);
             childrenTreeItems.add(this.renderTreeItem(childVariableManager));
         }
-
-        // @formatter:off
         return TreeItem.newTreeItem(id)
                 .kind(kind)
                 .label(label)
                 .editable(editable)
                 .deletable(deletable)
                 .selectable(selectable)
-                .imageURL(imageURL)
+                .iconURL(iconURL)
                 .children(childrenTreeItems)
                 .hasChildren(hasChildren)
                 .expanded(expanded)
                 .build();
-        // @formatter:on
     }
 }

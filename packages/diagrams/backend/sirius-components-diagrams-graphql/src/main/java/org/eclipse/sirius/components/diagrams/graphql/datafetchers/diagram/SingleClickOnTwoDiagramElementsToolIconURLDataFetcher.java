@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -24,18 +27,18 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = "SingleClickOnTwoDiagramElementsTool", field = "imageURL")
-public class SingleClickOnTwoDiagramElementsToolImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+@QueryDataFetcher(type = "SingleClickOnTwoDiagramElementsTool", field = "iconURL")
+public class SingleClickOnTwoDiagramElementsToolIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     @Override
-    public String get(DataFetchingEnvironment environment) throws Exception {
-        String url = "";
+    public List<String> get(DataFetchingEnvironment environment) throws Exception {
+        List<String> iconURL = new ArrayList<>();
         Object source = environment.getSource();
         if (source instanceof org.eclipse.sirius.components.diagrams.tools.ITool tool) {
-            url = URLConstants.IMAGE_BASE_PATH + tool.getImageURL();
+            iconURL = tool.getIconURL();
         } else if (source instanceof ITool tool) {
-            url = URLConstants.IMAGE_BASE_PATH + tool.imageURL();
+            iconURL = tool.iconURL();
         }
-        return url;
+        return iconURL.stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
     }
 }

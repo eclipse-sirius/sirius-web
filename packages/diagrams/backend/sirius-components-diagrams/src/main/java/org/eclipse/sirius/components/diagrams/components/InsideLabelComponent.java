@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,7 +60,7 @@ public class InsideLabelComponent implements IComponent {
         Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
-        String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
         InsideLabelLocation insideLabelLocation = InsideLabelLocation.TOP_CENTER;
         Position position = optionalPreviousInsideLabel.map(InsideLabel::getPosition).orElse(Position.UNDEFINED);

@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class TreeDescription implements IRepresentationDescription {
+
     private String id;
 
     private String label;
@@ -43,7 +44,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> imageURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, Boolean> editableProvider;
 
@@ -65,6 +66,10 @@ public final class TreeDescription implements IRepresentationDescription {
 
     private TreeDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newTreeDescription(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -93,8 +98,8 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getImageURLProvider() {
-        return this.imageURLProvider;
+    public Function<VariableManager, List<String>> getIconURLProvider() {
+        return this.iconURLProvider;
     }
 
     public Function<VariableManager, Boolean> getEditableProvider() {
@@ -108,7 +113,6 @@ public final class TreeDescription implements IRepresentationDescription {
     public Function<VariableManager, Boolean> getSelectableProvider() {
         return this.selectableProvider;
     }
-
 
     public Function<VariableManager, List<?>> getElementsProvider() {
         return this.elementsProvider;
@@ -135,10 +139,6 @@ public final class TreeDescription implements IRepresentationDescription {
         return this.renameHandler;
     }
 
-    public static Builder newTreeDescription(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -152,7 +152,8 @@ public final class TreeDescription implements IRepresentationDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
@@ -164,7 +165,7 @@ public final class TreeDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> imageURLProvider;
+        private Function<VariableManager, List<String>> iconURLProvider;
 
         private Function<VariableManager, Boolean> editableProvider;
 
@@ -213,8 +214,8 @@ public final class TreeDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder imageURLProvider(Function<VariableManager, String> imageURLProvider) {
-            this.imageURLProvider = Objects.requireNonNull(imageURLProvider);
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
+            this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
 
@@ -271,7 +272,7 @@ public final class TreeDescription implements IRepresentationDescription {
             treeDescription.treeItemIdProvider = Objects.requireNonNull(this.treeItemIdProvider);
             treeDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             treeDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
-            treeDescription.imageURLProvider = Objects.requireNonNull(this.imageURLProvider);
+            treeDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             treeDescription.editableProvider = Objects.requireNonNull(this.editableProvider);
             treeDescription.deletableProvider = Objects.requireNonNull(this.deletableProvider);
             treeDescription.selectableProvider = Objects.requireNonNull(this.selectableProvider);

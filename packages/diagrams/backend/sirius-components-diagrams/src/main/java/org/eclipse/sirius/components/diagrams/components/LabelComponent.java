@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,7 +59,7 @@ public class LabelComponent implements IComponent {
         Boolean italic = labelStyleDescription.getItalicProvider().apply(variableManager);
         Boolean strikeThrough = labelStyleDescription.getStrikeThroughProvider().apply(variableManager);
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
-        String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
         Position position = optionalPreviousLabel.map(Label::getPosition).orElse(Position.UNDEFINED);
         Size size = optionalPreviousLabel.map(Label::getSize).orElse(Size.UNDEFINED);

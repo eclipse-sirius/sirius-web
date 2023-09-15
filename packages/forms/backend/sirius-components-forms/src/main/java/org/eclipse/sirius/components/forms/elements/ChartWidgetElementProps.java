@@ -28,13 +28,14 @@ import org.eclipse.sirius.components.representations.IProps;
  */
 @Immutable
 public final class ChartWidgetElementProps implements IProps {
+
     public static final String TYPE = "ChartWidget";
 
     private String id;
 
     private String label;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private Supplier<String> helpTextProvider;
 
@@ -42,6 +43,10 @@ public final class ChartWidgetElementProps implements IProps {
 
     private ChartWidgetElementProps() {
         // Prevent instantiation
+    }
+
+    public static Builder newChartWidgetElementProps(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -52,7 +57,7 @@ public final class ChartWidgetElementProps implements IProps {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 
@@ -63,10 +68,6 @@ public final class ChartWidgetElementProps implements IProps {
     @Override
     public List<Element> getChildren() {
         return this.children;
-    }
-
-    public static Builder newChartWidgetElementProps(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -82,11 +83,12 @@ public final class ChartWidgetElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private Supplier<String> helpTextProvider;
 
@@ -101,7 +103,7 @@ public final class ChartWidgetElementProps implements IProps {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

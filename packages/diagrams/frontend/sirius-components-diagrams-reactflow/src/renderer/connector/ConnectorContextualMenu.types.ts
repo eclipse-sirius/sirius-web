@@ -49,7 +49,7 @@ export interface GQLDiagramDescription extends GQLRepresentationDescription {
 export interface GQLTool {
   id: string;
   label: string;
-  imageURL: string;
+  iconURL: string[];
 }
 
 export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {

@@ -52,6 +52,16 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
       padding: 0,
     },
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 
 const getReferenceValueOptionsQuery = gql`
@@ -233,7 +243,20 @@ export const ValuedReferenceAutocomplete = ({
       onChange={handleAutocompleteChange}
       renderOption={(option: GQLReferenceValue) => (
         <>
-          {option.iconURL ? <img width="16" height="16" alt={''} src={httpOrigin + option.iconURL} /> : null}
+          {option.iconURL.length > 0 && (
+            <div className={classes.iconContainer}>
+              {option.iconURL.map((icon, index) => (
+                <img
+                  height="16"
+                  width="16"
+                  key={index}
+                  alt={option.kind}
+                  src={httpOrigin + icon}
+                  className={classes.icon}
+                  style={{ zIndex: index }}></img>
+              ))}
+            </div>
+          )}
           <span className={classes.optionLabel} data-testid={`option-${option.label}`}>
             {option.label}
           </span>
@@ -247,7 +270,22 @@ export const ValuedReferenceAutocomplete = ({
             classes={{ label: classes.referenceValueStyle }}
             label={option.label}
             data-testid={`reference-value-${option.label}`}
-            icon={option.iconURL ? <img width="16" height="16" alt={''} src={httpOrigin + option.iconURL} /> : null}
+            icon={
+              option.iconURL.length > 0 && (
+                <div className={classes.iconContainer}>
+                  {option.iconURL.map((icon, index) => (
+                    <img
+                      height="16"
+                      width="16"
+                      key={index}
+                      alt={option.kind}
+                      src={httpOrigin + icon}
+                      className={classes.icon}
+                      style={{ zIndex: index }}></img>
+                  ))}
+                </div>
+              )
+            }
             clickable={!readOnly && !widget.readOnly}
             onClick={() => optionClickHandler(option)}
             {...getTagProps({ index })}

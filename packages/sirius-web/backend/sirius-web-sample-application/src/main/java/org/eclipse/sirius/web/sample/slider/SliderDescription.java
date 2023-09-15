@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.sample.slider;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -28,11 +29,12 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class SliderDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, Integer> minValueProvider;
 
@@ -46,6 +48,10 @@ public final class SliderDescription extends AbstractWidgetDescription {
         // Prevent instantiation
     }
 
+    public static Builder newSliderDescription(String id) {
+        return new Builder(id);
+    }
+
     public Function<VariableManager, String> getIdProvider() {
         return this.idProvider;
     }
@@ -54,7 +60,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -81,10 +87,6 @@ public final class SliderDescription extends AbstractWidgetDescription {
                 this.getMaxValueProvider(), this.getCurrentValueProvider(), this.getNewValueHandler());
     }
 
-    public static Builder newSliderDescription(String id) {
-        return new Builder(id);
-    }
-
     /**
      * Builder used to create the SliderDescription.
      */
@@ -99,7 +101,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, String> helpTextProvider;
 
@@ -132,7 +134,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

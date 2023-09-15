@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.widget.reference.graphql.datafetchers.form;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
@@ -22,17 +24,17 @@ import graphql.schema.DataFetchingEnvironment;
 /**
  * Data fetcher for ReferenceValue.iconURL, to rewrite the relative path of the image into an absolute path on the server.
  * <p>
- * If the <code>TreeItem.imageURL</code> is of the form <code>path/to/image.svg</code>, the rewritten value which will
+ * If the <code>TreeItem.iconURL</code> is of the form <code>path/to/image.svg</code>, the rewritten value which will
  * be seen by the frontend will be <code>/api/images/path/to/image.svg</code>.
  *
  * @author pcdavid
  */
 @QueryDataFetcher(type = "ReferenceValue", field = "iconURL")
-public class ReferenceValueIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+public class ReferenceValueIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     @Override
-    public String get(DataFetchingEnvironment environment) throws Exception {
+    public List<String> get(DataFetchingEnvironment environment) throws Exception {
         ReferenceValue item = environment.getSource();
-        return URLConstants.IMAGE_BASE_PATH + item.getIconURL();
+        return item.getIconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
     }
 }

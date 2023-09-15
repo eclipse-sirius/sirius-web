@@ -158,7 +158,7 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
       id
       label
       kind
-      imageURL
+      iconURL
       deletable
     }
     style {
@@ -285,7 +285,7 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
       parentId
       label
       kind
-      imageURL
+      iconURL
       selectable
     }
   }

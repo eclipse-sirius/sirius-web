@@ -166,7 +166,7 @@ public class ToolProvider implements IToolProvider {
         return ToolSection.newToolSection(toolSectionLabel)
                 .tools(tools)
                 .label(toolSectionLabel)
-                .imageURL(this.getImagePathFromIconPath(siriusToolSection).orElse(""))
+                .iconURL(this.getImagePathFromIconPath(siriusToolSection))
                 .build();
         // @formatter:on
     }
@@ -231,7 +231,7 @@ public class ToolProvider implements IToolProvider {
     private SingleClickOnDiagramElementTool convertNodeCreationDescription(Map<String, NodeDescription> id2NodeDescriptions, AQLInterpreter interpreter, NodeCreationDescription nodeCreationTool) {
         String id = this.identifierProvider.getIdentifier(nodeCreationTool);
         String label = new IdentifiedElementQuery(nodeCreationTool).getLabel();
-        String imagePath = this.toolImageProvider.getImage(nodeCreationTool);
+        List<String> imagePath = this.toolImageProvider.getIcon(nodeCreationTool);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(nodeCreationTool.getNodeMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(nodeCreationTool.getVariable());
         String selectionDescriptionId = null;
@@ -241,7 +241,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
-                .imageURL(imagePath)
+                .iconURL(imagePath)
                 .handler(this.createNodeCreationHandler(interpreter, nodeCreationTool))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(nodeCreationTool.getNodeMappings()))
@@ -254,7 +254,7 @@ public class ToolProvider implements IToolProvider {
             ContainerCreationDescription containerCreationDescription) {
         String id = this.identifierProvider.getIdentifier(containerCreationDescription);
         String label = new IdentifiedElementQuery(containerCreationDescription).getLabel();
-        String imagePath = this.toolImageProvider.getImage(containerCreationDescription);
+        List<String> imagePath = this.toolImageProvider.getIcon(containerCreationDescription);
         List<IDiagramElementDescription> targetDescriptions = this.getParentNodeDescriptions(containerCreationDescription.getContainerMappings(), id2NodeDescriptions);
         var selectModelElementVariableOpt = new SelectModelElementVariableProvider().getSelectModelElementVariable(containerCreationDescription.getVariable());
         String selectionDescriptionId = null;
@@ -264,7 +264,7 @@ public class ToolProvider implements IToolProvider {
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
-                .imageURL(imagePath)
+                .iconURL(imagePath)
                 .handler(this.createContainerCreationHandler(interpreter, containerCreationDescription))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(this.atLeastOneRootMapping(containerCreationDescription.getContainerMappings()))
@@ -277,7 +277,7 @@ public class ToolProvider implements IToolProvider {
             DiagramDescription siriusDiagramDescription, ToolDescription toolDescription) {
         String id = this.identifierProvider.getIdentifier(toolDescription);
         String label = new IdentifiedElementQuery(toolDescription).getLabel();
-        String imagePath = this.toolImageProvider.getImage(toolDescription);
+        List<String> imagePath = this.toolImageProvider.getIcon(toolDescription);
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
@@ -308,7 +308,7 @@ public class ToolProvider implements IToolProvider {
 
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
-                .imageURL(imagePath)
+                .iconURL(imagePath)
                 .handler(this.createGenericToolHandler(interpreter, toolDescription))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(true)
@@ -320,7 +320,7 @@ public class ToolProvider implements IToolProvider {
             DiagramDescription siriusDiagramDescription, OperationAction operationAction) {
         String id = this.identifierProvider.getIdentifier(operationAction);
         String label = new IdentifiedElementQuery(operationAction).getLabel();
-        String imagePath = this.toolImageProvider.getImage(operationAction);
+        List<String> imagePath = this.toolImageProvider.getIcon(operationAction);
 
         List<DiagramElementMapping> mappings = this.getAllDiagramElementMappings(siriusDiagramDescription);
 
@@ -349,7 +349,7 @@ public class ToolProvider implements IToolProvider {
 
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
-                .imageURL(imagePath)
+                .iconURL(imagePath)
                 .handler(this.createOperationActionHandler(interpreter, operationAction))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(true)
@@ -386,7 +386,7 @@ public class ToolProvider implements IToolProvider {
             EdgeCreationDescription edgeCreationDescription) {
         String id = this.identifierProvider.getIdentifier(edgeCreationDescription);
         String label = new IdentifiedElementQuery(edgeCreationDescription).getLabel();
-        String imagePath = this.toolImageProvider.getImage(edgeCreationDescription);
+        List<String> imagePath = this.toolImageProvider.getIcon(edgeCreationDescription);
 
         List<SingleClickOnTwoDiagramElementsCandidate> edgeCandidates = new ArrayList<>();
         for (EdgeMapping edgeMapping : edgeCreationDescription.getEdgeMappings()) {
@@ -413,7 +413,7 @@ public class ToolProvider implements IToolProvider {
 
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(id)
                 .label(label)
-                .imageURL(imagePath)
+                .iconURL(imagePath)
                 .handler(this.createEdgeCreationHandler(interpreter, edgeCreationDescription))
                 .candidates(edgeCandidates)
                 .build();
@@ -423,11 +423,10 @@ public class ToolProvider implements IToolProvider {
             DeleteElementDescription deleteElementDescription) {
         String id = this.identifierProvider.getIdentifier(deleteElementDescription);
         String label = new IdentifiedElementQuery(deleteElementDescription).getLabel();
-        String imagePath = this.toolImageProvider.getImage(deleteElementDescription);
+        List<String> imagePath = this.toolImageProvider.getIcon(deleteElementDescription);
 
         List<DiagramElementMapping> mappings = deleteElementDescription.getMappings();
 
-        // @formatter:off
         List<String> targetDescriptionIds = mappings.stream()
                 .map(this.identifierProvider::getIdentifier)
                 .toList();
@@ -441,12 +440,11 @@ public class ToolProvider implements IToolProvider {
                 .toList();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(label)
-                .imageURL(imagePath)
+                .iconURL(imagePath)
                 .handler(this.createDeleteToolHandler(interpreter, deleteElementDescription))
                 .appliesToDiagramRoot(false)
                 .targetDescriptions(targetDescriptions)
                 .build();
-        // @formatter:on
     }
 
     private Function<VariableManager, IStatus> createContainerCreationHandler(AQLInterpreter interpreter, ContainerCreationDescription toolDescription) {
@@ -620,16 +618,16 @@ public class ToolProvider implements IToolProvider {
         // @formatter:on
     }
 
-    private Optional<String> getImagePathFromIconPath(org.eclipse.sirius.diagram.description.tool.ToolSection toolSection) {
+    private List<String> getImagePathFromIconPath(org.eclipse.sirius.diagram.description.tool.ToolSection toolSection) {
         var optionalIconPath = Optional.ofNullable(toolSection.getIcon());
 
-        // @formatter:off
         return optionalIconPath
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .filter(iconPath -> !iconPath.isBlank())
-                .map(this::normalize);
-        // @formatter:on
+                .map(this::normalize)
+                .map(List::of)
+                .orElse(List.of());
     }
 
     private String normalize(String iconPath) {

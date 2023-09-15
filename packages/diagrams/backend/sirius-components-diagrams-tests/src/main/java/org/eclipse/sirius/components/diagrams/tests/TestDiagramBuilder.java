@@ -105,7 +105,7 @@ public class TestDiagramBuilder {
             LabelStyle labelStyle = LabelStyle.newLabelStyle()
                     .color("#000000")
                     .fontSize(16)
-                    .iconURL("")
+                    .iconURL(List.of())
                     .build();
             InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                     .type("labelType")
@@ -154,7 +154,7 @@ public class TestDiagramBuilder {
         // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(TOOL_LABEL)
-                .imageURL(TOOL_IMAGE_URL)
+                .iconURL(List.of(TOOL_IMAGE_URL))
                 .handler(variableManager -> new Success())
                 .targetDescriptions(List.of())
                 .build();

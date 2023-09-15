@@ -38,7 +38,7 @@ public class RadioComponent implements IComponent {
 
     public static final String CANDIDATE_VARIABLE = "candidate";
 
-    private RadioComponentProps props;
+    private final RadioComponentProps props;
 
     public RadioComponent(RadioComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -57,7 +57,7 @@ public class RadioComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = radioDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = radioDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = radioDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = radioDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = radioDescription.getOptionsProvider().apply(variableManager);
 

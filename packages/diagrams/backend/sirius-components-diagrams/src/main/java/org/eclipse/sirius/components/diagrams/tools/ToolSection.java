@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,20 +22,28 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * A group of tools.
  *
  * @author nvannier
- *
  */
 @Immutable
 public final class ToolSection {
+
     private String id;
 
     private List<ITool> tools;
 
     private String label;
 
-    private String imageURL;
+    private List<String> iconURL;
 
     private ToolSection() {
         // Prevent instantiation
+    }
+
+    public static Builder newToolSection(String id) {
+        return new Builder(id);
+    }
+
+    public static Builder newToolSection(ToolSection toolSection) {
+        return new Builder(toolSection);
     }
 
     public String getId() {
@@ -50,22 +58,14 @@ public final class ToolSection {
         return this.label;
     }
 
-    public String getImageURL() {
-        return this.imageURL;
-    }
-
-    public static Builder newToolSection(String id) {
-        return new Builder(id);
-    }
-
-    public static Builder newToolSection(ToolSection toolSection) {
-        return new Builder(toolSection);
+    public List<String> getIconURL() {
+        return this.iconURL;
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, imageURL: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.imageURL);
+        String pattern = "{0} '{'id: {1}, label: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
     }
 
     /**
@@ -75,9 +75,10 @@ public final class ToolSection {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
 
-        private String imageURL;
+        private final String id;
+
+        private List<String> iconURL;
 
         private List<ITool> tools;
 
@@ -91,7 +92,7 @@ public final class ToolSection {
             this.id = Objects.requireNonNull(toolSection.id);
             this.tools = Objects.requireNonNull(toolSection.tools);
             this.label = Objects.requireNonNull(toolSection.label);
-            this.imageURL = Objects.requireNonNull(toolSection.imageURL);
+            this.iconURL = Objects.requireNonNull(toolSection.iconURL);
         }
 
         public Builder tools(List<ITool> tools) {
@@ -104,8 +105,8 @@ public final class ToolSection {
             return this;
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder iconURL(List<String> iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -114,7 +115,7 @@ public final class ToolSection {
             toolSection.id = Objects.requireNonNull(this.id);
             toolSection.tools = Objects.requireNonNull(this.tools);
             toolSection.label = Objects.requireNonNull(this.label);
-            toolSection.imageURL = Objects.requireNonNull(this.imageURL);
+            toolSection.iconURL = Objects.requireNonNull(this.iconURL);
             return toolSection;
         }
     }

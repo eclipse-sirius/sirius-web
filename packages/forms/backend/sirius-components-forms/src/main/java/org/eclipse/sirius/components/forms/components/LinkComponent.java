@@ -50,7 +50,7 @@ public class LinkComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = linkDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = linkDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = linkDescription.getIconURLProvider().apply(variableManager);
         String url = linkDescription.getUrlProvider().apply(variableManager);
         LinkStyle style = linkDescription.getStyleProvider().apply(variableManager);
         List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(linkDescription, variableManager)));

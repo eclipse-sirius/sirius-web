@@ -22,12 +22,13 @@ import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescrip
  *
  * @author mcharfadi
  */
-public record SingleClickOnDiagramElementTool(String id, String label, String imageURL, List<IDiagramElementDescription> targetDescriptions,  String selectionDescriptionId, boolean appliesToDiagramRoot) implements ITool {
+public record SingleClickOnDiagramElementTool(String id, String label, List<String> iconURL, List<IDiagramElementDescription> targetDescriptions, String selectionDescriptionId,
+                                              boolean appliesToDiagramRoot) implements ITool {
 
     public SingleClickOnDiagramElementTool {
         Objects.requireNonNull(id);
         Objects.requireNonNull(label);
-        Objects.requireNonNull(imageURL);
+        Objects.requireNonNull(iconURL);
         Objects.requireNonNull(targetDescriptions);
     }
 
@@ -43,11 +44,12 @@ public record SingleClickOnDiagramElementTool(String id, String label, String im
     @SuppressWarnings("checkstyle:HiddenField")
     @org.eclipse.sirius.components.annotations.Builder
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String imageURL;
+        private List<String> iconURL;
 
         private List<IDiagramElementDescription> targetDescriptions;
 
@@ -59,8 +61,8 @@ public record SingleClickOnDiagramElementTool(String id, String label, String im
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder iconURL(List<String> iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -85,7 +87,7 @@ public record SingleClickOnDiagramElementTool(String id, String label, String im
         }
 
         public SingleClickOnDiagramElementTool build() {
-            return new SingleClickOnDiagramElementTool(this.id, this.label, this.imageURL, this.targetDescriptions, this.selectionDescriptionId, this.appliesToDiagramRoot);
+            return new SingleClickOnDiagramElementTool(this.id, this.label, this.iconURL, this.targetDescriptions, this.selectionDescriptionId, this.appliesToDiagramRoot);
         }
     }
 

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.slider;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -28,6 +29,7 @@ import org.eclipse.sirius.web.sample.slider.SliderElementProps.Builder;
  * @author pcdavid
  */
 public class SliderComponent implements IComponent {
+
     private final SliderComponentProps props;
 
     public SliderComponent(SliderComponentProps props) {
@@ -47,7 +49,7 @@ public class SliderComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = sliderDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = sliderDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = sliderDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = sliderDescription.getIsReadOnlyProvider().apply(variableManager);
         int minValue = sliderDescription.getMinValueProvider().apply(variableManager);
         int maxValue = sliderDescription.getMaxValueProvider().apply(variableManager);

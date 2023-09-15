@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.builder.label;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public final class LabelBuilder {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         return Label.newLabel(UUID.randomUUID().toString())
@@ -59,7 +60,7 @@ public final class LabelBuilder {
                 .italic(false)
                 .underline(false)
                 .strikeThrough(false)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
 
         return InsideLabel.newLabel(UUID.randomUUID().toString())

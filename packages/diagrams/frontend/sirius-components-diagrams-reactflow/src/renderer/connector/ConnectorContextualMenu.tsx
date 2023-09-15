@@ -16,12 +16,15 @@ import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-siriu
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
   ConnectorContextualMenuProps,
+  GetConnectorToolsData,
+  GetConnectorToolsVariables,
   GQLDiagramDescription,
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
@@ -29,10 +32,21 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
   GQLRepresentationDescription,
   GQLTool,
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
+
+const useStyle = makeStyles(() => ({
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+}));
 
 export const getConnectorToolsQuery = gql`
   query getConnectorTools(
@@ -52,7 +66,7 @@ export const getConnectorToolsQuery = gql`
               ) {
                 id
                 label
-                imageURL
+                iconURL
               }
             }
           }
@@ -98,6 +112,7 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   const { connection, onConnectorContextualMenuClose } = useConnector();
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const classes = useStyle();
 
   const { addMessages, addErrorMessage } = useMultiToast();
 
@@ -207,7 +222,19 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
       {connectorTools.map((tool) => (
         <MenuItem key={tool.id} onClick={() => invokeTool(tool)}>
           <ListItemIcon>
-            <img height="16" width="16" alt="" src={httpOrigin + tool.imageURL} title={tool.label} />
+            <div className={classes.iconContainer}>
+              {tool.iconURL.map((icon, index) => (
+                <img
+                  height="16"
+                  width="16"
+                  key={index}
+                  alt={tool.label}
+                  title={tool.label}
+                  src={httpOrigin + icon}
+                  className={classes.icon}
+                  style={{ zIndex: index }}></img>
+              ))}
+            </div>
           </ListItemIcon>
           <Typography>{tool.label}</Typography>
         </MenuItem>

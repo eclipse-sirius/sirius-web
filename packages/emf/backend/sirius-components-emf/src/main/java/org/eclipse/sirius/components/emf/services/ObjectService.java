@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.emf.services;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.Objects;
@@ -95,7 +96,6 @@ public class ObjectService implements IObjectService {
     }
 
     private String getIdFromIDAdapter(EObject eObject) {
-        // @formatter:off
         return eObject.eAdapters().stream()
                 .filter(IDAdapter.class::isInstance)
                 .map(IDAdapter.class::cast)
@@ -103,7 +103,6 @@ public class ObjectService implements IObjectService {
                 .map(IDAdapter::getId)
                 .map(Object::toString)
                 .orElse(null);
-        // @formatter:on
     }
 
     private String getIdFromURIFragment(EObject eObject) {
@@ -124,13 +123,11 @@ public class ObjectService implements IObjectService {
 
     @Override
     public String getLabel(Object object) {
-        // @formatter:off
         return Optional.of(object).filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .flatMap(eObject -> this.getLabelEAttribute(eObject).map(eObject::eGet))
                 .map(Object::toString)
                 .orElse("");
-        // @formatter:on
     }
 
     @Override
@@ -149,23 +146,23 @@ public class ObjectService implements IObjectService {
     }
 
     @Override
-    public String getImagePath(Object object) {
+    public List<String> getImagePath(Object object) {
         if (object instanceof EObject eObject) {
 
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider && !(adapter instanceof ReflectiveItemProvider)) {
                 try {
                     Object image = labelProvider.getImage(eObject);
-                    String imageFullPath = this.findImagePath(image);
+                    List<String> imageFullPath = this.findImagePath(image);
                     if (imageFullPath != null) {
-                        return this.getImageRelativePath(imageFullPath);
+                        return imageFullPath.stream().map(this::getImageRelativePath).toList();
                     }
                 } catch (MissingResourceException exception) {
                     this.logger.warn("Missing icon for {}", eObject);
                 }
             }
         }
-        return DEFAULT_ICON_PATH;
+        return List.of(DEFAULT_ICON_PATH);
     }
 
     private String getImageRelativePath(String imageFullPath) {
@@ -183,27 +180,24 @@ public class ObjectService implements IObjectService {
         return imageRelativePath;
     }
 
-    private String findImagePath(Object image) {
-        String imagePath = null;
+    private List<String> findImagePath(Object image) {
+        List<String> imagePath = null;
         if (image instanceof URI uri) {
-            imagePath = uri.toString();
+            imagePath = List.of(uri.toString());
         } else if (image instanceof URL url) {
-            imagePath = url.toString();
+            imagePath = List.of(url.toString());
         } else if (image instanceof ComposedImage composite) {
-            // @formatter:off
             imagePath = composite.getImages().stream()
-                                 .map(this::findImagePath)
-                                 .filter(Objects::nonNull)
-                                 .findFirst()
-                                 .orElse(null);
-            // @formatter:on
+                    .map(this::findImagePath)
+                    .flatMap(Collection::stream)
+                    .filter(Objects::nonNull)
+                    .toList();
         }
         return imagePath;
     }
 
     @Override
     public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-        // @formatter:off
         return Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
@@ -226,7 +220,7 @@ public class ObjectService implements IObjectService {
                     }
 
                     // If not found in the resources of the ResourceSet, we search in the PackageRegistry resources
-                    if (!optionalEObject.isPresent()) {
+                    if (optionalEObject.isEmpty()) {
                         URI uri = URI.createURI(objectId);
                         if (uri.hasFragment()) {
                             EObject eObject = resourceSet.getEObject(uri, false);
@@ -235,7 +229,6 @@ public class ObjectService implements IObjectService {
                     }
                     return optionalEObject;
                 });
-        // @formatter:on
     }
 
     @Override
@@ -259,13 +252,11 @@ public class ObjectService implements IObjectService {
 
     @Override
     public Optional<String> getLabelField(Object object) {
-        // @formatter:off
         return Optional.of(object)
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .flatMap(this::getLabelEAttribute)
                 .map(EAttribute::getName);
-        // @formatter:on
     }
 
     private Optional<EAttribute> getLabelEAttribute(EObject eObject) {

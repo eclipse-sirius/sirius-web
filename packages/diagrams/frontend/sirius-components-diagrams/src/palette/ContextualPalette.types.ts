@@ -74,14 +74,14 @@ export interface GQLPalette {
 export interface GQLToolSection {
   id: string;
   label: string;
-  imageURL: string;
+  iconURL: string[];
   tools: GQLTool[];
 }
 
 export interface GQLTool {
   id: string;
   label: string;
-  imageURL: string;
+  iconURL: string[];
   __typename: string;
 }
 

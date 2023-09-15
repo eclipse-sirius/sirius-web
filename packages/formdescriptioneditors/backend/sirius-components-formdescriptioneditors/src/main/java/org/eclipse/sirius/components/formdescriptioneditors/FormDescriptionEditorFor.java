@@ -28,10 +28,15 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class FormDescriptionEditorFor extends AbstractWidget {
+
     private List<AbstractWidget> children;
 
     private FormDescriptionEditorFor() {
         // Prevent instantiation
+    }
+
+    public static Builder newFormDescriptionEditorFor(String id) {
+        return new Builder(id);
     }
 
     public List<AbstractWidget> getChildren() {
@@ -40,10 +45,6 @@ public final class FormDescriptionEditorFor extends AbstractWidget {
 
     public boolean hasHelpText() {
         return false;
-    }
-
-    public static Builder newFormDescriptionEditorFor(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -59,11 +60,12 @@ public final class FormDescriptionEditorFor extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private List<Diagnostic> diagnostics;
 
@@ -82,7 +84,7 @@ public final class FormDescriptionEditorFor extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -111,7 +113,7 @@ public final class FormDescriptionEditorFor extends AbstractWidget {
             FormDescriptionEditorFor formDescriptionEditorFor = new FormDescriptionEditorFor();
             formDescriptionEditorFor.id = Objects.requireNonNull(this.id);
             formDescriptionEditorFor.label = Objects.requireNonNull(this.label);
-            formDescriptionEditorFor.iconURL = this.iconURL;
+            formDescriptionEditorFor.iconURL = Objects.requireNonNull(this.iconURL);
             formDescriptionEditorFor.diagnostics = Objects.requireNonNull(this.diagnostics);
             formDescriptionEditorFor.helpTextProvider = this.helpTextProvider; // Optional on purpose
             formDescriptionEditorFor.readOnly = this.readOnly;

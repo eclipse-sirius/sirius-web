@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -25,11 +27,11 @@ import graphql.schema.DataFetchingEnvironment;
  * @author pcdavid
  */
 @QueryDataFetcher(type = "ChildCreationDescription", field = "iconURL")
-public class ChildCreationDescriptionIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+public class ChildCreationDescriptionIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     @Override
-    public String get(DataFetchingEnvironment environment) throws Exception {
+    public List<String> get(DataFetchingEnvironment environment) throws Exception {
         ChildCreationDescription childCreationDescription = environment.getSource();
-        return URLConstants.IMAGE_BASE_PATH + childCreationDescription.getIconURL();
+        return childCreationDescription.getIconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
     }
 }

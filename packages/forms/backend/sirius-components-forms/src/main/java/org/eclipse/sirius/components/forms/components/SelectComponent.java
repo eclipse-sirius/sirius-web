@@ -37,7 +37,7 @@ public class SelectComponent implements IComponent {
 
     public static final String CANDIDATE_VARIABLE = "candidate";
 
-    private SelectComponentProps props;
+    private final SelectComponentProps props;
 
     public SelectComponent(SelectComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -56,7 +56,7 @@ public class SelectComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = selectDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = selectDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = selectDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = selectDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = selectDescription.getOptionsProvider().apply(variableManager);
         String value = selectDescription.getValueProvider().apply(variableManager);
@@ -75,8 +75,8 @@ public class SelectComponent implements IComponent {
             var selectOptionBuilder = SelectOption.newSelectOption(optionId)
                     .label(optionLabel);
             if (selectStyle != null && selectStyle.isShowIcon()) {
-                String optionIconUrl = selectDescription.getOptionIconURLProvider().apply(optionVariableManager);
-                if (optionIconUrl != null && !optionIconUrl.isBlank()) {
+                List<String> optionIconUrl = selectDescription.getOptionIconURLProvider().apply(optionVariableManager);
+                if (optionIconUrl != null && !optionIconUrl.isEmpty()) {
                     selectOptionBuilder.iconURL(optionIconUrl);
                 }
             }

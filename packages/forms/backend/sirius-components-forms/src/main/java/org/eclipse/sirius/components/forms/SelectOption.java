@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -24,14 +25,19 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class SelectOption {
+
     private String id;
 
     private String label;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private SelectOption() {
         // Prevent instantiation
+    }
+
+    public static Builder newSelectOption(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -42,12 +48,8 @@ public final class SelectOption {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
-    }
-
-    public static Builder newSelectOption(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -63,11 +65,12 @@ public final class SelectOption {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -78,7 +81,7 @@ public final class SelectOption {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = iconURL;
             return this;
         }
@@ -87,7 +90,7 @@ public final class SelectOption {
             SelectOption selectOption = new SelectOption();
             selectOption.id = Objects.requireNonNull(this.id);
             selectOption.label = Objects.requireNonNull(this.label);
-            selectOption.iconURL = this.iconURL;
+            selectOption.iconURL = Objects.requireNonNull(this.iconURL);
             return selectOption;
         }
     }

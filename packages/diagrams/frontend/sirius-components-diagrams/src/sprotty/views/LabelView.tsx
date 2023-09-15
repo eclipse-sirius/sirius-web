@@ -14,6 +14,7 @@
 /** @jsxRuntime classic */
 import { setAttr, SLabelView, svg } from 'sprotty';
 import { getSubType } from 'sprotty-protocol';
+
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 const Text = (props) => {
@@ -88,7 +89,11 @@ export class LabelView extends SLabelView {
 
     const vnode = (
       <g attrs-data-testid={`Label - ${label.text}`}>
-        {iconURL ? <image href={iconURL} y={iconVerticalOffset} x="-20" style={styleIcon} /> : ''}
+        {iconURL.length > 0
+          ? iconURL.map((icon, index) => (
+              <image href={icon} y={iconVerticalOffset} x="-20" style={styleIcon} key={index} />
+            ))
+          : ''}
         <text class-sprotty-label={true} style={styleObject}>
           <Text text={text} fontSize={fontSize} />
         </text>

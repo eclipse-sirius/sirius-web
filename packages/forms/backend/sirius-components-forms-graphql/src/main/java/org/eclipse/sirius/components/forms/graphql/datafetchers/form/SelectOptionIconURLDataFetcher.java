@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.graphql.datafetchers.form;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.forms.SelectOption;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -28,15 +30,11 @@ import graphql.schema.DataFetchingEnvironment;
  * @author mcharfadi
  */
 @QueryDataFetcher(type = "SelectOption", field = "iconURL")
-public class SelectOptionIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+public class SelectOptionIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     @Override
-    public String get(DataFetchingEnvironment environment) throws Exception {
+    public List<String> get(DataFetchingEnvironment environment) throws Exception {
         SelectOption option = environment.getSource();
-        String result = option.getIconURL();
-        if (result != null && !result.isBlank()) {
-            result = URLConstants.IMAGE_BASE_PATH + result;
-        }
-        return result;
+        return option.getIconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
     }
 }

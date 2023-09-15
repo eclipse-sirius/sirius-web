@@ -55,7 +55,7 @@ export interface GQLTreeItem {
   id: string;
   label: string;
   kind: string;
-  imageURL: string;
+  iconURL: [string];
   hasChildren: boolean;
   children: GQLTreeItem[];
   expanded: boolean;

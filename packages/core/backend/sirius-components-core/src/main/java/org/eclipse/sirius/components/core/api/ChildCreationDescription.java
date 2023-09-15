@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.core.api;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,9 +27,9 @@ public class ChildCreationDescription {
 
     private final String label;
 
-    private final String iconURL;
+    private final List<String> iconURL;
 
-    public ChildCreationDescription(String id, String label, String iconURL) {
+    public ChildCreationDescription(String id, String label, List<String> iconURL) {
         this.id = Objects.requireNonNull(id);
         this.label = Objects.requireNonNull(label);
         this.iconURL = Objects.requireNonNull(iconURL);
@@ -42,7 +43,7 @@ public class ChildCreationDescription {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 

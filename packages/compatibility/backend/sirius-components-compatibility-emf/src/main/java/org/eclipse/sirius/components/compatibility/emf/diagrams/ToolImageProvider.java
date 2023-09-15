@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,12 +60,9 @@ public class ToolImageProvider implements IToolImageProvider {
     }
 
     @Override
-    public String getImage(AbstractToolDescription abstractToolDescription) {
-        // @formatter:off
-        return this.getImagePathFromIconPath(abstractToolDescription)
-                .or(() -> this.getImagePathFromDomainClass(abstractToolDescription))
-                .orElse("");
-        // @formatter:on
+    public List<String> getIcon(AbstractToolDescription abstractToolDescription) {
+        var optionalImagePathFromIconPath = this.getImagePathFromIconPath(abstractToolDescription);
+        return optionalImagePathFromIconPath.map(List::of).orElseGet(() -> this.getImagePathFromDomainClass(abstractToolDescription));
     }
 
     private Optional<String> getImagePathFromIconPath(AbstractToolDescription abstractToolDescription) {
@@ -96,17 +93,15 @@ public class ToolImageProvider implements IToolImageProvider {
         return path;
     }
 
-    private Optional<String> getImagePathFromDomainClass(AbstractToolDescription abstractToolDescription) {
-        // @formatter:off
+    private List<String> getImagePathFromDomainClass(AbstractToolDescription abstractToolDescription) {
         var optionalInstance = this.getMappings(abstractToolDescription).stream()
                 .map(this::getDomainClass)
                 .flatMap(Optional::stream)
                 .filter(domainClass -> !domainClass.isBlank())
                 .findFirst()
                 .flatMap(this::getInstance);
-        // @formatter:on
 
-        return optionalInstance.map(instance -> this.objectService.getImagePath(optionalInstance.get()));
+        return optionalInstance.map(this.objectService::getImagePath).orElse(List.of());
     }
 
     private List<DiagramElementMapping> getMappings(AbstractToolDescription abstractToolDescription) {

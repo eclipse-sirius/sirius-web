@@ -53,21 +53,20 @@ public class ViewToolImageProvider implements IViewToolImageProvider {
     }
 
     @Override
-    public String getImage(DiagramElementDescription diagramElementDescription) {
-        // @formatter:off
-        return this.getImagePathFromDomainClass(diagramElementDescription)
-                .orElseGet(() -> this.getDefaultImage(diagramElementDescription));
-        // @formatter:on
+    public List<String> getIcon(DiagramElementDescription diagramElementDescription) {
+        var imagePathFromDomainClass = this.getImagePathFromDomainClass(diagramElementDescription);
+        if (imagePathFromDomainClass.isEmpty()) {
+            return List.of(this.getDefaultImage(diagramElementDescription));
+        }
+        return imagePathFromDomainClass;
     }
 
-    private Optional<String> getImagePathFromDomainClass(DiagramElementDescription diagramElementDescription) {
-        // @formatter:off
+    private List<String> getImagePathFromDomainClass(DiagramElementDescription diagramElementDescription) {
         var optionalInstance = Optional.ofNullable(diagramElementDescription.getDomainType())
                 .filter(domainType -> !domainType.isBlank())
                 .flatMap(this::getInstance);
-        // @formatter:on
 
-        return optionalInstance.map(instance -> this.objectService.getImagePath(optionalInstance.get()));
+        return optionalInstance.map(this.objectService::getImagePath).orElse(List.of());
     }
 
     private Optional<EObject> getInstance(String domainClass) {

@@ -300,7 +300,7 @@ const convertLabel = (
   labelStyle.opacity = parentElement['state'] === ViewModifier.Faded ? 0.25 : 1;
 
   if (labelStyle.iconURL?.length ?? 0 > 0) {
-    labelStyle.iconURL = httpOrigin + labelStyle.iconURL;
+    labelStyle.iconURL = labelStyle.iconURL.map((iconURL) => httpOrigin + iconURL);
   }
 
   label.style = labelStyle;

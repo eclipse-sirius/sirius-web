@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.compatibility.emf.compatibility.diagrams;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.compatibility.emf.diagrams.ToolImageProvider;
@@ -40,8 +42,9 @@ public class ToolImageProviderTests {
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
         ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry);
 
-        String convertedIconPath = toolImageProvider.getImage(toolDescription);
-        assertThat(convertedIconPath.equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
+        List<String> convertedIconPath = toolImageProvider.getIcon(toolDescription);
+        assertThat(convertedIconPath).hasSize(1);
+        assertThat(convertedIconPath.get(0).equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
     }
 
     @Test
@@ -53,7 +56,8 @@ public class ToolImageProviderTests {
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
         ToolImageProvider toolImageProvider = new ToolImageProvider(objectService, ePackageRegistry);
 
-        String convertedIconPath = toolImageProvider.getImage(operationAction);
-        assertThat(convertedIconPath.equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
+        List<String> convertedIconPath = toolImageProvider.getIcon(operationAction);
+        assertThat(convertedIconPath).hasSize(1);
+        assertThat(convertedIconPath.get(0).equals(ICON_PATH.substring(ICON_PATH.indexOf('/', 1)))).isTrue();
     }
 }

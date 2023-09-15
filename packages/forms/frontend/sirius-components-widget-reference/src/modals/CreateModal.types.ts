@@ -45,7 +45,7 @@ export interface GQLEditingContext {
 export interface GQLChildCreationDescription {
   id: string;
   label: string;
-  iconURL: string;
+  iconURL: string[];
 }
 
 export interface GQLGetDomainsQueryVariables {
@@ -79,7 +79,7 @@ export interface GQLRootEditingContext {
 export interface GQLRootChildCreationDescription {
   id: string;
   label: string;
-  iconURL: string;
+  iconURL: string[];
 }
 
 export interface GQLDomain {
@@ -95,7 +95,7 @@ export interface Domain {
 export interface ChildCreationDescription {
   id: string;
   label: string;
-  iconURL: string;
+  iconURL: string[];
 }
 
 export interface GQLObject {

@@ -32,7 +32,7 @@ public final class ImageDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, String> urlProvider;
 
@@ -40,6 +40,10 @@ public final class ImageDescription extends AbstractWidgetDescription {
 
     private ImageDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newImageDescription(String id) {
+        return new Builder(id);
     }
 
     public Function<VariableManager, String> getIdProvider() {
@@ -50,7 +54,7 @@ public final class ImageDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -60,10 +64,6 @@ public final class ImageDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, String> getMaxWidthProvider() {
         return this.maxWidthProvider;
-    }
-
-    public static Builder newImageDescription(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -82,15 +82,15 @@ public final class ImageDescription extends AbstractWidgetDescription {
 
         private final String id;
 
+        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
+
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
-
-        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, String> urlProvider;
 
@@ -123,7 +123,7 @@ public final class ImageDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

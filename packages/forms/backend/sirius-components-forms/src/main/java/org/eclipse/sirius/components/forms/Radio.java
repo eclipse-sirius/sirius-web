@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Radio extends AbstractWidget {
+
     private List<RadioOption> options;
 
     private Function<String, IStatus> newValueHandler;
@@ -37,6 +38,10 @@ public final class Radio extends AbstractWidget {
 
     private Radio() {
         // Prevent instantiation
+    }
+
+    public static Builder newRadio(String id) {
+        return new Builder(id);
     }
 
     public List<RadioOption> getOptions() {
@@ -49,10 +54,6 @@ public final class Radio extends AbstractWidget {
 
     public RadioStyle getStyle() {
         return this.style;
-    }
-
-    public static Builder newRadio(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -68,11 +69,12 @@ public final class Radio extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private List<RadioOption> options;
 
@@ -95,7 +97,7 @@ public final class Radio extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -134,7 +136,7 @@ public final class Radio extends AbstractWidget {
             Radio radio = new Radio();
             radio.id = Objects.requireNonNull(this.id);
             radio.label = Objects.requireNonNull(this.label);
-            radio.iconURL = this.iconURL; // Optional on purpose
+            radio.iconURL = Objects.requireNonNull(this.iconURL);
             radio.options = Objects.requireNonNull(this.options);
             radio.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             radio.style = this.style; // Optional on purpose

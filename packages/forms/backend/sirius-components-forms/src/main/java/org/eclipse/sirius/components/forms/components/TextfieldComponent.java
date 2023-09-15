@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class TextfieldComponent implements IComponent {
 
-    private TextfieldComponentProps props;
+    private final TextfieldComponentProps props;
 
     public TextfieldComponent(TextfieldComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -54,7 +54,7 @@ public class TextfieldComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = textfieldDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = textfieldDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = textfieldDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = textfieldDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = textfieldDescription.getValueProvider().apply(variableManager);
         Function<String, IStatus> specializedHandler = newValue -> textfieldDescription.getNewValueHandler().apply(variableManager, newValue);

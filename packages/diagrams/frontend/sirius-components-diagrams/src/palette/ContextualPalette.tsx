@@ -67,7 +67,7 @@ export const getPaletteQuery = gql`
                   __typename
                   id
                   label
-                  imageURL
+                  iconURL
                   ... on SingleClickOnDiagramElementTool {
                     targetDescriptions {
                       id
@@ -89,12 +89,12 @@ export const getPaletteQuery = gql`
                 toolSections {
                   id
                   label
-                  imageURL
+                  iconURL
                   tools {
                     __typename
                     id
                     label
-                    imageURL
+                    iconURL
                     ... on SingleClickOnDiagramElementTool {
                       targetDescriptions {
                         id
@@ -168,14 +168,14 @@ const updateCollapsingStateMutation = gql`
 const connectorTool = {
   id: 'connector',
   type: 'connector',
-  imageURL: connectorImagePath,
+  iconURL: [connectorImagePath],
   label: 'Connector',
   __typename: 'Connector',
 };
 const closeTool = {
   id: 'close',
   type: 'close',
-  imageURL: closeImagePath,
+  iconURL: [closeImagePath],
   label: 'Close',
   __typename: 'Close',
 };
@@ -183,17 +183,17 @@ const closeTool = {
 const visibilitySection: GQLToolSection = {
   id: 'visibility_section',
   label: 'Visibility Section',
-  imageURL: hideImagePath,
+  iconURL: [hideImagePath],
   tools: [
     {
       id: 'hide',
-      imageURL: hideImagePath,
+      iconURL: [hideImagePath],
       label: 'Hide',
       __typename: 'Hide',
     },
     {
       id: 'fade',
-      imageURL: fadeImagePath,
+      iconURL: [fadeImagePath],
       label: 'Fade',
       __typename: 'Fade',
     },

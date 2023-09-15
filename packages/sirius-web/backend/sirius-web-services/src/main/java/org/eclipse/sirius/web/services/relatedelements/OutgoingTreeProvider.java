@@ -48,6 +48,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author pcdavid
  */
 public class OutgoingTreeProvider {
+
     private static final String WIDGET_ID = "related/outgoing";
 
     private static final String TITLE = "Outgoing";
@@ -78,10 +79,10 @@ public class OutgoingTreeProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .labelProvider(variableManager -> TITLE)
-                .iconURLProvider(variableManager -> WIDGET_ICON_URL)
+                .iconURLProvider(variableManager -> List.of(WIDGET_ICON_URL))
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)
-                .nodeImageURLProvider(this::getNodeImageURL)
+                .nodeIconURLProvider(this::getNodeImageURL)
                 .nodeKindProvider(this::getNodeKind)
                 .nodeSelectableProvider(this::isNodeSelectable)
                 .childrenProvider(this::getOutgoingChildren)
@@ -162,8 +163,7 @@ public class OutgoingTreeProvider {
     private String getDisplayName(EReference eReference, EObject eObject) {
         String result = null;
         Adapter adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
-        if (adapter instanceof IItemPropertySource) {
-            IItemPropertySource itemPropertySource = (IItemPropertySource) adapter;
+        if (adapter instanceof IItemPropertySource itemPropertySource) {
             IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
             if (descriptor != null) {
                 result = descriptor.getDisplayName(eReference);
@@ -174,15 +174,15 @@ public class OutgoingTreeProvider {
         return result;
     }
 
-    private String getNodeImageURL(VariableManager variableManager) {
-        String result = null;
+    private List<String> getNodeImageURL(VariableManager variableManager) {
+        List<String> result = List.of(ImageConstants.DEFAULT_SVG);
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof EReference) {
-            result = OUTGOING_REFERENCE_ICON_URL;
+            result = List.of(OUTGOING_REFERENCE_ICON_URL);
         } else if (self != null) {
             result = this.objectService.getImagePath(self);
         }
-        return Optional.ofNullable(result).orElse(ImageConstants.DEFAULT_SVG);
+        return result;
     }
 
     private String getNodeKind(VariableManager variableManager) {
@@ -204,8 +204,7 @@ public class OutgoingTreeProvider {
     private List<String> collectAllNodeIds(VariableManager variableManager) {
         List<String> result = new ArrayList<>();
         for (var element : variableManager.get(TreeComponent.NODES_VARIABLE, List.class).orElse(List.of())) {
-            if (element instanceof TreeNode) {
-                TreeNode node = (TreeNode) element;
+            if (element instanceof TreeNode node) {
                 result.add(node.getId());
             }
         }

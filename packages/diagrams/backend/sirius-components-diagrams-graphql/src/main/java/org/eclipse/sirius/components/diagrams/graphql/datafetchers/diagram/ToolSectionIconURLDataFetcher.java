@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -20,16 +22,16 @@ import org.eclipse.sirius.components.graphql.api.URLConstants;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to concatenate the server image URL to toolSection image path.
+ * The data fetcher used to concatenate the server icon URL to toolSection image path.
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = "ToolSection", field = "imageURL")
-public class ToolSectionImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+@QueryDataFetcher(type = "ToolSection", field = "iconURL")
+public class ToolSectionIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     @Override
-    public String get(DataFetchingEnvironment environment) throws Exception {
+    public List<String> get(DataFetchingEnvironment environment) throws Exception {
         ToolSection toolSection = environment.getSource();
-        return URLConstants.IMAGE_BASE_PATH + toolSection.imageURL();
+        return toolSection.iconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
     }
 }

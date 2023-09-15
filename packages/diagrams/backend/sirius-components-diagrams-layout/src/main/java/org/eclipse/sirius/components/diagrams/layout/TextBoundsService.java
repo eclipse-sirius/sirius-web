@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.layout;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,7 +61,7 @@ public class TextBoundsService {
             LabelStyle labelStyle = LabelStyle.newLabelStyle()
                     .fontSize(16)
                     .color("#000000")
-                    .iconURL("")
+                    .iconURL(List.of())
                     .build();
             Label label = Label.newLabel(UUID.randomUUID().toString())
                     .type("labelType")

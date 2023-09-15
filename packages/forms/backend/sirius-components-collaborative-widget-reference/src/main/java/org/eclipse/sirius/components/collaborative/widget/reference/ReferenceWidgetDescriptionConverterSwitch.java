@@ -116,7 +116,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager))
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))
                 .itemsProvider(variableManager -> this.getReferenceValue(referenceDescription, variableManager))
                 .optionsProvider(variableManager -> this.getReferenceOptions(referenceDescription, variableManager))
@@ -246,8 +246,8 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         return this.getItem(variableManager).map(this.objectService::getLabel).orElse("");
     }
 
-    private String getItemIconURL(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse("");
+    private List<String> getItemIconURL(VariableManager variableManager) {
+        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of());
     }
 
     private String getItemKind(VariableManager variableManager) {

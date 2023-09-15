@@ -93,7 +93,7 @@ test('should drop the Textfield in the drop area', async () => {
   const textfieldWidget: GQLTextfield = {
     id: 'Textfield1',
     label: 'Textfield1',
-    iconURL: null,
+    iconURL: [],
     hasHelpText: false,
     __typename: 'Textfield',
     diagnostics: [],
@@ -181,7 +181,7 @@ test('should delete the Textfield from the drop area', async () => {
   const textfieldWidget: GQLTextfield = {
     id: 'Textfield1',
     label: 'Textfield1',
-    iconURL: null,
+    iconURL: [],
     hasHelpText: false,
     __typename: 'Textfield',
     diagnostics: [],
@@ -287,7 +287,7 @@ test('should delete the PieChart from the drop area', async () => {
   const pieChartWidget: GQLChartWidget = {
     id: 'ChartWidget1',
     label: 'PieChart1',
-    iconURL: null,
+    iconURL: [],
     hasHelpText: false,
     __typename: 'ChartWidget',
     diagnostics: [],
@@ -362,7 +362,7 @@ test('should move the existing Textfield from/into the drop area', async () => {
   const textfieldWidget: GQLTextfield = {
     id: 'Textfield1',
     label: 'Textfield1',
-    iconURL: null,
+    iconURL: [],
     hasHelpText: false,
     __typename: 'Textfield',
     diagnostics: [],

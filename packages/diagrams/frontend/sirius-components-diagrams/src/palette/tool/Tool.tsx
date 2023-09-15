@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import { useContext } from 'react';
 import { GenericTool } from './GenericTool';
 import { ToolProps } from './Tool.types';
@@ -31,10 +31,20 @@ const useToolStyles = makeStyles(() => ({
   selected: {
     fontWeight: 'bold',
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 
 export const Tool = ({ tool, selected, onClick, disabled, thumbnail }: ToolProps) => {
-  const { id, label, imageURL } = tool;
+  const { id, label, iconURL } = tool;
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const classes = useToolStyles();
@@ -45,14 +55,26 @@ export const Tool = ({ tool, selected, onClick, disabled, thumbnail }: ToolProps
   }
 
   let image = <GenericTool title={label} style={{ fill: 'var(--daintree)' }} />;
-  if (imageURL && imageURL != '/api/images') {
-    let imageSrc;
-    if (imageURL.startsWith('data:')) {
-      imageSrc = imageURL;
-    } else {
-      imageSrc = httpOrigin + imageURL;
-    }
-    image = <img height="16" width="16" alt="" src={imageSrc} title={label} />;
+  if (iconURL.length > 0) {
+    image = (
+      <div className={classes.iconContainer}>
+        {iconURL
+          .filter((url) => url != '/api/images')
+          .map((url, index) => {
+            return (
+              <img
+                height="16"
+                width="16"
+                key={index}
+                alt={label}
+                title={label}
+                src={url.startsWith('data:') ? url : httpOrigin + url}
+                className={classes.icon}
+                style={{ zIndex: index }}></img>
+            );
+          })}
+      </div>
+    );
   }
   let labelContent;
   if (!thumbnail) {

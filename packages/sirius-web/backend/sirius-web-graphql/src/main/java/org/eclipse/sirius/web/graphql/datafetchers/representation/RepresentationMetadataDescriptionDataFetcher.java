@@ -63,7 +63,7 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
             .treeItemIdProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
             .kindProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
             .labelProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
-            .imageURLProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
+            .iconURLProvider(variableManager -> List.of(TreeEventProcessorFactory.TREE_ID))
             .editableProvider(variableManager -> null)
             .deletableProvider(variableManager -> null)
             .elementsProvider(variableManager -> null)

@@ -117,7 +117,7 @@ public class DiagramElementChangeVisibilityTests {
                 .strikeThroughProvider(VariableManager -> true)
                 .colorProvider(VariableManager -> COLOR)
                 .fontSizeProvider(variableManager -> LABEL_FONT_SIZE)
-                .iconURLProvider(VariableManager -> "")
+                .iconURLProvider(VariableManager -> List.of())
                 .build();
 
         LabelDescription labelDescription = LabelDescription.newLabelDescription(UUID.randomUUID().toString())

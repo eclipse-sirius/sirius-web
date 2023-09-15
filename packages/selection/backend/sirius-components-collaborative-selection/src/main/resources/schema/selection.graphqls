@@ -27,7 +27,7 @@ type Selection implements Representation {
 type SelectionObject {
   id: ID!
   label: String!
-  iconURL: String!
+  iconURL: [String!]!
 }
 
 type SelectionDescription implements RepresentationDescription {

@@ -146,7 +146,7 @@ public class EditService implements IEditService {
                     if (editingDomainItemProvider instanceof Helper helper) {
                         for (CommandParameter commandParameter : commandParameters) {
                             String text = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
-                            String iconURL = this.objectService.getImagePath(commandParameter.getValue());
+                            List<String> iconURL = this.objectService.getImagePath(commandParameter.getValue());
                             ChildCreationDescription childCreationDescription = new ChildCreationDescription(text, text, iconURL);
                             childCreationDescriptions.add(childCreationDescription);
                         }
@@ -249,7 +249,7 @@ public class EditService implements IEditService {
                 for (EClass suggestedClass : classes) {
                     if (referenceKind == null || this.getEClass(ePackageRegistry, referenceKind).map(eClassReference -> eClassReference.isSuperTypeOf(suggestedClass))
                             .orElse(true)) {
-                        String iconURL = this.objectService.getImagePath(EcoreUtil.create(suggestedClass));
+                        List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(suggestedClass));
                         rootObjectCreationDescription.add(new ChildCreationDescription(suggestedClass.getName(), suggestedClass.getName(), iconURL));
                     }
                 }

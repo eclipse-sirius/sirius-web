@@ -101,7 +101,7 @@ public class NonContainmentReferenceIfDescriptionProvider {
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .optionsProvider(this.getOptionsProvider())
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .itemsProvider(this::getReferenceValue)
                 .itemIdProvider(this::getItemId)
                 .itemKindProvider(this::getItemKind)
@@ -164,8 +164,8 @@ public class NonContainmentReferenceIfDescriptionProvider {
         return this.getItem(variableManager).map(this.objectService::getLabel).orElse("");
     }
 
-    private String getItemIconURL(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse("");
+    private List<String> getItemIconURL(VariableManager variableManager) {
+        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of());
     }
 
     private String getItemKind(VariableManager variableManager) {

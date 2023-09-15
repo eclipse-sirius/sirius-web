@@ -115,7 +115,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
             .itemsProvider(this.getItemsProvider())
             .itemIdProvider(this.getItemIdProvider())
             .itemLabelProvider(this.getItemLabelProvider())
-            .itemImageURLProvider(this.getItemImageURLProvider())
+            .itemIconURLProvider(this.getItemIconURLProvider())
             .itemDeletableProvider(this.getItemDeletableProvider())
             .itemClickHandlerProvider(itemClickHandlerProvider)
             .itemDeleteHandlerProvider(this.getItemDeleteHandlerProvider())
@@ -158,7 +158,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
         };
     }
 
-    private Function<VariableManager, String> getItemImageURLProvider() {
+    private Function<VariableManager, List<String>> getItemIconURLProvider() {
         return variableManager -> {
             var optionalRepresentationMetadata = variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class);
             if (optionalRepresentationMetadata.isPresent()) {
@@ -167,10 +167,9 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
                 return this.representationImageProviders.stream()
                         .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
                         .flatMap(Optional::stream)
-                        .findFirst()
-                        .orElse(ImageConstants.RESOURCE_SVG);
+                        .toList();
             }
-            return ImageConstants.DEFAULT_SVG;
+            return List.of(ImageConstants.DEFAULT_SVG);
         };
     }
 
