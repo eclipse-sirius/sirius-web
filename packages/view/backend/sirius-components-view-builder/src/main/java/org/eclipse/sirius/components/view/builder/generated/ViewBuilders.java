@@ -99,5 +99,25 @@ public class ViewBuilders {
         return new DeleteElementBuilder();
     }
 
+    /**
+     * Instantiate a LetBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public LetBuilder newLet() {
+        return new LetBuilder();
+    }
+
+    /**
+     * Instantiate a IfBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public IfBuilder newIf() {
+        return new IfBuilder();
+    }
+
 
 }

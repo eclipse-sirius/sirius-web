@@ -21,7 +21,9 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
@@ -173,6 +175,24 @@ public class ViewSwitch<T> extends Switch<T> {
                 T result = this.caseDeleteElement(deleteElement);
                 if (result == null)
                     result = this.caseOperation(deleteElement);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.LET: {
+                Let let = (Let) theEObject;
+                T result = this.caseLet(let);
+                if (result == null)
+                    result = this.caseOperation(let);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case ViewPackage.IF: {
+                If if_ = (If) theEObject;
+                T result = this.caseIf(if_);
+                if (result == null)
+                    result = this.caseOperation(if_);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -358,6 +378,34 @@ public class ViewSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseDeleteElement(DeleteElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Let</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Let</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLet(Let object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>If</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>If</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseIf(If object) {
         return null;
     }
 

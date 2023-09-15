@@ -23,6 +23,8 @@ import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.If;
+import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.UnsetValue;
 import org.eclipse.sirius.components.view.View;
@@ -85,6 +87,10 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createUnsetValue();
             case ViewPackage.DELETE_ELEMENT:
                 return this.createDeleteElement();
+            case ViewPackage.LET:
+                return this.createLet();
+            case ViewPackage.IF:
+                return this.createIf();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -222,6 +228,28 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public DeleteElement createDeleteElement() {
         DeleteElementImpl deleteElement = new DeleteElementImpl();
         return deleteElement;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Let createLet() {
+        LetImpl let = new LetImpl();
+        return let;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public If createIf() {
+        IfImpl if_ = new IfImpl();
+        return if_;
     }
 
     /**

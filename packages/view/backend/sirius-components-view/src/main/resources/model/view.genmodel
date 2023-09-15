@@ -64,6 +64,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//UnsetValue/elementExpression"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//DeleteElement"/>
+    <genClasses ecoreClass="view.ecore#//Let">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Let/variableName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Let/valueExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="view.ecore#//If">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//If/conditionExpression"/>
+    </genClasses>
     <genClasses ecoreClass="view.ecore#//Conditional">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//Conditional/condition"/>
     </genClasses>

@@ -22,7 +22,9 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
@@ -140,6 +142,16 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDeleteElement(DeleteElement object) {
             return ViewAdapterFactory.this.createDeleteElementAdapter();
+        }
+
+        @Override
+        public Adapter caseLet(Let object) {
+            return ViewAdapterFactory.this.createLetAdapter();
+        }
+
+        @Override
+        public Adapter caseIf(If object) {
+            return ViewAdapterFactory.this.createIfAdapter();
         }
 
         @Override
@@ -321,6 +333,32 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDeleteElementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Let <em>Let</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.Let
+     * @generated
+     */
+    public Adapter createLetAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.If <em>If</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.If
+     * @generated
+     */
+    public Adapter createIfAdapter() {
         return null;
     }
 

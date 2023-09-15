@@ -24,7 +24,9 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
+import org.eclipse.sirius.components.view.If;
 import org.eclipse.sirius.components.view.LabelStyle;
+import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.SetValue;
@@ -123,6 +125,20 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass deleteElementEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass letEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass ifEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -593,6 +609,56 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getLet() {
+        return this.letEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLet_VariableName() {
+        return (EAttribute) this.letEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLet_ValueExpression() {
+        return (EAttribute) this.letEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getIf() {
+        return this.ifEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getIf_ConditionExpression() {
+        return (EAttribute) this.ifEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getConditional() {
         return this.conditionalEClass;
     }
@@ -734,6 +800,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
 
         this.deleteElementEClass = this.createEClass(DELETE_ELEMENT);
 
+        this.letEClass = this.createEClass(LET);
+        this.createEAttribute(this.letEClass, LET__VARIABLE_NAME);
+        this.createEAttribute(this.letEClass, LET__VALUE_EXPRESSION);
+
+        this.ifEClass = this.createEClass(IF);
+        this.createEAttribute(this.ifEClass, IF__CONDITION_EXPRESSION);
+
         this.conditionalEClass = this.createEClass(CONDITIONAL);
         this.createEAttribute(this.conditionalEClass, CONDITIONAL__CONDITION);
 
@@ -779,6 +852,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.setValueEClass.getESuperTypes().add(this.getOperation());
         this.unsetValueEClass.getESuperTypes().add(this.getOperation());
         this.deleteElementEClass.getESuperTypes().add(this.getOperation());
+        this.letEClass.getESuperTypes().add(this.getOperation());
+        this.ifEClass.getESuperTypes().add(this.getOperation());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -852,6 +927,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.deleteElementEClass, DeleteElement.class, "DeleteElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.letEClass, Let.class, "Let", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getLet_VariableName(), this.ecorePackage.getEString(), "variableName", null, 1, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLet_ValueExpression(), this.getInterpretedExpression(), "valueExpression", null, 1, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.ifEClass, If.class, "If", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getIf_ConditionExpression(), this.getInterpretedExpression(), "conditionExpression", null, 1, 1, If.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalEClass, Conditional.class, "Conditional", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getConditional_Condition(), this.getInterpretedExpression(), "condition", "aql:false", 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,

@@ -82,6 +82,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2735[#2735] [gantt] Contribute the first version of the Gantt representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/2403[2403] [view] Add support for If and Let constructs in the operations DSL.
 
 === Improvements
 
