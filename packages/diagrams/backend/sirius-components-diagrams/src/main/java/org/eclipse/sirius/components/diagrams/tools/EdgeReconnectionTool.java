@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.diagrams.tools;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -41,6 +42,10 @@ public final class EdgeReconnectionTool implements ITool {
         // Prevent instantiation
     }
 
+    public static Builder newEdgeReconnectionTool(String id) {
+        return new Builder(id);
+    }
+
     @Override
     public String getId() {
         return this.id;
@@ -61,18 +66,14 @@ public final class EdgeReconnectionTool implements ITool {
     }
 
     @Override
-    public String getImageURL() {
-        return "";
+    public List<String> getIconURL() {
+        return List.of();
     }
 
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
-    }
-
-    public static Builder newEdgeReconnectionTool(String id) {
-        return new Builder(id);
     }
 
     /**
@@ -82,7 +83,8 @@ public final class EdgeReconnectionTool implements ITool {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 

@@ -76,7 +76,7 @@ public class EdgeMappingConverterTests {
         IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
-                return containerMappingUUID.toString();
+                return containerMappingUUID;
             }
         };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
@@ -98,10 +98,10 @@ public class EdgeMappingConverterTests {
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription(id.toString())
+        LabelDescription labelDescription = LabelDescription.newLabelDescription(id)
                 .idProvider(variableManager -> "")
                 .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
@@ -151,7 +151,7 @@ public class EdgeMappingConverterTests {
         IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
-                return containerMappingUUID.toString();
+                return containerMappingUUID;
             }
         };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;
@@ -191,7 +191,7 @@ public class EdgeMappingConverterTests {
         IIdentifierProvider identifierProvider = new IIdentifierProvider.NoOp() {
             @Override
             public String getIdentifier(Object element) {
-                return targetContainerMappingUUID.toString();
+                return targetContainerMappingUUID;
             }
         };
         ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory = SemanticCandidatesProvider::new;

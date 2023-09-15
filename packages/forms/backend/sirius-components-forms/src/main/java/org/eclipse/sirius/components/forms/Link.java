@@ -36,16 +36,16 @@ public final class Link extends AbstractWidget {
         // Prevent instantiation
     }
 
+    public static Builder newLink(String id) {
+        return new Builder(id);
+    }
+
     public String getUrl() {
         return this.url;
     }
 
     public LinkStyle getStyle() {
         return this.style;
-    }
-
-    public static Builder newLink(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -61,11 +61,14 @@ public final class Link extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private final String id;
+
+        private final boolean readOnly = true; // Read-only by nature
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private String url;
 
@@ -74,8 +77,6 @@ public final class Link extends AbstractWidget {
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
-
-        private final boolean readOnly = true; // Read-only by nature;;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -86,7 +87,7 @@ public final class Link extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -115,7 +116,7 @@ public final class Link extends AbstractWidget {
             Link link = new Link();
             link.id = Objects.requireNonNull(this.id);
             link.label = Objects.requireNonNull(this.label);
-            link.iconURL = this.iconURL;
+            link.iconURL = Objects.requireNonNull(this.iconURL);
             link.url = Objects.requireNonNull(this.url);
             link.style = this.style; // Optional on purpose
             link.diagnostics = Objects.requireNonNull(this.diagnostics);

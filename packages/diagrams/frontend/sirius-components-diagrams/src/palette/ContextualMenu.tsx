@@ -45,7 +45,7 @@ export const getConnectorToolsQuery = gql`
               ) {
                 id
                 label
-                imageURL
+                iconURL
               }
             }
           }

@@ -108,6 +108,16 @@ const useTreeItemStyle = makeStyles((theme) => ({
   highlight: {
     backgroundColor: theme.palette.navigation.leftBackground,
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 
 // The list of characters that will enable the direct edit mechanism.
@@ -275,8 +285,21 @@ export const TreeItem = ({
   }, [selected]);
 
   let image = <CropDinIcon />;
-  if (item.imageURL) {
-    image = <img height="16" width="16" alt={item.kind} src={httpOrigin + item.imageURL}></img>;
+  if (item.iconURL?.length > 0) {
+    image = (
+      <div className={classes.iconContainer}>
+        {item.iconURL.map((icon, index) => (
+          <img
+            height="16"
+            width="16"
+            key={index}
+            alt={item.kind}
+            src={httpOrigin + icon}
+            className={classes.icon}
+            style={{ zIndex: index }}></img>
+        ))}
+      </div>
+    );
   }
   let text;
   const onCloseEditingMode = () => {

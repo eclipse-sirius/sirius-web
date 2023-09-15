@@ -90,10 +90,10 @@ public class CurrentTreeProvider {
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
                 .labelProvider(variableManager -> TITLE)
-                .iconURLProvider(variableManager -> WIDGET_ICON_URL)
+                .iconURLProvider(variableManager -> List.of(WIDGET_ICON_URL))
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)
-                .nodeImageURLProvider(this::getNodeImageURL)
+                .nodeIconURLProvider(this::getNodeImageURL)
                 .nodeKindProvider(this::getNodeKind)
                 .nodeSelectableProvider(this::isNodeSelectable)
                 .childrenProvider(this::getCurrentChildren)
@@ -157,7 +157,7 @@ public class CurrentTreeProvider {
         String result = null;
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof String) {
-            result = "category/" + (String) self;
+            result = "category/" + self;
         } else if (self instanceof EReference) {
             result = "reference/" + ((EReference) self).getName();
         } else if (self != null) {
@@ -191,8 +191,7 @@ public class CurrentTreeProvider {
      */
     private String getContainmentReferenceLabel(EObject eObject, EReference eReference) {
         Adapter adapter = this.adapterFactory.adapt(eObject, IItemLabelProvider.class);
-        if (adapter instanceof ItemProviderAdapter) {
-            ItemProviderAdapter editingDomainItemProvider = (ItemProviderAdapter) adapter;
+        if (adapter instanceof ItemProviderAdapter editingDomainItemProvider) {
             String key = String.format("_UI_%s_%s_feature", eReference.getEContainingClass().getName(), eReference.getName());
             try {
                 return editingDomainItemProvider.getString(key);
@@ -203,17 +202,17 @@ public class CurrentTreeProvider {
         return null;
     }
 
-    private String getNodeImageURL(VariableManager variableManager) {
-        String result = null;
+    private List<String> getNodeImageURL(VariableManager variableManager) {
+        List<String> result = List.of(ImageConstants.DEFAULT_SVG);
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof String) {
-            result = FOLDER_ICON_URL;
+            result = List.of(FOLDER_ICON_URL);
         } else if (self instanceof EReference) {
-            result = CHILDREN_CATEGORY_ICON_URL;
+            result = List.of(CHILDREN_CATEGORY_ICON_URL);
         } else if (self != null) {
             result = this.objectService.getImagePath(self);
         }
-        return Optional.ofNullable(result).orElse(ImageConstants.DEFAULT_SVG);
+        return result;
     }
 
     private String getNodeKind(VariableManager variableManager) {
@@ -237,8 +236,7 @@ public class CurrentTreeProvider {
     private List<String> collectAllNodeIds(VariableManager variableManager) {
         List<String> result = new ArrayList<>();
         for (var element : variableManager.get(TreeComponent.NODES_VARIABLE, List.class).orElse(List.of())) {
-            if (element instanceof TreeNode) {
-                TreeNode node = (TreeNode) element;
+            if (element instanceof TreeNode node) {
                 result.add(node.getId());
             }
         }

@@ -117,7 +117,7 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
   const toolbarAction: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction1',
@@ -197,7 +197,7 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
   const toolbarAction1: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction1',
@@ -215,7 +215,7 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
     label: 'ToolbarAction2',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction2',
@@ -297,7 +297,7 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
   const toolbarAction1: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction1',
@@ -315,7 +315,7 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
     label: 'ToolbarAction2',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction2',
@@ -399,7 +399,7 @@ test('move the existing ToolbarAction from/into the drop area located at the end
   const toolbarAction1: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction1',
@@ -417,7 +417,7 @@ test('move the existing ToolbarAction from/into the drop area located at the end
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
     label: 'ToolbarAction2',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction2',
@@ -501,7 +501,7 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button for a page'
   const toolbarAction: GQLToolbarAction = {
     id: 'ToolbarAction1',
     label: 'ToolbarAction1',
-    iconURL: null,
+    iconURL: [],
     __typename: 'ToolbarAction',
     diagnostics: [],
     buttonLabel: 'ToolbarAction1',

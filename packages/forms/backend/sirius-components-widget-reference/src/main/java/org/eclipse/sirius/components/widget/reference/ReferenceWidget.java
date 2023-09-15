@@ -141,7 +141,7 @@ public final class ReferenceWidget extends AbstractWidget {
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private List<Diagnostic> diagnostics;
 
@@ -186,7 +186,7 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -281,7 +281,7 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.id = Objects.requireNonNull(this.id);
             referenceWidget.descriptionId = Objects.requireNonNull(this.descriptionId);
             referenceWidget.label = Objects.requireNonNull(this.label);
-            referenceWidget.iconURL = this.iconURL;
+            referenceWidget.iconURL = Objects.requireNonNull(this.iconURL);
             referenceWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
             referenceWidget.referenceValues = Objects.requireNonNull(this.referenceValues);
             referenceWidget.referenceOptionsProvider = Objects.requireNonNull(this.referenceOptionsProvider);

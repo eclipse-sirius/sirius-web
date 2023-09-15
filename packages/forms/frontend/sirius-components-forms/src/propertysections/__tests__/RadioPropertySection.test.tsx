@@ -17,8 +17,8 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { GQLRadio } from '../../form/FormEventFragments.types';
 import {
-  RadioPropertySection,
   editRadioMutation,
+  RadioPropertySection,
   updateWidgetFocusMutation,
 } from '../../propertysections/RadioPropertySection';
 import {
@@ -39,7 +39,7 @@ const defaultRadio: GQLRadio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   diagnostics: [],
   options: [
@@ -61,7 +61,7 @@ const radioWithStyle: GQLRadio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   diagnostics: [],
   options: [
@@ -90,7 +90,7 @@ const radioWithEmptyStyle: GQLRadio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   diagnostics: [],
   options: [
@@ -119,7 +119,7 @@ const readOnlyRadio: GQLRadio = {
   __typename: 'Radio',
   id: 'radioId',
   label: 'Status:',
-  iconURL: null,
+  iconURL: [],
   diagnostics: [],
   options: [
     {

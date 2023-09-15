@@ -9,6 +9,7 @@
 
 === Architectural decision records
 
+- [ADR-111] Add support for image overlay
 
 === Breaking changes
 
@@ -29,6 +30,7 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 - https://github.com/eclipse-sirius/sirius-web/issues/1712[#1712] [diagram] The GraphQL type `Node` must now implement `isLabelEditable` boolean field.
 - https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [sirius-web] The GraphQL field `CreateChildSuccessPayload` now expects to have a list of messages.
 - https://github.com/eclipse-sirius/sirius-web/issues/1982[#1982] [diagram] Change the diagram structure. The Node's 'label' attribute has been renamed into 'insideLabel' and its type changed from `Label` to `InsideLabel` (which is currently identical to `Label` except for the name).
+- https://github.com/eclipse-sirius/sirius-web/issues/2388[#2388] [core] The `IObjectService.getImagePath` API changed and now must return a list containing all the image paths to compose/overlay.
 
 === Dependency update
 
@@ -75,6 +77,9 @@ This coupling will be removed in the near future as a consequence, the dependenc
 - https://github.com/eclipse-sirius/sirius-web/issues/2475[#2475] [diagram] Prevent nodes to move each diagram refresh event. Only the size is still updated.
 - https://github.com/eclipse-sirius/sirius-web/issues/2485[#2485] [view] Change the default size of View Node Description from 1x1 to 150x70.
 - https://github.com/eclipse-sirius/sirius-web/issues/2493[2493] [diagram] Disable double click to zoom in with ReactFlow.
+- https://github.com/eclipse-sirius/sirius-web/issues/2388[#2388] [core] Added support for image overlay in icons.
+All icons can now be composed of multiple images, which will be overlayed on top of each other.
+An example of use has been added on the domain entity items.
 
 == v2023.10.0
 
@@ -134,6 +139,8 @@ They are loaded in every studio project but hidden in the explorer.
 They are also made readonly in the details view.
 Applications derived from Sirius Web may have to ensure that references to default colors are properly resolved when loading a view model.
 - https://github.com/eclipse-sirius/sirius-web/issues/2191[#2191] [view] The Color property on ImageNodeStyle has been removed.
+- https://github.com/eclipse-sirius/sirius-web/issues/2388[#2388] [tree] `treeItem` is no longer composed of a single string for the imageURL, but of a list of strings to take into account composite images.
+The `IObjectService.getImagePath` API changed and now must return a list containing all the image paths.
 
 === Dependency update
 

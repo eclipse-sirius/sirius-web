@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class RichTextComponent implements IComponent {
 
-    private RichTextComponentProps props;
+    private final RichTextComponentProps props;
 
     public RichTextComponent(RichTextComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -53,7 +53,7 @@ public class RichTextComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = richTextDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = richTextDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = richTextDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = richTextDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = richTextDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, String, IStatus> genericHandler = richTextDescription.getNewValueHandler();

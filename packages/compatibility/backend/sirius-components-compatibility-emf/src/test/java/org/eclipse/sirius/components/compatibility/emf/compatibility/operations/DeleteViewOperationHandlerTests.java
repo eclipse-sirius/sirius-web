@@ -106,7 +106,7 @@ public class DeleteViewOperationHandlerTests {
                         .position(Position.at(0, 0))
                         .size(Size.of(10, 10))
                         .alignment(Position.at(0, 0))
-                        .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL("").build())
+                        .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL(List.of()).build())
                         .build())
                 .style(ImageNodeStyle.newImageNodeStyle().imageURL("").scalingFactor(0).build())
                 .position(Position.at(0, 0))
@@ -170,7 +170,7 @@ public class DeleteViewOperationHandlerTests {
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .build();
 
         LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")

@@ -99,6 +99,16 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
   iconRoot: {
     minWidth: theme.spacing(3),
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 
 const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
@@ -199,14 +209,21 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
               data-testid="childCreationDescription">
               {childCreationDescriptions.map((childCreationDescription) => (
                 <MenuItem value={childCreationDescription.id} key={childCreationDescription.id}>
-                  {childCreationDescription.iconURL && (
+                  {childCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
-                      <img
-                        height="16"
-                        width="16"
-                        alt={childCreationDescription.label}
-                        src={httpOrigin + childCreationDescription.iconURL}
-                      />
+                      <div className={classes.iconContainer}>
+                        {childCreationDescription.iconURL.map((icon, index) => (
+                          <img
+                            height="16"
+                            width="16"
+                            key={index}
+                            alt={childCreationDescription.label}
+                            src={httpOrigin + icon}
+                            className={classes.icon}
+                            style={{ zIndex: index }}
+                          />
+                        ))}
+                      </div>
                     </ListItemIcon>
                   )}
                   <ListItemText primary={childCreationDescription.label} />

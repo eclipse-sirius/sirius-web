@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class MultiSelect extends AbstractWidget {
+
     private List<SelectOption> options;
 
     private List<String> values;
@@ -40,6 +41,10 @@ public final class MultiSelect extends AbstractWidget {
 
     private MultiSelect() {
         // Prevent instantiation
+    }
+
+    public static Builder newMultiSelect(String id) {
+        return new Builder(id);
     }
 
     public List<SelectOption> getOptions() {
@@ -58,10 +63,6 @@ public final class MultiSelect extends AbstractWidget {
         return this.style;
     }
 
-    public static Builder newMultiSelect(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, values: {3}, options: {4}'}'";
@@ -75,11 +76,12 @@ public final class MultiSelect extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private List<SelectOption> options;
 
@@ -104,7 +106,7 @@ public final class MultiSelect extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -148,7 +150,7 @@ public final class MultiSelect extends AbstractWidget {
             MultiSelect select = new MultiSelect();
             select.id = Objects.requireNonNull(this.id);
             select.label = Objects.requireNonNull(this.label);
-            select.iconURL = this.iconURL; // Optional on purpose
+            select.iconURL = Objects.requireNonNull(this.iconURL);
             select.options = Objects.requireNonNull(this.options);
             select.values = this.values;
             select.newValuesHandler = Objects.requireNonNull(this.newValuesHandler);

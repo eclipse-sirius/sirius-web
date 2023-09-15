@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.sample.slider;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,7 +36,7 @@ public final class SliderElementProps implements IProps {
 
     private String label;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private Supplier<String> helpTextProvider;
 
@@ -53,6 +54,10 @@ public final class SliderElementProps implements IProps {
         // Prevent instantiation
     }
 
+    public static Builder newSliderElementProps(String id) {
+        return new Builder(id);
+    }
+
     public String getId() {
         return this.id;
     }
@@ -61,7 +66,7 @@ public final class SliderElementProps implements IProps {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 
@@ -89,10 +94,6 @@ public final class SliderElementProps implements IProps {
         return this.newValueHandler;
     }
 
-    public static Builder newSliderElementProps(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, minValue: {3}, maxValue: {4}, currentValue: {5}'}'";
@@ -107,11 +108,11 @@ public final class SliderElementProps implements IProps {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private Supplier<String> helpTextProvider;
 
@@ -134,7 +135,7 @@ public final class SliderElementProps implements IProps {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

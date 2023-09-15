@@ -35,7 +35,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, Boolean> valueProvider;
 
@@ -47,6 +47,10 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
         // Prevent instantiation
     }
 
+    public static Builder newCheckboxDescription(String id) {
+        return new Builder(id);
+    }
+
     public Function<VariableManager, String> getIdProvider() {
         return this.idProvider;
     }
@@ -55,7 +59,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -69,10 +73,6 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, CheckboxStyle> getStyleProvider() {
         return this.styleProvider;
-    }
-
-    public static Builder newCheckboxDescription(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -89,7 +89,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private Function<VariableManager, String> idProvider;
 
@@ -97,7 +97,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
@@ -134,7 +134,7 @@ public final class CheckboxDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

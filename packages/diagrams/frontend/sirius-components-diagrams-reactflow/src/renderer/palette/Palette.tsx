@@ -69,7 +69,7 @@ const ToolFields = gql`
     __typename
     id
     label
-    imageURL
+    iconURL
     ... on SingleClickOnDiagramElementTool {
       targetDescriptions {
         id
@@ -96,7 +96,7 @@ export const getPaletteQuery = gql`
                 toolSections {
                   id
                   label
-                  imageURL
+                  iconURL
                   tools {
                     ...ToolFields
                   }

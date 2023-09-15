@@ -34,7 +34,7 @@ public final class ListDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, List<?>> itemsProvider;
 
@@ -44,7 +44,7 @@ public final class ListDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> itemKindProvider;
 
-    private Function<VariableManager, String> itemImageURLProvider;
+    private Function<VariableManager, List<String>> itemIconURLProvider;
 
     private Function<VariableManager, Boolean> itemDeletableProvider;
 
@@ -58,6 +58,10 @@ public final class ListDescription extends AbstractWidgetDescription {
         // Prevent instantiation
     }
 
+    public static Builder newListDescription(String id) {
+        return new Builder(id);
+    }
+
     public Function<VariableManager, String> getIdProvider() {
         return this.idProvider;
     }
@@ -66,7 +70,7 @@ public final class ListDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -86,8 +90,8 @@ public final class ListDescription extends AbstractWidgetDescription {
         return this.itemKindProvider;
     }
 
-    public Function<VariableManager, String> getItemImageURLProvider() {
-        return this.itemImageURLProvider;
+    public Function<VariableManager, List<String>> getItemIconURLProvider() {
+        return this.itemIconURLProvider;
     }
 
     public Function<VariableManager, Boolean> getItemDeletableProvider() {
@@ -106,10 +110,6 @@ public final class ListDescription extends AbstractWidgetDescription {
         return this.styleProvider;
     }
 
-    public static Builder newListDescription(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -124,7 +124,7 @@ public final class ListDescription extends AbstractWidgetDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private Function<VariableManager, String> idProvider;
 
@@ -132,7 +132,7 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
@@ -144,7 +144,7 @@ public final class ListDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> itemKindProvider;
 
-        private Function<VariableManager, String> itemImageURLProvider;
+        private Function<VariableManager, List<String>> itemIconURLProvider;
 
         private Function<VariableManager, Boolean> itemDeletableProvider;
 
@@ -181,7 +181,7 @@ public final class ListDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
@@ -211,8 +211,8 @@ public final class ListDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder itemImageURLProvider(Function<VariableManager, String> itemImageURLProvider) {
-            this.itemImageURLProvider = Objects.requireNonNull(itemImageURLProvider);
+        public Builder itemIconURLProvider(Function<VariableManager, List<String>> itemIconURLProvider) {
+            this.itemIconURLProvider = Objects.requireNonNull(itemIconURLProvider);
             return this;
         }
 
@@ -268,7 +268,7 @@ public final class ListDescription extends AbstractWidgetDescription {
             listDescription.itemIdProvider = Objects.requireNonNull(this.itemIdProvider);
             listDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);
             listDescription.itemKindProvider = Objects.requireNonNull(this.itemKindProvider);
-            listDescription.itemImageURLProvider = Objects.requireNonNull(this.itemImageURLProvider);
+            listDescription.itemIconURLProvider = Objects.requireNonNull(this.itemIconURLProvider);
             listDescription.itemDeletableProvider = Objects.requireNonNull(this.itemDeletableProvider);
             listDescription.itemDeleteHandlerProvider = Objects.requireNonNull(this.itemDeleteHandlerProvider);
             listDescription.itemClickHandlerProvider = Objects.requireNonNull(this.itemClickHandlerProvider);

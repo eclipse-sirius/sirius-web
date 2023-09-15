@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.Optional;
  * @author sbegaudeau
  */
 public interface IObjectService {
+
     String getId(Object object);
 
     String getLabel(Object object);
@@ -29,7 +30,7 @@ public interface IObjectService {
 
     String getFullLabel(Object object);
 
-    String getImagePath(Object object);
+    List<String> getImagePath(Object object);
 
     Optional<Object> getObject(IEditingContext editingContext, String objectId);
 
@@ -67,8 +68,8 @@ public interface IObjectService {
         }
 
         @Override
-        public String getImagePath(Object object) {
-            return "";
+        public List<String> getImagePath(Object object) {
+            return List.of();
         }
 
         @Override

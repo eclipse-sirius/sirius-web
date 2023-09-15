@@ -53,66 +53,66 @@ public final class StylesFactory {
 
     public LabelStyleDescription createLabelStyleDescription(NodeStyleDescription nodeStyle) {
         return LabelStyleDescription.newLabelStyleDescription()
-                                    .colorProvider(variableManager -> Optional.ofNullable(nodeStyle.getLabelColor())
-                                                                              .filter(FixedColor.class::isInstance)
-                                                                              .map(FixedColor.class::cast)
-                                                                              .map(FixedColor::getValue)
-                                                                              .orElse(DEFAULT_COLOR))
-                                    .fontSizeProvider(variableManager -> nodeStyle.getFontSize())
-                                    .boldProvider(variableManager -> nodeStyle.isBold())
-                                    .italicProvider(variableManager -> nodeStyle.isItalic())
-                                    .underlineProvider(variableManager -> nodeStyle.isUnderline())
-                                    .strikeThroughProvider(variableManager -> nodeStyle.isStrikeThrough())
-                                    .iconURLProvider(variableManager -> {
-                                        String iconURL = "";
-                                        if (nodeStyle.isShowIcon() && nodeStyle.getLabelIcon() == null) {
-                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse("");
-                                        }
-                                        if (nodeStyle.isShowIcon() && !(nodeStyle.getLabelIcon() == null)) {
-                                            iconURL = nodeStyle.getLabelIcon();
-                                        }
-                                        return iconURL;
-                                    })
-                                    .build();
+                .colorProvider(variableManager -> Optional.ofNullable(nodeStyle.getLabelColor())
+                        .filter(FixedColor.class::isInstance)
+                        .map(FixedColor.class::cast)
+                        .map(FixedColor::getValue)
+                        .orElse(DEFAULT_COLOR))
+                .fontSizeProvider(variableManager -> nodeStyle.getFontSize())
+                .boldProvider(variableManager -> nodeStyle.isBold())
+                .italicProvider(variableManager -> nodeStyle.isItalic())
+                .underlineProvider(variableManager -> nodeStyle.isUnderline())
+                .strikeThroughProvider(variableManager -> nodeStyle.isStrikeThrough())
+                .iconURLProvider(variableManager -> {
+                    List<String> iconURL = List.of();
+                    if (nodeStyle.isShowIcon() && nodeStyle.getLabelIcon() == null) {
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                    }
+                    if (nodeStyle.isShowIcon() && nodeStyle.getLabelIcon() != null) {
+                        iconURL = List.of(nodeStyle.getLabelIcon());
+                    }
+                    return iconURL;
+                })
+                .build();
     }
 
     public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
         return LabelStyleDescription.newLabelStyleDescription()
-                                    .colorProvider(variableManager -> Optional.ofNullable(edgeStyle.getColor())
-                                                                              .filter(FixedColor.class::isInstance)
-                                                                              .map(FixedColor.class::cast)
-                                                                              .map(FixedColor::getValue)
-                                                                              .orElse(DEFAULT_COLOR))
-                                    .fontSizeProvider(variableManager -> edgeStyle.getFontSize())
-                                    .boldProvider(variableManager -> edgeStyle.isBold())
-                                    .italicProvider(variableManager -> edgeStyle.isItalic())
-                                    .underlineProvider(variableManager -> edgeStyle.isUnderline())
-                                    .strikeThroughProvider(variableManager -> edgeStyle.isStrikeThrough())
-                                    .iconURLProvider(variableManager -> {
-                                        String iconURL = "";
-                                        if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() == null) {
-                                            iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse("");
-                                        }
-                                        if (edgeStyle.isShowIcon() && !(edgeStyle.getLabelIcon() == null)) {
-                                            iconURL = edgeStyle.getLabelIcon();
-                                        }
-                                        return iconURL;
-                                    })
-                                    .build();
+                .colorProvider(variableManager -> Optional.ofNullable(edgeStyle.getColor())
+                        .filter(FixedColor.class::isInstance)
+                        .map(FixedColor.class::cast)
+                        .map(FixedColor::getValue)
+                        .orElse(DEFAULT_COLOR))
+                .fontSizeProvider(variableManager -> edgeStyle.getFontSize())
+                .boldProvider(variableManager -> edgeStyle.isBold())
+                .italicProvider(variableManager -> edgeStyle.isItalic())
+                .underlineProvider(variableManager -> edgeStyle.isUnderline())
+                .strikeThroughProvider(variableManager -> edgeStyle.isStrikeThrough())
+                .iconURLProvider(variableManager -> {
+                    List<String> iconURL = List.of();
+                    if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() == null) {
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                    }
+                    if (edgeStyle.isShowIcon() && edgeStyle.getLabelIcon() != null) {
+                        iconURL = List.of(edgeStyle.getLabelIcon());
+                    }
+                    return iconURL;
+                })
+                .build();
     }
 
     public EdgeStyle createEdgeStyle(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
         return EdgeStyle.newEdgeStyle()
-                        .color(Optional.ofNullable(edgeStyle.getColor())
-                                       .filter(FixedColor.class::isInstance)
-                                       .map(FixedColor.class::cast)
-                                       .map(FixedColor::getValue)
-                                       .orElse(DEFAULT_COLOR))
-                        .lineStyle(LineStyle.valueOf(edgeStyle.getLineStyle().getLiteral()))
-                        .size(edgeStyle.getEdgeWidth())
-                        .sourceArrow(ArrowStyle.valueOf(edgeStyle.getSourceArrowStyle().getLiteral()))
-                        .targetArrow(ArrowStyle.valueOf(edgeStyle.getTargetArrowStyle().getLiteral()))
-                        .build();
+                .color(Optional.ofNullable(edgeStyle.getColor())
+                        .filter(FixedColor.class::isInstance)
+                        .map(FixedColor.class::cast)
+                        .map(FixedColor::getValue)
+                        .orElse(DEFAULT_COLOR))
+                .lineStyle(LineStyle.valueOf(edgeStyle.getLineStyle().getLiteral()))
+                .size(edgeStyle.getEdgeWidth())
+                .sourceArrow(ArrowStyle.valueOf(edgeStyle.getSourceArrowStyle().getLiteral()))
+                .targetArrow(ArrowStyle.valueOf(edgeStyle.getTargetArrowStyle().getLiteral()))
+                .build();
     }
 
     public String getNodeType(NodeStyleDescription nodeStyleDescription) {
@@ -141,21 +141,21 @@ public final class StylesFactory {
                 break;
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
-                    .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
-                    .color(Optional.ofNullable(nodeStyle.getColor())
-                                   .filter(FixedColor.class::isInstance)
-                                   .map(FixedColor.class::cast)
-                                   .map(FixedColor::getValue)
-                                   .orElse(DEFAULT_COLOR))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
-                                         .filter(FixedColor.class::isInstance)
-                                         .map(FixedColor.class::cast)
-                                         .map(FixedColor::getValue)
-                                         .orElse(""))
-                    .borderSize(nodeStyle.getBorderSize())
-                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                    .borderRadius(nodeStyle.getBorderRadius())
-                    .build();
+                        .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
+                        .color(Optional.ofNullable(nodeStyle.getColor())
+                                .filter(FixedColor.class::isInstance)
+                                .map(FixedColor.class::cast)
+                                .map(FixedColor::getValue)
+                                .orElse(DEFAULT_COLOR))
+                        .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
+                                .filter(FixedColor.class::isInstance)
+                                .map(FixedColor.class::cast)
+                                .map(FixedColor::getValue)
+                                .orElse(""))
+                        .borderSize(nodeStyle.getBorderSize())
+                        .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                        .borderRadius(nodeStyle.getBorderRadius())
+                        .build();
                 break;
             default:
                 for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
@@ -168,21 +168,21 @@ public final class StylesFactory {
         }
         if (result == null) {
             result = RectangularNodeStyle.newRectangularNodeStyle()
-                   .withHeader(true)
-                   .color(Optional.ofNullable(nodeStyle.getColor())
-                                  .filter(FixedColor.class::isInstance)
-                                  .map(FixedColor.class::cast)
-                                  .map(FixedColor::getValue)
-                                  .orElse(DEFAULT_COLOR))
-                   .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
-                                        .filter(FixedColor.class::isInstance)
-                                        .map(FixedColor.class::cast)
-                                        .map(FixedColor::getValue)
-                                        .orElse(""))
-                   .borderSize(nodeStyle.getBorderSize())
-                   .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                   .borderRadius(nodeStyle.getBorderRadius())
-                   .build();
+                    .withHeader(true)
+                    .color(Optional.ofNullable(nodeStyle.getColor())
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse(DEFAULT_COLOR))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse(""))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .borderRadius(nodeStyle.getBorderRadius())
+                    .build();
         }
 
         return result;

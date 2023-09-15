@@ -74,7 +74,7 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
     private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
 
     public ExplorerDescriptionProvider(IObjectService objectService, IURLParser urlParser, IRepresentationService representationService,
-                                       List<IRepresentationImageProvider> representationImageProviders, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
+            List<IRepresentationImageProvider> representationImageProviders, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationService = Objects.requireNonNull(representationService);
@@ -103,7 +103,7 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
-                .imageURLProvider(this::getImageURL)
+                .iconURLProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(this::isSelectable)
@@ -193,22 +193,21 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
         return true;
     }
 
-    private String getImageURL(VariableManager variableManager) {
+    private List<String> getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
 
-        String imageURL = null;
+        List<String> imageURL = List.of(ImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {
             imageURL = this.representationImageProviders.stream()
                     .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
                     .flatMap(Optional::stream)
-                    .findFirst()
-                    .orElse(ImageConstants.RESOURCE_SVG);
+                    .toList();
         } else if (self instanceof Resource) {
-            imageURL = ImageConstants.RESOURCE_SVG;
+            imageURL = List.of(ImageConstants.RESOURCE_SVG);
         }
-        return Optional.ofNullable(imageURL).orElse(ImageConstants.DEFAULT_SVG);
+        return imageURL;
     }
 
     private List<Resource> getElements(VariableManager variableManager) {

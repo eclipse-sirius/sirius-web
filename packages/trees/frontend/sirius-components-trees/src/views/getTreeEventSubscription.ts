@@ -41,7 +41,7 @@ fragment treeItemFields on TreeItem {
   deletable
   selectable
   kind
-  imageURL
+  iconURL
 }
 `;
 

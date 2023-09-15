@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.viewpoint.FontFormat;
  * @author hmarchadour
  */
 public class LabelStyleDescriptionConverter {
+
     private final AQLInterpreter interpreter;
 
     private final IObjectService objectService;
@@ -40,22 +41,20 @@ public class LabelStyleDescriptionConverter {
     public LabelStyleDescription convert(org.eclipse.sirius.viewpoint.description.style.BasicLabelStyleDescription labelStyleDescription) {
         List<FontFormat> fontFormats = labelStyleDescription.getLabelFormat();
 
-        Function<VariableManager, String> iconURLProvider = (variableManager) -> {
-            String iconURL = "";
+        Function<VariableManager, List<String>> iconURLProvider = (variableManager) -> {
+            List<String> iconURL = List.of();
             if (labelStyleDescription.isShowIcon()) {
-                // @formatter:off
                 String iconPath = labelStyleDescription.getIconPath();
                 if (iconPath != null && !iconPath.isEmpty()) {
                     int indexOfSecondSlash = iconPath.indexOf('/', 1);
                     if (indexOfSecondSlash != -1) {
-                        iconURL = iconPath.substring(indexOfSecondSlash);
+                        iconURL = List.of(iconPath.substring(indexOfSecondSlash));
                     }
                 } else {
                     iconURL = variableManager.get(VariableManager.SELF, Object.class)
                             .map(this.objectService::getImagePath)
-                            .orElse("");
+                            .orElse(List.of());
                 }
-                // @formatter:on
             }
             return iconURL;
         };

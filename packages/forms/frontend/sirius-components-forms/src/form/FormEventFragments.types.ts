@@ -14,6 +14,7 @@
 export interface GQLFormEventSubscription {
   formEvent: GQLFormEventPayload;
 }
+
 export interface GQLFormEventPayload {
   __typename: string;
 }
@@ -127,7 +128,7 @@ export type GQLGroupDisplayMode = 'LIST' | 'TOGGLEABLE_AREAS';
 export interface GQLWidget {
   id: string;
   label: string;
-  iconURL: string | null;
+  iconURL: string[];
   __typename: string;
   diagnostics: GQLDiagnostic[];
   hasHelpText: boolean;
@@ -217,7 +218,7 @@ export interface GQLMultiSelectStyle {
 export interface GQLSelectOption {
   id: string;
   label: string;
-  iconURL: string;
+  iconURL: string[];
 }
 
 export interface GQLRadio extends GQLWidget {
@@ -258,7 +259,7 @@ export interface GQLListItem {
   id: string;
   label: string;
   kind: string;
-  imageURL: string;
+  iconURL: string[];
   deletable: Boolean;
 }
 
@@ -349,6 +350,7 @@ export interface GQLPieChartEntry {
   key: string;
   value: number;
 }
+
 export interface GQLLabelWidget extends GQLWidget {
   stringValue: string;
   style: GQLLabelWidgetStyle;

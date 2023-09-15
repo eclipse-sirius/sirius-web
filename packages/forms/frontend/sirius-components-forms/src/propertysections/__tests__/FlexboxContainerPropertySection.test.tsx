@@ -28,7 +28,7 @@ const defaultFlexboxContainer: GQLFlexboxContainer = {
   flexGrow: 1,
   flexWrap: 'nowrap',
   hasHelpText: false,
-  iconURL: null,
+  iconURL: [],
 };
 
 const flexboxContainerWithStyle: GQLFlexboxContainer = {

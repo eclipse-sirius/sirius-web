@@ -70,9 +70,9 @@ public class ListItemEventHandlersTests {
     private static ListItem getListItemWithClickHandler(String listItemId, Function<ClickEventKind, IStatus> clickHandler) {
         return ListItem.newListItem(listItemId)
                 .deletable(true)
-                .deleteHandler(() -> new Success())
+                .deleteHandler(Success::new)
                 .clickHandler(clickHandler)
-                .imageURL("")
+                .iconURL(java.util.List.of())
                 .kind("Diagram")
                 .label("empty representation")
                 .build();
@@ -83,7 +83,7 @@ public class ListItemEventHandlersTests {
                 .deletable(true)
                 .deleteHandler(deleteHandler)
                 .clickHandler(clickEventKind -> new Success())
-                .imageURL("")
+                .iconURL(java.util.List.of())
                 .kind("Diagram")
                 .label("empty representation")
                 .build();

@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class RichText extends AbstractWidget {
+
     private String value;
 
     private Function<String, IStatus> newValueHandler;
@@ -37,16 +38,16 @@ public final class RichText extends AbstractWidget {
         // Prevent instantiation
     }
 
+    public static Builder newRichText(String id) {
+        return new Builder(id);
+    }
+
     public String getValue() {
         return this.value;
     }
 
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
-    }
-
-    public static Builder newRichText(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -62,11 +63,12 @@ public final class RichText extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private String value;
 
@@ -87,7 +89,7 @@ public final class RichText extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -121,7 +123,7 @@ public final class RichText extends AbstractWidget {
             RichText richtext = new RichText();
             richtext.id = Objects.requireNonNull(this.id);
             richtext.label = Objects.requireNonNull(this.label);
-            richtext.iconURL = this.iconURL; // Optional on purpose
+            richtext.iconURL = Objects.requireNonNull(this.iconURL);
             richtext.value = Objects.requireNonNull(this.value);
             richtext.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             richtext.diagnostics = Objects.requireNonNull(this.diagnostics);

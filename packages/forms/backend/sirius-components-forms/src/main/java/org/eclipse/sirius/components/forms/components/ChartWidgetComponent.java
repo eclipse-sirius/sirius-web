@@ -59,7 +59,7 @@ public class ChartWidgetComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = chartWidgetDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = chartWidgetDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = chartWidgetDescription.getIconURLProvider().apply(variableManager);
         IChartDescription chartDescription = chartWidgetDescription.getChartDescription();
 
         List<Element> children = new ArrayList<>();

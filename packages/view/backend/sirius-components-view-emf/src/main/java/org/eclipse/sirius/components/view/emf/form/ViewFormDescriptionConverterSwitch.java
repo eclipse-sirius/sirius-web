@@ -206,7 +206,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
         String descriptionId = this.getDescriptionId(viewSelectDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewSelectDescription.getLabelExpression());
-        Function<VariableManager, String> optionIconURLProvider = this.getOptionIconURLProvider();
+        Function<VariableManager, List<String>> optionIconURLProvider = this.getOptionIconURLProvider();
         Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewSelectDescription.getIsEnabledExpression());
         Function<VariableManager, String> valueProvider = this.getSelectValueProvider(viewSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
@@ -314,7 +314,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
         String descriptionId = this.getDescriptionId(multiSelectDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(multiSelectDescription.getLabelExpression());
-        Function<VariableManager, String> optionIconURLProvider = this.getOptionIconURLProvider();
+        Function<VariableManager, List<String>> optionIconURLProvider = this.getOptionIconURLProvider();
         Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(multiSelectDescription.getIsEnabledExpression());
         Function<VariableManager, List<String>> valuesProvider = this.getMultiSelectValuesProvider(multiSelectDescription.getValueExpression());
         Function<VariableManager, String> optionIdProvider = this.getOptionIdProvider();
@@ -596,7 +596,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
         Function<VariableManager, String> itemKindProvider = this::getKind;
         Function<VariableManager, IStatus> itemDeleteHandlerProvider = this::handleItemDeletion;
         Function<VariableManager, IStatus> itemClickHandlerProvider = variableManager -> this.getListItemClickHandler(variableManager, viewListDescription.getBody());
-        Function<VariableManager, String> itemImageUrlProvider = this::getListItemImageURL;
+        Function<VariableManager, List<String>> itemIconURLProvider = this::getListItemIconURL;
 
         Function<VariableManager, ListStyle> styleProvider = variableManager -> {
             var effectiveStyle = viewListDescription.getConditionalStyles().stream()
@@ -618,7 +618,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
                 .itemsProvider(valueProvider)
                 .itemKindProvider(itemKindProvider)
                 .itemDeleteHandlerProvider(itemDeleteHandlerProvider)
-                .itemImageURLProvider(itemImageUrlProvider)
+                .itemIconURLProvider(itemIconURLProvider)
                 .itemIdProvider(itemIdProvider)
                 .itemLabelProvider(displayProvider)
                 .itemDeletableProvider(isDeletableProvider)
@@ -861,7 +861,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
 
             Object newValueObject = null;
             if (newValue != null && !newValue.isBlank()) {
-                newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).flatMap(editingContext -> this.objectService.getObject(editingContext, newValue))
+                newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                        .flatMap(editingContext -> this.objectService.getObject(editingContext, newValue))
                         .orElse(newValue);
             }
             VariableManager childVariableManager = variableManager.createChild();
@@ -877,8 +878,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
         };
     }
 
-    private Function<VariableManager, String> getOptionIconURLProvider() {
-        return variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse("");
+    private Function<VariableManager, List<String>> getOptionIconURLProvider() {
+        return variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(List.of());
     }
 
     private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {
@@ -896,11 +897,11 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
     }
 
 
-    private String getListItemImageURL(VariableManager variablemanager) {
+    private List<String> getListItemIconURL(VariableManager variablemanager) {
         // @formatter:off
         return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, Object.class)
                 .map(this.objectService::getImagePath)
-                .orElse("");
+                .orElse(List.of());
         // @formatter:on
     }
 

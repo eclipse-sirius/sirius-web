@@ -41,7 +41,7 @@ public class ListComponent implements IComponent {
 
     public static final String CLICK_EVENT_KIND_VARIABLE = "onClickEventKind";
 
-    private ListComponentProps props;
+    private final ListComponentProps props;
 
     public ListComponent(ListComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -60,7 +60,7 @@ public class ListComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = listDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = listDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = listDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = listDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> itemCandidates = listDescription.getItemsProvider().apply(variableManager);
         ListStyle style = listDescription.getStyleProvider().apply(variableManager);
@@ -75,7 +75,7 @@ public class ListComponent implements IComponent {
             String itemId = listDescription.getItemIdProvider().apply(itemVariableManager);
             String itemLabel = listDescription.getItemLabelProvider().apply(itemVariableManager);
             String itemKind = listDescription.getItemKindProvider().apply(itemVariableManager);
-            String itemImageURL = listDescription.getItemImageURLProvider().apply(itemVariableManager);
+            List<String> itemIconURL = listDescription.getItemIconURLProvider().apply(itemVariableManager);
             boolean isItemDeletable = listDescription.getItemDeletableProvider().apply(itemVariableManager);
             Function<VariableManager, IStatus> clickHandlerProvider = listDescription.getItemClickHandlerProvider();
             Function<VariableManager, IStatus> deleteHandlerProvider = listDescription.getItemDeleteHandlerProvider();
@@ -89,7 +89,7 @@ public class ListComponent implements IComponent {
             ListItem item = ListItem.newListItem(itemId)
                     .label(itemLabel)
                     .kind(itemKind)
-                    .imageURL(itemImageURL)
+                    .iconURL(itemIconURL)
                     .deletable(isItemDeletable)
                     .clickHandler(clickHandler)
                     .deleteHandler(deleteHandler)

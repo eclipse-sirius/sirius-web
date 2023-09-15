@@ -42,6 +42,10 @@ public final class Textarea extends AbstractWidget {
         // Prevent instantiation
     }
 
+    public static Builder newTextarea(String id) {
+        return new Builder(id);
+    }
+
     public String getValue() {
         return this.value;
     }
@@ -62,10 +66,6 @@ public final class Textarea extends AbstractWidget {
         return this.completionProposalsProvider;
     }
 
-    public static Builder newTextarea(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, value: {3}, supportsCompletion: {4}'}'";
@@ -79,11 +79,12 @@ public final class Textarea extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private String value;
 
@@ -108,7 +109,7 @@ public final class Textarea extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -152,7 +153,7 @@ public final class Textarea extends AbstractWidget {
             Textarea textarea = new Textarea();
             textarea.id = Objects.requireNonNull(this.id);
             textarea.label = Objects.requireNonNull(this.label);
-            textarea.iconURL = this.iconURL; // Optional on purpose
+            textarea.iconURL = Objects.requireNonNull(this.iconURL);
             textarea.value = Objects.requireNonNull(this.value);
             textarea.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             textarea.style = this.style; // Optional on purpose

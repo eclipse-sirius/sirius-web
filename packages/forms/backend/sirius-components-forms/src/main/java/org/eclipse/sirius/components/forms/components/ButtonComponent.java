@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class ButtonComponent implements IComponent {
 
-    private ButtonComponentProps props;
+    private final ButtonComponentProps props;
 
     public ButtonComponent(ButtonComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -53,7 +53,7 @@ public class ButtonComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = buttonDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = buttonDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = buttonDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = buttonDescription.getIsReadOnlyProvider().apply(variableManager);
         String buttonLabel = buttonDescription.getButtonLabelProvider().apply(variableManager);
         String imageURL = buttonDescription.getImageURLProvider().apply(variableManager);

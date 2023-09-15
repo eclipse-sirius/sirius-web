@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.services.diagrams.api;
 
+import java.util.List;
+
 import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
 
 /**
@@ -20,7 +22,8 @@ import org.eclipse.sirius.viewpoint.description.tool.AbstractToolDescription;
  * @author sbegaudeau
  */
 public interface IToolImageProvider {
-    String getImage(AbstractToolDescription abstractToolDescription);
+
+    List<String> getIcon(AbstractToolDescription abstractToolDescription);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -28,9 +31,10 @@ public interface IToolImageProvider {
      * @author sbegaudeau
      */
     class NoOp implements IToolImageProvider {
+
         @Override
-        public String getImage(AbstractToolDescription abstractToolDescription) {
-            return "";
+        public List<String> getIcon(AbstractToolDescription abstractToolDescription) {
+            return List.of();
         }
     }
 }

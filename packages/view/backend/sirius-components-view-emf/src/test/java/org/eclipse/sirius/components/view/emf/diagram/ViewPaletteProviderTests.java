@@ -222,7 +222,7 @@ public class ViewPaletteProviderTests {
                 .italicProvider(variableManager -> false)
                 .underlineProvider(variableManager -> false)
                 .strikeThroughProvider(variableManager -> false)
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .build();
 
         LabelDescription labelDescription = LabelDescription.newLabelDescription("nodeId")

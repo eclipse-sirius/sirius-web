@@ -171,7 +171,7 @@ export interface GQLLabelStyle {
   bold: boolean;
   color: string;
   fontSize: number;
-  iconURL: string;
+  iconURL: string[];
   italic: boolean;
   strikeThrough: boolean;
   underline: boolean;
@@ -188,6 +188,7 @@ export interface GQLImageNodeStyle extends GQLINodeStyle {
   borderSize: number;
   borderStyle: GQLLineStyle;
 }
+
 export interface GQLParametricSVGNodeStyle extends GQLINodeStyle {
   svgURL: string;
   backgroundColor: string;
@@ -196,6 +197,7 @@ export interface GQLParametricSVGNodeStyle extends GQLINodeStyle {
   borderSize: number;
   borderStyle: GQLLineStyle;
 }
+
 export interface GQLIconLabelNodeStyle extends GQLINodeStyle {
   backgroundColor: string;
 }
@@ -380,6 +382,7 @@ export interface GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload
 export interface GQLUpdateEdgeRoutingPointsVariables {
   input: GQLUpdateEdgeRoutingPointsInput;
 }
+
 export interface GQLUpdateEdgeRoutingPointsInput {
   id: string;
   representationId: string;
@@ -387,9 +390,11 @@ export interface GQLUpdateEdgeRoutingPointsInput {
   diagramElementId: string;
   routingPoints: Position[];
 }
+
 export interface GQLUpdateEdgeRoutingPointsData {
   updateEdgeRoutingPoints: GQLUpdateEdgeRoutingPointsPayload;
 }
+
 export interface GQLUpdateEdgeRoutingPointsPayload {
   __typename: string;
 }
@@ -407,6 +412,7 @@ export interface GQLErrorPayload
     GQLArrangeAllPayload {
   message: string;
 }
+
 export interface GQLWorkbenchSelection {
   entries: GQLWorkbenchSelectionEntry[];
 }

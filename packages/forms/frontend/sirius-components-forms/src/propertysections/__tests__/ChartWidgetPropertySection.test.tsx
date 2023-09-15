@@ -136,7 +136,7 @@ const defaultBarChartWithEmptyStyle: GQLBarChart = {
 const defaultPieChartWidget: GQLChartWidget = {
   id: 'id',
   label: 'myPieChart',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   chart: defaultPieChart,
   __typename: 'ChartWidget',
@@ -145,7 +145,7 @@ const defaultPieChartWidget: GQLChartWidget = {
 const defaultPieChartWidgetWithStyle: GQLChartWidget = {
   id: 'id',
   label: 'myPieChart',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   chart: defaultPieChartWithStyle,
   __typename: 'ChartWidget',
@@ -154,7 +154,7 @@ const defaultPieChartWidgetWithStyle: GQLChartWidget = {
 const defaultPieChartWidgetWithEmptyStyle: GQLChartWidget = {
   id: 'id',
   label: 'myPieChart',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   chart: defaultPieChartWithEmptyStyle,
   __typename: 'ChartWidget',
@@ -164,7 +164,7 @@ const defaultPieChartWidgetWithEmptyStyle: GQLChartWidget = {
 const defaultBarChartWidget: GQLChartWidget = {
   id: 'id',
   label: 'myBarChart',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   chart: defaultBarChart,
   __typename: 'ChartWidget',
@@ -174,7 +174,7 @@ const defaultBarChartWidget: GQLChartWidget = {
 const defaultBarChartWidgetWithStyle: GQLChartWidget = {
   id: 'id',
   label: 'myBarChart',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   chart: defaultBarChartWithStyle,
   __typename: 'ChartWidget',
@@ -184,7 +184,7 @@ const defaultBarChartWidgetWithStyle: GQLChartWidget = {
 const defaultBarChartWidgetWithEmptyStyle: GQLChartWidget = {
   id: 'id',
   label: 'myBarChart',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   chart: defaultBarChartWithEmptyStyle,
   __typename: 'ChartWidget',

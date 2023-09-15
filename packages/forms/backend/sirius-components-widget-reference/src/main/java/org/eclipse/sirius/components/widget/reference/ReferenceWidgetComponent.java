@@ -73,7 +73,7 @@ public class ReferenceWidgetComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = referenceDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = referenceDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = referenceDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = referenceDescription.getIsReadOnlyProvider().apply(variableManager);
         String ownerId = referenceDescription.getOwnerIdProvider().apply(variableManager);
 
@@ -169,7 +169,7 @@ public class ReferenceWidgetComponent implements IComponent {
                     childVariables.put(ReferenceWidgetComponent.ITEM_VARIABLE, object);
                     String itemId = referenceDescription.getItemIdProvider().apply(childVariables);
                     String itemLabel = referenceDescription.getItemLabelProvider().apply(childVariables);
-                    String itemImageURL = referenceDescription.getItemImageURLProvider().apply(childVariables);
+                    List<String> itemImageURL = referenceDescription.getItemImageURLProvider().apply(childVariables);
                     String itemKind = referenceDescription.getItemKindProvider().apply(childVariables);
                     Function<VariableManager, IStatus> clickHandlerProvider = referenceDescription.getItemClickHandlerProvider();
                     Function<VariableManager, IStatus> removeHandlerProvider = referenceDescription.getItemRemoveHandlerProvider();
@@ -204,7 +204,7 @@ public class ReferenceWidgetComponent implements IComponent {
             childVariables.put(ReferenceWidgetComponent.ITEM_VARIABLE, object);
             String itemId = referenceDescription.getItemIdProvider().apply(childVariables);
             String itemLabel = referenceDescription.getItemLabelProvider().apply(childVariables);
-            String itemImageURL = referenceDescription.getItemImageURLProvider().apply(childVariables);
+            List<String> itemImageURL = referenceDescription.getItemImageURLProvider().apply(childVariables);
             String itemKind = referenceDescription.getItemKindProvider().apply(childVariables);
             return ReferenceValue.newReferenceValue(itemId)
                     .label(itemLabel)

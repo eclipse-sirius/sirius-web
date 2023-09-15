@@ -99,7 +99,7 @@ public class GetConnectorToolsEventHandlerTests {
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color("#000000")
                 .fontSize(16)
-                .iconURL("")
+                .iconURL(List.of())
                 .build();
         InsideLabel insdieLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type("labelType")
@@ -145,14 +145,14 @@ public class GetConnectorToolsEventHandlerTests {
                 .candidates(List.of(candidates))
                 .handler(variableManager -> new Success())
                 .label(CONNECTOR_TOOL_LABEL)
-                .imageURL("")
+                .iconURL(List.of())
                 .build();
 
         SingleClickOnTwoDiagramElementsTool notConnectorTool = SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(NOT_CONNECTOR_TOOL_ID)
                 .candidates(List.of(candidates))
                 .handler(variableManager -> new Success())
                 .label(NOT_CONNECTOR_TOOL_LABEL)
-                .imageURL("")
+                .iconURL(List.of())
                 .build();
 
         Palette palette = Palette.newPalette(TOOLSECTION_ID)

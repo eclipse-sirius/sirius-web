@@ -23,7 +23,7 @@ afterEach(() => cleanup());
 const defaultLabel: GQLLabelWidget = {
   label: 'myLabel',
   stringValue: 'theLabelValue',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   style: {
     color: null,
@@ -41,7 +41,7 @@ const defaultLabel: GQLLabelWidget = {
 const defaultLabelWithStyle: GQLLabelWidget = {
   label: 'myLabel',
   stringValue: 'theLabelValue',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   style: {
     color: 'RebeccaPurple',

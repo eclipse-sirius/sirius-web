@@ -281,7 +281,7 @@ public class UnsynchronizedDiagramTests {
                 .strikeThroughProvider(VariableManager -> true)
                 .colorProvider(VariableManager -> "#FFFFFF")
                 .fontSizeProvider(variableManager -> 10)
-                .iconURLProvider(VariableManager -> "")
+                .iconURLProvider(VariableManager -> List.of())
                 .build();
 
         LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")

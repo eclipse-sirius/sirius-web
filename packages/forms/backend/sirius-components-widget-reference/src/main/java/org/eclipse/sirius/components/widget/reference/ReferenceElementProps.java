@@ -39,7 +39,7 @@ public final class ReferenceElementProps implements IProps {
 
     private String label;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private Supplier<String> helpTextProvider;
 
@@ -91,7 +91,7 @@ public final class ReferenceElementProps implements IProps {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 
@@ -182,7 +182,7 @@ public final class ReferenceElementProps implements IProps {
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
         private boolean readOnly;
         private Supplier<String> helpTextProvider;
 
@@ -225,7 +225,7 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

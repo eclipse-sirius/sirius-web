@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.widget.reference;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,7 +36,7 @@ public final class ReferenceValue {
 
     private String kind;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private Function<ClickEventKind, IStatus> clickHandler;
 
@@ -61,7 +62,7 @@ public final class ReferenceValue {
         return this.kind;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 
@@ -75,7 +76,7 @@ public final class ReferenceValue {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}, imageURL: {4}'}'";
+        String pattern = "{0} '{'id: {1}, label: {2}, kind: {3}, iconURL: {4}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.kind, this.iconURL);
     }
 
@@ -93,7 +94,7 @@ public final class ReferenceValue {
 
         private String kind;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private Function<ClickEventKind, IStatus> clickHandler;
 
@@ -113,7 +114,7 @@ public final class ReferenceValue {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

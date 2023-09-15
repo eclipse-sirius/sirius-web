@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class ToolbarAction extends AbstractWidget {
+
     private String label;
 
     private String buttonLabel;
@@ -40,6 +41,10 @@ public final class ToolbarAction extends AbstractWidget {
 
     private ToolbarAction() {
         // Prevent instantiation
+    }
+
+    public static Builder newToolbarAction(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -63,10 +68,6 @@ public final class ToolbarAction extends AbstractWidget {
         return this.pushButtonHandler;
     }
 
-    public static Builder newToolbarAction(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, buttonLabel: {3}, imageURL: {4}'}'";
@@ -80,11 +81,12 @@ public final class ToolbarAction extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private String buttonLabel;
 
@@ -104,7 +106,7 @@ public final class ToolbarAction extends AbstractWidget {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -154,7 +156,7 @@ public final class ToolbarAction extends AbstractWidget {
             button.id = Objects.requireNonNull(this.id);
             button.label = Objects.requireNonNull(this.label);
             button.buttonLabel = this.buttonLabel;
-            button.iconURL = this.iconURL; // Optional on purpose
+            button.iconURL = Objects.requireNonNull(this.iconURL);
             button.imageURL = this.imageURL; // Optional on purpose
             button.pushButtonHandler = Objects.requireNonNull(this.pushButtonHandler);
             button.style = this.style; // Optional on purpose

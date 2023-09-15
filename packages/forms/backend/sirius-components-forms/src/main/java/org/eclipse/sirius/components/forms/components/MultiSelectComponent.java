@@ -38,7 +38,7 @@ public class MultiSelectComponent implements IComponent {
 
     public static final String CANDIDATE_VARIABLE = "candidate";
 
-    private MultiSelectComponentProps props;
+    private final MultiSelectComponentProps props;
 
     public MultiSelectComponent(MultiSelectComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -57,7 +57,7 @@ public class MultiSelectComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = multiSelectDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = multiSelectDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = multiSelectDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = multiSelectDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> optionCandidates = multiSelectDescription.getOptionsProvider().apply(variableManager);
         List<String> values = multiSelectDescription.getValuesProvider().apply(variableManager);
@@ -76,8 +76,8 @@ public class MultiSelectComponent implements IComponent {
             var selectOptionBuilder = SelectOption.newSelectOption(optionId)
                     .label(optionLabel);
             if (multiSelectStyle != null && multiSelectStyle.isShowIcon()) {
-                String optionIconUrl = multiSelectDescription.getOptionIconURLProvider().apply(optionVariableManager);
-                if (optionIconUrl != null && !optionIconUrl.isBlank()) {
+                List<String> optionIconUrl = multiSelectDescription.getOptionIconURLProvider().apply(optionVariableManager);
+                if (optionIconUrl != null && !optionIconUrl.isEmpty()) {
                     selectOptionBuilder.iconURL(optionIconUrl);
                 }
             }

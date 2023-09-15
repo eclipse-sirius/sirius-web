@@ -28,7 +28,7 @@ public abstract class AbstractWidget {
 
     protected String label;
 
-    protected String iconURL;
+    protected List<String> iconURL;
 
     protected List<Diagnostic> diagnostics;
 
@@ -44,7 +44,7 @@ public abstract class AbstractWidget {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 

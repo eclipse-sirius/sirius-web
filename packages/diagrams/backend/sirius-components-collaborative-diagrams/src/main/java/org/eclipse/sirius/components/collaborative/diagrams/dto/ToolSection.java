@@ -20,11 +20,12 @@ import java.util.Objects;
  *
  * @author mcharfadi
  */
-public record ToolSection(String id, String label, String imageURL, List<ITool> tools) {
+public record ToolSection(String id, String label, List<String> iconURL, List<ITool> tools) {
+
     public ToolSection {
         Objects.requireNonNull(id);
         Objects.requireNonNull(label);
-        Objects.requireNonNull(imageURL);
+        Objects.requireNonNull(iconURL);
         Objects.requireNonNull(tools);
     }
 
@@ -40,11 +41,12 @@ public record ToolSection(String id, String label, String imageURL, List<ITool> 
     @SuppressWarnings("checkstyle:HiddenField")
     @org.eclipse.sirius.components.annotations.Builder
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String imageURL;
+        private List<String> iconURL;
 
         private List<ITool> tools;
 
@@ -57,8 +59,8 @@ public record ToolSection(String id, String label, String imageURL, List<ITool> 
             return this;
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder iconURL(List<String> iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -68,7 +70,7 @@ public record ToolSection(String id, String label, String imageURL, List<ITool> 
         }
 
         public ToolSection build() {
-            return new ToolSection(this.id, this.label, this.imageURL, this.tools);
+            return new ToolSection(this.id, this.label, this.iconURL, this.tools);
         }
 
     }

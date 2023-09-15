@@ -106,9 +106,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
-                    .filter(ImageNodeStyleDescription.class::isInstance)
-                    .isPresent();
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .filter(ImageNodeStyleDescription.class::isInstance)
+                .isPresent();
 
         return this.propertiesWidgetCreationService.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
     }
@@ -120,7 +120,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .filter(IconLabelNodeStyleDescription.class::isInstance)
                 .isPresent();
 
@@ -133,15 +133,15 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         List<AbstractControlDescription> controls = new ArrayList<>();
         controls.add(this.propertiesWidgetCreationService.createCheckbox("nodestyle.isWithHeader", "With Header",
-            style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
-            (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
+                style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
+                (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
                 DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER, Optional.empty()));
 
         controls.addAll(this.getGeneralControlDescription(NodeType.NODE_RECTANGLE));
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .filter(RectangularNodeStyleDescription.class::isInstance)
                 .isPresent();
 
@@ -158,9 +158,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(widthExpression);
 
         var heightExpression = this.propertiesWidgetCreationService.createExpressionField("nodestyle.heightExpression", "Height Expression",
-               style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
-               (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
-               DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
+                style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
+                (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
         controls.add(heightExpression);
 
         var showIcon = this.propertiesWidgetCreationService.createCheckbox("nodestyle.showIcon", "Show Icon",
@@ -184,42 +184,42 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(borderColor);
 
         var borderRadius = this.propertiesWidgetCreationService.createTextField("nodestyle.borderRadius", "Border Radius",
-                             style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
-                             (style, newBorderRadius) -> {
-                                 try {
-                                     ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
-                                 } catch (NumberFormatException nfe) {
-                                     // Ignore.
-                                 }
-                             },
-                             DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS);
+                style -> String.valueOf(((NodeStyleDescription) style).getBorderRadius()),
+                (style, newBorderRadius) -> {
+                    try {
+                        ((NodeStyleDescription) style).setBorderRadius(Integer.parseInt(newBorderRadius));
+                    } catch (NumberFormatException nfe) {
+                        // Ignore.
+                    }
+                },
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS);
         controls.add(borderRadius);
 
         var borderSize = this.propertiesWidgetCreationService.createTextField("nodestyle.borderSize", "Border Size",
-                             style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
-                             (style, newBorderSize) -> {
-                                 try {
-                                     ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
-                                 } catch (NumberFormatException nfe) {
-                                     // Ignore.
-                                 }
-                             },
-                             DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE);
+                style -> String.valueOf(((NodeStyleDescription) style).getBorderSize()),
+                (style, newBorderSize) -> {
+                    try {
+                        ((NodeStyleDescription) style).setBorderSize(Integer.parseInt(newBorderSize));
+                    } catch (NumberFormatException nfe) {
+                        // Ignore.
+                    }
+                },
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE);
         controls.add(borderSize);
 
         var borderStyle = this.createBorderLineStyleSelectionField();
         controls.add(borderStyle);
 
         var fontSize = this.propertiesWidgetCreationService.createTextField("nodestyle.fontSize", "Font Size",
-                             style -> String.valueOf(((LabelStyle) style).getFontSize()),
-                             (style, newColor) -> {
-                                 try {
-                                     ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
-                                 } catch (NumberFormatException nfe) {
-                                     // Ignore.
-                                 }
-                             },
-                             ViewPackage.Literals.LABEL_STYLE__FONT_SIZE);
+                style -> String.valueOf(((LabelStyle) style).getFontSize()),
+                (style, newColor) -> {
+                    try {
+                        ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
+                    } catch (NumberFormatException nfe) {
+                        // Ignore.
+                    }
+                },
+                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE);
         controls.add(fontSize);
 
         var italic = this.propertiesWidgetCreationService.createCheckbox("nodestyle.italic", "Italic",
@@ -251,30 +251,32 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private SelectDescription createBorderLineStyleSelectionField() {
         return SelectDescription.newSelectDescription("nodestyle.borderstyle")
-                                .idProvider(variableManager -> "nodestyle.borderstyle")
-                                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                                .labelProvider(variableManager -> "Border Line Style")
-                                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString).orElse(EMPTY))
-                                .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
-                                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
-                                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
-                                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
-                                .newValueHandler((variableManager, newValue) -> {
-                                    var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
-                                    if (optionalBorderStyle.isPresent()) {
-                                        if (newValue != null && LineStyle.get(newValue) != null) {
-                                            optionalBorderStyle.get().setBorderLineStyle(LineStyle.get(newValue));
-                                        } else {
-                                            optionalBorderStyle.get().setBorderLineStyle(LineStyle.SOLID);
-                                        }
-                                        return new Success();
-                                    }
-                                    return new Failure("");
-                                })
-                                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE))
-                                .kindProvider(this.propertiesConfigurerService.getKindProvider())
-                                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
-                                .build();
+                .idProvider(variableManager -> "nodestyle.borderstyle")
+                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
+                .labelProvider(variableManager -> "Border Line Style")
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class).map(BorderStyle::getBorderLineStyle).map(LineStyle::toString)
+                        .orElse(EMPTY))
+                .optionsProvider(variableManager -> LineStyle.VALUES.stream().toList())
+                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getLiteral).orElse(EMPTY))
+                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class).map(LineStyle::getName).orElse(EMPTY))
+                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
+                        .orElse(List.of()))
+                .newValueHandler((variableManager, newValue) -> {
+                    var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
+                    if (optionalBorderStyle.isPresent()) {
+                        if (newValue != null && LineStyle.get(newValue) != null) {
+                            optionalBorderStyle.get().setBorderLineStyle(LineStyle.get(newValue));
+                        } else {
+                            optionalBorderStyle.get().setBorderLineStyle(LineStyle.SOLID);
+                        }
+                        return new Success();
+                    }
+                    return new Failure("");
+                })
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE))
+                .kindProvider(this.propertiesConfigurerService.getKindProvider())
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
+                .build();
     }
 
 
@@ -316,8 +318,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .map(CustomImageMetadata::getLabel)
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(customImageMetadataEntity -> String.format(CUSTOM, customImageMetadataEntity.getId().toString()))
-                        .orElse(EMPTY))
+                        .map(customImageMetadataEntity -> List.of(String.format(CUSTOM, customImageMetadataEntity.getId().toString())))
+                        .orElse(List.of()))
                 .newValueHandler(this.getIconLabelValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
@@ -336,8 +338,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                     Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
 
                     Stream<CustomImageMetadata> parametricSVGs = this.parametricSVGImageRegistries.stream()
-                        .flatMap(service-> service.getImages().stream())
-                        .map(image -> new CustomImageMetadata(image.getId(), optionalEditingContextId, image.getLabel(), "image/svg+xml"));
+                            .flatMap(service -> service.getImages().stream())
+                            .map(image -> new CustomImageMetadata(image.getId(), optionalEditingContextId, image.getLabel(), "image/svg+xml"));
 
                     List<CustomImageMetadata> customImages = optionalEditingContextId.map(this.customImageSearchService::getAvailableImages).orElse(List.of());
 
@@ -352,7 +354,8 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
                         .map(CustomImageMetadata::getLabel)
                         .orElse(EMPTY))
-                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath).orElse(""))
+                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.objectService::getImagePath)
+                        .orElse(List.of()))
                 .newValueHandler(this.getNewShapeValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())

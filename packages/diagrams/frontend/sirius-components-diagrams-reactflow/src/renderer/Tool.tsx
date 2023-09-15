@@ -24,15 +24,39 @@ const useToolStyle = makeStyles(() => ({
     alignItems: 'center',
     cursor: 'pointer',
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 
 export const Tool = ({ tool, onClick, thumbnail }: ToolProps) => {
-  const { id, label, imageURL } = tool;
+  const { id, label, iconURL } = tool;
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const classes = useToolStyle();
   let image: JSX.Element | null = null;
-  if (imageURL) {
-    image = <img height="16" width="16" alt="" src={httpOrigin + imageURL} title={label} />;
+  if (iconURL.length > 0) {
+    image = (
+      <div className={classes.iconContainer}>
+        {iconURL.map((icon, index) => (
+          <img
+            height="16"
+            width="16"
+            key={index}
+            alt={label}
+            title={label}
+            src={httpOrigin + icon}
+            className={classes.icon}
+            style={{ zIndex: index }}></img>
+        ))}
+      </div>
+    );
   }
   let labelContent: JSX.Element | null = null;
   if (!thumbnail) {

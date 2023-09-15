@@ -36,7 +36,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, List<?>> optionsProvider;
 
@@ -44,7 +44,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> optionLabelProvider;
 
-    private Function<VariableManager, String> optionIconURLProvider;
+    private Function<VariableManager, List<String>> optionIconURLProvider;
 
     private Function<VariableManager, List<String>> valuesProvider;
 
@@ -56,6 +56,10 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         // Prevent instantiation
     }
 
+    public static Builder newMultiSelectDescription(String id) {
+        return new Builder(id);
+    }
+
     public Function<VariableManager, String> getIdProvider() {
         return this.idProvider;
     }
@@ -64,7 +68,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -80,7 +84,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
         return this.optionLabelProvider;
     }
 
-    public Function<VariableManager, String> getOptionIconURLProvider() {
+    public Function<VariableManager, List<String>> getOptionIconURLProvider() {
         return this.optionIconURLProvider;
     }
 
@@ -94,10 +98,6 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
     public Function<VariableManager, MultiSelectStyle> getStyleProvider() {
         return this.styleProvider;
-    }
-
-    public static Builder newMultiSelectDescription(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -115,7 +115,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private Function<VariableManager, String> idProvider;
 
@@ -123,7 +123,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
@@ -133,7 +133,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> optionLabelProvider;
 
-        private Function<VariableManager, String> optionIconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> optionIconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, List<String>> valuesProvider;
 
@@ -168,7 +168,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
@@ -193,7 +193,7 @@ public final class MultiSelectDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder optionIconURLProvider(Function<VariableManager, String> optionIconURLProvider) {
+        public Builder optionIconURLProvider(Function<VariableManager, List<String>> optionIconURLProvider) {
             this.optionIconURLProvider = Objects.requireNonNull(optionIconURLProvider);
             return this;
         }

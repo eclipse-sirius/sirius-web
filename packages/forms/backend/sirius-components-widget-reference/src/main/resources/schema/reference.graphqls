@@ -7,7 +7,7 @@ type ReferenceWidget implements Widget {
   descriptionId: String!
   diagnostics: [Diagnostic!]!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
   reference: Reference!
@@ -36,7 +36,7 @@ type ReferenceValue {
   id: ID!
   label: String!
   kind: String!
-  iconURL: String
+  iconURL: [String!]!
   hasClickAction: Boolean!
 }
 

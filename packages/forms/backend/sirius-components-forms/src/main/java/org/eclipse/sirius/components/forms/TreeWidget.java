@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class TreeWidget extends AbstractWidget {
+
     private String label;
 
     private List<TreeNode> nodes;
@@ -35,6 +36,10 @@ public final class TreeWidget extends AbstractWidget {
 
     private TreeWidget() {
         // Prevent instantiation
+    }
+
+    public static Builder newTreeWidget(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -50,10 +55,6 @@ public final class TreeWidget extends AbstractWidget {
         return this.expandedNodesIds;
     }
 
-    public static Builder newTreeWidget(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, nodeCount: {3}'}'";
@@ -67,11 +68,14 @@ public final class TreeWidget extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final boolean readOnly = true; // Read-only by nature
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private List<TreeNode> nodes;
 
@@ -80,8 +84,6 @@ public final class TreeWidget extends AbstractWidget {
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
-
-        private final boolean readOnly = true; // Read-only by nature;;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -92,7 +94,7 @@ public final class TreeWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = iconURL;
             return this;
         }
@@ -121,7 +123,7 @@ public final class TreeWidget extends AbstractWidget {
             TreeWidget treeWidget = new TreeWidget();
             treeWidget.id = Objects.requireNonNull(this.id);
             treeWidget.label = Objects.requireNonNull(this.label);
-            treeWidget.iconURL = this.iconURL; // Optional on purpose
+            treeWidget.iconURL = Objects.requireNonNull(this.iconURL);
             treeWidget.nodes = Objects.requireNonNull(this.nodes);
             treeWidget.expandedNodesIds = Objects.requireNonNull(this.expandedNodesIds);
             treeWidget.diagnostics = Objects.requireNonNull(this.diagnostics);

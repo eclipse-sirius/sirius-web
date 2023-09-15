@@ -69,6 +69,16 @@ const useStyle = makeStyles((theme) => ({
   iconRoot: {
     minWidth: theme.spacing(3),
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 
 const createElementInReferenceMutation = gql`
@@ -406,14 +416,20 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
             data-testid="childCreationDescription">
             {creationDescriptions.map((creationDescription) => (
               <MenuItem value={creationDescription.id} key={creationDescription.id}>
-                {creationDescription.iconURL && (
+                {creationDescription.iconURL.length > 0 && (
                   <ListItemIcon className={classes.iconRoot}>
-                    <img
-                      height="16"
-                      width="16"
-                      alt={creationDescription.label}
-                      src={httpOrigin + creationDescription.iconURL}
-                    />
+                    <div className={classes.iconContainer}>
+                      {creationDescription.iconURL.map((icon, index) => (
+                        <img
+                          height="16"
+                          width="16"
+                          key={index}
+                          alt={creationDescription.label}
+                          src={httpOrigin + icon}
+                          className={classes.icon}
+                          style={{ zIndex: index }}></img>
+                      ))}
+                    </div>
                   </ListItemIcon>
                 )}
                 <ListItemText primary={creationDescription.label} />

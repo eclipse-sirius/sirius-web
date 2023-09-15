@@ -245,7 +245,7 @@ public class DiagramRendererNodeTests {
                 .strikeThroughProvider(VariableManager -> true)
                 .colorProvider(VariableManager -> LABEL_COLOR)
                 .fontSizeProvider(variableManager -> LABEL_FONT_SIZE)
-                .iconURLProvider(VariableManager -> "")
+                .iconURLProvider(VariableManager -> List.of())
                 .build();
 
         LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")

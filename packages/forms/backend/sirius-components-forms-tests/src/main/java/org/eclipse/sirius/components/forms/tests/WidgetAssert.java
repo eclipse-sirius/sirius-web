@@ -51,9 +51,7 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
             assertThat(this.actual.getId()).isEqualTo(widget.getId());
         }
 
-        if (this.actual instanceof List && widget instanceof List) {
-            List actualList = (List) this.actual;
-            List list = (List) widget;
+        if (this.actual instanceof List actualList && widget instanceof List list) {
             assertThat(actualList.getLabel()).isEqualTo(list.getLabel());
             assertThat(actualList.getItems()).hasSameSizeAs(list.getItems());
 
@@ -63,9 +61,7 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
                 ListItem listItem = list.getItems().get(i);
                 assertThat(actualListItem).matches(listItem, idPolicy);
             }
-        } else if (this.actual instanceof Checkbox && widget instanceof Checkbox) {
-            Checkbox actualCheckbox = (Checkbox) this.actual;
-            Checkbox checkbox = (Checkbox) widget;
+        } else if (this.actual instanceof Checkbox actualCheckbox && widget instanceof Checkbox checkbox) {
             assertThat(actualCheckbox.getLabel()).isEqualTo(checkbox.getLabel());
             assertThat(actualCheckbox.isValue()).isEqualTo(checkbox.isValue());
         } else if (this.actual instanceof Radio && widget instanceof Radio) {
@@ -74,14 +70,10 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
             this.assertSelect((Select) this.actual, (Select) widget, idPolicy);
         } else if (this.actual instanceof TreeWidget && widget instanceof TreeWidget) {
             this.assertTree((TreeWidget) this.actual, (TreeWidget) widget, idPolicy);
-        } else if (this.actual instanceof Textarea && widget instanceof Textarea) {
-            Textarea actualTextarea = (Textarea) this.actual;
-            Textarea textarea = (Textarea) widget;
+        } else if (this.actual instanceof Textarea actualTextarea && widget instanceof Textarea textarea) {
             assertThat(actualTextarea.getLabel()).isEqualTo(textarea.getLabel());
             assertThat(actualTextarea.getValue()).isEqualTo(textarea.getValue());
-        } else if (this.actual instanceof Textfield && widget instanceof Textfield) {
-            Textfield actualTextfield = (Textfield) this.actual;
-            Textfield textfield = (Textfield) widget;
+        } else if (this.actual instanceof Textfield actualTextfield && widget instanceof Textfield textfield) {
             assertThat(actualTextfield.getLabel()).isEqualTo(textfield.getLabel());
             assertThat(actualTextfield.getValue()).isEqualTo(textfield.getValue());
         }
@@ -139,7 +131,10 @@ public class WidgetAssert extends AbstractAssert<WidgetAssert, AbstractWidget> {
             TreeNode expectedNode = expectedTree.getNodes().get(i);
 
             assertThat(actualNode.getLabel()).isEqualTo(expectedNode.getLabel());
-            assertThat("/api/images" + actualNode.getImageURL()).isEqualTo(expectedNode.getImageURL());
+            assertThat(actualNode.getIconURL()).hasSameSizeAs(expectedNode.getIconURL());
+            for (int j = 0; j < actualNode.getIconURL().size(); j++) {
+                assertThat("/api/images" + actualNode.getIconURL().get(j)).isEqualTo(expectedNode.getIconURL().get(j));
+            }
             assertThat(actualNode.getKind()).isEqualTo(expectedNode.getKind());
             if (idPolicy == IdPolicy.WITH_ID) {
                 assertThat(actualNode.getId()).isEqualTo(expectedNode.getId());

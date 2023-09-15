@@ -45,7 +45,7 @@ const getDocumentSubscription = gql`
     deletable
     selectable
     kind
-    imageURL
+    iconURL
   }
 `.loc.source.body.trim();
 

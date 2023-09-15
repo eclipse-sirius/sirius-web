@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.selection;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,10 +32,14 @@ public final class SelectionObject {
 
     private String label;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private SelectionObject() {
         // Prevent instantiation
+    }
+
+    public static Builder newSelectionObject(UUID id) {
+        return new Builder(id);
     }
 
     public UUID getId() {
@@ -45,12 +50,8 @@ public final class SelectionObject {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
-    }
-
-    public static Builder newSelectionObject(UUID id) {
-        return new Builder(id);
     }
 
     @Override
@@ -66,11 +67,12 @@ public final class SelectionObject {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private UUID id;
+
+        private final UUID id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -81,7 +83,7 @@ public final class SelectionObject {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

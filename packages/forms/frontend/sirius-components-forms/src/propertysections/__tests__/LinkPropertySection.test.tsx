@@ -23,7 +23,7 @@ afterEach(() => cleanup());
 const defaultLink: GQLLink = {
   label: 'myLabel',
   url: 'the/url/value',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   style: {
     color: null,
@@ -41,7 +41,7 @@ const defaultLink: GQLLink = {
 const defaultLinkWithStyle: GQLLink = {
   label: 'myLabel',
   url: 'the/url/value',
-  iconURL: null,
+  iconURL: [],
   hasHelpText: false,
   style: {
     color: 'RebeccaPurple',

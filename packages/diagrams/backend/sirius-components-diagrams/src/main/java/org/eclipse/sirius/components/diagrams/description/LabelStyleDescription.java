@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.description;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -38,10 +39,14 @@ public final class LabelStyleDescription {
 
     private Function<VariableManager, Boolean> strikeThroughProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private LabelStyleDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newLabelStyleDescription() {
+        return new Builder();
     }
 
     public Function<VariableManager, Integer> getFontSizeProvider() {
@@ -68,12 +73,8 @@ public final class LabelStyleDescription {
         return this.strikeThroughProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
-    }
-
-    public static Builder newLabelStyleDescription() {
-        return new Builder();
     }
 
     /**
@@ -96,7 +97,7 @@ public final class LabelStyleDescription {
 
         private Function<VariableManager, Boolean> strikeThroughProvider;
 
-        private Function<VariableManager, String> iconURLProvider;
+        private Function<VariableManager, List<String>> iconURLProvider;
 
         private Builder() {
         }
@@ -131,7 +132,7 @@ public final class LabelStyleDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

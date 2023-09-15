@@ -42,6 +42,10 @@ public final class FlexboxContainer extends AbstractWidget {
         // Prevent instantiation
     }
 
+    public static Builder newFlexboxContainer(String id) {
+        return new Builder(id);
+    }
+
     public String getFlexDirection() {
         return this.flexDirection;
     }
@@ -62,10 +66,6 @@ public final class FlexboxContainer extends AbstractWidget {
         return this.borderStyle;
     }
 
-    public static Builder newFlexboxContainer(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}', flexDirection: {3}', flexWrap: {4}', flexGrow: {5}'}'";
@@ -79,11 +79,12 @@ public final class FlexboxContainer extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private String flexDirection;
 
@@ -110,7 +111,7 @@ public final class FlexboxContainer extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -159,7 +160,7 @@ public final class FlexboxContainer extends AbstractWidget {
             FlexboxContainer flexboxContainer = new FlexboxContainer();
             flexboxContainer.id = Objects.requireNonNull(this.id);
             flexboxContainer.label = Objects.requireNonNull(this.label);
-            flexboxContainer.iconURL = this.iconURL; // Optional on purpose
+            flexboxContainer.iconURL = Objects.requireNonNull(this.iconURL);
             flexboxContainer.flexDirection = Objects.requireNonNull(this.flexDirection);
             flexboxContainer.flexWrap = Objects.requireNonNull(this.flexWrap);
             flexboxContainer.flexGrow = Objects.requireNonNull(this.flexGrow);

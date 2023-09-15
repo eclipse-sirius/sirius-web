@@ -84,7 +84,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         List<AbstractControlDescription> controls = new ArrayList<>(this.getGeneralControlDescription());
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager ->  variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .filter(EdgeStyle.class::isInstance)
                 .isPresent();
 
@@ -155,21 +155,21 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private Stream<UserColor> getColorsFromColorPalettesStream(VariableManager variableManager) {
         return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                              .filter(EditingContext.class::isInstance)
-                              .map(EditingContext.class::cast)
-                              .map(EditingContext::getDomain)
-                              .map(EditingDomain::getResourceSet)
-                              .map(ResourceSet::getResources)
-                              .stream()
-                              .flatMap(EList::stream)
-                              .map(Resource::getContents)
-                              .flatMap(EList::stream)
-                              .filter(View.class::isInstance)
-                              .map(View.class::cast)
-                              .map(View::getColorPalettes)
-                              .flatMap(EList::stream)
-                              .map(ColorPalette::getColors)
-                              .flatMap(EList::stream);
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getDomain)
+                .map(EditingDomain::getResourceSet)
+                .map(ResourceSet::getResources)
+                .stream()
+                .flatMap(EList::stream)
+                .map(Resource::getContents)
+                .flatMap(EList::stream)
+                .filter(View.class::isInstance)
+                .map(View.class::cast)
+                .map(View::getColorPalettes)
+                .flatMap(EList::stream)
+                .map(ColorPalette::getColors)
+                .flatMap(EList::stream);
     }
 
     private SelectDescription createSourceArrowStyleSelectionField() {
@@ -190,7 +190,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, ArrowStyle.class)
                         .map(Enumerator::getName)
                         .orElse(EMPTY))
-                .optionIconURLProvider(variableManager -> "")
+                .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getSourceArrowValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__SOURCE_ARROW_STYLE))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
@@ -231,7 +231,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, ArrowStyle.class)
                         .map(Enumerator::getName)
                         .orElse(EMPTY))
-                .optionIconURLProvider(variableManager -> "")
+                .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getTargetArrowValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__TARGET_ARROW_STYLE))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
@@ -272,7 +272,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, LineStyle.class)
                         .map(Enumerator::getName)
                         .orElse(EMPTY))
-                .optionIconURLProvider(variableManager -> "")
+                .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getLineStyleValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.LINE_STYLE))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
@@ -314,8 +314,8 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .map(CustomImageMetadata::getLabel)
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(customImageMetadataEntity -> String.format("/custom/%s", customImageMetadataEntity.getId().toString()))
-                        .orElse(EMPTY))
+                        .map(customImageMetadataEntity -> List.of(String.format("/custom/%s", customImageMetadataEntity.getId().toString())))
+                        .orElse(List.of()))
                 .newValueHandler(this.getIconLabelValueHandler())
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())

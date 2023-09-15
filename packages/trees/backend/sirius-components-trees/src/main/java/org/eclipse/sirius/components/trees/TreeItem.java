@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
 @Immutable
 
 public final class TreeItem {
+
     public static final String SELECTED_TREE_ITEM = "selectedTreeItem";
 
     private String id;
@@ -34,7 +35,7 @@ public final class TreeItem {
 
     private String label;
 
-    private String imageURL;
+    private List<String> iconURL;
 
     private boolean editable;
 
@@ -50,6 +51,10 @@ public final class TreeItem {
 
     private TreeItem() {
         // Prevent instantiation
+    }
+
+    public static Builder newTreeItem(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -76,8 +81,8 @@ public final class TreeItem {
         return this.selectable;
     }
 
-    public String getImageURL() {
-        return this.imageURL;
+    public List<String> getIconURL() {
+        return this.iconURL;
     }
 
     public boolean isHasChildren() {
@@ -92,14 +97,11 @@ public final class TreeItem {
         return this.children;
     }
 
-    public static Builder newTreeItem(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, deletable: {5}, imageURL: {6}, hasChildren: {7}, expanded: {8}, childCount: {9}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.kind, this.label, this.editable, this.deletable, this.imageURL, this.hasChildren, this.expanded,
+        String pattern = "{0} '{'id: {1}, kind: {2}, label: {3}, editable: {4}, deletable: {5}, iconURL: {6}, hasChildren: {7}, expanded: {8}, childCount: {9}'}'";
+        return MessageFormat.format(pattern, this.getClass()
+                        .getSimpleName(), this.id, this.kind, this.label, this.editable, this.deletable, this.iconURL, this.hasChildren, this.expanded,
                 this.children.size());
     }
 
@@ -110,13 +112,14 @@ public final class TreeItem {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String kind;
 
         private String label;
 
-        private String imageURL;
+        private List<String> iconURL;
 
         private boolean editable;
 
@@ -144,8 +147,8 @@ public final class TreeItem {
             return this;
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder iconURL(List<String> imageURL) {
+            this.iconURL = Objects.requireNonNull(imageURL);
             return this;
         }
 
@@ -184,7 +187,7 @@ public final class TreeItem {
             treeItem.id = Objects.requireNonNull(this.id);
             treeItem.kind = Objects.requireNonNull(this.kind);
             treeItem.label = Objects.requireNonNull(this.label);
-            treeItem.imageURL = Objects.requireNonNull(this.imageURL);
+            treeItem.iconURL = Objects.requireNonNull(this.iconURL);
             treeItem.editable = this.editable;
             treeItem.deletable = this.deletable;
             treeItem.selectable = this.selectable;

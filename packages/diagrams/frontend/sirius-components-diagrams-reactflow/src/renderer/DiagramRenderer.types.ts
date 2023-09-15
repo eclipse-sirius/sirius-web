@@ -80,6 +80,6 @@ export interface EdgeData {
 export interface Label {
   id: string;
   text: string;
-  iconURL: string | null;
+  iconURL: string[];
   style: React.CSSProperties;
 }

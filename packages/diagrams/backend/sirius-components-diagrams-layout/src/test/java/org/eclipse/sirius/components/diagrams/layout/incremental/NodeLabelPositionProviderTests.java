@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 THALES GLOBAL SERVICES.
+ * Copyright (c) 2021, 2023 THALES GLOBAL SERVICES.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,6 @@ public class NodeLabelPositionProviderTests {
     private static final int FONT_SIZE = 16;
 
     private static final String LABEL_COLOR = "#000000";
-
-    private static final String ICON_URL = "";
 
     private static final Size DEFAULT_NODE_SIZE = Size.of(150, 70);
 
@@ -95,7 +93,7 @@ public class NodeLabelPositionProviderTests {
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color(LABEL_COLOR)
                 .fontSize(FONT_SIZE)
-                .iconURL(ICON_URL)
+                .iconURL(List.of())
                 .build();
         //@formatter:on
         TextBounds textBounds = new TextBoundsProvider().computeBounds(labelStyle, "labelText");

@@ -170,7 +170,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
         return ToolSection.newToolSection(toolSelectionId)
                 .label(toolSection.getName())
-                .imageURL("")
+                .iconURL(List.of())
                 .tools(toolSection.getNodeTools().stream().map(this::createDiagramRootNodeTool).toList())
                 .build();
     }
@@ -191,7 +191,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
         }
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(viewNodeTool.getName())
-                .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
+                .iconURL(List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON))
                 .selectionDescriptionId(selectionDescriptionId)
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
@@ -245,7 +245,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
         return ToolSection.newToolSection(toolSelectionId)
                 .label(toolSection.getName())
-                .imageURL("")
+                .iconURL(List.of())
                 .tools(tools)
                 .build();
     }
@@ -254,7 +254,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
         String toolId = this.idProvider.apply(viewEdgeTool).toString();
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(viewEdgeTool.getName())
-                .imageURL(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON)
+                .iconURL(List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON))
                 .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                         .sources(List.of(nodeDescription))
                         .targets(viewEdgeTool.getTargetElementDescriptions().stream().filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
@@ -297,7 +297,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
 
         return ToolSection.newToolSection(toolSelectionId)
                 .label(toolSection.getName())
-                .imageURL("")
+                .iconURL(List.of())
                 .tools(toolSection.getNodeTools().stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
                         .map(this::createNodeTool)
@@ -352,21 +352,21 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ToolSection createExtraExpandCollapseTool(List<IDiagramElementDescription> targetDescriptions, Object diagramElement) {
         var expandCollapseToolSectionBuilder = ToolSection.newToolSection("expand-collapse-section")
                 .label("")
-                .imageURL("")
+                .iconURL(List.of())
                 .tools(List.of());
 
         if (diagramElement instanceof Node node) {
             List<ITool> collapsingTools = new ArrayList<>();
             SingleClickOnDiagramElementTool collapseTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("collapse")
                     .label("Collapse")
-                    .imageURL(DiagramImageConstants.COLLAPSE_SVG)
+                    .iconURL(List.of(DiagramImageConstants.COLLAPSE_SVG))
                     .targetDescriptions(targetDescriptions)
                     .appliesToDiagramRoot(false)
                     .build();
 
             SingleClickOnDiagramElementTool expandTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("expand")
                     .label("Expand")
-                    .imageURL(DiagramImageConstants.EXPAND_SVG)
+                    .iconURL(List.of(DiagramImageConstants.EXPAND_SVG))
                     .targetDescriptions(targetDescriptions)
                     .appliesToDiagramRoot(false)
                     .build();
@@ -386,14 +386,14 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ToolSection createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
         SingleClickOnDiagramElementTool semanticDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
                 .label("Delete from model")
-                .imageURL(DiagramImageConstants.SEMANTIC_DELETE_SVG)
+                .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .build();
 
         return ToolSection.newToolSection("semantic-delete-section")
                 .label("")
-                .imageURL("")
+                .iconURL(List.of())
                 .tools(List.of(semanticDeleteTool))
                 .build();
     }
@@ -401,14 +401,14 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ToolSection createExtraGraphicalDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
         SingleClickOnDiagramElementTool graphicalDeleteTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("graphical-delete")
                 .label("Delete from diagram")
-                .imageURL(DiagramImageConstants.GRAPHICAL_DELETE_SVG)
+                .iconURL(List.of(DiagramImageConstants.GRAPHICAL_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .build();
 
         return ToolSection.newToolSection("graphical-delete-section")
                 .label("")
-                .imageURL("")
+                .iconURL(List.of())
                 .tools(List.of(graphicalDeleteTool))
                 .build();
     }
@@ -435,14 +435,14 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private ToolSection createExtraEditLabelEditTool(List<IDiagramElementDescription> targetDescriptions) {
         SingleClickOnDiagramElementTool editTool = SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("edit")
                 .label("Edit")
-                .imageURL(DiagramImageConstants.EDIT_SVG)
+                .iconURL(List.of(DiagramImageConstants.EDIT_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .build();
 
         return ToolSection.newToolSection("edit-section")
                 .label("")
-                .imageURL("")
+                .iconURL(List.of())
                 .tools(List.of(editTool))
                 .build();
     }

@@ -111,7 +111,7 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
-                .imageURLProvider(this::getImageURL)
+                .iconURLProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(isSelectableProvider)
@@ -275,15 +275,15 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         return false;
     }
 
-    private String getImageURL(VariableManager variableManager) {
+    private List<String> getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        String imageURL = null;
+        List<String> imageURL = List.of(ImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof Resource) {
-            imageURL = ImageConstants.RESOURCE_SVG;
+            imageURL = List.of(ImageConstants.RESOURCE_SVG);
         }
-        return Optional.ofNullable(imageURL).orElse(ImageConstants.DEFAULT_SVG);
+        return imageURL;
     }
 
     private List<? extends Object> getSearchScopeElements(VariableManager variableManager) {

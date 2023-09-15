@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.view.emf.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -35,8 +37,9 @@ public class ViewToolImageProviderTests {
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
         ViewToolImageProvider viewToolImageProvider = new ViewToolImageProvider(objectService, ePackageRegistry);
 
-        String imageURL = viewToolImageProvider.getImage(nodeDescription);
-        assertThat(ViewToolImageProvider.NODE_CREATION_TOOL_ICON.equals(imageURL)).isTrue();
+        List<String> iconURL = viewToolImageProvider.getIcon(nodeDescription);
+        assertThat(iconURL).hasSize(1);
+        assertThat(ViewToolImageProvider.NODE_CREATION_TOOL_ICON.equals(iconURL.get(0))).isTrue();
     }
 
     @Test
@@ -47,7 +50,8 @@ public class ViewToolImageProviderTests {
         EPackage.Registry ePackageRegistry = EPackage.Registry.INSTANCE;
         ViewToolImageProvider viewToolImageProvider = new ViewToolImageProvider(objectService, ePackageRegistry);
 
-        String imageURL = viewToolImageProvider.getImage(edgeDescription);
-        assertThat(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON.equals(imageURL)).isTrue();
+        List<String> iconURL = viewToolImageProvider.getIcon(edgeDescription);
+        assertThat(iconURL).hasSize(1);
+        assertThat(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON.equals(iconURL.get(0))).isTrue();
     }
 }

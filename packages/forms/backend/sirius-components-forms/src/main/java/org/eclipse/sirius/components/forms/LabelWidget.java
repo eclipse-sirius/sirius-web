@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class LabelWidget extends AbstractWidget {
+
     private String label;
 
     private String value;
@@ -35,6 +36,10 @@ public final class LabelWidget extends AbstractWidget {
 
     private LabelWidget() {
         // Prevent instantiation
+    }
+
+    public static Builder newLabelWidget(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -50,10 +55,6 @@ public final class LabelWidget extends AbstractWidget {
         return this.style;
     }
 
-    public static Builder newLabelWidget(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}, value: {3}'}'";
@@ -67,11 +68,14 @@ public final class LabelWidget extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final boolean readOnly = true; // Read-only by nature.
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private String value;
 
@@ -80,8 +84,6 @@ public final class LabelWidget extends AbstractWidget {
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
-
-        private final boolean readOnly = true; // Read-only by nature;;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -92,7 +94,7 @@ public final class LabelWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -121,7 +123,7 @@ public final class LabelWidget extends AbstractWidget {
             LabelWidget labelWidget = new LabelWidget();
             labelWidget.id = Objects.requireNonNull(this.id);
             labelWidget.label = Objects.requireNonNull(this.label);
-            labelWidget.iconURL = this.iconURL; // Optional on purpose
+            labelWidget.iconURL = Objects.requireNonNull(this.iconURL);
             labelWidget.value = Objects.requireNonNull(this.value);
             labelWidget.style = this.style; // Optional on purpose
             labelWidget.diagnostics = Objects.requireNonNull(this.diagnostics);

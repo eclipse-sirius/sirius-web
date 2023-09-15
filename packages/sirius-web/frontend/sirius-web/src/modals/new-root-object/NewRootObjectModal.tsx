@@ -111,6 +111,16 @@ const useNewRootObjectModalStyles = makeStyles((theme) => ({
   iconRoot: {
     minWidth: theme.spacing(3),
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 
 export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewRootObjectModalProps) => {
@@ -282,14 +292,20 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
               data-testid="type">
               {rootObjectCreationDescriptions.map((rootObjectCreationDescription) => (
                 <MenuItem value={rootObjectCreationDescription.id} key={rootObjectCreationDescription.id}>
-                  {rootObjectCreationDescription.iconURL && (
+                  {rootObjectCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
-                      <img
-                        height="16"
-                        width="16"
-                        alt={rootObjectCreationDescription.label}
-                        src={httpOrigin + rootObjectCreationDescription.iconURL}
-                      />
+                      <div className={classes.iconContainer}>
+                        {rootObjectCreationDescription.iconURL.map((icon, index) => (
+                          <img
+                            height="16"
+                            width="16"
+                            key={index}
+                            alt={rootObjectCreationDescription.label}
+                            src={httpOrigin + icon}
+                            className={classes.icon}
+                            style={{ zIndex: index }}></img>
+                        ))}
+                      </div>
                     </ListItemIcon>
                   )}
                   <ListItemText primary={rootObjectCreationDescription.label} />

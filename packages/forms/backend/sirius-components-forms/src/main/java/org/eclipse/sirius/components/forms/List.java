@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class List extends AbstractWidget {
+
     private java.util.List<ListItem> items;
 
     private ListStyle style;
@@ -34,16 +35,16 @@ public final class List extends AbstractWidget {
         // Prevent instantiation
     }
 
+    public static Builder newList(String id) {
+        return new Builder(id);
+    }
+
     public java.util.List<ListItem> getItems() {
         return this.items;
     }
 
     public ListStyle getStyle() {
         return this.style;
-    }
-
-    public static Builder newList(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -59,11 +60,12 @@ public final class List extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private java.util.List<String> iconURL = java.util.List.of();
 
         private ListStyle style;
 
@@ -84,7 +86,7 @@ public final class List extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(java.util.List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -118,7 +120,7 @@ public final class List extends AbstractWidget {
             List list = new List();
             list.id = Objects.requireNonNull(this.id);
             list.label = Objects.requireNonNull(this.label);
-            list.iconURL = this.iconURL; // Optional on purpose
+            list.iconURL = Objects.requireNonNull(this.iconURL);
             list.style = this.style; // Optional on purpose
             list.items = Objects.requireNonNull(this.items);
             list.diagnostics = Objects.requireNonNull(this.diagnostics);

@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.forms.graphql.datafetchers.form;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -31,7 +30,7 @@ import graphql.schema.FieldCoordinates;
  * @author pcdavid
  */
 @QueryDataFetcher(type = "Widget", field = "iconURL")
-public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
+public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     private static final String ICON_URL_FIELD = "iconURL";
 
@@ -60,12 +59,12 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
     public WidgetIconURLDataFetcher(List<IWidgetDescriptor> customWidgetDescriptors) {
         this.allFieldCoordinates = new ArrayList<>();
         CORE_WIDGET_TYPES.stream()
-            .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
-            .forEach(this.allFieldCoordinates::add);
+                .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
+                .forEach(this.allFieldCoordinates::add);
         customWidgetDescriptors.stream()
-            .flatMap(descriptor -> descriptor.getWidgetTypes().stream())
-            .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
-            .forEach(this.allFieldCoordinates::add);
+                .flatMap(descriptor -> descriptor.getWidgetTypes().stream())
+                .map(widgetType -> FieldCoordinates.coordinates(widgetType, ICON_URL_FIELD))
+                .forEach(this.allFieldCoordinates::add);
     }
 
     @Override
@@ -74,9 +73,9 @@ public class WidgetIconURLDataFetcher implements IDataFetcherWithFieldCoordinate
     }
 
     @Override
-    public String get(DataFetchingEnvironment environment) throws Exception {
+    public List<String> get(DataFetchingEnvironment environment) throws Exception {
         AbstractWidget item = environment.getSource();
-        return Optional.ofNullable(item.getIconURL()).map(url -> URLConstants.IMAGE_BASE_PATH + url).orElse(null);
+        return item.getIconURL().stream().map(url -> URLConstants.IMAGE_BASE_PATH + url).toList();
     }
 
 }

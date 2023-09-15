@@ -31,7 +31,7 @@ type FormDescriptionEditorFor implements Widget {
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   readOnly: Boolean!
   children: [Widget!]!
 }
@@ -41,7 +41,7 @@ type FormDescriptionEditorIf implements Widget {
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   readOnly: Boolean!
   children: [Widget!]!
 }

@@ -89,7 +89,7 @@ type LabelStyle {
   bold: Boolean!
   color: String!
   fontSize: Int!
-  iconURL: String!
+  iconURL: [String!]!
   italic: Boolean!
   strikeThrough: Boolean!
   underline: Boolean!
@@ -195,20 +195,20 @@ type Palette {
 type ToolSection {
   id: ID!
   label: String!
-  imageURL: String!
+  iconURL: [String!]!
   tools: [Tool]!
 }
 
 interface Tool {
   id: ID!
   label: String!
-  imageURL: String!
+  iconURL: [String!]!
 }
 
 type SingleClickOnDiagramElementTool implements Tool {
   id: ID!
   label: String!
-  imageURL: String!
+  iconURL: [String!]!
   appliesToDiagramRoot: Boolean!
   selectionDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
@@ -217,7 +217,7 @@ type SingleClickOnDiagramElementTool implements Tool {
 type SingleClickOnTwoDiagramElementsTool implements Tool {
   id: ID!
   label: String!
-  imageURL: String!
+  iconURL: [String!]!
   candidates: [SingleClickOnTwoDiagramElementsCandidate]!
 }
 

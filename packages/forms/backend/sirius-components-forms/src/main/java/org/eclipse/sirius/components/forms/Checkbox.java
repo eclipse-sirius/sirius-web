@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Checkbox extends AbstractWidget {
+
     private boolean value;
 
     private Function<Boolean, IStatus> newValueHandler;
@@ -37,6 +38,10 @@ public final class Checkbox extends AbstractWidget {
 
     private Checkbox() {
         // Prevent instantiation
+    }
+
+    public static Builder newCheckbox(String id) {
+        return new Builder(id);
     }
 
     public boolean isValue() {
@@ -49,10 +54,6 @@ public final class Checkbox extends AbstractWidget {
 
     public CheckboxStyle getStyle() {
         return this.style;
-    }
-
-    public static Builder newCheckbox(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -68,11 +69,12 @@ public final class Checkbox extends AbstractWidget {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private boolean value;
 
@@ -95,7 +97,7 @@ public final class Checkbox extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -134,7 +136,7 @@ public final class Checkbox extends AbstractWidget {
             Checkbox checkbox = new Checkbox();
             checkbox.id = Objects.requireNonNull(this.id);
             checkbox.label = Objects.requireNonNull(this.label);
-            checkbox.iconURL = this.iconURL; // Optional on purpose
+            checkbox.iconURL = Objects.requireNonNull(this.iconURL);
             checkbox.value = Objects.requireNonNull(this.value);
             checkbox.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             checkbox.style = this.style; // Optional on purpose

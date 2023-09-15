@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class CheckboxComponent implements IComponent {
 
-    private CheckboxComponentProps props;
+    private final CheckboxComponentProps props;
 
     public CheckboxComponent(CheckboxComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -53,7 +53,7 @@ public class CheckboxComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = checkboxDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = checkboxDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = checkboxDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = checkboxDescription.getIsReadOnlyProvider().apply(variableManager);
         Boolean value = checkboxDescription.getValueProvider().apply(variableManager);
         BiFunction<VariableManager, Boolean, IStatus> genericHandler = checkboxDescription.getNewValueHandler();

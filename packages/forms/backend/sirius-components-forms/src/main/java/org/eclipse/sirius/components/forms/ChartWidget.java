@@ -28,18 +28,19 @@ import org.eclipse.sirius.components.forms.validation.Diagnostic;
  */
 @Immutable
 public final class ChartWidget extends AbstractWidget {
+
     private IChart chart;
 
     private ChartWidget() {
         // Prevent instantiation
     }
 
-    public IChart getChart() {
-        return this.chart;
-    }
-
     public static Builder newChartWidget(String id) {
         return new Builder(id);
+    }
+
+    public IChart getChart() {
+        return this.chart;
     }
 
     @Override
@@ -58,17 +59,17 @@ public final class ChartWidget extends AbstractWidget {
 
         private final String id;
 
+        private final boolean readOnly = true; // Read-only by nature
+
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL = List.of();
 
         private IChart chart;
 
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
-
-        private final boolean readOnly = true; // Read-only by nature;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -79,7 +80,7 @@ public final class ChartWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
@@ -103,7 +104,7 @@ public final class ChartWidget extends AbstractWidget {
             ChartWidget chartWidget = new ChartWidget();
             chartWidget.id = Objects.requireNonNull(this.id);
             chartWidget.label = Objects.requireNonNull(this.label);
-            chartWidget.iconURL = this.iconURL; // Optional on purpose
+            chartWidget.iconURL = Objects.requireNonNull(this.iconURL);
             chartWidget.chart = Objects.requireNonNull(this.chart);
             chartWidget.diagnostics = Objects.requireNonNull(this.diagnostics);
             chartWidget.helpTextProvider = this.helpTextProvider; // Optional on purpose

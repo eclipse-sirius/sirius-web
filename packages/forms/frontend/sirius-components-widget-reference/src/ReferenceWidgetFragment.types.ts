@@ -42,7 +42,7 @@ export interface GQLReferenceValue {
   id: string;
   label: string;
   kind: string;
-  iconURL: string | null;
+  iconURL: string[];
   hasClickAction: boolean;
 }
 

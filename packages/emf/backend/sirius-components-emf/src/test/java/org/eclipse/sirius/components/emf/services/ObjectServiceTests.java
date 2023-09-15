@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
  * @author pcdavid
  */
 public class ObjectServiceTests {
+
     @Test
     public void testFindImagePathOnCompositeImage() {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
@@ -43,12 +44,10 @@ public class ObjectServiceTests {
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
         ObjectService objectService = new ObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
         EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
-        String imagePath = objectService.getImagePath(attr);
-        // @formatter:off
-        assertThat(imagePath)
-            .isNotNull()
-            .endsWith("/icons/full/obj16/EAttribute.gif");
-        // @formatter:on
+        List<String> imagePath = objectService.getImagePath(attr);
+        assertThat(imagePath).hasSize(1);
+        assertThat(imagePath.get(0))
+                .endsWith("/icons/full/obj16/EAttribute.gif");
     }
 
     @Test

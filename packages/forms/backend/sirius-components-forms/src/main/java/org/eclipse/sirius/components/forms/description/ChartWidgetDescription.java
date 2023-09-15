@@ -28,16 +28,21 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class ChartWidgetDescription extends AbstractWidgetDescription {
+
     private Function<VariableManager, String> idProvider;
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private IChartDescription chartDescription;
 
     private ChartWidgetDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newChartWidgetDescription(String id) {
+        return new Builder(id);
     }
 
     public Function<VariableManager, String> getIdProvider() {
@@ -48,16 +53,12 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
     public IChartDescription getChartDescription() {
         return this.chartDescription;
-    }
-
-    public static Builder newChartWidgetDescription(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -76,15 +77,15 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
 
         private final String id;
 
+        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
+
         private Function<VariableManager, String> idProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
-
-        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private IChartDescription chartDescription;
 
@@ -115,7 +116,7 @@ public final class ChartWidgetDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

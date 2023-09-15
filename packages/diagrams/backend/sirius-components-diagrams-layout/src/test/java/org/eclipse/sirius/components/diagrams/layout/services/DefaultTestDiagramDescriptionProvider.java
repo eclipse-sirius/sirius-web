@@ -66,17 +66,6 @@ public class DefaultTestDiagramDescriptionProvider {
     private static final String NODE_RECT_PREFIX = "rect";
 
     private static final String NODE_NAME_SEPARATOR = ":";
-
-    private IObjectService objectService;
-
-    private final Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
-        // @formatter:off
-        return variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
-                .orElse("");
-        // @formatter:on
-    };
-
     private final Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
         // @formatter:off
         String prefix = variableManager.get(VariableManager.SELF, Element.class)
@@ -126,7 +115,6 @@ public class DefaultTestDiagramDescriptionProvider {
 
         return nodeStyle;
     };
-
     private final Function<VariableManager, String> nodeTypeProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
@@ -158,7 +146,6 @@ public class DefaultTestDiagramDescriptionProvider {
                 .orElse("");
         // @formatter:on
     };
-
     private final Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
@@ -187,7 +174,6 @@ public class DefaultTestDiagramDescriptionProvider {
                 .orElse(null);
         // @formatter:on
     };
-
     private final Function<VariableManager, String> labelProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
@@ -198,7 +184,6 @@ public class DefaultTestDiagramDescriptionProvider {
                 .orElse("");
         // @formatter:on
     };
-
     private final Function<VariableManager, List<?>> nodeSemanticElementProvider = variableManager -> {
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getChildren)
@@ -206,6 +191,14 @@ public class DefaultTestDiagramDescriptionProvider {
                 .stream()
                 .filter(element -> !element.getName().startsWith("edge:"))
                 .toList();
+    };
+    private IObjectService objectService;
+    private final Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
+        // @formatter:off
+        return variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.objectService::getId)
+                .orElse("");
+        // @formatter:on
     };
 
     public DefaultTestDiagramDescriptionProvider(IObjectService objectService) {
@@ -407,7 +400,7 @@ public class DefaultTestDiagramDescriptionProvider {
                             .strikeThroughProvider(vm -> false)
                             .colorProvider(vm -> "black")
                             .fontSizeProvider(vm -> 14)
-                            .iconURLProvider(vm -> "")
+                            .iconURLProvider(vm -> List.of())
                             .build();
                 })
                 .build();

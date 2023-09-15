@@ -57,6 +57,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   noDragIcon: {
     display: 'none',
   },
+  iconContainer: {
+    position: 'relative',
+    width: '16px',
+    height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
 }));
 const useLabelStyles = makeStyles((theme: Theme) => ({
   highlight: {
@@ -240,7 +250,20 @@ export const FilterableSortableList = ({
                     <DragHandleIcon />
                   </ListItemIcon>
                   <ListItemIcon draggable onDragStart={() => handleDragItemStart(id)}>
-                    {iconURL ? <img width="16" height="16" alt={''} src={httpOrigin + iconURL} /> : null}
+                    {iconURL.length > 0 ? (
+                      <div className={classes.iconContainer}>
+                        {iconURL.map((icon, index) => (
+                          <img
+                            height="16"
+                            width="16"
+                            key={index}
+                            alt={kind}
+                            src={httpOrigin + icon}
+                            className={classes.icon}
+                            style={{ zIndex: index }}></img>
+                        ))}
+                      </div>
+                    ) : null}
                   </ListItemIcon>
                   <ListItemText
                     id={labelId}

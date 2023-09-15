@@ -35,7 +35,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
     private String id;
 
-    private String imageURL;
+    private List<String> iconURL;
 
     private String label;
 
@@ -51,6 +51,10 @@ public final class SingleClickOnDiagramElementTool implements ITool {
         // Prevent instantiation
     }
 
+    public static Builder newSingleClickOnDiagramElementTool(String id) {
+        return new Builder(id);
+    }
+
     public List<IDiagramElementDescription> getTargetDescriptions() {
         return this.targetDescriptions;
     }
@@ -64,10 +68,9 @@ public final class SingleClickOnDiagramElementTool implements ITool {
         return this.id;
     }
 
-    // This field is defined in DiagramTypesProvider to add the server base URL prefix.
     @Override
-    public String getImageURL() {
-        return this.imageURL;
+    public List<String> getIconURL() {
+        return this.iconURL;
     }
 
     @Override
@@ -86,12 +89,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, label: {2}, imageURL: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label, this.imageURL);
-    }
-
-    public static Builder newSingleClickOnDiagramElementTool(String id) {
-        return new Builder(id);
+        String pattern = "{0} '{'id: {1}, label: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.label);
     }
 
     /**
@@ -101,9 +100,10 @@ public final class SingleClickOnDiagramElementTool implements ITool {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
 
-        private String imageURL;
+        private final String id;
+
+        private List<String> iconURL;
 
         private String label;
 
@@ -119,8 +119,8 @@ public final class SingleClickOnDiagramElementTool implements ITool {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder imageURL(String imageURL) {
-            this.imageURL = Objects.requireNonNull(imageURL);
+        public Builder iconURL(List<String> iconURL) {
+            this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
 
@@ -152,7 +152,7 @@ public final class SingleClickOnDiagramElementTool implements ITool {
         public SingleClickOnDiagramElementTool build() {
             SingleClickOnDiagramElementTool tool = new SingleClickOnDiagramElementTool();
             tool.id = Objects.requireNonNull(this.id);
-            tool.imageURL = Objects.requireNonNull(this.imageURL);
+            tool.iconURL = Objects.requireNonNull(this.iconURL);
             tool.label = Objects.requireNonNull(this.label);
             tool.handler = Objects.requireNonNull(this.handler);
             tool.targetDescriptions = Objects.requireNonNull(this.targetDescriptions);

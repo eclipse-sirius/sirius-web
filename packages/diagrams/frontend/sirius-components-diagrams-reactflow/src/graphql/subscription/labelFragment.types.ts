@@ -33,7 +33,7 @@ export interface GQLLabelStyle {
   italic: boolean;
   underline: boolean;
   strikeThrough: boolean;
-  iconURL: string;
+  iconURL: string[];
 }
 
 export type InsideLabelLocation = 'TOP_CENTER';

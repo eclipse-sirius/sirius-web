@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class TextareaComponent implements IComponent {
 
-    private TextareaComponentProps props;
+    private final TextareaComponentProps props;
 
     public TextareaComponent(TextareaComponentProps props) {
         this.props = Objects.requireNonNull(props);
@@ -54,7 +54,7 @@ public class TextareaComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = textareaDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = textareaDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = textareaDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = textareaDescription.getIsReadOnlyProvider().apply(variableManager);
         String value = textareaDescription.getValueProvider().apply(variableManager);
         Function<String, IStatus> specializedHandler = newValue -> textareaDescription.getNewValueHandler().apply(variableManager, newValue);
