@@ -267,7 +267,12 @@ export const ReferencePropertySection = ({
   let modal: JSX.Element | null = null;
   if (modalDisplayed === 'browse') {
     modal = widget.reference.manyValued ? (
-      <TransferModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
+      <TransferModal
+        editingContextId={editingContextId}
+        formId={formId}
+        onClose={addSelectedElements}
+        widget={widget}
+      />
     ) : (
       <BrowseModal editingContextId={editingContextId} onClose={addSelectedElements} widget={widget} />
     );

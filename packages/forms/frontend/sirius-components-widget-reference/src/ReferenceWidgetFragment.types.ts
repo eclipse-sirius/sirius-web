@@ -17,7 +17,6 @@ export interface GQLReferenceWidget extends GQLWidget {
   label: string;
   reference: GQLReference;
   referenceValues: GQLReferenceValue[] | null;
-  referenceOptions: GQLReferenceValue[] | null;
   style: GQLReferenceWidgetStyle | null;
   ownerId: string;
 }
