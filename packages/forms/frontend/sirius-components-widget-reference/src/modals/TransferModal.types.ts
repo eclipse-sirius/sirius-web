@@ -12,10 +12,11 @@
  *******************************************************************************/
 
 import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
+import { GQLReferenceValue, GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 
 export interface TransferModalProps {
   editingContextId: string;
+  formId: string;
   widget: GQLReferenceWidget;
   onClose: (selectedElementIds: string[]) => void;
 }
@@ -25,4 +26,5 @@ export interface TransferModalState {
   right: SelectionEntry[];
   rightSelection: SelectionEntry[];
   draggingRightItemId: string | undefined;
+  options: GQLReferenceValue[];
 }

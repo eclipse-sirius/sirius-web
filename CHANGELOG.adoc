@@ -11,6 +11,7 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2386[#2386] [form] Reference widget structure has changed, `referenceOptions` has been removed to be lazily loaded.
 
 === Dependency update
 
@@ -23,6 +24,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2386[#2386] [form] Reference widget candidates are now lazily loaded when necessary.
 
 
 == v2023.10.0

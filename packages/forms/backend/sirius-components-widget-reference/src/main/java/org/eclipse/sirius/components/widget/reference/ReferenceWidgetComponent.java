@@ -61,7 +61,6 @@ public class ReferenceWidgetComponent implements IComponent {
         String ownerId = referenceDescription.getOwnerIdProvider().apply(variableManager);
 
         List<?> rawValue = referenceDescription.getItemsProvider().apply(variableManager);
-        List<?> rawOptions = referenceDescription.getOptionsProvider().apply(variableManager);
         Setting setting = referenceDescription.getSettingProvider().apply(variableManager);
         ReferenceWidgetStyle style = referenceDescription.getStyleProvider().apply(variableManager);
 
@@ -91,7 +90,32 @@ public class ReferenceWidgetComponent implements IComponent {
                 })
                 .toList();
 
-        List<ReferenceValue> options = rawOptions.stream()
+
+        List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(referenceDescription, variableManager)));
+
+        var builder = ReferenceElementProps.newReferenceElementProps(id)
+                .label(label)
+                .iconURL(iconURL)
+                .values(items)
+                .optionsProvider(() -> this.getOptions(variableManager, referenceDescription))
+                .setting(setting)
+                .ownerId(ownerId)
+                .children(children);
+        if (referenceDescription.getHelpTextProvider() != null) {
+            builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
+        }
+        if (readOnly != null) {
+            builder.readOnly(readOnly);
+        }
+        if (style != null) {
+            builder.style(style);
+        }
+
+        return new Element(ReferenceElementProps.TYPE, builder.build());
+    }
+
+    private List<ReferenceValue> getOptions(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        return referenceDescription.getOptionsProvider().apply(variableManager).stream()
                 .map(object -> {
                     VariableManager childVariables = variableManager.createChild();
                     childVariables.put(ReferenceWidgetComponent.ITEM_VARIABLE, object);
@@ -107,28 +131,6 @@ public class ReferenceWidgetComponent implements IComponent {
                             .build();
                 })
                 .toList();
-
-        List<Element> children = List.of(new Element(DiagnosticComponent.class, new DiagnosticComponentProps(referenceDescription, variableManager)));
-
-        var builder = ReferenceElementProps.newReferenceElementProps(id)
-                .label(label)
-                .iconURL(iconURL)
-                .values(items)
-                .options(options)
-                .setting(setting)
-                .ownerId(ownerId)
-                .children(children);
-        if (referenceDescription.getHelpTextProvider() != null) {
-            builder.helpTextProvider(() -> referenceDescription.getHelpTextProvider().apply(variableManager));
-        }
-        if (readOnly != null) {
-            builder.readOnly(readOnly);
-        }
-        if (style != null) {
-            builder.style(style);
-        }
-
-        return new Element(ReferenceElementProps.TYPE, builder.build());
     }
 
 }

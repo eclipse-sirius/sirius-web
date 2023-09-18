@@ -10,20 +10,34 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue, getCSSColor, theme } from '@eclipse-sirius/sirius-components-core';
+import { gql, useLazyQuery } from '@apollo/client';
+import {
+  getCSSColor,
+  ServerContext,
+  ServerContextValue,
+  theme,
+  useMultiToast,
+} from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GQLReferenceValue, GQLReferenceWidgetStyle } from '../ReferenceWidgetFragment.types';
-import { ValuedReferenceAutocompleteProps } from './ValuedReferenceAutocomplete.types';
+import {
+  GQLFormDescription,
+  GQLGetReferenceValueOptionsQueryData,
+  GQLGetReferenceValueOptionsQueryVariables,
+  GQLRepresentationDescription,
+  ValuedReferenceAutocompleteProps,
+  ValuedReferenceAutocompleteState,
+} from './ValuedReferenceAutocomplete.types';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   optionLabel: {
@@ -48,6 +62,31 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   },
 }));
 
+const getReferenceValueOptionsQuery = gql`
+  query getReferenceValueOptions($editingContextId: ID!, $representationId: ID!, $referenceWidgetId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on FormDescription {
+              referenceValueOptions(referenceWidgetId: $referenceWidgetId) {
+                id
+                label
+                kind
+                iconURL
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const isFormDescription = (
+  representationDescription: GQLRepresentationDescription
+): representationDescription is GQLFormDescription => representationDescription.__typename === 'FormDescription';
+
 export const ValuedReferenceAutocomplete = ({
   editingContextId,
   formId,
@@ -71,6 +110,53 @@ export const ValuedReferenceAutocomplete = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyles(props);
+
+  const { addErrorMessage } = useMultiToast();
+  const [state, setState] = useState<ValuedReferenceAutocompleteState>({ open: false, options: null });
+  const loading = state.open && state.options === null;
+
+  const [
+    getReferenceValueOptions,
+    {
+      loading: childReferenceValueOptionsLoading,
+      data: childReferenceValueOptionsData,
+      error: childReferenceValueOptionsError,
+    },
+  ] = useLazyQuery<GQLGetReferenceValueOptionsQueryData, GQLGetReferenceValueOptionsQueryVariables>(
+    getReferenceValueOptionsQuery
+  );
+
+  useEffect(() => {
+    if (!childReferenceValueOptionsLoading) {
+      if (childReferenceValueOptionsError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (childReferenceValueOptionsData) {
+        const representationDescription: GQLRepresentationDescription =
+          childReferenceValueOptionsData.viewer.editingContext.representation.description;
+        if (isFormDescription(representationDescription)) {
+          setState((prevState) => {
+            return {
+              ...prevState,
+              options: representationDescription.referenceValueOptions,
+            };
+          });
+        }
+      }
+    }
+  }, [childReferenceValueOptionsLoading, childReferenceValueOptionsData, childReferenceValueOptionsError]);
+
+  useEffect(() => {
+    if (loading) {
+      getReferenceValueOptions({
+        variables: {
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+        },
+      });
+    }
+  }, [loading]);
 
   const handleAutocompleteChange = (_event, newValue) => {
     let newValueIds: string[] = newValue.map((value: GQLReferenceValue) => value.id);
@@ -103,6 +189,17 @@ export const ValuedReferenceAutocomplete = ({
     editReference({ variables });
   };
 
+  useEffect(() => {
+    if (!state.open) {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          options: null,
+        };
+      });
+    }
+  }, [widget]);
+
   let placeholder: string;
   if (widget.reference.manyValued) {
     placeholder = 'Values';
@@ -115,7 +212,25 @@ export const ValuedReferenceAutocomplete = ({
       multiple
       filterSelectedOptions
       disabled={readOnly || widget.readOnly}
-      options={widget.referenceOptions}
+      open={state.open}
+      onOpen={() =>
+        setState((prevState) => {
+          return {
+            ...prevState,
+            open: true,
+          };
+        })
+      }
+      onClose={() =>
+        setState((prevState) => {
+          return {
+            ...prevState,
+            open: false,
+          };
+        })
+      }
+      loading={loading}
+      options={state.options || []}
       getOptionLabel={(option: GQLReferenceValue) => option.label}
       value={widget.referenceValues}
       getOptionSelected={(option, value) => option.id === value.id}

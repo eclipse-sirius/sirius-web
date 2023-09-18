@@ -190,12 +190,6 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
                  iconURL
                  hasClickAction
                }
-               referenceOptions {
-                 id
-                 label
-                 kind
-                 iconURL
-               }
                style {
                  color
                  fontSize

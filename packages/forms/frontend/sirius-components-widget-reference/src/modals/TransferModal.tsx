@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DRAG_SOURCES_TYPE, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+import { gql, useQuery } from '@apollo/client';
+import { DRAG_SOURCES_TYPE, SelectionEntry, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,9 +22,15 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FilterableSortableList } from '../components/FilterableSortableList';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
+import {
+  GQLFormDescription,
+  GQLGetReferenceValueOptionsQueryData,
+  GQLGetReferenceValueOptionsQueryVariables,
+  GQLRepresentationDescription,
+} from '../components/ValuedReferenceAutocomplete.types';
 import { TransferModalProps, TransferModalState } from './TransferModal.types';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,14 +50,76 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TransferModal = ({ editingContextId, widget, onClose }: TransferModalProps) => {
+const getReferenceValueOptionsQuery = gql`
+  query getReferenceValueOptions($editingContextId: ID!, $representationId: ID!, $referenceWidgetId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on FormDescription {
+              referenceValueOptions(referenceWidgetId: $referenceWidgetId) {
+                id
+                label
+                kind
+                iconURL
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const isFormDescription = (
+  representationDescription: GQLRepresentationDescription
+): representationDescription is GQLFormDescription => representationDescription.__typename === 'FormDescription';
+
+export const TransferModal = ({ editingContextId, formId, widget, onClose }: TransferModalProps) => {
   const classes = useStyles();
+  const { addErrorMessage } = useMultiToast();
   const [state, setState] = useState<TransferModalState>({
     right: widget.referenceValues,
     rightSelection: [],
     draggingRightItemId: undefined,
     leftSelection: [],
+    options: [],
   });
+
+  const {
+    loading: childReferenceValueOptionsLoading,
+    data: childReferenceValueOptionsData,
+    error: childReferenceValueOptionsError,
+  } = useQuery<GQLGetReferenceValueOptionsQueryData, GQLGetReferenceValueOptionsQueryVariables>(
+    getReferenceValueOptionsQuery,
+    {
+      variables: {
+        editingContextId,
+        representationId: formId,
+        referenceWidgetId: widget.id,
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (!childReferenceValueOptionsLoading) {
+      if (childReferenceValueOptionsError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (childReferenceValueOptionsData) {
+        const representationDescription: GQLRepresentationDescription =
+          childReferenceValueOptionsData.viewer.editingContext.representation.description;
+        if (isFormDescription(representationDescription)) {
+          setState((prevState) => {
+            return {
+              ...prevState,
+              options: representationDescription.referenceValueOptions,
+            };
+          });
+        }
+      }
+    }
+  }, [childReferenceValueOptionsLoading, childReferenceValueOptionsData, childReferenceValueOptionsError]);
 
   const handleLeftSelection = (selection) => {
     setState((prevState) => {
@@ -222,7 +291,7 @@ export const TransferModal = ({ editingContextId, widget, onClose }: TransferMod
             <div className={classes.paper}>
               <FilterableSortableList
                 items={state.right}
-                options={[...widget.referenceOptions, ...widget.referenceValues]}
+                options={[...state.options, ...widget.referenceValues]}
                 setItems={(items: SelectionEntry[]) =>
                   setState((prevState) => {
                     return {

@@ -44,7 +44,7 @@ public final class ReferenceElementProps implements IProps {
 
     private List<ReferenceValue> values;
 
-    private List<ReferenceValue> options;
+    private Supplier<List<ReferenceValue>> optionsProvider;
 
     private Setting setting;
 
@@ -86,8 +86,8 @@ public final class ReferenceElementProps implements IProps {
         return this.values;
     }
 
-    public List<ReferenceValue> getOptions() {
-        return this.options;
+    public Supplier<List<ReferenceValue>> getOptionsProvider() {
+        return this.optionsProvider;
     }
 
     public Setting getSetting() {
@@ -131,7 +131,7 @@ public final class ReferenceElementProps implements IProps {
 
         private List<ReferenceValue> values;
 
-        private List<ReferenceValue> options;
+        private Supplier<List<ReferenceValue>> optionsProvider;
 
         private Setting setting;
 
@@ -170,8 +170,8 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder options(List<ReferenceValue> options) {
-            this.options = Objects.requireNonNull(options);
+        public Builder optionsProvider(Supplier<List<ReferenceValue>> optionsProvider) {
+            this.optionsProvider = Objects.requireNonNull(optionsProvider);
             return this;
         }
 
@@ -202,7 +202,7 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.iconURL = this.iconURL;
             referenceElementProps.readOnly = this.readOnly;
             referenceElementProps.values = Objects.requireNonNull(this.values);
-            referenceElementProps.options = Objects.requireNonNull(this.options);
+            referenceElementProps.optionsProvider = Objects.requireNonNull(this.optionsProvider);
             referenceElementProps.setting = Objects.requireNonNull(this.setting);
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose

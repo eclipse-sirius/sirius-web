@@ -1,3 +1,7 @@
+extend type FormDescription {
+  referenceValueOptions(referenceWidgetId: ID!): [ReferenceValue!]!
+}
+
 type ReferenceWidget implements Widget {
   id: ID!
   diagnostics: [Diagnostic!]!
@@ -7,7 +11,6 @@ type ReferenceWidget implements Widget {
   readOnly: Boolean!
   reference: Reference!
   referenceValues: [ReferenceValue!]!
-  referenceOptions: [ReferenceValue!]!
   style: ReferenceWidgetStyle
   ownerId: ID!
 }

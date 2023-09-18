@@ -32,3 +32,42 @@ export interface ValuedReferenceAutocompleteProps {
   editReference: MutationFunction<GQLEditReferenceData, GQLEditReferenceVariables>;
   optionClickHandler: (element: GQLReferenceValue) => void;
 }
+
+export interface ValuedReferenceAutocompleteState {
+  open: boolean;
+  options: GQLReferenceValue[] | null;
+}
+
+export interface GQLGetReferenceValueOptionsQueryData {
+  viewer: GQLViewer;
+}
+
+export interface GQLViewer {
+  editingContext: GQLEditingContext;
+}
+
+export interface GQLEditingContext {
+  representation: GQLRepresentationMetadata;
+}
+
+export interface GQLRepresentationMetadata {
+  id: string;
+  label: string;
+  kind: string;
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
+  __typename: string;
+}
+
+export interface GQLFormDescription extends GQLRepresentationDescription {
+  referenceValueOptions: GQLReferenceValue[];
+}
+
+export interface GQLGetReferenceValueOptionsQueryVariables {
+  editingContextId: string;
+  representationId: string;
+  referenceWidgetId: string;
+}
