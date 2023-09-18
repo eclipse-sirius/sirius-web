@@ -1,0 +1,37 @@
+= (S) Image overlay
+
+== Problem
+
+To make an element easier to read, a specifier may want to adapt the rendering of its icon by applying a layer according to certain semantic data.
+Currently, despite the fact it is possible to provide several images to the same element, only the first will be rendering in the application.
+
+== Key Result
+
+Display on the UI, all images provided for a semantic element.
+
+== Solution
+
+Instead of only retrieving the first image, overlay all layers.
+
+=== Scenario
+
+* For a given element, a list of images is provided.
+* On the UI, all the images are overlaid to display the element.
+
+=== Breadboarding
+
+* If the `domain::Entity` is represented by this single image :
+
+image::images/image_overlay_01.svg[entity image]
+
+* We add an algorithm to provide another image if the entity is abstract :
+
+image::images/image_overlay_02.svg[abstract image]
+
+* On the UI, the new representation for the abstract entity are the superposition of these two layers :
+
+image::images/image_overlay_03.png[composed image]
+
+== Rabbit holes
+
+* The declaration of all the images can only be done programmatically.
