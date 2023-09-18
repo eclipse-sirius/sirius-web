@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -50,7 +49,13 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> itemImageURLProvider;
 
-    private Function<VariableManager, Setting> settingProvider;
+    private Function<VariableManager, String> typeNameProvider;
+
+    private Function<VariableManager, String> referenceKindProvider;
+
+    private Function<VariableManager, Boolean> isContainmentProvider;
+
+    private Function<VariableManager, Boolean> isManyProvider;
 
     private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
@@ -114,8 +119,20 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.itemImageURLProvider;
     }
 
-    public Function<VariableManager, Setting> getSettingProvider() {
-        return this.settingProvider;
+    public Function<VariableManager, String> getTypeNameProvider() {
+        return this.typeNameProvider;
+    }
+
+    public Function<VariableManager, String> getReferenceKindProvider() {
+        return this.referenceKindProvider;
+    }
+
+    public Function<VariableManager, Boolean> getIsContainmentProvider() {
+        return this.isContainmentProvider;
+    }
+
+    public Function<VariableManager, Boolean> getIsManyProvider() {
+        return this.isManyProvider;
     }
 
     public Function<VariableManager, IStatus> getItemClickHandlerProvider() {
@@ -190,7 +207,13 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, String> itemImageURLProvider;
 
-        private Function<VariableManager, Setting> settingProvider;
+        private Function<VariableManager, String> typeNameProvider;
+
+        private Function<VariableManager, String> referenceKindProvider;
+
+        private Function<VariableManager, Boolean> isContainmentProvider;
+
+        private Function<VariableManager, Boolean> isManyProvider;
 
         private Function<VariableManager, String> helpTextProvider;
 
@@ -271,8 +294,23 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder settingProvider(Function<VariableManager, Setting> settingProvider) {
-            this.settingProvider = Objects.requireNonNull(settingProvider);
+        public Builder typeNameProvider(Function<VariableManager, String> typeNameProvider) {
+            this.typeNameProvider = Objects.requireNonNull(typeNameProvider);
+            return this;
+        }
+
+        public Builder referenceKindProvider(Function<VariableManager, String> referenceKindProvider) {
+            this.referenceKindProvider = Objects.requireNonNull(referenceKindProvider);
+            return this;
+        }
+
+        public Builder isContainmentProvider(Function<VariableManager, Boolean> isContainmentProvider) {
+            this.isContainmentProvider = Objects.requireNonNull(isContainmentProvider);
+            return this;
+        }
+
+        public Builder isManyProvider(Function<VariableManager, Boolean> isManyProvider) {
+            this.isManyProvider = Objects.requireNonNull(isManyProvider);
             return this;
         }
 
@@ -340,7 +378,10 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);
             referenceWidgetDescription.itemKindProvider = Objects.requireNonNull(this.itemKindProvider);
             referenceWidgetDescription.itemImageURLProvider = Objects.requireNonNull(this.itemImageURLProvider);
-            referenceWidgetDescription.settingProvider = Objects.requireNonNull(this.settingProvider);
+            referenceWidgetDescription.typeNameProvider = Objects.requireNonNull(this.typeNameProvider);
+            referenceWidgetDescription.referenceKindProvider = Objects.requireNonNull(this.referenceKindProvider);
+            referenceWidgetDescription.isContainmentProvider = Objects.requireNonNull(this.isContainmentProvider);
+            referenceWidgetDescription.isManyProvider = Objects.requireNonNull(this.isManyProvider);
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceWidgetDescription.itemClickHandlerProvider = this.itemClickHandlerProvider; // Optional on purpose
             referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);

@@ -12,11 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.widget.reference.datafetchers;
 
-import java.util.Objects;
-
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.widget.reference.Reference;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
@@ -31,20 +27,12 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "ReferenceWidget", field = "reference")
 public class ReferenceWidgetReferenceDataFetcher implements IDataFetcherWithFieldCoordinates<Reference> {
 
-    private final IEMFKindService emfKindService;
-
-    public ReferenceWidgetReferenceDataFetcher(IEMFKindService emfKindService) {
-        this.emfKindService = Objects.requireNonNull(emfKindService);
-    }
-
-
     @Override
     public Reference get(DataFetchingEnvironment environment) throws Exception {
         ReferenceWidget referenceWidget = environment.getSource();
-        var feature = referenceWidget.getSetting().getEStructuralFeature();
-        return new Reference(this.emfKindService.getKind(feature.getEContainingClass()),
-                this.emfKindService.getKind(((EReference) feature).getEReferenceType()),
-                ((EReference) feature).isContainment(),
-                feature.isMany());
+        return new Reference(referenceWidget.getTypeName(),
+                referenceWidget.getReferenceKind(),
+                referenceWidget.isContainment(),
+                referenceWidget.isMany());
     }
 }

@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.representations.Element;
@@ -76,7 +75,10 @@ public class ReferenceWidgetComponent implements IComponent {
         Boolean readOnly = referenceDescription.getIsReadOnlyProvider().apply(variableManager);
         String ownerId = referenceDescription.getOwnerIdProvider().apply(variableManager);
 
-        Setting setting = referenceDescription.getSettingProvider().apply(variableManager);
+        String typeName = referenceDescription.getTypeNameProvider().apply(variableManager);
+        String referenceKind = referenceDescription.getReferenceKindProvider().apply(variableManager);
+        boolean isContainment = referenceDescription.getIsContainmentProvider().apply(variableManager);
+        boolean isMany = referenceDescription.getIsManyProvider().apply(variableManager);
         ReferenceWidgetStyle style = referenceDescription.getStyleProvider().apply(variableManager);
 
         List<ReferenceValue> items = this.getItems(variableManager, referenceDescription);
@@ -89,7 +91,10 @@ public class ReferenceWidgetComponent implements IComponent {
                 .diagnostics(List.of())
                 .values(items)
                 .options(options)
-                .setting(setting)
+                .typeName(typeName)
+                .referenceKind(referenceKind)
+                .isContainment(isContainment)
+                .isMany(isMany)
                 .ownerId(ownerId)
                 .clearHandler(() -> {
                     return referenceDescription.getClearHandlerProvider().apply(variableManager);

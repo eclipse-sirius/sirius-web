@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -74,14 +75,17 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService,
-            ComposedAdapterFactory composedAdapterFactory) {
+    private final IEMFKindService emfKindService;
+
+    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService,
+            IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = editService;
         this.feedbackMessageService = feedbackMessageService;
         this.adapterFactory = composedAdapterFactory;
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+        this.emfKindService = Objects.requireNonNull(emfKindService);
     }
 
     @Override
@@ -98,11 +102,17 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         };
 
         var builder = org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId).targetObjectIdProvider(this.semanticTargetIdProvider)
-                .idProvider(new WidgetIdProvider()).labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager)).iconURLProvider(variableManager -> "")
+                .idProvider(new WidgetIdProvider()).labelProvider(variableManager -> this.getReferenceLabel(referenceDescription, variableManager))
+                .iconURLProvider(variableManager -> "")
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))
                 .itemsProvider(variableManager -> this.getReferenceValue(referenceDescription, variableManager))
-                .optionsProvider(variableManager -> this.getReferenceOptions(referenceDescription, variableManager)).itemIdProvider(this::getItemId).itemKindProvider(this::getItemKind)
-                .itemLabelProvider(this::getItemLabel).itemImageURLProvider(this::getItemIconURL).settingProvider(variableManager -> this.resolveSetting(referenceDescription, variableManager))
+                .optionsProvider(variableManager -> this.getReferenceOptions(referenceDescription, variableManager))
+                .itemIdProvider(this::getItemId).itemKindProvider(this::getItemKind)
+                .itemLabelProvider(this::getItemLabel).itemImageURLProvider(this::getItemIconURL)
+                .typeNameProvider(variableManager -> this.getTypeName(variableManager, referenceDescription))
+                .referenceKindProvider(variableManager -> this.getReferenceKind(variableManager, referenceDescription))
+                .isContainmentProvider(variableManager -> this.isContainment(variableManager, referenceDescription))
+                .isManyProvider(variableManager -> this.isMany(variableManager, referenceDescription))
                 .ownerIdProvider(variableManager -> this.getOwnerId(referenceDescription, variableManager))
                 .clearHandlerProvider(variableManager -> this.handleClearReference(variableManager, referenceDescription))
                 .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(variableManager, referenceDescription))
@@ -366,5 +376,41 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
             }
         }
         return result;
+    }
+
+    private String getTypeName(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            return this.emfKindService.getKind(reference.getEContainingClass());
+        }
+        return "";
+    }
+
+    private String getReferenceKind(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            return this.emfKindService.getKind(reference.getEReferenceType());
+        }
+        return "";
+    }
+
+    private boolean isContainment(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            return reference.isContainment();
+        }
+        return false;
+    }
+
+    private boolean isMany(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
+        EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+        String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+            return reference.isMany();
+        }
+        return false;
     }
 }

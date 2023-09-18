@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IProps;
@@ -52,7 +51,13 @@ public final class ReferenceElementProps implements IProps {
 
     private List<ReferenceValue> options;
 
-    private Setting setting;
+    private String typeName;
+
+    private String referenceKind;
+
+    private boolean isContainment;
+
+    private boolean isMany;
 
     private ReferenceWidgetStyle style;
 
@@ -108,9 +113,22 @@ public final class ReferenceElementProps implements IProps {
         return this.options;
     }
 
-    public Setting getSetting() {
-        return this.setting;
+    public String getTypeName() {
+        return this.typeName;
     }
+
+    public String getReferenceKind() {
+        return this.referenceKind;
+    }
+
+    public boolean isContainment() {
+        return this.isContainment;
+    }
+
+    public boolean isMany() {
+        return this.isMany;
+    }
+
 
     public ReferenceWidgetStyle getStyle() {
         return this.style;
@@ -168,7 +186,13 @@ public final class ReferenceElementProps implements IProps {
 
         private List<ReferenceValue> options;
 
-        private Setting setting;
+        private String typeName;
+
+        private String referenceKind;
+
+        private boolean isContainment;
+
+        private boolean isMany;
 
         private ReferenceWidgetStyle style;
 
@@ -223,8 +247,23 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder setting(Setting setting) {
-            this.setting = Objects.requireNonNull(setting);
+        public Builder typeName(String typeName) {
+            this.typeName = Objects.requireNonNull(typeName);
+            return this;
+        }
+
+        public Builder referenceKind(String referenceKind) {
+            this.referenceKind = Objects.requireNonNull(referenceKind);
+            return this;
+        }
+
+        public Builder isContainment(boolean isContainment) {
+            this.isContainment = isContainment;
+            return this;
+        }
+
+        public Builder isMany(boolean isMany) {
+            this.isMany = isMany;
             return this;
         }
 
@@ -272,7 +311,10 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.readOnly = this.readOnly;
             referenceElementProps.values = Objects.requireNonNull(this.values);
             referenceElementProps.options = Objects.requireNonNull(this.options);
-            referenceElementProps.setting = Objects.requireNonNull(this.setting);
+            referenceElementProps.typeName = Objects.requireNonNull(this.typeName);
+            referenceElementProps.referenceKind = Objects.requireNonNull(this.referenceKind);
+            referenceElementProps.isContainment = this.isContainment;
+            referenceElementProps.isMany = this.isMany;
             referenceElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             referenceElementProps.style = this.style; // Optional on purpose
             referenceElementProps.ownerId = Objects.requireNonNull(this.ownerId);

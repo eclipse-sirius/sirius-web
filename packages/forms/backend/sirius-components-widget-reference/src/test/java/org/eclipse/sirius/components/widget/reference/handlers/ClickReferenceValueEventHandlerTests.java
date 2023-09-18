@@ -23,10 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
@@ -84,17 +80,14 @@ public class ClickReferenceValueEventHandlerTests {
                 .clickHandler(clickHandler)
                 .build();
 
-        EObject owner = EcorePackage.Literals.ECLASS;
-        EStructuralFeature.Setting setting = ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
-
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
                 .diagnostics(Collections.emptyList())
                 .referenceValues(Collections.singletonList(referenceValue))
                 .referenceOptions(List.of())
                 .label("")
                 .readOnly(false)
-                .setting(setting)
                 .ownerId("")
+                .referenceKind("")
                 .build();
 
         Group group = Group.newGroup("groupId")
@@ -162,16 +155,13 @@ public class ClickReferenceValueEventHandlerTests {
                 .clickHandler(clickHandler)
                 .build();
 
-        EObject owner = EcorePackage.Literals.ECLASS;
-        EStructuralFeature.Setting setting = ((InternalEObject) owner).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
-
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(referenceValueId)
                 .diagnostics(Collections.emptyList())
                 .referenceValues(Collections.singletonList(referenceValue))
                 .referenceOptions(List.of())
                 .label("")
                 .readOnly(true)
-                .setting(setting)
+                .referenceKind("")
                 .ownerId("")
                 .build();
 
