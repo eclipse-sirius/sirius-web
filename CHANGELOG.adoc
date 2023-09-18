@@ -7,6 +7,7 @@
 - Add tool sections in the View DSL
 - Add support for Precondition Expressions in Tools
 - Color management in View
+- Add support for image overlay
 
 === Architectural decision records
 
