@@ -132,6 +132,7 @@
     "graphql": "16.8.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "notistack": "3.0.1",
     "subscriptions-transport-ws": "0.9.19",
     "uuid": "8.3.2",
     "websocket": "1.0.34"
