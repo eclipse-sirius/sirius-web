@@ -107,7 +107,7 @@ This will be fixed in the next version.
 - https://github.com/eclipse-sirius/sirius-web/issues/2252[#2252] [diagram] It's now possible to contribute custom frontend-defined tools in a React Flow diagram palette.
 To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_, it's available only on _OperationalActivity_ and it simply opens a dialog with the node label content.
 - https://github.com/eclipse-sirius/sirius-web/issues/2044[#2044] [view] Add custom icons to edges and nodes label in view dsl.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2396[#2396] [vs-code] Add VS Code Integration for React Flow diagrams.
 
 === Improvements
 

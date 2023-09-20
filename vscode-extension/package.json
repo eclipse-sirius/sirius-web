@@ -128,6 +128,7 @@
     "@eclipse-sirius/sirius-components-diagrams": "*",
     "@eclipse-sirius/sirius-components-forms": "*",
     "@eclipse-sirius/sirius-components-selection": "*",
+    "@eclipse-sirius/sirius-components-diagrams-reactflow": "*",
     "axios": "0.21.4",
     "graphql": "16.8.0",
     "react": "17.0.2",
@@ -135,6 +136,17 @@
     "notistack": "3.0.1",
     "subscriptions-transport-ws": "0.9.19",
     "uuid": "8.3.2",
-    "websocket": "1.0.34"
+    "websocket": "1.0.34",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "@material-ui/lab": "4.0.0-alpha.61",
+    "@xstate/react": "1.6.3",
+    "lexical": "0.8.1",
+    "d3": "7.0.0",
+    "html-to-image": "1.11.11",
+    "reactflow": "11.8.1",
+    "reflect-metadata": "0.1.13",
+    "sprotty": "0.12.0",
+    "xstate": "4.32.1"
   }
 }

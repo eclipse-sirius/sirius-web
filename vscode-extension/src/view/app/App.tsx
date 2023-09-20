@@ -13,6 +13,7 @@
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import React, { useEffect, useState } from 'react';
 import './Sprotty.css';
@@ -111,7 +112,20 @@ export const App = ({
   }, []);
 
   let component;
-  if (representationKind.startsWith('siriusComponents://representation?type=Diagram')) {
+  if (
+    representationKind.startsWith('siriusComponents://representation?type=Diagram') &&
+    representationLabel.endsWith('__REACT_FLOW')
+  ) {
+    component = (
+      <ReactFlowDiagramRepresentation
+        editingContextId={state.editingContextId}
+        representationId={state.representationId}
+        readOnly={false}
+        selection={state.selection}
+        setSelection={setSelection}
+      />
+    );
+  } else if (representationKind.startsWith('siriusComponents://representation?type=Diagram')) {
     component = (
       <DiagramRepresentation
         editingContextId={state.editingContextId}
