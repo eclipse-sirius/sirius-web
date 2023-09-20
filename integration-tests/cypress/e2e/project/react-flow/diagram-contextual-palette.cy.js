@@ -61,7 +61,8 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('Label - CaptureSubSystem').click('topLeft');
     cy.getByTestId('Hide-elements').should('exist');
     cy.getByTestId('Fade-elements').should('exist');
-    cy.getByTestId('rf__wrapper').click();
+    cy.getByTestId('rf__wrapper').click('bottomLeft');
+    // NOTE for later: ensure the palette is displayed
     cy.getByTestId('Hide-elements').should('not.exist');
     cy.getByTestId('Fade-elements').should('not.exist');
   });

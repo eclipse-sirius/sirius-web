@@ -104,6 +104,7 @@ export const DiagramRepresentation = ({
                   <MarkerDefinitions />
                   <FullscreenContextProvider>
                     <DiagramRenderer
+                      key={state.diagramRefreshedEventPayload.diagram.id}
                       diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
                       selection={selection}
                       setSelection={setSelection}
