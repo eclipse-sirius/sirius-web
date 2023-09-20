@@ -76,7 +76,7 @@ public class ProjectImporter {
         boolean errorOccurred = !this.createDocuments(inputId);
 
         if (!errorOccurred) {
-            errorOccurred = !this.createRepresentations(inputId);
+            this.createRepresentations(inputId);
         }
 
         return !errorOccurred;
