@@ -62,6 +62,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
     snapToGrid: false,
+    fitviewLifecycle: 'neverRendered',
   });
 
   const { layout } = useLayout();
@@ -90,8 +91,18 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       setNodes(laidOutDiagram.nodes);
       setEdges(laidOutDiagram.edges);
       hideDiagramPalette();
+      if (state.fitviewLifecycle === 'neverRendered') {
+        setState((prevState) => ({ ...prevState, fitviewLifecycle: 'shouldFitview' }));
+      }
     });
   }, [diagramRefreshedEventPayload]);
+
+  useEffect(() => {
+    if (state.fitviewLifecycle === 'shouldFitview') {
+      reactFlowInstance.fitView({ minZoom: 0.5 });
+      setState((prevState) => ({ ...prevState, fitviewLifecycle: 'viewfit' }));
+    }
+  }, [state.fitviewLifecycle]);
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);

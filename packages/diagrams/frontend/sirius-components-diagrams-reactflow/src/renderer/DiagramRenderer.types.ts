@@ -17,6 +17,8 @@ import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagram
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
 
+export type FitViewLifecycle = 'neverRendered' | 'shouldFitview' | 'viewfit';
+
 export interface DiagramRendererProps {
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload;
   selection: Selection;
@@ -25,6 +27,7 @@ export interface DiagramRendererProps {
 
 export interface DiagramRendererState {
   snapToGrid: boolean;
+  fitviewLifecycle: FitViewLifecycle;
 }
 
 export interface DiagramPaletteState {
