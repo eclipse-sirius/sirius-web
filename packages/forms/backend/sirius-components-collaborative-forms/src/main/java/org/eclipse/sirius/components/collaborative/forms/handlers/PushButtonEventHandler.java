@@ -84,7 +84,7 @@ public class PushButtonEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalButton.map(AbstractWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
 
                 var handler = optionalButton.filter(Button.class::isInstance)

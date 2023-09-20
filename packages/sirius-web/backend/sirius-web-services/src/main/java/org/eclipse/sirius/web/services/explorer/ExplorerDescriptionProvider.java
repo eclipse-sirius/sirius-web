@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
+import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.explorer.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.web.services.explorer.api.IRenameTreeItemHandler;
@@ -220,7 +221,8 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
 
         if (optionalResourceSet.isPresent()) {
             return optionalResourceSet.get().getResources().stream()
-                    .filter(res -> res.getURI() != null && EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme()))
+                    .filter(res -> res.getURI() != null && EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme())
+                            && !ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.equals(res.getURI().toString()))
                     .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
                     .toList();
         }

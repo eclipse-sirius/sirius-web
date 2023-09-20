@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { Toast, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
   PropertySectionContext,
@@ -49,7 +49,7 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
     margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
     padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
     borderWidth: ({ borderStyle }) => borderStyle?.size || 1,
-    borderColor: ({ borderStyle }) => borderStyle?.color || 'gray',
+    borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'gray',
     borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
     borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
   },

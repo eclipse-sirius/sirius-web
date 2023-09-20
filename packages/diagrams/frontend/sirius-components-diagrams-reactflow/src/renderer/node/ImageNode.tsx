@@ -25,7 +25,12 @@ const imageNodeStyle = (
   selected: boolean,
   faded: boolean
 ): React.CSSProperties => {
-  const imageNodeStyle: React.CSSProperties = { width: '100%', height: '100%', opacity: faded ? '0.4' : '', ...style };
+  const imageNodeStyle: React.CSSProperties = {
+    width: '100%',
+    height: '100%',
+    opacity: faded ? '0.4' : '',
+    ...style,
+  };
   if (selected) {
     imageNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
   }

@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useCallback, useEffect } from 'react';
 import {
@@ -38,6 +39,7 @@ const multiLabelEdgeStyle = (
   const multiLabelEdgeStyle: React.CSSProperties = {
     opacity: faded ? '0.4' : '',
     ...style,
+    stroke: style?.stroke ? getCSSColor(String(style.stroke), theme) : undefined,
   };
 
   if (selected) {

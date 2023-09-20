@@ -17,14 +17,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -37,6 +41,7 @@ import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentation
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -71,6 +76,8 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
             List<View> views = new ArrayList<>();
             List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingDomain);
             ResourceSet resourceSet = this.createResourceSet(this.ePackageRegistry);
+            this.loadStudioColorPalettes(resourceSet);
+
             this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
                 Resource resource = this.loadDocumentAsEMF(documentEntity, resourceSet);
                 views.addAll(this.getViewDefinitions(resource).toList());
@@ -80,6 +87,20 @@ public class DynamicRepresentationDescriptionService implements IDynamicRepresen
                     .forEach(dynamicRepresentationDescriptions::add);
         }
         return dynamicRepresentationDescriptions;
+    }
+
+    private void loadStudioColorPalettes(ResourceSet resourceSet) {
+        ClassPathResource classPathResource = new ClassPathResource("studioColorPalettes.json");
+        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
+        Resource resource = new JSONResourceFactory().createResource(uri);
+        try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
+            resourceSet.getResources().add(resource);
+            resource.load(inputStream, null);
+            resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes"));
+        } catch (IOException exception) {
+            this.logger.warn("An error occured while loading document studioColorPalettes.json: {}.", exception.getMessage());
+            resourceSet.getResources().remove(resource);
+        }
     }
 
     private List<EPackage> getAccessibleEPackages(EditingDomain editingDomain) {

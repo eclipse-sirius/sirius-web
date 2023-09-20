@@ -11,13 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { LabelProps } from './Label.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 
-const labelStyle = (style: React.CSSProperties, faded: Boolean, transform: string): React.CSSProperties => {
+const labelStyle = (
+  theme: Theme,
+  style: React.CSSProperties,
+  faded: Boolean,
+  transform: string
+): React.CSSProperties => {
   return {
     transform,
     opacity: faded ? '0.4' : '',
@@ -27,10 +33,12 @@ const labelStyle = (style: React.CSSProperties, faded: Boolean, transform: strin
     alignItems: 'center',
     justifyContent: 'flex-start',
     ...style,
+    color: style.color ? getCSSColor(String(style.color), theme) : undefined,
   };
 };
 
 export const Label = memo(({ diagramElementId, label, faded, transform }: LabelProps) => {
+  const theme: Theme = useTheme();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } = useDiagramDirectEdit();
 
@@ -56,7 +64,7 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
       data-id={label.id}
       data-testid={`Label - ${label.text}`}
       onDoubleClick={handleDoubleClick}
-      style={labelStyle(label.style, faded, transform)}
+      style={labelStyle(theme, label.style, faded, transform)}
       className="nopan">
       {label.iconURL ? <img src={httpOrigin + label.iconURL} /> : ''}
       {label.text}

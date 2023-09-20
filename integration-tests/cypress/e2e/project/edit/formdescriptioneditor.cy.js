@@ -132,6 +132,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
 
   it('display the page of the element selected', () => {
     // Creates a second page
+    cy.getByTestId('New Form Description').click();
     cy.getByTestId('New Form Description-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
@@ -139,6 +140,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('create-object').click();
     // Adds a widget to the first page
     cy.getByTestId('PageDescription').eq(0).dblclick();
+    cy.getByTestId('GroupDescription').eq(0).click();
     cy.getByTestId('GroupDescription-more').eq(0).should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
@@ -150,6 +152,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('create-object').click();
     // Adds a widget to the second page
     cy.getByTestId('PageDescription').eq(1).dblclick();
+    cy.getByTestId('GroupDescription').eq(1).click();
     cy.getByTestId('GroupDescription-more').eq(1).should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);

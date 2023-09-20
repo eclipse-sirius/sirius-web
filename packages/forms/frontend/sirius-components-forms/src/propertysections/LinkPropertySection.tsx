@@ -10,15 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import Link from '@material-ui/core/Link';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { HelpTooltip } from './HelpTooltip';
 import { LinkPropertySectionProps, LinkStyleProps } from './LinkPropertySection.types';
 
-const useStyle = makeStyles<Theme, LinkStyleProps>(() => ({
+const useStyle = makeStyles<Theme, LinkStyleProps>((theme) => ({
   style: {
-    color: ({ color }) => (color ? color : null),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),

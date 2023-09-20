@@ -1,0 +1,45 @@
+= (S) Contribute custom frontend tool
+
+== Problem
+
+Today there is no way to add custom complex tool to a diagram palette.
+It's only possible to add semantic actions on a clickHandler, but not to add more complex scenarios like open a modal to select data.
+
+== Key Result
+
+Add the possibility to programmatically contribute custom React Components tools to a palette.
+
+== Solution
+
+Add a new React component `DiagramPaletteToolContribution` with two props:
+
+* `canHandle(diagramId: string, diagramElementId: string)`->defined if the custom tool must be added to the palette.
+* `component(props: DiagramPaletteToolContributionComponentProps)`->the custom React component to add to the palette.
+
+With the following available props:
+
+[source]
+----
+diagramElementId: string;
+key: string;
+----
+
+By using appropriate hook, it's possible to retrieve:
+* _editingContextId_ and _diagramId_.
+* target element metadata with _diagramElementId_.
+
+To add new tools to a palette, complete the `diagramPaletteToolContributions` list in `EditProjectView.tsx`
+
+=== Scenario
+
+. The developer creates a new React component which will be added to the list of palette tools (a `iconButton` with a `onClick` action, for example).
+. The developer adds this new component in the `diagramPaletteToolContributions` list in `EditProjectView.tsx`.
+. The developer declares a `canHandle` condition to determine when this tool should be available.
+. For any diagram palette, if the `canHandle` predicate is evaluated to true, the new tool will be available.
+
+== Rabbit holes
+
+* The tools contributed must have the ability to perform any HTTP request.
+* The tools contributed must have the ability to perform basic user interaction such as opening dialogs.
+* This feature will only be able on the new diagram representation by react-flow.
+* This feature is contributed only in API and not in View DSL.

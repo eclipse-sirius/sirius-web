@@ -17,6 +17,8 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EValidator.Registry;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.emf.diagram.DiagramDescriptionValidator;
+import org.eclipse.sirius.components.view.emf.diagram.FormDescriptionValidator;
+import org.eclipse.sirius.components.view.form.FormPackage;
 import org.springframework.context.annotation.Configuration;
 
 import jakarta.annotation.PostConstruct;
@@ -38,5 +40,6 @@ public class ViewEMFConfiguration {
     @PostConstruct
     public void registerViewValidator() {
         this.eValidatorRegistry.put(DiagramPackage.eINSTANCE, new DiagramDescriptionValidator());
+        this.eValidatorRegistry.put(FormPackage.eINSTANCE, new FormDescriptionValidator());
     }
 }

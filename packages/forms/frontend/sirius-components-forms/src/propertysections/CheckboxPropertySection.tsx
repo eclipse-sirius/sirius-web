@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import {
   CheckboxPropertySectionProps,
@@ -39,7 +39,7 @@ const useStyle = makeStyles<Theme, CheckboxStyleProps>((theme) => ({
     alignItems: 'flex-start',
   },
   style: {
-    color: ({ color }) => (color ? color : theme.palette.primary.light),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : theme.palette.primary.light),
   },
   disabled: {},
 }));

@@ -68,13 +68,15 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
     /**
-     * These types have even more specific properties definition, see {@link NodeStylePropertiesConfigurer}.
+     * These types have even more specific properties definition, see {@link NodeStylePropertiesConfigurer}
+     * or {@link FixedColorPropertiesConfigurer}.
      */
     private static final List<EClass> TYPES_WITH_CUSTOM_PROPERTIES = List.of(
             DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION,
             DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION,
             DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION,
-            DiagramPackage.Literals.EDGE_STYLE
+            DiagramPackage.Literals.EDGE_STYLE,
+            ViewPackage.Literals.FIXED_COLOR
     );
 
     private final IObjectService objectService;

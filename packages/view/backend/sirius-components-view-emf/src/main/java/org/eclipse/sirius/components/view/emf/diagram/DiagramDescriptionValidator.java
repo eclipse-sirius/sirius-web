@@ -76,6 +76,9 @@ public class DiagramDescriptionValidator implements EValidator {
         }
         if (eObject instanceof NodeStyleDescription nodeStyle) {
             isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
+            isValid = this.hasProperLabelColor(nodeStyle, diagnostics) && isValid;
+            isValid = this.hasProperBorderColor(nodeStyle, diagnostics) && isValid;
+
         }
         if (eObject instanceof ImageNodeStyleDescription imageNodeStyle) {
             isValid = this.hasProperShape(imageNodeStyle, diagnostics) && isValid;
@@ -146,6 +149,44 @@ public class DiagramDescriptionValidator implements EValidator {
                     new Object [] {
                         nodeStyle,
                         DiagramPackage.Literals.STYLE__COLOR,
+                    });
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean hasProperLabelColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
+        boolean isValid = Objects.nonNull(nodeStyle.getLabelColor());
+
+        if (!isValid && diagnostics != null) {
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_COMPONENTS_EMF_PACKAGE,
+                    0,
+                    "The label color should not be empty",
+                    new Object [] {
+                        nodeStyle,
+                        DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
+                    });
+
+            diagnostics.add(basicDiagnostic);
+        }
+
+        return isValid;
+    }
+
+    private boolean hasProperBorderColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
+        boolean isValid = Objects.nonNull(nodeStyle.getBorderColor());
+
+        if (!isValid && diagnostics != null) {
+            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
+                    SIRIUS_COMPONENTS_EMF_PACKAGE,
+                    0,
+                    "The border color should not be empty",
+                    new Object [] {
+                        nodeStyle,
+                        DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR,
                     });
 
             diagnostics.add(basicDiagnostic);

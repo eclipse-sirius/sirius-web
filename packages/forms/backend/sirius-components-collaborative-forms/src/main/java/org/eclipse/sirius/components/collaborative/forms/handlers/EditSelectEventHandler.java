@@ -84,7 +84,7 @@ public class EditSelectEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalSelect.map(Select::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
                 status = optionalSelect.map(Select::getNewValueHandler)
                         .map(handler -> handler.apply(input.newValue()))

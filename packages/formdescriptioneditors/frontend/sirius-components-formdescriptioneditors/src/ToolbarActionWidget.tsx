@@ -11,7 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import {
+  Selection,
+  ServerContext,
+  ServerContextValue,
+  Toast,
+  getCSSColor,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   ButtonStyleProps,
   GQLButton,
@@ -38,15 +44,17 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
     minWidth: '32px',
     lineHeight: 1.25,
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.light),
-    color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+    backgroundColor: ({ backgroundColor }) =>
+      backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
+    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
     fontStyle: ({ italic }) => (italic ? 'italic' : null),
     fontWeight: ({ bold }) => (bold ? 'bold' : null),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     '&:hover': {
-      backgroundColor: ({ backgroundColor }) => (backgroundColor ? backgroundColor : theme.palette.primary.main),
-      color: ({ foregroundColor }) => (foregroundColor ? foregroundColor : 'white'),
+      backgroundColor: ({ backgroundColor }) =>
+        backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
+      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
       fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
       fontStyle: ({ italic }) => (italic ? 'italic' : null),
       fontWeight: ({ bold }) => (bold ? 'bold' : null),

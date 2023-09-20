@@ -15,8 +15,8 @@
 import { VNode } from 'snabbdom';
 import { RectangularNodeView, RenderingContext, SLabel, svg } from 'sprotty';
 import { Node, RectangularNodeStyle } from '../Diagram.types';
-import { debugInfos } from './debugInfos';
 import { createResizeHandles } from './ViewUtils';
+import { debugInfos } from './debugInfos';
 const preventRemovalOfUnusedImportByPrettier = svg !== null;
 
 /**

@@ -84,7 +84,7 @@ public class EditMultiSelectEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalMultiSelect.map(MultiSelect::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
                 status = optionalMultiSelect.map(MultiSelect::getNewValuesHandler)
                         .map(handler -> handler.apply(input.newValues()))

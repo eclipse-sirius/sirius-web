@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { Theme } from '@material-ui/core/styles';
 import {
   boundsFeature,
   connectableFeature,
@@ -87,7 +89,8 @@ export const convertDiagram = (
   gqlDiagram: GQLDiagram,
   diagramDescription: DiagramDescription,
   httpOrigin: string,
-  readOnly: boolean
+  readOnly: boolean,
+  theme: Theme
 ): Diagram => {
   const {
     id,
@@ -110,10 +113,10 @@ export const convertDiagram = (
   const { autoLayout } = diagramDescription;
   nodes
     .filter((node) => node.state !== GQLViewModifier.Hidden)
-    .map((node) => convertNode(diagram, node, httpOrigin, readOnly, autoLayout));
+    .map((node) => convertNode(diagram, node, httpOrigin, readOnly, autoLayout, theme));
   edges
     .filter((edge) => edge.state !== GQLViewModifier.Hidden)
-    .map((edge) => convertEdge(diagram, edge, httpOrigin, readOnly));
+    .map((edge) => convertEdge(diagram, edge, httpOrigin, readOnly, theme));
 
   return diagram;
 };
@@ -123,7 +126,8 @@ const convertNode = (
   gqlNode: GQLNode,
   httpOrigin: string,
   readOnly: boolean,
-  autoLayout: boolean
+  autoLayout: boolean,
+  theme: Theme
 ): Node => {
   const {
     id,
@@ -147,19 +151,19 @@ const convertNode = (
 
   node.state = ViewModifier[GQLViewModifier[state]];
 
-  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly);
+  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly, theme);
   (borderNodes ?? [])
     .filter((borderNode) => borderNode.state !== GQLViewModifier.Hidden)
-    .map((borderNode) => convertBorderNode(node, borderNode, httpOrigin, readOnly, autoLayout));
+    .map((borderNode) => convertBorderNode(node, borderNode, httpOrigin, readOnly, autoLayout, theme));
   (childNodes ?? [])
     .filter((childNode) => childNode.state !== GQLViewModifier.Hidden)
-    .map((childNode) => convertNode(node, childNode, httpOrigin, readOnly, autoLayout));
+    .map((childNode) => convertNode(node, childNode, httpOrigin, readOnly, autoLayout, theme));
 
   node.id = id;
   node.type = type;
   node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
   node.descriptionId = descriptionId;
-  node.style = convertNodeStyle(style, httpOrigin);
+  node.style = convertNodeStyle(style, theme, httpOrigin);
   node.editableLabel = !readOnly ? convertedLabel : null;
   node.targetObjectId = targetObjectId;
   node.targetObjectKind = targetObjectKind;
@@ -176,7 +180,8 @@ const convertBorderNode = (
   gqlNode: GQLNode,
   httpOrigin: string,
   readOnly: boolean,
-  autoLayout: boolean
+  autoLayout: boolean,
+  theme: Theme
 ): BorderNode => {
   const {
     id,
@@ -196,13 +201,13 @@ const convertBorderNode = (
   const node: BorderNode = new BorderNode();
   parentElement.add(node);
 
-  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly);
+  const convertedLabel = convertLabel(node, label, httpOrigin, readOnly, theme);
 
   node.id = id;
   node.type = type.replace('node:', 'port:');
   node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
   node.descriptionId = descriptionId;
-  node.style = convertNodeStyle(style, httpOrigin);
+  node.style = convertNodeStyle(style, theme, httpOrigin);
   node.editableLabel = !readOnly ? convertedLabel : null;
   node.targetObjectId = targetObjectId;
   node.targetObjectKind = targetObjectKind;
@@ -264,7 +269,8 @@ const convertLabel = (
   parentElement: SParentElement,
   gqlLabel: GQLLabel,
   httpOrigin: string,
-  readOnly: boolean
+  readOnly: boolean,
+  theme: Theme
 ): Label => {
   const { id, text, type, style, alignment, position, size } = gqlLabel;
 
@@ -285,7 +291,7 @@ const convertLabel = (
 
   const labelStyle: LabelStyle = new LabelStyle();
   labelStyle.bold = bold;
-  labelStyle.color = color;
+  labelStyle.color = getCSSColor(color, theme);
   labelStyle.fontSize = fontSize;
   labelStyle.iconURL = iconURL;
   labelStyle.italic = italic;
@@ -302,7 +308,7 @@ const convertLabel = (
   return label;
 };
 
-const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle | null => {
+const convertNodeStyle = (style: GQLINodeStyle, theme: Theme, httpOrigin: string): INodeStyle | null => {
   let convertedStyle: INodeStyle | null = null;
 
   if (isImageNodeStyle(style)) {
@@ -310,7 +316,7 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
 
     const imageNodeStyle = new ImageNodeStyle();
     imageNodeStyle.imageURL = httpOrigin + imageURL;
-    imageNodeStyle.borderColor = borderColor;
+    imageNodeStyle.borderColor = getCSSColor(borderColor, theme);
     imageNodeStyle.borderSize = borderSize;
     imageNodeStyle.borderRadius = borderRadius;
     imageNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
@@ -321,18 +327,18 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
 
     const svgNodeStyle = new ParametricSVGNodeStyle();
     svgNodeStyle.svgURL = httpOrigin + svgURL;
-    svgNodeStyle.borderColor = borderColor;
+    svgNodeStyle.borderColor = getCSSColor(borderColor, theme);
     svgNodeStyle.borderSize = borderSize;
     svgNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
-    svgNodeStyle.backgroundColor = backgroundColor;
+    svgNodeStyle.backgroundColor = getCSSColor(backgroundColor, theme);
 
     convertedStyle = svgNodeStyle;
   } else if (isRectangularNodeStyle(style)) {
     const { color, borderColor, borderRadius, borderSize, borderStyle, withHeader } = style;
 
     const rectangularNodeStyle = new RectangularNodeStyle();
-    rectangularNodeStyle.color = color;
-    rectangularNodeStyle.borderColor = borderColor;
+    rectangularNodeStyle.color = getCSSColor(color, theme);
+    rectangularNodeStyle.borderColor = getCSSColor(borderColor, theme);
     rectangularNodeStyle.borderRadius = borderRadius;
     rectangularNodeStyle.borderSize = borderSize;
     rectangularNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
@@ -343,14 +349,14 @@ const convertNodeStyle = (style: GQLINodeStyle, httpOrigin: string): INodeStyle 
     const { backgroundColor } = style;
 
     const iconLabelNodeStyle = new IconLabelNodeStyle();
-    iconLabelNodeStyle.backgroundColor = backgroundColor;
+    iconLabelNodeStyle.backgroundColor = getCSSColor(backgroundColor, theme);
 
     convertedStyle = iconLabelNodeStyle;
   }
   return convertedStyle;
 };
 
-const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, readOnly: boolean): Edge => {
+const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, readOnly: boolean, theme: Theme): Edge => {
   const {
     id,
     type,
@@ -371,7 +377,7 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
   } = gqlEdge;
 
   const edgeStyle = new EdgeStyle();
-  edgeStyle.color = style.color;
+  edgeStyle.color = getCSSColor(style.color, theme);
   edgeStyle.size = style.size;
   edgeStyle.lineStyle = LineStyle[GQLLineStyle[style.lineStyle]];
   edgeStyle.sourceArrow = ArrowStyle[GQLArrowStyle[style.sourceArrow]];
@@ -384,11 +390,13 @@ const convertEdge = (diagram: Diagram, gqlEdge: GQLEdge, httpOrigin: string, rea
   edge.state = ViewModifier[GQLViewModifier[state]];
 
   if (beginLabel) {
-    convertLabel(edge, beginLabel, httpOrigin, readOnly);
+    convertLabel(edge, beginLabel, httpOrigin, readOnly, theme);
   }
-  const convertedCenterLabel: Label | null = centerLabel ? convertLabel(edge, centerLabel, httpOrigin, readOnly) : null;
+  const convertedCenterLabel: Label | null = centerLabel
+    ? convertLabel(edge, centerLabel, httpOrigin, readOnly, theme)
+    : null;
   if (endLabel) {
-    convertLabel(edge, endLabel, httpOrigin, readOnly);
+    convertLabel(edge, endLabel, httpOrigin, readOnly, theme);
   }
 
   edge.id = id;

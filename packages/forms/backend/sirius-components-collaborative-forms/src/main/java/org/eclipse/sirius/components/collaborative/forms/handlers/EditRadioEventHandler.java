@@ -83,7 +83,7 @@ public class EditRadioEventHandler implements IFormEventHandler {
 
             IStatus status;
             if (optionalRadio.map(Radio::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
-                status = new Failure("Read-only widget can not be edited");
+                status = new Failure("Read-only widget cannot be edited");
             } else {
                 status = optionalRadio.map(Radio::getNewValueHandler)
                         .map(handler -> handler.apply(input.newValue()))
