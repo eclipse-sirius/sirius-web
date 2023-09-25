@@ -11,9 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import { SwapHoriz as SwapHorizIcon } from '@material-ui/icons';
 import React from 'react';
 import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
 import { TreeToolBarProps } from './TreeToolBar.types';
@@ -36,8 +34,6 @@ const useTreeToolbarStyles = makeStyles((theme) => ({
 
 export const TreeToolBar = ({
   editingContextId,
-  onSynchronizedClick,
-  synchronized,
   treeFilters,
   onTreeFilterMenuItemClick,
   treeToolBarContributionComponents,
@@ -50,32 +46,18 @@ export const TreeToolBar = ({
     treeFiltersMenu = <TreeFiltersMenu filters={treeFilters} onTreeFilterMenuItemClick={onTreeFilterMenuItemClick} />;
   }
 
-  const preferenceButtonSynchronizeTitle = synchronized
-    ? 'Disable synchronization with representation'
-    : 'Enable synchronization with representation';
   return (
-    <>
-      <div className={classes.toolbar}>
-        {treeToolBarContributionComponents.map((component, index) => {
-          const props: TreeToolBarContributionComponentProps = {
-            editingContextId: editingContextId,
-            disabled: readOnly,
-            key: index.toString(),
-          };
-          const element = React.createElement(component, props);
-          return element;
-        })}
-        {treeFiltersMenu}
-        <IconButton
-          color="inherit"
-          size="small"
-          aria-label={preferenceButtonSynchronizeTitle}
-          title={preferenceButtonSynchronizeTitle}
-          onClick={onSynchronizedClick}
-          data-testid="tree-synchronize">
-          <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
-        </IconButton>
-      </div>
-    </>
+    <div className={classes.toolbar}>
+      {treeToolBarContributionComponents.map((component, index) => {
+        const props: TreeToolBarContributionComponentProps = {
+          editingContextId: editingContextId,
+          disabled: readOnly,
+          key: index.toString(),
+        };
+        const element = React.createElement(component, props);
+        return element;
+      })}
+      {treeFiltersMenu}
+    </div>
   );
 };
