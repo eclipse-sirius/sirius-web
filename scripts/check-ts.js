@@ -54,7 +54,10 @@ for (let index = 0; index < filePaths.length; index++) {
         line.includes("useSubscription(") ||
         line.includes("useContext(") ||
         line.includes("useRef(") ||
-        line.includes("useMachine(")
+        line.includes("useMachine(") ||
+        line.includes("useReactFlow(") ||
+        line.includes("useNodes(") ||
+        line.includes("useEdges(")
       ) {
         linesWithMissingTypes.push(`${filePath}#${index}: ${line}`);
       } else if (line.includes(": Array<")) {

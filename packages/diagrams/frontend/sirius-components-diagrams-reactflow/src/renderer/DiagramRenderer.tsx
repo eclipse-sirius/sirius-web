@@ -31,7 +31,7 @@ import {
   useStoreApi,
 } from 'reactflow';
 import { convertDiagram } from '../converter/convertDiagram';
-import { Diagram, DiagramRendererProps, DiagramRendererState, NodeData } from './DiagramRenderer.types';
+import { Diagram, DiagramRendererProps, DiagramRendererState, EdgeData, NodeData } from './DiagramRenderer.types';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
@@ -55,7 +55,7 @@ const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange =
 
 export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSelection }: DiagramRendererProps) => {
   const store = useStoreApi();
-  const reactFlowInstance = useReactFlow();
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
 

@@ -91,7 +91,7 @@ export const MultiLabelEdge = memo(
 
     const { beginLabel, endLabel, label, faded } = data || {};
 
-    const reactFlowInstance = useReactFlow();
+    const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
     useEffect(() => {
       if (sourceHandleId?.split('--')[2] !== sourcePosition || targetHandleId?.split('--')[2] !== targetPosition) {
         reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
