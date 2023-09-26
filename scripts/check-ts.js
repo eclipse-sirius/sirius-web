@@ -30,6 +30,7 @@ const linesWithReferencesToDeprecatedCSS = [];
 const linesWithMissingTypes = [];
 const linesWithArrayType = [];
 const linesWithPotentialNullOrUndefined = [];
+const lineWithSiriusComponentsImportWithDist = [];
 
 for (let index = 0; index < filePaths.length; index++) {
   const filePath = filePaths[index];
@@ -64,6 +65,13 @@ for (let index = 0; index < filePaths.length; index++) {
         linesWithArrayType.push(`${filePath}#${index}: ${line}`);
       } else if (line.includes("!.")) {
         linesWithPotentialNullOrUndefined.push(`${filePath}#${index}: ${line}`);
+      } else if (
+        line.includes("@eclipse-sirius/sirius-components") &&
+        line.includes("/dist")
+      ) {
+        lineWithSiriusComponentsImportWithDist.push(
+          `${filePath}#${index}: ${line}`
+        );
       }
     }
   }
@@ -90,5 +98,11 @@ if (linesWithReferencesToDeprecatedCSS.length > 0) {
     "The following lines should instead check that the value is not null or undefined"
   );
   console.log(linesWithPotentialNullOrUndefined);
+  process.exit(1);
+} else if (lineWithSiriusComponentsImportWithDist.length > 0) {
+  console.log(
+    "The following imports are referencing element in sirius-components 'dist' folder"
+  );
+  console.log(lineWithSiriusComponentsImportWithDist);
   process.exit(1);
 }
