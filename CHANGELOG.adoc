@@ -39,6 +39,7 @@ As a result, the identifier of a form description created from a view model will
 - https://github.com/eclipse-sirius/sirius-web/issues/2335[#2335] [form] Change the capabilities of the reference widget to open it to more customization.
 In order to provide a first version of those capabilities, some additional coupling has been created between the reference widget and its use in Sirius Web which may prevent its use in other applications.
 This coupling will be removed in the near future as a consequence, the dependencies of this code will change and some APIs of the reference widget will be broken in the near future.
+- https://github.com/eclipse-sirius/sirius-web/issues/2380[#2380] [diagram] Add typing to reactflow hooks
 
 
 == v2023.10.0

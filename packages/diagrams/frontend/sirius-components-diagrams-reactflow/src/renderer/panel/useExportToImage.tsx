@@ -14,6 +14,7 @@
 import { toSvg } from 'html-to-image';
 import { useCallback } from 'react';
 import { Rect, Transform, getRectOfNodes, getTransformForBounds, useReactFlow } from 'reactflow';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { UseExportToImage } from './useExportToImage.types';
 
 const downloadImage = (dataUrl: string) => {
@@ -24,7 +25,7 @@ const downloadImage = (dataUrl: string) => {
 };
 
 export const useExportToImage = (): UseExportToImage => {
-  const reactFlow = useReactFlow();
+  const reactFlow = useReactFlow<NodeData, EdgeData>();
 
   const exportToImage = useCallback(() => {
     const nodesBounds: Rect = getRectOfNodes(reactFlow.getNodes());

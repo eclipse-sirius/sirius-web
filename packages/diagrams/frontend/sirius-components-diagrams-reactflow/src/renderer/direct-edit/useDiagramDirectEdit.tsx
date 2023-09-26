@@ -12,8 +12,7 @@
  *******************************************************************************/
 import { useCallback, useContext } from 'react';
 import { useEdges, useNodes } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
-import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramDirectEditContext } from './DiagramDirectEditContext';
 import { DiagramDirectEditContextValue } from './DiagramDirectEditContext.types';
 import { UseDiagramDirectEditValue } from './useDiagramDirectEdit.types';
@@ -24,7 +23,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
   const nodes = useNodes<NodeData>();
-  const edges = useEdges<MultiLabelEdgeData>();
+  const edges = useEdges<EdgeData>();
 
   const onDirectEdit = useCallback(
     (event: React.KeyboardEvent<Element>) => {

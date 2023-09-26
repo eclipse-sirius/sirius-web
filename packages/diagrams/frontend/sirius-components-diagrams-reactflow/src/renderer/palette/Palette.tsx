@@ -20,9 +20,10 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useEdges, useNodes } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Tool } from '../Tool';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
-import { Tool } from '../Tool';
 import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
 import { DiagramPaletteToolContext } from './DiagramPaletteToolContext';
 import { DiagramPaletteToolContributionComponentProps } from './DiagramPaletteToolContribution.types';
@@ -165,8 +166,8 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
   const [palette, setPalette] = useState<GQLPalette | undefined>(undefined);
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
-  const nodes = useNodes();
-  const edges = useEdges();
+  const nodes = useNodes<NodeData>();
+  const edges = useEdges<EdgeData>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const diagramPaletteToolComponents = useContext<DiagramPaletteToolContextValue>(DiagramPaletteToolContext)

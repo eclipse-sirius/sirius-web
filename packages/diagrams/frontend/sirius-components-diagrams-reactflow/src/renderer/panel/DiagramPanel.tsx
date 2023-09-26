@@ -27,9 +27,8 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { useState } from 'react';
 import { Panel, useEdges, useNodes, useReactFlow } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ShareDiagramDialog } from '../ShareDiagramDialog';
-import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
@@ -43,11 +42,11 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   });
 
   const nodes = useNodes<NodeData>();
-  const edges = useEdges<MultiLabelEdgeData>();
+  const edges = useEdges<EdgeData>();
   const { autoLayout } = useLayout();
   const { fullscreen, onFullscreen } = useFullscreen();
 
-  const reactFlow = useReactFlow();
+  const reactFlow = useReactFlow<NodeData, EdgeData>();
   const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
   const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
   const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
