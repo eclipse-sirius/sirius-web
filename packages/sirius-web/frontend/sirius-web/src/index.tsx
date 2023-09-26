@@ -15,14 +15,12 @@ import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import {
   Representation,
   RepresentationComponent,
+  RepresentationComponentRegistry,
   RepresentationContext,
+  RepresentationContextValue,
   ServerContext,
   theme,
 } from '@eclipse-sirius/sirius-components-core';
-import {
-  RepresentationComponentRegistry,
-  RepresentationContextValue,
-} from '@eclipse-sirius/sirius-components-core/dist/workbench/RepresentationContext.types';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
@@ -45,15 +43,16 @@ import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloGraphQLClient } from './ApolloGraphQLClient';
-import './Sprotty.css';
 import { httpOrigin } from './core/URL';
-import './fonts.css';
 import { Main } from './main/Main';
-import './reset.css';
 import { ToastProvider } from './toast/ToastProvider';
-import './variables.css';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
+
+import './Sprotty.css';
+import './fonts.css';
+import './reset.css';
+import './variables.css';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();

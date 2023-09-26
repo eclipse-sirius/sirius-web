@@ -22,6 +22,7 @@ export * from './toast/MultiToast';
 export * from './toast/Toast';
 export * from './workbench/Panels';
 export * from './workbench/RepresentationContext';
+export * from './workbench/RepresentationContext.types';
 export * from './workbench/Workbench';
 export * from './workbench/Workbench.types';
 export * from './workbench/WorkbenchViewContribution';
