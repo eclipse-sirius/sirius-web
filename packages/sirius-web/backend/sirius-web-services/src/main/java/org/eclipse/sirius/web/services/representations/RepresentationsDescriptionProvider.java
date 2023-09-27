@@ -61,10 +61,13 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
 
     private final List<IRepresentationImageProvider> representationImageProviders;
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
     public RepresentationsDescriptionProvider(IObjectService objectService, IRepresentationService representationService, List<IRepresentationImageProvider> representationImageProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationService = Objects.requireNonNull(representationService);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
     }
 
     @Override
@@ -78,30 +81,21 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
         PageDescription firstPageDescription = this.getPageDescription(groupDescriptions);
         pageDescriptions.add(firstPageDescription);
 
-        // @formatter:off
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getFullLabel)
                 .orElse("Properties");
-        // @formatter:on
-
-        // @formatter:off
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(this.objectService::getId)
-                .orElse(null);
 
         return FormDescription.newFormDescription(UUID.nameUUIDFromBytes(REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID.getBytes()).toString())
                 .label("Representations default form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
-                .targetObjectIdProvider(targetObjectIdProvider)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
                 .build();
-        // @formatter:on
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
-        // @formatter:off
         return PageDescription.newPageDescription("representationPageId")
                 .idProvider(variableManager -> "Representations Page")
                 .labelProvider(variableManager -> "Representations Page")
@@ -109,14 +103,12 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)
                 .build();
-        // @formatter:on
     }
 
     private GroupDescription getGroupDescription() {
         List<AbstractControlDescription> controlDescriptions = new ArrayList<>();
         Function<VariableManager, IStatus> itemClickHandlerProvider = variableManager -> new Success();
 
-        // @formatter:off
         ListDescription listDescription = ListDescription.newListDescription("RepresentationsList")
             .idProvider(new WidgetIdProvider())
             .labelProvider((variableManager) -> "Representations")
@@ -132,29 +124,25 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
             .kindProvider((object) -> "")
             .messageProvider((object) -> "")
             .styleProvider(variableManager -> null)
+            .targetObjectIdProvider(this.semanticTargetIdProvider)
             .build();
-        // @formatter:on
 
         controlDescriptions.add(listDescription);
 
-        // @formatter:off
         return GroupDescription.newGroupDescription("representationsGroupId")
                 .idProvider(variableManager -> "Representations Group")
                 .labelProvider(variableManager -> "Representations Group")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();
-        // @formatter:on
     }
 
     private Function<VariableManager, IStatus> getItemDeleteHandlerProvider() {
         return variableManager -> {
-            // @formatter:off
             return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                     .map(RepresentationMetadata::getId)
                     .map(this::getSuccessStatus)
                     .orElse(new Failure(""));
-            // @formatter:on
         };
     }
 
@@ -176,13 +164,11 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
             if (optionalRepresentationMetadata.isPresent()) {
                 RepresentationMetadata representationMetadata = optionalRepresentationMetadata.get();
 
-                // @formatter:off
                 return this.representationImageProviders.stream()
                         .map(representationImageProvider -> representationImageProvider.getImageURL(representationMetadata.getKind()))
                         .flatMap(Optional::stream)
                         .findFirst()
                         .orElse(ImageConstants.RESOURCE_SVG);
-                // @formatter:on
             }
             return ImageConstants.DEFAULT_SVG;
         };
@@ -190,31 +176,25 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
 
     private Function<VariableManager, String> getItemLabelProvider() {
         return variableManager -> {
-            // @formatter:off
             return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                     .map(RepresentationMetadata::getLabel)
                     .orElse(null);
-            // @formatter:on
         };
     }
 
     private Function<VariableManager, String> getItemKindProvider() {
         return variableManager -> {
-            // @formatter:off
             return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                     .map(RepresentationMetadata::getKind)
                     .orElse(null);
-            // @formatter:on
         };
     }
 
     private Function<VariableManager, String> getItemIdProvider() {
         return variableManager -> {
-            // @formatter:off
             return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                     .map(RepresentationMetadata::getId)
                     .orElse(null);
-            // @formatter:on
         };
     }
 
