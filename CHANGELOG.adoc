@@ -91,6 +91,7 @@ An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2381[#2381] [diagram] Fix an issue where the handleId of an edge was undefined.
 - https://github.com/eclipse-sirius/sirius-web/issues/2191[#2191] [view] The Color property on ImageNodeStyle has been removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/2395[#2395] [vs-code] Fix an issue that appeared while rendering diagram with vs-code extension.
+- https://github.com/eclipse-sirius/sirius-web/issues/2426[#2426] [sirius-web] Fix an issue where the Representations view was always empty.
 
 === New Features
 
