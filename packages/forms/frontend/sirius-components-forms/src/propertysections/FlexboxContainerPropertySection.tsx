@@ -58,16 +58,16 @@ export const FlexboxContainerPropertySection = ({
     borderStyle: widget.borderStyle,
   });
 
-  let children = widget.children.map((widget) => (
-    <div className={classes.children} key={widget.id}>
+  let children = widget.children.map((childWidget) => (
+    <div className={classes.children} key={childWidget.id}>
       <PropertySection
         editingContextId={editingContextId}
         formId={formId}
-        widget={widget}
+        widget={childWidget}
         widgetSubscriptions={widgetSubscriptions}
         setSelection={setSelection}
         readOnly={readOnly || widget.readOnly}
-        key={widget.id}
+        key={childWidget.id}
       />
     </div>
   ));

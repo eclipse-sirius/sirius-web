@@ -205,7 +205,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('Color').findByTestId('reference-value-black').should('exist');
   });
 
-  it.only('Check textfield widget style description has default colors', () => {
+  it('Check textfield widget style description has default colors', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View-more').click();
     cy.getByTestId('new-object').click();

@@ -94,6 +94,7 @@ An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2395[#2395] [vs-code] Fix an issue that appeared while rendering diagram with vs-code extension.
 - https://github.com/eclipse-sirius/sirius-web/issues/2426[#2426] [sirius-web] Fix an issue where the Representations view was always empty.
 - https://github.com/eclipse-sirius/sirius-web/issues/2429[#2429] [sirius-web] Ensure that view models can be successfully uploaded by loading the default color palettes
+- https://github.com/eclipse-sirius/sirius-web/issues/2433[#2433] [form] Fix an issue where the readonly property of FlexboxContainerPropertySection was not correctly dispatched to children.
 
 === New Features
 
