@@ -26,7 +26,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { useState } from 'react';
-import { Panel, useEdges, useNodes, useReactFlow } from 'reactflow';
+import { Node, Panel, useEdges, useNodes, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
@@ -47,7 +47,8 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   const { fullscreen, onFullscreen } = useFullscreen();
 
   const reactFlow = useReactFlow<NodeData, EdgeData>();
-  const handleFitToScreen = () => reactFlow.fitView({ duration: 200 });
+  const selectedNodes: Node<NodeData>[] = nodes.filter((node) => node.selected);
+  const handleFitToScreen = () => reactFlow.fitView({ duration: 200, nodes: selectedNodes });
   const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
   const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
   const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
