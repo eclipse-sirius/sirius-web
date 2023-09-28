@@ -394,6 +394,9 @@ export const TextfieldPropertySection = ({
               }
             : {}
         }
+        inputProps={{
+          'data-testid': `input-${widget.label}`,
+        }}
       />
       {proposalsList}
     </div>

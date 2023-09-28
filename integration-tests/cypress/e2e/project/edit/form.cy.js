@@ -15,6 +15,15 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.deleteAllProjects();
   });
 
+  const createNewTreeItemOn = (treeItemName, parentItem) => {
+    cy.getByTestId(`${parentItem}-more`).click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click().get(`[data-value="${treeItemName}"]`).should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId(`${parentItem}-toggle`).next().should('have.attr', 'data-expanded', 'true');
+  };
+
   it('check widget read-only mode in form', () => {
     // Create the view
     cy.createProjectFromTemplate('studio-template').then((res) => {
@@ -26,23 +35,14 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     });
     cy.getByTestId('ViewDocument').dblclick();
     cy.getByTestId('View').dblclick();
-    cy.getByTestId('View-more').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('create-object').should('be.enabled');
-    cy.getByTestId('childCreationDescription').click();
-    cy.get('[data-value="Form Description"]').click();
-    cy.getByTestId('create-object').click();
+    createNewTreeItemOn('Form Description', 'View');
     cy.getByTestId('New Form Description').click();
     cy.getByTestId('Domain Type').type('flow::System');
     cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
     cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
     cy.getByTestId('ReadOnlyRepresentation').dblclick();
     cy.getByTestId('PageDescription').dblclick();
-    cy.getByTestId('GroupDescription-more').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get('[data-value="Widgets Button Description"]').should('exist').click();
-    cy.getByTestId('create-object').click();
+    createNewTreeItemOn('Widgets Button Description', 'GroupDescription');
     cy.getByTestId('Button Label Expression').type('Test Button');
     cy.getByTestId('Is Enabled Expression').type('aql:self.temperature==0');
 
@@ -65,5 +65,49 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('Test Button').should('be.disabled');
     cy.getByTestId('Temperature').type('{selectall}').type('0').type('{enter}');
     cy.getByTestId('Test Button').should('not.be.disabled');
+  });
+
+  it('check the flexbox read-only mode is dispatched to children', () => {
+    // Create the view
+    cy.createProjectFromTemplate('studio-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
+      const view_document_id = 'ea57f74d-bc7b-3a7a-81e0-8aef4ee85770';
+      cy.createDocument(projectId, view_document_id, 'ViewDocument').then(() => {
+        cy.visit(`/projects/${projectId}/edit`);
+      });
+    });
+    cy.getByTestId('ViewDocument').dblclick();
+    cy.getByTestId('View').dblclick();
+    createNewTreeItemOn('Form Description', 'View');
+    cy.getByTestId('New Form Description').click();
+    cy.getByTestId('Domain Type').type('flow::System');
+    cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
+    cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
+    cy.getByTestId('ReadOnlyRepresentation').dblclick();
+    cy.getByTestId('PageDescription').dblclick();
+    createNewTreeItemOn('Widgets Flexbox Container Description', 'GroupDescription');
+    cy.getByTestId('Label Expression').type('Test flexbox container');
+    cy.getByTestId('Is Enabled Expression').type("aql:self.name='NewSystem'");
+    createNewTreeItemOn('Textfield Description', 'FlexboxContainerDescription');
+    cy.getByTestId('Label Expression').type('Name');
+    cy.getByTestId('Value Expression').type('aql:self.name');
+
+    cy.get('[title="Back to the homepage"]').click();
+    // Check the representation
+    cy.getByTestId('create-template-Flow').click();
+
+    cy.getByTestId('NewSystem').click();
+    cy.getByTestId('NewSystem-more').click();
+
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('ReadOnlyRepresentation').should('exist').click();
+    cy.getByTestId('create-representation').click();
+
+    cy.getByTestId('page').findByTestId('input-Name').should('not.be.disabled');
+    cy.getByTestId('NewSystem').click();
+    cy.getByTestId('form').findByTestId('Name').type('2').type('{enter}');
+    cy.getByTestId('page').findByTestId('input-Name').should('be.disabled');
   });
 });
