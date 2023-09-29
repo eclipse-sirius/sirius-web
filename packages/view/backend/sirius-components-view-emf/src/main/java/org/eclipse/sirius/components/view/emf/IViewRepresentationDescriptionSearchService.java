@@ -17,6 +17,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 
 /**
  * Get a View representation description from its representation description Id.
@@ -30,6 +31,8 @@ public interface IViewRepresentationDescriptionSearchService {
     Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId);
 
     Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId);
+
+    Optional<FormElementDescription> findViewFormElementDescriptionById(String formDescriptionId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -50,6 +53,11 @@ public interface IViewRepresentationDescriptionSearchService {
 
         @Override
         public Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<FormElementDescription> findViewFormElementDescriptionById(String formDescriptionId) {
             return Optional.empty();
         }
     }

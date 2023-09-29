@@ -40,8 +40,16 @@ public class FormIdProvider implements IFormIdProvider {
         String sourceElementId = this.objectService.getId(formDescription);
         return FORM_DESCRIPTION_KIND + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
     }
+    @Override
+    public String getFormElementDescriptionId(EObject widgetDescription) {
+        String sourceId = this.getSourceIdFromElementDescription(widgetDescription);
+        String sourceElementId = this.objectService.getId(widgetDescription);
+        String kind = widgetDescription.eClass().getName();
+        return FORM_ELEMENT_DESCRIPTION_PREFIX + "?" + KIND + "=" + kind + "&" +  SOURCE_KIND + "=" +  VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "=" + sourceElementId;
+    }
 
     private String getSourceIdFromElementDescription(EObject elementDescription) {
         return elementDescription.eResource().getURI().toString().split("///")[1];
     }
+
 }
