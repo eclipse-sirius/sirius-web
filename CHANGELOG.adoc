@@ -25,6 +25,8 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2386[#2386] [form] Reference widget candidates are now lazily loaded when necessary.
+- https://github.com/eclipse-sirius/sirius-web/issues/2424[#2424] [view] Align the format of description id used in Form generated from View with the one used in diagram.
+As a result, the identifier of a form description created from a view model will not be an UUID anymore but instead an URL based identifier
 
 
 == v2023.10.0
@@ -170,6 +172,7 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new default color palettes along with the creation of a view (theme colors, mui colors...).
 These color palettes are accessible in studio projects but are not visible in the Explorer view.
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new validation rules about colors for View diagrams & forms.
+
 
 == v2023.8.0
 

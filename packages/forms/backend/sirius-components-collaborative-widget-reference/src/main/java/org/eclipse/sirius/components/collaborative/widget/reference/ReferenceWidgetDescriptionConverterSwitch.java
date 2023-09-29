@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -48,6 +47,8 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetComponent;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyleProvider;
@@ -74,9 +75,13 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory) {
+    private final IFormIdProvider widgetIdProvider;
+
+    public ReferenceWidgetDescriptionConverterSwitch(AQLInterpreter interpreter, IObjectService objectService, IEditService editService,
+            IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.objectService = Objects.requireNonNull(objectService);
+        this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.editService = editService;
         this.feedbackMessageService = feedbackMessageService;
         this.adapterFactory = composedAdapterFactory;
@@ -232,9 +237,8 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         return this.getItem(variableManager).map(this.objectService::getId).orElse("");
     }
 
-    private String getDescriptionId(EObject description) {
-        String descriptionURI = EcoreUtil.getURI(description).toString();
-        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+    private String getDescriptionId(FormElementDescription description) {
+        return this.widgetIdProvider.getFormElementDescriptionId(description);
     }
 
     private IStatus handleItemClick(VariableManager variableManager, List<Operation> operations) {

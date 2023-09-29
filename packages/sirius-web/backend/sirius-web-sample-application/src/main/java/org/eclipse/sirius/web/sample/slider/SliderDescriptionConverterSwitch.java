@@ -16,11 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -37,6 +34,8 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.web.customwidgets.SliderDescription;
 import org.eclipse.sirius.web.customwidgets.util.CustomwidgetsSwitch;
 
@@ -55,9 +54,12 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public SliderDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
+    private final IFormIdProvider widgetIdProvider;
+
+    public SliderDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
+        this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
@@ -119,9 +121,8 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
         return new StringValueProvider(this.interpreter, safeValueExpression);
     }
 
-    private String getDescriptionId(EObject description) {
-        String descriptionURI = EcoreUtil.getURI(description).toString();
-        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+    private String getDescriptionId(FormElementDescription description) {
+        return this.widgetIdProvider.getFormElementDescriptionId(description);
     }
 
     private Function<VariableManager, Boolean> getReadOnlyValueProvider(String expression) {

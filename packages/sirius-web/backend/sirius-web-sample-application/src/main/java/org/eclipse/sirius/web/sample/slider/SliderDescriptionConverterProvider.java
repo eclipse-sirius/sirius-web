@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.slider;
 
+import java.util.Objects;
+
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +32,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class SliderDescriptionConverterProvider implements IWidgetConverterProvider {
 
+    private final IFormIdProvider widgetIdProvider;
+
+    public SliderDescriptionConverterProvider(IFormIdProvider widgetIdProvider) {
+        this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
+    }
+
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new SliderDescriptionConverterSwitch(interpreter, editService, objectService, feedbackMessageService);
+        return new SliderDescriptionConverterSwitch(interpreter, editService, objectService, feedbackMessageService, this.widgetIdProvider);
     }
 
 }

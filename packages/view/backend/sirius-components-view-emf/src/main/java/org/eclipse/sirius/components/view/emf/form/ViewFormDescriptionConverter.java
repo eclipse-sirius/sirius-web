@@ -21,7 +21,6 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -88,7 +87,8 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         org.eclipse.sirius.components.view.form.FormDescription viewFormDescription = (org.eclipse.sirius.components.view.form.FormDescription) representationDescription;
         List<Switch<AbstractWidgetDescription>> widgetConverters = this.customWidgetConverterProviders.stream().map(provider -> provider.getWidgetConverter(interpreter,
                 this.editService, this.objectService, this.feedbackMessageService)).toList();
-        Switch<AbstractControlDescription> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters), this.feedbackMessageService);
+        Switch<AbstractControlDescription> dispatcher = new ViewFormDescriptionConverterSwitch(interpreter, this.editService, this.objectService, new ComposedSwitch<>(widgetConverters),
+                this.feedbackMessageService, this.formIdProvider);
 
         List<PageDescription> pageDescriptions = viewFormDescription.getPages()
                 .stream()
@@ -232,8 +232,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private String getDescriptionId(EObject description) {
-        String descriptionURI = EcoreUtil.getURI(description).toString();
-        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+        return this.formIdProvider.getFormElementDescriptionId(description);
     }
 
     private GroupDisplayMode getGroupDisplayMode(org.eclipse.sirius.components.view.form.GroupDescription viewGroupDescription) {

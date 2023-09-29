@@ -17,12 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.charts.barchart.components.BarChartStyle;
 import org.eclipse.sirius.components.charts.barchart.descriptions.BarChartDescription;
@@ -81,6 +78,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.form.ButtonDescriptionStyle;
 import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
@@ -115,13 +113,16 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<AbstractWidgetDescription> customWidgetConverters, IFeedbackMessageService feedbackMessageService) {
+    private final IFormIdProvider widgetIdProvider;
+
+    public ViewFormDescriptionConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, Switch<AbstractWidgetDescription> customWidgetConverters, IFeedbackMessageService feedbackMessageService, IFormIdProvider idProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.objectService = Objects.requireNonNull(objectService);
         this.customWidgetConverters = Objects.requireNonNull(customWidgetConverters);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
+        this.widgetIdProvider = Objects.requireNonNull(idProvider);
     }
 
     @Override
@@ -890,10 +891,10 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<AbstractContr
         };
     }
 
-    private String getDescriptionId(EObject description) {
-        String descriptionURI = EcoreUtil.getURI(description).toString();
-        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+    private String getDescriptionId(FormElementDescription description) {
+        return this.widgetIdProvider.getFormElementDescriptionId(description);
     }
+
 
     private String getListItemImageURL(VariableManager variablemanager) {
         // @formatter:off
