@@ -56,6 +56,7 @@ In the near future, the GraphQL schema and the frontend of `sirius-components-fo
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [sirius-web] Default colors are now loaded from a default model located in `sirius-components-view/src/main/resources/studioColorPalettes.json`.
 They are loaded in every studio project but hidden in the explorer.
 They are also made readonly in the details view.
+Applications derived from Sirius Web may have to ensure that references to default colors are properly resolved when loading a view model.
 - https://github.com/eclipse-sirius/sirius-web/issues/2191[#2191] [view] The Color property on ImageNodeStyle has been removed.
 
 === Dependency update
@@ -92,6 +93,7 @@ An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2191[#2191] [view] The Color property on ImageNodeStyle has been removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/2395[#2395] [vs-code] Fix an issue that appeared while rendering diagram with vs-code extension.
 - https://github.com/eclipse-sirius/sirius-web/issues/2426[#2426] [sirius-web] Fix an issue where the Representations view was always empty.
+- https://github.com/eclipse-sirius/sirius-web/issues/2429[#2429] [sirius-web] Ensure that view models can be successfully uploaded by loading the default color palettes
 
 === New Features
 

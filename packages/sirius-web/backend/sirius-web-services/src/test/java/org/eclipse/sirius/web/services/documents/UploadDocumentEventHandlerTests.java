@@ -27,6 +27,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,6 +55,8 @@ import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.NoOpServicesMessageService;
+import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
+import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -163,8 +166,10 @@ public class UploadDocumentEventHandlerTests {
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider);
 
         UploadFile file = new UploadFile(FILE_NAME, inputstream);
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
@@ -243,7 +248,10 @@ public class UploadDocumentEventHandlerTests {
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
-        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry());
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
+
+        UploadDocumentEventHandler handler = new UploadDocumentEventHandler(documentService, messageService, new SimpleMeterRegistry(), editingContextMetadataProvider);
         UploadFile file = new UploadFile(FILE_NAME, new ByteArrayInputStream(resourceBytes));
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);

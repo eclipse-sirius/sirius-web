@@ -41,7 +41,7 @@ public class ColorPaletteService {
         UserColor color = this.getColorFromPalette(this.colorPalettesView, colorName);
 
         if (color == null && object instanceof EObject eObject) {
-            color = this.getColorFromPalette(this.getView(object), colorName);
+            color = this.getColorFromPalette(this.getView(eObject), colorName);
         }
         return color;
     }
