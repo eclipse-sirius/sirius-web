@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-services</artifactId>
-	<version>2023.8.4</version>
+	<version>2023.10.0</version>
 	<name>sirius-web-services</name>
 	<description>Sirius Web Services</description>
 
@@ -47,12 +47,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-layout</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>xml-apis</groupId>
@@ -67,32 +67,32 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-emf</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-persistence</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2023.8.4</version>
+			<version>2023.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
