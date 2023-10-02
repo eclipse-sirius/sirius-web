@@ -16,7 +16,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
@@ -63,6 +66,11 @@ public class ReferenceWidgetComponent implements IComponent {
         List<?> rawValue = referenceDescription.getItemsProvider().apply(variableManager);
         List<?> rawOptions = referenceDescription.getOptionsProvider().apply(variableManager);
         Setting setting = referenceDescription.getSettingProvider().apply(variableManager);
+        if (setting == null) {
+            // Setting a dummy setting to avoid npe
+            EObject object = EcorePackage.Literals.ECLASS;
+            setting = ((InternalEObject) object).eSetting(EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES);
+        }
         ReferenceWidgetStyle style = referenceDescription.getStyleProvider().apply(variableManager);
 
         List<ReferenceValue> items = rawValue.stream()
