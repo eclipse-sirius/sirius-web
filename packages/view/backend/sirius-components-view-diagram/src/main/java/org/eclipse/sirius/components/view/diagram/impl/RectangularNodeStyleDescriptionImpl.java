@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 
 /**
@@ -986,22 +985,6 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                     return -1;
             }
         }
-        if (baseClass == NodeStyleDescription.class) {
-            switch (derivedFeatureID) {
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-                    return DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR;
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
-                    return DiagramPackage.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
-                    return DiagramPackage.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
-                    return DiagramPackage.NODE_STYLE_DESCRIPTION__SHOW_ICON;
-                case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON:
-                    return DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_ICON;
-                default:
-                    return -1;
-            }
-        }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
@@ -1038,22 +1021,6 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                     return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE;
                 case DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE:
                     return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == NodeStyleDescription.class) {
-            switch (baseFeatureID) {
-                case DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR;
-                case DiagramPackage.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
-                case DiagramPackage.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
-                case DiagramPackage.NODE_STYLE_DESCRIPTION__SHOW_ICON:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON;
-                case DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_ICON:
-                    return DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON;
                 default:
                     return -1;
             }

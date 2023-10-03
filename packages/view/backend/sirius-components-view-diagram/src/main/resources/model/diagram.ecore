@@ -122,7 +122,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderLineStyle" eType="#//LineStyle"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeStyleDescription" abstract="true"
-      interface="true" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//BorderStyle">
+      interface="true" eSuperTypes="#//Style ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//BorderStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="labelColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="widthComputationExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
@@ -137,13 +137,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//NodeStyleDescription"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RectangularNodeStyleDescription" eSuperTypes="#//Style #//NodeStyleDescription">
+  <eClassifiers xsi:type="ecore:EClass" name="RectangularNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="withHeader" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ImageNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IconLabelNodeStyleDescription" eSuperTypes="#//Style #//NodeStyleDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IconLabelNodeStyleDescription" eSuperTypes="#//NodeStyleDescription"/>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineStyle" lowerBound="1"
         eType="#//LineStyle" defaultValueLiteral="Solid"/>

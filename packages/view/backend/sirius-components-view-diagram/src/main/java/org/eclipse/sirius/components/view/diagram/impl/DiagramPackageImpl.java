@@ -1868,13 +1868,12 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
         this.listLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
         this.freeFormLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
+        this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getStyle());
         this.nodeStyleDescriptionEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
         this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
         this.conditionalNodeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
-        this.rectangularNodeStyleDescriptionEClass.getESuperTypes().add(this.getStyle());
         this.rectangularNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
         this.imageNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
-        this.iconLabelNodeStyleDescriptionEClass.getESuperTypes().add(this.getStyle());
         this.iconLabelNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
         this.edgeStyleEClass.getESuperTypes().add(this.getStyle());
         this.edgeStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());

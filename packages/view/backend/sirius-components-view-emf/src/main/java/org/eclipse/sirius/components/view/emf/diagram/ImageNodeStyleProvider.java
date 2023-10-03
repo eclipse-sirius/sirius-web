@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.Style;
 import org.springframework.stereotype.Service;
 
 /**
@@ -57,10 +56,12 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
         if (nodeStyle instanceof ImageNodeStyleDescription) {
             String svgName = ((ImageNodeStyleDescription) nodeStyle).getShape();
             if (svgName != null) {
+                // @formatter:off
                 boolean parametricImageFound = this.parametricSVGImageServices.stream()
                         .flatMap(service -> service.getImages().stream())
                         .map(ParametricSVGImage::getId)
                         .anyMatch(UUID.fromString(svgName)::equals);
+                // @formatter:on
                 if (parametricImageFound) {
                     nodeType = Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE);
                 } else {
@@ -76,11 +77,9 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
         Optional<INodeStyle> iNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.equals(Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE))) {
+            // @formatter:off
             iNodeStyle = Optional.of(ParametricSVGNodeStyle.newParametricSVGNodeStyle()
-                    .backgroundColor(Optional.ofNullable(nodeStyle)
-                                             .filter(Style.class::isInstance)
-                                             .map(Style.class::cast)
-                                             .map(Style::getColor)
+                    .backgroundColor(Optional.ofNullable(nodeStyle.getColor())
                                              .filter(FixedColor.class::isInstance)
                                              .map(FixedColor.class::cast)
                                              .map(FixedColor::getValue)
@@ -95,7 +94,9 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
                     .build());
+            // @formatter:on
         } else if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE))) {
+            // @formatter:off
             iNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
                                .scalingFactor(1)
                                .imageURL("/custom/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
@@ -108,6 +109,7 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
                                .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                                .borderRadius(nodeStyle.getBorderRadius())
                                .build());
+            // @formatter:on
         }
 
         return iNodeStyle;

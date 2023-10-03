@@ -20,10 +20,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
-import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 
 /**
@@ -45,10 +43,8 @@ public class DiagramColorAdapter extends EContentAdapter {
         if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof DiagramDescription && notification.getNewValue() instanceof NodeDescription nodeDescription
                 && DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS == notification.getFeatureID(DiagramDescription.class)) {
             NodeStyleDescription style = nodeDescription.getStyle();
-            if (style instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription && rectangularNodeStyleDescription.getColor() == null) {
-                rectangularNodeStyleDescription.setColor(this.colorPaletteService.getColorFromPalette(nodeDescription, "white"));
-            } else if (style instanceof IconLabelNodeStyleDescription iconLabelNodeStyleDescription && iconLabelNodeStyleDescription.getColor() == null) {
-                iconLabelNodeStyleDescription.setColor(this.colorPaletteService.getColorFromPalette(nodeDescription, "white"));
+            if (style != null && style.getColor() == null) {
+                style.setColor(this.colorPaletteService.getColorFromPalette(nodeDescription, "white"));
             }
             if (style != null && style.getBorderColor() == null) {
                 style.setBorderColor(this.colorPaletteService.getColorFromPalette(nodeDescription, "black"));
@@ -58,10 +54,8 @@ public class DiagramColorAdapter extends EContentAdapter {
             }
         } else if (Notification.SET == notification.getEventType() && notification.getNotifier() instanceof ConditionalNodeStyle condition && notification.getNewValue() instanceof NodeStyleDescription style
                 && DiagramPackage.CONDITIONAL_NODE_STYLE__STYLE == notification.getFeatureID(ConditionalNodeStyle.class)) {
-            if (style instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription && rectangularNodeStyleDescription.getColor() == null) {
-                rectangularNodeStyleDescription.setColor(this.colorPaletteService.getColorFromPalette(condition, "white"));
-            } else if (style instanceof IconLabelNodeStyleDescription iconLabelNodeStyleDescription && iconLabelNodeStyleDescription.getColor() == null) {
-                iconLabelNodeStyleDescription.setColor(this.colorPaletteService.getColorFromPalette(condition, "white"));
+            if (style.getColor() == null) {
+                style.setColor(this.colorPaletteService.getColorFromPalette(condition, "white"));
             }
             if (style.getBorderColor() == null) {
                 style.setBorderColor(this.colorPaletteService.getColorFromPalette(condition, "black"));

@@ -196,7 +196,7 @@ public class EdgePaletteItemProvider extends ItemProviderAdapter
                 || childFeature == DiagramPackage.Literals.EDGE_PALETTE__END_LABEL_EDIT_TOOL;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2", new Object[]{this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner)});
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

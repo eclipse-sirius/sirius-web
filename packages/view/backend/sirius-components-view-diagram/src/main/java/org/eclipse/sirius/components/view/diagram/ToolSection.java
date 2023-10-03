@@ -24,9 +24,9 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName <em>Name</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getToolSection()
  * @model abstract="true"
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getToolSection()
  */
 public interface ToolSection extends EObject {
 
@@ -46,10 +46,9 @@ public interface ToolSection extends EObject {
      * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName <em>Name</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
+     * @param value the new value of the '<em>Name</em>' attribute.
      * @generated
+     * @see #getName()
      */
     void setName(String value);
 

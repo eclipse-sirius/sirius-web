@@ -16,12 +16,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Image Node Style Description</b></em>'. <!--
@@ -30,6 +31,15 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getFontSize <em>Font
+ * Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isItalic
+ * <em>Italic</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isBold <em>Bold</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isUnderline
+ * <em>Underline</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isStrikeThrough <em>Strike
+ * Through</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getBorderColor <em>Border
  * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getBorderRadius <em>Border
@@ -54,7 +64,107 @@ import org.eclipse.sirius.components.view.impl.LabelStyleImpl;
  *
  * @generated
  */
-public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements ImageNodeStyleDescription {
+public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNodeStyleDescription {
+    /**
+     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected static final int FONT_SIZE_EDEFAULT = 14;
+
+    /**
+     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getFontSize()
+     * @generated
+     * @ordered
+     */
+    protected int fontSize = FONT_SIZE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean ITALIC_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isItalic()
+     * @generated
+     * @ordered
+     */
+    protected boolean italic = ITALIC_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #isBold()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean BOLD_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #isBold()
+     * @generated
+     * @ordered
+     */
+    protected boolean bold = BOLD_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean UNDERLINE_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isUnderline()
+     * @generated
+     * @ordered
+     */
+    protected boolean underline = UNDERLINE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isStrikeThrough()
+     * @generated
+     * @ordered
+     */
+    protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -252,6 +362,121 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
     @Override
     protected EClass eStaticClass() {
         return DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getFontSize() {
+        return this.fontSize;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setFontSize(int newFontSize) {
+        int oldFontSize = this.fontSize;
+        this.fontSize = newFontSize;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE, oldFontSize, this.fontSize));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isItalic() {
+        return this.italic;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setItalic(boolean newItalic) {
+        boolean oldItalic = this.italic;
+        this.italic = newItalic;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC, oldItalic, this.italic));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isBold() {
+        return this.bold;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBold(boolean newBold) {
+        boolean oldBold = this.bold;
+        this.bold = newBold;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD, oldBold, this.bold));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isUnderline() {
+        return this.underline;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setUnderline(boolean newUnderline) {
+        boolean oldUnderline = this.underline;
+        this.underline = newUnderline;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE, oldUnderline, this.underline));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isStrikeThrough() {
+        return this.strikeThrough;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStrikeThrough(boolean newStrikeThrough) {
+        boolean oldStrikeThrough = this.strikeThrough;
+        this.strikeThrough = newStrikeThrough;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
     }
 
     /**
@@ -528,6 +753,16 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE:
+                return this.getFontSize();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC:
+                return this.isItalic();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD:
+                return this.isBold();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE:
+                return this.isUnderline();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+                return this.isStrikeThrough();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
                 if (resolve)
                     return this.getBorderColor();
@@ -564,6 +799,21 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE:
+                this.setFontSize((Integer) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC:
+                this.setItalic((Boolean) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD:
+                this.setBold((Boolean) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE:
+                this.setUnderline((Boolean) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+                this.setStrikeThrough((Boolean) newValue);
+                return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
                 this.setBorderColor((UserColor) newValue);
                 return;
@@ -606,6 +856,21 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE:
+                this.setFontSize(FONT_SIZE_EDEFAULT);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC:
+                this.setItalic(ITALIC_EDEFAULT);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD:
+                this.setBold(BOLD_EDEFAULT);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE:
+                this.setUnderline(UNDERLINE_EDEFAULT);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+                return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
                 this.setBorderColor((UserColor) null);
                 return;
@@ -648,6 +913,16 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE:
+                return this.fontSize != FONT_SIZE_EDEFAULT;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC:
+                return this.italic != ITALIC_EDEFAULT;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD:
+                return this.bold != BOLD_EDEFAULT;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE:
+                return this.underline != UNDERLINE_EDEFAULT;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
                 return this.borderColor != null;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
@@ -679,6 +954,22 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+        if (baseClass == LabelStyle.class) {
+            switch (derivedFeatureID) {
+                case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE:
+                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
+                case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC:
+                    return ViewPackage.LABEL_STYLE__ITALIC;
+                case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD:
+                    return ViewPackage.LABEL_STYLE__BOLD;
+                case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE:
+                    return ViewPackage.LABEL_STYLE__UNDERLINE;
+                case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+                default:
+                    return -1;
+            }
+        }
         if (baseClass == BorderStyle.class) {
             switch (derivedFeatureID) {
                 case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
@@ -703,6 +994,22 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+        if (baseClass == LabelStyle.class) {
+            switch (baseFeatureID) {
+                case ViewPackage.LABEL_STYLE__FONT_SIZE:
+                    return DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE;
+                case ViewPackage.LABEL_STYLE__ITALIC:
+                    return DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__ITALIC;
+                case ViewPackage.LABEL_STYLE__BOLD:
+                    return DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BOLD;
+                case ViewPackage.LABEL_STYLE__UNDERLINE:
+                    return DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__UNDERLINE;
+                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
+                    return DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
+                default:
+                    return -1;
+            }
+        }
         if (baseClass == BorderStyle.class) {
             switch (baseFeatureID) {
                 case DiagramPackage.BORDER_STYLE__BORDER_COLOR:
@@ -731,7 +1038,17 @@ public class ImageNodeStyleDescriptionImpl extends LabelStyleImpl implements Ima
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (borderRadius: ");
+        result.append(" (fontSize: ");
+        result.append(this.fontSize);
+        result.append(", italic: ");
+        result.append(this.italic);
+        result.append(", bold: ");
+        result.append(this.bold);
+        result.append(", underline: ");
+        result.append(this.underline);
+        result.append(", strikeThrough: ");
+        result.append(this.strikeThrough);
+        result.append(", borderRadius: ");
         result.append(this.borderRadius);
         result.append(", borderSize: ");
         result.append(this.borderSize);

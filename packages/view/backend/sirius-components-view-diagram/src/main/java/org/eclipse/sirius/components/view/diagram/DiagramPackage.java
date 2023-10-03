@@ -766,12 +766,20 @@ public interface DiagramPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION = 9;
 
     /**
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_DESCRIPTION__COLOR = STYLE__COLOR;
+
+    /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__FONT_SIZE = ViewPackage.LABEL_STYLE__FONT_SIZE;
+    int NODE_STYLE_DESCRIPTION__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -779,7 +787,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__ITALIC = ViewPackage.LABEL_STYLE__ITALIC;
+    int NODE_STYLE_DESCRIPTION__ITALIC = STYLE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -787,7 +795,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BOLD = ViewPackage.LABEL_STYLE__BOLD;
+    int NODE_STYLE_DESCRIPTION__BOLD = STYLE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -795,7 +803,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__UNDERLINE = ViewPackage.LABEL_STYLE__UNDERLINE;
+    int NODE_STYLE_DESCRIPTION__UNDERLINE = STYLE_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -803,7 +811,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+    int NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -811,7 +819,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_COLOR = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 0;
+    int NODE_STYLE_DESCRIPTION__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -819,7 +827,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_RADIUS = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 1;
+    int NODE_STYLE_DESCRIPTION__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -827,7 +835,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_SIZE = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 2;
+    int NODE_STYLE_DESCRIPTION__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -836,7 +844,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 3;
+    int NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
 
     /**
      * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -844,7 +852,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__LABEL_COLOR = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 4;
+    int NODE_STYLE_DESCRIPTION__LABEL_COLOR = STYLE_FEATURE_COUNT + 9;
 
     /**
      * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -853,7 +861,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 5;
+    int NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -862,7 +870,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 6;
+    int NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -870,7 +878,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__SHOW_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 7;
+    int NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 12;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -878,7 +886,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__LABEL_ICON = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 8;
+    int NODE_STYLE_DESCRIPTION__LABEL_ICON = STYLE_FEATURE_COUNT + 13;
 
     /**
      * The number of structural features of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -887,7 +895,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 9;
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 14;
 
     /**
      * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -896,7 +904,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_OPERATION_COUNT = ViewPackage.LABEL_STYLE_OPERATION_COUNT + 0;
+    int NODE_STYLE_DESCRIPTION_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalNodeStyleImpl
@@ -960,7 +968,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__COLOR = STYLE__COLOR;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -968,7 +976,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE = NODE_STYLE_DESCRIPTION__FONT_SIZE;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -976,7 +984,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC = STYLE_FEATURE_COUNT + 1;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__ITALIC = NODE_STYLE_DESCRIPTION__ITALIC;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -984,7 +992,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD = STYLE_FEATURE_COUNT + 2;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BOLD = NODE_STYLE_DESCRIPTION__BOLD;
 
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -992,7 +1000,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE = STYLE_FEATURE_COUNT + 3;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__UNDERLINE = NODE_STYLE_DESCRIPTION__UNDERLINE;
 
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1000,7 +1008,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1008,7 +1016,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_COLOR = NODE_STYLE_DESCRIPTION__BORDER_COLOR;
 
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1016,7 +1024,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
 
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1024,7 +1032,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE = NODE_STYLE_DESCRIPTION__BORDER_SIZE;
 
     /**
      * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1033,7 +1041,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
      * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1041,7 +1049,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR = STYLE_FEATURE_COUNT + 9;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
 
     /**
      * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1050,7 +1058,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 10;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1059,7 +1067,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 11;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1067,7 +1075,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 12;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON = NODE_STYLE_DESCRIPTION__SHOW_ICON;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1075,7 +1083,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON = STYLE_FEATURE_COUNT + 13;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON = NODE_STYLE_DESCRIPTION__LABEL_ICON;
 
     /**
      * The feature id for the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1083,7 +1091,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER = STYLE_FEATURE_COUNT + 14;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc
@@ -1092,7 +1100,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 15;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1101,7 +1109,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl
@@ -1112,6 +1120,14 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     int IMAGE_NODE_STYLE_DESCRIPTION = 12;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1271,7 +1287,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__COLOR = STYLE__COLOR;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__COLOR = NODE_STYLE_DESCRIPTION__COLOR;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1279,7 +1295,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__FONT_SIZE = NODE_STYLE_DESCRIPTION__FONT_SIZE;
 
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1287,7 +1303,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__ITALIC = STYLE_FEATURE_COUNT + 1;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__ITALIC = NODE_STYLE_DESCRIPTION__ITALIC;
 
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1295,7 +1311,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BOLD = STYLE_FEATURE_COUNT + 2;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BOLD = NODE_STYLE_DESCRIPTION__BOLD;
 
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1303,7 +1319,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__UNDERLINE = STYLE_FEATURE_COUNT + 3;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__UNDERLINE = NODE_STYLE_DESCRIPTION__UNDERLINE;
 
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1311,7 +1327,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1319,7 +1335,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR = NODE_STYLE_DESCRIPTION__BORDER_COLOR;
 
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1327,7 +1343,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
 
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1335,7 +1351,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE = NODE_STYLE_DESCRIPTION__BORDER_SIZE;
 
     /**
      * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1344,7 +1360,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
      * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1352,7 +1368,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR = STYLE_FEATURE_COUNT + 9;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
 
     /**
      * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1361,7 +1377,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 10;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1370,7 +1386,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 11;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1378,7 +1394,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 12;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON = NODE_STYLE_DESCRIPTION__SHOW_ICON;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1386,7 +1402,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON = STYLE_FEATURE_COUNT + 13;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON = NODE_STYLE_DESCRIPTION__LABEL_ICON;
 
     /**
      * The number of structural features of the '<em>Icon Label Node Style Description</em>' class. <!-- begin-user-doc
@@ -1395,7 +1411,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 14;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Icon Label Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1404,7 +1420,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl <em>Edge
