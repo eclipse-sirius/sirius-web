@@ -1,0 +1,38 @@
+= ADR-112 - Provide only valid view descriptions to the renderer
+
+== Context
+
+Some rendered components  can have an invalid description.
+For example a reference widget component without a valid `Reference Name Expression`.
+
+This can provoke unexpected results.
+We want to avoid converting view dsl elements to programmatic elements if they have an invalid description.
+
+== Decision
+
+Only the `sirius-components-view-emf` package will be impacted.
+
+The class `ViewFormDescriptionConverterSwitch.java` will extends extends `FormSwitch<Optional<AbstractControlDescription>>` instead of `FormSwitch<AbstractControlDescription>`.
+
+`IWidgetConverterProvider#getWidgetConverter` will change to:
+
+`Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService)`;
+
+from:
+`Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService)`;
+
+`ReferenceWidgetDescriptionConverterSwitch#caseReferenceWidgetDescription` will return an empty optional if the widget description is invalid.
+
+
+We will also log all invalid descriptions.
+
+== Status
+
+draft
+
+== Consequences
+
+This will change currently used API that will need to be documented.
+
+== References
+

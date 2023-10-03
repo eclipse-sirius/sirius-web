@@ -10,6 +10,7 @@
 === Architectural decision records
 
 - [ADR-111] Add support for image overlay
+- [ADR-112] Provide only valid view descriptions to the renderer
 
 === Breaking changes
 
