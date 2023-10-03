@@ -37,6 +37,7 @@ public class RequiredServiceNodeDescriptionProvider implements INodeDescriptionP
     public NodeDescription create() {
         var nodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         nodeStyle.setShape("67e2ae35-e8e7-3aaa-9ab0-c74df3410888");
+        nodeStyle.setColor(this.colorProvider.getColor("color_white"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         nodeStyle.setBorderSize(0);
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));

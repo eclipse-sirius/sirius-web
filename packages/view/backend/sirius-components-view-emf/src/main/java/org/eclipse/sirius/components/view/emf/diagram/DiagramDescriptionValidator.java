@@ -42,11 +42,8 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.Style;
 
 /**
  * The validator for {@link DiagramDescription}.
@@ -77,12 +74,7 @@ public class DiagramDescriptionValidator implements EValidator {
         if (eObject instanceof DiagramElementDescription diagramElementDescription) {
             isValid = this.hasProperDomainType(diagramElementDescription, diagnostics) && isValid;
         }
-        if (eObject instanceof RectangularNodeStyleDescription nodeStyle) {
-            isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
-            isValid = this.hasProperLabelColor(nodeStyle, diagnostics) && isValid;
-            isValid = this.hasProperBorderColor(nodeStyle, diagnostics) && isValid;
-        }
-        if (eObject instanceof IconLabelNodeStyleDescription nodeStyle) {
+        if (eObject instanceof NodeStyleDescription nodeStyle) {
             isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
             isValid = this.hasProperLabelColor(nodeStyle, diagnostics) && isValid;
             isValid = this.hasProperBorderColor(nodeStyle, diagnostics) && isValid;
@@ -146,8 +138,8 @@ public class DiagramDescriptionValidator implements EValidator {
         return isValid;
     }
 
-    private boolean hasProperColor(Style style, DiagnosticChain diagnostics) {
-        boolean isValid = Objects.nonNull(style.getColor());
+    private boolean hasProperColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
+        boolean isValid = Objects.nonNull(nodeStyle.getColor());
 
         if (!isValid && diagnostics != null) {
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
@@ -155,7 +147,7 @@ public class DiagramDescriptionValidator implements EValidator {
                     0,
                     "The color should not be empty",
                     new Object [] {
-                        style,
+                        nodeStyle,
                         DiagramPackage.Literals.STYLE__COLOR,
                     });
 

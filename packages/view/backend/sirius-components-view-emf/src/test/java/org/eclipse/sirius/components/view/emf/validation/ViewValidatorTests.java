@@ -114,7 +114,7 @@ public class ViewValidatorTests {
     @Test
     public void testNodeStyleColorIsAbsent() {
         Map<Object, Object> defaultContext = Diagnostician.INSTANCE.createDefaultContext();
-        RectangularNodeStyleDescription rectangularNodeStyleDescription = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        RectangularNodeStyleDescription conditionalNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
         BasicDiagnostic expected = new BasicDiagnostic(Diagnostic.ERROR, null, 0, null, null);
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
@@ -122,7 +122,7 @@ public class ViewValidatorTests {
                 0,
                 "The color should not be empty",
                 new Object [] {
-                    rectangularNodeStyleDescription,
+                    conditionalNodeStyle,
                     DiagramPackage.Literals.STYLE__COLOR,
                 }));
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
@@ -130,7 +130,7 @@ public class ViewValidatorTests {
                 0,
                 "The label color should not be empty",
                 new Object [] {
-                    rectangularNodeStyleDescription,
+                    conditionalNodeStyle,
                     DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
                 }));
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
@@ -138,11 +138,11 @@ public class ViewValidatorTests {
                 0,
                 "The border color should not be empty",
                 new Object [] {
-                    rectangularNodeStyleDescription,
+                    conditionalNodeStyle,
                     DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR,
                 }));
         BasicDiagnostic diagnosticChain = new BasicDiagnostic(Diagnostic.OK, null, 0, null, null);
-        boolean validationResult = new DiagramDescriptionValidator().validate(rectangularNodeStyleDescription.eClass(), rectangularNodeStyleDescription, diagnosticChain, defaultContext);
+        boolean validationResult = new DiagramDescriptionValidator().validate(conditionalNodeStyle.eClass(), conditionalNodeStyle, diagnosticChain, defaultContext);
         assertThat(validationResult).isFalse();
         assertThat(diagnosticChain).isEqualTo(expected);
     }
