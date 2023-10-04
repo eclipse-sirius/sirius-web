@@ -57,13 +57,17 @@ import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyleProvid
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widgets.reference.util.ReferenceSwitch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Converts a View-based ReferenceWidgetDescription into its API equivalent.
  *
  * @author pcdavid
  */
-public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<AbstractWidgetDescription> {
+public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<Optional<AbstractWidgetDescription>> {
+
+    private final Logger logger = LoggerFactory.getLogger(ReferenceWidgetDescriptionConverterSwitch.class);
 
     private final AQLInterpreter interpreter;
 
@@ -95,8 +99,13 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
     }
 
     @Override
-    public AbstractWidgetDescription caseReferenceWidgetDescription(ReferenceWidgetDescription referenceDescription) {
+    public Optional<AbstractWidgetDescription> caseReferenceWidgetDescription(ReferenceWidgetDescription referenceDescription) {
         String descriptionId = this.getDescriptionId(referenceDescription);
+
+        if (referenceDescription.getReferenceNameExpression().isEmpty()) {
+            this.logger.warn("Invalid empty Reference Name Expression on widget {}", referenceDescription.getName());
+            return Optional.empty();
+        }
 
         Function<VariableManager, ReferenceWidgetStyle> styleProvider = variableManager -> {
             var effectiveStyle = referenceDescription.getConditionalStyles().stream()
@@ -142,7 +151,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
             builder.itemClickHandlerProvider(variableManager -> this.handleItemClick(variableManager, referenceDescription.getBody()));
         }
 
-        return builder.build();
+        return Optional.of(builder.build());
     }
 
     private EObject getReferenceOwner(VariableManager variableManager, String referenceOwnerExpression) {

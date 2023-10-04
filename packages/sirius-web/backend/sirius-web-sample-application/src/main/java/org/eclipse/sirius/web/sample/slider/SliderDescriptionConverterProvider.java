@@ -24,6 +24,8 @@ import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IWidgetConverterProvider;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * Provides the widget converter needed for the Slider widget.
  *
@@ -39,7 +41,7 @@ public class SliderDescriptionConverterProvider implements IWidgetConverterProvi
     }
 
     @Override
-    public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
+    public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
         return new SliderDescriptionConverterSwitch(interpreter, editService, objectService, feedbackMessageService, this.widgetIdProvider);
     }
 

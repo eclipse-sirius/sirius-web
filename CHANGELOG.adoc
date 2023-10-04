@@ -38,6 +38,7 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 It requires to add a `isHeaderProvider` to the _LabelDescription_ of Node.
 Replace only for the programmatic API the _LabelDescription_ type in _NodeDescription_ by _InsideLabelDescription_ and add the inside label location.
 Update the graphql API accordingly.
+- https://github.com/eclipse-sirius/sirius-web/issues/2444[#2444] [form] `ViewFormDescriptionConverterSwitch` now extends `FormSwitch<Optional<AbstractControlDescription>>`
 
 === Dependency update
 
@@ -91,6 +92,7 @@ All icons can now be composed of multiple images, which will be overlayed on top
 An example of use has been added on the domain entity items.
 - https://github.com/eclipse-sirius/sirius-web/issues/2483[#2483] [diagram] Take the header into account in the React Flow layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/2504[#2504] [diagram] Create nodes at the cursor position when using create instance or drop tools.
+- https://github.com/eclipse-sirius/sirius-web/issues/2444[#2444] [form] It is now possible to ignore widgets with invalid descriptions
 
 == v2023.10.0
 
