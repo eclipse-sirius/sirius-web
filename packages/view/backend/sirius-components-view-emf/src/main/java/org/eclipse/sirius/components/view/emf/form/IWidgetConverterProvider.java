@@ -19,6 +19,8 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 
+import java.util.Optional;
+
 /**
  * Provides a switch to convert View-based custom widget descriptions into their API equivalent given an execution context.
  *
@@ -26,5 +28,5 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
  */
 public interface IWidgetConverterProvider {
 
-    Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService);
+    Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService);
 }
