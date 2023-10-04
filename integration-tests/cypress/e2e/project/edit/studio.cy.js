@@ -127,19 +127,15 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('Name').clear();
     cy.getByTestId('Name').type('TestTool');
 
-    cy.get('[title="Back to the homepage"]')
-      .click()
-      .then(() => {
-        cy.url().should('eq', Cypress.config().baseUrl + '/projects');
-      });
-    cy.getByTestId('create')
-      .click()
-      .then(() => {
-        cy.wait(500);
-        cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
-        cy.getByTestId('name').type('Instance');
-        cy.getByTestId('create-project').click();
-      });
+    cy.get('[title="Back to the homepage"]').click();
+    cy.url().should('eq', Cypress.config().baseUrl + '/projects');
+    cy.get('[title="Blank Studio"]').should('be.visible');
+    cy.getByTestId('create').click();
+
+    cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
+    cy.getByTestId('name').should('be.visible');
+    cy.getByTestId('name').type('Instance');
+    cy.getByTestId('create-project').click();
 
     cy.getByTestId('empty').click();
     cy.getByTestId('Others...-more').click();

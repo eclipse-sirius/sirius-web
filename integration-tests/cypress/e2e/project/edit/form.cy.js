@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
+describe('/projects/:projectId/edit - Form', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
   });
@@ -78,6 +78,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     });
     cy.getByTestId('ViewDocument').dblclick();
     cy.getByTestId('View').dblclick();
+
     createNewTreeItemOn('Form Description', 'View');
     cy.getByTestId('New Form Description').click();
     cy.getByTestId('Domain Type').type('flow::System');
@@ -85,10 +86,14 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
     cy.getByTestId('ReadOnlyRepresentation').dblclick();
     cy.getByTestId('PageDescription').dblclick();
+
     createNewTreeItemOn('Widgets Flexbox Container Description', 'GroupDescription');
+    cy.getByTestId('Label Expression').should('not.be.disabled');
     cy.getByTestId('Label Expression').type('Test flexbox container');
     cy.getByTestId('Is Enabled Expression').type("aql:self.name='NewSystem'");
+
     createNewTreeItemOn('Textfield Description', 'FlexboxContainerDescription');
+    cy.getByTestId('Label Expression').should('not.be.disabled');
     cy.getByTestId('Label Expression').type('Name');
     cy.getByTestId('Value Expression').type('aql:self.name');
 
