@@ -6,6 +6,7 @@
 === Shapes
 
 - Add support for custom nodes in Diagram representations
+- Add the possibility to specify a size ratio on node.
 
 === Architectural decision records
 
