@@ -162,18 +162,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private List<AbstractControlDescription> getGeneralControlDescription(String nodeType) {
         List<AbstractControlDescription> controls = new ArrayList<>();
 
-        var widthExpression = this.propertiesWidgetCreationService.createExpressionField("nodestyle.widthExpression", "Width Expression",
-                style -> ((NodeStyleDescription) style).getWidthComputationExpression(),
-                (style, newWidthExpression) -> ((NodeStyleDescription) style).setWidthComputationExpression(newWidthExpression),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION);
-        controls.add(widthExpression);
-
-        var heightExpression = this.propertiesWidgetCreationService.createExpressionField("nodestyle.heightExpression", "Height Expression",
-                style -> ((NodeStyleDescription) style).getHeightComputationExpression(),
-                (style, newHeightExpression) -> ((NodeStyleDescription) style).setHeightComputationExpression(newHeightExpression),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION);
-        controls.add(heightExpression);
-
         var showIcon = this.propertiesWidgetCreationService.createCheckbox("nodestyle.showIcon", "Show Icon",
                 style -> ((NodeStyleDescription) style).isShowIcon(),
                 (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),

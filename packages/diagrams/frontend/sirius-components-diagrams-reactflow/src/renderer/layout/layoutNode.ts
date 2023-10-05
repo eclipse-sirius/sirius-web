@@ -66,12 +66,12 @@ export const findNodeIndex = (nodes: Node<NodeData>[], nodeId: string): number =
   return nodes.findIndex((node) => node.id === nodeId);
 };
 
-export const getNodeOrMinWidth = (nodeWidth: number | undefined): number => {
-  return Math.max(nodeWidth ?? -Infinity, defaultWidth);
+export const getNodeOrMinWidth = (nodeWidth: number | undefined, node: Node<NodeData>): number => {
+  return Math.max(nodeWidth ?? -Infinity, node.data.defaultWidth ?? defaultWidth);
 };
 
-export const getNodeOrMinHeight = (nodeHeight: number | undefined): number => {
-  return Math.max(nodeHeight ?? -Infinity, defaultHeight);
+export const getNodeOrMinHeight = (nodeHeight: number | undefined, node: Node<NodeData>): number => {
+  return Math.max(nodeHeight ?? -Infinity, node.data.defaultHeight ?? defaultHeight);
 };
 
 export const getChildNodePosition = (
@@ -398,4 +398,17 @@ export const getWestBorderNodeFootprintHeight = (
 
 export const getChildren = (node: Node<NodeData>, allVisibleNodes: Node<NodeData>[]): Node<NodeData>[] => {
   return allVisibleNodes.filter((child) => child.parentNode === node.id);
+};
+
+export const applyRatioOnNewNodeSizeValue = (node: Node<NodeData>) => {
+  const initRatio = (node.data.defaultWidth || defaultWidth) / (node.data.defaultHeight || defaultHeight);
+  if (node.width && node.height) {
+    const newRatio = node.width / node.height;
+    if (initRatio > newRatio) {
+      node.width = node.height * initRatio;
+    }
+    if (initRatio < newRatio) {
+      node.height = node.width / initRatio;
+    }
+  }
 };

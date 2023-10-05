@@ -22,6 +22,7 @@ public abstract class NodeStyleDescriptionBuilder {
 
     /**
      * Builder for org.eclipse.sirius.components.view.diagram.NodeStyleDescription.
+     *
      * @generated
      */
     protected abstract org.eclipse.sirius.components.view.diagram.NodeStyleDescription getNodeStyleDescription();
@@ -35,6 +36,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setColor(value);
         return this;
     }
+
     /**
      * Setter for FontSize.
      *
@@ -44,6 +46,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setFontSize(value);
         return this;
     }
+
     /**
      * Setter for Italic.
      *
@@ -53,6 +56,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setItalic(value);
         return this;
     }
+
     /**
      * Setter for Bold.
      *
@@ -62,6 +66,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setBold(value);
         return this;
     }
+
     /**
      * Setter for Underline.
      *
@@ -71,6 +76,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setUnderline(value);
         return this;
     }
+
     /**
      * Setter for StrikeThrough.
      *
@@ -80,6 +86,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setStrikeThrough(value);
         return this;
     }
+
     /**
      * Setter for BorderColor.
      *
@@ -89,6 +96,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setBorderColor(value);
         return this;
     }
+
     /**
      * Setter for BorderRadius.
      *
@@ -98,6 +106,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setBorderRadius(value);
         return this;
     }
+
     /**
      * Setter for BorderSize.
      *
@@ -107,6 +116,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setBorderSize(value);
         return this;
     }
+
     /**
      * Setter for BorderLineStyle.
      *
@@ -116,6 +126,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }
+
     /**
      * Setter for LabelColor.
      *
@@ -125,24 +136,7 @@ public abstract class NodeStyleDescriptionBuilder {
         this.getNodeStyleDescription().setLabelColor(value);
         return this;
     }
-    /**
-     * Setter for WidthComputationExpression.
-     *
-     * @generated
-     */
-    public NodeStyleDescriptionBuilder widthComputationExpression(java.lang.String value) {
-        this.getNodeStyleDescription().setWidthComputationExpression(value);
-        return this;
-    }
-    /**
-     * Setter for HeightComputationExpression.
-     *
-     * @generated
-     */
-    public NodeStyleDescriptionBuilder heightComputationExpression(java.lang.String value) {
-        this.getNodeStyleDescription().setHeightComputationExpression(value);
-        return this;
-    }
+
     /**
      * Setter for ShowIcon.
      *

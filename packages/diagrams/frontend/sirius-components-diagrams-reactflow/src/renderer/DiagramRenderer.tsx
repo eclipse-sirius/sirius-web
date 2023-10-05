@@ -61,7 +61,12 @@ const GRID_STEP: number = 10;
 const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
 const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';
 
-export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSelection }: DiagramRendererProps) => {
+export const DiagramRenderer = ({
+  diagramRefreshedEventPayload,
+  diagramDescription,
+  selection,
+  setSelection,
+}: DiagramRendererProps) => {
   const store = useStoreApi();
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
   const { onDirectEdit } = useDiagramDirectEdit();
@@ -90,7 +95,11 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
   useEffect(() => {
     const { diagram } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverterHandlers);
+    const convertedDiagram: Diagram = convertDiagram(
+      diagram,
+      nodeConverterHandlers,
+      diagramDescription?.nodeDescriptions ?? []
+    );
 
     const previousDiagram: Diagram = {
       metadata: { ...convertedDiagram.metadata },
@@ -106,7 +115,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
         setState((prevState) => ({ ...prevState, fitviewLifecycle: 'shouldFitview' }));
       }
     });
-  }, [diagramRefreshedEventPayload]);
+  }, [diagramRefreshedEventPayload, diagramDescription]);
 
   useEffect(() => {
     if (state.fitviewLifecycle === 'shouldFitview') {

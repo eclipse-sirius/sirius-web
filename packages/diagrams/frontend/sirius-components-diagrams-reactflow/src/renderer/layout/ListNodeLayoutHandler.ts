@@ -15,9 +15,10 @@ import { Node } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
+import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import {
+  applyRatioOnNewNodeSizeValue,
   computeNodesBox,
   findNodeIndex,
   getEastBorderNodeFootprintHeight,
@@ -74,8 +75,8 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const nodeWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
     const nodeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
-    node.height = getNodeOrMinHeight(nodeHeight);
+    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
+    node.height = getNodeOrMinHeight(nodeHeight, node);
   }
 
   private handleParentNode(
@@ -154,9 +155,11 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       westBorderNodeFootprintHeight
     );
 
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
-    node.height = getNodeOrMinHeight(nodeHeight);
-
+    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
+    node.height = getNodeOrMinHeight(nodeHeight, node);
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
     // Update border nodes positions
     borderNodes.forEach((borderNode) => {
       borderNode.extent = getBorderNodeExtent(node, borderNode);

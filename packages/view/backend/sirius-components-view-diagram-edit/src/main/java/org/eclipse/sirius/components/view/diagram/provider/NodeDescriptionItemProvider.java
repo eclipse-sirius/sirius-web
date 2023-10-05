@@ -61,6 +61,9 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.addReusedChildNodeDescriptionsPropertyDescriptor(object);
             this.addReusedBorderNodeDescriptionsPropertyDescriptor(object);
             this.addUserResizablePropertyDescriptor(object);
+            this.addDefaultWidthExpressionPropertyDescriptor(object);
+            this.addDefaultHeightExpressionPropertyDescriptor(object);
+            this.addKeepAspectRatioPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -112,6 +115,44 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.getString("_UI_NodeDescription_userResizable_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_userResizable_feature", "_UI_NodeDescription_type"), DiagramPackage.Literals.NODE_DESCRIPTION__USER_RESIZABLE,
                 true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Default Width Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDefaultWidthExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_defaultWidthExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_defaultWidthExpression_feature", "_UI_NodeDescription_type"),
+                DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Default Height Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDefaultHeightExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_defaultHeightExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_defaultHeightExpression_feature", "_UI_NodeDescription_type"),
+                DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Keep Aspect Ratio feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addKeepAspectRatioPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_NodeDescription_keepAspectRatio_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_keepAspectRatio_feature", "_UI_NodeDescription_type"),
+                DiagramPackage.Literals.NODE_DESCRIPTION__KEEP_ASPECT_RATIO, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -194,6 +235,9 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         switch (notification.getFeatureID(NodeDescription.class)) {
             case DiagramPackage.NODE_DESCRIPTION__COLLAPSIBLE:
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
+            case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:

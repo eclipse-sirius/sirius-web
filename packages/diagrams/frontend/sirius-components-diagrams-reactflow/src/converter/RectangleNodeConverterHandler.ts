@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
+import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import {
   GQLNode,
   GQLNodeStyle,
@@ -19,15 +20,16 @@ import {
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
+import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toRectangularNode = (
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
+  nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean
 ): Node<RectangularNodeData> => {
   const {
@@ -57,6 +59,9 @@ const toRectangularNode = (
     },
     label: undefined,
     faded: state === GQLViewModifier.Faded,
+    nodeDescription,
+    defaultWidth: gqlNode.defaultWidth,
+    defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
     labelEditable,
@@ -121,10 +126,12 @@ export class RectangleNodeConverterHandler implements INodeConverterHandler {
     gqlNode: GQLNode<GQLRectangularNodeStyle>,
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[]
+    nodes: Node[],
+    nodeDescriptions: GQLNodeDescription[]
   ) {
-    nodes.push(toRectangularNode(gqlNode, parentNode, isBorderNode));
-    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes);
-    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes);
+    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
+    nodes.push(toRectangularNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
+    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
   }
 }

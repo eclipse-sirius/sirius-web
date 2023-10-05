@@ -74,6 +74,9 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/reusedChildNodeDescriptions"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/reusedBorderNodeDescriptions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/userResizable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/defaultWidthExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/defaultHeightExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/keepAspectRatio"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//EdgeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeDescription/beginLabelExpression"/>
@@ -101,8 +104,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//NodeStyleDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference diagram.ecore#//NodeStyleDescription/labelColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeStyleDescription/widthComputationExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeStyleDescription/heightComputationExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeStyleDescription/showIcon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeStyleDescription/labelIcon"/>
     </genClasses>

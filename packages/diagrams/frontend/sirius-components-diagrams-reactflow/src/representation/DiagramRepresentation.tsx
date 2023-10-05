@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, OnDataOptions, useSubscription } from '@apollo/client';
-import { RepresentationComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { useContext, useState } from 'react';
+import { gql, OnDataOptions, useQuery, useSubscription } from '@apollo/client';
+import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
+import { nodeDescriptionFragment } from '../graphql/query/nodeDescriptionFragment';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
 import {
   GQLDiagramEventPayload,
@@ -35,11 +36,33 @@ import { DiagramElementPaletteContextProvider } from '../renderer/palette/Diagra
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
 import {
   DiagramRepresentationState,
+  GQLDiagramDescriptionData,
+  GQLDiagramDescriptionVariables,
   GQLDiagramEventData,
   GQLDiagramEventVariables,
 } from './DiagramRepresentation.types';
 
 const subscription = (contributions: GraphQLNodeStyleFragment[]) => gql(diagramEventSubscription(contributions));
+
+export const getDiagramDescription = gql`
+  ${nodeDescriptionFragment}
+  query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on DiagramDescription {
+              id
+              nodeDescriptions {
+                ...nodeDescriptionFragment
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
   payload.__typename === 'DiagramRefreshedEventPayload';
@@ -55,7 +78,9 @@ export const DiagramRepresentation = ({
     diagramRefreshedEventPayload: null,
     complete: false,
     message: null,
+    diagramDescription: undefined,
   });
+  const { addErrorMessage } = useMultiToast();
 
   const variables: GQLDiagramEventVariables = {
     input: {
@@ -73,6 +98,31 @@ export const DiagramRepresentation = ({
       }
     }
   };
+
+  const {
+    loading: diagramDescriptionLoading,
+    data: diagramDescriptionData,
+    error: diagramDescriptionError,
+  } = useQuery<GQLDiagramDescriptionData, GQLDiagramDescriptionVariables>(getDiagramDescription, {
+    variables: {
+      editingContextId,
+      representationId,
+    },
+    skip: state.diagramRefreshedEventPayload === null,
+  });
+
+  useEffect(() => {
+    if (!diagramDescriptionLoading) {
+      setState((prevState) => ({
+        ...prevState,
+        diagramDescription: diagramDescriptionData?.viewer.editingContext.representation.description,
+      }));
+    }
+    if (diagramDescriptionError) {
+      const { message } = diagramDescriptionError;
+      addErrorMessage(message);
+    }
+  }, [diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError]);
 
   const onComplete = () => {
     setState((prevState) => ({ ...prevState, diagram: null, complete: true }));
@@ -96,7 +146,7 @@ export const DiagramRepresentation = ({
   if (state.complete) {
     return <div>The representation is not available anymore</div>;
   }
-  if (!state.diagramRefreshedEventPayload) {
+  if (!state.diagramRefreshedEventPayload || !state.diagramDescription) {
     return <div></div>;
   }
 
@@ -115,6 +165,7 @@ export const DiagramRepresentation = ({
                         <DiagramRenderer
                           key={state.diagramRefreshedEventPayload.diagram.id}
                           diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+                          diagramDescription={state.diagramDescription}
                           selection={selection}
                           setSelection={setSelection}
                         />

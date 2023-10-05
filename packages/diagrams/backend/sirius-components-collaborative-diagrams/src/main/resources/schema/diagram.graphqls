@@ -47,6 +47,8 @@ type Node {
   childrenLayoutStrategy: ILayoutStrategy
   borderNodes: [Node!]!
   childNodes: [Node!]!
+  defaultWidth: Int
+  defaultHeight: Int
   labelEditable: Boolean!
 }
 
@@ -257,6 +259,8 @@ type NodeDescription implements DiagramElementDescription {
   synchronizationPolicy: SynchronizationPolicy!
   borderNodeDescriptions: [NodeDescription!]!
   childNodeDescriptions: [NodeDescription!]!
+  userResizable: Boolean!
+  keepAspectRatio: Boolean!
 }
 
 type EdgeDescription implements DiagramElementDescription {

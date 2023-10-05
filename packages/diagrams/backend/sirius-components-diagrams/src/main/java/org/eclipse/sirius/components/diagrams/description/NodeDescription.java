@@ -75,6 +75,12 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Function<VariableManager, IStatus> deleteHandler;
 
+    private boolean keepAspectRatio;
+
+    private Function<VariableManager, Integer> defaultWidthProvider;
+
+    private Function<VariableManager, Integer> defaultHeightProvider;
+
     private Function<VariableManager, IStatus> dropNodeHandler;
 
     private NodeDescription() {
@@ -174,6 +180,18 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.labelEditHandler;
     }
 
+    public boolean isKeepAspectRatio() {
+        return this.keepAspectRatio;
+    }
+
+    public Function<VariableManager, Integer> getDefaultWidthProvider() {
+        return this.defaultWidthProvider;
+    }
+
+    public Function<VariableManager, Integer> getDefaultHeightProvider() {
+        return this.defaultHeightProvider;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, borderNodeDescriptionCount: {2}, childNodeDescriptionCount: {3}'}'";
@@ -228,6 +246,12 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Function<VariableManager, IStatus> deleteHandler;
 
+        private boolean keepAspectRatio;
+
+        private Function<VariableManager, Integer> defaultWidthProvider = variableManager -> null;
+
+        private Function<VariableManager, Integer> defaultHeightProvider = variableManager -> null;
+
         private Function<VariableManager, IStatus> dropNodeHandler;
 
         public Builder(String id) {
@@ -255,6 +279,10 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.deleteHandler = nodeDescription.getDeleteHandler();
             this.shouldRenderPredicate = nodeDescription.getShouldRenderPredicate();
             this.dropNodeHandler = nodeDescription.getDropNodeHandler();
+            this.keepAspectRatio = nodeDescription.isKeepAspectRatio();
+            this.defaultWidthProvider = nodeDescription.getDefaultWidthProvider();
+            this.defaultHeightProvider = nodeDescription.getDefaultHeightProvider();
+
         }
 
         public Builder synchronizationPolicy(SynchronizationPolicy synchronizationPolicy) {
@@ -357,6 +385,21 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
+        public Builder keepAspectRatio(boolean keepAspectRatio) {
+            this.keepAspectRatio = keepAspectRatio;
+            return this;
+        }
+
+        public Builder defaultWidthProvider(Function<VariableManager, Integer> defaultWidthProvider) {
+            this.defaultWidthProvider = Objects.requireNonNull(defaultWidthProvider);
+            return this;
+        }
+
+        public Builder defaultHeightProvider(Function<VariableManager, Integer> defaultHeightProvider) {
+            this.defaultHeightProvider = Objects.requireNonNull(defaultHeightProvider);
+            return this;
+        }
+
         public NodeDescription build() {
             NodeDescription nodeDescription = new NodeDescription();
             nodeDescription.id = Objects.requireNonNull(this.id);
@@ -380,6 +423,9 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.labelEditHandler = this.labelEditHandler; // Optional on purpose
             nodeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             nodeDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
+            nodeDescription.keepAspectRatio = this.keepAspectRatio;
+            nodeDescription.defaultWidthProvider = Objects.requireNonNull(this.defaultWidthProvider);
+            nodeDescription.defaultHeightProvider = Objects.requireNonNull(this.defaultHeightProvider);
             return nodeDescription;
         }
     }

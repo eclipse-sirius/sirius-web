@@ -62,8 +62,6 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
             this.addBorderSizePropertyDescriptor(object);
             this.addBorderLineStylePropertyDescriptor(object);
             this.addLabelColorPropertyDescriptor(object);
-            this.addWidthComputationExpressionPropertyDescriptor(object);
-            this.addHeightComputationExpressionPropertyDescriptor(object);
             this.addShowIconPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
             this.addWithHeaderPropertyDescriptor(object);
@@ -184,32 +182,6 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
     }
 
     /**
-     * This adds a property descriptor for the Width Computation Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addWidthComputationExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyleDescription_widthComputationExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_widthComputationExpression_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Height Computation Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addHeightComputationExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeStyleDescription_heightComputationExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_heightComputationExpression_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
      * This adds a property descriptor for the Show Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -311,8 +283,6 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
-            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON:
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:

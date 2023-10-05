@@ -25,7 +25,7 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
     cy.getByTestId('Entity1 Node').dblclick();
 
-    cy.getByTestId('150-more').click();
+    cy.getByTestId('RectangularNodeStyleDescription-more').click();
     cy.getByTestId('delete').click();
     cy.getByTestId('Entity1 Node-more').click();
     cy.getByTestId('new-object').click();

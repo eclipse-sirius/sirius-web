@@ -62,7 +62,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
 
   it('test Hide/Fade action is not available on diagram background', () => {
     createFlowReactFlowDiagram();
-    cy.getByTestId('Label - CaptureSubSystem').click('topLeft');
+    cy.getByTestId('rf__wrapper').findByTestId('Label - CaptureSubSystem').should('exist').click('topLeft');
     cy.getByTestId('Hide-elements').should('exist');
     cy.getByTestId('Fade-elements').should('exist');
     cy.getByTestId('rf__wrapper').click('bottomLeft');

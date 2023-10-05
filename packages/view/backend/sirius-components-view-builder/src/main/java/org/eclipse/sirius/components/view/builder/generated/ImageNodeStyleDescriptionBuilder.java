@@ -22,12 +22,14 @@ public class ImageNodeStyleDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription imageNodeStyleDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription getImageNodeStyleDescription() {
@@ -36,6 +38,7 @@ public class ImageNodeStyleDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription build() {
@@ -51,6 +54,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setColor(value);
         return this;
     }
+
     /**
      * Setter for FontSize.
      *
@@ -60,6 +64,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setFontSize(value);
         return this;
     }
+
     /**
      * Setter for Italic.
      *
@@ -69,6 +74,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setItalic(value);
         return this;
     }
+
     /**
      * Setter for Bold.
      *
@@ -78,6 +84,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setBold(value);
         return this;
     }
+
     /**
      * Setter for Underline.
      *
@@ -87,6 +94,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setUnderline(value);
         return this;
     }
+
     /**
      * Setter for StrikeThrough.
      *
@@ -96,6 +104,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setStrikeThrough(value);
         return this;
     }
+
     /**
      * Setter for BorderColor.
      *
@@ -105,6 +114,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setBorderColor(value);
         return this;
     }
+
     /**
      * Setter for BorderRadius.
      *
@@ -114,6 +124,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setBorderRadius(value);
         return this;
     }
+
     /**
      * Setter for BorderSize.
      *
@@ -123,6 +134,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setBorderSize(value);
         return this;
     }
+
     /**
      * Setter for BorderLineStyle.
      *
@@ -132,6 +144,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }
+
     /**
      * Setter for LabelColor.
      *
@@ -141,24 +154,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setLabelColor(value);
         return this;
     }
-    /**
-     * Setter for WidthComputationExpression.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder widthComputationExpression(java.lang.String value) {
-        this.getImageNodeStyleDescription().setWidthComputationExpression(value);
-        return this;
-    }
-    /**
-     * Setter for HeightComputationExpression.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder heightComputationExpression(java.lang.String value) {
-        this.getImageNodeStyleDescription().setHeightComputationExpression(value);
-        return this;
-    }
+
     /**
      * Setter for ShowIcon.
      *
@@ -168,6 +164,7 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setShowIcon(value);
         return this;
     }
+
     /**
      * Setter for LabelIcon.
      *

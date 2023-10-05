@@ -161,24 +161,6 @@ public interface CustomnodesPackage extends EPackage {
     int ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR;
 
     /**
-     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = DiagramPackage.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = DiagramPackage.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated

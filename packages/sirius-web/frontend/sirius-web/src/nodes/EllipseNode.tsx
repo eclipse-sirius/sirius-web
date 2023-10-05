@@ -63,7 +63,12 @@ export const EllipseNode = memo(({ data, isConnectable, id, selected }: NodeProp
 
   return (
     <>
-      <NodeResizer color={theme.palette.primary.main} isVisible={selected} />
+      <NodeResizer
+        color={theme.palette.primary.main}
+        isVisible={selected}
+        shouldResize={() => !data.isBorderNode}
+        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+      />
       <div
         style={{
           ...ellipseNodeStyle(theme, data.style, selected, data.faded),

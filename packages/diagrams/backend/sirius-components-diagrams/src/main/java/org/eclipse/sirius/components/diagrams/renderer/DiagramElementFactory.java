@@ -124,6 +124,14 @@ public class DiagramElementFactory implements IElementFactory {
             nodeBuilder.insideLabel(insideLabel);
         }
 
+        if (props.getDefaultWidth() != null) {
+            nodeBuilder.defaultWidth(props.getDefaultWidth());
+        }
+
+        if (props.getDefaultHeight() != null) {
+            nodeBuilder.defaultHeight(props.getDefaultHeight());
+        }
+
         if (props.getChildrenLayoutStrategy() != null) {
             nodeBuilder.childrenLayoutStrategy(props.getChildrenLayoutStrategy());
         }

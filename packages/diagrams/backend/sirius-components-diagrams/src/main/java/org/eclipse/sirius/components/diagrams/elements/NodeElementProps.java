@@ -68,6 +68,10 @@ public final class NodeElementProps implements IProps {
 
     private boolean userResizable;
 
+    private Integer defaultWidth;
+
+    private Integer defaultHeight;
+
     private Set<CustomizableProperties> customizableProperties;
 
     private List<Element> children;
@@ -142,6 +146,14 @@ public final class NodeElementProps implements IProps {
         return this.userResizable;
     }
 
+    public Integer getDefaultWidth() {
+        return this.defaultWidth;
+    }
+
+    public Integer getDefaultHeight() {
+        return this.defaultHeight;
+    }
+
     public Set<CustomizableProperties> getCustomizableProperties() {
         return this.customizableProperties;
     }
@@ -198,6 +210,10 @@ public final class NodeElementProps implements IProps {
         private Size size;
 
         private boolean userResizable;
+
+        private Integer defaultWidth;
+
+        private Integer defaultHeight;
 
         private Set<CustomizableProperties> customizableProperties = Set.of();
 
@@ -279,6 +295,16 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder defaultWidth(Integer defaultWidth) {
+            this.defaultWidth = defaultWidth;
+            return this;
+        }
+
+        public Builder defaultHeight(Integer defaultHeight) {
+            this.defaultHeight = defaultHeight;
+            return this;
+        }
+
         public Builder customizableProperties(Set<CustomizableProperties> customizableProperties) {
             this.customizableProperties = Objects.requireNonNull(customizableProperties);
             return this;
@@ -314,6 +340,8 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.children = Objects.requireNonNull(this.children);
             nodeElementProps.labelEditable = this.labelEditable;
             nodeElementProps.customizableProperties = Objects.requireNonNull(this.customizableProperties);
+            nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose
+            nodeElementProps.defaultHeight = this.defaultHeight; // Optional on purpose
             return nodeElementProps;
         }
     }

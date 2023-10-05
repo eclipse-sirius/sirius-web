@@ -22,12 +22,14 @@ public class NodeDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.NodeDescription.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodeDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.NodeDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.NodeDescription getNodeDescription() {
@@ -36,6 +38,7 @@ public class NodeDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.NodeDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.NodeDescription build() {
@@ -51,6 +54,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *
@@ -60,6 +64,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setDomainType(value);
         return this;
     }
+
     /**
      * Setter for SemanticCandidatesExpression.
      *
@@ -69,6 +74,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setSemanticCandidatesExpression(value);
         return this;
     }
+
     /**
      * Setter for PreconditionExpression.
      *
@@ -78,6 +84,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setPreconditionExpression(value);
         return this;
     }
+
     /**
      * Setter for SynchronizationPolicy.
      *
@@ -87,6 +94,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setSynchronizationPolicy(value);
         return this;
     }
+
     /**
      * Setter for LabelExpression.
      *
@@ -96,6 +104,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setLabelExpression(value);
         return this;
     }
+
     /**
      * Setter for Collapsible.
      *
@@ -105,6 +114,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setCollapsible(value);
         return this;
     }
+
     /**
      * Setter for Palette.
      *
@@ -114,6 +124,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setPalette(value);
         return this;
     }
+
     /**
      * Setter for ChildrenLayoutStrategy.
      *
@@ -123,6 +134,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setChildrenLayoutStrategy(value);
         return this;
     }
+
     /**
      * Setter for Style.
      *
@@ -132,6 +144,7 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
@@ -199,6 +212,42 @@ public class NodeDescriptionBuilder {
      */
     public NodeDescriptionBuilder userResizable(java.lang.Boolean value) {
         this.getNodeDescription().setUserResizable(value);
+        return this;
+    }
+
+    /**
+     * Setter for DefaultWidthExpression.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder defaultWidthExpression(java.lang.String value) {
+        this.getNodeDescription().setDefaultWidthExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for DefaultHeightExpression.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder defaultHeightExpression(java.lang.String value) {
+        this.getNodeDescription().setDefaultHeightExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for MinWidthExpression.
+     *
+     * @generated
+     */
+
+    /**
+     * Setter for KeepAspectRatio.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder keepAspectRatio(java.lang.Boolean value) {
+        this.getNodeDescription().setKeepAspectRatio(value);
         return this;
     }
 

@@ -24,10 +24,6 @@ import org.eclipse.sirius.components.view.UserColor;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getLabelColor <em>Label Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getWidthComputationExpression <em>Width
- * Computation Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getHeightComputationExpression <em>Height
- * Computation Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#isShowIcon <em>Show Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getLabelIcon <em>Label Icon</em>}</li>
  * </ul>
@@ -58,54 +54,6 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
      * @generated
      */
     void setLabelColor(UserColor value);
-
-    /**
-     * Returns the value of the '<em><b>Width Computation Expression</b></em>' attribute. The default value is
-     * <code>"150"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Width Computation Expression</em>' attribute.
-     * @see #setWidthComputationExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription_WidthComputationExpression()
-     * @model default="150" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
-    String getWidthComputationExpression();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getWidthComputationExpression <em>Width
-     * Computation Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Width Computation Expression</em>' attribute.
-     * @see #getWidthComputationExpression()
-     * @generated
-     */
-    void setWidthComputationExpression(String value);
-
-    /**
-     * Returns the value of the '<em><b>Height Computation Expression</b></em>' attribute. The default value is
-     * <code>"70"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Height Computation Expression</em>' attribute.
-     * @see #setHeightComputationExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription_HeightComputationExpression()
-     * @model default="70" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
-    String getHeightComputationExpression();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getHeightComputationExpression <em>Height
-     * Computation Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Height Computation Expression</em>' attribute.
-     * @see #getHeightComputationExpression()
-     * @generated
-     */
-    void setHeightComputationExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->

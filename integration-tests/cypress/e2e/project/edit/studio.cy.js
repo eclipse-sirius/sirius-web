@@ -170,22 +170,21 @@ describe('/projects/:projectId/edit - Studio', () => {
       });
   });
 
-  it('Check node style description has default colors and default size', () => {
+  it('Check node style description has default colors', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
     cy.get('[data-testid$=" Diagram Description-more"]').click();
     cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('Node').dblclick();
-    cy.getByTestId('150').click();
+    cy.getByTestId('RectangularNodeStyleDescription').click();
     cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
     cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
     cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
-    cy.getByTestId('input-Width Expression').should('have.value', 150);
-    cy.getByTestId('input-Height Expression').should('have.value', 70);
   });
 
   it('Check edge style description has default colors', () => {
@@ -194,6 +193,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
     cy.get('[data-testid$=" Diagram Description-more"]').click();
     cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription').get('[data-value="Edge Description"]').should('exist').click();
     cy.getByTestId('create-object').click();
@@ -207,6 +207,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View-more').click();
     cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription').get('[data-value="Form Description"]').should('exist').click();
     cy.getByTestId('create-object').click();
@@ -215,6 +216,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('GroupDescription').dblclick();
     cy.getByTestId('GroupDescription-more').click();
     cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
       .get('[data-value="Widgets Textfield Description"]')
@@ -223,6 +225,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('create-object').click();
     cy.getByTestId('TextfieldDescription-more').click();
     cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
       .get('[data-value="Style Textfield Description Style"]')
@@ -236,5 +239,21 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('Foreground Color').getByTestId('Foreground Color-clear').click();
     cy.getByTestId('Foreground Color').type('amber 500{downarrow}{enter}');
     cy.getByTestId('Foreground Color').findByTestId('reference-value-amber 500').should('exist');
+  });
+
+  it('Check node description has ratio related properties', () => {
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View').dblclick();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.get('[data-testid$=" Diagram Description-more"]').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Node').click();
+    cy.getByTestId('Default Width Expression').should('exist');
+    cy.getByTestId('Default Height Expression').should('exist');
+    cy.getByTestId('Keep Aspect Ratio').should('exist');
   });
 });

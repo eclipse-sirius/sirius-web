@@ -241,6 +241,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         Function<VariableManager, Size> sizeProvider = variableManager -> this.computeSize(viewNodeDescription, interpreter, variableManager);
 
+        Function<VariableManager, Integer> defaultWidthProvider = variableManager -> this.computeDefaultSizeProvider(viewNodeDescription.getDefaultWidthExpression(), interpreter,
+                variableManager);
+        Function<VariableManager, Integer> defaultHeightProvider = variableManager -> this.computeDefaultSizeProvider(viewNodeDescription.getDefaultHeightExpression(), interpreter,
+                variableManager);
+
+        // @formatter:off
         List<String> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
                 .map(this.diagramIdProvider::getId)
                 .toList();
@@ -271,13 +277,26 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .sizeProvider(sizeProvider)
                 .userResizable(viewNodeDescription.isUserResizable())
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
-                .shouldRenderPredicate(shouldRenderPredicate);
+                .shouldRenderPredicate(shouldRenderPredicate)
+                .defaultWidthProvider(defaultWidthProvider)
+                .defaultHeightProvider(defaultHeightProvider)
+                .keepAspectRatio(viewNodeDescription.isKeepAspectRatio());
         new ToolFinder().findDropNodeTool(viewNodeDescription).ifPresent(dropNoteTool -> builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext)));
         new ToolFinder().findNodeLabelEditTool(viewNodeDescription)
                 .ifPresent(labelEditTool -> builder.labelEditHandler(this.createNodeLabelEditHandler(viewNodeDescription, converterContext)));
         NodeDescription result = builder.build();
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
+    }
+
+    private Integer computeDefaultSizeProvider(String defaultSizeExpression, AQLInterpreter interpreter, VariableManager variableManager) {
+        if (defaultSizeExpression != null && !defaultSizeExpression.isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), defaultSizeExpression);
+            if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
+                return result.asInt().getAsInt();
+            }
+        }
+        return null;
     }
 
     private NodeStyleDescription findEffectiveStyle(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
@@ -287,17 +306,16 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private Size computeSize(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter, VariableManager variableManager) {
-        var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
         double computedWidth = Size.UNDEFINED.getWidth();
-        if (effectiveStyle.eIsSet(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION) && !effectiveStyle.getWidthComputationExpression().isBlank()) {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getWidthComputationExpression());
+        if (viewNodeDescription.eIsSet(DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION) && !viewNodeDescription.getDefaultWidthExpression().isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewNodeDescription.getDefaultWidthExpression());
             if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
                 computedWidth = result.asInt().getAsInt();
             }
         }
         double computedHeight = Size.UNDEFINED.getHeight();
-        if (effectiveStyle.eIsSet(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION) && !effectiveStyle.getHeightComputationExpression().isBlank()) {
-            Result result = interpreter.evaluateExpression(variableManager.getVariables(), effectiveStyle.getHeightComputationExpression());
+        if (viewNodeDescription.eIsSet(DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION) && !viewNodeDescription.getDefaultHeightExpression().isBlank()) {
+            Result result = interpreter.evaluateExpression(variableManager.getVariables(), viewNodeDescription.getDefaultHeightExpression());
             if (result.getStatus().compareTo(Status.WARNING) <= 0 && result.asInt().isPresent()) {
                 computedHeight = result.asInt().getAsInt();
             }
