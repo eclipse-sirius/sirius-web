@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
+import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import {
   GQLIconLabelNodeStyle,
   GQLNode,
@@ -27,6 +28,7 @@ const defaultPosition: XYPosition = { x: 0, y: 0 };
 const toIconLabelNode = (
   gqlNode: GQLNode<GQLIconLabelNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
+  nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean
 ): Node<IconLabelNodeData> => {
   const {
@@ -54,6 +56,9 @@ const toIconLabelNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: state === GQLViewModifier.Faded,
+    nodeDescription,
+    defaultWidth: gqlNode.defaultWidth,
+    defaultHeight: gqlNode.defaultHeight,
     labelEditable: labelEditable,
   };
 
@@ -95,8 +100,10 @@ export class IconLabelNodeConverterHandler implements INodeConverterHandler {
     gqlNode: GQLNode<GQLIconLabelNodeStyle>,
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[]
+    nodes: Node[],
+    nodeDescriptions: GQLNodeDescription[]
   ) {
-    nodes.push(toIconLabelNode(gqlNode, parentNode, isBorderNode));
+    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
+    nodes.push(toIconLabelNode(gqlNode, parentNode, nodeDescription, isBorderNode));
   }
 }

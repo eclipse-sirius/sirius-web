@@ -220,4 +220,75 @@ public interface NodeDescription extends DiagramElementDescription {
      */
     void setUserResizable(boolean value);
 
+    /**
+     * Returns the value of the '<em><b>Default Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Default Width Expression</em>' attribute.
+     * @see #setDefaultWidthExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_DefaultWidthExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getDefaultWidthExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getDefaultWidthExpression <em>Default Width
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Default Width Expression</em>' attribute.
+     * @see #getDefaultWidthExpression()
+     * @generated
+     */
+    void setDefaultWidthExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Default Height Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Default Height Expression</em>' attribute.
+     * @see #setDefaultHeightExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_DefaultHeightExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getDefaultHeightExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getDefaultHeightExpression <em>Default Height
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Default Height Expression</em>' attribute.
+     * @see #getDefaultHeightExpression()
+     * @generated
+     */
+    void setDefaultHeightExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Keep Aspect Ratio</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Keep Aspect Ratio</em>' attribute.
+     * @see #setKeepAspectRatio(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDescription_KeepAspectRatio()
+     * @model
+     * @generated
+     */
+    boolean isKeepAspectRatio();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#isKeepAspectRatio
+     * <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Keep Aspect Ratio</em>' attribute.
+     * @see #isKeepAspectRatio()
+     * @generated
+     */
+    void setKeepAspectRatio(boolean value);
+
 } // NodeDescription

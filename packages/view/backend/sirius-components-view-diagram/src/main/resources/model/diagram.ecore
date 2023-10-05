@@ -80,6 +80,11 @@
         upperBound="-1" eType="#//NodeDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="userResizable" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultWidthExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultHeightExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keepAspectRatio" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="beginLabelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
@@ -124,12 +129,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="NodeStyleDescription" abstract="true"
       interface="true" eSuperTypes="#//Style ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle #//BorderStyle">
     <eStructuralFeatures xsi:type="ecore:EReference" name="labelColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="widthComputationExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral="150"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="heightComputationExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral="70"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="showIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelIcon" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

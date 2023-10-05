@@ -220,6 +220,9 @@ public class NodeComponent implements IComponent {
             customizableProperties = newProperties;
         }
 
+        Integer defaultWidth = nodeDescription.getDefaultWidthProvider().apply(nodeVariableManager);
+        Integer defaultHeight = nodeDescription.getDefaultHeightProvider().apply(nodeVariableManager);
+
         Builder nodeElementPropsBuilder = NodeElementProps.newNodeElementProps(nodeId)
                 .type(type)
                 .targetObjectId(targetObjectId)
@@ -236,6 +239,8 @@ public class NodeComponent implements IComponent {
                 .modifiers(modifiers)
                 .state(state)
                 .collapsingState(collapsingState)
+                .defaultWidth(defaultWidth)
+                .defaultHeight(defaultHeight)
                 .labelEditable(nodeDescription.getLabelEditHandler() != null);
 
         if (layoutStrategy != null) {
@@ -282,13 +287,10 @@ public class NodeComponent implements IComponent {
      * If a diagram event is specified and this one requests a modification of the modifier set, applied the event on
      * the default set.
      *
-     * @param optionalDiagramEvent
-     *         The optional diagram event modifying the default modifier set of the node
-     * @param optionalPreviousNode
-     *         The previous node from which get the old modifier set. If empty, the old modifier set is set to an
-     *         empty Set
-     * @param id
-     *         The ID of the current node
+     * @param optionalDiagramEvent The optional diagram event modifying the default modifier set of the node
+     * @param optionalPreviousNode The previous node from which get the old modifier set. If empty, the old modifier set is set to an
+     *                             empty Set
+     * @param id                   The ID of the current node
      */
     private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Node> optionalPreviousNode, String id) {
         Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(Set.of()));
@@ -336,12 +338,9 @@ public class NodeComponent implements IComponent {
      * from the description</li>
      * </ul>
      *
-     * @param optionalPreviousNode
-     *         The previous node if this node existed during a previous rendering
-     * @param nodeDescription
-     *         The description of the node
-     * @param nodeVariableManager
-     *         The variable manager of the node
+     * @param optionalPreviousNode The previous node if this node existed during a previous rendering
+     * @param nodeDescription      The description of the node
+     * @param nodeVariableManager  The variable manager of the node
      * @return The size of the node
      */
     private Size getSize(Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, VariableManager nodeVariableManager) {
@@ -380,7 +379,8 @@ public class NodeComponent implements IComponent {
                 .forEach(borderNodeDescriptions::add);
 
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
-            List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription)).orElse(List.of());
+            List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription))
+                    .orElse(List.of());
             List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(node -> node.getTargetObjectId()).toList();
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()

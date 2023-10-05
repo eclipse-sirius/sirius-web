@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
+import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import {
   GQLNode,
   GQLNodeStyle,
@@ -19,15 +20,16 @@ import {
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
+import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toListNode = (
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
+  nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean
 ): Node<ListNodeData> => {
   const {
@@ -59,6 +61,9 @@ const toListNode = (
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: state === GQLViewModifier.Faded,
     labelEditable,
+    nodeDescription,
+    defaultWidth: gqlNode.defaultWidth,
+    defaultHeight: gqlNode.defaultHeight,
   };
 
   if (insideLabel) {
@@ -120,10 +125,12 @@ export class ListNodeConverterHandler implements INodeConverterHandler {
     gqlNode: GQLNode<GQLRectangularNodeStyle>,
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[]
+    nodes: Node[],
+    nodeDescriptions: GQLNodeDescription[]
   ) {
-    nodes.push(toListNode(gqlNode, parentNode, isBorderNode));
-    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes);
-    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes);
+    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
+    nodes.push(toListNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
+    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
   }
 }

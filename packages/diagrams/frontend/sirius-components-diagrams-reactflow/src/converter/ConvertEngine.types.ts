@@ -11,10 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node } from 'reactflow';
+import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLNode, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 
 export interface IConvertEngine {
-  convertNodes(gqlNodesToConvert: GQLNode<GQLNodeStyle>[], parentNode: GQLNode<GQLNodeStyle> | null, nodes: Node[]);
+  convertNodes(
+    gqlNodesToConvert: GQLNode<GQLNodeStyle>[],
+    parentNode: GQLNode<GQLNodeStyle> | null,
+    nodes: Node[],
+    nodeDescriptions: GQLNodeDescription[]
+  ): void;
 }
 
 export interface INodeConverterHandler {
@@ -25,6 +31,7 @@ export interface INodeConverterHandler {
     gqlNode: GQLNode<GQLNodeStyle>,
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[]
+    nodes: Node[],
+    nodeDescriptions: GQLNodeDescription[]
   ): void;
 }

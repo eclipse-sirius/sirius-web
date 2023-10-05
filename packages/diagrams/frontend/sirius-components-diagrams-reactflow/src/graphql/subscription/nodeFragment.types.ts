@@ -27,6 +27,8 @@ export interface GQLNode<T extends GQLNodeStyle> {
   childNodes: GQLNode<GQLNodeStyle>[] | undefined;
   position: GQLPosition;
   size: GQLSize;
+  defaultWidth: number | null;
+  defaultHeight: number | null;
   labelEditable: boolean;
 }
 

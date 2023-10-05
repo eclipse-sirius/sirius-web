@@ -13,6 +13,7 @@
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node } from 'reactflow';
+import { GQLDiagramDescription, GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -21,6 +22,7 @@ export type FitViewLifecycle = 'neverRendered' | 'shouldFitview' | 'viewfit';
 
 export interface DiagramRendererProps {
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload;
+  diagramDescription: GQLDiagramDescription;
   selection: Selection;
   setSelection: (selection: Selection) => void;
 }
@@ -56,6 +58,9 @@ export interface NodeData {
   descriptionId: string;
   label: Label | undefined;
   faded: boolean;
+  nodeDescription: GQLNodeDescription | undefined;
+  defaultWidth: number | null;
+  defaultHeight: number | null;
   isBorderNode: boolean;
   borderNodePosition: BorderNodePositon | null;
   labelEditable: boolean;

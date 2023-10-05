@@ -62,7 +62,8 @@ fragment nodeFragment on Node {
       kind
     }
   }
-  userResizable
+  defaultWidth
+  defaultHeight
   labelEditable
 }
 `;

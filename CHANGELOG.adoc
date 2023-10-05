@@ -52,6 +52,8 @@ Add the attribute `displayHeaderSeparator` to the graphql API.
 +
 .Compartment with header without separator
 image:doc/screenshots/compartmentWithHeaderWithoutSeparator.png[Compartment with header without separator,30%]
+- https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] The properties `widthComputationExpression` and `heightComputationExpression` have been removed from `NodeStyleDescription`.
+From now on, use the `defaultWidthExpression` and `defaultHeightExpression` properties from `NodeDescription`.
 
 === Dependency update
 
@@ -97,6 +99,7 @@ Note that the custom shape replaces the parametric SVG, which is deprecated and 
 That includes the support during the direct edit.
 The user can use 'shift+enter' to insert a line break.
 - https://github.com/eclipse-sirius/sirius-web/issues/2522[#2522] [diagram] Add the support for rotatable border node.
+- https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] Add the possibility to specify a ratio on node to guarantee its aspect.
 
 === Improvements
 

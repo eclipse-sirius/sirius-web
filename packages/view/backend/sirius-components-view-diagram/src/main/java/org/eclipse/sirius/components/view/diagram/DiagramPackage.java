@@ -390,13 +390,40 @@ public interface DiagramPackage extends EPackage {
     int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
+     * The feature id for the '<em><b>Default Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+
+    /**
+     * The feature id for the '<em><b>Default Height Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
+
+    /**
+     * The feature id for the '<em><b>Keep Aspect Ratio</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+
+    /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+    int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -855,30 +882,12 @@ public interface DiagramPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION__LABEL_COLOR = STYLE_FEATURE_COUNT + 9;
 
     /**
-     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 10;
-
-    /**
-     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = STYLE_FEATURE_COUNT + 11;
-
-    /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 12;
+    int NODE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -886,7 +895,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION__LABEL_ICON = STYLE_FEATURE_COUNT + 13;
+    int NODE_STYLE_DESCRIPTION__LABEL_ICON = STYLE_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -895,7 +904,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 14;
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1052,24 +1061,6 @@ public interface DiagramPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
 
     /**
-     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
-
-    /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1218,24 +1209,6 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int IMAGE_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
-
-    /**
-     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int IMAGE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int IMAGE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1387,24 +1360,6 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int ICON_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR = NODE_STYLE_DESCRIPTION__LABEL_COLOR;
-
-    /**
-     * The feature id for the '<em><b>Width Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION;
-
-    /**
-     * The feature id for the '<em><b>Height Computation Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ICON_LABEL_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3169,6 +3124,42 @@ public interface DiagramPackage extends EPackage {
     EAttribute getNodeDescription_UserResizable();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getDefaultWidthExpression <em>Default Width
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Default Width Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getDefaultWidthExpression()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EAttribute getNodeDescription_DefaultWidthExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#getDefaultHeightExpression <em>Default Height
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Default Height Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#getDefaultHeightExpression()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EAttribute getNodeDescription_DefaultHeightExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDescription#isKeepAspectRatio <em>Keep Aspect
+     * Ratio</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Keep Aspect Ratio</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeDescription#isKeepAspectRatio()
+     * @see #getNodeDescription()
+     * @generated
+     */
+    EAttribute getNodeDescription_KeepAspectRatio();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription <em>Edge
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -3430,30 +3421,6 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getNodeStyleDescription_LabelColor();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getWidthComputationExpression <em>Width
-     * Computation Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Width Computation Expression</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getWidthComputationExpression()
-     * @see #getNodeStyleDescription()
-     * @generated
-     */
-    EAttribute getNodeStyleDescription_WidthComputationExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getHeightComputationExpression <em>Height
-     * Computation Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Height Computation Expression</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getHeightComputationExpression()
-     * @see #getNodeStyleDescription()
-     * @generated
-     */
-    EAttribute getNodeStyleDescription_HeightComputationExpression();
 
     /**
      * Returns the meta object for the attribute
@@ -4581,6 +4548,30 @@ public interface DiagramPackage extends EPackage {
         EAttribute NODE_DESCRIPTION__USER_RESIZABLE = eINSTANCE.getNodeDescription_UserResizable();
 
         /**
+         * The meta object literal for the '<em><b>Default Width Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = eINSTANCE.getNodeDescription_DefaultWidthExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Default Height Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = eINSTANCE.getNodeDescription_DefaultHeightExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Keep Aspect Ratio</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_DESCRIPTION__KEEP_ASPECT_RATIO = eINSTANCE.getNodeDescription_KeepAspectRatio();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeDescriptionImpl
          * <em>Edge Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -4779,22 +4770,6 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_STYLE_DESCRIPTION__LABEL_COLOR = eINSTANCE.getNodeStyleDescription_LabelColor();
-
-        /**
-         * The meta object literal for the '<em><b>Width Computation Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyleDescription_WidthComputationExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Height Computation Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION = eINSTANCE.getNodeStyleDescription_HeightComputationExpression();
 
         /**
          * The meta object literal for the '<em><b>Show Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--

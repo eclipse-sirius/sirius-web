@@ -181,6 +181,66 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
     protected boolean userResizable = USER_RESIZABLE_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getDefaultWidthExpression() <em>Default Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDefaultWidthExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String DEFAULT_WIDTH_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDefaultWidthExpression() <em>Default Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDefaultWidthExpression()
+     * @generated
+     * @ordered
+     */
+    protected String defaultWidthExpression = DEFAULT_WIDTH_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDefaultHeightExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String DEFAULT_HEIGHT_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDefaultHeightExpression()
+     * @generated
+     * @ordered
+     */
+    protected String defaultHeightExpression = DEFAULT_HEIGHT_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isKeepAspectRatio() <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #isKeepAspectRatio()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean KEEP_ASPECT_RATIO_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isKeepAspectRatio() <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #isKeepAspectRatio()
+     * @generated
+     * @ordered
+     */
+    protected boolean keepAspectRatio = KEEP_ASPECT_RATIO_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -461,6 +521,75 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public String getDefaultWidthExpression() {
+        return this.defaultWidthExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDefaultWidthExpression(String newDefaultWidthExpression) {
+        String oldDefaultWidthExpression = this.defaultWidthExpression;
+        this.defaultWidthExpression = newDefaultWidthExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION, oldDefaultWidthExpression, this.defaultWidthExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getDefaultHeightExpression() {
+        return this.defaultHeightExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDefaultHeightExpression(String newDefaultHeightExpression) {
+        String oldDefaultHeightExpression = this.defaultHeightExpression;
+        this.defaultHeightExpression = newDefaultHeightExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION, oldDefaultHeightExpression, this.defaultHeightExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isKeepAspectRatio() {
+        return this.keepAspectRatio;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setKeepAspectRatio(boolean newKeepAspectRatio) {
+        boolean oldKeepAspectRatio = this.keepAspectRatio;
+        this.keepAspectRatio = newKeepAspectRatio;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO, oldKeepAspectRatio, this.keepAspectRatio));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
@@ -507,6 +636,12 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getReusedBorderNodeDescriptions();
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 return this.isUserResizable();
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
+                return this.getDefaultWidthExpression();
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
+                return this.getDefaultHeightExpression();
+            case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
+                return this.isKeepAspectRatio();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -555,6 +690,15 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 this.setUserResizable((Boolean) newValue);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
+                this.setDefaultWidthExpression((String) newValue);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
+                this.setDefaultHeightExpression((String) newValue);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
+                this.setKeepAspectRatio((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -597,6 +741,15 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 this.setUserResizable(USER_RESIZABLE_EDEFAULT);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
+                this.setDefaultWidthExpression(DEFAULT_WIDTH_EXPRESSION_EDEFAULT);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
+                this.setDefaultHeightExpression(DEFAULT_HEIGHT_EXPRESSION_EDEFAULT);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
+                this.setKeepAspectRatio(KEEP_ASPECT_RATIO_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -629,6 +782,12 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.reusedBorderNodeDescriptions != null && !this.reusedBorderNodeDescriptions.isEmpty();
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 return this.userResizable != USER_RESIZABLE_EDEFAULT;
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
+                return DEFAULT_WIDTH_EXPRESSION_EDEFAULT == null ? this.defaultWidthExpression != null : !DEFAULT_WIDTH_EXPRESSION_EDEFAULT.equals(this.defaultWidthExpression);
+            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
+                return DEFAULT_HEIGHT_EXPRESSION_EDEFAULT == null ? this.defaultHeightExpression != null : !DEFAULT_HEIGHT_EXPRESSION_EDEFAULT.equals(this.defaultHeightExpression);
+            case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
+                return this.keepAspectRatio != KEEP_ASPECT_RATIO_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -648,6 +807,12 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         result.append(this.collapsible);
         result.append(", userResizable: ");
         result.append(this.userResizable);
+        result.append(", defaultWidthExpression: ");
+        result.append(this.defaultWidthExpression);
+        result.append(", defaultHeightExpression: ");
+        result.append(this.defaultHeightExpression);
+        result.append(", keepAspectRatio: ");
+        result.append(this.keepAspectRatio);
         result.append(')');
         return result.toString();
     }

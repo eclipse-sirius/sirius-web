@@ -22,12 +22,14 @@ public class IconLabelNodeStyleDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription iconLabelNodeStyleDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription getIconLabelNodeStyleDescription() {
@@ -36,6 +38,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription build() {
@@ -51,6 +54,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setColor(value);
         return this;
     }
+
     /**
      * Setter for FontSize.
      *
@@ -60,6 +64,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setFontSize(value);
         return this;
     }
+
     /**
      * Setter for Italic.
      *
@@ -69,6 +74,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setItalic(value);
         return this;
     }
+
     /**
      * Setter for Bold.
      *
@@ -78,6 +84,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setBold(value);
         return this;
     }
+
     /**
      * Setter for Underline.
      *
@@ -87,6 +94,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setUnderline(value);
         return this;
     }
+
     /**
      * Setter for StrikeThrough.
      *
@@ -96,6 +104,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setStrikeThrough(value);
         return this;
     }
+
     /**
      * Setter for BorderColor.
      *
@@ -105,6 +114,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setBorderColor(value);
         return this;
     }
+
     /**
      * Setter for BorderRadius.
      *
@@ -114,6 +124,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setBorderRadius(value);
         return this;
     }
+
     /**
      * Setter for BorderSize.
      *
@@ -123,6 +134,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setBorderSize(value);
         return this;
     }
+
     /**
      * Setter for BorderLineStyle.
      *
@@ -132,6 +144,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }
+
     /**
      * Setter for LabelColor.
      *
@@ -141,24 +154,7 @@ public class IconLabelNodeStyleDescriptionBuilder {
         this.getIconLabelNodeStyleDescription().setLabelColor(value);
         return this;
     }
-    /**
-     * Setter for WidthComputationExpression.
-     *
-     * @generated
-     */
-    public IconLabelNodeStyleDescriptionBuilder widthComputationExpression(java.lang.String value) {
-        this.getIconLabelNodeStyleDescription().setWidthComputationExpression(value);
-        return this;
-    }
-    /**
-     * Setter for HeightComputationExpression.
-     *
-     * @generated
-     */
-    public IconLabelNodeStyleDescriptionBuilder heightComputationExpression(java.lang.String value) {
-        this.getIconLabelNodeStyleDescription().setHeightComputationExpression(value);
-        return this;
-    }
+
     /**
      * Setter for ShowIcon.
      *

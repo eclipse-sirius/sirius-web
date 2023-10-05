@@ -15,9 +15,10 @@ import { Node } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
-import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
+import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import {
+  applyRatioOnNewNodeSizeValue,
   computeNodesBox,
   findNodeIndex,
   getChildNodePosition,
@@ -152,8 +153,11 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     const nodeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
-    node.height = getNodeOrMinHeight(nodeHeight);
+    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
+    node.height = getNodeOrMinHeight(nodeHeight, node);
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
 
     // Update border nodes positions
     borderNodes.forEach((borderNode) => {
@@ -179,7 +183,11 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       borderWidth * 2;
     const labelHeight =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
-    node.width = forceWidth ?? getNodeOrMinWidth(labelWidth);
-    node.height = getNodeOrMinHeight(labelHeight);
+    node.width = forceWidth ?? getNodeOrMinWidth(labelWidth, node);
+    node.height = getNodeOrMinHeight(labelHeight, node);
+
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
   }
 }

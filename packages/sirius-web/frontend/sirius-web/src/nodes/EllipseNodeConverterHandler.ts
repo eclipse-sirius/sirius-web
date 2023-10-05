@@ -15,6 +15,7 @@ import {
   BorderNodePositon,
   convertLabelStyle,
   GQLNode,
+  GQLNodeDescription,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
@@ -28,6 +29,7 @@ const defaultPosition: XYPosition = { x: 0, y: 0 };
 const toEllipseNode = (
   gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
+  nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean
 ): Node<EllipseNodeData> => {
   const {
@@ -57,6 +59,9 @@ const toEllipseNode = (
     label: undefined,
     faded: state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
+    nodeDescription,
+    defaultWidth: gqlNode.defaultWidth,
+    defaultHeight: gqlNode.defaultHeight,
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
     labelEditable,
   };
@@ -119,10 +124,12 @@ export class EllipseNodeConverterHandler implements INodeConverterHandler {
     gqlNode: GQLNode<GQLEllipseNodeStyle>,
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[]
+    nodes: Node[],
+    nodeDescriptions: GQLNodeDescription[]
   ) {
-    nodes.push(toEllipseNode(gqlNode, parentNode, isBorderNode));
-    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes);
-    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes);
+    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
+    nodes.push(toEllipseNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
+    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
   }
 }

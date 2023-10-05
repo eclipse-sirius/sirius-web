@@ -96,8 +96,8 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
     private final StereotypeBuilder stereotypeBuilder;
 
     public StudioProjectTemplatesInitializer(IProjectRepository projectRepository, IDocumentRepository documentRepository,
-                                             IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService,
-                                             IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry) {
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService,
+            IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
@@ -322,8 +322,6 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private RectangularNodeStyleDescription createRectangularNodeStyle(View view, String color, String borderColor) {
         RectangularNodeStyleDescription entity2Style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        entity2Style.setWidthComputationExpression("150");
-        entity2Style.setHeightComputationExpression("70");
         entity2Style.setColor(this.getColorFromPalette(view, color));
         entity2Style.setBorderColor(this.getColorFromPalette(view, borderColor));
         entity2Style.setBorderRadius(3);
@@ -384,14 +382,14 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private UserColor getColorFromPalette(View view, String colorName) {
         return view.getColorPalettes()
-                   .stream()
-                   .findFirst()
-                   .map(ColorPalette::getColors)
-                   .stream()
-                   .flatMap(Collection::stream)
-                   .filter(userColor -> userColor.getName().equals(colorName))
-                   .findFirst()
-                   .orElse(null);
+                .stream()
+                .findFirst()
+                .map(ColorPalette::getColors)
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(userColor -> userColor.getName().equals(colorName))
+                .findFirst()
+                .orElse(null);
     }
 
 }

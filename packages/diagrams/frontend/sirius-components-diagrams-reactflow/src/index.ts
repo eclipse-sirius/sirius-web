@@ -18,6 +18,7 @@ export { convertLabelStyle } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle, GraphQLNodeStyleFragment } from './graphql/subscription/nodeFragment.types';
+export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
 export { BorderNodePositon } from './renderer/DiagramRenderer.types';
 export type { Diagram, NodeData } from './renderer/DiagramRenderer.types';
 export { Label } from './renderer/Label';

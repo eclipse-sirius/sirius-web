@@ -15,9 +15,10 @@ import { Node } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { ImageNodeData } from '../node/ImageNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
+import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import {
+  applyRatioOnNewNodeSizeValue,
   computeNodesBox,
   getEastBorderNodeFootprintHeight,
   getNodeOrMinHeight,
@@ -27,13 +28,7 @@ import {
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
 } from './layoutNode';
-import {
-  borderLeftAndRight,
-  borderTopAndBottom,
-  defaultHeight,
-  defaultWidth,
-  rectangularNodePadding,
-} from './layoutParams';
+import { borderLeftAndRight, borderTopAndBottom, rectangularNodePadding } from './layoutParams';
 
 export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -52,8 +47,8 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     if (directChildren.length > 0) {
       this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, newlyAddedNode);
     } else {
-      node.width = forceWidth ?? defaultWidth;
-      node.height = defaultHeight;
+      node.width = forceWidth ?? getNodeOrMinWidth(undefined, node);
+      node.height = getNodeOrMinHeight(undefined, node);
     }
   }
 
@@ -70,11 +65,11 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
 
     if (previousNode && previousNode.width && previousNode.height) {
-      node.width = previousNode.width;
-      node.height = previousNode.height;
+      node.width = getNodeOrMinWidth(previousNode.width, node);
+      node.height = getNodeOrMinHeight(previousNode.height, node);
     } else {
-      node.width = defaultWidth;
-      node.height = defaultHeight;
+      node.width = getNodeOrMinWidth(undefined, node);
+      node.height = getNodeOrMinHeight(undefined, node);
     }
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
@@ -103,8 +98,12 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
       westBorderNodeFootprintHeight
     );
 
-    node.width = getNodeOrMinWidth(nodeWidth + borderLeftAndRight);
-    node.height = getNodeOrMinHeight(nodeHeight + borderTopAndBottom);
+    node.width = getNodeOrMinWidth(nodeWidth + borderLeftAndRight, node);
+    node.height = getNodeOrMinHeight(nodeHeight + borderTopAndBottom, node);
+
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
 
     // Update border nodes positions
     borderNodes.forEach((borderNode) => {

@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  applyRatioOnNewNodeSizeValue,
   computeNodesBox,
   Diagram,
   DiagramNodeType,
@@ -65,10 +66,25 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       } else if (previousNode) {
         child.position = previousNode.position;
       } else {
-        child.position = getChildNodePosition(visibleNodes, child, labelElement, false, borderWidth);
+        child.position = child.position = getChildNodePosition(
+          visibleNodes,
+          child,
+          labelElement,
+          false,
+          false,
+          borderWidth
+        );
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
-          child.position = getChildNodePosition(visibleNodes, child, labelElement, false, borderWidth, previousSibling);
+          child.position = getChildNodePosition(
+            visibleNodes,
+            child,
+            labelElement,
+            false,
+            false,
+            borderWidth,
+            previousSibling
+          );
         }
       }
     });
@@ -98,8 +114,11 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const nodeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
-    node.height = getNodeOrMinHeight(nodeHeight);
+    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
+    node.height = getNodeOrMinHeight(nodeHeight, node);
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
 
     // Update border nodes positions
     borderNodes.forEach((borderNode) => {

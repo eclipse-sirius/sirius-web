@@ -22,12 +22,14 @@ public class RectangularNodeStyleDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription.
+     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription rectangularNodeStyleDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription getRectangularNodeStyleDescription() {
@@ -36,6 +38,7 @@ public class RectangularNodeStyleDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription build() {
@@ -51,6 +54,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setColor(value);
         return this;
     }
+
     /**
      * Setter for FontSize.
      *
@@ -60,6 +64,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setFontSize(value);
         return this;
     }
+
     /**
      * Setter for Italic.
      *
@@ -69,6 +74,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setItalic(value);
         return this;
     }
+
     /**
      * Setter for Bold.
      *
@@ -78,6 +84,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setBold(value);
         return this;
     }
+
     /**
      * Setter for Underline.
      *
@@ -87,6 +94,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setUnderline(value);
         return this;
     }
+
     /**
      * Setter for StrikeThrough.
      *
@@ -96,6 +104,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setStrikeThrough(value);
         return this;
     }
+
     /**
      * Setter for BorderColor.
      *
@@ -105,6 +114,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setBorderColor(value);
         return this;
     }
+
     /**
      * Setter for BorderRadius.
      *
@@ -114,6 +124,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setBorderRadius(value);
         return this;
     }
+
     /**
      * Setter for BorderSize.
      *
@@ -123,6 +134,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setBorderSize(value);
         return this;
     }
+
     /**
      * Setter for BorderLineStyle.
      *
@@ -132,6 +144,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setBorderLineStyle(value);
         return this;
     }
+
     /**
      * Setter for LabelColor.
      *
@@ -141,24 +154,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setLabelColor(value);
         return this;
     }
-    /**
-     * Setter for WidthComputationExpression.
-     *
-     * @generated
-     */
-    public RectangularNodeStyleDescriptionBuilder widthComputationExpression(java.lang.String value) {
-        this.getRectangularNodeStyleDescription().setWidthComputationExpression(value);
-        return this;
-    }
-    /**
-     * Setter for HeightComputationExpression.
-     *
-     * @generated
-     */
-    public RectangularNodeStyleDescriptionBuilder heightComputationExpression(java.lang.String value) {
-        this.getRectangularNodeStyleDescription().setHeightComputationExpression(value);
-        return this;
-    }
+
     /**
      * Setter for ShowIcon.
      *
@@ -168,6 +164,7 @@ public class RectangularNodeStyleDescriptionBuilder {
         this.getRectangularNodeStyleDescription().setShowIcon(value);
         return this;
     }
+
     /**
      * Setter for LabelIcon.
      *

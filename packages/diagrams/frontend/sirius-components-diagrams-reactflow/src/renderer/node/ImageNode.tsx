@@ -73,6 +73,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         color={theme.palette.primary.main}
         isVisible={selected && !data.isBorderNode}
         shouldResize={() => !data.isBorderNode}
+        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
       />
       <img
         src={httpOrigin + data.imageURL}

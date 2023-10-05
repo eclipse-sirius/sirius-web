@@ -55,7 +55,14 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
 
   return (
     <>
-      <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => !data.isBorderNode} />
+      {data.nodeDescription?.userResizable && (
+        <NodeResizer
+          color={theme.palette.primary.main}
+          isVisible={selected}
+          shouldResize={() => !data.isBorderNode}
+          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        />
+      )}
       <div
         style={{
           ...rectangularNodeStyle(theme, data.style, selected, data.faded),

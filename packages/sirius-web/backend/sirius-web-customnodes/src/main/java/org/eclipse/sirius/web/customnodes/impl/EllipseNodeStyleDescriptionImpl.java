@@ -51,10 +51,6 @@ import org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription;
  * Style</em>}</li>
  * <li>{@link org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl#getLabelColor <em>Label
  * Color</em>}</li>
- * <li>{@link org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl#getWidthComputationExpression
- * <em>Width Computation Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl#getHeightComputationExpression
- * <em>Height Computation Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl#isShowIcon <em>Show
  * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl#getLabelIcon <em>Label
@@ -244,46 +240,6 @@ public class EllipseNodeStyleDescriptionImpl extends StyleImpl implements Ellips
      * @ordered
      */
     protected UserColor labelColor;
-
-    /**
-     * The default value of the '{@link #getWidthComputationExpression() <em>Width Computation Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getWidthComputationExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String WIDTH_COMPUTATION_EXPRESSION_EDEFAULT = "150";
-
-    /**
-     * The cached value of the '{@link #getWidthComputationExpression() <em>Width Computation Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getWidthComputationExpression()
-     * @generated
-     * @ordered
-     */
-    protected String widthComputationExpression = WIDTH_COMPUTATION_EXPRESSION_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getHeightComputationExpression() <em>Height Computation Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getHeightComputationExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT = "70";
-
-    /**
-     * The cached value of the '{@link #getHeightComputationExpression() <em>Height Computation Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getHeightComputationExpression()
-     * @generated
-     * @ordered
-     */
-    protected String heightComputationExpression = HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -614,54 +570,6 @@ public class EllipseNodeStyleDescriptionImpl extends StyleImpl implements Ellips
      * @generated
      */
     @Override
-    public String getWidthComputationExpression() {
-        return this.widthComputationExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setWidthComputationExpression(String newWidthComputationExpression) {
-        String oldWidthComputationExpression = this.widthComputationExpression;
-        this.widthComputationExpression = newWidthComputationExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION, oldWidthComputationExpression,
-                    this.widthComputationExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String getHeightComputationExpression() {
-        return this.heightComputationExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setHeightComputationExpression(String newHeightComputationExpression) {
-        String oldHeightComputationExpression = this.heightComputationExpression;
-        this.heightComputationExpression = newHeightComputationExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION, oldHeightComputationExpression,
-                    this.heightComputationExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public boolean isShowIcon() {
         return this.showIcon;
     }
@@ -734,10 +642,6 @@ public class EllipseNodeStyleDescriptionImpl extends StyleImpl implements Ellips
                 if (resolve)
                     return this.getLabelColor();
                 return this.basicGetLabelColor();
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
-                return this.getWidthComputationExpression();
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
-                return this.getHeightComputationExpression();
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.isShowIcon();
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
@@ -783,12 +687,6 @@ public class EllipseNodeStyleDescriptionImpl extends StyleImpl implements Ellips
                 return;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
                 this.setLabelColor((UserColor) newValue);
-                return;
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
-                this.setWidthComputationExpression((String) newValue);
-                return;
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
-                this.setHeightComputationExpression((String) newValue);
                 return;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
@@ -838,12 +736,6 @@ public class EllipseNodeStyleDescriptionImpl extends StyleImpl implements Ellips
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
                 this.setLabelColor((UserColor) null);
                 return;
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
-                this.setWidthComputationExpression(WIDTH_COMPUTATION_EXPRESSION_EDEFAULT);
-                return;
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
-                this.setHeightComputationExpression(HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT);
-                return;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
@@ -882,10 +774,6 @@ public class EllipseNodeStyleDescriptionImpl extends StyleImpl implements Ellips
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
                 return this.labelColor != null;
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__WIDTH_COMPUTATION_EXPRESSION:
-                return WIDTH_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.widthComputationExpression != null : !WIDTH_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.widthComputationExpression);
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__HEIGHT_COMPUTATION_EXPRESSION:
-                return HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT == null ? this.heightComputationExpression != null : !HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT.equals(this.heightComputationExpression);
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
@@ -1001,10 +889,6 @@ public class EllipseNodeStyleDescriptionImpl extends StyleImpl implements Ellips
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
-        result.append(", widthComputationExpression: ");
-        result.append(this.widthComputationExpression);
-        result.append(", heightComputationExpression: ");
-        result.append(this.heightComputationExpression);
         result.append(", showIcon: ");
         result.append(this.showIcon);
         result.append(", labelIcon: ");

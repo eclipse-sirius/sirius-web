@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { Edge, Node } from 'reactflow';
+import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
@@ -92,11 +93,17 @@ const defaultNodeConverterHandlers: INodeConverterHandler[] = [
 
 export const convertDiagram = (
   gqlDiagram: GQLDiagram,
-  nodeConverterHandlerContributions: INodeConverterHandler[]
+  nodeConverterHandlerContributions: INodeConverterHandler[],
+  nodeDescriptions: GQLNodeDescription[]
 ): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
   const convertEngine: IConvertEngine = {
-    convertNodes(gqlNodesToConvert: GQLNode<GQLNodeStyle>[], parentNode: GQLNode<GQLNodeStyle> | null, nodes: Node[]) {
+    convertNodes(
+      gqlNodesToConvert: GQLNode<GQLNodeStyle>[],
+      parentNode: GQLNode<GQLNodeStyle> | null,
+      nodes: Node[],
+      nodeDescriptions: GQLNodeDescription[]
+    ) {
       gqlNodesToConvert.forEach((node) => {
         const nodeConverterHandler: INodeConverterHandler | undefined = [
           ...defaultNodeConverterHandlers,
@@ -105,13 +112,13 @@ export const convertDiagram = (
         if (nodeConverterHandler) {
           const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(node.id);
 
-          nodeConverterHandler.handle(this, node, parentNode, isBorderNode, nodes);
+          nodeConverterHandler.handle(this, node, parentNode, isBorderNode, nodes, nodeDescriptions);
         }
       });
     },
   };
 
-  convertEngine.convertNodes(gqlDiagram.nodes, null, nodes);
+  convertEngine.convertNodes(gqlDiagram.nodes, null, nodes, nodeDescriptions);
 
   const nodeId2node = new Map<string, Node>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));

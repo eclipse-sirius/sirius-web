@@ -68,6 +68,10 @@ public final class Node implements IDiagramElement {
 
     private Set<CustomizableProperties> customizedProperties;
 
+    private Integer defaultWidth;
+
+    private Integer defaultHeight;
+
     private boolean labelEditable;
 
     private Node() {
@@ -160,6 +164,14 @@ public final class Node implements IDiagramElement {
         return this.customizedProperties;
     }
 
+    public Integer getDefaultWidth() {
+        return this.defaultWidth;
+    }
+
+    public Integer getDefaultHeight() {
+        return this.defaultHeight;
+    }
+
     public boolean isLabelEditable() {
         return this.labelEditable;
     }
@@ -217,6 +229,10 @@ public final class Node implements IDiagramElement {
 
         private Set<CustomizableProperties> customizedProperties = Set.of();
 
+        private Integer defaultWidth;
+
+        private Integer defaultHeight;
+
         private boolean labelEditable;
 
         private Builder(String id) {
@@ -243,6 +259,8 @@ public final class Node implements IDiagramElement {
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
             this.customizedProperties = node.getCustomizedProperties();
+            this.defaultWidth = node.getDefaultWidth();
+            this.defaultHeight = node.getDefaultHeight();
             this.labelEditable = node.isLabelEditable();
         }
 
@@ -336,6 +354,16 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
+        public Builder defaultWidth(Integer defaultWidth) {
+            this.defaultWidth = Objects.requireNonNull(defaultWidth);
+            return this;
+        }
+
+        public Builder defaultHeight(Integer defaultHeight) {
+            this.defaultHeight = Objects.requireNonNull(defaultHeight);
+            return this;
+        }
+
         public Builder labelEditable(boolean labelEditable) {
             this.labelEditable = labelEditable;
             return this;
@@ -362,6 +390,8 @@ public final class Node implements IDiagramElement {
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.customizedProperties = this.customizedProperties;
+            node.defaultWidth = this.defaultWidth; // Optional on purpose
+            node.defaultHeight = this.defaultHeight; // Optional on purpose
             node.labelEditable = this.labelEditable;
             return node;
         }
