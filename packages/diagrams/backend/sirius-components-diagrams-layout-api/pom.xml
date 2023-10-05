@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-diagrams-layout-api</artifactId>
-	<version>2023.10.0</version>
+	<version>2023.10.1</version>
 	<name>sirius-components-diagrams-layout-api</name>
 	<description>Sirius Components Diagrams Layout API</description>
 
@@ -43,12 +43,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams</artifactId>
-			<version>2023.10.0</version>
+			<version>2023.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-core</artifactId>
-			<version>2023.10.0</version>
+			<version>2023.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
