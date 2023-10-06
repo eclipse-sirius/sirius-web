@@ -1,6 +1,6 @@
 # Review checklist
 
-This document will contain a cheklist of the various things to consider while submitting or reviewing a contribution.
+This document will contain a checklist of the various things to consider while submitting or reviewing a contribution.
 
 ## Issues
 
@@ -8,40 +8,61 @@ This document will contain a cheklist of the various things to consider while su
 
 Issues are quite simple to review, you should mostly consider if the appropriate labels have been added with at least a label for:
 
-- The area such as `area: backend`, `area: frontend`, `area: diagram` etc
+- The various packages that will be impacted such as `package: diagram`, `package: form`, `package: view` etc
 - The difficulty such as `difficulty: starter`
-- The type like `type: enhancement``
+- The type like `type: enhancement`
 
-Those various labels are important to find existing issues and also because we have from time to time some contributors available on the project for a couple of day or weeks and we need to find simple enhancements for them to perform.
+Those various labels are important to find existing issues and also because we have from time to time some contributors available on the project for a couple of days or weeks and we need to find simple enhancements for them to perform.
 
 Do not add try to create labels of various shapes in the title of your issues such as `Topic:` or `[Topic]`.
-If it's necessary, ask for the creation of a proper label dedicated to your topic.
+If it's necessary, ask for the creation of a proper label dedicated to your topic if the topic represents a sizable part of the project long term.
 It will make it easier to find issues in the future.
 
-Issues and pull requests on Sirius Components should be focused on Sirius Components.
-If an application integrating Sirius Components needs to be mentionned, please use Sirius Web.
+Issues and pull requests in this repository should be focused on Sirius Components and Sirius Web.
+If an application integrating Sirius Components needs to be mentioned, please use Sirius Web as an example as much as possible.
+
 
 ### Projects and milestones
 
 We are currently working on a single project and milestone at a time.
-If you know for a fact that your work will be part of the current iteration, you can add the current project and milestone to the issue and pull request.
+If you know for a fact that some work will be part of the current iteration, you can add the current project and milestone to the issue and pull request.
+
+IMPORTANT: Since we are managing our work using the Github project, all issues associated with the current milestone should be visible in the project too.
 
 
 ### Linked pull requests
 
 If there are pull requests for an issue, you should link them.
-Once the pull request will be merged, the issue will be closed automatically.
-If some work remains to be done, it's best to open a new issue to indicate that a first part of the work has been merged and that some work remains to be done.
+Once the pull request is merged, the issue will be closed automatically.
+It is also essential in order to have a bird eye view of the work being done in the project.
+If some work remains to be done, it's best to open a new issue to indicate that the first part of the work has been merged and that some work remains to be done.
+Large scale / generic issues tend to be problematic since you never know if you can close them since the work may not be fully completed.
+Since issues can only be attached to a single milestone, it creates issues when some work is spanning across multiple iterations.
+
+TIP: The smaller the scope of an issue, the smaller the unit of work to be done will be and the faster it will be reviewed, merged and thus delivered.
 
 
 ## Pull requests
 
 ### Commit
 
-All the commits of a pull request should be properly formatted.
+We are expecting to frequently merge meaningful improvements to both Sirius Components and Sirius Web.
+As a result, the most important metric to keep delivering meaningful improvements is the size of the scope of each improvement.
+You can organize your work as you want with any number of commits to remember what you have done but when it is time to submit your work to be reviewed, it is best to have the lowest number of commits possible.
+Since a contribution is expected to be small in scope, most of the pull requests of the project contain a single commit.
+We frequently have pull requests with two or three commits with, for example, a commit for an ADR or a commit for a small isolated improvement not strictly related to the main work but most of the time, the smaller a pull request is, the better it is for everybody.
+
+All the commit messages of a pull request should be properly formatted.
 Have a look at other commits if you have any doubts about the way we format our commit messages.
-Commits should thus start with a title starting with the topic of the commit, either the number of an issue or a general purpose tag like `[releng]`, `[test]`, `[doc]` etc.
+Commits should thus start with a title starting with the number of the issue linked to the pull request most of the time or a general purpose tag like `[releng]`, `[test]`, `[doc]` etc.
 General purpose tags should only be used for small improvements.
+
+TIP: While an issue should describe the problem to be fixed or the feature to implement, commit messages should describe the solution implemented.
+Some issues would benefit from having a commit title indicating what has been done instead of just copying and pasting the title of the issue which describe what was the problem.
+
+If you have some meaningful information to communicate on what has been done in your contribution or how it impacts consumers of Sirius Components / Sirius Web, write it the CHANGELOG.
+This is the main channel of communication that we are using to inform consumers of this repository of the changes made.
+Don't write anything meaningful in the body of a commit message, nobody will read it.
 
 If such an improvement requires some explanation or some additional context, then using a proper issue capturing those pieces of information is better.
 If you are referencing an issue, the URL of the issue should be specified too.
@@ -55,19 +76,92 @@ It's not required anymore by the Eclipse Foundation and we may remove this requi
 The code should have a proper copyright which should be updated when necessary.
 
 A commit fixing an issue should also update the `CHANGELOG` to indicate what has been done.
-For most contributions, a simple sentence with the link of the issue and it's description is enough.
+For most contributions, a simple sentence indicating what has been done with the link of the issue is enough.
 Important API breaks should also be noted in the dedicated sections.
+
+IMPORTANT: If a contribution changes code in Sirius Web, most of the time it is to adapt the code to a change in Sirius Components.
+You can pretty much consider any contribution with a change in Sirius Web as having API breaks which should be described separately than the work being done in the CHANGELOG.
 
 Major evolutions require a dedicated `ADR` which should be referenced in the `CHANGELOG` too.
 It is better to contribute the ADR before starting to work on an issue in order to ensure that you are not starting in a wrong direction.
 
+## Code
+
+### Architecture
+
+This repository contains two main parts: Sirius Components and Sirius Web.
+
+#### Sirius Components
+
+The modules of Sirius Components are meant to be reused by countless applications in various use cases.
+As a result, the modules of Sirius Components should make as little hypothesis on the environment in which they will be used as possible.
+For that reason, we are separating some concerns in Sirius Components to let consumers of Sirius Components take just what they need.
+We want to maximize what our consumers can retrieve in some constrained use cases.
+
+Here are some use cases of applications in which a subset of Sirius Components should be usable:
+
+- *Java applications not using the Spring runtime*:
+We should be able to embed our representations in a Java application based on another framework than Spring.
+Parts of our code can have dependencies to Spring annotations like `@Service` but we need to isolate our dependency to Spring.
+Yet, we should not rely more than necessary on Spring to build our API and behavior.
+- *Applications not relying on an internet connection:*
+We have demonstrated in the past that both the frontend and backend modules of Sirius Components can be embedded in a VS Code extension which works locally.
+It still uses an internal HTTP / WebSocket server to communicate between the frontend and the backend but does not rely on an internet connection to a remote server.
+- *Java applications not using any frontend at all:*
+We should be able to create representations fully in Java without any JavaScript/CSS/HTML at all.
+The application integrating Sirius Components module would have to figure out how to render the representation for its users but it should be possible.
+- *Java applications without Eclipse EMF:*
+In some use cases, our consumer may not leverage EMF to manipulate their data.
+As such, the core parts of our application should not consider that EMF will be available.
+- *Java applications without odesign or our View DSL:*
+They would have to manipulate bare metal APIs without the refinements and high level concepts of our View DSL but it has advantages too.
+Fully programmatic manipulation can be easier to maintain for experienced Java developers and more performant for advanced teams.
+- *Applications using something other than React for the frontend rendering:*
+Yes we can use React components from an application not based on React for example in a Vue or Angular application.
+- *Applications using another GraphQL framework:*
+We are leveraging Spring MVC and GraphQL Java to build our own GraphQL API but some of our customers may use something else like Netflix DGS or even homemade solutions.
+- *Applications with a very different GraphQL API than Sirius Web:*
+We may not be in charge of the whole GraphQL API so don't pollute the root GraphQL concepts.
+For example, if you need to retrieve some information for a representation, add a field in some types of your representation, see how the palette of a diagram is retrieved for example.
+Try not to add additional fields to the root concepts (Query, EditingContext for example).
+Given the nature of GraphQL, we do not have a choice for mutations and subscriptions.
+
+As a result, those requirements brings some constraints to the organization of our code:
+
+- Maven modules used to render representations like `sirius-components-diagrams` should be independent from pretty much everything.
+As such, they should not depend on Spring (even Spring annotations), Eclipse EMF, the View DSL, any GraphQL concern, any network concern, any persistence solutions, etc.
+- Maven modules used to integrate support for a representation in our collaborative environment like `sirius-components-collaborative-diagrams` should be independent from our GraphQL API, Eclipse EMF, the View DSL.
+They should not have any opinion on the persistence or network solutions adopted by the application in which they are integrated.
+Those modules should not rely on advanced Spring features since they will be reused in non-Spring applications.
+They can depend on Spring annotations like `@Service` but not much more.
+- Maven modules used to provide support for the GraphQL API should be independent from Eclipse EMF, the View DSL, the persistence solution or even the network protocols used (HTTP or WebSocket or Server Sent Event etc.)
+- Our NPM packages should not make any hypothesis on the way the representations have been created (odesign, View DSL, programmatically).
+They should not either be dependent on a specific protocol apart from HTTP to fetch images to be displayed in a regular image element like `<img src="..." />`.
+Some applications could decide that our GraphQL queries and mutations could be sent over WebSocket and our subscriptions sent using Server Sent Events.
+
+#### Sirius Web
+
+Sirius Web is one use case showing how we recommend building an application which reuses everything that Sirius Components has to offer.
+It should never be considered as the sole use case or even the main use case in which the end users are interacting with Sirius Components.
+
+The goal of Sirius Web is to provide a simple web application integrating Sirius Components.
+Since a lot of consumers of Sirius Components will want to create web applications like Sirius Web, it has to provide some answers on how Sirius Components can behave in a web environment.
+For that, Sirius Web will have to solve specific issues outside of the scope of Sirius Components.
+Those solutions will thus force Sirius Web to depend on additional technologies and introduce additional concepts.
+
+IMPORTANT: *Sirius Web specific concepts and dependencies should not leak into Sirius Components code*.
+
+Here are a couple of examples of concerns specific to Sirius Web.
+In order to provide a scope to the data manipulated in the application, Sirius Web provides concepts like `Project` and `Document`.
+Sirius Web also depends on Spring Data JPA and PostgreSQL in order to save all of its data.
+It uses HTTP to send queries and mutations and WebSocket to provide support for subscriptions.
 
 ### Backend
 
 Here is a list of things to consider while reviewing some backend changes:
 
 - [ ] Is there really a good reason not to have tests?
-- [ ] Are there new depencencies? Are they really relevant?
+- [ ] Are there new dependencies? Are they really relevant?
 - [ ] Do the variables have a meaningful name?
 - [ ] If the commit includes or modified an event handler, a regular service class or anything related to the layout algorithm, then it should contain some tests
 - [ ] If an input, a payload or a datafetcher has been modified then the associated schema should be updated too (it works both ways)
@@ -75,20 +169,20 @@ Here is a list of things to consider while reviewing some backend changes:
 - [ ] Are there non `final` fields and are they really necessary?
 - [ ] Does a data structure contain some behavior?
 - [ ] Is any data structure mutable? Is that really necessary?
-- [ ] Is the dependency to EMF / Sirius RCP properly isolated?
+- [ ] Are the dependencies relevant and up to date?
 
 
 ### Frontend
 
 Our frontend has been started in JavaScript and it is being migrated to TypeScript.
-This is continuous improvement should be done by everybody, one piece of code at a time.
+This continuous improvement should be done by everybody, one piece of code at a time.
 If you modify a file which is not properly typed, you will be asked to improve its TypeScript typing.
 
 Here is a list of things to consider while reviewing some frontend changes:
 
 - [ ] Is there really a good reason not to have tests?
 - [ ] Is this really necessary to use a snapshot for this test? Why can't a simple assertion be used?
-- [ ] Are there new depencencies? Are they really relevant?
+- [ ] Are there new dependencies? Are they really relevant?
 - [ ] Do the variables have a meaningful name?
 - [ ] Is the code modified or the new code properly typed? This includes calls to Apollo, XState or React hooks like `useState`, `useMachine`, `useQuery`, `useMutation` or `useSubscription`. It also includes the return type of the function and the type of the event handlers.
 - [ ] Are there useless `null` or `undefined` checks? This includes unnecessary `?.` of course
@@ -107,9 +201,9 @@ The reviewer should consider if the PR needs to be squashed and he should do it 
 
 After that, the reviewer should use the `Rebase and merge` action to merge the PR and `Delete the branch` to clean the, now useless, branch.
 
-If the commit is necessary for another project, for example to merge some changes in Sirius Web, then a new release should be performed.
+If the commit is necessary for another project, then a new release should be performed.
 Most of the time, the commit for the release should be added by the reviewer in the PR.
-This prevent the need for another reviewer to perform a review of a pull request containing only the commit for the release.
+This prevents the need for another reviewer to perform a review of a pull request containing only the commit for the release.
 
 To create this commit, use the prepare release script like that: `node scripts/prepare-release.js 2022.3.0`
 
