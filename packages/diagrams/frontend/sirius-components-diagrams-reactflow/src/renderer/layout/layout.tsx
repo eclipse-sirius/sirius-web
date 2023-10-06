@@ -19,9 +19,10 @@ import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/li
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Edge, Node, ReactFlowProvider } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { ConnectionHandle, Diagram, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
+import { getEdgeParameters } from '../edge/EdgeLayout';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
@@ -253,6 +254,9 @@ const layoutDiagram = (
       }
     }
   });
+
+  setPreviousHandles(previousDiagram, diagram);
+  setNewHandles(previousDiagram, diagram);
 };
 
 export const performDefaultAutoLayout = (
@@ -416,4 +420,111 @@ const elkToReactFlow = (elkNodes: ElkNode[], nodeId2Node: Map<string, Node>): No
     }
   });
   return nodes;
+};
+
+const setPreviousHandles = (previousDiagram: Diagram | null, diagram: Diagram) => {
+  diagram.edges.forEach((edge) => {
+    let previousEdge: Edge<EdgeData> | undefined = previousDiagram?.edges.find((n) => n.id === edge.id);
+
+    if (
+      previousEdge &&
+      edge.sourceNode &&
+      edge.targetNode &&
+      previousEdge.sourceNode &&
+      previousEdge.targetNode &&
+      previousEdge.source === edge.source &&
+      previousEdge.target === edge.target
+    ) {
+      const nodeSourcePreviousConnectionHandles: ConnectionHandle[] = previousEdge.sourceNode.data.connectionHandles;
+      const nodeSourceConnectionHandles: ConnectionHandle[] = edge.sourceNode.data.connectionHandles.map(
+        (handle: ConnectionHandle) => {
+          let previousHandle = nodeSourcePreviousConnectionHandles.find((handle) => handle.edgeId === edge.id);
+          if (handle.edgeId === edge.id) {
+            return previousHandle;
+          }
+          return handle;
+        }
+      );
+
+      const nodeTargetPreviousConnectionHandles: ConnectionHandle[] = previousEdge.targetNode.data.connectionHandles;
+      const nodeTargetConnectionHandles: ConnectionHandle[] = edge.targetNode.data.connectionHandles.map((handle) => {
+        let previousHandle = nodeTargetPreviousConnectionHandles.find((handle) => handle.edgeId === edge.id);
+        if (handle.edgeId === edge.id) {
+          return previousHandle;
+        }
+        return handle;
+      });
+
+      diagram.nodes.map((node) => {
+        if (edge.sourceNode && edge.targetNode) {
+          if (edge.sourceNode.id === node.id) {
+            node.data = { ...node.data, connectionHandles: nodeSourceConnectionHandles };
+          }
+          if (edge.targetNode.id === node.id) {
+            node.data = { ...node.data, connectionHandles: nodeTargetConnectionHandles };
+          }
+        }
+        return node;
+      });
+    }
+  });
+};
+
+const setNewHandles = (previousDiagram: Diagram | null, diagram: Diagram) => {
+  let newlyAddedEdges: Edge<EdgeData>[] = diagram.edges.filter(
+    (edge) => !previousDiagram?.edges.map((n) => n.id).find((n) => n === edge.id)
+  );
+
+  newlyAddedEdges.forEach((edge) => {
+    if (edge.sourceNode && edge.targetNode) {
+      const { sourcePosition, targetPosition } = getEdgeParameters(
+        edge.sourceNode,
+        edge.targetNode,
+        edge.id,
+        diagram.nodes
+      );
+
+      const nodeSourceConnectionHandles: ConnectionHandle[] = edge.sourceNode.data.connectionHandles;
+      const nodeTargetConnectionHandles: ConnectionHandle[] = edge.targetNode.data.connectionHandles;
+      const nodeSourceConnectionHandle: ConnectionHandle | undefined = nodeSourceConnectionHandles.find(
+        (connectionHandle) => connectionHandle.edgeId === edge.id
+      );
+      const nodeTargetConnectionHandle: ConnectionHandle | undefined = nodeTargetConnectionHandles.find(
+        (connectionHandle) => connectionHandle.edgeId === edge.id
+      );
+
+      if (
+        nodeSourceConnectionHandle?.position !== sourcePosition &&
+        nodeTargetConnectionHandle?.position !== targetPosition
+      ) {
+        nodeSourceConnectionHandles.map((nodeConnectionHandle) => {
+          if (nodeConnectionHandle.edgeId === edge.id && nodeConnectionHandle.type === 'source') {
+            nodeConnectionHandle.position = sourcePosition;
+            nodeConnectionHandle.id = `handle--source--${edge.id}`;
+          }
+          return nodeConnectionHandle;
+        });
+
+        nodeTargetConnectionHandles.map((nodeConnectionHandle) => {
+          if (nodeConnectionHandle.edgeId === edge.id && nodeConnectionHandle.type === 'target') {
+            nodeConnectionHandle.position = targetPosition;
+            nodeConnectionHandle.id = `handle--target--${edge.id}`;
+          }
+          return nodeConnectionHandle;
+        });
+
+        diagram.nodes = diagram.nodes.map((node) => {
+          if (edge.sourceNode && edge.targetNode) {
+            if (edge.sourceNode.id === node.id) {
+              node.data = { ...node.data, connectionHandles: nodeSourceConnectionHandles };
+            }
+            if (edge.targetNode.id === node.id) {
+              node.data = { ...node.data, connectionHandles: nodeTargetConnectionHandles };
+            }
+          }
+          return node;
+        });
+      }
+    }
+  });
 };

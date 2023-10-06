@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import {
   BaseEdge,
   Edge,
@@ -24,7 +24,7 @@ import {
   useReactFlow,
   useStore,
 } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { ConnectionHandle, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getEdgeParameters } from './EdgeLayout';
@@ -50,20 +50,10 @@ const multiLabelEdgeStyle = (
 };
 
 export const MultiLabelEdge = memo(
-  ({
-    id,
-    source,
-    target,
-    data,
-    style,
-    markerEnd,
-    markerStart,
-    selected,
-    sourceHandleId,
-    targetHandleId,
-  }: EdgeProps<MultiLabelEdgeData>) => {
+  ({ id, source, target, data, style, markerEnd, markerStart, selected }: EdgeProps<MultiLabelEdgeData>) => {
     const theme = useTheme();
-
+    const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+    const firstUpdate = useRef<boolean>(true);
     const sourceNode = useStore<Node<NodeData> | undefined>(
       useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
     );
@@ -77,7 +67,9 @@ export const MultiLabelEdge = memo(
 
     const { sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition } = getEdgeParameters(
       sourceNode,
-      targetNode
+      targetNode,
+      id,
+      reactFlowInstance.getNodes()
     );
 
     const [edgePath, labelX, labelY] = getSmoothStepPath({
@@ -91,20 +83,68 @@ export const MultiLabelEdge = memo(
 
     const { beginLabel, endLabel, label, faded } = data || {};
 
-    const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
     useEffect(() => {
-      if (sourceHandleId?.split('--')[2] !== sourcePosition || targetHandleId?.split('--')[2] !== targetPosition) {
-        reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
-          edges.map((edge) => {
-            if (edge.id === id) {
-              edge.sourceHandle = `handle--${edge.source}--${sourcePosition}`;
-              edge.targetHandle = `handle--${edge.target}--${targetPosition}`;
-            }
-            return edge;
-          })
+      if (firstUpdate.current && firstUpdate) {
+        firstUpdate.current = false;
+      } else {
+        const nodeSourceConnectionHandles: ConnectionHandle[] = sourceNode.data.connectionHandles;
+        const nodeTargetConnectionHandles: ConnectionHandle[] = targetNode.data.connectionHandles;
+        const nodeSourceConnectionHandle: ConnectionHandle | undefined = nodeSourceConnectionHandles.find(
+          (connectionHandle) => connectionHandle.edgeId === id
         );
+        const nodeTargetConnectionHandle: ConnectionHandle | undefined = nodeTargetConnectionHandles.find(
+          (connectionHandle) => connectionHandle.edgeId === id
+        );
+
+        if (
+          nodeSourceConnectionHandle?.position !== sourcePosition &&
+          nodeTargetConnectionHandle?.position !== targetPosition
+        ) {
+          nodeSourceConnectionHandles.map((nodeConnectionHandle: ConnectionHandle) => {
+            if (nodeConnectionHandle.edgeId === id && nodeConnectionHandle.type === 'source') {
+              nodeConnectionHandle.position = sourcePosition;
+              nodeConnectionHandle.id = `handle--source--${id}`;
+            }
+            return nodeConnectionHandle;
+          });
+
+          nodeTargetConnectionHandles.map((nodeConnectionHandle: ConnectionHandle) => {
+            if (nodeConnectionHandle.edgeId === id && nodeConnectionHandle.type === 'target') {
+              nodeConnectionHandle.position = targetPosition;
+              nodeConnectionHandle.id = `handle--target--${id}`;
+            }
+            return nodeConnectionHandle;
+          });
+
+          reactFlowInstance.setNodes((nodes: Node<NodeData>[]) =>
+            nodes.map((node) => {
+              if (sourceNode.id === node.id) {
+                node.data = { ...node.data, connectionHandles: nodeSourceConnectionHandles };
+              }
+              if (targetNode.id === node.id) {
+                node.data = { ...node.data, connectionHandles: nodeTargetConnectionHandles };
+              }
+              return node;
+            })
+          );
+        }
       }
     }, [sourcePosition, targetPosition]);
+
+    useEffect(() => {
+      reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
+        edges.map((edge) => {
+          if (edge.id === id) {
+            if (selected) {
+              edge.updatable = true;
+            } else {
+              edge.updatable = false;
+            }
+          }
+          return edge;
+        })
+      );
+    }, [selected]);
 
     return (
       <>

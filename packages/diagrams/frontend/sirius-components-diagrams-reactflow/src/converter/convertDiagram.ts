@@ -11,8 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, XYPosition } from 'reactflow';
+import { Edge, Node, Position, XYPosition } from 'reactflow';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
+import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import {
   GQLIconLabelNodeStyle,
@@ -22,7 +23,7 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon, Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
+import { BorderNodePositon, ConnectionHandle, Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { ImageNodeData } from '../renderer/node/ImageNode.types';
@@ -36,7 +37,8 @@ const defaultPosition: XYPosition = { x: 0, y: 0 };
 const toRectangularNode = (
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<RectangularNodeData> => {
   const {
     targetObjectId,
@@ -50,6 +52,25 @@ const toRectangularNode = (
     labelEditable,
   } = gqlNode;
 
+  const connectionHandles: ConnectionHandle[] = [];
+  gqlEdges.forEach((edge) => {
+    if (edge.sourceId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--source--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Right,
+        type: 'source',
+      });
+    if (edge.targetId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--target--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Left,
+        type: 'target',
+      });
+  });
   const data: RectangularNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -63,6 +84,7 @@ const toRectangularNode = (
       borderWidth: style.borderSize,
       borderStyle: style.borderStyle,
     },
+    connectionHandles,
     label: undefined,
     faded: state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
@@ -121,7 +143,8 @@ const toRectangularNode = (
 const toIconLabelNode = (
   gqlNode: GQLNode<GQLIconLabelNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<IconLabelNodeData> => {
   const {
     targetObjectId,
@@ -134,7 +157,25 @@ const toIconLabelNode = (
     style,
     labelEditable,
   } = gqlNode;
-
+  const connectionHandles: ConnectionHandle[] = [];
+  gqlEdges.forEach((edge) => {
+    if (edge.sourceId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--source--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Right,
+        type: 'source',
+      });
+    if (edge.targetId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--target--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Left,
+        type: 'target',
+      });
+  });
   const data: IconLabelNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -144,6 +185,7 @@ const toIconLabelNode = (
       textAlign: 'left',
       backgroundColor: style.backgroundColor,
     },
+    connectionHandles,
     label: undefined,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
@@ -182,7 +224,8 @@ const toIconLabelNode = (
 const toListNode = (
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<ListNodeData> => {
   const {
     targetObjectId,
@@ -195,12 +238,31 @@ const toListNode = (
     style,
     labelEditable,
   } = gqlNode;
-
+  const connectionHandles: ConnectionHandle[] = [];
+  gqlEdges.forEach((edge) => {
+    if (edge.sourceId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--source--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Right,
+        type: 'source',
+      });
+    if (edge.targetId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--target--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Left,
+        type: 'target',
+      });
+  });
   const data: ListNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
+    connectionHandles,
     style: {
       backgroundColor: style.color,
       borderColor: style.borderColor,
@@ -266,7 +328,8 @@ const toListNode = (
 const toImageNode = (
   gqlNode: GQLNode<GQLImageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<ImageNodeData> => {
   const {
     targetObjectId,
@@ -280,12 +343,33 @@ const toImageNode = (
     labelEditable,
   } = gqlNode;
 
+  const connectionHandles: ConnectionHandle[] = [];
+  gqlEdges.forEach((edge) => {
+    if (edge.sourceId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--source--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Right,
+        type: 'source',
+      });
+    if (edge.targetId === gqlNode.id)
+      connectionHandles.push({
+        id: `handle--target--${edge.id}`,
+        edgeId: edge.id,
+        nodeId: gqlNode.id,
+        position: Position.Left,
+        type: 'target',
+      });
+  });
+
   const data: ImageNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
     label: undefined,
+    connectionHandles,
     imageURL: style.imageURL,
     style: {},
     faded: state === GQLViewModifier.Faded,
@@ -347,28 +431,33 @@ const isImageNode = (gqlNode: GQLNode<GQLNodeStyle>): gqlNode is GQLNode<GQLImag
 const isIconLabelNode = (gqlNode: GQLNode<GQLNodeStyle>): gqlNode is GQLNode<GQLIconLabelNodeStyle> =>
   gqlNode.style.__typename === 'IconLabelNodeStyle';
 
-const convertNode = (gqlNode: GQLNode<GQLNodeStyle>, parentNode: GQLNode<GQLNodeStyle> | null, nodes: Node[]): void => {
+const convertNode = (
+  gqlNode: GQLNode<GQLNodeStyle>,
+  parentNode: GQLNode<GQLNodeStyle> | null,
+  nodes: Node[],
+  gqlEdges: GQLEdge[]
+): void => {
   const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(gqlNode.id);
 
   if (isRectangularNode(gqlNode)) {
     const isList = gqlNode.childrenLayoutStrategy?.kind === 'List';
     if (!isList) {
-      nodes.push(toRectangularNode(gqlNode, parentNode, isBorderNode));
-      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
-      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+      nodes.push(toRectangularNode(gqlNode, parentNode, isBorderNode, gqlEdges));
+      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes, gqlEdges));
+      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes, gqlEdges));
     } else {
-      nodes.push(toListNode(gqlNode, parentNode, isBorderNode));
+      nodes.push(toListNode(gqlNode, parentNode, isBorderNode, gqlEdges));
 
-      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
-      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+      (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes, gqlEdges));
+      (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes, gqlEdges));
     }
   } else if (isImageNode(gqlNode)) {
-    nodes.push(toImageNode(gqlNode, parentNode, isBorderNode));
+    nodes.push(toImageNode(gqlNode, parentNode, isBorderNode, gqlEdges));
 
-    (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes));
-    (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes));
+    (gqlNode.borderNodes ?? []).forEach((gqlBorderNode) => convertNode(gqlBorderNode, gqlNode, nodes, gqlEdges));
+    (gqlNode.childNodes ?? []).forEach((gqlChildNode) => convertNode(gqlChildNode, gqlNode, nodes, gqlEdges));
   } else if (isIconLabelNode(gqlNode)) {
-    nodes.push(toIconLabelNode(gqlNode, parentNode, isBorderNode));
+    nodes.push(toIconLabelNode(gqlNode, parentNode, isBorderNode, gqlEdges));
   }
 };
 
@@ -433,7 +522,7 @@ const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties =>
 
 export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
-  gqlDiagram.nodes.forEach((gqlNode) => convertNode(gqlNode, null, nodes));
+  gqlDiagram.nodes.forEach((gqlNode) => convertNode(gqlNode, null, nodes, gqlDiagram.edges));
 
   const nodeId2node = new Map<string, Node>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));
@@ -442,6 +531,9 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
 
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
+    const sourceNode = nodeId2node.get(gqlEdge.sourceId);
+    const targetNode = nodeId2node.get(gqlEdge.targetId);
+
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
@@ -474,6 +566,11 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       },
       data,
       hidden: gqlEdge.state === GQLViewModifier.Hidden,
+      sourceHandle: `handle--source--${gqlEdge.id}`,
+      targetHandle: `handle--target--${gqlEdge.id}`,
+      sourceNode: sourceNode,
+      targetNode: targetNode,
+      interactionWidth: 0.25,
     };
   });
 

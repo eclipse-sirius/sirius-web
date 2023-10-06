@@ -14,7 +14,12 @@
 import { Node, Position } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 
-export type GetEdgeParameters = (source: Node<NodeData>, target: Node<NodeData>) => EdgeParameters;
+export type GetEdgeParameters = (
+  source: Node<NodeData>,
+  target: Node<NodeData>,
+  edgeId: string,
+  visiblesNodes: Node<NodeData>[]
+) => EdgeParameters;
 
 export interface EdgeParameters {
   sourceX: number;
@@ -25,7 +30,12 @@ export interface EdgeParameters {
   targetPosition: Position;
 }
 
-export type GetParameters = (nodeA: Node<NodeData>, nodeB: Node<NodeData>) => Parameters;
+export type GetParameters = (
+  nodeA: Node<NodeData>,
+  nodeB: Node<NodeData>,
+  edgeId: string,
+  visiblesNodes: Node<NodeData>[]
+) => Parameters;
 
 export interface Parameters {
   x: number;
@@ -33,14 +43,18 @@ export interface Parameters {
   position: Position;
 }
 
-export type GetNodeCenter = (node: Node<NodeData>) => NodeCenter;
+export type GetNodeCenter = (node: Node<NodeData>, visiblesNodes: Node<NodeData>[]) => NodeCenter;
 
 export interface NodeCenter {
   x: number;
   y: number;
 }
 
-export type GetHandleCoordinatesByPosition = (node: Node<NodeData>, handlePosition: Position) => HandleCoordinates;
+export type GetHandleCoordinatesByPosition = (
+  node: Node<NodeData>,
+  handlePosition: Position,
+  edgeId: string
+) => HandleCoordinates;
 
 export interface HandleCoordinates {
   x: number;

@@ -28,6 +28,7 @@ import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
 import { LayoutContextContextProvider } from '../renderer/layout/LayoutContext';
+import { NodeContextProvider } from '../renderer/node/NodeContext';
 import { DiagramElementPaletteContextProvider } from '../renderer/palette/DiagramElementPaletteContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
 import {
@@ -104,17 +105,19 @@ export const DiagramRepresentation = ({
               <DiagramElementPaletteContextProvider>
                 <ConnectorContextProvider>
                   <DropNodeContextProvider>
-                    <div style={{ display: 'inline-block', position: 'relative' }}>
-                      <MarkerDefinitions />
-                      <FullscreenContextProvider>
-                        <DiagramRenderer
-                          key={state.diagramRefreshedEventPayload.diagram.id}
-                          diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-                          selection={selection}
-                          setSelection={setSelection}
-                        />
-                      </FullscreenContextProvider>
-                    </div>
+                    <NodeContextProvider>
+                      <div style={{ display: 'inline-block', position: 'relative' }}>
+                        <MarkerDefinitions />
+                        <FullscreenContextProvider>
+                          <DiagramRenderer
+                            key={state.diagramRefreshedEventPayload.diagram.id}
+                            diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+                            selection={selection}
+                            setSelection={setSelection}
+                          />
+                        </FullscreenContextProvider>
+                      </div>
+                    </NodeContextProvider>
                   </DropNodeContextProvider>
                 </ConnectorContextProvider>
               </DiagramElementPaletteContextProvider>

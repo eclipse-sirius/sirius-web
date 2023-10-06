@@ -11,180 +11,84 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql } from '@apollo/client';
-import { useLazyQuery } from '@apollo/client/react';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useTheme } from '@material-ui/core/styles';
-import { useContext, useEffect, useState } from 'react';
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart, OnConnectStartParams } from 'reactflow';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useContext } from 'react';
+import {
+  Connection,
+  OnConnect,
+  OnConnectEnd,
+  OnConnectStart,
+  OnConnectStartParams,
+  useReactFlow,
+  useUpdateNodeInternals,
+} from 'reactflow';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { NodeContext } from '../node/NodeContext';
+import { NodeContextValue } from '../node/NodeContext.types';
+import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
-import {
-  GQLDiagramDescription,
-  GQLGetToolSectionsData,
-  GQLGetToolSectionsVariables,
-  GQLNodeDescription,
-  GQLRepresentationDescription,
-  GQLSingleClickOnTwoDiagramElementsTool,
-  GQLTool,
-  NodeStyleProvider,
-  UseConnectorValue,
-} from './useConnector.types';
-
-const getToolSectionsQuery = gql`
-  query getToolSections($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
-    viewer {
-      editingContext(editingContextId: $editingContextId) {
-        representation(representationId: $diagramId) {
-          description {
-            ... on DiagramDescription {
-              palette(diagramElementId: $diagramElementId) {
-                tools {
-                  __typename
-                  ... on SingleClickOnTwoDiagramElementsTool {
-                    candidates {
-                      sources {
-                        id
-                      }
-                      targets {
-                        id
-                      }
-                    }
-                  }
-                }
-                toolSections {
-                  tools {
-                    __typename
-                    ... on SingleClickOnTwoDiagramElementsTool {
-                      candidates {
-                        sources {
-                          id
-                        }
-                        targets {
-                          id
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingleClickOnTwoDiagramElementsTool =>
-  tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
-
-const isDiagramDescription = (
-  representationDescription: GQLRepresentationDescription
-): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
+import { NodeStyleProvider, UseConnectorValue } from './useConnector.types';
 
 export const useConnector = (): UseConnectorValue => {
-  const { connection, setConnection, resetConnection, candidates, setCandidates, isNewConnection, setIsNewConnection } =
+  const { connection, setConnection, resetConnection, candidates, isNewConnection, setIsNewConnection } =
     useContext<ConnectorContextValue>(ConnectorContext);
-  const { addErrorMessage } = useMultiToast();
-  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const [state, setState] = useState<OnConnectStartParams>({
-    handleType: null,
-    nodeId: null,
-    handleId: null,
-  });
-
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
   const theme = useTheme();
+  const { hideDiagramElementPalette } = useDiagramElementPalette();
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const newConnectionStyleProvider: NodeStyleProvider = {
-    getNodeStyle: (id: string): React.CSSProperties => {
+    getNodeStyle: (nodeId: string, descriptionId: string): React.CSSProperties => {
+      const node = reactFlowInstance.getNode(nodeId);
+
+      const isCompatibleConnectionTarget: boolean = candidates
+        .map((nodeDescription) => nodeDescription.id)
+        .includes(descriptionId);
       const nodeStyle: React.CSSProperties = {};
-      if (isNewConnection && candidates.map((node) => node.id).includes(id)) {
-        nodeStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
-        nodeStyle.opacity = 1;
-      } else if (isNewConnection) {
+
+      if (isNewConnection && !isCompatibleConnectionTarget && !node?.selected) {
         nodeStyle.opacity = 0.4;
       }
-      return nodeStyle;
-    },
-    getHandleStyle: (id: string): React.CSSProperties => {
-      const handleStyle: React.CSSProperties = {};
-      if (isNewConnection && candidates.map((node) => node.id).includes(id)) {
-        handleStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
-        handleStyle.opacity = 1;
-      } else if (isNewConnection) {
-        handleStyle.opacity = 0.4;
+
+      const isCompatibleHoveredConnectionTarget: boolean = candidates
+        .map((nodeDescription) => nodeDescription.id)
+        .includes(hoveredNode?.data.descriptionId ?? '');
+
+      if (nodeId === hoveredNode?.id && isCompatibleHoveredConnectionTarget && isNewConnection) {
+        nodeStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
       }
-      return handleStyle;
+
+      return nodeStyle;
     },
   };
 
-  const onConnect: OnConnect = (connection: Connection) => setConnection(connection);
+  const onConnect: OnConnect = (connection: Connection) => {
+    setConnection(connection);
+  };
 
   const onConnectStart: OnConnectStart = (
     _event: React.MouseEvent | React.TouchEvent,
-    onConnectStartParams: OnConnectStartParams
+    params: OnConnectStartParams
   ) => {
-    setState((prevState) => ({
-      ...prevState,
-      handleType: onConnectStartParams.handleType,
-      nodeId: onConnectStartParams.nodeId,
-      handleId: onConnectStartParams.handleId,
-    }));
+    hideDiagramElementPalette();
+    //Refresh handles
+    updateNodeInternals(params.nodeId ?? '');
+    resetConnection();
   };
-
-  useEffect(() => {
-    if (isNewConnection && state.nodeId && state.handleType) {
-      getToolSections({
-        variables: {
-          editingContextId,
-          diagramId,
-          diagramElementId: state.nodeId,
-        },
-      });
-    }
-  }, [isNewConnection, state]);
 
   const onConnectorContextualMenuClose = () => resetConnection();
-
-  const [getToolSections, { loading: toolSectionsLoading, data: toolSectionsData, error: toolSectionsError }] =
-    useLazyQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getToolSectionsQuery);
-
-  useEffect(() => {
-    if (!toolSectionsLoading && toolSectionsData) {
-      const diagramDescription: GQLRepresentationDescription =
-        toolSectionsData.viewer.editingContext.representation.description;
-      const nodesCandidates: GQLNodeDescription[] = [];
-      if (isDiagramDescription(diagramDescription)) {
-        diagramDescription.palette.tools.filter(isSingleClickOnTwoDiagramElementsTool).forEach((tool) => {
-          tool.candidates.forEach((candidate) => nodesCandidates.push(...candidate.targets));
-        });
-        diagramDescription.palette.toolSections.forEach((toolSection) => {
-          toolSection.tools.filter(isSingleClickOnTwoDiagramElementsTool).forEach((tool) => {
-            tool.candidates.forEach((candidate) => nodesCandidates.push(...candidate.targets));
-          });
-        });
-      }
-      setCandidates(nodesCandidates);
-
-      if (toolSectionsError) {
-        addErrorMessage(toolSectionsError.message);
-      }
-    }
-  }, [toolSectionsLoading, toolSectionsData, toolSectionsError]);
-
-  const onConnectEnd: OnConnectEnd = (_event: MouseEvent | TouchEvent) => {
-    setCandidates([]);
-    setIsNewConnection(false);
-  };
 
   const onConnectionStartElementClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.button === 0) {
       setIsNewConnection(true);
     }
+  };
+
+  const onConnectEnd: OnConnectEnd = (_event: MouseEvent | TouchEvent) => {
+    setIsNewConnection(false);
   };
 
   return {

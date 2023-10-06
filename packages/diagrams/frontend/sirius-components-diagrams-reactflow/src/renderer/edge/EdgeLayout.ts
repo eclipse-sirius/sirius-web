@@ -14,9 +14,9 @@
 import { HandleElement, Position, internalsSymbol } from 'reactflow';
 import { GetEdgeParameters, GetHandleCoordinatesByPosition, GetNodeCenter, GetParameters } from './EdgeLayout.types';
 
-export const getEdgeParameters: GetEdgeParameters = (source, target) => {
-  const { x: sourceX, y: sourceY, position: sourcePosition } = getParameters(source, target);
-  const { x: targetX, y: targetY, position: targetPosition } = getParameters(target, source);
+export const getEdgeParameters: GetEdgeParameters = (source, target, edgeId, visiblesNodes) => {
+  const { x: sourceX, y: sourceY, position: sourcePosition } = getParameters(source, target, edgeId, visiblesNodes);
+  const { x: targetX, y: targetY, position: targetPosition } = getParameters(target, source, edgeId, visiblesNodes);
 
   return {
     sourceX,
@@ -28,9 +28,9 @@ export const getEdgeParameters: GetEdgeParameters = (source, target) => {
   };
 };
 
-const getParameters: GetParameters = (nodeA, nodeB) => {
-  const centerA = getNodeCenter(nodeA);
-  const centerB = getNodeCenter(nodeB);
+const getParameters: GetParameters = (nodeA, nodeB, edgeId, visiblesNodes) => {
+  const centerA = getNodeCenter(nodeA, visiblesNodes);
+  const centerB = getNodeCenter(nodeB, visiblesNodes);
 
   const horizontallDifference = Math.abs(centerA.x - centerB.x);
   const verticalDifference = Math.abs(centerA.y - centerB.y);
@@ -42,7 +42,7 @@ const getParameters: GetParameters = (nodeA, nodeB) => {
     position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
   }
 
-  const { x, y } = getHandleCoordinatesByPosition(nodeA, position);
+  const { x, y } = getHandleCoordinatesByPosition(nodeA, position, edgeId);
 
   return {
     x,
@@ -51,37 +51,55 @@ const getParameters: GetParameters = (nodeA, nodeB) => {
   };
 };
 
-const getNodeCenter: GetNodeCenter = (node) => {
-  return {
-    x: node.positionAbsolute?.x ?? 0 + (node.width ?? 0) / 2,
-    y: node.positionAbsolute?.y ?? 0 + (node.height ?? 0) / 2,
-  };
+const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
+  if (node.positionAbsolute?.x && node.positionAbsolute?.y) {
+    return {
+      x: node.positionAbsolute?.x ?? 0 + (node.width ?? 0) / 2,
+      y: node.positionAbsolute?.y ?? 0 + (node.height ?? 0) / 2,
+    };
+  } else {
+    let parentNode = visiblesNodes.find((nodeParent) => nodeParent.id === node.parentNode);
+    let position = {
+      x: node.position?.x ?? 0 + (node.width ?? 0) / 2,
+      y: node.position?.y ?? 0 + (node.height ?? 0) / 2,
+    };
+    while (parentNode) {
+      position = {
+        x: position.x + parentNode.position?.x ?? 0,
+        y: position.y + parentNode.position?.y ?? 0,
+      };
+      let parentNodeId = parentNode.parentNode ?? '';
+      parentNode = visiblesNodes.find((nodeParent) => nodeParent.id === parentNodeId);
+    }
+    return position;
+  }
 };
 
-const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (node, handlePosition) => {
-  const handle: HandleElement | undefined = (node[internalsSymbol]?.handleBounds?.source ?? []).find(
-    (handle) => handle.position === handlePosition
+const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (node, handlePosition, edgeId) => {
+  let handle: HandleElement | undefined = (node[internalsSymbol]?.handleBounds?.source ?? []).find(
+    (handle) => handle.id?.split('--')[2] === edgeId
   );
-
-  if (handle) {
+  if (!handle) {
+    handle = (node[internalsSymbol]?.handleBounds?.target ?? []).find((handle) => handle.id?.split('--')[2] === edgeId);
+  }
+  if (handle && handlePosition) {
     let offsetX = handle.width / 2;
     let offsetY = handle.height / 2;
 
     switch (handlePosition) {
       case Position.Left:
-        offsetX = 0;
-        break;
-      case Position.Right:
         offsetX = handle.width;
         break;
-      case Position.Top:
-        offsetY = 0;
+      case Position.Right:
+        offsetX = 0;
         break;
-      case Position.Bottom:
+      case Position.Top:
         offsetY = handle.height;
         break;
+      case Position.Bottom:
+        offsetY = 0;
+        break;
     }
-
     const x = (node.positionAbsolute?.x ?? 0) + handle.x + offsetX;
     const y = (node.positionAbsolute?.y ?? 0) + handle.y + offsetY;
 

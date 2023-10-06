@@ -43,6 +43,8 @@ import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloGraphQLClient } from './ApolloGraphQLClient';
+import './ReactFlow.css';
+import './Sprotty.css';
 import { httpOrigin } from './core/URL';
 import { Main } from './main/Main';
 import { ToastProvider } from './toast/ToastProvider';

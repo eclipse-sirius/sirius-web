@@ -14,14 +14,17 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo } from 'react';
-import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { NodeProps, NodeResizer } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
 import { useDropNode } from '../dropNode/useDropNode';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { RectangularNodeData } from './RectangularNode.types';
-
+import { ConnectionHandles } from './handles/ConnectionHandles';
+import { ConnectionSourceHandles } from './handles/NewConnectionSourceHandles';
+import { ConnectionTargetHandles } from './handles/NewConnectionTargetHandle';
+import { useConnectionHandles } from './handles/useConnectionHandles';
 const rectangularNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
@@ -38,18 +41,21 @@ const rectangularNodeStyle = (
   if (selected) {
     rectangularNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
   }
+
   return rectangularNodeStyle;
 };
 
-export const RectangularNode = memo(({ data, isConnectable, id, selected }: NodeProps<RectangularNodeData>) => {
+export const RectangularNode = memo(({ data, id, selected }: NodeProps<RectangularNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { onConnectionStartElementClick, newConnectionStyleProvider } = useConnector();
   const { dropFeedbackStyleProvider } = useDropNode();
+  const { newConnectionStyleProvider } = useConnector();
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
   };
+
+  useConnectionHandles(id, data.connectionHandles);
 
   return (
     <>
@@ -57,46 +63,17 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
       <div
         style={{
           ...rectangularNodeStyle(theme, data.style, selected, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
           ...dropFeedbackStyleProvider.getNodeStyle(id),
+          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`Rectangle - ${data?.label?.text}`}>
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
-        <Handle
-          id={`handle--${id}--top`}
-          type="source"
-          position={Position.Top}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
-        <Handle
-          id={`handle--${id}--left`}
-          type="source"
-          position={Position.Left}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
-        <Handle
-          id={`handle--${id}--right`}
-          type="source"
-          position={Position.Right}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
-        <Handle
-          id={`handle--${id}--bottom`}
-          type="source"
-          position={Position.Bottom}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
+        {selected ? <ConnectionSourceHandles nodeId={id} /> : null}
+        <ConnectionTargetHandles nodeId={id} />
+        <ConnectionHandles connectionHandles={data.connectionHandles} />
       </div>
     </>
   );

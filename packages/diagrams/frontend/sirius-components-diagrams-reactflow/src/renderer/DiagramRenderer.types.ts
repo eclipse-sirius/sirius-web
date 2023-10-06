@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node } from 'reactflow';
+import { Edge, HandleProps, Node } from 'reactflow';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -60,6 +60,7 @@ export interface NodeData {
   borderNodePosition: BorderNodePositon | null;
   labelEditable: boolean;
   style: React.CSSProperties;
+  connectionHandles: ConnectionHandle[];
 }
 
 export enum BorderNodePositon {
@@ -67,6 +68,11 @@ export enum BorderNodePositon {
   EAST,
   SOUTH,
   WEST,
+}
+
+export interface ConnectionHandle extends HandleProps {
+  edgeId: string;
+  nodeId: string;
 }
 
 export interface EdgeData {

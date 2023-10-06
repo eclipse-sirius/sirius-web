@@ -14,12 +14,16 @@
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
-import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { NodeProps, NodeResizer } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDropNode } from '../dropNode/useDropNode';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ImageNodeData } from './ImageNode.types';
+import { ConnectionHandles } from './handles/ConnectionHandles';
+import { ConnectionSourceHandles } from './handles/NewConnectionSourceHandles';
+import { ConnectionTargetHandles } from './handles/NewConnectionTargetHandle';
+import { useConnectionHandles } from './handles/useConnectionHandles';
 
 const imageNodeStyle = (
   theme: Theme,
@@ -40,11 +44,13 @@ const imageNodeStyle = (
   return imageNodeStyle;
 };
 
-export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<ImageNodeData>) => {
+export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>) => {
   const theme = useTheme();
   const { dropFeedbackStyleProvider } = useDropNode();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { onConnectionStartElementClick, newConnectionStyleProvider } = useConnector();
+  const { newConnectionStyleProvider } = useConnector();
+
+  useConnectionHandles(id, data.connectionHandles);
 
   return (
     <>
@@ -53,45 +59,16 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         src={httpOrigin + data.imageURL}
         style={{
           ...imageNodeStyle(theme, data.style, selected, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
           ...dropFeedbackStyleProvider.getNodeStyle(id),
+          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
         }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />
       {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
       {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
-      <Handle
-        id={`handle--${id}--top`}
-        type="source"
-        position={Position.Top}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
-      <Handle
-        id={`handle--${id}--left`}
-        type="source"
-        position={Position.Left}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
-      <Handle
-        id={`handle--${id}--right`}
-        type="source"
-        position={Position.Right}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
-      <Handle
-        id={`handle--${id}--bottom`}
-        type="source"
-        position={Position.Bottom}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
+      {selected ? <ConnectionSourceHandles nodeId={id} /> : null}
+      <ConnectionTargetHandles nodeId={id} />
+      <ConnectionHandles connectionHandles={data.connectionHandles} />
     </>
   );
 });
