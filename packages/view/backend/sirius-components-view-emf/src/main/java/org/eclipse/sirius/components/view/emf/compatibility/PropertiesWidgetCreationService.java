@@ -99,7 +99,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     }
 
     @Override
-    public CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer, Object feature,  Optional<Function<VariableManager, String>> helpTextProvider) {
+    public CheckboxDescription createCheckbox(String id, String title, Function<Object, Boolean> reader, BiConsumer<Object, Boolean> writer, Object feature, Optional<Function<VariableManager, String>> helpTextProvider) {
         Function<VariableManager, Boolean> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(reader).orElse(Boolean.FALSE);
         BiFunction<VariableManager, Boolean, IStatus> newValueHandler = (variableManager, newValue) -> {
             var optionalDiagramMapping = variableManager.get(VariableManager.SELF, Object.class);
@@ -277,7 +277,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     private IStatus handleClearReference(VariableManager variableManager, Object feature) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
 
-        if (referenceOwner != null  && feature instanceof EReference reference) {
+        if (referenceOwner != null && feature instanceof EReference reference) {
             if (reference.isMany()) {
                 ((List<?>) referenceOwner.eGet(reference)).clear();
             } else {
@@ -293,7 +293,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
         Optional<Object> item = this.getItem(variableManager);
 
-        if (referenceOwner != null  && feature instanceof EReference reference) {
+        if (referenceOwner != null && feature instanceof EReference reference) {
             if (reference.isMany()) {
                 ((List<?>) reference.eGet(reference)).remove(item.get());
             } else {
@@ -310,7 +310,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
         Optional<Object> item = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, Object.class);
 
-        if (referenceOwner != null  && feature instanceof EReference reference) {
+        if (referenceOwner != null && feature instanceof EReference reference) {
             if (reference.isMany()) {
                 result = this.createErrorStatus("Multiple-valued reference can only accept a list of values");
             } else {
@@ -329,7 +329,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
         if (newValues.isEmpty()) {
             result = this.createErrorStatus("Something went wrong while adding reference values.");
-        } else if (referenceOwner != null  && feature instanceof EReference reference) {
+        } else if (referenceOwner != null && feature instanceof EReference reference) {
             if (reference.isMany()) {
                 ((List<Object>) referenceOwner.eGet(reference)).addAll(newValues.get());
             } else {
@@ -347,6 +347,13 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         String creationDescriptionId = variableManager.get(ReferenceWidgetComponent.CREATION_DESCRIPTION_ID_VARIABLE, String.class).orElse("");
         if (optionalIsChild.isPresent() && optionalEditingContext.isPresent()) {
+            if (this.isContainment(variableManager, feature) && !this.isMany(variableManager, feature)) {
+                // If the reference is containment and mono valued, we must first unset value before create a new one
+                EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+                if (referenceOwner != null && feature instanceof EReference reference) {
+                    referenceOwner.eUnset(reference);
+                }
+            }
             if (optionalIsChild.get()) {
                 EObject parent = variableManager.get(ReferenceWidgetComponent.PARENT_VARIABLE, EObject.class).orElse(null);
                 result = this.editService.createChild(optionalEditingContext.get(), parent, creationDescriptionId);
@@ -366,7 +373,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         Optional<Integer> fromIndex = variableManager.get(ReferenceWidgetComponent.MOVE_FROM_VARIABLE, Integer.class);
         Optional<Integer> toIndex = variableManager.get(ReferenceWidgetComponent.MOVE_TO_VARIABLE, Integer.class);
 
-        if (referenceOwner != null  && feature instanceof EReference reference) {
+        if (referenceOwner != null && feature instanceof EReference reference) {
             if (item.isPresent() && fromIndex.isPresent() && toIndex.isPresent()) {
                 if (reference.isMany()) {
                     List<Object> values = (List<Object>) referenceOwner.eGet(reference);
