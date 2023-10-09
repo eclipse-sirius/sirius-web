@@ -337,4 +337,170 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('Target-clear').click();
     cy.getByTestId('Target').find('p[class*="Mui-error"]').should('exist');
   });
+
+  it('check widget reference create element action on a mono valued and containment reference', () => {
+    cy.createProjectFromTemplate('studio-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
+      cy.visit(`/projects/${projectId}/edit`);
+    });
+
+    cy.getByTestId('DomainNewModel').dblclick();
+
+    cy.get('[title="domain::Domain"]').then(($div) => {
+      cy.wrap($div.data().testid).as('domainValue');
+    });
+
+    cy.get('@domainValue').then((domainValue) => {
+      cy.getByTestId(`${domainValue}-more`).click();
+    });
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Entity"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Name').find('input').should('have.value', 'NewEntity');
+    cy.getByTestId('Name').find('input').clear().type('SuperEntity1{enter}');
+    cy.getByTestId('Abstract').find('input').check();
+
+    cy.get('@domainValue').then((domainValue) => {
+      cy.getByTestId(`${domainValue}-more`).click();
+    });
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Entity"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Name').find('input').should('have.value', 'NewEntity');
+    cy.getByTestId('Name').find('input').clear().type('MonoValuedContainment{enter}');
+
+    cy.getByTestId('MonoValuedContainment-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Attribute"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Name').find('input').should('have.value', 'newString');
+    cy.getByTestId('Name').find('input').clear().type('Name');
+    cy.getByTestId('MonoValuedContainment').dblclick();
+
+    cy.getByTestId('SuperEntity1-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Relation"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Containment').find('input').check();
+    cy.getByTestId('Many').find('input').uncheck();
+    cy.getByTestId('Target Type').click();
+    cy.getByTestId('option-MonoValuedContainment').should('exist');
+    cy.getByTestId('option-MonoValuedContainment').click();
+
+    cy.getByTestId('Entity1').click();
+    cy.getByTestId('Name').find('input').should('have.value', 'Entity1');
+    cy.getByTestId('Super Type').click();
+    cy.getByTestId('option-SuperEntity1').should('exist');
+    cy.getByTestId('option-SuperEntity1').click();
+
+    cy.getByTestId('ViewNewModel').dblclick();
+    cy.getByTestId('View-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('create-object').should('be.enabled');
+    cy.getByTestId('childCreationDescription').click();
+    cy.get('[data-value="Form Description"]').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('New Form Description').click();
+    cy.getByTestId('input-Domain Type').should('have.text', '');
+    cy.get('@domainValue').then((domainValue) => {
+      cy.getByTestId('Domain Type').type(`${domainValue}::Entity1`);
+    });
+    cy.getByTestId('Name').type('{selectall}').type('WidgetRefRepresentation');
+    cy.getByTestId('Title Expression').type('{selectall}').type('WidgetRefRepresentation');
+    cy.getByTestId('WidgetRefRepresentation').dblclick();
+    cy.getByTestId('PageDescription').dblclick();
+    cy.getByTestId('GroupDescription-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value="Widgets Reference Widget Description"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Reference Name Expression').should('exist');
+    cy.getByTestId('Label Expression').type('Test Widget Reference');
+    cy.getByTestId('Reference Name Expression').find('textarea').eq(0).type('relation');
+
+    cy.get('[title="Back to the homepage"]').click();
+
+    cy.url().should('eq', Cypress.config().baseUrl + '/projects');
+    cy.get('[title="Blank Studio"]').should('be.visible');
+    cy.getByTestId('create').click();
+
+    cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
+    cy.getByTestId('name').should('be.visible');
+    cy.getByTestId('name').type('Instance');
+    cy.getByTestId('create-project').click();
+    cy.getByTestId('empty').click();
+    cy.getByTestId('Others...-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
+    cy.getByTestId('domain').click();
+    cy.getByTestId('domain').get('[data-value^="domain://"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Root-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Entity1s Entity1"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+
+    cy.getByTestId('Entity1').click();
+    cy.getByTestId('input-Name').clear().type('Entity1');
+    cy.getByTestId('Entity1-more').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('WidgetRefRepresentation').should('exist').click();
+    cy.getByTestId('create-representation').click();
+
+    cy.getByTestId('reference-value-').should('not.exist');
+
+    cy.getByTestId('Test Widget Reference-add').click();
+    cy.getByTestId('create-modal').should('exist');
+    cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
+    cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value]')
+      .should('have.length', 1)
+      .get('[data-value="Relation Mono Valued Containment"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-modal').findByTestId('create-object').click();
+
+    cy.getByTestId('reference-value-').should('exist');
+
+    cy.getByTestId('MonoValuedContainment').click();
+    cy.getByTestId('input-Name').should('not.have.value', 'Entity1');
+    cy.getByTestId('input-Name').type('Test{enter}');
+    cy.getByTestId('reference-value-Test').should('exist');
+
+    cy.getByTestId('Test Widget Reference-add').click();
+    cy.getByTestId('create-modal').should('exist');
+    cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
+    cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription')
+      .click()
+      .get('[data-value]')
+      .should('have.length', 1)
+      .get('[data-value="Relation Mono Valued Containment"]')
+      .should('exist')
+      .click();
+    cy.getByTestId('create-modal').findByTestId('create-object').click();
+    cy.getByTestId('reference-value-Test').should('not.exist');
+    cy.getByTestId('reference-value-').should('exist');
+  });
 });

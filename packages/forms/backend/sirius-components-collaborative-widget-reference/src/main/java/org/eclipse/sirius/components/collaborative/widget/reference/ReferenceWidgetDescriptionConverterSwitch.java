@@ -357,6 +357,14 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         String creationDescriptionId = variableManager.get(ReferenceWidgetComponent.CREATION_DESCRIPTION_ID_VARIABLE, String.class).orElse("");
         if (optionalIsChild.isPresent() && optionalEditingContext.isPresent()) {
+            if (this.isContainment(variableManager, referenceDescription) && !this.isMany(variableManager, referenceDescription)) {
+                // If the reference is mono valued and containment, we must first unset value before create a new one
+                EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
+                String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
+                if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference reference) {
+                    owner.eUnset(reference);
+                }
+            }
             if (optionalIsChild.get()) {
                 EObject parent = variableManager.get(ReferenceWidgetComponent.PARENT_VARIABLE, EObject.class).orElse(null);
                 result = this.editService.createChild(optionalEditingContext.get(), parent, creationDescriptionId);

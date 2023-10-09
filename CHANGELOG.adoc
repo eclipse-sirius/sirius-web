@@ -28,6 +28,7 @@ UI is unchanged except that we removed the transactional behavior of the _Transf
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2360[#2360] [form] Fix an issue that prevent creation of new object on some containment reference with the reference widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [form] Fix an issue that prevent creation of new object on mono valued and containment reference when a value is already set with the reference widget.
 
 === New Features
 
