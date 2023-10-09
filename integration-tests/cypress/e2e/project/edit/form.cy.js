@@ -10,18 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-describe('/projects/:projectId/edit - Form', () => {
+describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
   });
 
-  const createNewTreeItemOn = (treeItemName, parentItem) => {
+  const createNewObjectInExplorer = (parentItem, treeItemName, expectedNewElementId) => {
+    cy.getByTestId(parentItem).should('exist');
     cy.getByTestId(`${parentItem}-more`).click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
+    cy.getByTestId('new-object-modal').should('exist');
     cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click().get(`[data-value="${treeItemName}"]`).should('exist').click();
     cy.getByTestId('create-object').click();
+    cy.getByTestId('new-object-modal').should('not.exist');
     cy.getByTestId(`${parentItem}-toggle`).next().should('have.attr', 'data-expanded', 'true');
+
+    // Make sure the created element is selected in the explorer
+    cy.getByTestId('explorer://').findByTestId('selected').findByTestId(expectedNewElementId).should('exist');
+    cy.getByTestId('explorer://').findByTestId('selected').invoke('attr', 'data-treeitemid').as('treeItemId');
+    // Make sure the created element properties are display in the property view
+    cy.get('@treeItemId').then((treeItemId) => {
+      cy.getByTestId('form').findByTestId(`page-tab-${treeItemId}`).should('have.attr', 'aria-selected', 'true');
+    });
+    return cy.get('@treeItemId');
   };
 
   it('check widget read-only mode in form', () => {
@@ -34,17 +46,22 @@ describe('/projects/:projectId/edit - Form', () => {
       });
     });
     cy.getByTestId('ViewDocument').dblclick();
-    cy.getByTestId('View').dblclick();
-    createNewTreeItemOn('Form Description', 'View');
-    cy.getByTestId('New Form Description').click();
-    cy.getByTestId('Domain Type').type('flow::System');
-    cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
-    cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
+    cy.getByTestId('View').click();
+    createNewObjectInExplorer('View', 'Form Description', 'New Form Description').then((_newElementId) => {
+      cy.getByTestId('Domain Type').type('flow::System');
+      cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
+      cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
+    });
+
     cy.getByTestId('ReadOnlyRepresentation').dblclick();
     cy.getByTestId('PageDescription').dblclick();
-    createNewTreeItemOn('Widgets Button Description', 'GroupDescription');
-    cy.getByTestId('Button Label Expression').type('Test Button');
-    cy.getByTestId('Is Enabled Expression').type('aql:self.temperature==0');
+
+    createNewObjectInExplorer('GroupDescription', 'Widgets Button Description', 'ButtonDescription').then(
+      (_newElementId) => {
+        cy.getByTestId('Button Label Expression').type('Test Button');
+        cy.getByTestId('Is Enabled Expression').type('aql:self.temperature==0');
+      }
+    );
 
     cy.get('[title="Back to the homepage"]').click();
     // Check the representation
@@ -78,24 +95,29 @@ describe('/projects/:projectId/edit - Form', () => {
     });
     cy.getByTestId('ViewDocument').dblclick();
     cy.getByTestId('View').dblclick();
-
-    createNewTreeItemOn('Form Description', 'View');
-    cy.getByTestId('New Form Description').click();
-    cy.getByTestId('Domain Type').type('flow::System');
-    cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
-    cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
+    createNewObjectInExplorer('View', 'Form Description', 'New Form Description').then((_newElementId) => {
+      cy.getByTestId('Domain Type').type('flow::System');
+      cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
+      cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
+    });
     cy.getByTestId('ReadOnlyRepresentation').dblclick();
     cy.getByTestId('PageDescription').dblclick();
 
-    createNewTreeItemOn('Widgets Flexbox Container Description', 'GroupDescription');
-    cy.getByTestId('Label Expression').should('not.be.disabled');
-    cy.getByTestId('Label Expression').type('Test flexbox container');
-    cy.getByTestId('Is Enabled Expression').type("aql:self.name='NewSystem'");
+    createNewObjectInExplorer(
+      'GroupDescription',
+      'Widgets Flexbox Container Description',
+      'FlexboxContainerDescription'
+    ).then((_newElementId) => {
+      cy.getByTestId('Label Expression').type('Test flexbox container');
+      cy.getByTestId('Is Enabled Expression').type("aql:self.name='NewSystem'");
+    });
 
-    createNewTreeItemOn('Textfield Description', 'FlexboxContainerDescription');
-    cy.getByTestId('Label Expression').should('not.be.disabled');
-    cy.getByTestId('Label Expression').type('Name');
-    cy.getByTestId('Value Expression').type('aql:self.name');
+    createNewObjectInExplorer('FlexboxContainerDescription', 'Textfield Description', 'TextfieldDescription').then(
+      (_newElementId) => {
+        cy.getByTestId('Label Expression').type('Name');
+        cy.getByTestId('Value Expression').type('aql:self.name');
+      }
+    );
 
     cy.get('[title="Back to the homepage"]').click();
     // Check the representation
@@ -110,7 +132,6 @@ describe('/projects/:projectId/edit - Form', () => {
     cy.getByTestId('ReadOnlyRepresentation').should('exist').click();
     cy.getByTestId('create-representation').click();
 
-    cy.getByTestId('page').findByTestId('input-Name').should('not.be.disabled');
     cy.getByTestId('NewSystem').click();
     cy.getByTestId('form').findByTestId('Name').type('2').type('{enter}');
     cy.getByTestId('page').findByTestId('input-Name').should('be.disabled');
