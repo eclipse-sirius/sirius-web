@@ -398,14 +398,14 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
         EObject owner = this.getReferenceOwner(variableManager, referenceDescription.getReferenceOwnerExpression());
         String referenceName = this.getStringValueProvider(referenceDescription.getReferenceNameExpression()).apply(variableManager);
         return Optional.ofNullable(owner)
-                       .map(EObject::eClass)
-                       .map(klass -> klass.getEStructuralFeature(referenceName))
-                       .filter(EReference.class::isInstance)
-                       .map(EReference.class::cast);
+                .map(EObject::eClass)
+                .map(klass -> klass.getEStructuralFeature(referenceName))
+                .filter(EReference.class::isInstance)
+                .map(EReference.class::cast);
     }
 
     private String getOwnerKind(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
-        return this.getReference(variableManager, referenceDescription).flatMap(reference -> Optional.of(this.emfKindService.getKind(reference.getEContainingClass()))).orElse("");
+        return variableManager.get(VariableManager.SELF, EObject.class).map(self -> this.emfKindService.getKind(self.eClass())).orElse("");
     }
 
     private String getReferenceKind(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
