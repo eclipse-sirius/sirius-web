@@ -31,8 +31,8 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import Filter from '@material-ui/icons/Filter';
 import LinkIcon from '@material-ui/icons/Link';
@@ -51,14 +51,15 @@ import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariab
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
-  editProjectViewMachine,
   HandleFetchedProjectEvent,
   HideToastEvent,
   SchemaValue,
   SelectRepresentationEvent,
   ShowToastEvent,
+  editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
+import { CodeLookupToolContribution } from './ToolContributions/CodeLookupToolContribution';
 import { PapayaOperationActivityLabelDetailToolContribution } from './ToolContributions/PapayaOperationActivityLabelDetailToolContribution';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
@@ -185,6 +186,21 @@ export const EditProjectView = () => {
           return false;
         }}
         component={PapayaOperationActivityLabelDetailToolContribution}
+      />,
+      <DiagramPaletteToolContribution
+        canHandle={(_diagramId, diagramElementId) => {
+          const nodes = useNodes<NodeData>();
+          const targetedNode = nodes.find((node) => node.id === diagramElementId);
+          if (targetedNode) {
+            const kind = targetedNode.data.targetObjectKind;
+            return (
+              kind === 'siriusComponents://semantic?domain=papaya_logical_architecture&entity=Interface' ||
+              kind === 'siriusComponents://semantic?domain=papaya_logical_architecture&entity=Class'
+            );
+          }
+          return false;
+        }}
+        component={CodeLookupToolContribution}
       />,
     ];
 
