@@ -16,6 +16,8 @@ import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 
 export interface ILayoutEngine {
+  registerNodeLayoutHandlerContribution(nodeLayoutHandlerContribution: INodeLayoutHandler<NodeData>);
+
   layoutNodes(
     previousDiagram: Diagram | null,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
@@ -27,6 +29,7 @@ export interface ILayoutEngine {
 
 export interface INodeLayoutHandler<T extends NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>);
+
   handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,

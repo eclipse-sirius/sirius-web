@@ -12,8 +12,9 @@
  *******************************************************************************/
 
 import { diagramFragment } from './diagramFragment';
+import { GraphQLNodeStyleFragment } from './nodeFragment.types';
 
-export const diagramEventSubscription = `
+export const diagramEventSubscription = (contributions: GraphQLNodeStyleFragment[]) => `
 subscription diagramEvent($input: DiagramEventInput!) {
   diagramEvent(input: $input) {
     ... on ErrorPayload {
@@ -35,5 +36,5 @@ subscription diagramEvent($input: DiagramEventInput!) {
   }
 }
 
-${diagramFragment}
+${diagramFragment(contributions)}
 `;

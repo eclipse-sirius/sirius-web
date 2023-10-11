@@ -70,6 +70,9 @@ Note that double-clicking no longer triggers a direct edit.
 The behavior is controlled by the new _Drop Node_ tools defined on the target element, which can be either a node or the diagram itself (when dropping on the diagram's background).
 - https://github.com/eclipse-sirius/sirius-web/issues/1982[#1982] [diagram] Make the node label non required
 - https://github.com/eclipse-sirius/sirius-web/issues/2482[#2482] [diagram] Add the support for TOP_CENTER inside label location. Other inside label locations will be supported later.
+- https://github.com/eclipse-sirius/sirius-web/issues/2256[#2256] [diagram] Add the possibility to contribute custom shape.
+See the `EllipseNode` example and link:doc/how-to/contribute-custom-node.adoc[the documentation] for more details.
+Note that the custom shape replaces the parametric SVG, which is deprecated and will be removed in a future version.
 
 === Improvements
 

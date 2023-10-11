@@ -78,3 +78,8 @@ export interface GQLImageNodeStyle extends GQLNodeStyle {
 export interface GQLIconLabelNodeStyle extends GQLNodeStyle {
   backgroundColor: string;
 }
+
+export interface GraphQLNodeStyleFragment {
+  type: string;
+  fields: string;
+}

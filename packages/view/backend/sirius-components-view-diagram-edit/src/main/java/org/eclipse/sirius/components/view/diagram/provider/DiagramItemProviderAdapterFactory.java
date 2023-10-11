@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ChangeNotifier;
+import org.eclipse.emf.edit.provider.ChildCreationExtenderManager;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IChangeNotifier;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.util.DiagramAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -51,7 +53,7 @@ import org.eclipse.sirius.components.view.util.ViewSwitch;
  *
  * @generated
  */
-public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
+public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable, IChildCreationExtender {
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -67,6 +69,13 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
+
+    /**
+     * This helps manage the child creation extenders. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(DiagramEditPlugin.INSTANCE, DiagramPackage.eNS_URI);
 
     /**
      * This keeps track of all the supported types checked by {@link #isFactoryForType isFactoryForType}. <!--
@@ -807,6 +816,35 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
         }
 
         return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public List<IChildCreationExtender> getChildCreationExtenders() {
+        return this.childCreationExtenderManager.getChildCreationExtenders();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Collection<?> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
+        return this.childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ResourceLocator getResourceLocator() {
+        return this.childCreationExtenderManager;
     }
 
     /**

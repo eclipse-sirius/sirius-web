@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GraphQLNodeStyleFragment } from './nodeFragment.types';
 
-export const nodeFragment = `
+export const nodeFragment = (contributions: GraphQLNodeStyleFragment[]) => `
 fragment nodeFragment on Node {
   id
   type
@@ -42,6 +43,14 @@ fragment nodeFragment on Node {
     ... on IconLabelNodeStyle {
       backgroundColor
     }
+     ${contributions.map(
+       (nodeStyle) =>
+         `
+    ... on ${nodeStyle.type} {
+      ${nodeStyle.fields}
+    }
+    `
+     )}
   }
   childrenLayoutStrategy {
     __typename

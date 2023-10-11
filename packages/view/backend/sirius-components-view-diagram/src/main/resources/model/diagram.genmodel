@@ -13,7 +13,7 @@
   <foreignModel>diagram.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="Diagram" basePackage="org.eclipse.sirius.components.view" disposableProviderFactory="true"
-      childCreationExtenders="true" ecorePackage="diagram.ecore#/">
+      extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="diagram.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//ArrowStyle">
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrowStyle/None"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//ArrowStyle/OutputArrow"/>

@@ -110,7 +110,8 @@ public class GeneralPurposeTests {
             "/sirius-components-domain",
             "/sirius-components-view",
             "/sirius-web-customwidgets",
-            "/sirius-components-widget-reference-view"
+            "/sirius-components-widget-reference-view",
+            "/sirius-web-customnodes"
     );
 
     /**
@@ -133,10 +134,8 @@ public class GeneralPurposeTests {
     /**
      * Finds all the files located under the given source folder path with the given extension.
      *
-     * @param sourceFolderPath The path of the source folder
-     *
+     * @param sourceFolderPath           The path of the source folder
      * @param includesGeneratedCodePaths Used to indicate if we want to consider generated code
-     *
      * @return The path of the files
      */
     private List<Path> findFilePaths(Path sourceFolderPath, String extension, boolean includesGeneratedCodePaths) {

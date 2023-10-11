@@ -17,6 +17,9 @@ import {
   DiagramPaletteToolContextValue,
   DiagramPaletteToolContribution,
   NodeData,
+  NodeTypeContext,
+  NodeTypeContextValue,
+  NodeTypeContribution,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
@@ -43,6 +46,9 @@ import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { EllipseNode } from '../../nodes/EllipseNode';
+import { EllipseNodeConverterHandler } from '../../nodes/EllipseNodeConverterHandler';
+import { EllipseNodeLayoutHandler } from '../../nodes/EllipseNodeLayoutHandler';
 import { OnboardArea } from '../../onboarding/OnboardArea';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
@@ -188,42 +194,56 @@ export const EditProjectView = () => {
       />,
     ];
 
+    const nodeTypeRegistryValue: NodeTypeContextValue = {
+      graphQLNodeStyleFragments: [
+        {
+          type: 'EllipseNodeStyle',
+          fields: `borderColor borderSize borderStyle color`,
+        },
+      ],
+      nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
+      nodeConverterHandlers: [new EllipseNodeConverterHandler()],
+      nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
+    };
+
     main = (
       <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
         <TreeToolBarContext.Provider value={treeToolBarContributions}>
           <DiagramPaletteToolContext.Provider value={diagramPaletteToolContributions}>
-            <Workbench
-              editingContextId={project.currentEditingContext.id}
-              initialRepresentationSelected={representation}
-              onRepresentationSelected={onRepresentationSelected}
-              mainAreaComponent={OnboardArea}
-              readOnly={false}>
-              <WorkbenchViewContribution
-                side="left"
-                title="Explorer"
-                icon={<AccountTreeIcon />}
-                component={ExplorerView}
-              />
-              <WorkbenchViewContribution
-                side="left"
-                title="Validation"
-                icon={<WarningIcon />}
-                component={ValidationView}
-              />
-              <WorkbenchViewContribution side="right" title="Details" icon={<MenuIcon />} component={DetailsView} />
-              <WorkbenchViewContribution
-                side="right"
-                title="Representations"
-                icon={<Filter />}
-                component={RepresentationsView}
-              />
-              <WorkbenchViewContribution
-                side="right"
-                title="Related Elements"
-                icon={<LinkIcon />}
-                component={RelatedElementsView}
-              />
-            </Workbench>
+            <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+              <Workbench
+                editingContextId={project.currentEditingContext.id}
+                initialRepresentationSelected={representation}
+                onRepresentationSelected={onRepresentationSelected}
+                mainAreaComponent={OnboardArea}
+                readOnly={false}>
+                <WorkbenchViewContribution
+                  side="left"
+                  title="Explorer"
+                  icon={<AccountTreeIcon />}
+                  component={ExplorerView}
+                />
+                <WorkbenchViewContribution
+                  side="left"
+                  title="Validation"
+                  icon={<WarningIcon />}
+                  component={ValidationView}
+                />
+                <WorkbenchViewContribution side="right" title="Details" icon={<MenuIcon />} component={DetailsView} />
+                <WorkbenchViewContribution
+                  side="right"
+                  title="Representations"
+                  icon={<Filter />}
+                  component={RepresentationsView}
+                />
+                <WorkbenchViewContribution
+                  side="right"
+                  title="Related Elements"
+                  icon={<LinkIcon />}
+                  component={RelatedElementsView}
+                />
+              </Workbench>
+            </NodeTypeContext.Provider>
           </DiagramPaletteToolContext.Provider>
         </TreeToolBarContext.Provider>
       </TreeItemContextMenuContext.Provider>

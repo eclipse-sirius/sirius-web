@@ -1,0 +1,184 @@
+= How to contribute custom node to the Diagram representation
+
+This document shows the steps needed for an application to contribute and use its own custom nodes to Diagram representations.
+
+We will use the example of a "Ellipse" shape to illustrate this.
+
+== Custom Node Implementation: Backend
+
+=== View DSL Integration
+
+While technically optional, this step is highly recommended as it will allow node style to be configurable using the View DSL like the rest of the core node types.
+
+First, create your own Ecore model.
+It must define sub-types of the `NodeStyleDescription` _EClass_ from `diagram.ecore` (`org.eclipse.sirius.components.view.diagram.NodeStyleDescription`) with the appropriate configuration attributes.
+
+With this information, it becomes possible to create instances of your node's View-based description class (e.g. `EllipseNodeStyle`) inside a View-based _DiagramDescription_.
+
+The final step is to tell the system how to convert these modeled node style description into their corresponding core implementation.
+This is done by declaring a `INodeStyleProvider`:
+
+[source,java]
+----
+@Service
+public class EllipseNodeStyleProvider implements INodeStyleProvider {
+     @Override
+    public Optional<String> getNodeType(NodeStyleDescription nodeStyle) {
+        if (nodeStyle instanceof EllipseNodeStyleDescription) {
+            return Optional.of(NODE_ELLIPSE);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<INodeStyle> createNodeStyle(NodeStyleDescription nodeStyle, Optional<String> optionalEditingContextId) {
+        // ...
+        return Optional.of(EllipseNodeStyle.newEllipseNodeStyle().build());
+    }
+}
+----
+
+You will need to declare your new _nodeStyle_ in the global GraphQL Schema.
+This is done by simply providing a `.graphqls` schema file.
+Note that the file *must* be in a `schema` folder in the classpath to be detected.
+For the Ellipse node we have `/sirius-web-sample-application/src/main/resources/schema/customnodes.graphqls` with the following content:
+
+[source,graphqls]
+----
+type EllipseNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  color: String!
+}
+
+extend union INodeStyle = EllipseNodeStyle
+----
+
+IMPORTANT: Make sure the type of the _nodeStyle_ declared in the GraphQL Schema (`type EllipseNodeStyle` above) matches the name of the Java class implementing the node (`EllipseNodeStyle.java`).
+
+
+== Custom Node Implementation: Frontend
+
+* Declare the `GQLNodeStyle` concrete sub-type for you new node:
+
+[source,typescript]
+----
+// File: packages/sirius-web/frontend/sirius-web/src/nodes/EllipseNode.types.ts
+import { GQLNodeStyle } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+
+export interface GQLEllipseNodeStyle extends GQLNodeStyle {
+  color: string;
+  borderColor: string;
+  borderStyle: string;
+  borderSize: string;
+}
+----
+
+* Implement the actual frontend React-flow node type for your new shape.
+
+[source,typescript]
+----
+// File: packages/sirius-web/frontend/sirius-web/src/nodes/EllipseNode.tsx
+export const EllipseNode = memo(({ data, isConnectable, id, selected }: NodeProps<EllipseNodeData>) => {
+  // ...
+});
+----
+
+* Implement the handler in charge of the conversion.
+
+[source,typescript]
+----
+// File: packages/sirius-web/frontend/sirius-web/src/nodes/EllipseNodeConverterHandler.tsx
+export class EllipseNodeConverterHandler implements INodeConverterHandler {
+  // ...
+}
+----
+
+The `canHandle` predicate, check on what `gqlNode` the converter should be used.
+
+[source,typescript]
+----
+canHandle(gqlNode: GQLNode) {
+  return gqlNode.style.__typename === 'EllipseNodeStyle';
+}
+----
+
+The `handle` method, converts a `GQLNode` to a concrete `Node` and adds it to the _nodes_ array, remember to convert _borderNodes_ and _childNodes_ if necessary.
+
+[source,typescript]
+----
+  handle(
+    convertEngine: IConvertEngine,
+    gqlNode: GQLNode,
+    parentNode: GQLNode | null,
+    isBorderNode: boolean,
+    nodes: Node[]
+  ) {
+    nodes.push(toEllipseNode(gqlNode, parentNode, isBorderNode));
+    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes);
+    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes);
+  }
+----
+
+* Implement the handler in charge of the layout.
+
+[source,typescript]
+----
+export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
+// ...
+}
+----
+
+The `canHandle` predicate, check on what `node` the layout should be used.
+
+[source,typescript]
+----
+canHandle(node: Node<NodeData, DiagramNodeType>) {
+  return node.type === 'ellipseNode';
+}
+----
+
+The `handle` method, layout a _node_ by setting its _size_ and _position_, remember to take into account _borderNodes_ and _childNodes_ if necessary.
+
+[source,typescript]
+----
+  handle(
+    layoutEngine: ILayoutEngine,
+    previousDiagram: Diagram | null,
+    node: Node<NodeData>,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    directChildren: Node<NodeData, DiagramNodeType>[],
+    forceWidth?: number
+  ) {
+    // ...
+  }
+----
+
+* Finally, you have to contribute all these elements to the `NodeTypeComponentRegistry`, for _sirius-web_ this registry is in `packages/sirius-web/frontend/sirius-web/src/views/edit-project/EditProjectView.tsx`.
+
+[source,typescript]
+----
+    const nodeTypeRegistry: NodeTypeComponentRegistry = {
+      getNodeStyleContributions: () => {
+        const ellipseNodeStyleContribution: NodeStyleContribution = {
+          name: 'EllipseNodeStyle',
+          fields: `borderColor, borderSize, borderStyle, color`,
+        };
+        return [ellipseNodeStyleContribution];
+      },
+      getNodeLayoutHandler: () => {
+        return [new EllipseNodeLayoutHandler()];
+      },
+      getNodeConverterHandler: () => {
+        return [new EllipseNodeConverterHandler()];
+      },
+      getNodeTypeContributions: () => {
+        return [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />];
+      },
+    };
+----
+
+IMPORTANT: Make sure the type of the `getNodeTypeContributions` matches the type set during the conversion (in `EllipseNodeConverterHandler`).
+
+

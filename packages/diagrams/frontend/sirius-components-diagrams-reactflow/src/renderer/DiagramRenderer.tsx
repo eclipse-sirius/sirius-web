@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -32,9 +32,10 @@ import {
   useStoreApi,
 } from 'reactflow';
 
-import 'reactflow/dist/style.css';
-import { convertDiagram } from '../converter/convertDiagram';
 import { useBorderChange } from './border/useBorderChange';
+import { NodeTypeContext } from '../contexts/NodeContext';
+import { NodeTypeContextValue } from '../contexts/NodeContext.types';
+import { convertDiagram } from '../converter/convertDiagram';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
@@ -45,13 +46,15 @@ import { useDropNode } from './dropNode/useDropNode';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useLayout } from './layout/useLayout';
-import { nodeTypes } from './node/NodeTypes';
 import { DiagramNodeType } from './node/NodeTypes.types';
+import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
+
+import 'reactflow/dist/style.css';
 
 const GRID_STEP: number = 10;
 
@@ -78,13 +81,16 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onBorderChange } = useBorderChange();
+  const { getNodeTypes } = useNodeType();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
 
+  const { nodeConverterHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
+
   useEffect(() => {
     const { diagram } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(diagram);
+    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverterHandlers);
 
     const previousDiagram: Diagram = {
       metadata: { ...convertedDiagram.metadata },
@@ -243,7 +249,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   return (
     <ReactFlow
       nodes={nodes}
-      nodeTypes={nodeTypes}
+      nodeTypes={getNodeTypes()}
       onNodesChange={handleNodesChange}
       edges={edges}
       edgeTypes={edgeTypes}
