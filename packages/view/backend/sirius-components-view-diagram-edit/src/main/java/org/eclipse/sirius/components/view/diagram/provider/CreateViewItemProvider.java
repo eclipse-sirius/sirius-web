@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
@@ -189,16 +188,6 @@ public class CreateViewItemProvider extends OperationItemProvider {
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, DiagramFactory.eINSTANCE.createCreateView()));
 
         newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, DiagramFactory.eINSTANCE.createDeleteView()));
-    }
-
-    /**
-     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public ResourceLocator getResourceLocator() {
-        return DiagramEditPlugin.INSTANCE;
     }
 
 }

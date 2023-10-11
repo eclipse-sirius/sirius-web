@@ -51,4 +51,8 @@ export class LayoutEngine implements ILayoutEngine {
       }
     });
   }
+
+  public registerNodeLayoutHandlerContribution(nodeLayoutHandlerContribution: INodeLayoutHandler<NodeData>) {
+    this.nodeLayoutHandlers.push(nodeLayoutHandlerContribution);
+  }
 }

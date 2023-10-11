@@ -125,7 +125,7 @@ public final class StylesFactory {
             for (INodeStyleProvider iNodeStyleProvider : this.iNodeStyleProviders) {
                 Optional<String> nodeType = iNodeStyleProvider.getNodeType(nodeStyleDescription);
                 if (nodeType.isPresent()) {
-                    type = Optional.of(nodeType.get());
+                    type = nodeType;
                     break;
                 }
             }

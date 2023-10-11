@@ -14,7 +14,7 @@
 import { ComponentType } from 'react';
 import { NodeProps } from 'reactflow';
 
-export type DiagramNodeType = 'rectangularNode' | 'imageNode' | 'listNode' | 'iconLabelNode';
+export type DiagramNodeType = string;
 
 export type DiagramNodeTypes = {
   [key in DiagramNodeType]: ComponentType<NodeProps>;

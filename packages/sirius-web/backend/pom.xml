@@ -41,5 +41,7 @@
 		<module>sirius-web-customwidgets</module>
 		<module>sirius-web-customwidgets-edit</module>
 		<module>sirius-web-sample-application</module>
+		<module>sirius-web-customnodes</module>
+		<module>sirius-web-customnodes-edit</module>
 	</modules>
 </project>

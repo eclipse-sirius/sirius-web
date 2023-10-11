@@ -28,6 +28,8 @@ import org.eclipse.sirius.components.view.diagram.provider.DiagramItemProviderAd
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.provider.FormItemProviderAdapterFactory;
 import org.eclipse.sirius.components.view.provider.ViewItemProviderAdapterFactory;
+import org.eclipse.sirius.web.customnodes.CustomnodesPackage;
+import org.eclipse.sirius.web.customnodes.provider.CustomnodesItemProviderAdapterFactory;
 import org.eclipse.sirius.web.customwidgets.CustomwidgetsPackage;
 import org.eclipse.sirius.web.customwidgets.provider.CustomwidgetsItemProviderAdapterFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -41,6 +43,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class SampleEMFConfiguration {
+
     @Bean
     public AdapterFactory flowAdapterFactory() {
         return new FlowItemProviderAdapterFactory();
@@ -132,5 +135,23 @@ public class SampleEMFConfiguration {
     @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public ChildExtenderProvider sliderChildExtenderProvider() {
         return new ChildExtenderProvider(FormPackage.eNS_URI, CustomwidgetsItemProviderAdapterFactory.FormChildCreationExtender::new);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
+    public EPackage customNodesEPackage() {
+        return CustomnodesPackage.eINSTANCE;
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
+    public AdapterFactory customNodesAdapterFactory() {
+        return new CustomnodesItemProviderAdapterFactory();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
+    public ChildExtenderProvider customNodesChildExtenderProvider() {
+        return new ChildExtenderProvider(DiagramPackage.eNS_URI, CustomnodesItemProviderAdapterFactory.DiagramChildCreationExtender::new);
     }
 }

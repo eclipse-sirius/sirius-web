@@ -13,11 +13,13 @@
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { XYPosition, useReactFlow } from 'reactflow';
+import { useReactFlow, XYPosition } from 'reactflow';
+import { NodeTypeContext } from '../../contexts/NodeContext';
+import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { Diagram, EdgeData, NodeData } from '../DiagramRenderer.types';
+import { cleanLayoutArea, layout, performDefaultAutoLayout, prepareLayoutArea } from './layout';
 import { LayoutContext } from './LayoutContext';
 import { LayoutContextContextValue } from './LayoutContext.types';
-import { cleanLayoutArea, layout, performDefaultAutoLayout, prepareLayoutArea } from './layout';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
 
 const initialState: UseLayoutState = {
@@ -31,6 +33,7 @@ const initialState: UseLayoutState = {
 
 export const useLayout = (): UseLayoutValue => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const [state, setState] = useState<UseLayoutState>(initialState);
 
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
@@ -66,7 +69,12 @@ export const useLayout = (): UseLayoutValue => {
         hiddenContainer: layoutArea,
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
-      const laidoutDiagram = layout(state.previousDiagram, state.diagramToLayout, referencePosition);
+      const laidoutDiagram = layout(
+        state.previousDiagram,
+        state.diagramToLayout,
+        referencePosition,
+        nodeLayoutHandlers
+      );
       setState((prevState) => ({
         ...prevState,
         diagramToLayout: null,

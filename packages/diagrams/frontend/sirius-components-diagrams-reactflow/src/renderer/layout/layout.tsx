@@ -13,24 +13,25 @@
 
 import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
-import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
+import { MessageOptions, ServerContext, theme, ToastContext } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
-import { Fragment, createElement } from 'react';
+import { createElement, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { Edge, Node, ReactFlowProvider } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
-import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
+import { Label } from '../Label';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNode } from '../node/RectangularNode';
 import { RectangularNodeData } from '../node/RectangularNode.types';
+import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { ReferencePosition } from './LayoutContext.types';
 import { LayoutEngine } from './LayoutEngine';
-import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
+import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { getChildren } from './layoutNode';
 
 const emptyNodeProps = {
@@ -163,7 +164,10 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void, 
       <ApolloProvider client={new ApolloClient({ cache: new InMemoryCache(), uri: '' })}>
         <ThemeProvider theme={theme}>
           <ServerContext.Provider value={{ httpOrigin }}>
-            <ToastContext.Provider value={{ enqueueSnackbar: (_body: string, _options?: MessageOptions) => {} }}>
+            <ToastContext.Provider
+              value={{
+                enqueueSnackbar: (_body: string, _options?: MessageOptions) => {},
+              }}>
               <DiagramDirectEditContextProvider>{hiddenContainerContentElements}</DiagramDirectEditContextProvider>
             </ToastContext.Provider>
           </ServerContext.Provider>
@@ -187,19 +191,27 @@ const gap = 20;
 export const layout = (
   previousDiagram: Diagram | null,
   diagram: Diagram,
-  referencePosition: ReferencePosition | null
+  referencePosition: ReferencePosition | null,
+  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ): Diagram => {
-  layoutDiagram(previousDiagram, diagram, referencePosition);
+  layoutDiagram(previousDiagram, diagram, referencePosition, nodeLayoutHandlerContributions);
   return diagram;
 };
 
 const layoutDiagram = (
   previousDiagram: Diagram | null,
   diagram: Diagram,
-  referencePosition: ReferencePosition | null
+  referencePosition: ReferencePosition | null,
+  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentNode);
+
+  const layoutEngine: ILayoutEngine = new LayoutEngine();
+
+  nodeLayoutHandlerContributions.forEach((nodeLayoutHandler) =>
+    layoutEngine.registerNodeLayoutHandlerContribution(nodeLayoutHandler)
+  );
 
   let newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined = undefined;
   if (referencePosition) {
@@ -216,7 +228,7 @@ const layoutDiagram = (
     }
   }
 
-  new LayoutEngine().layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout, newlyAddedNode);
+  layoutEngine.layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout, newlyAddedNode);
 
   // Update position of root nodes
   nodesToLayout.forEach((node, index) => {
