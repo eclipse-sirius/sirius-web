@@ -20,7 +20,7 @@ export interface UseLayoutValue {
     diagramToLayout: Diagram,
     callback: (laidoutDiagram: Diagram) => void
   ) => void;
-  autoLayout: (nodes: Node<NodeData>[], edges: Edge[]) => Promise<{ nodes: Node<NodeData>[] }>;
+  autoLayout: (nodes: Node<NodeData>[], edges: Edge[], zoomLevel: number) => Promise<{ nodes: Node<NodeData>[] }>;
 }
 
 export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';
