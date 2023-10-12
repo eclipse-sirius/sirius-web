@@ -67,7 +67,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   };
 
   const handleArrangeAll = () => {
-    autoLayout(nodes, edges).then(({ nodes }) => {
+    autoLayout(nodes, edges, reactFlow.getZoom()).then(({ nodes }) => {
       reactFlow.setNodes(nodes);
     });
   };

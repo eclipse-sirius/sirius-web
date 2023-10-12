@@ -22,6 +22,7 @@ import { Edge, Node, ReactFlowProvider } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
+import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { RectangularNode } from '../node/RectangularNode';
@@ -49,6 +50,7 @@ const emptyRectangularNodeProps = {
   type: 'rectangularNode',
 };
 
+const isIconLabelNode = (node: Node<NodeData>): node is Node<IconLabelNodeData> => node.type === 'iconLabelNode';
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
 const isRectangularNode = (node: Node<NodeData>): node is Node<RectangularNodeData> => node.type === 'rectangularNode';
 
@@ -227,7 +229,8 @@ const layoutDiagram = (previousDiagram: Diagram | null, diagram: Diagram) => {
 
 export const performDefaultAutoLayout = (
   nodes: Node<NodeData>[],
-  edges: Edge[]
+  edges: Edge[],
+  zoomLevel: number
 ): Promise<{ nodes: Node<NodeData>[] }> => {
   const layoutOptions: LayoutOptions = {
     'elk.algorithm': 'layered',
@@ -238,13 +241,14 @@ export const performDefaultAutoLayout = (
     'elk.direction': 'DOWN',
     'elk.layered.spacing.edgeNodeBetweenLayers': '30',
   };
-  return performAutoLayout(nodes, edges, layoutOptions);
+  return performAutoLayout(nodes, edges, layoutOptions, zoomLevel);
 };
 
 export const performAutoLayout = (
   nodes: Node<NodeData>[],
   edges: Edge[],
-  layoutOptions: LayoutOptions
+  layoutOptions: LayoutOptions,
+  zoomLevel: number
 ): Promise<{ nodes: Node<NodeData>[] }> => {
   const graph: ElkNode = {
     id: 'root',
@@ -272,9 +276,36 @@ export const performAutoLayout = (
       const label = document.querySelector<HTMLDivElement>(`[data-id="${rectangularNodeData.label?.id}"]`);
       if (label) {
         const elkLabel: ElkLabel = {
-          width: label.getBoundingClientRect().width,
-          height: label.getBoundingClientRect().height,
+          width: label.getBoundingClientRect().width / zoomLevel,
+          height: label.getBoundingClientRect().height / zoomLevel,
           text: rectangularNodeData.label?.text,
+        };
+
+        elkNode.labels?.push(elkLabel);
+      }
+    }
+    if (isListNode(node)) {
+      const listNodeData: ListNodeData = node.data;
+
+      const label = document.querySelector<HTMLDivElement>(`[data-id="${listNodeData.label?.id}"]`);
+      if (label) {
+        const elkLabel: ElkLabel = {
+          width: label.getBoundingClientRect().width / zoomLevel,
+          height: label.getBoundingClientRect().height / zoomLevel,
+          text: listNodeData.label?.text,
+        };
+
+        elkNode.labels?.push(elkLabel);
+      }
+    }
+    if (isIconLabelNode(node)) {
+      const iconLabelNodeData: IconLabelNodeData = node.data;
+      const label = document.querySelector<HTMLDivElement>(`[data-id="${iconLabelNodeData.label?.id}"]`);
+      if (label) {
+        const elkLabel: ElkLabel = {
+          width: label.getBoundingClientRect().width / zoomLevel,
+          height: label.getBoundingClientRect().height / zoomLevel,
+          text: iconLabelNodeData.label?.text,
         };
 
         elkNode.labels?.push(elkLabel);
@@ -283,8 +314,8 @@ export const performAutoLayout = (
 
     const element = document.querySelector(`[data-id="${node.id}"]`);
     if (element) {
-      elkNode.width = element.getBoundingClientRect().width;
-      elkNode.height = element.getBoundingClientRect().height;
+      elkNode.width = element.getBoundingClientRect().width / zoomLevel;
+      elkNode.height = element.getBoundingClientRect().height / zoomLevel;
     }
 
     nodeId2ElkNode.set(elkNode.id, elkNode);
