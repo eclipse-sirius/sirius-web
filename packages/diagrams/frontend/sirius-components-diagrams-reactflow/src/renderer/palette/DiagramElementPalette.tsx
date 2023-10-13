@@ -44,7 +44,10 @@ export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElem
 
   return isOpened && x && y ? (
     <DiagramElementPalettePortal>
-      <div className={classes.toolbar} style={{ position: 'absolute', left: x, top: y }}>
+      <div
+        className={classes.toolbar}
+        style={{ position: 'absolute', left: x, top: y }}
+        onClick={(event) => event.stopPropagation()}>
         <Palette
           diagramElementId={diagramElementId}
           onDirectEditClick={handleDirectEditClick}
