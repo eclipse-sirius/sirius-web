@@ -5,6 +5,7 @@
 
 === Shapes
 
+- Add support for custom nodes in Diagram representations
 
 === Architectural decision records
 
