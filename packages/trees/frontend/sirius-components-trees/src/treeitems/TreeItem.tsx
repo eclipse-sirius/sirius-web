@@ -18,18 +18,18 @@ import {
   ServerContextValue,
 } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { isFilterCandidate, splitText } from './filterTreeItem';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
-import { isFilterCandidate, splitText } from './filterTreeItem';
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -265,11 +265,11 @@ export const TreeItem = ({
   }
   useEffect(() => {
     if (selected) {
-      if (refDom.current.scrollIntoViewIfNeeded) {
+      if (refDom.current?.scrollIntoViewIfNeeded) {
         refDom.current.scrollIntoViewIfNeeded(true);
       } else {
         // Fallback for browsers not supporting the non-standard `scrollIntoViewIfNeeded`
-        refDom.current.scrollIntoView({ behavior: 'smooth' });
+        refDom.current?.scrollIntoView({ behavior: 'smooth' });
       }
     }
   }, [selected]);
