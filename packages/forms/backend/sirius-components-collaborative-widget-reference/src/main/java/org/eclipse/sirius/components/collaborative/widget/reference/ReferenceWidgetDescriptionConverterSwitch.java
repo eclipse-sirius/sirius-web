@@ -211,10 +211,16 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 } else {
                     referenceOptions = Arrays.asList(ItemPropertyDescriptor.getReachableObjectsOfType(eObject, eReference.getEReferenceType()).toArray());
                 }
-                return referenceOptions.stream().filter(option -> !EcoreUtil.isAncestor((EObject) option, eObject)).toList();
+                return referenceOptions.stream()
+                        .filter(option -> !this.isOptionAncestorAndContainmentReference((EObject) option, eObject, eReference))
+                        .toList();
             }
         }
         return new ArrayList<>();
+    }
+
+    private boolean isOptionAncestorAndContainmentReference(EObject option, EObject self, EReference eReference) {
+        return eReference.isContainment() && EcoreUtil.isAncestor(option, self);
     }
 
     private StringValueProvider getStringValueProvider(String valueExpression) {

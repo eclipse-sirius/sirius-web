@@ -97,7 +97,8 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         registry.add(this.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID,
                 variableManager -> variableManager.get("treeId", String.class).map(treeId -> treeId.startsWith("modelBrowser://reference")).orElse(false), variableManager -> {
                     EClass targetType = this.resolveTargetType(variableManager).orElse(null);
-                    return this.isTypeSelectable(variableManager, targetType);
+                    boolean isContainment = this.resolveIsContainment(variableManager);
+                    return this.isTypeSelectable(variableManager, targetType, isContainment);
                 }, this::getSearchScopeElements));
     }
 
@@ -142,10 +143,11 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         return isSelectable;
     }
 
-    private boolean isTypeSelectable(VariableManager variableManager, EClass targetType) {
+    private boolean isTypeSelectable(VariableManager variableManager, EClass targetType, boolean isContainment) {
         var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
         if (optionalSelf.isPresent() && targetType != null) {
-            return targetType.isInstance(optionalSelf.get()) && this.resolveOwnerEObject(variableManager).map(eObject -> !EcoreUtil.isAncestor(optionalSelf.get(), eObject)).orElse(true);
+            return targetType.isInstance(optionalSelf.get())
+                    && this.resolveOwnerEObject(variableManager).map(eObject -> !(isContainment && EcoreUtil.isAncestor(optionalSelf.get(), eObject))).orElse(true);
         } else {
             return false;
         }
@@ -195,6 +197,17 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
             return this.findEPackage(ePackageRegistry, ePackageName).map(ePackage -> ePackage.getEClassifier(eClassName)).filter(EClass.class::isInstance).map(EClass.class::cast);
         } else {
             return Optional.empty();
+        }
+    }
+
+    private boolean resolveIsContainment(VariableManager variableManager) {
+        var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
+        if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND)) {
+            Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
+            String isContainment = parameters.get("isContainment").get(0);
+            return Boolean.parseBoolean(isContainment);
+        } else {
+            return false;
         }
     }
 
