@@ -297,7 +297,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
             if (reference.isMany()) {
                 ((List<?>) reference.eGet(reference)).remove(item.get());
             } else {
-                reference.eUnset(reference);
+                referenceOwner.eUnset(reference);
             }
         } else {
             return this.createErrorStatus("Something went wrong while removing a reference value.");

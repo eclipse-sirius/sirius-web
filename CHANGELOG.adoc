@@ -32,9 +32,10 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 
 === Bug fixes
 
-- https://github.com/eclipse-sirius/sirius-web/issues/2360[#2360] [form] Fix an issue that prevent creation of new object on some containment reference with the reference widget.
-- https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [form] Fix an issue that prevent creation of new object on mono valued and containment reference when a value is already set with the reference widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/2360[#2360] [form] Fix an issue that prevents creation of new object on some containment reference with the reference widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [form] Fix an issue that prevents creation of new object on mono valued and containment reference when a value is already set with the reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/2269[#2269] [view] Fix an issue where it was possible to create a DiagramDescription or a FormDescription as a root object of a resource.
+- https://github.com/eclipse-sirius/sirius-web/issues/2470[#2470] [form] Fix an issue that prevents the removal of a contained reference from the reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/1712[#1712] [diagram] Fix an issue that triggers direct label edition even if there is no corresponding tool.
 Note that double-clicking no longer triggers a direct edit.
 
