@@ -503,4 +503,33 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('reference-value-Test').should('not.exist');
     cy.getByTestId('reference-value-').should('exist');
   });
+
+  it.only('check widget reference click navigation to filter tree item', () => {
+    cy.createProjectFromTemplate('studio-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
+      cy.visit(`/projects/${projectId}/edit`);
+    });
+    cy.getByTestId('DomainNewModel').dblclick();
+
+    cy.get('[title="domain::Domain"]').then(($div) => {
+      cy.wrap($div.data().testid).as('domainValue');
+    });
+    cy.get('@domainValue').then((domainValue) => {
+      cy.getByTestId(`${domainValue}`).dblclick();
+    });
+    cy.getByTestId('Entity1').dblclick();
+    cy.getByTestId('Entity2').dblclick();
+    cy.getByTestId('linkedTo').click();
+    cy.getByTestId('reference-value-Entity2').should('exist');
+
+    cy.getByTestId('linkedTo').type('{ctrl+f}');
+    cy.getByTestId('filterbar-textfield').type('Entity1');
+    cy.getByTestId('filterbar-filter-button').click();
+    cy.getByTestId('Entity2').should('not.exist');
+
+    cy.getByTestId('reference-value-Entity2').click();
+    cy.getByTestId('page-tab-Entity2').should('exist');
+    cy.getByTestId('filterbar-close-button').click();
+    cy.getByTestId('selected').findByTestId('Entity2').should('exist');
+  });
 });
