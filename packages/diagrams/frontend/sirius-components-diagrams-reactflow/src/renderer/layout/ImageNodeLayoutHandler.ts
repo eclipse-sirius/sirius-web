@@ -18,7 +18,7 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
-  computeContentBox,
+  computeNodesBox,
   getEastBorderNodeFootprintHeight,
   getNodeOrMinHeight,
   getNodeOrMinWidth,
@@ -78,11 +78,11 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
 
-    const childrenContentBox = computeContentBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
+    const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
 
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const nodeWidth = Math.max(
       directChildrenAwareNodeWidth,
       node.width,
@@ -92,8 +92,8 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
 
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes);
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const nodeHeight = Math.max(
       directChildrenAwareNodeHeight,
       node.height,
@@ -108,6 +108,6 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     borderNodes.forEach((borderNode) => {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
-    setBorderNodesPosition(borderNodes, node);
+    setBorderNodesPosition(borderNodes, node, previousDiagram);
   }
 }
