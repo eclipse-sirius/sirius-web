@@ -31,9 +31,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class EStructuralFeatureChoiceOfValueProvider implements Function<VariableManager, List<?>> {
 
-    private String featureVariableName;
+    private final String featureVariableName;
 
-    private AdapterFactory adapterFactory;
+    private final AdapterFactory adapterFactory;
 
     public EStructuralFeatureChoiceOfValueProvider(String featureVariableName, AdapterFactory adapterFactory) {
         this.featureVariableName = Objects.requireNonNull(featureVariableName);
@@ -50,15 +50,12 @@ public class EStructuralFeatureChoiceOfValueProvider implements Function<Variabl
             EReference eReference = optionalEReference.get();
 
             Object adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
-            if (adapter instanceof IItemPropertySource) {
-                IItemPropertySource itemPropertySource = (IItemPropertySource) adapter;
+            if (adapter instanceof IItemPropertySource itemPropertySource) {
                 IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
                 if (descriptor != null) {
-                    // @formatter:off
                     return descriptor.getChoiceOfValues(eObject).stream()
                             .filter(Objects::nonNull)
                             .toList();
-                    // @formatter:on
                 }
             }
         }
