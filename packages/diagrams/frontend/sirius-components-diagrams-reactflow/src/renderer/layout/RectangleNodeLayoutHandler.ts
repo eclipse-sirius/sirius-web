@@ -18,7 +18,7 @@ import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
-  computeContentBox,
+  computeNodesBox,
   findNodeIndex,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
@@ -74,20 +74,26 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
-      child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth);
-      const previousSibling = directNodesChildren[index - 1];
-      if (previousSibling) {
-        child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth, previousSibling);
+      const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
+
+      if (previousNode) {
+        child.position = previousNode.position;
+      } else {
+        child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth);
+        const previousSibling = directNodesChildren[index - 1];
+        if (previousSibling) {
+          child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth, previousSibling);
+        }
       }
     });
 
     // Update node to layout size
     // WARN: We suppose label are always on top of children (that wrong)
-    const childrenContentBox = computeContentBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
+    const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
 
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes);
+    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const labelOnlyWidth =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
 
@@ -103,8 +109,8 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes);
+    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
 
     const nodeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
@@ -117,7 +123,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     borderNodes.forEach((borderNode) => {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
-    setBorderNodesPosition(borderNodes, node);
+    setBorderNodesPosition(borderNodes, node, previousDiagram);
   }
 
   private handleLeafNode(

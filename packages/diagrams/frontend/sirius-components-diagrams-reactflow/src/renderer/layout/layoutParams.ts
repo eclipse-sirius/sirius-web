@@ -13,6 +13,7 @@
 
 export const gap = 20;
 export const rectangularNodePadding = 8;
+export const defaultNodeMargin = 8;
 export const borderLeftAndRight = 2;
 export const borderTopAndBottom = 2;
 export const defaultWidth = 150;
