@@ -38,17 +38,5 @@ fragment edgeFragment on Edge {
     targetArrow
     color
   }
-  routingPoints {
-    x
-    y
-  }
-  sourceAnchorRelativePosition {
-    x
-    y
-  }
-  targetAnchorRelativePosition {
-    x
-    y
-  }
 }
 `;
