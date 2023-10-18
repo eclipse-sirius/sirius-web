@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagra
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -88,7 +89,8 @@ public class DeleteFromDiagramEventHandlerTests {
 
         @Override
         public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, String edgeDescriptionId) {
-            return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID().toString(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID().toString()).get()));
+            return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID()
+                    .toString(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID().toString()).get()));
         }
     };
 
@@ -102,10 +104,10 @@ public class DeleteFromDiagramEventHandlerTests {
     @Test
     public void testNodeSemanticDeletionFromDiagram() {
         var handler = new DeleteFromDiagramEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
-                new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+                new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
         var nodeIds = List.of(NODE_ID);
-        var edgeIds = List.<String> of();
+        var edgeIds = List.<String>of();
         var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC);
 
         One<IPayload> payloadSink = Sinks.one();
@@ -126,10 +128,10 @@ public class DeleteFromDiagramEventHandlerTests {
     @Test
     public void testEdgeSemanticDeletionFromDiagram() {
         var handler = new DeleteFromDiagramEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
-                new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry());
+                new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var nodeIds = List.<String> of();
-        var edgeIds = List.<String> of(EDGE_ID);
+        var nodeIds = List.<String>of();
+        var edgeIds = List.of(EDGE_ID);
         var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds, DeletionPolicy.SEMANTIC);
 
         One<IPayload> payloadSink = Sinks.one();

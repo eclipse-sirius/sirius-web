@@ -18,3 +18,8 @@ export interface ToolProps {
   onClick: (tool: GQLTool) => void;
   thumbnail?: boolean;
 }
+
+export interface GQLMessage {
+  body: string;
+  level: string;
+}

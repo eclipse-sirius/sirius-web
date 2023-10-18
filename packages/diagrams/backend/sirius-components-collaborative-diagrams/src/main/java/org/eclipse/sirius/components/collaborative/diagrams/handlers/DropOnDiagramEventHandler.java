@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -61,12 +62,15 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     public DropOnDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            ICollaborativeDiagramMessageService messageService) {
+            ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
@@ -89,7 +93,7 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
                 IStatus status = this.executeTool(editingContext, diagramContext, objects, input.diagramTargetElementId(), input.startingPositionX(), input.startingPositionY());
                 if (status instanceof Success) {
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
-                    payload = new DropOnDiagramSuccessPayload(diagramInput.id(), diagram);
+                    payload = new DropOnDiagramSuccessPayload(diagramInput.id(), diagram, this.feedbackMessageService.getFeedbackMessages());
                 } else if (status instanceof Failure failure) {
                     payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
                 }

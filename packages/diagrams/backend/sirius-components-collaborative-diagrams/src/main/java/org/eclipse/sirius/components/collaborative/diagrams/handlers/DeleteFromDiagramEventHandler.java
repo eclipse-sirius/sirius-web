@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -77,23 +78,24 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final Logger logger = LoggerFactory.getLogger(DeleteFromDiagramEventHandler.class);
 
     private final Counter counter;
 
     public DeleteFromDiagramEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -160,7 +162,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
             DeleteFromDiagramInput diagramInput) {
 
         var changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
-        IPayload payload = new DeleteFromDiagramSuccessPayload(diagramInput.id(), diagramContext.getDiagram());
+        IPayload payload = new DeleteFromDiagramSuccessPayload(diagramInput.id(), diagramContext.getDiagram(), this.feedbackMessageService.getFeedbackMessages());
         if (!errors.isEmpty()) {
             errors.add(new Message(this.messageService.deleteFailed(), MessageLevel.ERROR));
 
@@ -199,7 +201,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 result = new Failure(message);
             }
         } else {
-            String message = this.messageService.nodeDescriptionNotFound(node.getId().toString());
+            String message = this.messageService.nodeDescriptionNotFound(node.getId());
             this.logger.debug(message);
             result = new Failure(message);
         }
@@ -237,7 +239,7 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 result = new Failure(message);
             }
         } else {
-            String message = this.messageService.edgeDescriptionNotFound(edge.getId().toString());
+            String message = this.messageService.edgeDescriptionNotFound(edge.getId());
             this.logger.debug(message);
             result = new Failure(message);
         }

@@ -19,6 +19,7 @@ import {
   GQLDropOnDiagramData,
   GQLDropOnDiagramInput,
   GQLDropOnDiagramPayload,
+  GQLDropOnDiagramSuccessPayload,
   GQLDropOnDiagramVariables,
   GQLErrorPayload,
   UseDropValue,
@@ -32,9 +33,16 @@ const dropOnDiagramMutation = gql`
         diagram {
           id
         }
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -42,6 +50,8 @@ const dropOnDiagramMutation = gql`
 
 const isErrorPayload = (payload: GQLDropOnDiagramPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropOnDiagramSuccessPayload =>
+  payload.__typename === 'DropOnDiagramSuccessPayload';
 
 export const useDrop = (): UseDropValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -57,7 +67,7 @@ export const useDrop = (): UseDropValue => {
     }
     if (droponDiagramElementData) {
       const { dropOnDiagram } = droponDiagramElementData;
-      if (isErrorPayload(dropOnDiagram)) {
+      if (isErrorPayload(dropOnDiagram) || isSuccessPayload(dropOnDiagram)) {
         addMessages(dropOnDiagram.messages);
       }
     }

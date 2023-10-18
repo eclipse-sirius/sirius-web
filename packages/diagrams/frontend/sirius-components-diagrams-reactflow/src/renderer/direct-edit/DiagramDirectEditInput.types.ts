@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '../Tool.types';
+
 export interface DiagramDirectEditInputProps {
   labelId: string;
   editingKey: string | null;
@@ -53,11 +55,11 @@ export interface GQLRenameElementPayload {
 }
 
 export interface GQLSuccessPayload extends GQLRenameElementPayload {
-  messages: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLErrorPayload extends GQLRenameElementPayload {
-  messages: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLEditLabelData {

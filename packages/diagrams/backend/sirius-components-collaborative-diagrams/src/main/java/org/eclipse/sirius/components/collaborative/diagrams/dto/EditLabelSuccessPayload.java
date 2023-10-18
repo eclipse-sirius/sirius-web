@@ -12,18 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.representations.Message;
 
 /**
  * The payload of the "Edit Label" mutation returned on success.
  *
  * @author pcdavid
  */
-public record EditLabelSuccessPayload(UUID id, Diagram diagram) implements IPayload {
+public record EditLabelSuccessPayload(UUID id, Diagram diagram, List<Message> messages) implements IPayload {
+
     public EditLabelSuccessPayload {
         Objects.requireNonNull(id);
         Objects.requireNonNull(diagram);

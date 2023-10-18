@@ -12,18 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.representations.Message;
 
 /**
  * Payload to indicate that a "Delete from diagram" mutation succeeded.
  *
  * @author pcdavid
  */
-public record DeleteFromDiagramSuccessPayload(UUID id, Diagram diagram) implements IPayload {
+public record DeleteFromDiagramSuccessPayload(UUID id, Diagram diagram, List<Message> messages) implements IPayload {
+
     public DeleteFromDiagramSuccessPayload {
         Objects.requireNonNull(id);
         Objects.requireNonNull(diagram);

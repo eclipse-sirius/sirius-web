@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Connection, Edge } from 'reactflow';
+import { GQLMessage } from '../Tool.types';
 
 export interface UseReconnectEdge {
   reconnectEdge: (oldEdge: Edge, newConnection: Connection) => void;
@@ -49,5 +50,9 @@ export enum GQLReconnectKind {
 }
 
 export interface GQLErrorPayload extends GQLReconnectEdgePayload {
-  message: string;
+  messages: GQLMessage[];
+}
+
+export interface GQLSuccessPayload extends GQLReconnectEdgePayload {
+  messages: GQLMessage[];
 }

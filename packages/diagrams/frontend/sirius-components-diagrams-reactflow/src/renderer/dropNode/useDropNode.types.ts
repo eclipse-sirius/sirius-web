@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { Node, NodeDragHandler } from 'reactflow';
+import { GQLMessage } from '../Tool.types';
 
 export interface UseDropNodeValue {
   onNodeDragStart: NodeDragHandler;
@@ -99,9 +100,4 @@ export interface GQLDropNodeCompatibilityEntry {
   droppedNodeDescriptionId: string;
   droppableOnDiagram: boolean;
   droppableOnNodeTypes: string[];
-}
-
-export interface GQLMessage {
-  body: string;
-  level: string;
 }

@@ -25,9 +25,11 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescript
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
+import org.eclipse.sirius.components.collaborative.diagrams.configuration.DiagramEventHandlerConfiguration;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -95,7 +97,8 @@ public class ReconnectEdgeEventHandlerTests {
 
             @Override
             public Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, String edgeDescriptionId) {
-                return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID().toString(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID().toString()).get()));
+                return Optional.of(new TestDiagramDescriptionBuilder().getEdgeDescription(UUID.randomUUID().toString(), this.findNodeDescriptionById(diagramDescription, UUID.randomUUID().toString())
+                        .get()));
             }
         };
 
@@ -128,8 +131,8 @@ public class ReconnectEdgeEventHandlerTests {
         };
         var messageService = new ICollaborativeDiagramMessageService.NoOp();
 
-        var handler = new ReconnectEdgeEventHandler(diagramQueryService, diagramDescriptionService, representationDescriptionSearchService, objectService, List.of(reconnectionToolExecutor),
-                messageService, new SimpleMeterRegistry());
+        var handler = new ReconnectEdgeEventHandler(new DiagramEventHandlerConfiguration(objectService, diagramQueryService, diagramDescriptionService, representationDescriptionSearchService,
+                messageService, new IFeedbackMessageService.NoOp()), List.of(reconnectionToolExecutor), new SimpleMeterRegistry());
         var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET, Position.UNDEFINED);
 
         assertThat(handler.canHandle(input)).isTrue();

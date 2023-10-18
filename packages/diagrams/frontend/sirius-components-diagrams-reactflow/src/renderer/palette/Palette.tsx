@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import TonalityIcon from '@material-ui/icons/Tonality';
@@ -32,13 +33,18 @@ import {
   GQLCollapsingState,
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
+  GQLDeleteFromDiagramPayload,
+  GQLDeleteFromDiagramSuccessPayload,
   GQLDeleteFromDiagramVariables,
   GQLDeletionPolicy,
   GQLDiagramDescription,
+  GQLErrorPayload,
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,
+  GQLInvokeSingleClickOnDiagramElementToolPayload,
+  GQLInvokeSingleClickOnDiagramElementToolSuccessPayload,
   GQLInvokeSingleClickOnDiagramElementToolVariables,
   GQLPalette,
   GQLRepresentationDescription,
@@ -122,9 +128,16 @@ const invokeSingleClickOnDiagramElementToolMutation = gql`
             kind
           }
         }
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -135,7 +148,16 @@ export const deleteFromDiagramMutation = gql`
     deleteFromDiagram(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on DeleteFromDiagramSuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -155,6 +177,16 @@ const updateCollapsingStateMutation = gql`
   }
 `;
 
+const isErrorPayload = (
+  payload: GQLDeleteFromDiagramPayload | GQLInvokeSingleClickOnDiagramElementToolPayload
+): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
+const isDeleteSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLDeleteFromDiagramSuccessPayload =>
+  payload.__typename === 'DeleteFromDiagramSuccessPayload';
+const isInvokeSingleClickSuccessPayload = (
+  payload: GQLInvokeSingleClickOnDiagramElementToolPayload
+): payload is GQLInvokeSingleClickOnDiagramElementToolSuccessPayload =>
+  payload.__typename === 'InvokeSingleClickOnDiagramElementToolSuccessPayload';
+
 const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
 
@@ -170,6 +202,7 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
   const nodes = useNodes<NodeData>();
   const edges = useEdges<EdgeData>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { addMessages } = useMultiToast();
 
   const diagramPaletteToolComponents = useContext<DiagramPaletteToolContextValue>(DiagramPaletteToolContext)
     .filter((contribution) => contribution.props.canHandle(diagramId, diagramElementId))
@@ -223,7 +256,7 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
   >(invokeSingleClickOnDiagramElementToolMutation);
 
   const invokeSingleClickTool = useCallback(
-    (tool: GQLTool) => {
+    async (tool: GQLTool) => {
       if (isSingleClickOnDiagramElementTool(tool)) {
         const { id: toolId } = tool;
         const input: GQLInvokeSingleClickOnDiagramElementToolInput = {
@@ -237,14 +270,25 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
           selectedObjectId: null,
         };
 
-        invokeSingleClickOnDiagramElementTool({ variables: { input } });
+        const { data } = await invokeSingleClickOnDiagramElementTool({
+          variables: { input },
+        });
+        if (data) {
+          const { invokeSingleClickOnDiagramElementTool } = data;
+          if (
+            isErrorPayload(invokeSingleClickOnDiagramElementTool) ||
+            isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)
+          ) {
+            addMessages(invokeSingleClickOnDiagramElementTool.messages);
+          }
+        }
       }
     },
     [
       editingContextId,
       diagramId,
       diagramElementId,
-      invokeSingleClickOnDiagramElementTool,
+      invokeSingleClickOnDiagramElementToolMutation,
       isSingleClickOnDiagramElementTool,
     ]
   );
@@ -262,7 +306,7 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
   };
 
   const invokeDeleteMutation = useCallback(
-    (nodeIds: string[], edgeIds: string[], deletionPolicy: GQLDeletionPolicy) => {
+    async (nodeIds: string[], edgeIds: string[], deletionPolicy: GQLDeletionPolicy) => {
       const input: GQLDeleteFromDiagramInput = {
         id: crypto.randomUUID(),
         editingContextId,
@@ -271,7 +315,13 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
         edgeIds,
         deletionPolicy,
       };
-      deleteElementsMutation({ variables: { input } });
+      const { data } = await deleteElementsMutation({ variables: { input } });
+      if (data) {
+        const { deleteFromDiagram } = data;
+        if (isErrorPayload(deleteFromDiagram) || isDeleteSuccessPayload(deleteFromDiagram)) {
+          addMessages(deleteFromDiagram.messages);
+        }
+      }
     },
     [editingContextId, diagramId, deleteElementsMutation]
   );

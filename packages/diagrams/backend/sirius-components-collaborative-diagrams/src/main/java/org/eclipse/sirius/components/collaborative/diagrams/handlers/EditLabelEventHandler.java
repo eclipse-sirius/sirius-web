@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -67,23 +68,24 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final Logger logger = LoggerFactory.getLogger(EditLabelEventHandler.class);
 
     private final Counter counter;
 
     public EditLabelEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -105,12 +107,12 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
             if (node.isPresent()) {
                 this.invokeDirectEditTool(node.get(), editingContext, diagram, input.newText());
 
-                payload = new EditLabelSuccessPayload(diagramInput.id(), diagram);
+                payload = new EditLabelSuccessPayload(diagramInput.id(), diagram, this.feedbackMessageService.getFeedbackMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
             } else {
                 var edge = this.diagramQueryService.findEdgeByLabelId(diagram, input.labelId());
                 if (edge.isPresent()) {
-                    payload = new EditLabelSuccessPayload(diagramInput.id(), diagram);
+                    payload = new EditLabelSuccessPayload(diagramInput.id(), diagram, this.feedbackMessageService.getFeedbackMessages());
                     try {
                         this.invokeDirectEditTool(edge.get(), input.labelId(), editingContext, diagram, input.newText());
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);

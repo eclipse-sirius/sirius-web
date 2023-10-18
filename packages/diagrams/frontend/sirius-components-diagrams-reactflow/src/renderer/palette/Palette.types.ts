@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '../Tool.types';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -26,6 +27,7 @@ export interface GQLErrorPayload
     GQLDeleteFromDiagramPayload,
     GQLUpdateCollapsingStatePayload {
   message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLInvokeSingleClickOnDiagramElementToolData {
@@ -40,6 +42,7 @@ export interface GQLInvokeSingleClickOnDiagramElementToolSuccessPayload
   extends GQLInvokeSingleClickOnDiagramElementToolPayload {
   id: string;
   newSelection: GQLWorkbenchSelection;
+  messages: GQLMessage[];
 }
 
 export interface GQLWorkbenchSelection {
@@ -145,6 +148,10 @@ export interface GQLDeleteFromDiagramData {
 
 export interface GQLDeleteFromDiagramPayload {
   __typename: string;
+}
+
+export interface GQLDeleteFromDiagramSuccessPayload extends GQLDeleteFromDiagramPayload {
+  messages: GQLMessage[];
 }
 
 export enum GQLDeletionPolicy {
