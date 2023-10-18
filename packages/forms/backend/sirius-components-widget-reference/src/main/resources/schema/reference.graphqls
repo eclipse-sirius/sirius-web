@@ -118,6 +118,7 @@ union CreateElementInReferencePayload = CreateElementInReferenceSuccessPayload |
 type CreateElementInReferenceSuccessPayload {
   id: ID!
   object: Object!
+  messages: [Message]!
 }
 
 input MoveReferenceValueInput {

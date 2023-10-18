@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateEl
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
@@ -47,6 +48,7 @@ import reactor.core.publisher.Sinks.One;
  */
 @Service
 public class CreateElementEventHandler implements IFormEventHandler {
+
     private final IFormQueryService formQueryService;
 
     private final IReferenceMessageService messageService;
@@ -55,10 +57,13 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private final Counter counter;
 
-    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
     }
@@ -86,8 +91,10 @@ public class CreateElementEventHandler implements IFormEventHandler {
                 Optional<Object> optionalObject = optionalWidget.map(ReferenceWidget::getCreateElementHandler).map(handler -> handler.apply(handlerInput));
 
                 if (optionalObject.isPresent()) {
-                    payload = new CreateElementInReferenceSuccessPayload(formInput.id(), optionalObject.get());
+                    payload = new CreateElementInReferenceSuccessPayload(formInput.id(), optionalObject.get(), this.feedbackMessageService.getFeedbackMessages());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, formInput.representationId(), formInput);
+                } else {
+                    payload = new ErrorPayload(input.id(), this.feedbackMessageService.getFeedbackMessages());
                 }
             }
         }

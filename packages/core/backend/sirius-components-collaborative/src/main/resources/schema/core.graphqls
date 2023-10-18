@@ -210,6 +210,7 @@ union CreateChildPayload = ErrorPayload|CreateChildSuccessPayload
 type CreateChildSuccessPayload {
   id: ID!
   object: Object
+  messages: [Message]!
 }
 
 input CreateRepresentationInput {

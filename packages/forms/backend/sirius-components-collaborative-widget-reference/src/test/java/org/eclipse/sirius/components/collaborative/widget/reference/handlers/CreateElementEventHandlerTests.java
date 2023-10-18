@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateEl
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -64,7 +65,8 @@ public class CreateElementEventHandlerTests {
         String referenceValueId = "ReferenceValue Id";
         String changeKind = ChangeKind.SEMANTIC_CHANGE;
 
-        var input = new CreateElementInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID().toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId");
+        var input = new CreateElementInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID()
+                .toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId");
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
 
         ReferenceValue referenceValue = ReferenceValue.newReferenceValue(referenceValueId)
@@ -125,7 +127,8 @@ public class CreateElementEventHandlerTests {
             }
         };
 
-        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectService, new SimpleMeterRegistry());
+        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectService, new SimpleMeterRegistry(),
+                new IFeedbackMessageService.NoOp());
         assertThat(handler.canHandle(input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -149,7 +152,8 @@ public class CreateElementEventHandlerTests {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(CHANGE_DESCRIPTION_PARAMETER_KEY, referenceValueId);
-        var input = new CreateElementInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID().toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId");
+        var input = new CreateElementInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID()
+                .toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId");
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
         Function<CreateElementInReferenceHandlerParameters, Object> createHandler = (inputParameter) -> {
@@ -203,7 +207,7 @@ public class CreateElementEventHandlerTests {
             }
         };
 
-        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, messageService, new IObjectService.NoOp(), new SimpleMeterRegistry());
+        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, messageService, new IObjectService.NoOp(), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
         assertThat(handler.canHandle(input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

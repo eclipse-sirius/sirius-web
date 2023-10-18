@@ -12,17 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.representations.Message;
 
 /**
  * The payload of the create child mutation.
  *
  * @author sbegaudeau
  */
-public record CreateChildSuccessPayload(UUID id, Object object) implements IPayload {
+public record CreateChildSuccessPayload(UUID id, Object object, List<Message> messages) implements IPayload {
+
     public CreateChildSuccessPayload {
         Objects.requireNonNull(id);
     }

@@ -407,8 +407,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
       .should('exist')
       .click();
     cy.getByTestId('create-modal').findByTestId('create-object').click();
-    cy.getByTestId('reference-value-Test').should('not.exist');
-    cy.getByTestId('reference-value-').should('exist');
+    cy.getByTestId('reference-value-Test').should('exist');
   });
 
   it('check widget reference click navigation to filter tree item', () => {
@@ -440,7 +439,7 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('selected').findByTestId('Entity2').should('exist');
   });
 
-  it.only('check widget reference filter ancestor only for containment reference', () => {
+  it('check widget reference filter ancestor only for containment reference', () => {
     cy.createProjectFromTemplate('studio-template').then((res) => {
       const projectId = res.body.data.createProjectFromTemplate.project.id;
       cy.visit(`/projects/${projectId}/edit`);

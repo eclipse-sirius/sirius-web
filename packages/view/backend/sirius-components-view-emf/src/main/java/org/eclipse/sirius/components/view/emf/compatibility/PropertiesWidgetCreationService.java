@@ -347,13 +347,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         String creationDescriptionId = variableManager.get(ReferenceWidgetComponent.CREATION_DESCRIPTION_ID_VARIABLE, String.class).orElse("");
         if (optionalIsChild.isPresent() && optionalEditingContext.isPresent()) {
-            if (this.isContainment(variableManager, feature) && !this.isMany(variableManager, feature)) {
-                // If the reference is containment and mono valued, we must first unset value before create a new one
-                EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-                if (referenceOwner != null && feature instanceof EReference reference) {
-                    referenceOwner.eUnset(reference);
-                }
-            }
             if (optionalIsChild.get()) {
                 EObject parent = variableManager.get(ReferenceWidgetComponent.PARENT_VARIABLE, EObject.class).orElse(null);
                 result = this.editService.createChild(optionalEditingContext.get(), parent, creationDescriptionId);

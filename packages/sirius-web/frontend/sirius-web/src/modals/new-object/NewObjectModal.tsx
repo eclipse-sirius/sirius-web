@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -28,6 +28,7 @@ import { useContext, useEffect } from 'react';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
+  GQLCreateChildSuccessPayload,
   GQLErrorPayload,
   GQLGetChildCreationDescriptionsQueryData,
   GQLGetChildCreationDescriptionsQueryVariables,
@@ -38,12 +39,10 @@ import {
   CreateChildEvent,
   FetchedChildCreationDescriptionsEvent,
   HandleResponseEvent,
-  HideToastEvent,
   NewObjectModalContext,
   NewObjectModalEvent,
   newObjectModalMachine,
   SchemaValue,
-  ShowToastEvent,
 } from './NewObjectModalMachine';
 
 const createChildMutation = gql`
@@ -56,9 +55,16 @@ const createChildMutation = gql`
           label
           kind
         }
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -97,13 +103,16 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
 
 const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateChildSuccessPayload =>
+  payload.__typename === 'CreateChildSuccessPayload';
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const classes = useNewObjectModalStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
-  const { newObjectModal, toast } = value as SchemaValue;
-  const { selectedChildCreationDescriptionId, childCreationDescriptions, objectToSelect, message } = context;
+  const { newObjectModal } = value as SchemaValue;
+  const { selectedChildCreationDescriptionId, childCreationDescriptions, objectToSelect } = context;
 
   const {
     loading: childCreationDescriptionsLoading,
@@ -116,11 +125,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!childCreationDescriptionsLoading) {
       if (childCreationDescriptionsError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (childCreationDescriptionsData) {
         const fetchChildCreationDescriptionsEvent: FetchedChildCreationDescriptionsEvent = {
@@ -146,21 +151,16 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   useEffect(() => {
     if (!createChildLoading) {
       if (createChildError) {
-        const showToastEvent: ShowToastEvent = {
-          type: 'SHOW_TOAST',
-          message: 'An unexpected error has occurred, please refresh the page',
-        };
-        dispatch(showToastEvent);
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
       }
       if (createChildData) {
         const handleResponseEvent: HandleResponseEvent = { type: 'HANDLE_RESPONSE', data: createChildData };
         dispatch(handleResponseEvent);
 
         const { createChild } = createChildData;
-        if (isErrorPayload(createChild)) {
-          const { message } = createChild;
-          const showToastEvent: ShowToastEvent = { type: 'SHOW_TOAST', message };
-          dispatch(showToastEvent);
+        if (isErrorPayload(createChild) || isSuccessPayload(createChild)) {
+          const { messages } = createChild;
+          addMessages(messages);
         }
       }
     }
@@ -226,11 +226,6 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
           </Button>
         </DialogActions>
       </Dialog>
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
     </>
   );
 };

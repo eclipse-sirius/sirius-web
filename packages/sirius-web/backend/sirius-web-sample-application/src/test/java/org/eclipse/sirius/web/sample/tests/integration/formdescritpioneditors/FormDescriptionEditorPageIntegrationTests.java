@@ -52,6 +52,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
@@ -89,6 +93,19 @@ public class FormDescriptionEditorPageIntegrationTests extends AbstractIntegrati
     private UUID formDescriptionObjectId;
 
     private UUID representationId;
+
+    //To use spring service with scope request, we simulate it.
+    @BeforeEach
+    public void simulateRequestContext() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
+        RequestContextHolder.setRequestAttributes(requestAttributes);
+    }
+
+    @AfterEach
+    public void resetRequestContext() {
+        RequestContextHolder.resetRequestAttributes();
+    }
 
     @BeforeEach
     public void setup() {
@@ -235,7 +252,7 @@ public class FormDescriptionEditorPageIntegrationTests extends AbstractIntegrati
                 }
                 """;
 
-        var createChildInput = new CreateChildInput(UUID.randomUUID(), this.projectId.toString(), rootObjectId.toString(), "Form Description");
+        var createChildInput = new CreateChildInput(UUID.randomUUID(), this.projectId.toString(), this.rootObjectId.toString(), "Form Description");
 
         var createChildExecutionInput = ExecutionInput.newExecutionInput()
                 .query(createChildQuery)
@@ -368,9 +385,9 @@ public class FormDescriptionEditorPageIntegrationTests extends AbstractIntegrati
                 .expectNextMatches(isInitiatedWithOnePageFormDescriptionEditorRefreshedEventPayload)
                 .then(this::addPageMutation)
                 .expectNextMatches(afterAddPageFormDescriptionEditorRefreshedEventPayload)
-                .then(() -> movePageMutation(newPageId.get()))
+                .then(() -> this.movePageMutation(newPageId.get()))
                 .expectNextMatches(afterMovePageFormDescriptionEditorRefreshedEventPayload)
-                .then(() -> deletePageMutation(newPageId.get()))
+                .then(() -> this.deletePageMutation(newPageId.get()))
                 .expectNextMatches(afterDeletePageFormDescriptionEditorRefreshedEventPayload)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
