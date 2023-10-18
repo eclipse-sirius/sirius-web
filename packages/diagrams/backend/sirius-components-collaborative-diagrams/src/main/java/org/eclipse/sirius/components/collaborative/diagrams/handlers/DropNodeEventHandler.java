@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborat
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -75,15 +76,18 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final Counter counter;
 
     public DropNodeEventHandler(IObjectService objectService, IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
+            IRepresentationDescriptionSearchService representationDescriptionSearchService, ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService, MeterRegistry meterRegistry) {
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
     }
 
@@ -107,7 +111,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
                 var optionalDropTarget = Optional.ofNullable(input.targetElementId()).flatMap(elementId -> this.diagramQueryService.findNodeById(diagram, elementId));
                 boolean handled = this.invokeDropNodeTool(editingContext, diagramContext, diagram, optionalDroppedNode.get(), optionalDropTarget);
                 if (handled) {
-                    payload = new SuccessPayload(diagramInput.id(), List.of());
+                    payload = new SuccessPayload(diagramInput.id(), this.feedbackMessageService.getFeedbackMessages());
                 } else {
                     payload = new SuccessPayload(diagramInput.id(), List.of(new Message("No drop handler found", MessageLevel.INFO)));
                 }

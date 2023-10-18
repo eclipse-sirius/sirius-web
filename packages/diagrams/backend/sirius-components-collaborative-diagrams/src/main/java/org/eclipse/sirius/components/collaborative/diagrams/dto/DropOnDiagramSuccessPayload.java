@@ -12,18 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.representations.Message;
 
 /**
  * The payload of the "drop on diagram" mutation returned on success.
  *
  * @author hmarchadour
  */
-public record DropOnDiagramSuccessPayload(UUID id, Diagram diagram) implements IPayload {
+public record DropOnDiagramSuccessPayload(UUID id, Diagram diagram, List<Message> messages) implements IPayload {
+
     public DropOnDiagramSuccessPayload {
         Objects.requireNonNull(id);
         Objects.requireNonNull(diagram);

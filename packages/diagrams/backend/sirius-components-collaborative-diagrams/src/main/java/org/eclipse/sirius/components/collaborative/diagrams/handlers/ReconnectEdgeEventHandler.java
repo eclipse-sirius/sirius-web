@@ -29,10 +29,12 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
+import org.eclipse.sirius.components.collaborative.diagrams.configuration.DiagramEventHandlerConfiguration;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
@@ -72,23 +74,22 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final Counter counter;
 
-    public ReconnectEdgeEventHandler(IDiagramQueryService diagramQueryService, IDiagramDescriptionService diagramDescriptionService,
-            IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService, List<IReconnectionToolsExecutor> reconnectionToolsExecutors,
-            ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry) {
-        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
-        this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.objectService = Objects.requireNonNull(objectService);
+    public ReconnectEdgeEventHandler(DiagramEventHandlerConfiguration diagramEventHandlerConfiguration, List<IReconnectionToolsExecutor> reconnectionToolsExecutors, MeterRegistry meterRegistry) {
+        this.diagramQueryService = Objects.requireNonNull(diagramEventHandlerConfiguration.getDiagramQueryService());
+        this.diagramDescriptionService = Objects.requireNonNull(diagramEventHandlerConfiguration.getDiagramDescriptionService());
+        this.representationDescriptionSearchService = Objects.requireNonNull(diagramEventHandlerConfiguration.getRepresentationDescriptionSearchService());
+        this.objectService = Objects.requireNonNull(diagramEventHandlerConfiguration.getObjectService());
         this.reconnectionToolsExecutors = Objects.requireNonNull(reconnectionToolsExecutors);
-        this.messageService = Objects.requireNonNull(messageService);
+        this.messageService = Objects.requireNonNull(diagramEventHandlerConfiguration.getMessageService());
+        this.feedbackMessageService = Objects.requireNonNull(diagramEventHandlerConfiguration.getFeedbackMessageService());
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -122,7 +123,7 @@ public class ReconnectEdgeEventHandler implements IDiagramEventHandler {
             if (status instanceof Success) {
                 diagramContext.setDiagramEvent(
                         new ReconnectEdgeEvent(reconnectEdgeInput.reconnectEdgeKind(), reconnectEdgeInput.edgeId(), reconnectEdgeInput.newEdgeEndId(), reconnectEdgeInput.newEdgeEndPosition()));
-                payload = new SuccessPayload(reconnectEdgeInput.id());
+                payload = new SuccessPayload(reconnectEdgeInput.id(), this.feedbackMessageService.getFeedbackMessages());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, reconnectEdgeInput.representationId(), reconnectEdgeInput);
             } else {
                 payload = new ErrorPayload(reconnectEdgeInput.id(), ((Failure) status).getMessages());

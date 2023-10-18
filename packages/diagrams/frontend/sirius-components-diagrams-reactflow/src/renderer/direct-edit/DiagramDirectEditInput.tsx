@@ -51,9 +51,16 @@ export const editLabelMutationOp = gql`
         diagram {
           id
         }
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -62,7 +69,7 @@ export const editLabelMutationOp = gql`
 const isErrorPayload = (payload: GQLRenameElementPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLRenameElementPayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
+  payload.__typename === 'EditLabelSuccessPayload';
 
 export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform }: DiagramDirectEditInputProps) => {
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
@@ -70,7 +77,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
     newLabel: initialLabel,
   });
 
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const { hideDiagramElementPalette } = useDiagramElementPalette();
 
@@ -102,9 +109,10 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
     if (editLabelData) {
       const { editLabel } = editLabelData;
       if (isErrorPayload(editLabel)) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
+        addMessages(editLabel.messages);
       } else if (isSuccessPayload(editLabel)) {
-        if (editLabel.__typename === 'SuccessPayload') {
+        addMessages(editLabel.messages);
+        if (editLabel.__typename === 'EditLabelSuccessPayload') {
           onClose();
         }
       }
@@ -147,7 +155,6 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
         },
       });
     }
-    onClose();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

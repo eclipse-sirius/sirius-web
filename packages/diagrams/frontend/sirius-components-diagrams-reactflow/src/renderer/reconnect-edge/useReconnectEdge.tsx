@@ -23,6 +23,7 @@ import {
   GQLReconnectEdgePayload,
   GQLReconnectEdgeVariables,
   GQLReconnectKind,
+  GQLSuccessPayload,
   UseReconnectEdge,
 } from './useReconnectEdge.types';
 
@@ -31,7 +32,16 @@ export const reconnectEdgeMutation = gql`
     reconnectEdge(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -39,9 +49,11 @@ export const reconnectEdgeMutation = gql`
 
 const isErrorPayload = (payload: GQLReconnectEdgePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLReconnectEdgePayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const useReconnectEdge = (): UseReconnectEdge => {
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
     GQLReconnectEdgeData,
@@ -70,8 +82,8 @@ export const useReconnectEdge = (): UseReconnectEdge => {
     }
     if (reconnectEdgeData) {
       const { reconnectEdge } = reconnectEdgeData;
-      if (isErrorPayload(reconnectEdge)) {
-        addErrorMessage(reconnectEdge.message);
+      if (isErrorPayload(reconnectEdge) || isSuccessPayload(reconnectEdge)) {
+        addMessages(reconnectEdge.messages);
       }
     }
   }, [reconnectEdgeData, reconnectEdgeError]);

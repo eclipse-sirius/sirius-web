@@ -21,6 +21,7 @@ import {
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
   GQLDeleteFromDiagramPayload,
+  GQLDeleteFromDiagramSuccessPayload,
   GQLDeleteFromDiagramVariables,
   GQLDeletionPolicy,
   GQLErrorPayload,
@@ -32,7 +33,16 @@ export const deleteFromDiagramMutation = gql`
     deleteFromDiagram(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
+      }
+      ... on DeleteFromDiagramSuccessPayload {
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -40,9 +50,11 @@ export const deleteFromDiagramMutation = gql`
 
 const isErrorPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLDeleteFromDiagramSuccessPayload =>
+  payload.__typename === 'DeleteFromDiagramSuccessPayload';
 
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const nodes = useNodes<NodeData>();
 
@@ -57,8 +69,8 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
     }
     if (deleteElementsData) {
       const { deleteFromDiagram } = deleteElementsData;
-      if (isErrorPayload(deleteFromDiagram)) {
-        addErrorMessage('An unexpected error has occurred: ' + deleteFromDiagram.message);
+      if (isErrorPayload(deleteFromDiagram) || isSuccessPayload(deleteFromDiagram)) {
+        addMessages(deleteFromDiagram.messages);
       }
     }
   }, [deleteElementsData, deleteElementsError]);

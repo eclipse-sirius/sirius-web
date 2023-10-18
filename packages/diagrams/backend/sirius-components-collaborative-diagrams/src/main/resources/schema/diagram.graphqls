@@ -321,6 +321,7 @@ union DeleteFromDiagramPayload = ErrorPayload | DeleteFromDiagramSuccessPayload
 type DeleteFromDiagramSuccessPayload {
   id: ID!
   diagram: Diagram!
+  messages: [Message]!
 }
 
 input EditLabelInput {
@@ -336,6 +337,7 @@ union EditLabelPayload = ErrorPayload | EditLabelSuccessPayload
 type EditLabelSuccessPayload {
   id: ID!
   diagram: Diagram!
+  messages: [Message]!
 }
 
 input InvokeSingleClickOnTwoDiagramElementsToolInput {
@@ -427,6 +429,7 @@ union DropOnDiagramPayload = ErrorPayload | DropOnDiagramSuccessPayload
 type DropOnDiagramSuccessPayload {
   id: ID!
   diagram: Diagram!
+  messages: [Message]!
 }
 
 union DropNodePayload = ErrorPayload | SuccessPayload

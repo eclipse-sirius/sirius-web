@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '../Tool.types';
 
 export interface UseDropValue {
   onDrop: (event: React.DragEvent, diagramElementId?: string) => void;
@@ -19,6 +20,7 @@ export interface UseDropValue {
 export interface GQLDropOnDiagramPayload {
   __typename: string;
 }
+
 export interface GQLDropOnDiagramData {
   dropOnDiagram: GQLDropOnDiagramPayload;
 }
@@ -36,6 +38,11 @@ export interface GQLDropOnDiagramInput {
 export interface GQLDropOnDiagramVariables {
   input: GQLDropOnDiagramInput;
 }
+
 export interface GQLErrorPayload extends GQLDropOnDiagramPayload {
-  messages: string;
+  messages: GQLMessage[];
+}
+
+export interface GQLDropOnDiagramSuccessPayload extends GQLDropOnDiagramPayload {
+  messages: GQLMessage[];
 }
