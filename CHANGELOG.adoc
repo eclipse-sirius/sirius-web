@@ -26,6 +26,7 @@ UI is unchanged except that we removed the transactional behavior of the _Transf
 A new parameter `rootDomainsOnly: Boolean` has been added, allowing to remove domains not compatible with root objects.
 For example, Diagram & Form domains are not root domains because `DiagramDescription` and `FormDescription` are not root objects valid candidates.
 - https://github.com/eclipse-sirius/sirius-web/issues/1712[#1712] [diagram] The GraphQL type `Node` must now implement `isLabelEditable` boolean field.
+- https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [sirius-web] The GraphQL field `CreateChildSuccessPayload` now expects to have a list of messages.
 
 === Dependency update
 
@@ -38,6 +39,7 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 - https://github.com/eclipse-sirius/sirius-web/issues/2470[#2470] [form] Fix an issue that prevents the removal of a contained reference from the reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/2469[#2469] [form] Fix an issue that occurs when navigating from a reference widget to a filtered item in the explorer.
 - https://github.com/eclipse-sirius/sirius-web/issues/2466[#2466] [form] Fix an issue that prevents the selection of an ancestor in the reference widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [form] Add a more meaningful message when trying to add a new value to a mono reference no empty.
 - https://github.com/eclipse-sirius/sirius-web/issues/1712[#1712] [diagram] Fix an issue that triggers direct label edition even if there is no corresponding tool.
 Note that double-clicking no longer triggers a direct edit.
 

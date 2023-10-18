@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -44,8 +45,12 @@ import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
+import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.springframework.stereotype.Service;
 
@@ -66,11 +71,17 @@ public class EditService implements IEditService {
 
     private final IObjectService objectService;
 
-    public EditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider, IObjectService objectService) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    private final IEMFMessageService messageService;
+
+    public EditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.suggestedRootObjectTypesProvider = Objects.requireNonNull(suggestedRootObjectsProvider);
         this.objectService = Objects.requireNonNull(objectService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     private Optional<EClass> getEClass(EPackage.Registry ePackageRegistry, String kind) {
@@ -149,7 +160,6 @@ public class EditService implements IEditService {
 
     @Override
     public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId) {
-        // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
@@ -158,7 +168,6 @@ public class EditService implements IEditService {
         Optional<EObject> optionalEObject = Optional.of(object)
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
-        // @formatter:on
 
         if (optionalEditingDomain.isPresent() && optionalEObject.isPresent()) {
             AdapterFactoryEditingDomain editingDomain = optionalEditingDomain.get();
@@ -166,12 +175,10 @@ public class EditService implements IEditService {
 
             Collection<?> newChildDescriptors = editingDomain.getNewChildDescriptors(eObject, null);
 
-            // @formatter:off
             List<CommandParameter> commandParameters = newChildDescriptors.stream()
                     .filter(CommandParameter.class::isInstance)
                     .map(CommandParameter.class::cast)
                     .toList();
-            // @formatter:on
 
             Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
             if (adapter instanceof IEditingDomainItemProvider editingDomainItemProvider) {
@@ -191,6 +198,14 @@ public class EditService implements IEditService {
 
     private Optional<Object> createObject(AdapterFactoryEditingDomain editingDomain, EObject eObject, CommandParameter commandParameter) {
         Optional<Object> objectOptional = Optional.empty();
+
+        if (commandParameter.getEStructuralFeature() instanceof EReference ref && ref.isContainment() && !ref.isMany() && eObject.eGet(ref) != null) {
+            this.feedbackMessageService
+                    .addFeedbackMessage(new Message(this.messageService.upperBoundaryReached(commandParameter.getEValue().eClass()
+                            .getName(), commandParameter.getEStructuralFeature().getName()), MessageLevel.WARNING));
+            return Optional.empty();
+        }
+
         Command createChildCommand = CreateChildCommand.create(editingDomain, eObject, commandParameter, Collections.singletonList(eObject));
         editingDomain.getCommandStack().execute(createChildCommand);
         Collection<?> result = createChildCommand.getResult();

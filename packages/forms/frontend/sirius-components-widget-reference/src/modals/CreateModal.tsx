@@ -31,6 +31,7 @@ import {
   GQLCreateElementInReferenceMutationData,
   GQLCreateElementInReferenceMutationVariables,
   GQLCreateElementInReferencePayload,
+  GQLCreateElementInReferenceSuccessPayload,
   GQLErrorPayload,
   GQLGetChildCreationDescriptionsQueryData,
   GQLGetChildCreationDescriptionsQueryVariables,
@@ -47,13 +48,13 @@ import {
   CreateChildEvent,
   CreateModalContext,
   CreateModalEvent,
+  createModalMachine,
   CreateRootEvent,
   FetchedChildCreationDescriptionsEvent,
   FetchedDomainsEvent,
   FetchedRootObjectCreationDescriptionsEvent,
   HandleCreateElementResponseEvent,
   SchemaValue,
-  createModalMachine,
 } from './CreateModalMachine';
 
 const useStyle = makeStyles((theme) => ({
@@ -80,9 +81,16 @@ const createElementInReferenceMutation = gql`
           label
           kind
         }
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -136,11 +144,15 @@ const getDomainsQuery = gql`
 
 const isErrorPayload = (payload: GQLCreateElementInReferencePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (
+  payload: GQLCreateElementInReferencePayload
+): payload is GQLCreateElementInReferenceSuccessPayload =>
+  payload.__typename === 'CreateElementInReferenceSuccessPayload';
 
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const classes = useStyle();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] = useMachine<CreateModalContext, CreateModalEvent>(createModalMachine);
   const { createModal } = value as SchemaValue;
 
@@ -255,9 +267,9 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         dispatch(handleResponseEvent);
 
         const { createElementInReference } = createElementData;
-        if (isErrorPayload(createElementInReference)) {
-          const { message } = createElementInReference;
-          addErrorMessage(message);
+        if (isErrorPayload(createElementInReference) || isSuccessPayload(createElementInReference)) {
+          const { messages } = createElementInReference;
+          addMessages(messages);
         }
       }
     }

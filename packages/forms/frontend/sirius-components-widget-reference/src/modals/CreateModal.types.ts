@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '../ReferenceWidgetFragment.types';
 
 export interface CreateModalProps {
@@ -20,7 +21,7 @@ export interface CreateModalProps {
 }
 
 export interface GQLErrorPayload extends GQLCreateElementInReferencePayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLGetChildCreationDescriptionsQueryVariables {
@@ -128,4 +129,5 @@ export interface GQLCreateElementInReferencePayload {
 export interface GQLCreateElementInReferenceSuccessPayload extends GQLCreateElementInReferencePayload {
   id: string;
   object: GQLObject;
+  messages: GQLMessage[];
 }

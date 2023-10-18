@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessag
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.junit.jupiter.api.Test;
@@ -93,7 +94,7 @@ public class CreateChildEventHandlerTests {
             }
         };
 
-        CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new ICollaborativeMessageService.NoOp(), new SimpleMeterRegistry());
+        CreateChildEventHandler handler = new CreateChildEventHandler(objectService, editService, new ICollaborativeMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
         var input = new CreateChildInput(UUID.randomUUID(), UUID.randomUUID().toString(), "parentObjectId", "childCreationDescriptionId");
 
         IEditingContext editingContext = () -> UUID.randomUUID().toString();

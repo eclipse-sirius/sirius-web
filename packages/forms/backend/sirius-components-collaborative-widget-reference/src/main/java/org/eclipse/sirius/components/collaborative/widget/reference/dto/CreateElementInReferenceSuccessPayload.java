@@ -12,17 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.representations.Message;
 
 /**
  * The payload of the create element mutation.
  *
  * @author Jerome Gout
  */
-public record CreateElementInReferenceSuccessPayload(UUID id, Object object) implements IPayload {
+public record CreateElementInReferenceSuccessPayload(UUID id, Object object, List<Message> messages) implements IPayload {
+
     public CreateElementInReferenceSuccessPayload {
         Objects.requireNonNull(id);
         Objects.requireNonNull(object);

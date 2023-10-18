@@ -18,16 +18,10 @@ import {
   GQLCreateChildSuccessPayload,
   GQLGetChildCreationDescriptionsQueryData,
 } from 'modals/new-object/NewObjectModal.types';
-import { Machine, assign } from 'xstate';
+import { assign, Machine } from 'xstate';
 
 export interface NewObjectModalStateSchema {
   states: {
-    toast: {
-      states: {
-        visible: {};
-        hidden: {};
-      };
-    };
     newObjectModal: {
       states: {
         loading: {};
@@ -41,18 +35,14 @@ export interface NewObjectModalStateSchema {
 
 export type SchemaValue = {
   newObjectModal: 'loading' | 'valid' | 'creatingChild' | 'success';
-  toast: 'visible' | 'hidden';
 };
 
 export interface NewObjectModalContext {
   selectedChildCreationDescriptionId: string;
   childCreationDescriptions: ChildCreationDescription[];
   objectToSelect: SelectionEntry | null;
-  message: string | null;
 }
 
-export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
-export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type FetchedChildCreationDescriptionsEvent = {
   type: 'HANDLE_FETCHED_CHILD_CREATION_DESCRIPTIONS';
   data: GQLGetChildCreationDescriptionsQueryData;
@@ -67,9 +57,7 @@ export type NewObjectModalEvent =
   | FetchedChildCreationDescriptionsEvent
   | ChangeChildCreationDescriptionEvent
   | CreateChildEvent
-  | HandleResponseEvent
-  | ShowToastEvent
-  | HideToastEvent;
+  | HandleResponseEvent;
 
 const isCreateChildSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateChildSuccessPayload => {
   return payload.__typename === 'CreateChildSuccessPayload';
@@ -82,30 +70,8 @@ export const newObjectModalMachine = Machine<NewObjectModalContext, NewObjectMod
       selectedChildCreationDescriptionId: '',
       childCreationDescriptions: [],
       objectToSelect: null,
-      message: null,
     },
     states: {
-      toast: {
-        initial: 'hidden',
-        states: {
-          hidden: {
-            on: {
-              SHOW_TOAST: {
-                target: 'visible',
-                actions: 'setMessage',
-              },
-            },
-          },
-          visible: {
-            on: {
-              HIDE_TOAST: {
-                target: 'hidden',
-                actions: 'clearMessage',
-              },
-            },
-          },
-        },
-      },
       newObjectModal: {
         initial: 'loading',
         states: {
@@ -180,13 +146,6 @@ export const newObjectModalMachine = Machine<NewObjectModalContext, NewObjectMod
           return { objectToSelect: object };
         }
         return {};
-      }),
-      setMessage: assign((_, event) => {
-        const { message } = event as ShowToastEvent;
-        return { message };
-      }),
-      clearMessage: assign((_) => {
-        return { message: null };
       }),
     },
   }
