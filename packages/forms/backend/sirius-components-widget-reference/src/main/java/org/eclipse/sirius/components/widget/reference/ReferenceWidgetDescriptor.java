@@ -83,7 +83,6 @@ public class ReferenceWidgetDescriptor implements IWidgetDescriptor {
                     .clearHandler(props.getClearHandler())
                     .setHandler(props.getSetHandler())
                     .addHandler(props.getAddHandler())
-                    .createElementHandler(props.getCreateElementHandler())
                     .moveHandler(props.getMoveHandler());
             if (props.getHelpTextProvider() != null) {
                 builder.helpTextProvider(props.getHelpTextProvider());

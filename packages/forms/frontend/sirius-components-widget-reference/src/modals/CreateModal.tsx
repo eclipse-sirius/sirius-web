@@ -107,10 +107,19 @@ const createElementInReferenceMutation = gql`
 `;
 
 const getChildCreationDescriptionsQuery = gql`
-  query getChildCreationDescriptions($editingContextId: ID!, $kind: ID!, $referenceKind: String) {
+  query getChildCreationDescriptions(
+    $editingContextId: ID!
+    $kind: ID!
+    $referenceKind: String
+    $descriptionId: String!
+  ) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        childCreationDescriptions(kind: $kind, referenceKind: $referenceKind) {
+        referenceWidgetChildCreationDescriptions(
+          kind: $kind
+          referenceKind: $referenceKind
+          descriptionId: $descriptionId
+        ) {
           id
           label
           iconURL
@@ -124,12 +133,16 @@ const getRootObjectCreationDescriptionsQuery = gql`
   query getRootObjectCreationDescriptions(
     $editingContextId: ID!
     $domainId: ID!
-    $suggested: Boolean!
     $referenceKind: String
+    $descriptionId: String!
   ) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
-        rootObjectCreationDescriptions(domainId: $domainId, suggested: $suggested, referenceKind: $referenceKind) {
+        referenceWidgetRootCreationDescriptions(
+          domainId: $domainId
+          referenceKind: $referenceKind
+          descriptionId: $descriptionId
+        ) {
           id
           label
           iconURL
@@ -297,6 +310,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         containerId,
         domainId: null,
         creationDescriptionId: selectedChildCreationDescriptionId,
+        descriptionId: widget.descriptionId,
       };
     } else if (createModal === 'validForRoot') {
       dispatch({ type: 'CREATE_ROOT' } as CreateRootEvent);
@@ -308,6 +322,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         containerId,
         domainId: selectedDomainId,
         creationDescriptionId: selectedChildCreationDescriptionId,
+        descriptionId: widget.descriptionId,
       };
     }
     createElementInReference({ variables: { input } });
@@ -335,6 +350,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
           editingContextId,
           kind: containerKind,
           referenceKind: widget.reference.referenceKind,
+          descriptionId: widget.descriptionId,
         },
       });
     }
@@ -346,8 +362,8 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
         variables: {
           editingContextId,
           domainId: selectedDomainId,
-          suggested: false,
           referenceKind: widget.reference.referenceKind,
+          descriptionId: widget.descriptionId,
         },
       });
     }

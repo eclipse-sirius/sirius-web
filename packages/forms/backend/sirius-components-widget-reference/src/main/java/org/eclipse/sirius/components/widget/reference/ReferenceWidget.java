@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.validation.Diagnostic;
 import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.widget.reference.dto.CreateElementInReferenceHandlerParameters;
 import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerParameters;
 
 /**
@@ -54,8 +53,6 @@ public final class ReferenceWidget extends AbstractWidget {
     private Function<Object, IStatus> setHandler;
 
     private Function<List<?>, IStatus> addHandler;
-
-    private Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler;
 
     private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -117,10 +114,6 @@ public final class ReferenceWidget extends AbstractWidget {
         return this.addHandler;
     }
 
-    public Function<CreateElementInReferenceHandlerParameters, Object> getCreateElementHandler() {
-        return this.createElementHandler;
-    }
-
     public Function<MoveReferenceValueHandlerParameters, IStatus> getMoveHandler() {
         return this.moveHandler;
     }
@@ -170,8 +163,6 @@ public final class ReferenceWidget extends AbstractWidget {
         private Function<Object, IStatus> setHandler;
 
         private Function<List<?>, IStatus> addHandler;
-
-        private Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler;
 
         private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -261,11 +252,6 @@ public final class ReferenceWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder createElementHandler(Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler) {
-            this.createElementHandler = Objects.requireNonNull(createElementHandler);
-            return this;
-        }
-
         public Builder moveHandler(Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler) {
             this.moveHandler = Objects.requireNonNull(moveHandler);
             return this;
@@ -296,7 +282,6 @@ public final class ReferenceWidget extends AbstractWidget {
             referenceWidget.clearHandler = this.clearHandler; // Optional on purpose
             referenceWidget.setHandler = this.setHandler; // Optional on purpose
             referenceWidget.addHandler = this.addHandler; // Optional on purpose
-            referenceWidget.createElementHandler = this.createElementHandler; // Optional on purpose
             referenceWidget.moveHandler = this.moveHandler; // Optional on purpose
             return referenceWidget;
         }

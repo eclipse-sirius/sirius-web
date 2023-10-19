@@ -14,14 +14,13 @@ package org.eclipse.sirius.components.collaborative.widget.reference.dto;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Input object for the mutation to create new element in model.
+ * Input object for the query to retrieve the root creation descriptions.
  *
- * @author Jerome Gout
+ * @author frouene
  */
-public record CreateElementInput(UUID id, String editingContextId, String representationId, String referenceWidgetId, String containerId, String domainId,
-                                 String creationDescriptionId, String descriptionId) implements IFormInput {
+public record ReferenceWidgetRootCreationDescriptionsInput(UUID id, String editingContextId, String domainId, String referenceKind, String descriptionId) implements IInput {
 
 }

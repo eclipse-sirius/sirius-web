@@ -10,17 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.widget.reference.dto;
+package org.eclipse.sirius.components.collaborative.widget.reference.dto;
 
 import java.util.UUID;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Input object to pass inputs to the createElementInReferenceHandler field of ReferenceWidget.
+ * Input object for the query to retrieve the child creation descriptions.
  *
- * @author Jerome Gout
+ * @author frouene
  */
-public record CreateElementInReferenceHandlerParameters(UUID documentId, String domainId, EObject parent, String creationDescriptionId) {
+public record ReferenceWidgetChildCreationDescriptionsInput(UUID id, String editingContextId, String kind, String referenceKind, String descriptionId) implements IInput {
 
 }

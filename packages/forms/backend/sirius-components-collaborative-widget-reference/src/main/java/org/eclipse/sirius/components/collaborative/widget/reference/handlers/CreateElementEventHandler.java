@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.widget.reference.handlers;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDefaultCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInReferenceSuccessPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
@@ -32,8 +34,8 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
+import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
-import org.eclipse.sirius.components.widget.reference.dto.CreateElementInReferenceHandlerParameters;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -55,14 +57,20 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private final IObjectService objectService;
 
+    private final List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers;
+
+    private final ReferenceWidgetDefaultCreateElementHandler defaultReferenceWidgetCreateElementHandler;
+
     private final Counter counter;
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
+    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, ReferenceWidgetDefaultCreateElementHandler defaultReferenceWidgetCreateElementHandler, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.referenceWidgetCreateElementHandlers = Objects.requireNonNull(referenceWidgetCreateElementHandlers);
+        this.defaultReferenceWidgetCreateElementHandler = Objects.requireNonNull(defaultReferenceWidgetCreateElementHandler);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
@@ -87,8 +95,12 @@ public class CreateElementEventHandler implements IFormEventHandler {
             if (optionalWidget.isPresent() && optionalWidget.get().isReadOnly()) {
                 payload = new ErrorPayload(input.id(), this.messageService.unableToEditReadOnlyWidget());
             } else {
-                var handlerInput = this.getHandlerInput(editingContext, input);
-                Optional<Object> optionalObject = optionalWidget.map(ReferenceWidget::getCreateElementHandler).map(handler -> handler.apply(handlerInput));
+                IReferenceWidgetCreateElementHandler handler = this.referenceWidgetCreateElementHandlers.stream()
+                        .filter(provider -> provider.canHandle(input.descriptionId()))
+                        .findFirst()
+                        .orElse(this.defaultReferenceWidgetCreateElementHandler);
+
+                var optionalObject = this.createElement(editingContext, handler, input);
 
                 if (optionalObject.isPresent()) {
                     payload = new CreateElementInReferenceSuccessPayload(formInput.id(), optionalObject.get(), this.feedbackMessageService.getFeedbackMessages());
@@ -103,16 +115,16 @@ public class CreateElementEventHandler implements IFormEventHandler {
         payloadSink.tryEmitValue(payload);
     }
 
-    private CreateElementInReferenceHandlerParameters getHandlerInput(IEditingContext editingContext, CreateElementInput input) {
-        if (input.domainId() != null) {
-            return new CreateElementInReferenceHandlerParameters(UUID.fromString(input.containerId()), input.domainId(), null, input.creationDescriptionId());
-        } else {
-            // this is child creation => containerId = parent object id
+    private Optional<Object> createElement(IEditingContext editingContext, IReferenceWidgetCreateElementHandler handler, CreateElementInput input) {
+        if (input.domainId() == null) {
             EObject parent = this.objectService.getObject(editingContext, input.containerId())
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
                     .orElse(null);
-            return new CreateElementInReferenceHandlerParameters(null, null, parent, input.creationDescriptionId());
+            return handler.createChild(editingContext, parent, input.creationDescriptionId(), input.descriptionId());
+        } else {
+            return handler.createRootObject(editingContext, UUID.fromString(input.containerId()), input.domainId(), input.creationDescriptionId(), input.descriptionId());
         }
     }
+
 }

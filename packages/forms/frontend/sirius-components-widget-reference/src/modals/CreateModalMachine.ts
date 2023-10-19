@@ -350,17 +350,17 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
       }),
       updateChildCreationDescriptions: assign((_, event) => {
         const { data } = event as FetchedChildCreationDescriptionsEvent;
-        const { childCreationDescriptions } = data.viewer.editingContext;
+        const { referenceWidgetChildCreationDescriptions } = data.viewer.editingContext;
         const selectedChildCreationDescriptionId =
-          childCreationDescriptions.length > 0 ? childCreationDescriptions[0].id : '';
-        return { creationDescriptions: childCreationDescriptions, selectedChildCreationDescriptionId };
+          referenceWidgetChildCreationDescriptions.length > 0 ? referenceWidgetChildCreationDescriptions[0].id : '';
+        return { creationDescriptions: referenceWidgetChildCreationDescriptions, selectedChildCreationDescriptionId };
       }),
       updateRootChildCreationDescriptions: assign((_, event) => {
         const { data } = event as FetchedRootObjectCreationDescriptionsEvent;
-        const { rootObjectCreationDescriptions } = data.viewer.editingContext;
+        const { referenceWidgetRootCreationDescriptions } = data.viewer.editingContext;
         const selectedChildCreationDescriptionId =
-          rootObjectCreationDescriptions.length > 0 ? rootObjectCreationDescriptions[0].id : '';
-        return { creationDescriptions: rootObjectCreationDescriptions, selectedChildCreationDescriptionId };
+          referenceWidgetRootCreationDescriptions.length > 0 ? referenceWidgetRootCreationDescriptions[0].id : '';
+        return { creationDescriptions: referenceWidgetRootCreationDescriptions, selectedChildCreationDescriptionId };
       }),
       updateChildCreationDescription: assign((_, event) => {
         const { childCreationDescriptionId } = event as ChangeChildCreationDescriptionEvent;

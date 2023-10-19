@@ -15,21 +15,20 @@ package org.eclipse.sirius.components.collaborative.widget.reference.handlers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDefaultCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInReferenceSuccessPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -38,10 +37,9 @@ import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.Page;
-import org.eclipse.sirius.components.representations.Success;
+import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.widget.reference.ReferenceValue;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
-import org.eclipse.sirius.components.widget.reference.dto.CreateElementInReferenceHandlerParameters;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -58,28 +56,19 @@ public class CreateElementEventHandlerTests {
 
     private static final String REF_WIDGET_ID = "RefWidget id";
 
-    private static final String CHANGE_DESCRIPTION_PARAMETER_KEY = "change_description_parameter_key";
-
     @Test
     public void testCreateElementInReference() {
         String referenceValueId = "ReferenceValue Id";
         String changeKind = ChangeKind.SEMANTIC_CHANGE;
 
         var input = new CreateElementInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID()
-                .toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId");
+                .toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId", "descriptionId");
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
 
         ReferenceValue referenceValue = ReferenceValue.newReferenceValue(referenceValueId)
                 .label("")
                 .kind("")
                 .build();
-
-        Function<CreateElementInReferenceHandlerParameters, Object> createHandler = (inputParameter) -> {
-            hasBeenExecuted.set(true);
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put(CHANGE_DESCRIPTION_PARAMETER_KEY, referenceValueId);
-            return referenceValue;
-        };
 
         IObjectService objectService = new IObjectService.NoOp() {
             @Override
@@ -100,7 +89,6 @@ public class CreateElementEventHandlerTests {
                 .referenceKind("")
                 .many(false)
                 .containment(false)
-                .createElementHandler(createHandler)
                 .build();
 
         Group group = Group.newGroup("groupId")
@@ -127,7 +115,16 @@ public class CreateElementEventHandlerTests {
             }
         };
 
-        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectService, new SimpleMeterRegistry(),
+        IReferenceWidgetCreateElementHandler referenceWidgetCreateElementHandler = new IReferenceWidgetCreateElementHandler.NoOp() {
+            @Override
+            public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, String descriptionId) {
+                hasBeenExecuted.set(true);
+                return Optional.of(referenceValue);
+            }
+        };
+
+        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectService, List.of(referenceWidgetCreateElementHandler),
+                new ReferenceWidgetDefaultCreateElementHandler(new IEditService.NoOp()), new SimpleMeterRegistry(),
                 new IFeedbackMessageService.NoOp());
         assertThat(handler.canHandle(input)).isTrue();
 
@@ -147,19 +144,11 @@ public class CreateElementEventHandlerTests {
 
     @Test
     public void testCreateElementInReferenceReadOnly() {
-        String referenceValueId = "ReferenceValue Id";
-        String changeKind = ChangeKind.SEMANTIC_CHANGE;
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put(CHANGE_DESCRIPTION_PARAMETER_KEY, referenceValueId);
         var input = new CreateElementInput(UUID.randomUUID(), FORM_ID.toString(), UUID.randomUUID()
-                .toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId");
+                .toString(), REF_WIDGET_ID, "864d9074-86a6-451a-871f-8fbe1cae1ae2", "domainId", "creationDescriptionId", "descriptionId");
 
         AtomicBoolean hasBeenExecuted = new AtomicBoolean();
-        Function<CreateElementInReferenceHandlerParameters, Object> createHandler = (inputParameter) -> {
-            hasBeenExecuted.set(true);
-            return new Success(changeKind, parameters);
-        };
 
         ReferenceWidget referenceWidget = ReferenceWidget.newReferenceWidget(REF_WIDGET_ID)
                 .diagnostics(Collections.emptyList())
@@ -173,7 +162,6 @@ public class CreateElementEventHandlerTests {
                 .referenceKind("")
                 .many(false)
                 .containment(false)
-                .createElementHandler(createHandler)
                 .build();
 
         Group group = Group.newGroup("groupId")
@@ -207,7 +195,7 @@ public class CreateElementEventHandlerTests {
             }
         };
 
-        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, messageService, new IObjectService.NoOp(), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
+        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, messageService, new IObjectService.NoOp(), List.of(), new ReferenceWidgetDefaultCreateElementHandler(new IEditService.NoOp()), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
         assertThat(handler.canHandle(input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

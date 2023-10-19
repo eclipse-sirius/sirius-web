@@ -50,8 +50,6 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandidateSearchProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -70,8 +68,6 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
     public static final String TREE_KIND = "modelBrowser://";
 
-    private final Logger logger = LoggerFactory.getLogger(ModelBrowsersDescriptionProvider.class);
-
     private final IObjectService objectService;
 
     private final IURLParser urlParser;
@@ -80,11 +76,14 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
     private final List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders;
 
-    public ModelBrowsersDescriptionProvider(IObjectService objectService, IURLParser urlParser, IEMFKindService emfKindService, List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders) {
+    private final ReferenceWidgetDefaultCandidateSearchProvider defaultCandidateProvider;
+
+    public ModelBrowsersDescriptionProvider(IObjectService objectService, IURLParser urlParser, IEMFKindService emfKindService, List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders, ReferenceWidgetDefaultCandidateSearchProvider defaultCandidateProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.candidateProviders = Objects.requireNonNull(candidateProviders);
+        this.defaultCandidateProvider = Objects.requireNonNull(defaultCandidateProvider);
     }
 
     @Override
@@ -297,12 +296,9 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
             return this.candidateProviders.stream()
                     .filter(provider -> provider.canHandle(descriptionId))
-                    .map(provider -> provider.getRootElementsForReference(semanticOwner, descriptionId, optionalEditingContext.get()))
                     .findFirst()
-                    .orElseGet(() -> {
-                        this.logger.warn("Unable to find a proper implementation of IReferenceWidgetRootCandidateSeachProvider for widget {}", descriptionId);
-                        return List.of();
-                    });
+                    .orElse(this.defaultCandidateProvider)
+                    .getRootElementsForReference(semanticOwner, descriptionId, optionalEditingContext.get());
         }
         return Collections.emptyList();
     }
