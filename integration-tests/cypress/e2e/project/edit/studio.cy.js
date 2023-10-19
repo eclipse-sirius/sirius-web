@@ -170,7 +170,7 @@ describe('/projects/:projectId/edit - Studio', () => {
       });
   });
 
-  it('Check node style description has default colors', () => {
+  it('Check node style description has default colors and default size', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
@@ -180,10 +180,12 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('Node').dblclick();
-    cy.getByTestId('1').click();
+    cy.getByTestId('150').click();
     cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
     cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
     cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
+    cy.getByTestId('input-Width Expression').should('have.value', 150);
+    cy.getByTestId('input-Height Expression').should('have.value', 70);
   });
 
   it('Check edge style description has default colors', () => {

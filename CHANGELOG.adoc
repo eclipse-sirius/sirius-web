@@ -14,7 +14,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/2386[#2386] [form] Reference widget structure has changed, `referenceOptions` has been removed to be lazily loaded.
 - https://github.com/eclipse-sirius/sirius-web/issues/2329[#2335] [form] The general mutation `editReference` has been removed from the reference widget. This mutation has been replaced by finer grain mutations:
 ** _clearReference_ mutation: to reset the content references (set the value to `null` for mono-valued references and to an empty list for multi-valued ones).
-** _addReferenceValues_ mutation: to several reference values to a reference (only used with mutli-valued references)
+** _addReferenceValues_ mutation: to several reference values to a reference (only used with multi-valued references)
 ** _setReferenceValue_ mutation: to set the value of mono-valued references
 ** _removeReferenceValue_ mutation: to remove a given value from a reference (in case of mono-valued references, this mutation is equivalent to _clearReference_)
 ** _createElementInReference_ mutation: to create a new element (used in the context of a reference widget)
@@ -56,7 +56,8 @@ This coupling will be removed in the near future as a consequence, the dependenc
 - https://github.com/eclipse-sirius/sirius-web/issues/2289[#2289] [diagram] Use the layout strategy to layout icon label nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/2410[#2410] [diagram] Do a fit to screen on a diagram opening
 - https://github.com/eclipse-sirius/sirius-web/issues/2268[#2268] [diagram] Create child nodes where the user has clicked.
-- https://github.com/eclipse-sirius/sirius-web/issues/2475[#2475] [diagram] Prevent nodes to move each diagram refresh event. Only the size is still updated
+- https://github.com/eclipse-sirius/sirius-web/issues/2475[#2475] [diagram] Prevent nodes to move each diagram refresh event. Only the size is still updated.
+- https://github.com/eclipse-sirius/sirius-web/issues/2485[#2485] [view] Change the default size of View Node Description from 1x1 to 150x70.
 
 == v2023.10.0
 

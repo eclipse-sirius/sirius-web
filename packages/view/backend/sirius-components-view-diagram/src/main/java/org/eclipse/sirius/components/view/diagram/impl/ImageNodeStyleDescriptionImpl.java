@@ -253,7 +253,7 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @generated
      * @ordered
      */
-    protected static final String WIDTH_COMPUTATION_EXPRESSION_EDEFAULT = "1";
+    protected static final String WIDTH_COMPUTATION_EXPRESSION_EDEFAULT = "150";
 
     /**
      * The cached value of the '{@link #getWidthComputationExpression() <em>Width Computation Expression</em>}'
@@ -273,7 +273,7 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @generated
      * @ordered
      */
-    protected static final String HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT = "1";
+    protected static final String HEIGHT_COMPUTATION_EXPRESSION_EDEFAULT = "70";
 
     /**
      * The cached value of the '{@link #getHeightComputationExpression() <em>Height Computation Expression</em>}'
