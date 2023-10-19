@@ -28,6 +28,7 @@ export interface GQLGetChildCreationDescriptionsQueryVariables {
   editingContextId: string;
   kind: string;
   referenceKind?: string;
+  descriptionId: string;
 }
 
 export interface GQLGetChildCreationDescriptionsQueryData {
@@ -39,7 +40,7 @@ export interface GQLViewer {
 }
 
 export interface GQLEditingContext {
-  childCreationDescriptions: GQLChildCreationDescription[];
+  referenceWidgetChildCreationDescriptions: GQLChildCreationDescription[];
 }
 
 export interface GQLChildCreationDescription {
@@ -59,8 +60,8 @@ export interface GQLGetDomainsQueryData {
 export interface GQLGetRootObjectCreationDescriptionsQueryVariables {
   editingContextId: string;
   domainId: string;
-  suggested: boolean;
   referenceKind?: string;
+  descriptionId: string;
 }
 
 export interface GQLGetRootObjectCreationDescriptionsQueryData {
@@ -72,7 +73,7 @@ export interface GQLRootViewer {
 }
 
 export interface GQLRootEditingContext {
-  rootObjectCreationDescriptions: GQLRootChildCreationDescription[];
+  referenceWidgetRootCreationDescriptions: GQLRootChildCreationDescription[];
   domains: GQLDomain[];
 }
 
@@ -116,6 +117,7 @@ export interface GQLCreateElementInReferenceInput {
   containerId: string;
   domainId: string | null;
   creationDescriptionId: string;
+  descriptionId: string;
 }
 
 export interface GQLCreateElementInReferenceMutationData {

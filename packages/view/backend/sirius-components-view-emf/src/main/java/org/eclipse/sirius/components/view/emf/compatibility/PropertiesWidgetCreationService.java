@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -29,8 +28,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -63,7 +60,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     private static final String EMPTY = "";
     private final IPropertiesConfigurerService propertiesConfigurerService;
     private final IObjectService objectService;
-    private final IEditService editService;
     private final IEMFKindService emfKindService;
     private final IFeedbackMessageService feedbackMessageService;
     private final AQLTextfieldCustomizer aqlTextfieldCustomizer;
@@ -71,7 +67,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
     public PropertiesWidgetCreationService(IPropertiesConfigurerService propertiesConfigurerService, ViewPropertiesDescriptionServiceConfiguration parameters, AQLTextfieldCustomizer aqlTextfieldCustomizer) {
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.objectService = Objects.requireNonNull(parameters.getObjectService());
-        this.editService = Objects.requireNonNull(parameters.getEditService());
         this.emfKindService = Objects.requireNonNull(parameters.getEmfKindService());
         this.feedbackMessageService = Objects.requireNonNull(parameters.getFeedbackMessageService());
         this.aqlTextfieldCustomizer = Objects.requireNonNull(aqlTextfieldCustomizer);
@@ -202,7 +197,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .itemRemoveHandlerProvider(variableManager -> this.handleRemoveValue(variableManager, feature))
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, feature))
                 .addHandlerProvider(variableManager -> this.handleAddReferenceValues(variableManager, feature))
-                .createElementHandlerProvider(variableManager -> this.handleCreateElement(variableManager, feature))
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, feature))
                 .build();
     }
@@ -339,24 +333,6 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
             result = this.createErrorStatus("Something went wrong while adding reference values.");
         }
         return result;
-    }
-
-    private Object handleCreateElement(VariableManager variableManager, Object feature) {
-        Optional<Object> result = Optional.empty();
-        Optional<Boolean> optionalIsChild = variableManager.get(ReferenceWidgetComponent.IS_CHILD_CREATION_VARIABLE, Boolean.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        String creationDescriptionId = variableManager.get(ReferenceWidgetComponent.CREATION_DESCRIPTION_ID_VARIABLE, String.class).orElse("");
-        if (optionalIsChild.isPresent() && optionalEditingContext.isPresent()) {
-            if (optionalIsChild.get()) {
-                EObject parent = variableManager.get(ReferenceWidgetComponent.PARENT_VARIABLE, EObject.class).orElse(null);
-                result = this.editService.createChild(optionalEditingContext.get(), parent, creationDescriptionId);
-            } else {
-                UUID documentId = variableManager.get(ReferenceWidgetComponent.DOCUMENT_ID_VARIABLE, UUID.class).orElse(UUID.randomUUID());
-                String domainId = variableManager.get(ReferenceWidgetComponent.DOMAIN_ID_VARIABLE, String.class).orElse("");
-                result = this.editService.createRootObject(optionalEditingContext.get(), documentId, domainId, creationDescriptionId);
-            }
-        }
-        return result.orElse(null);
     }
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager, Object feature) {

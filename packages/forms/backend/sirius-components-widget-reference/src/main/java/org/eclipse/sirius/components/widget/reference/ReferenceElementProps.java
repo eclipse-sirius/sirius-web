@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.widget.reference.dto.CreateElementInReferenceHandlerParameters;
 import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerParameters;
 
 /**
@@ -70,8 +69,6 @@ public final class ReferenceElementProps implements IProps {
     private Function<Object, IStatus> setHandler;
 
     private Function<List<?>, IStatus> addHandler;
-
-    private Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler;
 
     private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -151,10 +148,6 @@ public final class ReferenceElementProps implements IProps {
         return this.addHandler;
     }
 
-    public Function<CreateElementInReferenceHandlerParameters, Object> getCreateElementHandler() {
-        return this.createElementHandler;
-    }
-
     public Function<MoveReferenceValueHandlerParameters, IStatus> getMoveHandler() {
         return this.moveHandler;
     }
@@ -209,8 +202,6 @@ public final class ReferenceElementProps implements IProps {
         private Function<Object, IStatus> setHandler;
 
         private Function<List<?>, IStatus> addHandler;
-
-        private Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler;
 
         private Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler;
 
@@ -300,11 +291,6 @@ public final class ReferenceElementProps implements IProps {
             return this;
         }
 
-        public Builder createElementHandler(Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler) {
-            this.createElementHandler = Objects.requireNonNull(createElementHandler);
-            return this;
-        }
-
         public Builder moveHandler(Function<MoveReferenceValueHandlerParameters, IStatus> moveHandler) {
             this.moveHandler = Objects.requireNonNull(moveHandler);
             return this;
@@ -335,7 +321,6 @@ public final class ReferenceElementProps implements IProps {
             referenceElementProps.clearHandler = this.clearHandler; // Optional on purpose
             referenceElementProps.setHandler = this.setHandler; // Optional on purpose
             referenceElementProps.addHandler = this.addHandler; // Optional on purpose
-            referenceElementProps.createElementHandler = this.createElementHandler;  // Optional on purpose
             referenceElementProps.moveHandler = this.moveHandler;  // Optional on purpose
             return referenceElementProps;
         }

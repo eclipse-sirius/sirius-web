@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.widget.reference.dto.CreateElementInReferenceHandlerParameters;
 import org.eclipse.sirius.components.widget.reference.dto.MoveReferenceValueHandlerParameters;
 
 /**
@@ -44,16 +43,6 @@ public class ReferenceWidgetComponent implements IComponent {
     public static final String MOVE_TO_VARIABLE = "toIndex";
 
     public static final String CLICK_EVENT_KIND_VARIABLE = "onClickEventKind";
-
-    public static final String DOCUMENT_ID_VARIABLE = "documentId";
-
-    public static final String DOMAIN_ID_VARIABLE = "domainId";
-
-    public static final String PARENT_VARIABLE = "parent";
-
-    public static final String CREATION_DESCRIPTION_ID_VARIABLE = "creationDescriptionId";
-
-    public static final String IS_CHILD_CREATION_VARIABLE = "isChildCreation";
 
     private final ReferenceWidgetComponentProps props;
 
@@ -130,25 +119,6 @@ public class ReferenceWidgetComponent implements IComponent {
                 return referenceDescription.getMoveHandlerProvider().apply(childVariableManager);
             };
             builder.moveHandler(moveHandler);
-        }
-        if (referenceDescription.getCreateElementHandlerProvider() != null) {
-            Function<CreateElementInReferenceHandlerParameters, Object> createElementHandler = input -> {
-                VariableManager childVariableManager = variableManager.createChild();
-                if (input.documentId() != null) {
-                    // root creation
-                    childVariableManager.put(IS_CHILD_CREATION_VARIABLE, false);
-                    childVariableManager.put(DOMAIN_ID_VARIABLE, input.domainId());
-                    childVariableManager.put(CREATION_DESCRIPTION_ID_VARIABLE, input.creationDescriptionId());
-                    childVariableManager.put(DOCUMENT_ID_VARIABLE, input.documentId());
-                } else {
-                    // child creation
-                    childVariableManager.put(IS_CHILD_CREATION_VARIABLE, true);
-                    childVariableManager.put(PARENT_VARIABLE, input.parent());
-                    childVariableManager.put(CREATION_DESCRIPTION_ID_VARIABLE, input.creationDescriptionId());
-                }
-                return referenceDescription.getCreateElementHandlerProvider().apply(childVariableManager);
-            };
-            builder.createElementHandler(createElementHandler);
         }
 
         if (readOnly != null) {

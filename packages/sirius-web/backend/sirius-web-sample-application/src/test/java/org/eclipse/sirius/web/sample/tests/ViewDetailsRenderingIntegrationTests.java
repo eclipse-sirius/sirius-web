@@ -37,7 +37,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.URLParser;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -109,7 +108,7 @@ public class ViewDetailsRenderingIntegrationTests {
 
         EMFKindService emfKindService = new EMFKindService(new URLParser());
         IObjectService objectService = new ObjectService(emfKindService, composedAdapterFactory, new LabelFeatureProviderRegistry());
-        ViewPropertiesDescriptionServiceConfiguration parameters = new ViewPropertiesDescriptionServiceConfiguration(objectService, new IEditService.NoOp(), emfKindService, new IFeedbackMessageService.NoOp());
+        ViewPropertiesDescriptionServiceConfiguration parameters = new ViewPropertiesDescriptionServiceConfiguration(objectService, emfKindService, new IFeedbackMessageService.NoOp());
 
         // @formatter:off
         List<ITextfieldCustomizer> customizers = List.of(

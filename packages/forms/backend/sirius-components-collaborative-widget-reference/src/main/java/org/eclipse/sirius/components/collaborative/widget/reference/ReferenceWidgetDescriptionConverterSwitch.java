@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -36,7 +35,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -135,7 +133,6 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
                 .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(variableManager, referenceDescription))
                 .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, referenceDescription))
                 .addHandlerProvider(variableManager -> this.handleAddReference(variableManager, referenceDescription))
-                .createElementHandlerProvider(variableManager -> this.handleCreateElement(variableManager, referenceDescription)).styleProvider(styleProvider)
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, referenceDescription));
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
@@ -355,24 +352,6 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<A
             result = this.createErrorStatus("Something went wrong while adding reference values.");
         }
         return result;
-    }
-
-    private Object handleCreateElement(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {
-        Optional<Object> result = Optional.empty();
-        Optional<Boolean> optionalIsChild = variableManager.get(ReferenceWidgetComponent.IS_CHILD_CREATION_VARIABLE, Boolean.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        String creationDescriptionId = variableManager.get(ReferenceWidgetComponent.CREATION_DESCRIPTION_ID_VARIABLE, String.class).orElse("");
-        if (optionalIsChild.isPresent() && optionalEditingContext.isPresent()) {
-            if (optionalIsChild.get()) {
-                EObject parent = variableManager.get(ReferenceWidgetComponent.PARENT_VARIABLE, EObject.class).orElse(null);
-                result = this.editService.createChild(optionalEditingContext.get(), parent, creationDescriptionId);
-            } else {
-                UUID documentId = variableManager.get(ReferenceWidgetComponent.DOCUMENT_ID_VARIABLE, UUID.class).orElse(UUID.randomUUID());
-                String domainId = variableManager.get(ReferenceWidgetComponent.DOMAIN_ID_VARIABLE, String.class).orElse("");
-                result = this.editService.createRootObject(optionalEditingContext.get(), documentId, domainId, creationDescriptionId);
-            }
-        }
-        return result.orElse(null);
     }
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager, ReferenceWidgetDescription referenceDescription) {

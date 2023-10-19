@@ -14,7 +14,6 @@ package org.eclipse.sirius.components.view.emf.configuration;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -30,25 +29,18 @@ public class ViewPropertiesDescriptionServiceConfiguration {
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
-
     private final IEMFKindService emfKindService;
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ViewPropertiesDescriptionServiceConfiguration(IObjectService objectService, IEditService editService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService) {
+    public ViewPropertiesDescriptionServiceConfiguration(IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     public IObjectService getObjectService() {
         return this.objectService;
-    }
-
-    public IEditService getEditService() {
-        return this.editService;
     }
 
     public IEMFKindService getEmfKindService() {

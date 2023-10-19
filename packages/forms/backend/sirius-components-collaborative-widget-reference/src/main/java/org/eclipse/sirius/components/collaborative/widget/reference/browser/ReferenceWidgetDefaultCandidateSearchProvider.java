@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandid
 import org.springframework.stereotype.Service;
 
 /**
- *
  * Default implementation of {@link IReferenceWidgetRootCandidateSearchProvider}.
  * This implementation returns all root resources from the current model.
  *
@@ -36,7 +35,7 @@ public class ReferenceWidgetDefaultCandidateSearchProvider implements IReference
 
     @Override
     public boolean canHandle(String descriptionId) {
-        return true;
+        return false; // Default implementation, it'll be used if no other service can handle the descriptionId
     }
 
     @Override

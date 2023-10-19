@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.compatibility.emf.properties.EStringIfDescr
 import org.eclipse.sirius.components.compatibility.emf.properties.NonContainmentReferenceIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.NumberIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -99,12 +98,10 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final IEditService editService;
 
     public ViewPropertiesDescriptionRegistryConfigurer(ViewPropertiesDescriptionServiceConfiguration parameters, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
             IEMFMessageService emfMessageService, List<ITextfieldCustomizer> customizers) {
         this.objectService = Objects.requireNonNull(parameters.getObjectService());
-        this.editService = Objects.requireNonNull(parameters.getEditService());
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
@@ -209,7 +206,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
         ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
         ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.editService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
         var numericDataTypes = List.of(
                 EcorePackage.Literals.EINT,

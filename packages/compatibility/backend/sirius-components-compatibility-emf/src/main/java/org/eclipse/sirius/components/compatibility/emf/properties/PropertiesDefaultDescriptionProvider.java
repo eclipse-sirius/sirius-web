@@ -29,7 +29,6 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.collaborative.forms.PropertiesEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -55,8 +54,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
     private final IObjectService objectService;
 
-    private final IEditService editService;
-
     private final IEMFKindService emfKindService;
 
     private final IFeedbackMessageService feedbackMessageService;
@@ -69,10 +66,9 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public PropertiesDefaultDescriptionProvider(IObjectService objectService, IEditService editService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
+    public PropertiesDefaultDescriptionProvider(IObjectService objectService, IEMFKindService emfKindService, IFeedbackMessageService feedbackMessageService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
             IEMFMessageService emfMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.editService = Objects.requireNonNull(editService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
@@ -173,7 +169,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
         ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
         ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.editService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new NonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.emfKindService, this.feedbackMessageService, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
         // @formatter:off
         var numericDataTypes = List.of(

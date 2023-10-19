@@ -2,6 +2,11 @@ extend type FormDescription {
   referenceValueOptions(referenceWidgetId: ID!): [ReferenceValue!]!
 }
 
+extend type EditingContext {
+  referenceWidgetRootCreationDescriptions(domainId: ID!, referenceKind: String, descriptionId: String!): [ChildCreationDescription!]!
+  referenceWidgetChildCreationDescriptions(kind: ID!, referenceKind: String, descriptionId: String!): [ChildCreationDescription!]!
+}
+
 type ReferenceWidget implements Widget {
   id: ID!
   descriptionId: String!
@@ -111,6 +116,7 @@ input CreateElementInReferenceInput {
   """
   domainId: ID
   creationDescriptionId: ID!
+  descriptionId: ID!
 }
 
 union CreateElementInReferencePayload = CreateElementInReferenceSuccessPayload | ErrorPayload
