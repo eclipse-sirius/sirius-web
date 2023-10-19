@@ -61,12 +61,12 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
 
     /**
      * Returns the value of the '<em><b>Width Computation Expression</b></em>' attribute. The default value is
-     * <code>"1"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <code>"150"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Width Computation Expression</em>' attribute.
      * @see #setWidthComputationExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription_WidthComputationExpression()
-     * @model default="1" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @model default="150" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getWidthComputationExpression();
@@ -85,12 +85,12 @@ public interface NodeStyleDescription extends Style, LabelStyle, BorderStyle {
 
     /**
      * Returns the value of the '<em><b>Height Computation Expression</b></em>' attribute. The default value is
-     * <code>"1"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <code>"70"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Height Computation Expression</em>' attribute.
      * @see #setHeightComputationExpression(String)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription_HeightComputationExpression()
-     * @model default="1" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @model default="70" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getHeightComputationExpression();
