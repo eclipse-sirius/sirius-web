@@ -15,10 +15,10 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { Tool } from '../../Tool';
 import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
-import { ToolSectionProps, ToolSectionState } from './ToolSection.types';
+import { ToolSectionProps } from './ToolSection.types';
 
 const useToolSectionStyles = makeStyles(() => ({
   toolSection: {
@@ -44,34 +44,17 @@ const useToolSectionStyles = makeStyles(() => ({
 const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
 
-export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
+export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onExpand }: ToolSectionProps) => {
   const tools = toolSection.tools.filter(isSingleClickOnDiagramElementTool);
-  const initialState = {
-    expanded: false,
-  };
-  const [state, setState] = useState<ToolSectionState>(initialState);
-  const { expanded } = state;
 
   const classes = useToolSectionStyles();
 
   const onActiveTool = useCallback(
     (tool) => {
       onToolClick(tool);
-      setState(() => {
-        return {
-          expanded: false,
-        };
-      });
     },
     [onToolClick]
   );
-  const onExpand = useCallback(() => {
-    setState((prevState) => {
-      return {
-        expanded: !prevState.expanded,
-      };
-    });
-  }, []);
 
   let caretContent: JSX.Element | undefined;
   if (tools.length > 1) {
@@ -79,7 +62,7 @@ export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
       <ExpandMoreIcon
         className={classes.arrow}
         style={{ fontSize: 20 }}
-        onClick={() => onExpand()}
+        onClick={() => onExpand(toolSectionExpandId === toolSection.id ? undefined : toolSection.id)}
         data-testid="expand"
       />
     );
@@ -94,9 +77,9 @@ export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
           {caretContent}
         </div>
       )}
-      <Popper open={expanded} anchorEl={anchorRef.current} transition disablePortal>
+      <Popper open={toolSectionExpandId === toolSection.id} anchorEl={anchorRef.current} transition disablePortal>
         <Paper className={classes.toolList}>
-          <ClickAwayListener onClickAway={onExpand}>
+          <ClickAwayListener onClickAway={() => onExpand(undefined)}>
             <div>
               {tools.map((tool) => (
                 <Tool tool={tool} onClick={() => onActiveTool(tool)} key={tool.id} />
