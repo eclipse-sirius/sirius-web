@@ -17,6 +17,7 @@ import { NodeDropData } from './useDropNode.types';
 
 const defaultValue: DropNodeContextValue = {
   dropData: {
+    initialParentId: null,
     draggedNodeId: null,
     targetNodeId: null,
     compatibleNodeIds: [],
