@@ -160,6 +160,7 @@ export const useDropNode = (): UseDropNodeValue => {
       .map((n) => n.id);
 
     setDropData({
+      initialParentId: null,
       draggedNodeId: null,
       targetNodeId: node.parentNode || null,
       compatibleNodeIds: compatibleNodes,
@@ -182,6 +183,7 @@ export const useDropNode = (): UseDropNodeValue => {
         });
       const newParentId = intersections[0]?.id || null;
       setDropData({
+        initialParentId: node.parentNode || null,
         draggedNodeId: node.id,
         targetNodeId: newParentId,
         compatibleNodeIds: dropData.compatibleNodeIds,
@@ -202,7 +204,13 @@ export const useDropNode = (): UseDropNodeValue => {
       }
     }
     setDraggedNode(null);
-    setDropData({ draggedNodeId: null, targetNodeId: null, droppableOnDiagram: false, compatibleNodeIds: [] });
+    setDropData({
+      initialParentId: null,
+      draggedNodeId: null,
+      targetNodeId: null,
+      droppableOnDiagram: false,
+      compatibleNodeIds: [],
+    });
   };
 
   const theme = useTheme();
@@ -232,9 +240,11 @@ export const useDropNode = (): UseDropNodeValue => {
 
     getDiagramBackgroundStyle(): DiagramBackgroundStyle {
       const diagramForbidden = dropData.draggedNodeId !== null && !dropData.droppableOnDiagram;
-      const backgroundColor = diagramForbidden
-        ? theme.palette.action.disabledBackground
-        : theme.palette.background.default;
+      const diagramTargeted = dropData.targetNodeId === null && dropData.initialParentId !== null;
+      const backgroundColor =
+        diagramTargeted && diagramForbidden
+          ? theme.palette.action.disabledBackground
+          : theme.palette.background.default;
       return {
         backgroundColor,
         smallGridColor: diagramForbidden ? backgroundColor : '#f1f1f1',

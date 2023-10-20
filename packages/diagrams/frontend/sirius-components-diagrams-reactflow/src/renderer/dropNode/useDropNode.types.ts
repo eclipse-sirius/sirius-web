@@ -34,6 +34,7 @@ export interface DiagramBackgroundStyle {
 }
 
 export interface NodeDropData {
+  initialParentId: string | null;
   draggedNodeId: string | null;
   targetNodeId: string | null;
   compatibleNodeIds: string[];
