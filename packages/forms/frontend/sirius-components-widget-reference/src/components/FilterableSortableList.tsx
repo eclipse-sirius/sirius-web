@@ -16,8 +16,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import React, { useContext, useState } from 'react';
 import {
@@ -216,8 +216,8 @@ export const FilterableSortableList = ({
                   splitLabelWithTextToHighlight[0].toLocaleLowerCase() === state.filterBarText.toLocaleLowerCase())
               );
             })
-            .map(({ id }, index) => {
-              const { kind, label, iconURL } = options.find((option) => option.id === id);
+            .map(({ id, kind, label }, index) => {
+              const iconURL = options.find((option) => option.id === id)?.iconURL;
               const labelId = `transfer-list-item-${id}-label`;
               const selected = selectedItems.some((entry) => entry.id === id);
               const hover = state.hoveringItemId === id;
