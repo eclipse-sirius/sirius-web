@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -161,14 +161,14 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private Function<VariableManager, IStatus> createDiagramDropHandler(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription,
             ViewDiagramDescriptionConverterContext converterContext) {
-        Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions = Map.copyOf(converterContext.getConvertedNodes());
         return variableManager -> {
             Optional<DropTool> optionalDropTool = new ToolFinder().findDropTool(viewDiagramDescription);
             if (optionalDropTool.isPresent()) {
                 var augmentedVariableManager = variableManager.createChild();
-                augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, capturedNodeDescriptions);
+                var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+                augmentedVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
                 return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        capturedNodeDescriptions, this.feedbackMessageService)
+                        convertedNodes, this.feedbackMessageService)
                         .executeTool(optionalDropTool.get(), augmentedVariableManager);
             } else {
                 return new Failure("No drop handler configured");
@@ -479,7 +479,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         Function<VariableManager, IStatus> handler = variableManager -> {
             IStatus result;
             DeletionPolicy deletionPolicy = variableManager.get(DeleteFromDiagramEventHandler.DELETION_POLICY, DeletionPolicy.class).orElse(DeletionPolicy.SEMANTIC);
@@ -488,12 +487,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 result = new Success();
             } else {
                 VariableManager child = variableManager.createChild();
-                child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+                child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
 
                 var optionalTooltool = new ToolFinder().findDeleteTool(diagramElementDescription);
                 if (optionalTooltool.isPresent()) {
                     result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                            capturedConvertedNodes, this.feedbackMessageService)
+                            convertedNodes, this.feedbackMessageService)
                             .executeTool(optionalTooltool.get(), child);
                 } else {
                     result = new Failure("No deletion tool configured");
@@ -533,17 +533,17 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private BiFunction<VariableManager, String, IStatus> createNodeLabelEditHandler(org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription,
             ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         BiFunction<VariableManager, String, IStatus> handler = (variableManager, newLabel) -> {
             IStatus result;
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put("arg0", newLabel);
             childVariableManager.put("newLabel", newLabel);
-            childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
             var optionalTool = new ToolFinder().findNodeLabelEditTool(nodeDescription);
             if (optionalTool.isPresent()) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        capturedConvertedNodes, this.feedbackMessageService)
+                        convertedNodes, this.feedbackMessageService)
                         .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
@@ -569,13 +569,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put("arg0", newLabel);
             childVariableManager.put("newLabel", newLabel);
-            var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-            childVariableManager.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+            childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
 
             Optional<LabelEditTool> optionalTool = new ToolFinder().findLabelEditTool(edgeDescription, edgeLabelKind);
             if (optionalTool.isPresent()) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        capturedConvertedNodes, this.feedbackMessageService)
+                        convertedNodes, this.feedbackMessageService)
                         .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
@@ -596,11 +596,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private Function<VariableManager, IStatus> createDropNodeHandler(DropNodeTool dropNodeTool, ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         return variableManager -> {
             VariableManager child = variableManager.createChild();
-            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes,
+            var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
+            child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedNodes,
                     this.feedbackMessageService).executeTool(dropNodeTool, child);
         };
     }
