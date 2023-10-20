@@ -105,7 +105,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
             var optionalDroppedNode = this.diagramQueryService.findNodeById(diagram, input.droppedElementId());
             if (optionalDroppedNode.isPresent()) {
                 var optionalDropTarget = Optional.ofNullable(input.targetElementId()).flatMap(elementId -> this.diagramQueryService.findNodeById(diagram, elementId));
-                boolean handled = this.invokeDropNodeTool(editingContext, diagram, optionalDroppedNode.get(), optionalDropTarget);
+                boolean handled = this.invokeDropNodeTool(editingContext, diagramContext, diagram, optionalDroppedNode.get(), optionalDropTarget);
                 if (handled) {
                     payload = new SuccessPayload(diagramInput.id(), List.of());
                 } else {
@@ -119,7 +119,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private boolean invokeDropNodeTool(IEditingContext editingContext, Diagram diagram, Node droppedNode, Optional<Node> optionalDropTargetNode) {
+    private boolean invokeDropNodeTool(IEditingContext editingContext, IDiagramContext diagramContext, Diagram diagram, Node droppedNode, Optional<Node> optionalDropTargetNode) {
         var optionalHandler = this.findDropNodeHandler(editingContext, diagram, optionalDropTargetNode);
         var optionalTargetElement = this.objectService.getObject(editingContext, optionalDropTargetNode.map(Node::getTargetObjectId).orElse(diagram.getTargetObjectId()));
         var optionalDroppedElement = this.objectService.getObject(editingContext, droppedNode.getTargetObjectId());
@@ -129,6 +129,8 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
 
             VariableManager variableManager = new VariableManager();
             variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
+            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
             variableManager.put(DROPPED_ELEMENT, optionalDroppedElement.get());
             variableManager.put(DROPPED_NODE, droppedNode);
             variableManager.put(TARGET_ELEMENT, targetElement);
