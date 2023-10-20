@@ -595,16 +595,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
     }
 
-    private Function<VariableManager, IStatus> createDiagramDropNodeHandler(DropNodeTool dropNodeTool, ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
-        return variableManager -> {
-            VariableManager child = variableManager.createChild();
-            child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), capturedConvertedNodes,
-                    this.feedbackMessageService).executeTool(dropNodeTool, child);
-        };
-    }
-
     private Function<VariableManager, IStatus> createDropNodeHandler(DropNodeTool dropNodeTool, ViewDiagramDescriptionConverterContext converterContext) {
         var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
         return variableManager -> {
