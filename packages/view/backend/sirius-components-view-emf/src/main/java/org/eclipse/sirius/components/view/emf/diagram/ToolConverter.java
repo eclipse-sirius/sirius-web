@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.emf.diagram;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -168,15 +169,15 @@ public class ToolConverter {
     }
 
     private ITool createNodeTool(NodeTool nodeTool, ViewDiagramDescriptionConverterContext converterContext, boolean appliesToDiagramRoot) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
+        var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
         String toolId = this.idProvider.apply(nodeTool).toString();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(nodeTool.getName())
                 .imageURL(ViewToolImageProvider.NODE_CREATION_TOOL_ICON)
                 .handler(variableManager -> {
                     VariableManager child = variableManager.createChild();
-                    child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
-                    return this.execute(converterContext, capturedConvertedNodes, nodeTool, child);
+                    child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
+                    return this.execute(converterContext, convertedNodes, nodeTool, child);
                 })
                 .targetDescriptions(List.of())
                 .selectionDescriptionId(this.objectService.getId(nodeTool.getSelectionDescription()))
@@ -185,29 +186,29 @@ public class ToolConverter {
     }
 
     private ITool createEdgeTool(EdgeTool edgeTool, NodeDescription nodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        var capturedConvertedNodes = Map.copyOf(converterContext.getConvertedNodes());
+        var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
         String toolId = this.idProvider.apply(edgeTool).toString();
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(edgeTool.getName())
                 .imageURL(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON)
                 .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
-                        .sources(List.of(converterContext.getConvertedNodes().get(nodeDescription)))
-                        .targets(edgeTool.getTargetElementDescriptions().stream().map(converterContext.getConvertedNodes()::get).toList())
+                        .sources(List.of(convertedNodes.get(nodeDescription)))
+                        .targets(edgeTool.getTargetElementDescriptions().stream().map(convertedNodes::get).toList())
                         .build()))
                 .handler(variableManager -> {
                     VariableManager child = variableManager.createChild();
-                    child.put(CONVERTED_NODES_VARIABLE, capturedConvertedNodes);
+                    child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
                     child.put("nodeDescription", nodeDescription);
-                    return this.execute(converterContext, capturedConvertedNodes, edgeTool, child);
+                    return this.execute(converterContext, convertedNodes, edgeTool, child);
                 })
                 .build();
     }
 
-    private IStatus execute(ViewDiagramDescriptionConverterContext converterContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedConvertedNodes,
-            Tool tool, VariableManager variableManager) {
+    private IStatus execute(ViewDiagramDescriptionConverterContext converterContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes, Tool tool,
+            VariableManager variableManager) {
         IDiagramContext diagramContext = variableManager.get(IDiagramContext.DIAGRAM_CONTEXT, IDiagramContext.class).orElse(null);
-        var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, diagramContext,
-                capturedConvertedNodes, this.feedbackMessageService);
+        var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, diagramContext, convertedNodes,
+                this.feedbackMessageService);
         return operationInterpreter.executeTool(tool, variableManager);
     }
 }
