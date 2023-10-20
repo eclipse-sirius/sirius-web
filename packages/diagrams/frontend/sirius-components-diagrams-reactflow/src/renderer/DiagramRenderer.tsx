@@ -266,6 +266,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       snapToGrid={state.snapToGrid}
       snapGrid={[GRID_STEP, GRID_STEP]}
       connectionMode={ConnectionMode.Loose}
+      zoomOnDoubleClick={false}
       ref={ref}>
       {state.snapToGrid ? (
         <>

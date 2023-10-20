@@ -61,6 +61,7 @@ This coupling will be removed in the near future as a consequence, the dependenc
 - https://github.com/eclipse-sirius/sirius-web/issues/2268[#2268] [diagram] Create child nodes where the user has clicked.
 - https://github.com/eclipse-sirius/sirius-web/issues/2475[#2475] [diagram] Prevent nodes to move each diagram refresh event. Only the size is still updated.
 - https://github.com/eclipse-sirius/sirius-web/issues/2485[#2485] [view] Change the default size of View Node Description from 1x1 to 150x70.
+- https://github.com/eclipse-sirius/sirius-web/issues/2493[2493] [diagram] Disable double click to zoom in with ReactFlow.
 
 == v2023.10.0
 
