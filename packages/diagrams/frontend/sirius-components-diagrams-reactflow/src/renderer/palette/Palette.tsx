@@ -21,9 +21,9 @@ import { useEdges, useNodes } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { Tool } from '../Tool';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { Tool } from '../Tool';
 import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
 import { DiagramPaletteToolContext } from './DiagramPaletteToolContext';
 import { DiagramPaletteToolContributionComponentProps } from './DiagramPaletteToolContribution.types';
@@ -164,6 +164,7 @@ const isDiagramDescription = (
 
 export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementPalette }: PaletteProps) => {
   const [palette, setPalette] = useState<GQLPalette | undefined>(undefined);
+  const [toolSectionExpandId, setToolSectionExpandId] = useState<string | undefined>(undefined);
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
   const nodes = useNodes<NodeData>();
@@ -330,7 +331,13 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
         <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
       ))}
       {palette?.toolSections.map((toolSection) => (
-        <ToolSection toolSection={toolSection} onToolClick={handleToolClick} key={toolSection.id} />
+        <ToolSection
+          toolSection={toolSection}
+          onToolClick={handleToolClick}
+          key={toolSection.id}
+          onExpand={setToolSectionExpandId}
+          toolSectionExpandId={toolSectionExpandId}
+        />
       ))}
       {diagramPaletteToolComponents.map((component, index) => {
         const props: DiagramPaletteToolContributionComponentProps = {

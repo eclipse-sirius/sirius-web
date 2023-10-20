@@ -15,6 +15,8 @@ import { GQLTool, GQLToolSection } from '../Palette.types';
 export interface ToolSectionProps {
   toolSection: GQLToolSection;
   onToolClick: (tool: GQLTool) => void;
+  toolSectionExpandId: string | undefined;
+  onExpand: (toolSectionId: string | undefined) => void;
 }
 
 export interface ToolSectionState {
