@@ -192,25 +192,31 @@ export const useDropNode = (): UseDropNodeValue => {
     }
   };
 
-  const onNodeDragStop: NodeDragHandler = (_event, _node) => {
-    if (draggedNode && draggedNode.id === dropData.draggedNodeId) {
-      const oldParentId: string | null = draggedNode.parentNode || null;
-      const newParentId: string | null = dropData.targetNodeId;
-      const validNewParent =
-        (newParentId === null && dropData.droppableOnDiagram) ||
-        (newParentId !== null && dropData.compatibleNodeIds.includes(newParentId));
-      if (oldParentId !== newParentId && validNewParent) {
-        onDropNode(dropData.draggedNodeId, newParentId);
+  const onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler = (onDragCancelled) => {
+    return (_event, _node) => {
+      if (draggedNode && draggedNode.id === dropData.draggedNodeId) {
+        const oldParentId: string | null = draggedNode.parentNode || null;
+        const newParentId: string | null = dropData.targetNodeId;
+        const validNewParent =
+          (newParentId === null && dropData.droppableOnDiagram) ||
+          (newParentId !== null && dropData.compatibleNodeIds.includes(newParentId));
+        if (oldParentId !== newParentId) {
+          if (validNewParent) {
+            onDropNode(dropData.draggedNodeId, newParentId);
+          } else {
+            onDragCancelled(draggedNode);
+          }
+        }
       }
-    }
-    setDraggedNode(null);
-    setDropData({
-      initialParentId: null,
-      draggedNodeId: null,
-      targetNodeId: null,
-      droppableOnDiagram: false,
-      compatibleNodeIds: [],
-    });
+      setDraggedNode(null);
+      setDropData({
+        initialParentId: null,
+        draggedNodeId: null,
+        targetNodeId: null,
+        droppableOnDiagram: false,
+        compatibleNodeIds: [],
+      });
+    };
   };
 
   const theme = useTheme();

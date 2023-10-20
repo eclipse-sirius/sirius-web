@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeDragHandler } from 'reactflow';
+import { Node, NodeDragHandler } from 'reactflow';
 
 export interface UseDropNodeValue {
   onNodeDragStart: NodeDragHandler;
   onNodeDrag: NodeDragHandler;
-  onNodeDragStop: NodeDragHandler;
+  onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler;
   dropData: NodeDropData;
   dropFeedbackStyleProvider: StyleProvider;
 }

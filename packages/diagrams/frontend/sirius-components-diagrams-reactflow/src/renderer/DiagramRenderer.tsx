@@ -21,6 +21,7 @@ import {
   EdgeSelectionChange,
   Node,
   NodeChange,
+  NodePositionChange,
   NodeSelectionChange,
   OnEdgesChange,
   OnNodesChange,
@@ -260,7 +261,15 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       onDragOver={onDragOver}
       onNodeDrag={onNodeDrag}
       onNodeDragStart={onNodeDragStart}
-      onNodeDragStop={onNodeDragStop}
+      onNodeDragStop={onNodeDragStop((node: Node) => {
+        const resetPosition: NodePositionChange = {
+          id: node.id,
+          type: 'position',
+          position: node.position,
+          positionAbsolute: node.positionAbsolute,
+        };
+        onNodesChange([resetPosition]);
+      })}
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={state.snapToGrid}
