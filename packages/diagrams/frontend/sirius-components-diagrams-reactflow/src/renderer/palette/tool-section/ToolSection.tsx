@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,6 +30,7 @@ const useToolSectionStyles = makeStyles(() => ({
   },
   toolList: {
     padding: '4px',
+    width: 'max-content',
   },
   arrow: {
     cursor: 'pointer',
@@ -95,23 +95,15 @@ export const ToolSection = ({ toolSection, onToolClick }: ToolSectionProps) => {
         </div>
       )}
       <Popper open={expanded} anchorEl={anchorRef.current} transition disablePortal>
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-            }}>
-            <Paper className={classes.toolList}>
-              <ClickAwayListener onClickAway={onExpand}>
-                <div>
-                  {tools.map((tool) => (
-                    <Tool tool={tool} onClick={() => onActiveTool(tool)} key={tool.id} />
-                  ))}
-                </div>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
+        <Paper className={classes.toolList}>
+          <ClickAwayListener onClickAway={onExpand}>
+            <div>
+              {tools.map((tool) => (
+                <Tool tool={tool} onClick={() => onActiveTool(tool)} key={tool.id} />
+              ))}
+            </div>
+          </ClickAwayListener>
+        </Paper>
       </Popper>
     </>
   );
