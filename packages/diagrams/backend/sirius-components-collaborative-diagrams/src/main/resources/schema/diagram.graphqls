@@ -47,6 +47,7 @@ type Node {
   childrenLayoutStrategy: ILayoutStrategy
   borderNodes: [Node!]!
   childNodes: [Node!]!
+  labelEditable: Boolean!
 }
 
 type FreeFormLayoutStrategy {
@@ -274,7 +275,7 @@ input DropNodeInput {
   id: ID!
   editingContextId: ID!
   representationId: ID!
-  droppedElementId: ID! 
+  droppedElementId: ID!
   targetElementId: ID
 }
 

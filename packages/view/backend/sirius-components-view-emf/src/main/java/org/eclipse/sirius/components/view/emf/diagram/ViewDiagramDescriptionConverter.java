@@ -242,7 +242,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
         Function<VariableManager, Size> sizeProvider = variableManager -> this.computeSize(viewNodeDescription, interpreter, variableManager);
 
-        // @formatter:off
         List<String> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
                 .map(this.diagramIdProvider::getId)
                 .toList();
@@ -272,13 +271,11 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .reusedBorderNodeDescriptionIds(reusedBorderNodeDescriptionIds)
                 .sizeProvider(sizeProvider)
                 .userResizable(viewNodeDescription.isUserResizable())
-                .labelEditHandler(this.createNodeLabelEditHandler(viewNodeDescription, converterContext))
                 .deleteHandler(this.createDeleteHandler(viewNodeDescription, converterContext))
                 .shouldRenderPredicate(shouldRenderPredicate);
-        // @formatter:on
-        new ToolFinder().findDropNodeTool(viewNodeDescription).ifPresent(dropNoteTool -> {
-            builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));
-        });
+        new ToolFinder().findDropNodeTool(viewNodeDescription).ifPresent(dropNoteTool -> builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext)));
+        new ToolFinder().findNodeLabelEditTool(viewNodeDescription)
+                .ifPresent(labelEditTool -> builder.labelEditHandler(this.createNodeLabelEditHandler(viewNodeDescription, converterContext)));
         NodeDescription result = builder.build();
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
@@ -533,34 +530,16 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private BiFunction<VariableManager, String, IStatus> createNodeLabelEditHandler(org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription,
             ViewDiagramDescriptionConverterContext converterContext) {
-        BiFunction<VariableManager, String, IStatus> handler = (variableManager, newLabel) -> {
-            IStatus result;
+        var optionalTool = new ToolFinder().findNodeLabelEditTool(nodeDescription);
+        return optionalTool.<BiFunction<VariableManager, String, IStatus>>map(labelEditTool -> (variableManager, newLabel) -> {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put("arg0", newLabel);
             childVariableManager.put("newLabel", newLabel);
             var convertedNodes = Collections.unmodifiableMap(converterContext.getConvertedNodes());
             childVariableManager.put(CONVERTED_NODES_VARIABLE, convertedNodes);
-            var optionalTool = new ToolFinder().findNodeLabelEditTool(nodeDescription);
-            if (optionalTool.isPresent()) {
-                result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        convertedNodes, this.feedbackMessageService)
-                        .executeTool(optionalTool.get(), childVariableManager);
-            } else {
-                result = new Failure("No label edition tool configured");
-            }
-            return result;
-        };
-        return new IViewNodeLabelEditHandler() {
-            @Override
-            public IStatus apply(VariableManager variableManager, String newLabel) {
-                return handler.apply(variableManager, newLabel);
-            }
-
-            @Override
-            public boolean hasLabelEditTool() {
-                return new ToolFinder().findNodeLabelEditTool(nodeDescription).isPresent();
-            }
-        };
+            return new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager), convertedNodes,
+                    this.feedbackMessageService).executeTool(labelEditTool, childVariableManager);
+        }).orElse(null);
     }
 
     private IEdgeEditLabelHandler createEdgeLabelEditHandler(org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription, ViewDiagramDescriptionConverterContext converterContext) {
@@ -575,8 +554,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             Optional<LabelEditTool> optionalTool = new ToolFinder().findLabelEditTool(edgeDescription, edgeLabelKind);
             if (optionalTool.isPresent()) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                        convertedNodes, this.feedbackMessageService)
-                        .executeTool(optionalTool.get(), childVariableManager);
+                                                         convertedNodes, this.feedbackMessageService)
+                         .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
             }

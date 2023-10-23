@@ -58,6 +58,7 @@ export interface NodeData {
   faded: boolean;
   isBorderNode: boolean;
   borderNodePosition: BorderNodePositon | null;
+  labelEditable: boolean;
 }
 
 export enum BorderNodePositon {

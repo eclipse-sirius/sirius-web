@@ -27,6 +27,7 @@ export interface GQLNode {
   childNodes: GQLNode[] | undefined;
   position: GQLPosition;
   size: GQLSize;
+  labelEditable: boolean;
 }
 
 export interface ILayoutStrategy {

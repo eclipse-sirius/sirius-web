@@ -54,5 +54,6 @@ fragment nodeFragment on Node {
     }
   }
   userResizable
+  labelEditable
 }
 `;

@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class NodeDescription implements IDiagramElementDescription {
+
     private String id;
 
     private SynchronizationPolicy synchronizationPolicy;
@@ -78,6 +79,14 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private NodeDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newNodeDescription(String id) {
+        return new Builder(id);
+    }
+
+    public static Builder newNodeDescription(NodeDescription nodeDescription) {
+        return new Builder(nodeDescription);
     }
 
     @Override
@@ -165,14 +174,6 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.labelEditHandler;
     }
 
-    public static Builder newNodeDescription(String id) {
-        return new Builder(id);
-    }
-
-    public static Builder newNodeDescription(NodeDescription nodeDescription) {
-        return new Builder(nodeDescription);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, borderNodeDescriptionCount: {2}, childNodeDescriptionCount: {3}'}'";
@@ -186,7 +187,8 @@ public final class NodeDescription implements IDiagramElementDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
 
@@ -375,7 +377,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.collapsible = this.collapsible;
             nodeDescription.reusedBorderNodeDescriptionIds = Objects.requireNonNull(this.reusedBorderNodeDescriptionIds);
             nodeDescription.reusedChildNodeDescriptionIds = Objects.requireNonNull(this.reusedChildNodeDescriptionIds);
-            nodeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);
+            nodeDescription.labelEditHandler = this.labelEditHandler; // Optional on purpose
             nodeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             nodeDescription.dropNodeHandler = this.dropNodeHandler; // Optional on purpose.
             return nodeDescription;

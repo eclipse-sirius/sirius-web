@@ -238,7 +238,8 @@ public class NodeComponent implements IComponent {
                 .customizableProperties(customizableProperties)
                 .modifiers(modifiers)
                 .state(state)
-                .collapsingState(collapsingState);
+                .collapsingState(collapsingState)
+                .labelEditable(nodeDescription.getLabelEditHandler() != null);
 
         if (layoutStrategy != null) {
             nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
@@ -283,7 +284,7 @@ public class NodeComponent implements IComponent {
     /**
      * Compute the modifiers set applied on the new node. The set is by default the set of the previous node or is empty
      * if it does not exist.
-     *
+     * <p>
      * If a diagram event is specified and this one requests a modification of the modifier set, applied the event on
      * the default set.
      *
@@ -421,7 +422,8 @@ public class NodeComponent implements IComponent {
                 .forEach(childNodeDescriptions::add);
 
         return childNodeDescriptions.stream().map(childNodeDescription -> {
-            List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription)).orElse(List.of());
+            List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription))
+                    .orElse(List.of());
             List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(node -> node.getTargetObjectId()).toList();
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
@@ -448,7 +450,7 @@ public class NodeComponent implements IComponent {
         String parentElementId = this.props.getParentElementId();
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
-        return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), containmentKind, targetObjectId);
+        return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId(), containmentKind, targetObjectId);
     }
 
 }
