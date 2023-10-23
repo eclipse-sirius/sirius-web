@@ -138,8 +138,10 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(VariableManager.SELF, self);
-                nodeDescription.getLabelEditHandler().apply(variableManager, newText);
-                this.logger.debug("Edited label of diagram element {} to {}", node.getId(), newText);
+                if (nodeDescription.getLabelEditHandler() != null) {
+                    nodeDescription.getLabelEditHandler().apply(variableManager, newText);
+                    this.logger.debug("Edited label of diagram element {} to {}", node.getId(), newText);
+                }
             }
         }
     }

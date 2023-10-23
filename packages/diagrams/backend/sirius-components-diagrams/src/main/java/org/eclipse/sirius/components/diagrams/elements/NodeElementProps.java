@@ -72,8 +72,14 @@ public final class NodeElementProps implements IProps {
 
     private List<Element> children;
 
+    private boolean labelEditable;
+
     private NodeElementProps() {
         // Prevent instantiation
+    }
+
+    public static Builder newNodeElementProps(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -140,13 +146,13 @@ public final class NodeElementProps implements IProps {
         return this.customizableProperties;
     }
 
-    public static Builder newNodeElementProps(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public List<Element> getChildren() {
         return this.children;
+    }
+
+    public boolean isLabelEditable() {
+        return this.labelEditable;
     }
 
     @Override
@@ -162,7 +168,8 @@ public final class NodeElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String type;
 
@@ -195,6 +202,8 @@ public final class NodeElementProps implements IProps {
         private Set<CustomizableProperties> customizableProperties = Set.of();
 
         private List<Element> children;
+
+        private boolean labelEditable;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -280,6 +289,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder labelEditable(boolean labelEditable) {
+            this.labelEditable = labelEditable;
+            return this;
+        }
+
         public NodeElementProps build() {
             NodeElementProps nodeElementProps = new NodeElementProps();
             nodeElementProps.id = Objects.requireNonNull(this.id);
@@ -298,6 +312,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.size = Objects.requireNonNull(this.size);
             nodeElementProps.userResizable = this.userResizable;
             nodeElementProps.children = Objects.requireNonNull(this.children);
+            nodeElementProps.labelEditable = this.labelEditable;
             nodeElementProps.customizableProperties = Objects.requireNonNull(this.customizableProperties);
             return nodeElementProps;
         }

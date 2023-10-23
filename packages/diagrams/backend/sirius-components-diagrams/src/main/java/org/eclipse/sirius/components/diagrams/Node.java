@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class Node implements IDiagramElement {
+
     public static final String SELECTED_NODE = "selectedNode";
 
     private String id;
@@ -67,8 +68,18 @@ public final class Node implements IDiagramElement {
 
     private Set<CustomizableProperties> customizedProperties;
 
+    private boolean labelEditable;
+
     private Node() {
         // Prevent instantiation
+    }
+
+    public static Builder newNode(String id) {
+        return new Builder(id);
+    }
+
+    public static Builder newNode(Node node) {
+        return new Builder(node);
     }
 
     @Override
@@ -149,18 +160,15 @@ public final class Node implements IDiagramElement {
         return this.customizedProperties;
     }
 
-    public static Builder newNode(String id) {
-        return new Builder(id);
-    }
-
-    public static Builder newNode(Node node) {
-        return new Builder(node);
+    public boolean isLabelEditable() {
+        return this.labelEditable;
     }
 
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}, borderNodeCount: {9}, childNodeCount: {10}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
+        return MessageFormat.format(pattern, this.getClass()
+                        .getSimpleName(), this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.state,
                 this.label.getText(), this.style.getClass().getSimpleName(), this.borderNodes.size(), this.childNodes.size());
     }
 
@@ -171,7 +179,8 @@ public final class Node implements IDiagramElement {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String type;
 
@@ -209,6 +218,8 @@ public final class Node implements IDiagramElement {
 
         private Set<CustomizableProperties> customizedProperties = Set.of();
 
+        private boolean labelEditable;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -233,6 +244,7 @@ public final class Node implements IDiagramElement {
             this.borderNodes = node.getBorderNodes();
             this.childNodes = node.getChildNodes();
             this.customizedProperties = node.getCustomizedProperties();
+            this.labelEditable = node.isLabelEditable();
         }
 
         public Builder type(String type) {
@@ -325,6 +337,11 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
+        public Builder labelEditable(boolean labelEditable) {
+            this.labelEditable = labelEditable;
+            return this;
+        }
+
         public Node build() {
             Node node = new Node();
             node.id = Objects.requireNonNull(this.id);
@@ -346,6 +363,7 @@ public final class Node implements IDiagramElement {
             node.borderNodes = Objects.requireNonNull(this.borderNodes);
             node.childNodes = Objects.requireNonNull(this.childNodes);
             node.customizedProperties = this.customizedProperties;
+            node.labelEditable = this.labelEditable;
             return node;
         }
     }

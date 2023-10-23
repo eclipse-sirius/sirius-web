@@ -16,6 +16,7 @@ import TextField from '@material-ui/core/TextField';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import {
   DiagramDirectEditInputProps,
   DiagramDirectEditInputState,
@@ -71,6 +72,8 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
 
   const { addErrorMessage } = useMultiToast();
 
+  const { hideDiagramElementPalette } = useDiagramElementPalette();
+
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
   const textInput = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
@@ -85,6 +88,11 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
       labelId: labelId,
     },
   });
+
+  useEffect(() => {
+    // When opening the direct edit, close the current palette
+    hideDiagramElementPalette();
+  }, []);
 
   const [renameElement, { data: editLabelData, error: editLabelError }] = useMutation(editLabelMutationOp);
   useEffect(() => {

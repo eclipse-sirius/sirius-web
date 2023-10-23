@@ -423,9 +423,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
     private boolean hasLabelEditTool(Object diagramElementDescription) {
         boolean result = true;
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
-            if (nodeDescription.getLabelEditHandler() instanceof IViewNodeLabelEditHandler viewNodeLabelEditHandler) {
-                result = viewNodeLabelEditHandler.hasLabelEditTool();
-            }
+            result = nodeDescription.getLabelEditHandler() != null;
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
             if (edgeDescription.getLabelEditHandler() instanceof IViewEdgeLabelEditHandler viewEdgeLabelEditHandler) {
                 result = viewEdgeLabelEditHandler.hasLabelEditTool(EdgeLabelKind.CENTER_LABEL);

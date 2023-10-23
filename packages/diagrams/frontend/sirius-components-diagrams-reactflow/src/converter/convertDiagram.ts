@@ -64,6 +64,7 @@ const toRectangularNode = (
     faded: gqlNode.state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    labelEditable: gqlNode.labelEditable,
   };
 
   const verticalAlignmentIndex = gqlNode.label.type.indexOf('v_');
@@ -143,6 +144,7 @@ const toIconLabelNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: gqlNode.state === GQLViewModifier.Faded,
+    labelEditable: gqlNode.labelEditable,
   };
 
   const node: Node<IconLabelNodeData> = {
@@ -194,6 +196,7 @@ const toListNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNod
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: gqlNode.state === GQLViewModifier.Faded,
+    labelEditable: gqlNode.labelEditable,
   };
 
   if (style.withHeader && data.label) {
@@ -276,6 +279,7 @@ const toImageNode = (gqlNode: GQLNode, gqlParentNode: GQLNode | null, isBorderNo
     faded: gqlNode.state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    labelEditable: gqlNode.labelEditable,
   };
 
   const node: Node<ImageNodeData> = {
