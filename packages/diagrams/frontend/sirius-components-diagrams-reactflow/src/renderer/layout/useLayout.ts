@@ -12,8 +12,11 @@
  *******************************************************************************/
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import { useContext, useEffect, useState } from 'react';
-import { Diagram } from '../DiagramRenderer.types';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { XYPosition, useReactFlow } from 'reactflow';
+import { Diagram, EdgeData, NodeData } from '../DiagramRenderer.types';
+import { LayoutContext } from './LayoutContext';
+import { LayoutContextContextValue } from './LayoutContext.types';
 import { cleanLayoutArea, layout, performDefaultAutoLayout, prepareLayoutArea } from './layout';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
 
@@ -29,6 +32,10 @@ const initialState: UseLayoutState = {
 export const useLayout = (): UseLayoutValue => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [state, setState] = useState<UseLayoutState>(initialState);
+
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+  const { referencePosition, setReferencePosition, resetReferencePosition } =
+    useContext<LayoutContextContextValue>(LayoutContext);
 
   const layoutAreaPrepared = () => {
     const currentStep = 'LAYOUT';
@@ -59,7 +66,7 @@ export const useLayout = (): UseLayoutValue => {
         hiddenContainer: layoutArea,
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
-      const laidoutDiagram = layout(state.previousDiagram, state.diagramToLayout);
+      const laidoutDiagram = layout(state.previousDiagram, state.diagramToLayout, referencePosition);
       setState((prevState) => ({
         ...prevState,
         diagramToLayout: null,
@@ -71,10 +78,28 @@ export const useLayout = (): UseLayoutValue => {
       state.onLaidoutDiagram(state.laidoutDiagram);
       setState(() => initialState);
     }
-  }, [state.currentStep, state.hiddenContainer]);
+  }, [state.currentStep, state.hiddenContainer, referencePosition]);
+
+  const onReferencePositionSet = useCallback((referencePosition: XYPosition, parentId: string | null | undefined) => {
+    let position = { ...referencePosition };
+    let parentNode = reactFlowInstance.getNode(parentId ?? '');
+    while (parentNode) {
+      position = {
+        x: position.x - parentNode.position.x,
+        y: position.y - parentNode.position.y,
+      };
+      parentNode = reactFlowInstance.getNode(parentNode.parentNode ?? '');
+    }
+    setReferencePosition({
+      position,
+      parentId,
+    });
+  }, []);
 
   return {
     layout: layoutDiagram,
     autoLayout: performDefaultAutoLayout,
+    setReferencePosition: onReferencePositionSet,
+    resetReferencePosition,
   };
 };

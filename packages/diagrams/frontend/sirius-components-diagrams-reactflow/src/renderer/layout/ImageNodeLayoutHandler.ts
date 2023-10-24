@@ -46,10 +46,11 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     node: Node<ImageNodeData, 'imageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     if (directChildren.length > 0) {
-      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren);
+      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, newlyAddedNode);
     } else {
       node.width = forceWidth ?? defaultWidth;
       node.height = defaultHeight;
@@ -61,9 +62,10 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     previousDiagram: Diagram | null,
     node: Node<ImageNodeData, 'imageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
-    directChildren: Node<NodeData, DiagramNodeType>[]
+    directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined
   ) {
-    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren);
+    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
 

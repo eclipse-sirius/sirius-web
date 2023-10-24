@@ -20,6 +20,7 @@ export interface ILayoutEngine {
     previousDiagram: Diagram | null,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   );
 }
@@ -32,6 +33,7 @@ export interface INodeLayoutHandler<T extends NodeData> {
     node: Node<T>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   );
 }

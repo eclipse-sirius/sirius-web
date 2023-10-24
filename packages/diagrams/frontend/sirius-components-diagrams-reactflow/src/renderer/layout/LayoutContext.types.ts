@@ -10,17 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-import { Edge, Node, XYPosition } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
-
-export interface UseLayoutValue {
-  layout: (
-    previousLaidoutDiagram: Diagram | null,
-    diagramToLayout: Diagram,
-    callback: (laidoutDiagram: Diagram) => void
-  ) => void;
-  autoLayout: (nodes: Node<NodeData>[], edges: Edge[], zoomLevel: number) => Promise<{ nodes: Node<NodeData>[] }>;
+import { XYPosition } from 'reactflow';
+export interface LayoutContextContextValue {
+  referencePosition: ReferencePosition | null;
 
   /**
    * Store the reference position in the layout context for a later use, like in the next refresh to position new created node at the reference position stored in the context.
@@ -31,7 +23,7 @@ export interface UseLayoutValue {
    * @param referencePosition The reference position meant to be use in a later use.
    * @param parentId The element id directly under the reference position, null or undefined if it is the diagram.
    */
-  setReferencePosition: (referencePosition: XYPosition, parentId: string | null | undefined) => void;
+  setReferencePosition: (referencePosition: ReferencePosition) => void;
 
   /**
    * Reset the reference position stored in the layout context.
@@ -41,13 +33,15 @@ export interface UseLayoutValue {
   resetReferencePosition: () => void;
 }
 
-export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';
+export interface LayoutContextContextProviderProps {
+  children: React.ReactNode;
+}
 
-export interface UseLayoutState {
-  hiddenContainer: HTMLDivElement | null;
-  currentStep: Step;
-  previousDiagram: Diagram | null;
-  diagramToLayout: Diagram | null;
-  laidoutDiagram: Diagram | null;
-  onLaidoutDiagram: (laidoutDiagram: Diagram) => void;
+export interface LayoutContextContextProviderState {
+  referencePosition: ReferencePosition | null;
+}
+
+export interface ReferencePosition {
+  position: XYPosition;
+  parentId: string | null | undefined;
 }

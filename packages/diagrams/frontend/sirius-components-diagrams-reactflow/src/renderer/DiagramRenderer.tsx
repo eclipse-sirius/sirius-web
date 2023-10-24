@@ -69,8 +69,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
     fitviewLifecycle: 'neverRendered',
   });
 
-  const { layout } = useLayout();
-
+  const { layout, resetReferencePosition } = useLayout();
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onDiagramElementClick } = useDiagramElementPalette();
 
@@ -90,11 +89,11 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       nodes: nodes as Node<NodeData, DiagramNodeType>[],
       edges,
     };
-
     layout(previousDiagram, convertedDiagram, (laidOutDiagram) => {
       setNodes(laidOutDiagram.nodes);
       setEdges(laidOutDiagram.edges);
       hideDiagramPalette();
+      resetReferencePosition();
       if (state.fitviewLifecycle === 'neverRendered') {
         setState((prevState) => ({ ...prevState, fitviewLifecycle: 'shouldFitview' }));
       }
@@ -224,7 +223,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
         },
       ],
     };
-
     setSelection(selection);
     onDiagramBackgroundClick(event);
   };

@@ -42,6 +42,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     node: Node<RectangularNodeData, 'rectangularNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
@@ -49,7 +50,16 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
     if (directChildren.length > 0) {
-      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, borderWidth, forceWidth);
+      this.handleParentNode(
+        layoutEngine,
+        previousDiagram,
+        node,
+        visibleNodes,
+        directChildren,
+        newlyAddedNode,
+        borderWidth,
+        forceWidth
+      );
     } else {
       this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceWidth);
     }
@@ -61,10 +71,11 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     node: Node<RectangularNodeData, 'rectangularNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     borderWidth: number,
     forceWidth?: number
   ) {
-    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren);
+    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
@@ -77,7 +88,11 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
 
-      if (previousNode) {
+      const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
+
+      if (!!createdNode) {
+        child.position = createdNode.position;
+      } else if (previousNode) {
         child.position = previousNode.position;
       } else {
         child.position = getChildNodePosition(visibleNodes, child, labelElement, withHeader, borderWidth);
@@ -98,7 +113,6 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     // Update node to layout size
     // WARN: We suppose label are always on top of children (that wrong)
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
-
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
@@ -123,7 +137,6 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     const nodeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
-
     node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth);
     node.height = getNodeOrMinHeight(nodeHeight);
 

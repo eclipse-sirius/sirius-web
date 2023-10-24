@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface UseEdgePaletteValue {
+export interface UseDiagramElementPaletteValue {
   x: number | null;
   y: number | null;
   isOpened: boolean;
