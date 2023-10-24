@@ -15,7 +15,7 @@ import { useCallback, useContext } from 'react';
 import { XYPosition, useStoreApi } from 'reactflow';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
-import { UseEdgePaletteValue } from './useDiagramElementPalette.types';
+import { UseDiagramElementPaletteValue } from './useDiagramElementPalette.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
   return {
@@ -24,9 +24,10 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
   };
 };
 
-export const useDiagramElementPalette = (): UseEdgePaletteValue => {
+export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
   const { x, y, isOpened, hideDiagramElementPalette, showDiagramElementPalette } =
     useContext<DiagramElementPaletteContextValue>(DiagramElementPaletteContext);
+
   const { domNode } = useStoreApi().getState();
   const element = domNode?.getBoundingClientRect();
 

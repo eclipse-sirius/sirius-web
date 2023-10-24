@@ -32,6 +32,7 @@ export class LayoutEngine implements ILayoutEngine {
     previousDiagram: Diagram | null,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     nodesToLayout.forEach((node) => {
@@ -40,7 +41,7 @@ export class LayoutEngine implements ILayoutEngine {
       );
       if (nodeLayoutHandler) {
         const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentNode === node.id);
-        nodeLayoutHandler.handle(this, previousDiagram, node, visibleNodes, directChildren, forceWidth);
+        nodeLayoutHandler.handle(this, previousDiagram, node, visibleNodes, directChildren, newlyAddedNode, forceWidth);
 
         node.style = {
           ...node.style,

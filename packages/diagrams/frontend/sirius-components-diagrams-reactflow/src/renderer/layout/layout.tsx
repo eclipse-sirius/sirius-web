@@ -25,8 +25,10 @@ import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEd
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNode } from '../node/RectangularNode';
 import { RectangularNodeData } from '../node/RectangularNode.types';
+import { ReferencePosition } from './LayoutContext.types';
 import { LayoutEngine } from './LayoutEngine';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { getChildren } from './layoutNode';
@@ -182,22 +184,43 @@ export const cleanLayoutArea = (container: HTMLDivElement) => {
 
 const gap = 20;
 
-export const layout = (previousDiagram: Diagram | null, diagram: Diagram): Diagram => {
-  layoutDiagram(previousDiagram, diagram);
+export const layout = (
+  previousDiagram: Diagram | null,
+  diagram: Diagram,
+  referencePosition: ReferencePosition | null
+): Diagram => {
+  layoutDiagram(previousDiagram, diagram, referencePosition);
   return diagram;
 };
 
-const layoutDiagram = (previousDiagram: Diagram | null, diagram: Diagram) => {
+const layoutDiagram = (
+  previousDiagram: Diagram | null,
+  diagram: Diagram,
+  referencePosition: ReferencePosition | null
+) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentNode);
 
-  new LayoutEngine().layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout);
+  let newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined = undefined;
+  if (referencePosition) {
+    newlyAddedNode = allVisibleNodes
+      .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
+      .find((node) => node.parentNode === referencePosition.parentId);
+    if (newlyAddedNode) {
+      newlyAddedNode = { ...newlyAddedNode, position: referencePosition.position };
+    }
+  }
+
+  new LayoutEngine().layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout, newlyAddedNode);
 
   // Update position of root nodes
   nodesToLayout.forEach((node, index) => {
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
+    const createdNode = newlyAddedNode?.id === node.id ? newlyAddedNode : undefined;
 
-    if (previousNode) {
+    if (!!createdNode) {
+      node.position = createdNode.position;
+    } else if (previousNode) {
       node.position = previousNode.position;
     } else {
       const maxBorderNodeWidthWest = getChildren(node, allVisibleNodes)

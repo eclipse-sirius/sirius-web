@@ -12,9 +12,11 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { DRAG_SOURCES_TYPE, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
+import { Viewport, XYPosition, useStoreApi, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useLayout } from '../layout/useLayout';
 import {
   GQLDropOnDiagramData,
   GQLDropOnDiagramInput,
@@ -48,6 +50,17 @@ const dropOnDiagramMutation = gql`
   }
 `;
 
+const computeDropPosition = (
+  event: MouseEvent | React.MouseEvent,
+  { x: viewportX, y: viewportY, zoom: viewportZoom }: Viewport,
+  bounds?: DOMRect
+): XYPosition => {
+  return {
+    x: (event.clientX - (bounds?.left ?? 0) - viewportX) / viewportZoom,
+    y: (event.clientY - (bounds?.top ?? 0) - viewportY) / viewportZoom,
+  };
+};
+
 const isErrorPayload = (payload: GQLDropOnDiagramPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropOnDiagramSuccessPayload =>
@@ -56,48 +69,62 @@ const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropO
 export const useDrop = (): UseDropValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { setReferencePosition, resetReferencePosition } = useLayout();
   const [dropMutation, { data: droponDiagramElementData, error: droponDiagramError }] = useMutation<
     GQLDropOnDiagramData,
     GQLDropOnDiagramVariables
   >(dropOnDiagramMutation);
+  const viewport = useViewport();
+  const { domNode } = useStoreApi().getState();
+  const element = domNode?.getBoundingClientRect();
 
   useEffect(() => {
     if (droponDiagramError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
+      resetReferencePosition();
     }
     if (droponDiagramElementData) {
       const { dropOnDiagram } = droponDiagramElementData;
-      if (isErrorPayload(dropOnDiagram) || isSuccessPayload(dropOnDiagram)) {
+      if (isSuccessPayload(dropOnDiagram)) {
         addMessages(dropOnDiagram.messages);
+      }
+      if (isErrorPayload(dropOnDiagram)) {
+        addMessages(dropOnDiagram.messages);
+        resetReferencePosition();
       }
     }
   }, [droponDiagramElementData, droponDiagramError]);
 
-  const onDrop = (event: React.DragEvent, diagramElementId?: string) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const onDrop = useCallback(
+    (event: React.DragEvent, diagramElementId?: string) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-    const data = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
+      const data = event.dataTransfer.getData(DRAG_SOURCES_TYPE);
 
-    // check if the dropped element is valid
-    if (data === '') {
-      return;
-    }
+      // check if the dropped element is valid
+      if (data === '') {
+        return;
+      }
 
-    const selectedIds = JSON.parse(data).map((entry) => entry.id);
+      const dropPosition = computeDropPosition(event, viewport, element);
+      const selectedIds = JSON.parse(data).map((entry) => entry.id);
 
-    const input: GQLDropOnDiagramInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: diagramId,
-      objectIds: selectedIds,
-      startingPositionX: 100,
-      startingPositionY: 100,
-      diagramTargetElementId: diagramElementId ? diagramElementId : diagramId,
-    };
+      const input: GQLDropOnDiagramInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: diagramId,
+        objectIds: selectedIds,
+        startingPositionX: 100,
+        startingPositionY: 100,
+        diagramTargetElementId: diagramElementId ? diagramElementId : diagramId,
+      };
 
-    dropMutation({ variables: { input } });
-  };
+      setReferencePosition(dropPosition, diagramElementId);
+      dropMutation({ variables: { input } });
+    },
+    [element?.top, element?.left, viewport]
+  );
 
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();

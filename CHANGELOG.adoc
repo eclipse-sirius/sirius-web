@@ -84,11 +84,12 @@ This coupling will be removed in the near future as a consequence, the dependenc
 - https://github.com/eclipse-sirius/sirius-web/issues/2268[#2268] [diagram] Create child nodes where the user has clicked.
 - https://github.com/eclipse-sirius/sirius-web/issues/2475[#2475] [diagram] Prevent nodes to move each diagram refresh event. Only the size is still updated.
 - https://github.com/eclipse-sirius/sirius-web/issues/2485[#2485] [view] Change the default size of View Node Description from 1x1 to 150x70.
-- https://github.com/eclipse-sirius/sirius-web/issues/2493[2493] [diagram] Disable double click to zoom in with React Flow.
+- https://github.com/eclipse-sirius/sirius-web/issues/2493[#2493] [diagram] Disable double click to zoom in with React Flow.
 - https://github.com/eclipse-sirius/sirius-web/issues/2388[#2388] [core] Added support for image overlay in icons.
 All icons can now be composed of multiple images, which will be overlayed on top of each other.
 An example of use has been added on the domain entity items.
 - https://github.com/eclipse-sirius/sirius-web/issues/2483[#2483] [diagram] Take the header into account in the React Flow layout.
+- https://github.com/eclipse-sirius/sirius-web/issues/2504[#2504] [diagram] Create nodes at the cursor position when using create instance or drop tools.
 
 == v2023.10.0
 

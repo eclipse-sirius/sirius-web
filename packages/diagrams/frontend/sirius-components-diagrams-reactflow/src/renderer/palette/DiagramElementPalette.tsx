@@ -12,7 +12,10 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
+import { useCallback } from 'react';
+import { useViewport } from 'reactflow';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
+import { useLayout } from '../layout/useLayout';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
 import { DiagramElementPalettePortal } from './DiagramElementPalettePortal';
 import { Palette } from './Palette';
@@ -33,7 +36,9 @@ const useEdgePaletteStyle = makeStyles((theme) => ({
 
 export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
-  const { x, y, isOpened } = useDiagramElementPalette();
+  const { setReferencePosition, resetReferencePosition } = useLayout();
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
+  const { x: paletteX, y: paletteY, isOpened } = useDiagramElementPalette();
   const classes = useEdgePaletteStyle();
 
   const handleDirectEditClick = () => {
@@ -42,16 +47,32 @@ export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElem
     }
   };
 
-  return isOpened && x && y ? (
+  const onToolApply = useCallback(() => {
+    if (viewportZoom !== 0 && paletteX && paletteY) {
+      const referencePosition = {
+        x: (paletteX - viewportX) / viewportZoom,
+        y: (paletteY - viewportY) / viewportZoom,
+      };
+      setReferencePosition(referencePosition, diagramElementId);
+    }
+  }, [paletteX, paletteY, viewportX, viewportY, viewportZoom]);
+
+  const onToolApplyError = () => {
+    resetReferencePosition();
+  };
+
+  return isOpened && paletteX && paletteY ? (
     <DiagramElementPalettePortal>
       <div
         className={classes.toolbar}
-        style={{ position: 'absolute', left: x, top: y }}
+        style={{ position: 'absolute', left: paletteX, top: paletteY }}
         onClick={(event) => event.stopPropagation()}>
         <Palette
           diagramElementId={diagramElementId}
           onDirectEditClick={handleDirectEditClick}
           isDiagramElementPalette={true}
+          onToolApply={onToolApply}
+          onToolApplyError={onToolApplyError}
         />
       </div>
     </DiagramElementPalettePortal>

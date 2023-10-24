@@ -22,9 +22,9 @@ import { useEdges, useNodes } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Tool } from '../Tool';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
-import { Tool } from '../Tool';
 import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
 import { DiagramPaletteToolContext } from './DiagramPaletteToolContext';
 import { DiagramPaletteToolContributionComponentProps } from './DiagramPaletteToolContribution.types';
@@ -194,7 +194,13 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementPalette }: PaletteProps) => {
+export const Palette = ({
+  diagramElementId,
+  onDirectEditClick,
+  isDiagramElementPalette,
+  onToolApply,
+  onToolApplyError,
+}: PaletteProps) => {
   const [palette, setPalette] = useState<GQLPalette | undefined>(undefined);
   const [toolSectionExpandId, setToolSectionExpandId] = useState<string | undefined>(undefined);
   const { fadeDiagramElements } = useFadeDiagramElements();
@@ -270,16 +276,18 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
           selectedObjectId: null,
         };
 
+        onToolApply();
         const { data } = await invokeSingleClickOnDiagramElementTool({
           variables: { input },
         });
         if (data) {
           const { invokeSingleClickOnDiagramElementTool } = data;
-          if (
-            isErrorPayload(invokeSingleClickOnDiagramElementTool) ||
-            isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)
-          ) {
+          if (isInvokeSingleClickSuccessPayload(invokeSingleClickOnDiagramElementTool)) {
             addMessages(invokeSingleClickOnDiagramElementTool.messages);
+          }
+          if (isErrorPayload(invokeSingleClickOnDiagramElementTool)) {
+            addMessages(invokeSingleClickOnDiagramElementTool.messages);
+            onToolApplyError();
           }
         }
       }
@@ -290,6 +298,8 @@ export const Palette = ({ diagramElementId, onDirectEditClick, isDiagramElementP
       diagramElementId,
       invokeSingleClickOnDiagramElementToolMutation,
       isSingleClickOnDiagramElementTool,
+      onToolApply,
+      onToolApplyError,
     ]
   );
 

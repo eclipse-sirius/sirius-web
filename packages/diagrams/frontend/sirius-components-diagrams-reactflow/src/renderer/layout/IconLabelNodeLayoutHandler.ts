@@ -28,6 +28,7 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
     node: Node<IconLabelNodeData>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
+    _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);

@@ -40,6 +40,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
@@ -47,7 +48,16 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
     if (directChildren.length > 0) {
-      this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, borderWidth, forceWidth);
+      this.handleParentNode(
+        layoutEngine,
+        previousDiagram,
+        node,
+        visibleNodes,
+        directChildren,
+        newlyAddedNode,
+        borderWidth,
+        forceWidth
+      );
     } else {
       this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceWidth);
     }
@@ -74,10 +84,11 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     borderWidth: number,
     forceWidth?: number
   ) {
-    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, forceWidth);
+    layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode, forceWidth);
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
@@ -98,7 +109,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
         southBorderNodeFootprintWidth
       );
 
-      layoutEngine.layoutNodes(previousDiagram, visibleNodes, directNodesChildren, widerWidth);
+      layoutEngine.layoutNodes(previousDiagram, visibleNodes, directNodesChildren, newlyAddedNode, widerWidth);
     }
 
     directNodesChildren.forEach((child, index) => {

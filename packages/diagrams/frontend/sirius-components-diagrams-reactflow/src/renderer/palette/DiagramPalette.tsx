@@ -12,6 +12,9 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
+import { useCallback } from 'react';
+import { useViewport } from 'reactflow';
+import { useLayout } from '../layout/useLayout';
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { DiagramPalettePortal } from './DiagramPalettePortal';
 import { Palette } from './Palette';
@@ -31,13 +34,35 @@ const useDiagramPaletteStyle = makeStyles((theme) => ({
 }));
 
 export const DiagramPalette = ({ targetObjectId }: DiagramPaletteProps) => {
-  const { x, y, isOpened } = useDiagramPalette();
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
+  const { x: paletteX, y: paletteY, isOpened } = useDiagramPalette();
+  const { setReferencePosition, resetReferencePosition } = useLayout();
   const classes = useDiagramPaletteStyle();
 
-  return isOpened && x && y ? (
+  const onToolApply = useCallback(() => {
+    if (viewportZoom !== 0 && paletteX && paletteY) {
+      const referencePosition = {
+        x: (paletteX - viewportX) / viewportZoom,
+        y: (paletteY - viewportY) / viewportZoom,
+      };
+      setReferencePosition(referencePosition, '');
+    }
+  }, [paletteX, paletteY, viewportX, viewportY, viewportZoom]);
+
+  const onToolApplyError = () => {
+    resetReferencePosition();
+  };
+
+  return isOpened && paletteX && paletteY ? (
     <DiagramPalettePortal>
-      <div className={classes.toolbar} style={{ position: 'absolute', left: x, top: y }}>
-        <Palette diagramElementId={targetObjectId} onDirectEditClick={() => {}} isDiagramElementPalette={false} />
+      <div className={classes.toolbar} style={{ position: 'absolute', left: paletteX, top: paletteY }}>
+        <Palette
+          diagramElementId={targetObjectId}
+          onDirectEditClick={() => {}}
+          isDiagramElementPalette={false}
+          onToolApply={onToolApply}
+          onToolApplyError={onToolApplyError}
+        />
       </div>
     </DiagramPalettePortal>
   ) : null;

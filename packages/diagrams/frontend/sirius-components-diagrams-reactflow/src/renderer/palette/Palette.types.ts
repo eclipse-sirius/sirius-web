@@ -20,6 +20,8 @@ export interface PaletteProps {
   diagramElementId: string;
   onDirectEditClick: () => void;
   isDiagramElementPalette: boolean;
+  onToolApply: () => void;
+  onToolApplyError: () => void;
 }
 
 export interface GQLErrorPayload

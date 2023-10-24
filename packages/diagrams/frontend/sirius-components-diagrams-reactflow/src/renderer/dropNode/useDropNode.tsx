@@ -13,11 +13,12 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useTheme } from '@material-ui/core/styles';
-import { useContext, useEffect, useState } from 'react';
-import { Node, NodeDragHandler, useReactFlow } from 'reactflow';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { Node, NodeDragHandler, Viewport, XYPosition, useReactFlow, useStoreApi, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useLayout } from '../layout/useLayout';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import {
@@ -98,20 +99,26 @@ const useDropNodeMutation = () => {
     GQLDropNodeData,
     GQLDropNodeVariables
   >(dropNodeMutation);
+  const { setReferencePosition, resetReferencePosition } = useLayout();
 
   useEffect(() => {
     if (dropNodeError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
+      resetReferencePosition();
     }
     if (dropNodeData) {
       const { dropNode } = dropNodeData;
-      if (isErrorPayload(dropNode) || isSuccessPayload(dropNode)) {
+      if (isSuccessPayload(dropNode)) {
         addMessages(dropNode.messages);
+      }
+      if (isErrorPayload(dropNode)) {
+        addMessages(dropNode.messages);
+        resetReferencePosition();
       }
     }
   }, [dropNodeData, dropNodeError]);
 
-  const invokeMutation = (droppedElementId: string, targetElementId: string | null): void => {
+  const invokeMutation = (droppedElementId: string, targetElementId: string | null, dropPosition: XYPosition): void => {
     const input: GQLDropNodeInput = {
       id: crypto.randomUUID(),
       editingContextId,
@@ -119,6 +126,7 @@ const useDropNodeMutation = () => {
       droppedElementId,
       targetElementId,
     };
+    setReferencePosition(dropPosition, targetElementId);
     dropMutation({ variables: { input } });
   };
 
@@ -132,6 +140,17 @@ const isDescendantOf = (parent: Node, candidate: Node, nodeById: (string) => Nod
     const candidateParent = nodeById(candidate.parentNode);
     return candidateParent !== undefined && isDescendantOf(parent, candidateParent, nodeById);
   }
+};
+
+const computeDropPosition = (
+  event: MouseEvent | React.MouseEvent,
+  { x: viewportX, y: viewportY, zoom: viewportZoom }: Viewport,
+  bounds?: DOMRect
+): XYPosition => {
+  return {
+    x: (event.clientX - (bounds?.left ?? 0) - viewportX) / viewportZoom,
+    y: (event.clientY - (bounds?.top ?? 0) - viewportY) / viewportZoom,
+  };
 };
 
 export const useDropNode = (): UseDropNodeValue => {
@@ -148,15 +167,19 @@ export const useDropNode = (): UseDropNodeValue => {
       editingContextId,
     },
   });
+
+  const onDropNode = useDropNodeMutation();
+  const { getNodes, getIntersectingNodes } = useReactFlow<NodeData, EdgeData>();
+  const viewport = useViewport();
+  const { domNode } = useStoreApi().getState();
+  const element = domNode?.getBoundingClientRect();
+
   useEffect(() => {
     if (!loading && !error && data) {
       const entries = data.viewer.editingContext.representation.description.dropNodeCompatibility;
       setDropNodeCompatibilityData(entries);
     }
   }, [data, loading, error, setDropNodeCompatibilityData]);
-
-  const onDropNode = useDropNodeMutation();
-  const { getNodes, getIntersectingNodes } = useReactFlow<NodeData, EdgeData>();
 
   const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
 
@@ -196,32 +219,36 @@ export const useDropNode = (): UseDropNodeValue => {
     }
   };
 
-  const onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler = (onDragCancelled) => {
-    return (_event, _node) => {
-      if (draggedNode && draggedNode.id === dropData.draggedNodeId) {
-        const oldParentId: string | null = draggedNode.parentNode || null;
-        const newParentId: string | null = dropData.targetNodeId;
-        const validNewParent =
-          (newParentId === null && dropData.droppableOnDiagram) ||
-          (newParentId !== null && dropData.compatibleNodeIds.includes(newParentId));
-        if (oldParentId !== newParentId) {
-          if (validNewParent) {
-            onDropNode(dropData.draggedNodeId, newParentId);
-          } else {
-            onDragCancelled(draggedNode);
+  const onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler = useCallback(
+    (onDragCancelled) => {
+      return (event, _node) => {
+        const dropPosition = computeDropPosition(event, viewport, element);
+        if (draggedNode && draggedNode.id === dropData.draggedNodeId) {
+          const oldParentId: string | null = draggedNode.parentNode || null;
+          const newParentId: string | null = dropData.targetNodeId;
+          const validNewParent =
+            (newParentId === null && dropData.droppableOnDiagram) ||
+            (newParentId !== null && dropData.compatibleNodeIds.includes(newParentId));
+          if (oldParentId !== newParentId) {
+            if (validNewParent) {
+              onDropNode(dropData.draggedNodeId, newParentId, dropPosition);
+            } else {
+              onDragCancelled(draggedNode);
+            }
           }
         }
-      }
-      setDraggedNode(null);
-      setDropData({
-        initialParentId: null,
-        draggedNodeId: null,
-        targetNodeId: null,
-        droppableOnDiagram: false,
-        compatibleNodeIds: [],
-      });
-    };
-  };
+        setDraggedNode(null);
+        setDropData({
+          initialParentId: null,
+          draggedNodeId: null,
+          targetNodeId: null,
+          droppableOnDiagram: false,
+          compatibleNodeIds: [],
+        });
+      };
+    },
+    [element?.top, element?.left, viewport, draggedNode, dropData]
+  );
 
   const theme = useTheme();
 
