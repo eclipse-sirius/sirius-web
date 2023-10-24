@@ -59,6 +59,7 @@ export interface NodeData {
   isBorderNode: boolean;
   borderNodePosition: BorderNodePositon | null;
   labelEditable: boolean;
+  style: React.CSSProperties;
 }
 
 export enum BorderNodePositon {

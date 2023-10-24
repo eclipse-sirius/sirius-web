@@ -11,6 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeData } from '../DiagramRenderer.types';
+export interface AlignmentMapType {
+  TOP_CENTER: Alignment;
+}
 
-export interface IconLabelNodeData extends NodeData {}
+export const AlignmentMap: AlignmentMapType = {
+  TOP_CENTER: { primaryAlignment: 'TOP', secondaryAlignment: 'CENTER', isPrimaryVerticalAlignment: true },
+};
+
+export type AlignmentValue = 'TOP' | 'BOTTOM' | 'LEFT' | 'RIGHT' | 'CENTER';
+
+export interface Alignment {
+  primaryAlignment: AlignmentValue;
+  secondaryAlignment: AlignmentValue;
+  isPrimaryVerticalAlignment: boolean;
+}

@@ -13,6 +13,4 @@
 
 import { NodeData } from '../DiagramRenderer.types';
 
-export interface RectangularNodeData extends NodeData {
-  style: React.CSSProperties;
-}
+export interface RectangularNodeData extends NodeData {}

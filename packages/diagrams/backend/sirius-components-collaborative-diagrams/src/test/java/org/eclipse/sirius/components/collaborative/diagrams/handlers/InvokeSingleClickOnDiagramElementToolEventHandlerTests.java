@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
@@ -386,6 +387,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
         var label = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type("labelType")
                 .text("text")
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)

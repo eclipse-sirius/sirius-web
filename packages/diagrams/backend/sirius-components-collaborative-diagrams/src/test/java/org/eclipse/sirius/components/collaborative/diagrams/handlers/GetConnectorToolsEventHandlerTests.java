@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
@@ -103,6 +104,7 @@ public class GetConnectorToolsEventHandlerTests {
         InsideLabel insdieLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type("labelType")
                 .text("text")
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)

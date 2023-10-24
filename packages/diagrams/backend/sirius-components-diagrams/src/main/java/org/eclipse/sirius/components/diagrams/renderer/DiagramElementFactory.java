@@ -180,6 +180,7 @@ public class DiagramElementFactory implements IElementFactory {
         return InsideLabel.newLabel(props.getId())
                 .type(props.getType())
                 .text(props.getText())
+                .insideLabelLocation(props.getInsideLabelLocation())
                 .position(props.getPosition())
                 .size(props.getSize())
                 .alignment(props.getAlignment())

@@ -73,11 +73,16 @@ type Label {
 type InsideLabel {
   id: ID!
   text: String!
+  insideLabelLocation: InsideLabelLocation!
   type: String!
   style: LabelStyle!
   alignment: Position!
   position: Position!
   size: Size!
+}
+
+enum InsideLabelLocation {
+  TOP_CENTER
 }
 
 type LabelStyle {

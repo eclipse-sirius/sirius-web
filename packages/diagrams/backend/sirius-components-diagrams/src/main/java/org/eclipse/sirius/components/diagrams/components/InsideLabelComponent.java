@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -60,6 +61,7 @@ public class InsideLabelComponent implements IComponent {
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         String iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
+        InsideLabelLocation insideLabelLocation = InsideLabelLocation.TOP_CENTER;
         Position position = optionalPreviousInsideLabel.map(InsideLabel::getPosition).orElse(Position.UNDEFINED);
         Size size = optionalPreviousInsideLabel.map(InsideLabel::getSize).orElse(Size.UNDEFINED);
         Position aligment = optionalPreviousInsideLabel.map(InsideLabel::getAlignment).orElse(Position.UNDEFINED);
@@ -77,6 +79,7 @@ public class InsideLabelComponent implements IComponent {
         InsideLabelElementProps insideLabelElementProps = InsideLabelElementProps.newInsideLabelElementProps(id)
                 .type(type)
                 .text(text)
+                .insideLabelLocation(insideLabelLocation)
                 .position(position)
                 .size(size)
                 .alignment(aligment)

@@ -22,6 +22,7 @@ export interface GQLInsideLabel {
   id: string;
   type: string;
   text: string;
+  insideLabelLocation: InsideLabelLocation;
   style: GQLLabelStyle;
 }
 
@@ -34,3 +35,5 @@ export interface GQLLabelStyle {
   strikeThrough: boolean;
   iconURL: string;
 }
+
+export type InsideLabelLocation = 'TOP_CENTER';

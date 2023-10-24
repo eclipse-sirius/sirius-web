@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -180,6 +181,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
         var insideLabel = InsideLabel.newLabel("")
                 .type("")
                 .text("")
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)
