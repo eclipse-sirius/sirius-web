@@ -10,7 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams;
 
-import { NodeData } from '../DiagramRenderer.types';
-
-export interface IconLabelNodeData extends NodeData {}
+/**
+ * The location of a label inside a node.
+ *
+ * @author gcoutable
+ */
+public enum InsideLabelLocation {
+    TOP_CENTER
+}

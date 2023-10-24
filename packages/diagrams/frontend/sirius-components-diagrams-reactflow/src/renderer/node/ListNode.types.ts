@@ -11,14 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Label, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 
-export interface ListNodeData extends NodeData {
-  style: React.CSSProperties;
-}
-
-export interface ListItemData {
-  id: string;
-  label: Label;
-  style: React.CSSProperties;
-}
+export interface ListNodeData extends NodeData {}

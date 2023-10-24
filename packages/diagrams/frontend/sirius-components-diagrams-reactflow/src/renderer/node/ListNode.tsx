@@ -29,13 +29,10 @@ const listNodeStyle = (
   faded: boolean
 ): React.CSSProperties => {
   const listNodeStyle: React.CSSProperties = {
-    ...style,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
     width: '100%',
     height: '100%',
     opacity: faded ? '0.4' : '',
+    ...style,
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
     borderColor: getCSSColor(String(style.borderColor), theme),
   };

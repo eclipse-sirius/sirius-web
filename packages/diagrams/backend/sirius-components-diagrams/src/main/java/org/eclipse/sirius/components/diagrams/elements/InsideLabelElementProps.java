@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -36,6 +37,8 @@ public final class InsideLabelElementProps implements IProps {
     private String type;
 
     private String text;
+
+    private InsideLabelLocation insideLabelLocation;
 
     private Position position;
 
@@ -59,6 +62,10 @@ public final class InsideLabelElementProps implements IProps {
 
     public String getText() {
         return this.text;
+    }
+
+    public InsideLabelLocation getInsideLabelLocation() {
+        return this.insideLabelLocation;
     }
 
     public Position getPosition() {
@@ -100,6 +107,8 @@ public final class InsideLabelElementProps implements IProps {
 
         private String text;
 
+        private InsideLabelLocation insideLabelLocation;
+
         private Position position;
 
         private Size size;
@@ -119,6 +128,11 @@ public final class InsideLabelElementProps implements IProps {
 
         public Builder text(String text) {
             this.text = Objects.requireNonNull(text);
+            return this;
+        }
+
+        public Builder insideLabelLocation(InsideLabelLocation insideLabelLocation) {
+            this.insideLabelLocation = Objects.requireNonNull(insideLabelLocation);
             return this;
         }
 
@@ -147,6 +161,7 @@ public final class InsideLabelElementProps implements IProps {
             insideLabelElementProps.id = Objects.requireNonNull(this.id);
             insideLabelElementProps.type = Objects.requireNonNull(this.type);
             insideLabelElementProps.text = Objects.requireNonNull(this.text);
+            insideLabelElementProps.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
             insideLabelElementProps.position = Objects.requireNonNull(this.position);
             insideLabelElementProps.size = Objects.requireNonNull(this.size);
             insideLabelElementProps.alignment = Objects.requireNonNull(this.alignment);

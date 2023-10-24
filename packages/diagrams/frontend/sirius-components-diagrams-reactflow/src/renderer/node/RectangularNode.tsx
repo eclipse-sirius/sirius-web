@@ -29,7 +29,6 @@ const rectangularNodeStyle = (
   faded: boolean
 ): React.CSSProperties => {
   const rectangularNodeStyle: React.CSSProperties = {
-    display: 'flex',
     padding: '8px',
     width: '100%',
     height: '100%',

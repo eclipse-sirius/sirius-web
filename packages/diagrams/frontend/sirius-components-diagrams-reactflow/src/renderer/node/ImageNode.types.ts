@@ -15,5 +15,4 @@ import { NodeData } from '../DiagramRenderer.types';
 
 export interface ImageNodeData extends NodeData {
   imageURL: string;
-  style: React.CSSProperties;
 }

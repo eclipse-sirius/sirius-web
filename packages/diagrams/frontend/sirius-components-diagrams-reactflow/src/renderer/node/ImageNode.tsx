@@ -58,6 +58,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />
+      {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
       {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
       <Handle
         id={`handle--${id}--top`}
@@ -91,7 +92,6 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
         onMouseDown={onConnectionStartElementClick}
       />
-      {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
     </>
   );
 });

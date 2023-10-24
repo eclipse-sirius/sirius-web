@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -109,6 +110,7 @@ public class TestDiagramBuilder {
             InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                     .type("labelType")
                     .text("text")
+                    .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                     .position(Position.UNDEFINED)
                     .size(Size.UNDEFINED)
                     .alignment(Position.UNDEFINED)

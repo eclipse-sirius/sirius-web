@@ -33,6 +33,7 @@ fragment insideLabelFragment on InsideLabel {
   id
   type
   text
+  insideLabelLocation
   style {
     color
     fontSize

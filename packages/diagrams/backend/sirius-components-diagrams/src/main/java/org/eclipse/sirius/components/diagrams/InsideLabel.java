@@ -30,6 +30,8 @@ public final class InsideLabel {
 
     private String text;
 
+    private InsideLabelLocation insideLabelLocation;
+
     private Position position;
 
     private Size size;
@@ -52,6 +54,10 @@ public final class InsideLabel {
 
     public String getText() {
         return this.text;
+    }
+
+    public InsideLabelLocation getInsideLabelLocation() {
+        return this.insideLabelLocation;
     }
 
     public Position getPosition() {
@@ -96,6 +102,7 @@ public final class InsideLabel {
         private String type;
 
         private String text;
+        private InsideLabelLocation insideLabelLocation;
 
         private Position position;
 
@@ -113,6 +120,7 @@ public final class InsideLabel {
             this.id = insideLabel.getId();
             this.type = insideLabel.getType();
             this.text = insideLabel.getText();
+            this.insideLabelLocation = insideLabel.getInsideLabelLocation();
             this.position = insideLabel.getPosition();
             this.size = insideLabel.getSize();
             this.alignment = insideLabel.getAlignment();
@@ -126,6 +134,11 @@ public final class InsideLabel {
 
         public Builder text(String text) {
             this.text = Objects.requireNonNull(text);
+            return this;
+        }
+
+        public Builder insideLabelLocation(InsideLabelLocation insideLabelLocation) {
+            this.insideLabelLocation = Objects.requireNonNull(insideLabelLocation);
             return this;
         }
 
@@ -154,6 +167,7 @@ public final class InsideLabel {
             label.id = Objects.requireNonNull(this.id);
             label.type = Objects.requireNonNull(this.type);
             label.text = Objects.requireNonNull(this.text);
+            label.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
             label.position = Objects.requireNonNull(this.position);
             label.size = Objects.requireNonNull(this.size);
             label.alignment = Objects.requireNonNull(this.alignment);

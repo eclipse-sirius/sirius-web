@@ -29,6 +29,7 @@ import { ImageNodeData } from '../renderer/node/ImageNode.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
+import { AlignmentMap } from './convertDiagram.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -55,6 +56,7 @@ const toRectangularNode = (
     targetObjectKind,
     descriptionId,
     style: {
+      display: 'flex',
       backgroundColor: style.color,
       borderColor: style.borderColor,
       borderRadius: style.borderRadius,
@@ -79,34 +81,16 @@ const toRectangularNode = (
       },
       iconURL: labelStyle.iconURL,
     };
-    const verticalAlignmentIndex = insideLabel.type.indexOf('v_');
-    const horizontalAlignmentIndex = insideLabel.type.indexOf('-h_');
-    const verticalAlignment = insideLabel.type.substring(
-      verticalAlignmentIndex + 'v_'.length,
-      horizontalAlignmentIndex
-    );
-    const horizontalAliment = insideLabel.type.substring(horizontalAlignmentIndex + '-h_'.length);
 
-    if (verticalAlignment === 'top') {
-      data.label.style.alignSelf = 'flex-start';
-    } else if (verticalAlignment === 'center') {
-      data.label.style.alignSelf = 'center';
-    } else if (verticalAlignment === 'bottom') {
-      data.label.style.alignSelf = 'flex-end';
-    }
-
-    if (horizontalAliment === 'start') {
-      data.label.style.marginRight = 'auto';
-    } else if (horizontalAliment === 'center') {
-      data.label.style.marginLeft = 'auto';
-      data.label.style.marginRight = 'auto';
-    } else if (horizontalAliment === 'end') {
-      data.label.style.marginLeft = 'auto';
-    }
-
-    if (insideLabel.type === 'label:inside-center') {
-      data.label.style.marginLeft = 'auto';
-      data.label.style.marginRight = 'auto';
+    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
+    if (alignement.isPrimaryVerticalAlignment) {
+      if (alignement.primaryAlignment === 'TOP') {
+        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
+      }
+      if (alignement.secondaryAlignment === 'CENTER') {
+        data.style = { ...data.style, alignItems: 'stretch' };
+        data.label.style = { ...data.label.style, justifyContent: 'center' };
+      }
     }
   }
 
@@ -239,38 +223,18 @@ const toListNode = (
       },
     };
 
-    if (style.withHeader) {
-      data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-    }
-
-    const verticalAlignmentIndex = insideLabel.type.indexOf('v_');
-    const horizontalAlignmentIndex = insideLabel.type.indexOf('-h_');
-    const verticalAlignment = insideLabel.type.substring(
-      verticalAlignmentIndex + 'v_'.length,
-      horizontalAlignmentIndex
-    );
-    const horizontalAlignment = insideLabel.type.substring(horizontalAlignmentIndex + '-h_'.length);
-
-    if (verticalAlignment === 'top') {
-      data.label.style.alignSelf = 'flex-start';
-    } else if (verticalAlignment === 'center') {
-      data.label.style.alignSelf = 'center';
-    } else if (verticalAlignment === 'bottom') {
-      data.label.style.alignSelf = 'flex-end';
-    }
-
-    if (horizontalAlignment === 'start') {
-      data.label.style.marginRight = 'auto';
-    } else if (horizontalAlignment === 'center') {
-      data.label.style.marginLeft = 'auto';
-      data.label.style.marginRight = 'auto';
-    } else if (horizontalAlignment === 'end') {
-      data.label.style.marginLeft = 'auto';
-    }
-
-    if (insideLabel.type === 'label:inside-center') {
-      data.label.style.marginLeft = 'auto';
-      data.label.style.marginRight = 'auto';
+    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
+    if (alignement.isPrimaryVerticalAlignment) {
+      if (alignement.primaryAlignment === 'TOP') {
+        if (style.withHeader) {
+          data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+        }
+        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
+      }
+      if (alignement.secondaryAlignment === 'CENTER') {
+        data.style = { ...data.style, alignItems: 'stretch' };
+        data.label.style = { ...data.label.style, justifyContent: 'center' };
+      }
     }
   }
 
@@ -336,6 +300,17 @@ const toImageNode = (
         ...convertLabelStyle(labelStyle),
       },
     };
+
+    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
+    if (alignement.isPrimaryVerticalAlignment) {
+      if (alignement.primaryAlignment === 'TOP') {
+        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
+      }
+      if (alignement.secondaryAlignment === 'CENTER') {
+        data.style = { ...data.style, alignItems: 'stretch' };
+        data.label.style = { ...data.label.style, justifyContent: 'center' };
+      }
+    }
   }
 
   const node: Node<ImageNodeData> = {

@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -64,6 +65,7 @@ public final class LabelBuilder {
         return InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type(Objects.requireNonNull(labelType).getValue())
                 .text(Objects.requireNonNull(text))
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .alignment(Position.UNDEFINED)
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
