@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -179,9 +179,9 @@ public class NodeComponent implements IComponent {
         List<Element> childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor);
 
         List<Element> nodeChildren = new ArrayList<>();
-        LabelDescription labelDescription = nodeDescription.getLabelDescription();
+        InsideLabelDescription labelDescription = nodeDescription.getInsideLabelDescription();
         if (labelDescription != null) {
-            nodeVariableManager.put(LabelDescription.OWNER_ID, nodeId);
+            nodeVariableManager.put(InsideLabelDescription.OWNER_ID, nodeId);
 
             // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
             // the diagrams-layout.

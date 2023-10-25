@@ -53,7 +53,7 @@ import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.tests.TestDiagramBuilder;
@@ -422,11 +422,12 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .iconURLProvider(variableManager -> List.of())
                 .build();
 
-        var labelDescription = LabelDescription.newLabelDescription("labelDescription")
+        var insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescription")
                 .idProvider(vm -> "")
                 .styleDescriptionProvider(vm -> styleDescription)
                 .textProvider(vm -> "")
                 .isHeaderProvider(vm -> false)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)
@@ -434,7 +435,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .childNodeDescriptions(List.of())
                 .childrenLayoutStrategyProvider(vm -> new FreeFormLayoutStrategy())
                 .deleteHandler(vm -> new Success())
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .labelEditHandler((vm, newLabel) -> new Success())
                 .reusedBorderNodeDescriptionIds(List.of())
                 .reusedChildNodeDescriptionIds(List.of())

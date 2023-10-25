@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.InsideLabel;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -29,15 +29,15 @@ public class InsideLabelComponentProps implements IProps {
 
     private final VariableManager variableManager;
 
-    private final LabelDescription labelDescription;
+    private final InsideLabelDescription insideLabelDescription;
 
     private final Optional<InsideLabel> optionalPreviousInsideLabel;
 
     private final String type;
 
-    public InsideLabelComponentProps(VariableManager variableManager, LabelDescription labelDescription, Optional<InsideLabel> optionalPreviousInsideLabel, String type) {
+    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, Optional<InsideLabel> optionalPreviousInsideLabel, String type) {
         this.variableManager = Objects.requireNonNull(variableManager);
-        this.labelDescription = Objects.requireNonNull(labelDescription);
+        this.insideLabelDescription = Objects.requireNonNull(labelDescription);
         this.optionalPreviousInsideLabel = Objects.requireNonNull(optionalPreviousInsideLabel);
         this.type = Objects.requireNonNull(type);
     }
@@ -46,8 +46,8 @@ public class InsideLabelComponentProps implements IProps {
         return this.variableManager;
     }
 
-    public LabelDescription getLabelDescription() {
-        return this.labelDescription;
+    public InsideLabelDescription getInsideLabelDescription() {
+        return this.insideLabelDescription;
     }
 
     public Optional<InsideLabel> getPreviousInsideLabel() {

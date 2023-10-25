@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
@@ -118,10 +118,10 @@ public class MappingConverterTests {
                 new ImageSizeProvider());
 
         NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<>());
-        LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
+        InsideLabelDescription insideLabelDescription = convertedNodeDescription.getInsideLabelDescription();
 
-        String text = labelDescription.getTextProvider().apply(variableManager);
-        LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);
+        String text = insideLabelDescription.getTextProvider().apply(variableManager);
+        LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
         Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
         Boolean isBold = labelStyleDescription.getBoldProvider().apply(variableManager);
         Boolean isItalic = labelStyleDescription.getItalicProvider().apply(variableManager);
@@ -185,7 +185,7 @@ public class MappingConverterTests {
         assertThat(convertedNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_RECTANGLE);
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(RectangularNodeStyle.class);
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).asInstanceOf(InstanceOfAssertFactories.type(RectangularNodeStyle.class));
-        assertThat(convertedNodeDescription.getLabelDescription().getIsHeaderProvider().apply(variableManager)).isEqualTo(true);
+        assertThat(convertedNodeDescription.getInsideLabelDescription().getIsHeaderProvider().apply(variableManager)).isEqualTo(true);
 
         assertThat(convertedNodeDescription.getChildNodeDescriptions()).hasSize(1);
         NodeDescription subNodeDescription = convertedNodeDescription.getChildNodeDescriptions().get(0);
@@ -247,10 +247,10 @@ public class MappingConverterTests {
                 new ImageSizeProvider());
 
         NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<>());
-        LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
+        InsideLabelDescription insideLabelDescription = convertedNodeDescription.getInsideLabelDescription();
 
-        String text = labelDescription.getTextProvider().apply(variableManager);
-        LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);
+        String text = insideLabelDescription.getTextProvider().apply(variableManager);
+        LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
         Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
         Boolean isBold = labelStyleDescription.getBoldProvider().apply(variableManager);
         Boolean isItalic = labelStyleDescription.getItalicProvider().apply(variableManager);

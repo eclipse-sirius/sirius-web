@@ -69,10 +69,10 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
     public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
-        this(nodesBuilder, nodeLabel, false, isBorderNode);
+        this(nodesBuilder, nodeLabel, isBorderNode, false);
     }
 
-    public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isLabelAHeader, boolean isBorderNode) {
+    public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode, boolean isLabelAHeader) {
         this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER, isLabelAHeader);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);

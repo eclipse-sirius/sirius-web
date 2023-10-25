@@ -51,7 +51,7 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     private Predicate<VariableManager> shouldRenderPredicate;
 
-    private LabelDescription labelDescription;
+    private InsideLabelDescription insideLabelDescription;
 
     private Function<VariableManager, INodeStyle> styleProvider;
 
@@ -122,8 +122,8 @@ public final class NodeDescription implements IDiagramElementDescription {
         return this.shouldRenderPredicate;
     }
 
-    public LabelDescription getLabelDescription() {
-        return this.labelDescription;
+    public InsideLabelDescription getInsideLabelDescription() {
+        return this.insideLabelDescription;
     }
 
     public Function<VariableManager, INodeStyle> getStyleProvider() {
@@ -204,7 +204,7 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private Predicate<VariableManager> shouldRenderPredicate = variableManager -> true;
 
-        private LabelDescription labelDescription;
+        private InsideLabelDescription insideLabelDescription;
 
         private Function<VariableManager, INodeStyle> styleProvider;
 
@@ -242,7 +242,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.targetObjectKindProvider = nodeDescription.getTargetObjectKindProvider();
             this.targetObjectLabelProvider = nodeDescription.getTargetObjectLabelProvider();
             this.semanticElementsProvider = nodeDescription.getSemanticElementsProvider();
-            this.labelDescription = nodeDescription.getLabelDescription();
+            this.insideLabelDescription = nodeDescription.getInsideLabelDescription();
             this.styleProvider = nodeDescription.getStyleProvider();
             this.sizeProvider = nodeDescription.getSizeProvider();
             this.childrenLayoutStrategyProvider = nodeDescription.getChildrenLayoutStrategyProvider();
@@ -292,8 +292,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             return this;
         }
 
-        public Builder labelDescription(LabelDescription labelDescription) {
-            this.labelDescription = Objects.requireNonNull(labelDescription);
+        public Builder insideLabelDescription(InsideLabelDescription insideLabelDescription) {
+            this.insideLabelDescription = Objects.requireNonNull(insideLabelDescription);
             return this;
         }
 
@@ -367,7 +367,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);
             nodeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             nodeDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
-            nodeDescription.labelDescription = this.labelDescription;
+            nodeDescription.insideLabelDescription = this.insideLabelDescription;
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
             nodeDescription.userResizable = this.userResizable;
