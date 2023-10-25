@@ -31,7 +31,6 @@ fragment nodeFragment on Node {
       borderStyle
       borderSize
       borderRadius
-      withHeader
     }
     ... on ImageNodeStyle {
       imageURL

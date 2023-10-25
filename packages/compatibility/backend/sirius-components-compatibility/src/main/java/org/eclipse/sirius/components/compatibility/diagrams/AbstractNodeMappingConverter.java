@@ -82,14 +82,14 @@ public class AbstractNodeMappingConverter {
         Function<VariableManager, String> labelIdProvider = this.getLabelIdProvider();
         Function<VariableManager, String> labelExpressionProvider = this.getLabelExpressionProvider(interpreter, abstractNodeMappingDescriptionProvider);
         Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = this.getLabelStyleDescriptionProvider(labelStyleDescriptionConverter, abstractNodeMappingDescriptionProvider);
+        Function<VariableManager, Boolean> isHeaderProvider = new AbstractNodeMappingIsHeaderProvider(interpreter, abstractNodeMapping);
 
-        // @formatter:off
         LabelDescription labelDescription = LabelDescription.newLabelDescription(this.identifierProvider.getIdentifier(abstractNodeMapping) + LabelDescription.LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(labelExpressionProvider)
                 .styleDescriptionProvider(labelStyleDescriptionProvider)
+                .isHeaderProvider(isHeaderProvider)
                 .build();
-        // @formatter:on
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
             return variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null);
@@ -124,11 +124,9 @@ public class AbstractNodeMappingConverter {
 
         List<NodeDescription> childNodeDescriptions = this.getChildNodeDescriptions(abstractNodeMapping, interpreter, id2NodeDescriptions);
 
-        // @formatter:off
         List<NodeDescription> borderNodeDescriptions = abstractNodeMapping.getBorderedNodeMappings().stream()
                 .map(borderNodeMapping -> this.convert(borderNodeMapping, interpreter, id2NodeDescriptions))
                 .toList();
-        // @formatter:on
 
         ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(abstractNodeMapping.getDeletionDescription());
@@ -144,7 +142,6 @@ public class AbstractNodeMappingConverter {
             collapsible = new ContainerMappingQuery(containerMapping).isRegion();
         }
 
-        // @formatter:off
         NodeDescription description = NodeDescription.newNodeDescription(this.identifierProvider.getIdentifier(abstractNodeMapping))
                 .typeProvider(typeProvider)
                 .targetObjectIdProvider(semanticTargetIdProvider)
@@ -162,7 +159,6 @@ public class AbstractNodeMappingConverter {
                 .labelEditHandler(labelEditHandler)
                 .deleteHandler(deleteHandler)
                 .build();
-        // @formatter:on
 
         id2NodeDescriptions.put(description.getId(), description);
 
@@ -195,7 +191,6 @@ public class AbstractNodeMappingConverter {
     }
 
     private List<NodeDescription> getChildNodeDescriptions(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<String, NodeDescription> id2NodeDescriptions) {
-        // @formatter:off
         List<NodeDescription> childNodeDescriptions = new ArrayList<>();
 
         if (abstractNodeMapping instanceof ContainerMapping) {
@@ -211,7 +206,6 @@ public class AbstractNodeMappingConverter {
             childNodeDescriptions.addAll(childNodeMappingDescriptions);
             childNodeDescriptions.addAll(childContainerMappingDescriptions);
         }
-        // @formatter:on
 
         return childNodeDescriptions;
 

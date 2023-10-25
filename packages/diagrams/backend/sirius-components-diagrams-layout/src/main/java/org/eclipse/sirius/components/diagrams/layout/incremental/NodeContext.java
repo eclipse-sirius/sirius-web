@@ -91,7 +91,7 @@ public class NodeContext {
         // @formatter:on
 
         this.areChildrenConsidered = this.shouldConsiderChildren();
-        this.hasHeader = this.hasHeader();
+        this.hasHeader = this.node.getLabel().isHeader();
         this.hasLabel = this.shouldConsiderNodeLabel();
         this.isNodeLabelInside = this.isLabelInside();
         ElkPadding padding = new ElkPadding(0);
@@ -249,14 +249,6 @@ public class NodeContext {
         return nodeLabelPlacement.contains(NodeLabelPlacement.INSIDE);
     }
 
-    private boolean hasHeader() {
-        INodeStyle nodeStyle = this.node.getStyle();
-        if (nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
-            return rectangularNodeStyle.isWithHeader();
-        }
-        return false;
-    }
-
     /**
      * Adds a padding top if the node has a header.
      *
@@ -272,7 +264,7 @@ public class NodeContext {
     private double headerPadding() {
         INodeStyle nodeStyle = this.node.getStyle();
         if (nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
-            if (rectangularNodeStyle.isWithHeader()) {
+            if (this.node.getLabel().isHeader()) {
                 return rectangularNodeStyle.getBorderSize() + 5;
             }
         }

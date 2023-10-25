@@ -90,7 +90,6 @@ public class EdgeMappingConverterTests {
     }
 
     private NodeDescription createNodeDescription(String id) {
-        // @formatter:off
         LabelStyleDescription styleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "")
                 .fontSizeProvider(variableManager -> 0)
@@ -105,6 +104,7 @@ public class EdgeMappingConverterTests {
                 .idProvider(variableManager -> "")
                 .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         return NodeDescription.newNodeDescription(id)
@@ -122,7 +122,6 @@ public class EdgeMappingConverterTests {
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        // @formatter:on
     }
 
     /**

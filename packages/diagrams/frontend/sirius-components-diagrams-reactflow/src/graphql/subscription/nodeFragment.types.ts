@@ -69,7 +69,6 @@ export interface GQLRectangularNodeStyle extends GQLNodeStyle {
   borderStyle: string;
   borderSize: string;
   borderRadius: number;
-  withHeader: boolean;
 }
 
 export interface GQLImageNodeStyle extends GQLNodeStyle {

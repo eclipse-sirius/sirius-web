@@ -24,6 +24,7 @@ export interface GQLInsideLabel {
   text: string;
   insideLabelLocation: InsideLabelLocation;
   style: GQLLabelStyle;
+  isHeader: boolean;
 }
 
 export interface GQLLabelStyle {

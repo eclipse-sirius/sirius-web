@@ -79,23 +79,20 @@ public class DiagramElementChangeVisibilityTests {
     private static final List<String> OBJECT_IDS = List.of("First", "Second", "Third", "Fourth");
 
     private static final Function<VariableManager, INodeStyle> STYLE_PROVIDER = variableManager -> {
-        // @formatter:off
         return ImageNodeStyle.newImageNodeStyle()
                 .imageURL("test")
                 .scalingFactor(1)
                 .build();
-        // @formatter:on
     };
 
     private static final Function<VariableManager, EdgeStyle> STYLE_EDGE_PROVIDER = variableManager -> {
-        // @formatter:off
         return EdgeStyle.newEdgeStyle()
                 .color(COLOR)
                 .lineStyle(LineStyle.Dash)
                 .sourceArrow(ArrowStyle.Diamond)
                 .targetArrow(ArrowStyle.Diamond)
                 .build();
-        // @formatter:on
+
     };
 
     private NodeDescription createNodeDescription(String elementId, List<NodeDescription> borderNodes, List<NodeDescription> children) {
@@ -109,7 +106,6 @@ public class DiagramElementChangeVisibilityTests {
             return null;
         };
 
-        // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
                 .boldProvider(VariableManager -> true)
@@ -124,6 +120,7 @@ public class DiagramElementChangeVisibilityTests {
                 .idProvider(variableManager -> LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         NodeDescription nodeDescription = NodeDescription.newNodeDescription(id)
@@ -138,13 +135,12 @@ public class DiagramElementChangeVisibilityTests {
                 .borderNodeDescriptions(borderNodes)
                 .childNodeDescriptions(children)
                 .labelEditHandler((variableManager, newLabel) -> new Success())
-                .deleteHandler(variableManager -> new Success()).build();
-        // @formatter:on
+                .deleteHandler(variableManager -> new Success())
+                .build();
         return nodeDescription;
     }
 
     private EdgeDescription createEdgeDescription(NodeDescription sourceDescription, String sourceObjectId, NodeDescription targetDescription, String targetObjectId) {
-        // @formatter:off
         Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
@@ -182,12 +178,11 @@ public class DiagramElementChangeVisibilityTests {
                 .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        // @formatter:on
+
         return edgeDescription;
     }
 
     private Diagram createDiagram(Optional<Diagram> previousDiagram, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions) {
-        // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                 .label("")
                 .canCreatePredicate(variableManager -> true)
@@ -211,14 +206,13 @@ public class DiagramElementChangeVisibilityTests {
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvent(Optional.empty())
                 .build();
-        // @formatter:on
+
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer().render(element);
     }
 
     @Test
     public void testSimpleFadedElementRendering() {
-        // @formatter:off
         List<NodeDescription> nodeDescriptions = IntStream.range(0, 3)
                 .mapToObj(i -> this.createNodeDescription(OBJECT_IDS.get(i), List.of(), List.of()))
                 .toList();
@@ -250,7 +244,6 @@ public class DiagramElementChangeVisibilityTests {
                 .nodes(nodes)
                 .edges(List.of(edge))
                 .build();
-        // @formatter:on
 
         Diagram newDiagram = this.createDiagram(Optional.of(diagramTemp), nodeDescriptions, List.of(edgeDescription));
 
@@ -310,7 +303,6 @@ public class DiagramElementChangeVisibilityTests {
         Diagram diagramTemp2 = Diagram.newDiagram(newDiagram)
                 .nodes(nodes)
                 .build();
-        // @formatter:on
 
         Diagram newDiagram2 = this.createDiagram(Optional.of(diagramTemp2), nodeDescriptions, List.of(edgeDescription, edge2Description));
 
@@ -335,7 +327,6 @@ public class DiagramElementChangeVisibilityTests {
         // Test: (1 (4)(2 (3))), hide 1
         // Expected result: all nodes are hidden
 
-        // @formatter:off
         var node = Node.newNode(diagram.getNodes().get(0))
                 .modifiers(Set.of(ViewModifier.Hidden))
                 .build();
@@ -343,7 +334,6 @@ public class DiagramElementChangeVisibilityTests {
         Diagram diagramTemp = Diagram.newDiagram(diagram)
                 .nodes(List.of(node))
                 .build();
-        // @formatter:on
 
         Diagram newDiagram = this.createDiagram(Optional.of(diagramTemp), nodeDescriptions, List.of());
 
@@ -373,7 +363,6 @@ public class DiagramElementChangeVisibilityTests {
         Diagram diagram = returnedValue.getDiagram();
         List<NodeDescription> nodeDescriptions = returnedValue.getNodeDescriptions();
 
-        // @formatter:off
         var node = Node.newNode(diagram.getNodes().get(0))
                 .modifiers(Set.of())
                 .build();
@@ -381,7 +370,6 @@ public class DiagramElementChangeVisibilityTests {
         var diagramTemp = Diagram.newDiagram(diagram)
                 .nodes(List.of(node))
                 .build();
-        // @formatter:on
 
         var newDiagram = this.createDiagram(Optional.of(diagramTemp), nodeDescriptions, List.of());
 
@@ -398,7 +386,6 @@ public class DiagramElementChangeVisibilityTests {
         List<NodeDescription> nodeDescriptions = returnedValue.getNodeDescriptions();
         List<EdgeDescription> edgeDescriptions = returnedValue.getEdgeDescriptions();
 
-        // @formatter:off
         var node0 = Node.newNode(diagram.getNodes().get(0))
                 .modifiers(Set.of())
                 .build();
@@ -410,7 +397,7 @@ public class DiagramElementChangeVisibilityTests {
         var diagramTemp = Diagram.newDiagram(diagram)
                 .nodes(List.of(node0, node1, diagram.getNodes().get(2)))
                 .build();
-        // @formatter:on
+
 
         var newDiagram = this.createDiagram(Optional.of(diagramTemp), nodeDescriptions, edgeDescriptions);
 
@@ -429,7 +416,6 @@ public class DiagramElementChangeVisibilityTests {
 
         Edge edge = Edge.newEdge(diagram.getEdges().get(0)).modifiers(Set.of(ViewModifier.Normal)).build();
 
-        // @formatter:off
         Diagram diagramTemp = Diagram.newDiagram(diagram)
                 .nodes(List.of(node))
                 .edges(List.of(edge))
@@ -459,7 +445,6 @@ public class DiagramElementChangeVisibilityTests {
         diagramTemp = Diagram.newDiagram(newDiagram)
                 .edges(List.of(edge))
                 .build();
-        // @formatter:on
 
         newDiagram = this.createDiagram(Optional.of(diagramTemp), List.of(nodeDesc), List.of(edgeDesc));
 
@@ -468,11 +453,9 @@ public class DiagramElementChangeVisibilityTests {
 
         node = Node.newNode(diagram.getNodes().get(0)).modifiers(Set.of(ViewModifier.Normal, ViewModifier.Faded, ViewModifier.Hidden)).build();
 
-        // @formatter:off
         diagramTemp = Diagram.newDiagram(newDiagram)
                 .nodes(List.of(node))
                 .build();
-        // @formatter:on
 
         newDiagram = this.createDiagram(Optional.of(diagramTemp), List.of(nodeDesc), List.of(edgeDesc));
 

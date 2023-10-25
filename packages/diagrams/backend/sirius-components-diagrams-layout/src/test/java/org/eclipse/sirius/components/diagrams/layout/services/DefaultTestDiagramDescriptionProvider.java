@@ -66,21 +66,29 @@ public class DefaultTestDiagramDescriptionProvider {
     private static final String NODE_RECT_PREFIX = "rect";
 
     private static final String NODE_NAME_SEPARATOR = ":";
-    private final Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
-        // @formatter:off
+
+    private final Function <VariableManager, Boolean> isHeaderProvider = variableManager -> {
         String prefix = variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
                 .map(name -> name.split(NODE_NAME_SEPARATOR))
                 .filter(composedName -> composedName.length >= 2)
                 .map(composedName -> composedName[0])
                 .orElse("");
-        // @formatter:on
+        return NODE_LIST_PREFIX.equals(prefix);
+    };
+
+    private final Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
+        String prefix = variableManager.get(VariableManager.SELF, Element.class)
+                .map(Element::getName)
+                .map(name -> name.split(NODE_NAME_SEPARATOR))
+                .filter(composedName -> composedName.length >= 2)
+                .map(composedName -> composedName[0])
+                .orElse("");
 
         INodeStyle nodeStyle = null;
         switch (prefix) {
             case NODE_RECT_PREFIX:
                 nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
-                        .withHeader(false)
                         .borderSize(1)
                         .borderRadius(3)
                         .borderStyle(LineStyle.Solid)
@@ -96,7 +104,6 @@ public class DefaultTestDiagramDescriptionProvider {
                 break;
             case NODE_LIST_PREFIX:
                 nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
-                        .withHeader(true)
                         .borderColor("black")
                         .borderRadius(0)
                         .borderSize(1)
@@ -115,8 +122,8 @@ public class DefaultTestDiagramDescriptionProvider {
 
         return nodeStyle;
     };
+
     private final Function<VariableManager, String> nodeTypeProvider = variableManager -> {
-        // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
                 .map(name -> name.split(NODE_NAME_SEPARATOR))
@@ -144,10 +151,9 @@ public class DefaultTestDiagramDescriptionProvider {
                     return type;
                 })
                 .orElse("");
-        // @formatter:on
     };
+
     private final Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider = variableManager -> {
-        // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
                 .map(name -> name.split(NODE_NAME_SEPARATOR))
@@ -172,18 +178,17 @@ public class DefaultTestDiagramDescriptionProvider {
                     return childrenLayoutStrategy;
                 })
                 .orElse(null);
-        // @formatter:on
     };
+
     private final Function<VariableManager, String> labelProvider = variableManager -> {
-        // @formatter:off
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
                 .map(name -> name.split(NODE_NAME_SEPARATOR))
                 .filter(composedName -> composedName.length >= 2)
                 .map(composedName -> composedName[1])
                 .orElse("");
-        // @formatter:on
     };
+
     private final Function<VariableManager, List<?>> nodeSemanticElementProvider = variableManager -> {
         return variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getChildren)
@@ -192,7 +197,9 @@ public class DefaultTestDiagramDescriptionProvider {
                 .filter(element -> !element.getName().startsWith("edge:"))
                 .toList();
     };
+
     private IObjectService objectService;
+
     private final Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
         // @formatter:off
         return variableManager.get(VariableManager.SELF, Object.class)
@@ -237,7 +244,6 @@ public class DefaultTestDiagramDescriptionProvider {
                     .map(this.objectService::getId)
                     .ifPresent(id -> targetObjectIdToNodeId.computeIfAbsent(id, k -> UUID.randomUUID().toString()));
 
-            // @formatter:off
             Map<String, Element> idToElement = cache.getObjectToNodes().keySet().stream()
                     .filter(Element.class::isInstance)
                     .map(Element.class::cast)
@@ -245,9 +251,7 @@ public class DefaultTestDiagramDescriptionProvider {
                         String id = this.objectService.getId(elem);
                         return targetObjectIdToNodeId.computeIfAbsent(id, k -> UUID.randomUUID().toString());
                     }, elem -> elem));
-            // @formatter:on
 
-            // @formatter:off
             return variableManager.get(VariableManager.SELF, Element.class)
                     .map(Element::getChildren)
                     .orElseGet(List::of)
@@ -259,7 +263,6 @@ public class DefaultTestDiagramDescriptionProvider {
                     .map(cache::getElementsRepresenting)
                     .flatMap(Collection::stream)
                     .toList();
-            // @formatter:on
         };
     }
 
@@ -272,7 +275,6 @@ public class DefaultTestDiagramDescriptionProvider {
 
         EdgeDescription edgeDescription = this.getDefaultEdgeDescription(diagram, labelDescription, nodeDescription);
 
-        // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(TestLayoutDiagramBuilder.DIAGRAM_DESCRIPTION_ID)
                 .label("")
                 .autoLayout(false)
@@ -284,7 +286,6 @@ public class DefaultTestDiagramDescriptionProvider {
                 .edgeDescriptions(List.of(edgeDescription))
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
-        // @formatter:on
 
         return diagramDescription;
     }
@@ -292,7 +293,6 @@ public class DefaultTestDiagramDescriptionProvider {
     private EdgeDescription getDefaultEdgeDescription(Diagram diagram, LabelDescription labelDescription, NodeDescription nodeDescription) {
         List<String> nodeDescriptionIds = List.of(TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID, TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID);
 
-        // @formatter:off
         return EdgeDescription.newEdgeDescription(TestLayoutDiagramBuilder.EDGE_DESCRIPTION_ID)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
                 .targetObjectKindProvider(variableManager -> "")
@@ -343,12 +343,10 @@ public class DefaultTestDiagramDescriptionProvider {
                 .deleteHandler(variableManager -> new Failure(""))
                 .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Failure(""))
                 .build();
-        // @formatter:on
 
     }
 
     private NodeDescription getDefaultNodeDescription(LabelDescription labelDescription, NodeDescription childDescription) {
-        // @formatter:off
         return NodeDescription.newNodeDescription(TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID)
                 .typeProvider(this.nodeTypeProvider)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
@@ -365,11 +363,9 @@ public class DefaultTestDiagramDescriptionProvider {
                 .deleteHandler(variableManager -> new Failure(""))
                 .labelEditHandler((variableManager, newValue) -> new Failure(""))
                 .build();
-        // @formatter:on
     }
 
     private NodeDescription getDefaultChildDescription(LabelDescription labelDescription) {
-        // @formatter:off
         return NodeDescription.newNodeDescription(TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID)
                 .typeProvider(this.nodeTypeProvider)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
@@ -384,11 +380,11 @@ public class DefaultTestDiagramDescriptionProvider {
                 .deleteHandler(variableManager -> new Failure(""))
                 .labelEditHandler((variableManager, newValue) -> new Failure(""))
                 .build();
-        // @formatter:on
     }
 
     private LabelDescription getDefaultLabelDescription() {
-        // @formatter:off
+
+
         return  LabelDescription.newLabelDescription(UUID.randomUUID().toString())
                 .idProvider(variableManager -> "")
                 .textProvider(this.labelProvider)
@@ -403,8 +399,8 @@ public class DefaultTestDiagramDescriptionProvider {
                             .iconURLProvider(vm -> List.of())
                             .build();
                 })
+                .isHeaderProvider(this.isHeaderProvider)
                 .build();
-        // @formatter:on
     }
 
 }

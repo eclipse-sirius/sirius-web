@@ -68,13 +68,11 @@ public class NodeExportService {
     private StringBuilder exportChildren(Node node, Map<String, NodeAndContainerId> id2NodeHierarchy) {
         String nodeId = node.getId();
         StringBuilder childrenExport = new StringBuilder();
-        // @formatter:off
         Stream.concat(node.getBorderNodes().stream(), node.getChildNodes().stream())
             .forEach(elt -> {
                 id2NodeHierarchy.put(elt.getId(), new NodeAndContainerId(nodeId, elt));
                 childrenExport.append(this.export(elt, id2NodeHierarchy));
             });
-        // @formatter:on
         return childrenExport;
     }
 
@@ -83,7 +81,6 @@ public class NodeExportService {
         Size size = node.getSize();
         InsideLabel insideLabel = node.getInsideLabel();
 
-        // @formatter:off
         var rectangleStyle = RectangleStyle.newRectangleStyle()
                 .borderRadius(style.getBorderRadius())
                 .borderColor(style.getBorderColor())
@@ -91,7 +88,6 @@ public class NodeExportService {
                 .borderStyle(style.getBorderStyle())
                 .opacity(nodeOpacity)
                 .build();
-        // @formatter:on
 
         imageExport.append(this.elementExport.exportGNodeElement(node));
         // adapt the size and position to show the full width of the border
@@ -128,12 +124,10 @@ public class NodeExportService {
     private StringBuilder exportIconLabel(Node node, IconLabelNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy, float nodeOpacity) {
         StringBuilder rectangleExport = new StringBuilder();
 
-        // @formatter:off
         var rectangleStyle = RectangleStyle.newRectangleStyle()
                 .color(style.getBackgroundColor())
                 .opacity(nodeOpacity)
                 .build();
-        // @formatter:on
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Position.at(0, 0), rectangleStyle));
@@ -146,7 +140,6 @@ public class NodeExportService {
     private StringBuilder exportRectangle(Node node, RectangularNodeStyle style, Map<String, NodeAndContainerId> id2NodeHierarchy, float nodeOpacity) {
         StringBuilder rectangleExport = new StringBuilder();
 
-        // @formatter:off
         var rectangleStyle = RectangleStyle.newRectangleStyle()
                 .borderRadius(style.getBorderRadius())
                 .color(style.getColor())
@@ -155,12 +148,11 @@ public class NodeExportService {
                 .borderStyle(style.getBorderStyle())
                 .opacity(nodeOpacity)
                 .build();
-        // @formatter:on
 
         rectangleExport.append(this.elementExport.exportGNodeElement(node));
         rectangleExport.append(this.elementExport.exportRectangleElement(node.getSize(), Position.at(0, 0), rectangleStyle));
         rectangleExport.append(this.elementExport.exportInsideLabel(node.getInsideLabel(), nodeOpacity, node));
-        if (style.isWithHeader()) {
+        if (node.getInsideLabel().isIsHeader()) {
             rectangleExport.append(this.exportHeaderSeparator(node, node.getInsideLabel(), style, nodeOpacity));
         }
         rectangleExport.append(this.exportChildren(node, id2NodeHierarchy));

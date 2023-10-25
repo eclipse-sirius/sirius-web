@@ -98,7 +98,6 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
             return Optional.empty();
         }
         Map<String, Object> variables = this.variableManager.getVariables();
-        // @formatter:off
         var optionalParentNode  = this.interpreter.evaluateExpression(variables, createViewOperation.getParentViewExpression())
                 .asObject()
                 .filter(Node.class::isInstance)
@@ -107,7 +106,6 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .asObject()
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
-        // @formatter:on
 
         Optional<VariableManager> optionalVariableManager = Optional.empty();
         if (optionalSemanticElement.isPresent()) {
@@ -151,14 +149,12 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
         var targetObjectKind = this.objectService.getKind(semanticElement);
         var targetObjectLabel = this.objectService.getLabel(semanticElement);
 
-        // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                 .parentElementId(parentElementId)
                 .targetObjectId(targetObjectId)
                 .descriptionId(nodeDescription.getId())
                 .containmentKind(nodeContainmentKind)
                 .build();
-        // @formatter:on
         this.diagramContext.getViewCreationRequests().add(viewCreationRequest);
 
         // Since we have everything to compute the identifier of the node which will be created in the
@@ -181,6 +177,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)
                 .style(labelStyle)
+                .isHeader(false)
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()

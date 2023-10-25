@@ -229,6 +229,7 @@ public class ViewPaletteProviderTests {
                 .idProvider(variableManager -> "")
                 .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         return NodeDescription.newNodeDescription("nodeId")

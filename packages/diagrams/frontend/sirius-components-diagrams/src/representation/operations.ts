@@ -117,7 +117,6 @@ export const diagramEventSubscription = gql`
         borderStyle
         borderSize
         borderRadius
-        withHeader
       }
       ... on ImageNodeStyle {
         imageURL
@@ -241,6 +240,7 @@ export const diagramEventSubscription = gql`
       x
       y
     }
+    isHeader
   }
 `;
 

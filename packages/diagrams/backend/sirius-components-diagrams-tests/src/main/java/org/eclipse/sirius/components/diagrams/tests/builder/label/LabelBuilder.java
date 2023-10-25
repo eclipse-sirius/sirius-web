@@ -52,7 +52,7 @@ public final class LabelBuilder {
                 .build();
     }
 
-    public InsideLabel basicInsideLabel(String text, LabelType labelType) {
+    public InsideLabel basicInsideLabel(String text, LabelType labelType, boolean isHeader) {
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color("black")
                 .fontSize(14)
@@ -71,6 +71,7 @@ public final class LabelBuilder {
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .style(labelStyle)
+                .isHeader(isHeader)
                 .build();
     }
 

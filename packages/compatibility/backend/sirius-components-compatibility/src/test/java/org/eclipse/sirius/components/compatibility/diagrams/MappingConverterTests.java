@@ -117,7 +117,7 @@ public class MappingConverterTests {
         var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
 
-        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<String, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
 
         String text = labelDescription.getTextProvider().apply(variableManager);
@@ -177,15 +177,15 @@ public class MappingConverterTests {
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
         var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
-        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<String, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<>());
 
         VariableManager variableManager = new VariableManager();
 
         variableManager.put(VariableManager.SELF, EcorePackage.Literals.ECLASS);
         assertThat(convertedNodeDescription.getTypeProvider().apply(variableManager)).isEqualTo(NodeType.NODE_RECTANGLE);
         assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).isInstanceOf(RectangularNodeStyle.class);
-        assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).asInstanceOf(InstanceOfAssertFactories.type(RectangularNodeStyle.class))
-                .matches(RectangularNodeStyle::isWithHeader);
+        assertThat(convertedNodeDescription.getStyleProvider().apply(variableManager)).asInstanceOf(InstanceOfAssertFactories.type(RectangularNodeStyle.class));
+        assertThat(convertedNodeDescription.getLabelDescription().getIsHeaderProvider().apply(variableManager)).isEqualTo(true);
 
         assertThat(convertedNodeDescription.getChildNodeDescriptions()).hasSize(1);
         NodeDescription subNodeDescription = convertedNodeDescription.getChildNodeDescriptions().get(0);
@@ -246,7 +246,7 @@ public class MappingConverterTests {
         var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
                 new ImageSizeProvider());
 
-        NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<String, NodeDescription>());
+        NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<>());
         LabelDescription labelDescription = convertedNodeDescription.getLabelDescription();
 
         String text = labelDescription.getTextProvider().apply(variableManager);

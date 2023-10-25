@@ -226,7 +226,7 @@ const toListNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (style.withHeader) {
+        if (insideLabel.isHeader) {
           data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };

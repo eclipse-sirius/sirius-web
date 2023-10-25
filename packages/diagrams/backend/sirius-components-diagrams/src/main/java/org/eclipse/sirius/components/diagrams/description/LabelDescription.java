@@ -45,6 +45,8 @@ public final class LabelDescription {
 
     private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
 
+    private Function<VariableManager, Boolean> isHeaderProvider;
+
     private LabelDescription() {
         // Prevent instantiation
     }
@@ -59,6 +61,10 @@ public final class LabelDescription {
 
     public Function<VariableManager, String> getTextProvider() {
         return this.textProvider;
+    }
+
+    public Function<VariableManager, Boolean> getIsHeaderProvider() {
+        return this.isHeaderProvider;
     }
 
     public static Builder newLabelDescription(String id) {
@@ -90,6 +96,8 @@ public final class LabelDescription {
 
         private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
 
+        private Function<VariableManager, Boolean> isHeaderProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -109,12 +117,18 @@ public final class LabelDescription {
             return this;
         }
 
+        public Builder isHeaderProvider(Function<VariableManager, Boolean> isHeaderProvider) {
+            this.isHeaderProvider = Objects.requireNonNull(isHeaderProvider);
+            return this;
+        }
+
         public LabelDescription build() {
             LabelDescription labelDescription = new LabelDescription();
             labelDescription.id = Objects.requireNonNull(this.id);
             labelDescription.idProvider = Objects.requireNonNull(this.idProvider);
             labelDescription.textProvider = Objects.requireNonNull(this.textProvider);
             labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
+            labelDescription.isHeaderProvider = Objects.requireNonNull(this.isHeaderProvider);
             return labelDescription;
         }
     }

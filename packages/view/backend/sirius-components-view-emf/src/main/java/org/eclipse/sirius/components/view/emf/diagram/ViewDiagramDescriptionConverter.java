@@ -71,6 +71,7 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.springframework.stereotype.Service;
@@ -188,10 +189,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
     private boolean canCreateDiagram(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         boolean result = false;
-        // @formatter:off
         Optional<EClass> optionalEClass = variableManager.get(IRepresentationDescription.CLASS, EClass.class)
                 .filter(new DomainClassPredicate(viewDiagramDescription.getDomainType()));
-        // @formatter:on
         if (optionalEClass.isPresent()) {
             String preconditionExpression = viewDiagramDescription.getPreconditionExpression();
             if (preconditionExpression != null && !preconditionExpression.isBlank()) {
@@ -204,7 +203,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private NodeDescription convert(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, ViewDiagramDescriptionConverterContext converterContext) {
-        // @formatter:off
         // Convert our children first, we need their converted values to build our NodeDescription
         var childNodeDescriptions = viewNodeDescription.getChildrenDescriptions().stream()
                 .map(childNodeDescription -> this.convert(childNodeDescription, converterContext))
@@ -213,7 +211,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         var borderNodeDescriptions = viewNodeDescription.getBorderNodesDescriptions().stream()
                 .map(borderNodeDescription -> this.convert(borderNodeDescription, converterContext))
                 .toList();
-        // @formatter:on
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewNodeDescription.getSynchronizationPolicy().getName());
 
         AQLInterpreter interpreter = converterContext.getInterpreter();
@@ -321,13 +318,20 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return this.stylesFactory.createLabelStyleDescription(effectiveStyle);
         };
 
-        // @formatter:off
+        Function<VariableManager, Boolean> isHeaderProvider = variableManager -> {
+            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
+            if (effectiveStyle instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription) {
+                return rectangularNodeStyleDescription.isWithHeader();
+            }
+            return false;
+        };
+
         return LabelDescription.newLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + LabelDescription.LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDescription.getLabelExpression()))
                 .styleDescriptionProvider(styleDescriptionProvider)
+                .isHeaderProvider(isHeaderProvider)
                 .build();
-        // @formatter:on
     }
 
     private Optional<LabelDescription> getSpecificEdgeLabelDescription(org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription, String labelExpression, String labelSuffix,
@@ -342,37 +346,32 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         };
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
                     .map(org.eclipse.sirius.components.view.diagram.EdgeStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewEdgeDescription::getStyle);
-            // @formatter:on
 
             return this.stylesFactory.createEdgeLabelStyleDescription(effectiveStyle);
         };
 
-        // @formatter:off
         return Optional.of(LabelDescription.newLabelDescription(EcoreUtil.getURI(viewEdgeDescription).toString() + labelSuffix)
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, labelExpression))
                 .styleDescriptionProvider(styleDescriptionProvider)
+                .isHeaderProvider(vm -> false)
                 .build());
-        // @formatter:on
     }
 
     private Function<VariableManager, List<?>> getSemanticElementsProvider(org.eclipse.sirius.components.view.diagram.DiagramElementDescription elementDescription, AQLInterpreter interpreter) {
         return variableManager -> {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), elementDescription.getSemanticCandidatesExpression());
             List<Object> candidates = result.asObjects().orElse(List.of());
-            // @formatter:off
             return candidates.stream()
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
                     .filter(candidate -> new DomainClassPredicate(Optional.ofNullable(elementDescription.getDomainType()).orElse("")).test(candidate.eClass()))
                     .toList();
-            // @formatter:on
         };
     }
 
@@ -407,12 +406,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 List<Object> semanticCandidates = result.asObjects().orElse(List.of());
                 var nodeCandidates = semanticCandidates.stream().flatMap(semanticObject -> cache.getElementsRepresenting(semanticObject).stream());
 
-                // @formatter:off
                 return nodeCandidates
                         .filter(nodeElement -> viewEdgeDescription.getSourceNodeDescriptions().stream().anyMatch(nodeDescription -> this.isFromDescription(nodeElement, nodeDescription)))
                         .filter(Objects::nonNull)
                         .toList();
-                // @formatter:on
             };
         } else {
             sourceNodesProvider = variableManager -> {
@@ -425,31 +422,26 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 DiagramRenderingCache cache = optionalCache.get();
                 Object object = optionalObject.get();
 
-                // @formatter:off
                 return cache.getElementsRepresenting(object).stream()
                         .filter(this.isFromCompatibleSourceMapping(viewEdgeDescription))
                         .filter(Objects::nonNull)
                         .toList();
-                // @formatter:on
             };
         }
 
         Function<VariableManager, List<Element>> targetNodesProvider = new TargetNodesProvider(this.diagramIdProvider, viewEdgeDescription, interpreter);
 
         Function<VariableManager, EdgeStyle> styleProvider = variableManager -> {
-            // @formatter:off
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
                     .map(org.eclipse.sirius.components.view.diagram.EdgeStyle.class::cast)
                     .findFirst()
                     .orElseGet(viewEdgeDescription::getStyle);
-            // @formatter:on
             return this.stylesFactory.createEdgeStyle(effectiveStyle);
         };
 
         SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.valueOf(viewEdgeDescription.getSynchronizationPolicy().getName());
 
-        // @formatter:off
         var builder = EdgeDescription.newEdgeDescription(this.diagramIdProvider.getId(viewEdgeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
@@ -472,7 +464,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         EdgeDescription result = builder.build();
         converterContext.getConvertedEdges().put(viewEdgeDescription, result);
         return result;
-        // @formatter:on
     }
 
     private Function<VariableManager, IStatus> createDeleteHandler(DiagramElementDescription diagramElementDescription, ViewDiagramDescriptionConverterContext converterContext) {

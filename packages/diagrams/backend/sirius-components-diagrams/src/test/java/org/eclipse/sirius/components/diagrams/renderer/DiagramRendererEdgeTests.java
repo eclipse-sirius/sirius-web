@@ -136,7 +136,6 @@ public class DiagramRendererEdgeTests {
     }
 
     private Diagram renderDiagram(List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions) {
-        // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(DIAGRAM_DESCRIPTION_ID)
                 .label("")
                 .canCreatePredicate(variableManager -> true)
@@ -147,10 +146,8 @@ public class DiagramRendererEdgeTests {
                 .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
-        // @formatter:on
 
         VariableManager variableManager = new VariableManager();
-        // @formatter:off
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
@@ -161,14 +158,12 @@ public class DiagramRendererEdgeTests {
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvent(Optional.empty())
                 .build();
-        // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer().render(element);
         return diagram;
     }
 
     private NodeDescription getNodeDescription(String nodeDescriptionId) {
-        // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")
                 .fontSizeProvider(variableManager -> 16)
@@ -183,6 +178,7 @@ public class DiagramRendererEdgeTests {
                 .idProvider(variableManager -> "labelId")
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -217,11 +213,9 @@ public class DiagramRendererEdgeTests {
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        // @formatter:on
     }
 
     private EdgeDescription getEdgeDescription(NodeDescription nodeDescription, String id) {
-        // @formatter:off
         Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> {
             var optionalCache = variableManager.get(DiagramDescription.CACHE, DiagramRenderingCache.class);
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
@@ -273,6 +267,5 @@ public class DiagramRendererEdgeTests {
                 .deleteHandler(variableManager -> new Failure(""))
                 .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Failure(""))
                 .build();
-        // @formatter:on
     }
 }

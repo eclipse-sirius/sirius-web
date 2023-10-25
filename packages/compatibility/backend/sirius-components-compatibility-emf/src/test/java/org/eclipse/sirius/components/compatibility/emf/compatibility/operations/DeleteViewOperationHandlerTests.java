@@ -81,7 +81,6 @@ public class DeleteViewOperationHandlerTests {
     public void initialize() {
         this.operationTestContext = new OperationTestContext();
 
-        // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                 .label("DiagramDescriptionTest")
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
@@ -107,6 +106,7 @@ public class DeleteViewOperationHandlerTests {
                         .size(Size.of(10, 10))
                         .alignment(Position.at(0, 0))
                         .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL(List.of()).build())
+                        .isHeader(false)
                         .build())
                 .style(ImageNodeStyle.newImageNodeStyle().imageURL("").scalingFactor(0).build())
                 .position(Position.at(0, 0))
@@ -135,7 +135,6 @@ public class DeleteViewOperationHandlerTests {
             }
         };
         this.operationTestContext.getVariables().put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
-        // @formatter:on
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
@@ -162,7 +161,6 @@ public class DeleteViewOperationHandlerTests {
     }
 
     private NodeDescription getNodeDescription(String nodeDescriptionId) {
-        // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")
                 .fontSizeProvider(variableManager -> 16)
@@ -177,6 +175,7 @@ public class DeleteViewOperationHandlerTests {
                 .idProvider(variableManager -> "labelId")
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -212,7 +211,6 @@ public class DeleteViewOperationHandlerTests {
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        // @formatter:on
     }
 
 }

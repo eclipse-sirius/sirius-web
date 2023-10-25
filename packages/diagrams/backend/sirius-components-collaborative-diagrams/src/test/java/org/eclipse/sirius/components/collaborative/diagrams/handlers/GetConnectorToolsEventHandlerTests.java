@@ -95,7 +95,6 @@ public class GetConnectorToolsEventHandlerTests {
     private static final String TARGET_NODE_TARGET_ID = "targetNodeTargetId";
 
     private Node getNode(String id, String targetObjectId) {
-        // @formatter:off
         LabelStyle labelStyle = LabelStyle.newLabelStyle()
                 .color("#000000")
                 .fontSize(16)
@@ -109,6 +108,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)
                 .style(labelStyle)
+                .isHeader(false)
                 .build();
 
         return Node.newNode(id)
@@ -128,14 +128,12 @@ public class GetConnectorToolsEventHandlerTests {
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
                 .build();
-        // @formatter:on
     }
 
     @Test
     public void testGetConnectorTools() {
         NodeDescription nodeDescription = new TestDiagramDescriptionBuilder().getNodeDescription(NODE_DESCRIPTION_ID, variableManager -> List.of());
 
-        // @formatter:off
         SingleClickOnTwoDiagramElementsCandidate candidates = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                 .sources(List.of(nodeDescription))
                 .targets(List.of(nodeDescription))
@@ -170,7 +168,6 @@ public class GetConnectorToolsEventHandlerTests {
                 .palettes(List.of(palette))
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
-        //@formatter:on
 
         Node sourceNode = this.getNode(SOURCE_NODE_ID, SOURCE_NODE_TARGET_ID);
         Node targetNode = this.getNode(TARGET_NODE_ID, TARGET_NODE_TARGET_ID);
@@ -228,7 +225,6 @@ public class GetConnectorToolsEventHandlerTests {
     }
 
     private Diagram getDiagram(String id, List<Node> nodes) {
-        // @formatter:off
         return Diagram.newDiagram(id)
                 .label(DIAGRAM_LABEL)
                 .descriptionId(DIAGRAM_DESCRIPTION_ID.toString())
@@ -238,6 +234,5 @@ public class GetConnectorToolsEventHandlerTests {
                 .nodes(nodes)
                 .edges(List.of())
                 .build();
-        // @formatter:on
     }
 }

@@ -163,7 +163,7 @@ const convertNode = (
   node.type = type;
   node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
   node.descriptionId = descriptionId;
-  node.style = convertNodeStyle(style, theme, httpOrigin);
+  node.style = convertNodeStyle(style, theme, httpOrigin, insideLabel.isHeader);
   node.editableLabel = !readOnly ? convertedLabel : null;
   node.targetObjectId = targetObjectId;
   node.targetObjectKind = targetObjectKind;
@@ -207,7 +207,7 @@ const convertBorderNode = (
   node.type = type.replace('node:', 'port:');
   node.kind = `siriusComponents://graphical?representationType=Diagram&type=Node`;
   node.descriptionId = descriptionId;
-  node.style = convertNodeStyle(style, theme, httpOrigin);
+  node.style = convertNodeStyle(style, theme, httpOrigin, insideLabel.isHeader);
   node.editableLabel = !readOnly ? convertedLabel : null;
   node.targetObjectId = targetObjectId;
   node.targetObjectKind = targetObjectKind;
@@ -308,7 +308,12 @@ const convertLabel = (
   return label;
 };
 
-const convertNodeStyle = (style: GQLINodeStyle, theme: Theme, httpOrigin: string): INodeStyle | null => {
+const convertNodeStyle = (
+  style: GQLINodeStyle,
+  theme: Theme,
+  httpOrigin: string,
+  hasHeader: boolean
+): INodeStyle | null => {
   let convertedStyle: INodeStyle | null = null;
 
   if (isImageNodeStyle(style)) {
@@ -334,7 +339,7 @@ const convertNodeStyle = (style: GQLINodeStyle, theme: Theme, httpOrigin: string
 
     convertedStyle = svgNodeStyle;
   } else if (isRectangularNodeStyle(style)) {
-    const { color, borderColor, borderRadius, borderSize, borderStyle, withHeader } = style;
+    const { color, borderColor, borderRadius, borderSize, borderStyle } = style;
 
     const rectangularNodeStyle = new RectangularNodeStyle();
     rectangularNodeStyle.color = getCSSColor(color, theme);
@@ -342,7 +347,7 @@ const convertNodeStyle = (style: GQLINodeStyle, theme: Theme, httpOrigin: string
     rectangularNodeStyle.borderRadius = borderRadius;
     rectangularNodeStyle.borderSize = borderSize;
     rectangularNodeStyle.borderStyle = LineStyle[GQLLineStyle[borderStyle]];
-    rectangularNodeStyle.withHeader = withHeader;
+    rectangularNodeStyle.withHeader = hasHeader;
 
     convertedStyle = rectangularNodeStyle;
   } else if (isIconLabelNodeStyle(style)) {

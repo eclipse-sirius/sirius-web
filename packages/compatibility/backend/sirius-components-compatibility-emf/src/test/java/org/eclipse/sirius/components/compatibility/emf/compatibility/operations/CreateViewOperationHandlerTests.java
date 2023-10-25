@@ -78,7 +78,6 @@ public class CreateViewOperationHandlerTests {
     public void initialize() {
         this.operationTestContext = new OperationTestContext();
 
-        // @formatter:off
         DiagramDescription diagramDescription = DiagramDescription.newDiagramDescription(UUID.randomUUID().toString())
                 .label("DiagramDescriptionTest")
                 .targetObjectIdProvider(variableManager -> "diagramTargetObjectId")
@@ -107,7 +106,6 @@ public class CreateViewOperationHandlerTests {
             }
         };
         this.operationTestContext.getVariables().put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
-        // @formatter:on
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
@@ -185,7 +183,6 @@ public class CreateViewOperationHandlerTests {
     }
 
     private NodeDescription getNodeDescription(String nodeDescriptionId) {
-        // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")
                 .fontSizeProvider(variableManager -> 16)
@@ -200,6 +197,7 @@ public class CreateViewOperationHandlerTests {
                 .idProvider(variableManager -> "labelId")
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -235,7 +233,6 @@ public class CreateViewOperationHandlerTests {
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        // @formatter:on
     }
 
 }

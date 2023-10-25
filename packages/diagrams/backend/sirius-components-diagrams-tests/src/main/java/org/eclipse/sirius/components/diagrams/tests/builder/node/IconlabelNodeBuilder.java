@@ -61,7 +61,7 @@ public class IconlabelNodeBuilder<T> implements NodeBuilder<T> {
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
     public IconlabelNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
-        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER);
+        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER, false);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }
