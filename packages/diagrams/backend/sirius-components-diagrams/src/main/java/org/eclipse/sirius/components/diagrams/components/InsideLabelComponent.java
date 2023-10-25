@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.elements.InsideLabelElementProps;
 import org.eclipse.sirius.components.representations.Element;
@@ -45,19 +45,19 @@ public class InsideLabelComponent implements IComponent {
     @Override
     public Element render() {
         VariableManager variableManager = this.props.getVariableManager();
-        LabelDescription labelDescription = this.props.getLabelDescription();
+        InsideLabelDescription insideLabelDescription = this.props.getInsideLabelDescription();
         Optional<InsideLabel> optionalPreviousInsideLabel = this.props.getPreviousInsideLabel();
         String type = this.props.getType();
-        String idFromProvider = labelDescription.getIdProvider().apply(variableManager);
+        String idFromProvider = insideLabelDescription.getIdProvider().apply(variableManager);
         String id = UUID.nameUUIDFromBytes(idFromProvider.getBytes()).toString();
-        String text = labelDescription.getTextProvider().apply(variableManager);
+        String text = insideLabelDescription.getTextProvider().apply(variableManager);
 
-        boolean isHeader = labelDescription.getIsHeaderProvider().apply(variableManager);
+        boolean isHeader = insideLabelDescription.getIsHeaderProvider().apply(variableManager);
         if (isHeader) {
             type = LabelType.INSIDE_CENTER.getValue();
         }
 
-        LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);
+        LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
 
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
         Integer fontSize = labelStyleDescription.getFontSizeProvider().apply(variableManager);
@@ -67,7 +67,7 @@ public class InsideLabelComponent implements IComponent {
         Boolean underline = labelStyleDescription.getUnderlineProvider().apply(variableManager);
         List<String> iconURL = labelStyleDescription.getIconURLProvider().apply(variableManager);
 
-        InsideLabelLocation insideLabelLocation = InsideLabelLocation.TOP_CENTER;
+        InsideLabelLocation insideLabelLocation = insideLabelDescription.getInsideLabelLocation();
         Position position = optionalPreviousInsideLabel.map(InsideLabel::getPosition).orElse(Position.UNDEFINED);
         Size size = optionalPreviousInsideLabel.map(InsideLabel::getSize).orElse(Size.UNDEFINED);
         Position aligment = optionalPreviousInsideLabel.map(InsideLabel::getAlignment).orElse(Position.UNDEFINED);

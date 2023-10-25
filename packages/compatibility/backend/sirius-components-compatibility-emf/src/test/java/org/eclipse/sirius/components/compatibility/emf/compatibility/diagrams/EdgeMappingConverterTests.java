@@ -28,9 +28,10 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -100,11 +101,12 @@ public class EdgeMappingConverterTests {
                 .iconURLProvider(variableManager -> List.of())
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription(id)
+        InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(id)
                 .idProvider(variableManager -> "")
                 .textProvider(variableManager -> "")
                 .styleDescriptionProvider(variableManager -> styleDescription)
                 .isHeaderProvider(vm -> false)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 
         return NodeDescription.newNodeDescription(id)
@@ -113,7 +115,7 @@ public class EdgeMappingConverterTests {
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
                 .semanticElementsProvider(variableManager -> List.of())
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(variableManager -> null)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(variableManager -> Size.UNDEFINED)

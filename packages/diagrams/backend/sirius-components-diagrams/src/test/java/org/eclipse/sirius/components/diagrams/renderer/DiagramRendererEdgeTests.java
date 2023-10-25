@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -37,7 +38,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -174,11 +175,12 @@ public class DiagramRendererEdgeTests {
                 .iconURLProvider(variableManager -> List.of())
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")
-                .idProvider(variableManager -> "labelId")
+        InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
+                .idProvider(variableManager -> "insideLabelId")
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -204,7 +206,7 @@ public class DiagramRendererEdgeTests {
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(nodeStyleProvider)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(variableManager -> Size.UNDEFINED)

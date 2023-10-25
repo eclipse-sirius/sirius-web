@@ -29,8 +29,9 @@ import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
@@ -84,11 +85,12 @@ public class AbstractNodeMappingConverter {
         Function<VariableManager, LabelStyleDescription> labelStyleDescriptionProvider = this.getLabelStyleDescriptionProvider(labelStyleDescriptionConverter, abstractNodeMappingDescriptionProvider);
         Function<VariableManager, Boolean> isHeaderProvider = new AbstractNodeMappingIsHeaderProvider(interpreter, abstractNodeMapping);
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription(this.identifierProvider.getIdentifier(abstractNodeMapping) + LabelDescription.LABEL_SUFFIX)
+        InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(this.identifierProvider.getIdentifier(abstractNodeMapping) + InsideLabelDescription.INSIDE_LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(labelExpressionProvider)
                 .styleDescriptionProvider(labelStyleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {
@@ -149,7 +151,7 @@ public class AbstractNodeMappingConverter {
                 .targetObjectLabelProvider(semanticTargetLabelProvider)
                 .semanticElementsProvider(semanticElementsProvider)
                 .synchronizationPolicy(synchronizationPolicy)
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(sizeProvider)
@@ -185,8 +187,8 @@ public class AbstractNodeMappingConverter {
 
     private Function<VariableManager, String> getLabelIdProvider() {
         return variableManager -> {
-            Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
-            return String.valueOf(parentId) + LabelDescription.LABEL_SUFFIX;
+            Object parentId = variableManager.getVariables().get(InsideLabelDescription.OWNER_ID);
+            return String.valueOf(parentId) + InsideLabelDescription.INSIDE_LABEL_SUFFIX;
         };
     }
 

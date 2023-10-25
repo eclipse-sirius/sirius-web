@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -56,6 +58,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author gcoutable
  */
 public class DefaultTestDiagramDescriptionProvider {
+
+    private static final String BLACK_COLOR = "black";
 
     private static final String NODE_LIST_ITEM_PREFIX = "listitem";
 
@@ -104,7 +108,7 @@ public class DefaultTestDiagramDescriptionProvider {
                 break;
             case NODE_LIST_PREFIX:
                 nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
-                        .borderColor("black")
+                        .borderColor(BLACK_COLOR)
                         .borderRadius(0)
                         .borderSize(1)
                         .borderStyle(LineStyle.Solid)
@@ -268,10 +272,11 @@ public class DefaultTestDiagramDescriptionProvider {
 
     public DiagramDescription getDefaultDiagramDescription(Diagram diagram) {
         LabelDescription labelDescription = this.getDefaultLabelDescription();
+        InsideLabelDescription insideLabelDescription = this.getDefaultInsideLabelDescription();
 
-        NodeDescription childDescription = this.getDefaultChildDescription(labelDescription);
+        NodeDescription childDescription = this.getDefaultChildDescription(insideLabelDescription);
 
-        NodeDescription nodeDescription = this.getDefaultNodeDescription(labelDescription, childDescription);
+        NodeDescription nodeDescription = this.getDefaultNodeDescription(insideLabelDescription, childDescription);
 
         EdgeDescription edgeDescription = this.getDefaultEdgeDescription(diagram, labelDescription, nodeDescription);
 
@@ -346,14 +351,14 @@ public class DefaultTestDiagramDescriptionProvider {
 
     }
 
-    private NodeDescription getDefaultNodeDescription(LabelDescription labelDescription, NodeDescription childDescription) {
+    private NodeDescription getDefaultNodeDescription(InsideLabelDescription insideLabelDescription, NodeDescription childDescription) {
         return NodeDescription.newNodeDescription(TestLayoutDiagramBuilder.NODE_DESCRIPTION_ID)
                 .typeProvider(this.nodeTypeProvider)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(this.labelProvider)
                 .semanticElementsProvider(this.nodeSemanticElementProvider)
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(this.nodeStyleProvider)
                 .childrenLayoutStrategyProvider(this.childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
@@ -365,14 +370,14 @@ public class DefaultTestDiagramDescriptionProvider {
                 .build();
     }
 
-    private NodeDescription getDefaultChildDescription(LabelDescription labelDescription) {
+    private NodeDescription getDefaultChildDescription(InsideLabelDescription insideLabelDescription) {
         return NodeDescription.newNodeDescription(TestLayoutDiagramBuilder.CHILD_NODE_DESCRIPTION_ID)
                 .typeProvider(this.nodeTypeProvider)
                 .targetObjectIdProvider(this.targetObjectIdProvider)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(this.labelProvider)
                 .semanticElementsProvider(this.nodeSemanticElementProvider)
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(this.nodeStyleProvider)
                 .childrenLayoutStrategyProvider(this.childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
@@ -383,9 +388,7 @@ public class DefaultTestDiagramDescriptionProvider {
     }
 
     private LabelDescription getDefaultLabelDescription() {
-
-
-        return  LabelDescription.newLabelDescription(UUID.randomUUID().toString())
+        return LabelDescription.newLabelDescription(UUID.randomUUID().toString())
                 .idProvider(variableManager -> "")
                 .textProvider(this.labelProvider)
                 .styleDescriptionProvider(variableManager -> {
@@ -394,12 +397,31 @@ public class DefaultTestDiagramDescriptionProvider {
                             .italicProvider(vm -> false)
                             .underlineProvider(vm -> false)
                             .strikeThroughProvider(vm -> false)
-                            .colorProvider(vm -> "black")
+                            .colorProvider(vm -> BLACK_COLOR)
+                            .fontSizeProvider(vm -> 14)
+                            .iconURLProvider(vm -> List.of())
+                            .build();
+                })
+                .build();
+    }
+
+    private InsideLabelDescription getDefaultInsideLabelDescription() {
+        return InsideLabelDescription.newInsideLabelDescription(UUID.randomUUID().toString())
+                .idProvider(variableManager -> "")
+                .textProvider(this.labelProvider)
+                .styleDescriptionProvider(variableManager -> {
+                    return LabelStyleDescription.newLabelStyleDescription()
+                            .boldProvider(vm -> false)
+                            .italicProvider(vm -> false)
+                            .underlineProvider(vm -> false)
+                            .strikeThroughProvider(vm -> false)
+                            .colorProvider(vm -> BLACK_COLOR)
                             .fontSizeProvider(vm -> 14)
                             .iconURLProvider(vm -> List.of())
                             .build();
                 })
                 .isHeaderProvider(this.isHeaderProvider)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
     }
 

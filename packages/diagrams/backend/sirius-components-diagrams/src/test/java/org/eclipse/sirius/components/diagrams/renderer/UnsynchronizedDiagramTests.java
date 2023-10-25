@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -33,7 +34,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
@@ -277,11 +278,12 @@ public class UnsynchronizedDiagramTests {
                 .iconURLProvider(VariableManager -> List.of())
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription("labelDescriptionId")
-                .idProvider(variableManager -> "labelid")
+        InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription("insideLabelDescriptionId")
+                .idProvider(variableManager -> "insideLabelId")
                 .textProvider(variableManager -> "label")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
@@ -304,7 +306,7 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
@@ -321,7 +323,7 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)
@@ -338,7 +340,7 @@ public class UnsynchronizedDiagramTests {
                 .targetObjectIdProvider(variableManager -> TARGET_OBJECT_ID)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
-                .labelDescription(labelDescription)
+                .insideLabelDescription(insideLabelDescription)
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .sizeProvider(variableManager -> Size.UNDEFINED)

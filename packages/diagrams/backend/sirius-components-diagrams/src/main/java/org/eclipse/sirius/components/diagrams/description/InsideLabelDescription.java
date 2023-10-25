@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,20 +17,26 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
- * The label description.
+ * The inside label description.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
 @Immutable
-public final class LabelDescription {
+public final class InsideLabelDescription {
     /**
-     * The name of the variable passed to a label id provider so that the label's own id can include the id of it's
+     * The name of the variable passed to an inside label id provider so that the inside label's own id can include the id of it's
      * owner/parent diagram element.
      */
     public static final String OWNER_ID = "ownerId";
+
+    /**
+     * The suffix used to build an inside label's id given its owner's.
+     */
+    public static final String INSIDE_LABEL_SUFFIX = "_insideLlabel";
 
     private String id;
 
@@ -40,7 +46,11 @@ public final class LabelDescription {
 
     private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
 
-    private LabelDescription() {
+    private Function<VariableManager, Boolean> isHeaderProvider;
+
+    private InsideLabelLocation insideLabelLocation;
+
+    private InsideLabelDescription() {
         // Prevent instantiation
     }
 
@@ -56,12 +66,20 @@ public final class LabelDescription {
         return this.textProvider;
     }
 
-    public static Builder newLabelDescription(String id) {
-        return new Builder(id);
-    }
-
     public Function<VariableManager, LabelStyleDescription> getStyleDescriptionProvider() {
         return this.styleDescriptionProvider;
+    }
+
+    public Function<VariableManager, Boolean> getIsHeaderProvider() {
+        return this.isHeaderProvider;
+    }
+
+    public InsideLabelLocation getInsideLabelLocation() {
+        return this.insideLabelLocation;
+    }
+
+    public static Builder newInsideLabelDescription(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -85,6 +103,10 @@ public final class LabelDescription {
 
         private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
 
+        private Function<VariableManager, Boolean> isHeaderProvider;
+
+        private InsideLabelLocation insideLabelLocation;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -104,12 +126,24 @@ public final class LabelDescription {
             return this;
         }
 
-        public LabelDescription build() {
-            LabelDescription labelDescription = new LabelDescription();
+        public Builder isHeaderProvider(Function<VariableManager, Boolean> isHeaderProvider) {
+            this.isHeaderProvider = Objects.requireNonNull(isHeaderProvider);
+            return this;
+        }
+
+        public Builder insideLabelLocation(InsideLabelLocation insideLabelLocation) {
+            this.insideLabelLocation = Objects.requireNonNull(insideLabelLocation);
+            return this;
+        }
+
+        public InsideLabelDescription build() {
+            InsideLabelDescription labelDescription = new InsideLabelDescription();
             labelDescription.id = Objects.requireNonNull(this.id);
             labelDescription.idProvider = Objects.requireNonNull(this.idProvider);
             labelDescription.textProvider = Objects.requireNonNull(this.textProvider);
             labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
+            labelDescription.isHeaderProvider = Objects.requireNonNull(this.isHeaderProvider);
+            labelDescription.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
             return labelDescription;
         }
     }

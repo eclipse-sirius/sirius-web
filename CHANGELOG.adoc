@@ -35,7 +35,8 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 - https://github.com/eclipse-sirius/sirius-web/issues/2453[#2453] [diagram] The GraphQL fields `DeleteFromDiagramSuccessPayload`, `EditLabelSuccessPayload` and `DropOnDiagramSuccessPayload` now expects to have a list of messages.
 - https://github.com/eclipse-sirius/sirius-web/issues/2514[#2514] [diagram] Move and rename the RectangleNodeStyle `withHeader` attribute to InsideLabel `isHeader`.
 It requires to add a `isHeaderProvider` to the _LabelDescription_ of Node.
-Update the graphql api accordingly.
+Replace only for the programmatic API the _LabelDescription_ type in _NodeDescription_ by _InsideLabelDescription_ and add the inside label location.
+Update the graphql API accordingly.
 
 === Dependency update
 

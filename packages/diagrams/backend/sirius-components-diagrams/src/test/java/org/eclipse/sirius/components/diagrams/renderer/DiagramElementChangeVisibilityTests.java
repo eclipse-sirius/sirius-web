@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -42,7 +43,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
-import org.eclipse.sirius.components.diagrams.description.LabelDescription;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -62,7 +63,7 @@ public class DiagramElementChangeVisibilityTests {
 
     private static final String LABEL_TEXT = "Node";
 
-    private static final String LABEL_ID = "labelId";
+    private static final String INSIDE_LABEL_ID = "insideLabelId";
 
     private static final int LABEL_FONT_SIZE = 40;
 
@@ -116,11 +117,12 @@ public class DiagramElementChangeVisibilityTests {
                 .iconURLProvider(VariableManager -> List.of())
                 .build();
 
-        LabelDescription labelDescription = LabelDescription.newLabelDescription(UUID.randomUUID().toString())
-                .idProvider(variableManager -> LABEL_ID)
+        InsideLabelDescription insideLabelDescription = InsideLabelDescription.newInsideLabelDescription(UUID.randomUUID().toString())
+                .idProvider(variableManager -> INSIDE_LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 
         NodeDescription nodeDescription = NodeDescription.newNodeDescription(id)
@@ -129,7 +131,7 @@ public class DiagramElementChangeVisibilityTests {
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .targetObjectKindProvider(variableManager -> "")
                 .targetObjectLabelProvider(variableManager -> "")
-                .labelDescription(labelDescription).styleProvider(STYLE_PROVIDER)
+                .insideLabelDescription(insideLabelDescription).styleProvider(STYLE_PROVIDER)
                 .childrenLayoutStrategyProvider(variableManager -> new FreeFormLayoutStrategy())
                 .sizeProvider(SIZE_PROVIDER)
                 .borderNodeDescriptions(borderNodes)

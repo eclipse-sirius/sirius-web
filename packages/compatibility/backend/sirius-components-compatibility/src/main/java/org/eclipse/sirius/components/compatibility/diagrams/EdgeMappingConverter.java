@@ -151,7 +151,6 @@ public class EdgeMappingConverter {
                 .idProvider(labelIdProvider)
                 .textProvider(textProvider)
                 .styleDescriptionProvider(labelStyleDescriptionProvider)
-                .isHeaderProvider(vm -> false)
                 .build();
 
     }

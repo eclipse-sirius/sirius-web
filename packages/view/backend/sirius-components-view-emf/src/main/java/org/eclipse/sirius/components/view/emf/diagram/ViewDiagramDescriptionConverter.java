@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IEdgeEditLabelHandler;
+import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -258,7 +260,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription, interpreter))
                 .synchronizationPolicy(synchronizationPolicy)
                 .typeProvider(typeProvider)
-                .labelDescription(this.getLabelDescription(viewNodeDescription, interpreter))
+                .insideLabelDescription(this.getInsideLabelDescription(viewNodeDescription, interpreter))
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .childNodeDescriptions(childNodeDescriptions)
@@ -307,10 +309,10 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 
-    private LabelDescription getLabelDescription(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
+    private InsideLabelDescription getInsideLabelDescription(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
         Function<VariableManager, String> labelIdProvider = variableManager -> {
-            Object parentId = variableManager.get(LabelDescription.OWNER_ID, Object.class).orElse(null);
-            return parentId + LabelDescription.LABEL_SUFFIX;
+            Object parentId = variableManager.get(InsideLabelDescription.OWNER_ID, Object.class).orElse(null);
+            return parentId + InsideLabelDescription.INSIDE_LABEL_SUFFIX;
         };
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
@@ -326,11 +328,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return false;
         };
 
-        return LabelDescription.newLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + LabelDescription.LABEL_SUFFIX)
+        return InsideLabelDescription.newInsideLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + InsideLabelDescription.INSIDE_LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDescription.getLabelExpression()))
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
     }
 
@@ -359,7 +362,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, labelExpression))
                 .styleDescriptionProvider(styleDescriptionProvider)
-                .isHeaderProvider(vm -> false)
                 .build());
     }
 
