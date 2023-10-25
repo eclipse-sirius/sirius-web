@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
 import org.eclipse.sirius.components.diagrams.Position;
-import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -78,13 +77,11 @@ public class NodeComponent implements IComponent {
         VariableManager nodeComponentVariableManager = variableManager.createChild();
 
         if (nodeDescription.getSynchronizationPolicy().equals(SynchronizationPolicy.UNSYNCHRONIZED)) {
-            //@formatter:off
             List<String> creationRequestsIds = this.props.getViewCreationRequests().stream()
                     .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getDescriptionId(), nodeDescription.getId()))
                     .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getParentElementId(), this.props.getParentElementId()))
                     .map(ViewCreationRequest::getTargetObjectId)
                     .toList();
-            //@formatter:on
             List<String> previousNodeIds = this.props.getPreviousTargetObjectIds();
             List<String> semanticElementIds = new ArrayList<>(creationRequestsIds);
             semanticElementIds.addAll(previousNodeIds);
@@ -139,20 +136,16 @@ public class NodeComponent implements IComponent {
         String parentElementId = this.props.getParentElementId();
         String nodeDescriptionId = this.props.getNodeDescription().getId();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
-        // @formatter:off
         return this.props.getViewCreationRequests().stream()
                 .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getDescriptionId(), nodeDescriptionId))
                 .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getTargetObjectId(), targetObjectId))
                 .filter(viewCreationRequest -> Objects.equals(viewCreationRequest.getContainmentKind(), containmentKind))
                 .anyMatch(viewCreationRequest -> Objects.equals(viewCreationRequest.getParentElementId(), parentElementId));
-        // @formatter:on
     }
 
     private boolean existsViewDeletionRequested(String elementId) {
-        // @formatter:off
         return this.props.getViewDeletionRequests().stream()
                 .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), elementId));
-        // @formatter:on
     }
 
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent) {
@@ -202,7 +195,6 @@ public class NodeComponent implements IComponent {
 
         nodeChildren.addAll(borderNodes);
         nodeChildren.addAll(childNodes);
-        // @formatter:off
 
         Position position = optionalPreviousNode.map(Node::getPosition)
                 .orElse(Position.UNDEFINED);
@@ -247,7 +239,6 @@ public class NodeComponent implements IComponent {
             nodeElementPropsBuilder.childrenLayoutStrategy(layoutStrategy);
         }
 
-        // @formatter:on
         return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
     }
 
@@ -260,8 +251,6 @@ public class NodeComponent implements IComponent {
         } else if (NodeType.NODE_ICON_LABEL.equals(type)) {
             dummyLabelType = LabelType.INSIDE_CENTER;
         } else if (ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE.equals(type)) {
-            dummyLabelType = LabelType.INSIDE_CENTER;
-        } else if (style instanceof RectangularNodeStyle rectangularNodeStyle && rectangularNodeStyle.isWithHeader()) {
             dummyLabelType = LabelType.INSIDE_CENTER;
         }
         return dummyLabelType;
@@ -354,11 +343,9 @@ public class NodeComponent implements IComponent {
      */
     private Size getSize(Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, VariableManager nodeVariableManager) {
         Size size;
-        //@formatter:off
         boolean customizedSize = optionalPreviousNode.map(Node::getCustomizedProperties)
                 .filter(set -> set.contains(CustomizableProperties.Size))
                 .isPresent();
-        //@formatter:on
         if (customizedSize) {
             size = optionalPreviousNode.map(Node::getSize).orElse(Size.UNDEFINED);
         } else {

@@ -187,6 +187,7 @@ public class IncrementalLayoutDiagramConverter {
             textBounds = this.textBoundsService.getBounds(insideLabel);
         }
         layoutData.setTextBounds(textBounds);
+        layoutData.setIsHeader(insideLabel.isIsHeader());
 
         return layoutData;
     }

@@ -30,6 +30,8 @@ public class LabelLayoutData implements ILayoutData {
 
     private String id;
 
+    private boolean isHeader;
+
     @Override
     public String getId() {
         return this.id;
@@ -61,6 +63,14 @@ public class LabelLayoutData implements ILayoutData {
 
     public void setTextBounds(TextBounds textBounds) {
         this.textBounds = textBounds;
+    }
+
+    public boolean isHeader() {
+        return this.isHeader;
+    }
+
+    public void setIsHeader(boolean isHeader) {
+        this.isHeader = isHeader;
     }
 
 }

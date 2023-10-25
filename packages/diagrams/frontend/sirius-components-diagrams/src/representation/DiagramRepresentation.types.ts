@@ -165,6 +165,7 @@ export interface GQLLabel {
   alignment: GQLPosition;
   position: GQLPosition;
   size: GQLSize;
+  isHeader: boolean;
 }
 
 export interface GQLLabelStyle {
@@ -208,7 +209,6 @@ export interface GQLRectangularNodeStyle extends GQLINodeStyle {
   borderSize: number;
   borderStyle: GQLLineStyle;
   color: string;
-  withHeader: boolean;
 }
 
 export enum GQLLineStyle {

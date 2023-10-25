@@ -135,11 +135,9 @@ public class UnsynchronizedDiagramTests {
 
         String nodeIdToDelete = refreshedDiagramAfterNodeCreation.getNodes().get(0).getId();
 
-        // @formatter:off
         ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
                 .elementId(nodeIdToDelete)
                 .build();
-        // @formatter:on
         Diagram refreshedDiagramAfterNodeDeletion = this.render(diagramDescription, List.of(), List.of(viewDeletionRequest), Optional.of(refreshedDiagramAfterNodeCreation));
         assertThat(refreshedDiagramAfterNodeDeletion.getNodes()).hasSize(1);
 
@@ -235,11 +233,9 @@ public class UnsynchronizedDiagramTests {
 
         Diagram diagramAfterSecondNodeCreation = this.render(diagramDescription, List.of(childViewCreationRequest), List.of(), Optional.of(diagramAfterFirstNodeCreation));
         String nodeIdToDelete = diagramAfterSecondNodeCreation.getNodes().get(0).getChildNodes().get(0).getId();
-        // @formatter:off
         ViewDeletionRequest viewDeletionRequest = ViewDeletionRequest.newViewDeletionRequest()
                 .elementId(nodeIdToDelete)
                 .build();
-        // @formatter:on
         Diagram diagramAfterSecondNodeDeletion = this.render(diagramDescription, List.of(), List.of(viewDeletionRequest), Optional.of(diagramAfterFirstNodeCreation));
 
         assertThat(diagramAfterSecondNodeDeletion.getNodes()).hasSize(2);
@@ -255,7 +251,6 @@ public class UnsynchronizedDiagramTests {
     private Diagram render(DiagramDescription diagramDescription, List<ViewCreationRequest> viewCreationRequests, List<ViewDeletionRequest> viewDeletionRequests,
             Optional<Diagram> optionalPreviousDiagram) {
         VariableManager variableManager = new VariableManager();
-        // @formatter:off
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
@@ -266,14 +261,12 @@ public class UnsynchronizedDiagramTests {
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvent(Optional.empty())
                 .build();
-        // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
         Diagram diagram = new DiagramRenderer().render(element);
         return diagram;
     }
 
     private DiagramDescription getDiagramDescription(Function<VariableManager, List<?>> semanticElementsProvider) {
-        // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
                 .boldProvider(VariableManager -> true)
@@ -288,6 +281,7 @@ public class UnsynchronizedDiagramTests {
                 .idProvider(variableManager -> "labelid")
                 .textProvider(variableManager -> "label")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
@@ -364,7 +358,6 @@ public class UnsynchronizedDiagramTests {
                 .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
-        // @formatter:on
 
         return diagramDescription;
     }

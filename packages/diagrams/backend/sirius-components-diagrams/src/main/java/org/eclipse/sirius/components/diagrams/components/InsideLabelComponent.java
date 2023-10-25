@@ -52,6 +52,11 @@ public class InsideLabelComponent implements IComponent {
         String id = UUID.nameUUIDFromBytes(idFromProvider.getBytes()).toString();
         String text = labelDescription.getTextProvider().apply(variableManager);
 
+        boolean isHeader = labelDescription.getIsHeaderProvider().apply(variableManager);
+        if (isHeader) {
+            type = LabelType.INSIDE_CENTER.getValue();
+        }
+
         LabelStyleDescription labelStyleDescription = labelDescription.getStyleDescriptionProvider().apply(variableManager);
 
         String color = labelStyleDescription.getColorProvider().apply(variableManager);
@@ -85,6 +90,7 @@ public class InsideLabelComponent implements IComponent {
                 .size(size)
                 .alignment(aligment)
                 .style(labelStyle)
+                .isHeader(isHeader)
                 .build();
         return new Element(InsideLabelElementProps.TYPE, insideLabelElementProps);
     }

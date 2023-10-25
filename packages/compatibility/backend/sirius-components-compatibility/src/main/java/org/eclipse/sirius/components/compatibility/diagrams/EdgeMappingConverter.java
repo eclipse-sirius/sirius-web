@@ -96,7 +96,6 @@ public class EdgeMappingConverter {
 
         LabelStyleDescriptionConverter labelStyleDescriptionConverter = new LabelStyleDescriptionConverter(interpreter, this.objectService);
 
-        // @formatter:off
         EdgeStyleDescription style = edgeMapping.getStyle();
 
         Optional<LabelDescription> optionalBeginLabelDescription = Optional.ofNullable(style)
@@ -131,7 +130,6 @@ public class EdgeMappingConverter {
         optionalCenterLabelDescription.ifPresent(builder::centerLabelDescription);
         optionalEndLabelDescription.ifPresent(builder::endLabelDescription);
         return builder.build();
-        // @formatter:on
     }
 
     private LabelDescription createLabelDescription(AQLInterpreter interpreter, LabelStyleDescriptionConverter labelStyleDescriptionConverter,
@@ -149,13 +147,12 @@ public class EdgeMappingConverter {
 
         String id = this.identifierProvider.getIdentifier(edgeMapping) + idSuffix;
         StringValueProvider textProvider = new StringValueProvider(interpreter, labelExpression);
-        // @formatter:off
         return LabelDescription.newLabelDescription(id)
                 .idProvider(labelIdProvider)
                 .textProvider(textProvider)
                 .styleDescriptionProvider(labelStyleDescriptionProvider)
+                .isHeaderProvider(vm -> false)
                 .build();
-        // @formatter:on
 
     }
 
@@ -167,7 +164,6 @@ public class EdgeMappingConverter {
      * @return The relevant node descriptions created by the node and container description converters
      */
     private List<NodeDescription> getNodeDescriptions(List<DiagramElementMapping> mappings, Map<String, NodeDescription> id2NodeDescriptions) {
-        // @formatter:off
         return mappings.stream()
                 .filter(AbstractNodeMapping.class::isInstance)
                 .map(AbstractNodeMapping.class::cast)
@@ -175,7 +171,6 @@ public class EdgeMappingConverter {
                 .map(id2NodeDescriptions::get)
                 .filter(Objects::nonNull)
                 .toList();
-        // @formatter:on
     }
 
     private Function<VariableManager, List<?>> getSemanticElementsProvider(AQLInterpreter interpreter, EdgeMapping edgeMapping, List<NodeDescription> sourceNodeDescriptions) {
@@ -187,11 +182,9 @@ public class EdgeMappingConverter {
             String domainClass = Optional.ofNullable(edgeMapping.getDomainClass()).orElse("");
             semanticElementsProvider = this.semanticCandidatesProviderFactory.getSemanticCandidatesProvider(interpreter, domainClass, semanticCandidatesExpression, preconditionExpression);
         } else {
-            // @formatter:off
             List<String> sourceNodeDescriptionIds = sourceNodeDescriptions.stream()
                     .map(NodeDescription::getId)
                     .toList();
-            // @formatter:on
 
             semanticElementsProvider = new RelationBasedSemanticElementsProvider(sourceNodeDescriptionIds);
         }

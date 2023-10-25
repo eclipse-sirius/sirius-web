@@ -79,6 +79,7 @@ type InsideLabel {
   alignment: Position!
   position: Position!
   size: Size!
+  isHeader: Boolean!
 }
 
 enum InsideLabelLocation {
@@ -115,7 +116,6 @@ type RectangularNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
   color: String!
-  withHeader: Boolean!
 }
 
 enum LineStyle {

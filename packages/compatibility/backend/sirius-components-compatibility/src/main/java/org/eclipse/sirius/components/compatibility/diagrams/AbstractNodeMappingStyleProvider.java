@@ -79,15 +79,12 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
             style = workspaceImageDescriptionConverter.convert();
         } else {
             // Fallback on Rectangular node style for now, until other styles are supported
-
-            // @formatter:off
             style = RectangularNodeStyle.newRectangularNodeStyle()
                     .color("rgb(200, 200, 200)")
                     .borderColor("rgb(0, 0, 0)")
                     .borderSize(1)
                     .borderStyle(LineStyle.Solid)
                     .build();
-            // @formatter:on
         }
 
         return style;
@@ -112,11 +109,9 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
     }
 
     private INodeStyle createListItemNodeStyle(VariableManager variableManager, LabelStyleDescription nodeStyleDescription) {
-        // @formatter:off
         return IconLabelNodeStyle.newIconLabelNodeStyle()
                 .backgroundColor("transparent")
                 .build();
-        // @formatter:on
     }
 
     private INodeStyle createListNodeStyle(VariableManager variableManager, FlatContainerStyleDescription flatContainerStyleDescription) {
@@ -132,16 +127,13 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), flatContainerStyleDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
-        // @formatter:off
         return RectangularNodeStyle.newRectangularNodeStyle()
                 .color(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
-                .withHeader(true)
                 .build();
-        // @formatter:on
     }
 
     private int getBorderRadius(FlatContainerStyleDescription flatContainerStyleDescription) {
@@ -168,15 +160,12 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), squareDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
-        // @formatter:off
         return RectangularNodeStyle.newRectangularNodeStyle()
                 .color(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderStyle(borderStyle)
-                .withHeader(false)
                 .build();
-        // @formatter:on
     }
 
     private RectangularNodeStyle createRectangularNodeStyle(VariableManager variableManager, FlatContainerStyleDescription flatContainerStyleDescription) {
@@ -191,16 +180,13 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         Result result = this.interpreter.evaluateExpression(variables, flatContainerStyleDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
-        // @formatter:off
         return RectangularNodeStyle.newRectangularNodeStyle()
                 .color(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
-                .withHeader(false)
                 .build();
-        // @formatter:on
     }
 
     private RectangularNodeStyle createRectangularNodeStyle(VariableManager variableManager, DotDescription dotDescription) {
@@ -215,16 +201,13 @@ public class AbstractNodeMappingStyleProvider implements Function<VariableManage
         Result result = this.interpreter.evaluateExpression(variables, dotDescription.getBorderSizeComputationExpression());
         int borderSize = result.asInt().getAsInt();
 
-        // @formatter:off
         return RectangularNodeStyle.newRectangularNodeStyle()
                 .color(color)
                 .borderColor(borderColor)
                 .borderSize(borderSize)
                 .borderRadius(borderRadius)
                 .borderStyle(borderStyle)
-                .withHeader(false)
                 .build();
-        // @formatter:on
     }
 
 }

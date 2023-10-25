@@ -74,14 +74,12 @@ public class DiagramRendererNodeTests {
     @Test
     public void testSimpleNodeRendering() {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            // @formatter:off
             return RectangularNodeStyle.newRectangularNodeStyle()
                     .color("")
                     .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
-            // @formatter:on
         };
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.UNDEFINED, Optional.empty());
 
@@ -111,14 +109,12 @@ public class DiagramRendererNodeTests {
     @Test
     public void testSimpleNodeRenderingWithSizeProvider() {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            // @formatter:off
             return RectangularNodeStyle.newRectangularNodeStyle()
                     .color("")
                     .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
-            // @formatter:on
         };
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
 
@@ -148,28 +144,24 @@ public class DiagramRendererNodeTests {
     @Test
     public void testSimpleNodeRenderingWithSizeProviderWithPreviousDiagram() {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            // @formatter:off
             return RectangularNodeStyle.newRectangularNodeStyle()
                     .color("")
                     .borderColor("")
                     .borderSize(0)
                     .borderStyle(LineStyle.Solid)
                     .build();
-            // @formatter:on
         };
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.empty());
 
         // We modified the created diagram to change the node previous size.
         Node node = diagram.getNodes().get(0);
 
-        // @formatter:off
         Node nodeWithNewSize = Node.newNode(node)
                 .size(Size.of(50, 100))
                 .build();
         Diagram newDiagram = Diagram.newDiagram(diagram)
                 .nodes(List.of(nodeWithNewSize))
                 .build();
-        // @formatter:on
 
         diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.of(newDiagram));
 
@@ -181,7 +173,6 @@ public class DiagramRendererNodeTests {
         // We check that the node size is the new one set in new diagram
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 100 && s.getWidth() == 50);
 
-        // @formatter:off
         nodeWithNewSize = Node.newNode(node)
                 .size(Size.of(50, 100))
                 .customizedProperties(Set.of(CustomizableProperties.Size))
@@ -189,7 +180,6 @@ public class DiagramRendererNodeTests {
         newDiagram = Diagram.newDiagram(diagram)
                 .nodes(List.of(nodeWithNewSize))
                 .build();
-        // @formatter:on
         diagram = this.createDiagram(styleProvider, variableManager -> NODE_RECTANGULAR, VariableManager -> Size.of(10, 200), Optional.of(newDiagram));
         // We now check that we use the custom user size in priority over the VSM default one.
         assertThat(diagram.getNodes()).extracting(Node::getSize).allMatch(s -> s.getHeight() == 100 && s.getWidth() == 50);
@@ -201,12 +191,10 @@ public class DiagramRendererNodeTests {
     @Test
     public void testImageNodeRendering() {
         Function<VariableManager, INodeStyle> styleProvider = variableManager -> {
-            // @formatter:off
             return ImageNodeStyle.newImageNodeStyle()
                     .imageURL("test")
                     .scalingFactor(1)
                     .build();
-            // @formatter:on
         };
         Diagram diagram = this.createDiagram(styleProvider, variableManager -> NODE_IMAGE, VariableManager -> Size.UNDEFINED, Optional.empty());
 
@@ -237,7 +225,6 @@ public class DiagramRendererNodeTests {
      */
     private Diagram createDiagram(Function<VariableManager, INodeStyle> styleProvider, Function<VariableManager, String> typeProvider, Function<VariableManager, Size> sizeProvider,
             Optional<Diagram> previousDiagram) {
-        // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .italicProvider(VariableManager -> true)
                 .boldProvider(VariableManager -> true)
@@ -252,6 +239,7 @@ public class DiagramRendererNodeTests {
                 .idProvider(variableManager -> LABEL_ID)
                 .textProvider(variableManager -> LABEL_TEXT)
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         NodeDescription nodeDescription = NodeDescription.newNodeDescription(NODE_DESCRIPTION_ID)
@@ -280,10 +268,8 @@ public class DiagramRendererNodeTests {
                 .palettes(List.of())
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
-        // @formatter:on
 
         VariableManager variableManager = new VariableManager();
-        // @formatter:off
         DiagramComponentProps props = DiagramComponentProps.newDiagramComponentProps()
                 .variableManager(variableManager)
                 .diagramDescription(diagramDescription)
@@ -294,7 +280,6 @@ public class DiagramRendererNodeTests {
                 .operationValidator(new IOperationValidator.NoOp())
                 .diagramEvent(Optional.empty())
                 .build();
-        // @formatter:on
         Element element = new Element(DiagramComponent.class, props);
         return new DiagramRenderer().render(element);
     }

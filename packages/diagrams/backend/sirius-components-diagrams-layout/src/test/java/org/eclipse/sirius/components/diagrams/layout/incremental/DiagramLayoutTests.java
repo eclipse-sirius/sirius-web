@@ -126,7 +126,6 @@ public class DiagramLayoutTests {
     @Test
     public void testRemoveEdgeDoesNotAffectUnrelated() {
 
-        // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
                 .rectangleNode(FIRST_TARGET_OBJECT_ID).at(10, 10).of(20, 20).and()
@@ -143,7 +142,6 @@ public class DiagramLayoutTests {
                 .goingThrough(20, 50)
                 .and()
             .build();
-        // @formatter:on
 
         Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testRemoveEdgeDoesNotAffectUnrelated");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
@@ -184,7 +182,6 @@ public class DiagramLayoutTests {
         String firstChildTargetObjectId = "First child";
         String secondChildTargetObjectId = "Second child";
 
-        // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
                 .rectangleNode(firstParentTargetObjectId).at(10, 10).of(200, 300)
@@ -204,7 +201,6 @@ public class DiagramLayoutTests {
                 .to(firstParentTargetObjectId).at(0.1, 0.9)
             .and()
             .build();
-        // @formatter:on
 
         Path path = Paths.get(PATH_TO_EDITING_CONTEXTS.toString(), "testSimpleDiagramLayout");
         JsonBasedEditingContext editingContext = new JsonBasedEditingContext(path);
@@ -256,21 +252,18 @@ public class DiagramLayoutTests {
     public void testCreateEdgeDoesNotAffectOtherEdges() {
         ListLayoutStrategy columnListLayoutStrategy = new ListLayoutStrategy();
 
-        // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()
-                .rectangleNode(FIRST_TARGET_OBJECT_ID)
+                .rectangleNode(FIRST_TARGET_OBJECT_ID, true)
                     .at(10, 10)
                     .of(-1, -1)
-                    .withHeader(true)
                     .childNodes(columnListLayoutStrategy)
                         .iconLabelNode("Child").at(-1, -1).of(-1, -1).and()
                         .and()
                     .and()
-                .rectangleNode(SECOND_TARGET_OBJECT_ID)
+                .rectangleNode(SECOND_TARGET_OBJECT_ID, true)
                     .at(200, 200)
                     .of(-1, -1)
-                    .withHeader(true)
                     .childNodes(columnListLayoutStrategy).and()
                     .and()
             .and()
@@ -279,7 +272,6 @@ public class DiagramLayoutTests {
                 .to(SECOND_TARGET_OBJECT_ID).at(0.25, 0.25)
                 .and()
             .build();
-        // @formatter:on
         TestDiagramCreationService layoutDiagramInitialDiagram = this.createDiagramCreationService(diagram);
         Diagram initialLayoutedDiagram = layoutDiagramInitialDiagram.performLayout(new IEditingContext.NoOp(), diagram, null);
         assertThat(initialLayoutedDiagram.getEdges()).hasSize(1);

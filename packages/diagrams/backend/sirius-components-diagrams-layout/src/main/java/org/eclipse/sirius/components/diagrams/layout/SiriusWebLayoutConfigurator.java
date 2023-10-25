@@ -176,7 +176,7 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
     private void updateElkPadding(ElkNode elkNode, Node node) {
         INodeStyle nodeStyle = node.getStyle();
         if (nodeStyle instanceof RectangularNodeStyle style) {
-            if (style.isWithHeader()) {
+            if (node.getInsideLabel().isIsHeader()) {
                 // We are supposing that rectangular node label is positioned on top center of the node, which could not
                 // be always right
                 ElkPadding currentPadding = elkNode.getProperty(CoreOptions.PADDING);
@@ -184,7 +184,6 @@ public class SiriusWebLayoutConfigurator extends LayoutConfigurator implements I
                 elkNode.setProperty(CoreOptions.PADDING, new ElkPadding(updatedPaddingTop, currentPadding.right, currentPadding.bottom, currentPadding.left));
             }
         }
-
     }
 
     private List<ElkNode> collectChildrenNode(ElkNode elkDiagram) {

@@ -50,8 +50,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     private boolean isBorderNode;
 
-    private boolean withHeader;
-
     private InsideLabel insideLabel;
 
     private Position position;
@@ -71,7 +69,11 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
     public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
-        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER);
+        this(nodesBuilder, nodeLabel, false, isBorderNode);
+    }
+
+    public RectangleNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isLabelAHeader, boolean isBorderNode) {
+        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.INSIDE_CENTER, isLabelAHeader);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }
@@ -83,11 +85,6 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
 
     public RectangleNodeBuilder<T> of(double width, double height) {
         this.size = Size.of(width, height);
-        return this;
-    }
-
-    public RectangleNodeBuilder<T> withHeader(boolean withHeader) {
-        this.withHeader = withHeader;
         return this;
     }
 
@@ -126,16 +123,13 @@ public final class RectangleNodeBuilder<T> implements NodeBuilder<T> {
         List<Node> borderNodes = Optional.ofNullable(this.borderNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
         List<Node> childNodes = Optional.ofNullable(this.childNodesBuilder).map(nodesBuilder -> nodesBuilder.build(targetObjectIdToNodeId)).orElse(List.of());
 
-        // @formatter:off
         INodeStyle style = RectangularNodeStyle.newRectangularNodeStyle()
                 .color("#E5F5F8")
                 .borderColor("#33B0C3")
                 .borderSize(1)
                 .borderRadius(3)
                 .borderStyle(LineStyle.Solid)
-                .withHeader(this.withHeader)
                 .build();
-        // @formatter:on
 
         String labeltext = this.insideLabel.getText();
         String nodeId = UUID.randomUUID().toString();

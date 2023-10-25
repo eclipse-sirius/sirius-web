@@ -60,7 +60,7 @@ public final class ImageNodeBuilder<T> implements NodeBuilder<T> {
     private Set<CustomizableProperties> customizedProperties = Set.of();
 
     public ImageNodeBuilder(NodesBuilder<T> nodesBuilder, String nodeLabel, boolean isBorderNode) {
-        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.OUTSIDE_CENTER);
+        this.insideLabel = new LabelBuilder().basicInsideLabel(nodeLabel, LabelType.OUTSIDE_CENTER, false);
         this.isBorderNode = isBorderNode;
         this.nodesBuilder = Objects.requireNonNull(nodesBuilder);
     }

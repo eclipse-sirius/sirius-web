@@ -43,7 +43,6 @@ public class TestDiagramDescriptionBuilder {
 
     public DiagramDescription getDiagramDescription(String diagramDescriptionId, List<NodeDescription> nodeDescriptions, List<EdgeDescription> edgeDescriptions,
             List<Palette> palettes) {
-        // @formatter:off
         return DiagramDescription.newDiagramDescription(diagramDescriptionId)
                 .label("")
                 .canCreatePredicate(variableManager -> Boolean.TRUE)
@@ -54,11 +53,9 @@ public class TestDiagramDescriptionBuilder {
                 .palettes(palettes)
                 .dropHandler(variableManager -> new Failure(""))
                 .build();
-        // @formatter:on
     }
 
     public EdgeDescription getEdgeDescription(String edgeDescriptionId, NodeDescription nodeDescription) {
-        // @formatter:off
         Function<VariableManager, List<Element>> sourceNodesProvider = variableManager -> List.of();
         Function<VariableManager, List<Element>> targetNodesProvider = variableManager -> List.of();
 
@@ -89,11 +86,9 @@ public class TestDiagramDescriptionBuilder {
                 .labelEditHandler((variableManager, edgeLabelKind, newLabel) -> new Failure(""))
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        // @formatter:on
     }
 
     public NodeDescription getNodeDescription(String nodeDescriptionId, Function<VariableManager, List<?>> semanticElementsProvider) {
-        // @formatter:off
         LabelStyleDescription labelStyleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "#000000")
                 .fontSizeProvider(variableManager -> 16)
@@ -108,6 +103,7 @@ public class TestDiagramDescriptionBuilder {
                 .idProvider(variableManager -> "labelId")
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
+                .isHeaderProvider(vm -> false)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -142,7 +138,6 @@ public class TestDiagramDescriptionBuilder {
                 .labelEditHandler((variableManager, newLabel) -> new Success())
                 .deleteHandler(variableManager -> new Success())
                 .build();
-        // @formatter:on
     }
 
     private String getNodeId(String nodeDescriptionId, String objectId) {

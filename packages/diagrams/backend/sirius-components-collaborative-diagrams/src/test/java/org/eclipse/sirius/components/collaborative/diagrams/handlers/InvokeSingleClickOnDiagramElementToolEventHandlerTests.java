@@ -365,7 +365,6 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
     }
 
     private SingleClickOnDiagramElementTool createTool(String toolId, boolean appliesToDiagramRoot, List<IDiagramElementDescription> diagramElementsDescriptions) {
-        // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(TOOL_LABEL)
                 .iconURL(List.of(TOOL_IMAGE_URL))
@@ -374,11 +373,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .handler(variableManager -> new Success(ChangeKind.SEMANTIC_CHANGE, Map.of()))
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .build();
-        // @formatter:on
     }
 
     private Node createNode(String nodeId, String nodeDescriptionId, String targetObjectId) {
-        // @formatter:off
         var labelStyle = LabelStyle.newLabelStyle()
                 .color("#000001")
                 .fontSize(16)
@@ -392,6 +389,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .size(Size.UNDEFINED)
                 .alignment(Position.UNDEFINED)
                 .style(labelStyle)
+                .isHeader(false)
                 .build();
 
         return Node.newNode(nodeId)
@@ -411,11 +409,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .state(ViewModifier.Normal)
                 .collapsingState(CollapsingState.EXPANDED)
                 .build();
-        // @formatter:on
     }
 
     private NodeDescription createNodeDescription(String nodeDescriptionId) {
-        // @formatter:off
         var styleDescription = LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> "")
                 .fontSizeProvider(variableManager -> 0)
@@ -430,6 +426,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .idProvider(vm -> "")
                 .styleDescriptionProvider(vm -> styleDescription)
                 .textProvider(vm -> "")
+                .isHeaderProvider(vm -> false)
                 .build();
 
         return NodeDescription.newNodeDescription(nodeDescriptionId)
@@ -449,11 +446,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectLabelProvider(vm -> "")
                 .typeProvider(vm -> "")
                 .build();
-        // @formatter:on
     }
 
     private Edge createEdge(String edgeId, String edgeDescriptionId, String targetObjectId) {
-        // @formatter:off
         var labelStyle = LabelStyle.newLabelStyle()
                 .color("#000002")
                 .fontSize(14)
@@ -495,11 +490,9 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .modifiers(Set.of())
                 .state(ViewModifier.Normal)
                 .build();
-        // @formatter:on
     }
 
     private EdgeDescription createEdgeDescription(String edgeDescriptionId) {
-        // @formatter:off
         var edgeStyle = EdgeStyle.newEdgeStyle()
                 .color("#000003")
                 .lineStyle(LineStyle.Dash)
@@ -520,6 +513,5 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .targetObjectKindProvider(vm -> "")
                 .targetObjectLabelProvider(vm -> "")
                 .build();
-        // @formatter:on
     }
 }

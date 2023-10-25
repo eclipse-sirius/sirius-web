@@ -45,6 +45,12 @@ public final class NodesBuilder<T> {
         return nodeBuilder;
     }
 
+    public RectangleNodeBuilder<T> rectangleNode(String nodeLabel, boolean withHeader) {
+        RectangleNodeBuilder<T> nodeBuilder = new RectangleNodeBuilder<>(this, nodeLabel, this.isBorderNode, withHeader);
+        this.nodeBuilders.add(nodeBuilder);
+        return nodeBuilder;
+    }
+
     public ImageNodeBuilder<T> imageNode(String nodeLabel) {
         ImageNodeBuilder<T> imageNodeBuilder = new ImageNodeBuilder<>(this, nodeLabel, this.isBorderNode);
         this.nodeBuilders.add(imageNodeBuilder);

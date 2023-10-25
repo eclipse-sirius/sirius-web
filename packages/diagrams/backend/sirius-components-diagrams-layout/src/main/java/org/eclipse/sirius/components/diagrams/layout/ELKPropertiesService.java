@@ -18,10 +18,8 @@ import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
 import org.eclipse.elk.core.options.NodeLabelPlacement;
 import org.eclipse.elk.core.options.PortLabelPlacement;
-import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.springframework.stereotype.Service;
 
 /**
@@ -80,11 +78,7 @@ public class ELKPropertiesService {
     }
 
     public boolean hasHeader(Node node) {
-        INodeStyle nodeStyle = node.getStyle();
-        if (nodeStyle instanceof RectangularNodeStyle rectangularNodeStyle) {
-            return rectangularNodeStyle.isWithHeader();
-        }
-        return false;
+        return node.getInsideLabel().isIsHeader();
     }
 
     private String getVerticalAlignment(EnumSet<NodeLabelPlacement> nodeLabelPlacementSet) {

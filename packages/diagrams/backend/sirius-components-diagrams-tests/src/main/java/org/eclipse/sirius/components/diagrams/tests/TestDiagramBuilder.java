@@ -51,7 +51,6 @@ public class TestDiagramBuilder {
     public static final String TOOL_LABEL = "toolLabel";
 
     public Diagram getDiagram(String id) {
-        // @formatter:off
         return Diagram.newDiagram(id)
                 .label("diagramLabel")
                 .descriptionId(UUID.randomUUID().toString())
@@ -61,27 +60,22 @@ public class TestDiagramBuilder {
                 .nodes(List.of())
                 .edges(List.of())
                 .build();
-        // @formatter:on
     }
 
     public RectangularNodeStyle getRectangularNodeStyle() {
-        // @formatter:off
         return RectangularNodeStyle.newRectangularNodeStyle()
                 .borderColor("#000000")
                 .borderSize(1)
                 .borderStyle(LineStyle.Solid)
                 .color("#FFFFFF")
                 .build();
-        // @formatter:on
     }
 
     public ImageNodeStyle getImageNodeStyle() {
-        // @formatter:off
         return ImageNodeStyle.newImageNodeStyle()
                 .imageURL(IMAGE_PNG)
                 .scalingFactor(-1)
                 .build();
-        // @formatter:on
     }
 
     public Node getNode(String id, boolean withLabel) {
@@ -115,6 +109,7 @@ public class TestDiagramBuilder {
                     .size(Size.UNDEFINED)
                     .alignment(Position.UNDEFINED)
                     .style(labelStyle)
+                    .isHeader(false)
                     .build();
             nodeBuilder.insideLabel(insideLabel);
         }
@@ -123,7 +118,6 @@ public class TestDiagramBuilder {
     }
 
     public Edge getEdge(String id, String sourceId, String targetId) {
-        // @formatter:off
         EdgeStyle style = EdgeStyle.newEdgeStyle()
                 .size(1)
                 .lineStyle(LineStyle.Solid)
@@ -147,17 +141,14 @@ public class TestDiagramBuilder {
                 .sourceAnchorRelativePosition(Ratio.UNDEFINED)
                 .targetAnchorRelativePosition(Ratio.UNDEFINED)
                 .build();
-        // @formatter:on
     }
 
     public SingleClickOnDiagramElementTool getNodeTool(String id) {
-        // @formatter:off
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(TOOL_LABEL)
                 .iconURL(List.of(TOOL_IMAGE_URL))
                 .handler(variableManager -> new Success())
                 .targetDescriptions(List.of())
                 .build();
-        // @formatter:on
     }
 }

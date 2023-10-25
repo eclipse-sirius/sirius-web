@@ -34,8 +34,6 @@ public final class RectangularNodeStyle implements INodeStyle {
 
     private LineStyle borderStyle;
 
-    private boolean withHeader;
-
     private RectangularNodeStyle() {
         // Prevent instantiation
     }
@@ -60,18 +58,14 @@ public final class RectangularNodeStyle implements INodeStyle {
         return this.borderStyle;
     }
 
-    public boolean isWithHeader() {
-        return this.withHeader;
-    }
-
     public static Builder newRectangularNodeStyle() {
         return new Builder();
     }
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'color: {1}, with header: {2}, border: '{' color: {3}, size: {4}, radius: {5}, style: {6} '}''}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.withHeader, this.borderColor, this.borderSize, this.borderRadius, this.borderStyle);
+        String pattern = "{0} '{'color: {1}, border: '{' color: {2}, size: {3}, radius: {4}, style: {5} '}''}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.borderColor, this.borderSize, this.borderRadius, this.borderStyle);
     }
 
     /**
@@ -90,8 +84,6 @@ public final class RectangularNodeStyle implements INodeStyle {
         private int borderRadius;
 
         private LineStyle borderStyle;
-
-        private boolean withHeader;
 
         private Builder() {
             // Prevent instantiation
@@ -122,11 +114,6 @@ public final class RectangularNodeStyle implements INodeStyle {
             return this;
         }
 
-        public Builder withHeader(boolean withHeader) {
-            this.withHeader = withHeader;
-            return this;
-        }
-
         public RectangularNodeStyle build() {
             RectangularNodeStyle nodeStyleDescription = new RectangularNodeStyle();
             nodeStyleDescription.color = Objects.requireNonNull(this.color);
@@ -134,7 +121,6 @@ public final class RectangularNodeStyle implements INodeStyle {
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderRadius = this.borderRadius;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);
-            nodeStyleDescription.withHeader = this.withHeader;
             return nodeStyleDescription;
         }
     }

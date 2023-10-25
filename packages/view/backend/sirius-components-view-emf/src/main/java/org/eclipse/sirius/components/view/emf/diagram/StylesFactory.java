@@ -141,7 +141,6 @@ public final class StylesFactory {
                 break;
             case NodeType.NODE_RECTANGLE:
                 result = RectangularNodeStyle.newRectangularNodeStyle()
-                        .withHeader(((RectangularNodeStyleDescription) nodeStyle).isWithHeader())
                         .color(Optional.ofNullable(nodeStyle.getColor())
                                 .filter(FixedColor.class::isInstance)
                                 .map(FixedColor.class::cast)
@@ -168,7 +167,6 @@ public final class StylesFactory {
         }
         if (result == null) {
             result = RectangularNodeStyle.newRectangularNodeStyle()
-                    .withHeader(true)
                     .color(Optional.ofNullable(nodeStyle.getColor())
                             .filter(FixedColor.class::isInstance)
                             .map(FixedColor.class::cast)
