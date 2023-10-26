@@ -1,0 +1,29 @@
+= How to contribute custom tool to a Diagram palette
+
+This document shows the steps needed for an application to contribute its own custom tools.
+
+An example of a simple tool is available on _Papaya::OperationalActivity_ node to illustrate (see _PapayaOperationActivityLabelDetailToolContribution.tsx_ and _EditProjectView.tsx_).
+
+== The tool component
+
+By contributing a new custom tool, you add a React component to the palette.
+This component must use as props `DiagramPaletteToolContributionComponentProps`.
+To avoid inconsistency palette representation, we encourage the use of a simple icon, but by definition, you can contribute what you want as a React component.
+If needed, this icon can open a modal with more complex UI.
+
+This component can perform some GraphQL queries and mutations.
+To retrieve the _editingContextId_ and the _representationId_, you can use the following code in your component:
+
+[source,typescript]
+----
+const { projectId: editingContextId, representationId } = useParams<EditProjectViewParams>();
+----
+
+== Contribution
+
+Once the component has been developed, we need to contribute it to the `DiagramPaletteToolContext.Provider`.
+To do this, you need to add a `DiagramPaletteToolContribution` to the `DiagramPaletteToolContextValue` array pasted to the provider.
+The `DiagramPaletteToolContribution` need two props, the _component_ and a _canHandle_ function, this function will be called each time we create a palette on the diagram.
+It must return true only for the palette where the custom tool needs to be added.
+To compute that, this function has two parameters the _diagramId_ and the _diagramElementId_, note that for the diagram palette _diagramId_ = _diagramElementId_.
+To retrieve the node metadata, you can use the hook `useNodes` and filter all the node by the _diagramElementId_.
