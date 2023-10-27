@@ -80,6 +80,17 @@ const isErrorPayload = (payload: GQLDropNodePayload): payload is GQLErrorPayload
 const isSuccessPayload = (payload: GQLDropNodePayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
+const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): number => {
+  let nodeDepth = 0;
+
+  let nodeHierarchy: Node<NodeData> | undefined = node;
+  while (nodeHierarchy) {
+    nodeDepth++;
+    nodeHierarchy = intersections.find((node) => node.id === nodeHierarchy?.parentNode);
+  }
+  return nodeDepth;
+};
+
 const useDropNodeMutation = () => {
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -170,18 +181,11 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const onNodeDrag: NodeDragHandler = (_event, node) => {
     if (draggedNode && !draggedNode.data.isBorderNode) {
-      const intersections = getIntersectingNodes(node)
-        .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
-        .sort((n1, n2) => {
-          if (n1.parentNode === n2.id) {
-            return -1;
-          } else if (n2.parentNode === n1.id) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
-      const newParentId = intersections[0]?.id || null;
+      const intersections = getIntersectingNodes(node);
+      const newParentId =
+        [...intersections]
+          .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
+          .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
       setDropData({
         initialParentId: node.parentNode || null,
         draggedNodeId: node.id,

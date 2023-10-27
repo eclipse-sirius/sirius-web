@@ -45,8 +45,9 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 - https://github.com/eclipse-sirius/sirius-web/issues/2487[#2487] [form] Fix an issue that prevents an error when using values not in the option list in a reference widget modal transfert.
 - https://github.com/eclipse-sirius/sirius-web/issues/1712[#1712] [diagram] Fix an issue that triggers direct label edition even if there is no corresponding tool.
 Note that double-clicking no longer triggers a direct edit.
--https://github.com/eclipse-sirius/sirius-web/issues/2498[#2498] [diagram] Fix an issue that prevents tool name to be displayed on multi lines in react flow diagram palette.
+- https://github.com/eclipse-sirius/sirius-web/issues/2498[#2498] [diagram] Fix an issue that prevents tool name to be displayed on multi lines in react flow diagram palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/2491[2491] [diagram] Fix an issue where multiple tool section could be opened.
+- https://github.com/eclipse-sirius/sirius-web/issues/2509[#2509] [diagram] Fix an issue that prevents using graphical DnD in deep node in some cases.
 
 === New Features
 
