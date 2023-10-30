@@ -75,7 +75,13 @@ const toRectangularNode = (
     data.label = {
       id: insideLabel.id,
       text: insideLabel.text,
+      isHeader: insideLabel.isHeader,
       style: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '8px 16px',
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
@@ -85,6 +91,9 @@ const toRectangularNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
+        if (data.label.isHeader) {
+          data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+        }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
       }
       if (alignement.secondaryAlignment === 'CENTER') {
@@ -212,6 +221,7 @@ const toListNode = (
       id: insideLabel.id,
       text: insideLabel.text,
       iconURL: labelStyle.iconURL,
+      isHeader: insideLabel.isHeader,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -226,7 +236,7 @@ const toListNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (insideLabel.isHeader) {
+        if (data.label.isHeader) {
           data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };

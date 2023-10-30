@@ -67,10 +67,12 @@ export const getNodeOrMinHeight = (nodeHeight: number | undefined): number => {
   return Math.max(nodeHeight ?? -Infinity, defaultHeight);
 };
 
+// WARN: should be moved in RectangularNodeLayoutHandler.ts
 export const getChildNodePosition = (
   allVisibleNodes: Node<NodeData>[],
   child: Node<NodeData>,
   labelElement: HTMLElement | null,
+  withHeader: boolean,
   borderWidth: number,
   previousSibling?: Node<NodeData>
 ) => {
@@ -85,14 +87,11 @@ export const getChildNodePosition = (
     .reduce((a, b) => Math.max(a, b), 0);
 
   if (!previousSibling) {
+    const headerFootprint = withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0;
+
     return {
       x: rectangularNodePadding + borderWidth + maxWestBorderNodeWidth,
-      y:
-        borderWidth +
-        rectangularNodePadding +
-        maxNorthBorderNodeHeight +
-        (labelElement?.getBoundingClientRect().height ?? 0) +
-        rectangularNodePadding,
+      y: borderWidth + headerFootprint + rectangularNodePadding + maxNorthBorderNodeHeight,
     };
   } else {
     const previousSiblingsMaxEastBorderNodeWidth = getChildren(previousSibling, allVisibleNodes)
