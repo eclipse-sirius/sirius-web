@@ -62,6 +62,7 @@ Note that double-clicking no longer triggers a direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2513[#2513] [diagram] Fix the double node border displayed when node list was containing compartments.
 - https://github.com/eclipse-sirius/sirius-web/issues/2532[#2532] [diagram] Fix the limitation on borders that prevent movement on all sides of their node parent.
 - https://github.com/eclipse-sirius/sirius-web/issues/2543[#2543] [diagram] Prevent list items being moved to inconsistent positions
+- https://github.com/eclipse-sirius/sirius-web/issues/2500[#2500] [diagram] Selecting an element in the explorer now correctly selects and focuses on the corresponding edge on the current diagram if there is one.
 
 === New Features
 

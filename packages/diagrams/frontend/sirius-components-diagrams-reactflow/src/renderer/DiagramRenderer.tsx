@@ -130,7 +130,13 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
     const firstNodeMatchingWorkbenchSelection =
       alreadySelectedNodesMatchingWorkbenchSelection[0] ?? nodesMatchingWorkbenchSelection[0];
 
-    if (edgesMatchingWorkbenchSelection.length === 0 && firstNodeMatchingWorkbenchSelection) {
+    const alreadySelectedEdgesMatchingWorkbenchSelection = edgesMatchingWorkbenchSelection.filter(
+      (edge) => edge.selected
+    );
+    const firstEdgeMatchingWorkbenchSelection =
+      alreadySelectedEdgesMatchingWorkbenchSelection[0] ?? edgesMatchingWorkbenchSelection[0];
+
+    if (firstNodeMatchingWorkbenchSelection && alreadySelectedEdgesMatchingWorkbenchSelection.length === 0) {
       const firstNodeIdMatchingWorkbenchSelection = firstNodeMatchingWorkbenchSelection.id;
 
       // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
@@ -148,6 +154,33 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
           .getNodes()
           .filter((node) => firstNodeIdMatchingWorkbenchSelection === node.id);
         reactFlowInstance.fitView({ nodes: selectedNodes, maxZoom: 2, duration: 1000 });
+      }
+    } else if (edgesMatchingWorkbenchSelection.length > 0 && firstEdgeMatchingWorkbenchSelection) {
+      const firstEdgeIdMatchingWorkbenchSelection = firstEdgeMatchingWorkbenchSelection.id;
+
+      const reactFlowState = store.getState();
+      const currentlySelectedEdges = reactFlowState.edges.filter((edge) => edge.selected);
+
+      const isAlreadySelected = currentlySelectedEdges
+        .map((edge) => edge.id)
+        .includes(firstEdgeIdMatchingWorkbenchSelection);
+
+      if (!isAlreadySelected) {
+        reactFlowState.unselectNodesAndEdges();
+        reactFlowState.addSelectedEdges([firstEdgeIdMatchingWorkbenchSelection]);
+
+        const selectedEdges = reactFlowState.edges.filter((edge) => firstEdgeIdMatchingWorkbenchSelection === edge.id);
+        // React Flow does not support "fit on edge", so fit on its source & target nodes to ensure it is visible and in context
+        reactFlowInstance.fitView({
+          nodes: selectedEdges
+            .flatMap((edge) => [edge.source, edge.target])
+            .flatMap((id) => {
+              const nodes = reactFlowState.getNodes().filter((node) => node.id === id);
+              return nodes;
+            }),
+          maxZoom: 2,
+          duration: 1000,
+        });
       }
     }
   }, [selection]);
