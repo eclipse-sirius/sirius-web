@@ -43,6 +43,7 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_4"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_4"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
+        nodeStyle.setWithHeader(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Component");
         nodeDescription.setSemanticCandidatesExpression("aql:self.components");

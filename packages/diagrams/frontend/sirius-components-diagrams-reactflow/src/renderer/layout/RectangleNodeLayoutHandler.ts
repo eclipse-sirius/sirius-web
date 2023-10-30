@@ -68,6 +68,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const withHeader = node.data.label?.isHeader ?? false;
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -79,10 +80,17 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       if (previousNode) {
         child.position = previousNode.position;
       } else {
-        child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth);
+        child.position = getChildNodePosition(visibleNodes, child, labelElement, withHeader, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
-          child.position = getChildNodePosition(visibleNodes, child, labelElement, borderWidth, previousSibling);
+          child.position = getChildNodePosition(
+            visibleNodes,
+            child,
+            labelElement,
+            withHeader,
+            borderWidth,
+            previousSibling
+          );
         }
       }
     });
