@@ -110,13 +110,14 @@ export const useConnector = (): UseConnectorValue => {
       }
       return nodeStyle;
     },
-    getHandleStyle: (id: string): React.CSSProperties => {
+    getHandleStyle: (id: string, isNodeSelected: boolean): React.CSSProperties => {
       const handleStyle: React.CSSProperties = {};
       if (isNewConnection && candidates.map((node) => node.id).includes(id)) {
         handleStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
-        handleStyle.opacity = 1;
       } else if (isNewConnection) {
         handleStyle.opacity = 0.4;
+      } else if (!isNodeSelected) {
+        handleStyle.opacity = 0.0;
       }
       return handleStyle;
     },

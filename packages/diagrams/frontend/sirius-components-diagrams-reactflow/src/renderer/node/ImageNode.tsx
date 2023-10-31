@@ -65,7 +65,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         type="source"
         position={Position.Top}
         isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
         onMouseDown={onConnectionStartElementClick}
       />
       <Handle
@@ -73,7 +73,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         type="source"
         position={Position.Left}
         isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
         onMouseDown={onConnectionStartElementClick}
       />
       <Handle
@@ -81,7 +81,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         type="source"
         position={Position.Right}
         isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
         onMouseDown={onConnectionStartElementClick}
       />
       <Handle
@@ -89,7 +89,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
         type="source"
         position={Position.Bottom}
         isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
         onMouseDown={onConnectionStartElementClick}
       />
     </>

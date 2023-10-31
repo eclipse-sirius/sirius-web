@@ -70,7 +70,7 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
           type="source"
           position={Position.Top}
           isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
           onMouseDown={onConnectionStartElementClick}
         />
         <Handle
@@ -78,7 +78,7 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
           type="source"
           position={Position.Left}
           isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
           onMouseDown={onConnectionStartElementClick}
         />
         <Handle
@@ -86,7 +86,7 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
           type="source"
           position={Position.Right}
           isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
           onMouseDown={onConnectionStartElementClick}
         />
         <Handle
@@ -94,7 +94,7 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
           type="source"
           position={Position.Bottom}
           isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
+          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId, selected)}
           onMouseDown={onConnectionStartElementClick}
         />
       </div>
