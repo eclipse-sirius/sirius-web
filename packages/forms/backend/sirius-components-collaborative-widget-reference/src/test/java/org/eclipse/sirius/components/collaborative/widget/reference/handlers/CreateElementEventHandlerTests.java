@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
-import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDefaultCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInReferenceSuccessPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
@@ -124,8 +123,7 @@ public class CreateElementEventHandlerTests {
         };
 
         CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectService, List.of(referenceWidgetCreateElementHandler),
-                new ReferenceWidgetDefaultCreateElementHandler(new IEditService.NoOp()), new SimpleMeterRegistry(),
-                new IFeedbackMessageService.NoOp());
+                new IEditService.NoOp(), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
         assertThat(handler.canHandle(input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -195,7 +193,7 @@ public class CreateElementEventHandlerTests {
             }
         };
 
-        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, messageService, new IObjectService.NoOp(), List.of(), new ReferenceWidgetDefaultCreateElementHandler(new IEditService.NoOp()), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
+        CreateElementEventHandler handler = new CreateElementEventHandler(formQueryService, messageService, new IObjectService.NoOp(), List.of(), new IEditService.NoOp(), new SimpleMeterRegistry(), new IFeedbackMessageService.NoOp());
         assertThat(handler.canHandle(input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

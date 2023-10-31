@@ -22,7 +22,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandidateSearchProvider;
-import org.springframework.stereotype.Service;
 
 /**
  * Default implementation of {@link IReferenceWidgetRootCandidateSearchProvider}.
@@ -30,12 +29,11 @@ import org.springframework.stereotype.Service;
  *
  * @author Arthur Daussy
  */
-@Service
 public class ReferenceWidgetDefaultCandidateSearchProvider implements IReferenceWidgetRootCandidateSearchProvider {
 
     @Override
     public boolean canHandle(String descriptionId) {
-        return false; // Default implementation, it'll be used if no other service can handle the descriptionId
+        return true;
     }
 
     @Override

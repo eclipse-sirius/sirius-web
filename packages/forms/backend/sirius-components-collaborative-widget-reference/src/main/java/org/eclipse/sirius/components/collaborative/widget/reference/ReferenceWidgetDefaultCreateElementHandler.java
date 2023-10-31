@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
-import org.springframework.stereotype.Service;
 
 /**
  * * Default implementation of {@link IReferenceWidgetCreateElementHandler}.
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Service;
  *
  * @author frouene
  */
-@Service
 public class ReferenceWidgetDefaultCreateElementHandler implements IReferenceWidgetCreateElementHandler {
 
     private final IEditService editService;
@@ -40,7 +38,7 @@ public class ReferenceWidgetDefaultCreateElementHandler implements IReferenceWid
 
     @Override
     public boolean canHandle(String descriptionId) {
-        return false; // Default implementation, it'll be used if no other service can handle the descriptionId
+        return true;
     }
 
     @Override

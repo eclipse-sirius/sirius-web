@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextChildObject
 import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDefaultCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ReferenceWidgetChildCreationDescriptionsInput;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -46,9 +47,9 @@ public class ReferenceWidgetChildCreationDescriptionsEventHandler implements IEd
 
     private final Counter counter;
 
-    public ReferenceWidgetChildCreationDescriptionsEventHandler(List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, ReferenceWidgetDefaultCreateElementHandler defaultReferenceWidgetCreateElementHandler, MeterRegistry meterRegistry) {
+    public ReferenceWidgetChildCreationDescriptionsEventHandler(List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IEditService editService, MeterRegistry meterRegistry) {
         this.referenceWidgetCreateElementHandlers = Objects.requireNonNull(referenceWidgetCreateElementHandlers);
-        this.defaultReferenceWidgetCreateElementHandler = Objects.requireNonNull(defaultReferenceWidgetCreateElementHandler);
+        this.defaultReferenceWidgetCreateElementHandler = new ReferenceWidgetDefaultCreateElementHandler(Objects.requireNonNull(editService));
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
     }
 

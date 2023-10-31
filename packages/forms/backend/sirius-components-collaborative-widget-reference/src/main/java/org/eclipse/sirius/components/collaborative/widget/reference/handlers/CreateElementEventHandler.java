@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateEl
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -65,12 +66,12 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, ReferenceWidgetDefaultCreateElementHandler defaultReferenceWidgetCreateElementHandler, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
+    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IEditService editService, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
         this.objectService = Objects.requireNonNull(objectService);
         this.referenceWidgetCreateElementHandlers = Objects.requireNonNull(referenceWidgetCreateElementHandlers);
-        this.defaultReferenceWidgetCreateElementHandler = Objects.requireNonNull(defaultReferenceWidgetCreateElementHandler);
+        this.defaultReferenceWidgetCreateElementHandler = new ReferenceWidgetDefaultCreateElementHandler(Objects.requireNonNull(editService));
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER).tag(Monitoring.NAME, this.getClass().getSimpleName()).register(meterRegistry);
