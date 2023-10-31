@@ -178,6 +178,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .alignment(Position.UNDEFINED)
                 .style(labelStyle)
                 .isHeader(false)
+                .displayHeaderSeparator(false)
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()

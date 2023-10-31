@@ -110,6 +110,7 @@ public class TestDiagramBuilder {
                     .alignment(Position.UNDEFINED)
                     .style(labelStyle)
                     .isHeader(false)
+                    .displayHeaderSeparator(false)
                     .build();
             nodeBuilder.insideLabel(insideLabel);
         }

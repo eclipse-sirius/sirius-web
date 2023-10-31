@@ -50,6 +50,8 @@ public final class InsideLabelElementProps implements IProps {
 
     private boolean isHeader;
 
+    private boolean displayHeaderSeparator;
+
     private InsideLabelElementProps() {
         // Prevent instantiation
     }
@@ -90,6 +92,10 @@ public final class InsideLabelElementProps implements IProps {
         return this.isHeader;
     }
 
+    public boolean isDisplayHeaderSeparator() {
+        return this.displayHeaderSeparator;
+    }
+
     public static Builder newInsideLabelElementProps(String id) {
         return new Builder(id);
     }
@@ -124,6 +130,8 @@ public final class InsideLabelElementProps implements IProps {
         private LabelStyle style;
 
         private boolean isHeader;
+
+        private boolean displayHeaderSeparator;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -169,6 +177,11 @@ public final class InsideLabelElementProps implements IProps {
             return this;
         }
 
+        public Builder displayHeaderSeparator(boolean displayHeaderSeparator) {
+            this.displayHeaderSeparator = displayHeaderSeparator;
+            return this;
+        }
+
         public InsideLabelElementProps build() {
             InsideLabelElementProps insideLabelElementProps = new InsideLabelElementProps();
             insideLabelElementProps.id = Objects.requireNonNull(this.id);
@@ -180,6 +193,7 @@ public final class InsideLabelElementProps implements IProps {
             insideLabelElementProps.alignment = Objects.requireNonNull(this.alignment);
             insideLabelElementProps.style = Objects.requireNonNull(this.style);
             insideLabelElementProps.isHeader = this.isHeader;
+            insideLabelElementProps.displayHeaderSeparator = this.displayHeaderSeparator;
             return insideLabelElementProps;
         }
     }

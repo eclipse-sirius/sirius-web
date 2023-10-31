@@ -90,6 +90,7 @@ public class AbstractNodeMappingConverter {
                 .textProvider(labelExpressionProvider)
                 .styleDescriptionProvider(labelStyleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
+                .displayHeaderSeparatorProvider(isHeaderProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 

@@ -80,6 +80,7 @@ type InsideLabel {
   position: Position!
   size: Size!
   isHeader: Boolean!
+  displayHeaderSeparator: Boolean!
 }
 
 enum InsideLabelLocation {

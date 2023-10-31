@@ -186,6 +186,7 @@ public class DiagramElementFactory implements IElementFactory {
                 .alignment(props.getAlignment())
                 .style(props.getStyle())
                 .isHeader(props.isIsHeader())
+                .displayHeaderSeparator(props.isDisplayHeaderSeparator())
                 .build();
     }
 

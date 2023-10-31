@@ -39,6 +39,11 @@ It requires to add a `isHeaderProvider` to the _LabelDescription_ of Node.
 Replace only for the programmatic API the _LabelDescription_ type in _NodeDescription_ by _InsideLabelDescription_ and add the inside label location.
 Update the graphql API accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/2444[#2444] [form] `ViewFormDescriptionConverterSwitch` now extends `FormSwitch<Optional<AbstractControlDescription>>`
+- https://github.com/eclipse-sirius/sirius-web/issues/2516[#2516] [diagram] Add to the diagram core API the possibility to display the header separator when the inside label is a header.
+It requires to add a `displayHeaderSeparatorProvider` to the _InsideLabelDescription_.
+For the compatibility layer, the separator will always be displayed if the label is inside a node displaying its children has a list.
+In a near future it will be possible to customize that value using the View DSL, but for now, the `displayHeaderSeparatorProvider` has the same value as `isHeaderProvider`.
+Add the attribute `displayHeaderSeparator` to the graphql API.
 
 === Dependency update
 

@@ -65,7 +65,6 @@ public class ELKLayoutedDiagramProvider {
         Size size = Size.of(elkDiagram.getWidth(), elkDiagram.getHeight());
         Position position = Position.at(elkDiagram.getX(), elkDiagram.getY());
 
-        // @formatter:off
         List<Node> nodes = this.getLayoutedNodes(diagram.getNodes(), id2ElkGraphElements, layoutConfigurator);
         List<Edge> edges = this.getLayoutedEdges(diagram.getEdges(), id2ElkGraphElements);
 
@@ -75,11 +74,9 @@ public class ELKLayoutedDiagramProvider {
                 .nodes(nodes)
                 .edges(edges)
                 .build();
-        // @formatter:on
     }
 
     private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
-        // @formatter:off
         return nodes.stream().flatMap(node -> {
             return Optional.ofNullable(id2ElkGraphElements.get(node.getId().toString()))
                     .filter(ElkConnectableShape.class::isInstance)
@@ -87,7 +84,6 @@ public class ELKLayoutedDiagramProvider {
                     .map(elkNode -> this.getLayoutedNode(node, elkNode, id2ElkGraphElements, layoutConfigurator))
                     .stream();
         }).collect(Collectors.toUnmodifiableList());
-        // @formatter:on
     }
 
     private Node getLayoutedNode(Node node, ElkConnectableShape elkConnectableShape, Map<String, ElkGraphElement> id2ElkGraphElements, ISiriusWebLayoutConfigurator layoutConfigurator) {
@@ -103,7 +99,6 @@ public class ELKLayoutedDiagramProvider {
             // Reset the "custom size" flag if the ELK layout decided on a different size.
             customizedProperties = customizedProperties.stream().filter(property -> !CustomizableProperties.Size.equals(property)).collect(Collectors.toSet());
         }
-        // @formatter:off
         return Node.newNode(node)
                 .insideLabel(label)
                 .size(size)
@@ -112,11 +107,9 @@ public class ELKLayoutedDiagramProvider {
                 .borderNodes(borderNodes)
                 .customizedProperties(customizedProperties)
                 .build();
-        // @formatter:on
     }
 
     private List<Edge> getLayoutedEdges(List<Edge> edges, Map<String, ElkGraphElement> id2ElkGraphElements) {
-        // @formatter:off
         return edges.stream().flatMap(edge -> {
             return Optional.ofNullable(id2ElkGraphElements.get(edge.getId().toString()))
                     .filter(ElkEdge.class::isInstance)
@@ -124,7 +117,6 @@ public class ELKLayoutedDiagramProvider {
                     .map(elkEdge -> this.getLayoutedEdge(edge, elkEdge, id2ElkGraphElements))
                     .stream();
         }).collect(Collectors.toUnmodifiableList());
-        // @formatter:on
     }
 
     private Edge getLayoutedEdge(Edge edge, ElkEdge elkEdge, Map<String, ElkGraphElement> id2ElkGraphElements) {
@@ -183,7 +175,6 @@ public class ELKLayoutedDiagramProvider {
             endLabel = this.getLayoutedLabel(endLabel, id2ElkGraphElements, xOffset, yOffset);
         }
 
-        // @formatter:off
         return Edge.newEdge(edge)
                 .beginLabel(beginLabel)
                 .centerLabel(centerLabel)
@@ -192,7 +183,6 @@ public class ELKLayoutedDiagramProvider {
                 .sourceAnchorRelativePosition(sourceAnchorRatio)
                 .targetAnchorRelativePosition(targetAnchorRatio)
                 .build();
-        // @formatter:on
     }
 
     private Ratio getSectionRatio(ElkNode node, double sectionX, double sectionY) {
@@ -228,7 +218,6 @@ public class ELKLayoutedDiagramProvider {
 
             Position position = Position.at(xOffset + elkLabel.getX(), yOffset + elkLabel.getY());
 
-            // @formatter:off
             Position alignment = elkLabel.eAdapters().stream()
                     .findFirst()
                     .filter(AlignmentHolder.class::isInstance)
@@ -241,7 +230,6 @@ public class ELKLayoutedDiagramProvider {
                     .position(position)
                     .alignment(alignment)
                     .build();
-            // @formatter:on
         }
         return layoutedLabel;
     }
@@ -260,7 +248,6 @@ public class ELKLayoutedDiagramProvider {
                 nodeLabelType = this.elkPropertiesService.getNodeLabelType(node, layoutConfigurator);
             }
 
-            // @formatter:off
             Position position = Optional.of(elkLabel.getParent())
                     .filter(ElkNode.class::isInstance)
                     .map(ElkNode.class::cast)
@@ -294,7 +281,6 @@ public class ELKLayoutedDiagramProvider {
                     .position(position)
                     .alignment(alignment)
                     .build();
-            // @formatter:on
         }
         return layoutedInsideLabel;
     }
@@ -304,12 +290,10 @@ public class ELKLayoutedDiagramProvider {
         Position absolutePosition = Position.at(node.getX(), node.getY());
         while (currentNode.getParent() != null) {
             currentNode = currentNode.getParent();
-            // @formatter:off
             absolutePosition = Position.newPosition()
                     .x(absolutePosition.getX() + currentNode.getX())
                     .y(absolutePosition.getY() + currentNode.getY())
                     .build();
-            // @formatter:on
         }
         return absolutePosition;
     }

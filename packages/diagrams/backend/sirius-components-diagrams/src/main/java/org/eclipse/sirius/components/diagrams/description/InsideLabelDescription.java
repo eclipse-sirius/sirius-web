@@ -48,6 +48,8 @@ public final class InsideLabelDescription {
 
     private Function<VariableManager, Boolean> isHeaderProvider;
 
+    private Function<VariableManager, Boolean> displayHeaderSeparatorProvider;
+
     private InsideLabelLocation insideLabelLocation;
 
     private InsideLabelDescription() {
@@ -72,6 +74,10 @@ public final class InsideLabelDescription {
 
     public Function<VariableManager, Boolean> getIsHeaderProvider() {
         return this.isHeaderProvider;
+    }
+
+    public Function<VariableManager, Boolean> getDisplayHeaderSeparatorProvider() {
+        return this.displayHeaderSeparatorProvider;
     }
 
     public InsideLabelLocation getInsideLabelLocation() {
@@ -105,6 +111,8 @@ public final class InsideLabelDescription {
 
         private Function<VariableManager, Boolean> isHeaderProvider;
 
+        private Function<VariableManager, Boolean> displayHeaderSeparatorProvider;
+
         private InsideLabelLocation insideLabelLocation;
 
         private Builder(String id) {
@@ -131,6 +139,11 @@ public final class InsideLabelDescription {
             return this;
         }
 
+        public Builder displayHeaderSeparatorProvider(Function<VariableManager, Boolean> displayHeaderSeparatorProvider) {
+            this.displayHeaderSeparatorProvider = Objects.requireNonNull(displayHeaderSeparatorProvider);
+            return this;
+        }
+
         public Builder insideLabelLocation(InsideLabelLocation insideLabelLocation) {
             this.insideLabelLocation = Objects.requireNonNull(insideLabelLocation);
             return this;
@@ -144,6 +157,7 @@ public final class InsideLabelDescription {
             labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
             labelDescription.isHeaderProvider = Objects.requireNonNull(this.isHeaderProvider);
             labelDescription.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
+            labelDescription.displayHeaderSeparatorProvider = Objects.requireNonNull(this.displayHeaderSeparatorProvider);
             return labelDescription;
         }
     }

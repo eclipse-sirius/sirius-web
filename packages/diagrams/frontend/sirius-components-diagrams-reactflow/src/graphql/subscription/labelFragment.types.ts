@@ -25,6 +25,7 @@ export interface GQLInsideLabel {
   insideLabelLocation: InsideLabelLocation;
   style: GQLLabelStyle;
   isHeader: boolean;
+  displayHeaderSeparator: boolean;
 }
 
 export interface GQLLabelStyle {

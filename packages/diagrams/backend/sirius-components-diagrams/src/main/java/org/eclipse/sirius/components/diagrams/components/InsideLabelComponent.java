@@ -53,8 +53,10 @@ public class InsideLabelComponent implements IComponent {
         String text = insideLabelDescription.getTextProvider().apply(variableManager);
 
         boolean isHeader = insideLabelDescription.getIsHeaderProvider().apply(variableManager);
+        boolean displayHeaderSeparator = false;
         if (isHeader) {
             type = LabelType.INSIDE_CENTER.getValue();
+            displayHeaderSeparator = insideLabelDescription.getDisplayHeaderSeparatorProvider().apply(variableManager);
         }
 
         LabelStyleDescription labelStyleDescription = insideLabelDescription.getStyleDescriptionProvider().apply(variableManager);
@@ -91,6 +93,7 @@ public class InsideLabelComponent implements IComponent {
                 .alignment(aligment)
                 .style(labelStyle)
                 .isHeader(isHeader)
+                .displayHeaderSeparator(displayHeaderSeparator)
                 .build();
         return new Element(InsideLabelElementProps.TYPE, insideLabelElementProps);
     }

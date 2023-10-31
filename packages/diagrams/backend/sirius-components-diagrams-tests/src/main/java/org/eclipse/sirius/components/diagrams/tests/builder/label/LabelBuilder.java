@@ -72,6 +72,7 @@ public final class LabelBuilder {
                 .size(Size.UNDEFINED)
                 .style(labelStyle)
                 .isHeader(isHeader)
+                .displayHeaderSeparator(isHeader)
                 .build();
     }
 

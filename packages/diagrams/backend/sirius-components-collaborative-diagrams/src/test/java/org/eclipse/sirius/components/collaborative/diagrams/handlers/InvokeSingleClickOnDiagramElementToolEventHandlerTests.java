@@ -390,6 +390,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .alignment(Position.UNDEFINED)
                 .style(labelStyle)
                 .isHeader(false)
+                .displayHeaderSeparator(false)
                 .build();
 
         return Node.newNode(nodeId)
@@ -427,6 +428,7 @@ public class InvokeSingleClickOnDiagramElementToolEventHandlerTests {
                 .styleDescriptionProvider(vm -> styleDescription)
                 .textProvider(vm -> "")
                 .isHeaderProvider(vm -> false)
+                .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 
