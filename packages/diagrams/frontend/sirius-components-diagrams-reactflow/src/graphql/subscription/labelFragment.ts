@@ -35,6 +35,7 @@ fragment insideLabelFragment on InsideLabel {
   text
   insideLabelLocation
   isHeader
+  displayHeaderSeparator
   style {
     color
     fontSize

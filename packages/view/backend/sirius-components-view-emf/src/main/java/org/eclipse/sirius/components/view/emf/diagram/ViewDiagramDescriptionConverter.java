@@ -333,6 +333,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDescription.getLabelExpression()))
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
+                .displayHeaderSeparatorProvider(isHeaderProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
     }

@@ -109,6 +109,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .alignment(Position.UNDEFINED)
                 .style(labelStyle)
                 .isHeader(false)
+                .displayHeaderSeparator(false)
                 .build();
 
         return Node.newNode(id)

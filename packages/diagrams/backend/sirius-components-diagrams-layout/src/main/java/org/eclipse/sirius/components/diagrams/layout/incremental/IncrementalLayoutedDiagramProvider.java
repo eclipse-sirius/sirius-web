@@ -45,18 +45,15 @@ public class IncrementalLayoutedDiagramProvider {
         List<Node> nodes = this.getLayoutedNodes(diagram.getNodes(), id2LayoutData);
         List<Edge> edges = this.getLayoutedEdges(diagram.getEdges(), id2LayoutData);
 
-        // @formatter:off
         return Diagram.newDiagram(diagram)
                 .position(diagramLayoutData.getPosition())
                 .size(diagramLayoutData.getSize())
                 .nodes(nodes)
                 .edges(edges)
                 .build();
-        // @formatter:on
     }
 
     private List<Node> getLayoutedNodes(List<Node> nodes, Map<String, ILayoutData> id2LayoutData) {
-        // @formatter:off
         return nodes.stream().flatMap(node -> {
             return Optional.ofNullable(id2LayoutData.get(node.getId()))
                     .filter(NodeLayoutData.class::isInstance)
@@ -64,7 +61,6 @@ public class IncrementalLayoutedDiagramProvider {
                     .map(nodeLayoutData -> this.getLayoutedNode(node, nodeLayoutData, id2LayoutData))
                     .stream();
         }).collect(Collectors.toUnmodifiableList());
-        // @formatter:on
     }
 
     private Node getLayoutedNode(Node node, NodeLayoutData nodeLayoutData, Map<String, ILayoutData> id2LayoutData) {
@@ -79,7 +75,6 @@ public class IncrementalLayoutedDiagramProvider {
         } else {
             customizableProperties.remove(CustomizableProperties.Size);
         }
-        // @formatter:off
         return Node.newNode(node)
                 .insideLabel(insideLabel)
                 .size(nodeLayoutData.getSize())
@@ -89,11 +84,9 @@ public class IncrementalLayoutedDiagramProvider {
                 .borderNodes(borderNodes)
                 .customizedProperties(customizableProperties)
                 .build();
-        // @formatter:on
     }
 
     private List<Edge> getLayoutedEdges(List<Edge> edges, Map<String, ILayoutData> id2LayoutData) {
-        // @formatter:off
         return edges.stream().flatMap(edge -> {
             return Optional.ofNullable(id2LayoutData.get(edge.getId()))
                     .filter(EdgeLayoutData.class::isInstance)
@@ -101,7 +94,6 @@ public class IncrementalLayoutedDiagramProvider {
                     .map(edgeLayoutData -> this.getLayoutedEdge(edge, edgeLayoutData, id2LayoutData))
                     .stream();
         }).collect(Collectors.toUnmodifiableList());
-        // @formatter:on
     }
 
     private Edge getLayoutedEdge(Edge edge, EdgeLayoutData edgeLayoutData, Map<String, ILayoutData> id2LayoutData) {
@@ -118,7 +110,6 @@ public class IncrementalLayoutedDiagramProvider {
             endLabel = this.getLayoutedLabel(endLabel, id2LayoutData);
         }
 
-        // @formatter:off
         return Edge.newEdge(edge)
                 .beginLabel(beginLabel)
                 .centerLabel(centerLabel)
@@ -127,7 +118,6 @@ public class IncrementalLayoutedDiagramProvider {
                 .sourceAnchorRelativePosition(edgeLayoutData.getSourceAnchorRelativePosition())
                 .targetAnchorRelativePosition(edgeLayoutData.getTargetAnchorRelativePosition())
                 .build();
-        // @formatter:on
     }
 
     private Label getLayoutedLabel(Label label, Map<String, ILayoutData> id2LayoutData) {
@@ -136,14 +126,12 @@ public class IncrementalLayoutedDiagramProvider {
         if (optionalLabelLayoutData.isPresent()) {
             LabelLayoutData labelLayoutData = optionalLabelLayoutData.get();
 
-            // @formatter:off
             layoutedLabel = Label.newLabel(label)
                     .size(labelLayoutData.getTextBounds().getSize())
                     .position(labelLayoutData.getPosition())
                     .alignment(labelLayoutData.getTextBounds().getAlignment())
                     .type(labelLayoutData.getLabelType())
                     .build();
-            // @formatter:on
         }
         return layoutedLabel;
     }

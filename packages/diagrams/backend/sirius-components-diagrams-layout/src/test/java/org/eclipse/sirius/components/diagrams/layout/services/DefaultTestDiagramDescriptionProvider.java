@@ -421,6 +421,7 @@ public class DefaultTestDiagramDescriptionProvider {
                             .build();
                 })
                 .isHeaderProvider(this.isHeaderProvider)
+                .displayHeaderSeparatorProvider(this.isHeaderProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
     }

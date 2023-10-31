@@ -42,6 +42,8 @@ public final class InsideLabel {
 
     private boolean isHeader;
 
+    private boolean displayHeaderSeparator;
+
     private InsideLabel() {
         // Prevent instantiation
     }
@@ -80,6 +82,10 @@ public final class InsideLabel {
 
     public boolean isIsHeader() {
         return this.isHeader;
+    }
+
+    public boolean isDisplayHeaderSeparator() {
+        return this.displayHeaderSeparator;
     }
 
     public static Builder newLabel(String id) {
@@ -121,6 +127,8 @@ public final class InsideLabel {
 
         private boolean isHeader;
 
+        private boolean displayHeaderSeparator;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -135,6 +143,8 @@ public final class InsideLabel {
             this.alignment = insideLabel.getAlignment();
             this.style = insideLabel.getStyle();
             this.isHeader = insideLabel.isIsHeader();
+            this.displayHeaderSeparator = insideLabel.isDisplayHeaderSeparator();
+
         }
 
         public Builder type(String type) {
@@ -177,6 +187,11 @@ public final class InsideLabel {
             return this;
         }
 
+        public Builder displayHeaderSeparator(boolean displayHeaderSeparator) {
+            this.displayHeaderSeparator = displayHeaderSeparator;
+            return this;
+        }
+
         public InsideLabel build() {
             InsideLabel label = new InsideLabel();
             label.id = Objects.requireNonNull(this.id);
@@ -188,6 +203,7 @@ public final class InsideLabel {
             label.alignment = Objects.requireNonNull(this.alignment);
             label.style = Objects.requireNonNull(this.style);
             label.isHeader = this.isHeader;
+            label.displayHeaderSeparator = this.displayHeaderSeparator;
             return label;
         }
     }

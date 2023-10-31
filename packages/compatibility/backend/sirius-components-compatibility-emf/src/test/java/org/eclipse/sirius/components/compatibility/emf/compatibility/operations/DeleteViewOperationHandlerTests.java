@@ -107,6 +107,7 @@ public class DeleteViewOperationHandlerTests {
                         .alignment(Position.at(0, 0))
                         .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL(List.of()).build())
                         .isHeader(false)
+                        .displayHeaderSeparator(false)
                         .build())
                 .style(ImageNodeStyle.newImageNodeStyle().imageURL("").scalingFactor(0).build())
                 .position(Position.at(0, 0))
@@ -176,6 +177,7 @@ public class DeleteViewOperationHandlerTests {
                 .textProvider(variableManager -> "Node")
                 .styleDescriptionProvider(variableManager -> labelStyleDescription)
                 .isHeaderProvider(vm -> false)
+                .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
 

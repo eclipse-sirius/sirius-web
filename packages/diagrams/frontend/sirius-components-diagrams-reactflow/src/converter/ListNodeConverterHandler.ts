@@ -19,9 +19,9 @@ import {
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
+import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -82,7 +82,7 @@ const toListNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (data.label.isHeader) {
+        if (insideLabel.displayHeaderSeparator) {
           data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
