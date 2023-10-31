@@ -78,12 +78,12 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
     private final ReferenceWidgetDefaultCandidateSearchProvider defaultCandidateProvider;
 
-    public ModelBrowsersDescriptionProvider(IObjectService objectService, IURLParser urlParser, IEMFKindService emfKindService, List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders, ReferenceWidgetDefaultCandidateSearchProvider defaultCandidateProvider) {
+    public ModelBrowsersDescriptionProvider(IObjectService objectService, IURLParser urlParser, IEMFKindService emfKindService, List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.candidateProviders = Objects.requireNonNull(candidateProviders);
-        this.defaultCandidateProvider = Objects.requireNonNull(defaultCandidateProvider);
+        this.defaultCandidateProvider = new ReferenceWidgetDefaultCandidateSearchProvider();
     }
 
     @Override
