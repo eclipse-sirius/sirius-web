@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -24,7 +24,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   GQLCreateChildMutationData,
   GQLCreateChildPayload,
@@ -99,16 +99,6 @@ const useNewObjectModalStyles = makeStyles((theme) => ({
   iconRoot: {
     minWidth: theme.spacing(3),
   },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
 }));
 
 const isErrorPayload = (payload: GQLCreateChildPayload): payload is GQLErrorPayload =>
@@ -118,7 +108,6 @@ const isSuccessPayload = (payload: GQLCreateChildPayload): payload is GQLCreateC
 
 export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewObjectModalProps) => {
   const classes = useNewObjectModalStyles();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] = useMachine<NewObjectModalContext, NewObjectModalEvent>(newObjectModalMachine);
   const { newObjectModal } = value as SchemaValue;
@@ -211,19 +200,7 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
                 <MenuItem value={childCreationDescription.id} key={childCreationDescription.id}>
                   {childCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
-                      <div className={classes.iconContainer}>
-                        {childCreationDescription.iconURL.map((icon, index) => (
-                          <img
-                            height="16"
-                            width="16"
-                            key={index}
-                            alt={childCreationDescription.label}
-                            src={httpOrigin + icon}
-                            className={classes.icon}
-                            style={{ zIndex: index }}
-                          />
-                        ))}
-                      </div>
+                      <IconOverlay iconURL={childCreationDescription.iconURL} alt={childCreationDescription.label} />
                     </ListItemIcon>
                   )}
                   <ListItemText primary={childCreationDescription.label} />

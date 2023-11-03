@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { splitText } from '@eclipse-sirius/sirius-components-trees';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,7 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FilterableSortableListProps,
   FilterableSortableListState,
@@ -56,16 +56,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   noDragIcon: {
     display: 'none',
-  },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
 }));
 const useLabelStyles = makeStyles((theme: Theme) => ({
@@ -118,7 +108,6 @@ export const FilterableSortableList = ({
   moveElement,
 }: FilterableSortableListProps) => {
   const classes = useStyles();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [state, setState] = useState<FilterableSortableListState>({
     filterBarText: '',
@@ -250,20 +239,7 @@ export const FilterableSortableList = ({
                     <DragHandleIcon />
                   </ListItemIcon>
                   <ListItemIcon draggable onDragStart={() => handleDragItemStart(id)}>
-                    {iconURL.length > 0 ? (
-                      <div className={classes.iconContainer}>
-                        {iconURL.map((icon, index) => (
-                          <img
-                            height="16"
-                            width="16"
-                            key={index}
-                            alt={kind}
-                            src={httpOrigin + icon}
-                            className={classes.icon}
-                            style={{ zIndex: index }}></img>
-                        ))}
-                      </div>
-                    ) : null}
+                    <IconOverlay iconURL={iconURL} alt={kind} />
                   </ListItemIcon>
                   <ListItemText
                     id={labelId}

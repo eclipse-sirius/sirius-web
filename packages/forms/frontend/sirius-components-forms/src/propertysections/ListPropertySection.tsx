@@ -11,18 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { MouseEvent, useContext, useEffect } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { GQLListItem } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import {
@@ -101,17 +101,6 @@ const useListPropertySectionStyles = makeStyles<Theme, ListStyleProps>((theme) =
     whiteSpace: 'nowrap',
     flexGrow: 1,
   },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-    marginRight: theme.spacing(2),
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
 }));
 
 const NONE_WIDGET_ITEM_ID = 'none';
@@ -138,7 +127,7 @@ export const ListPropertySection = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useListPropertySectionStyles(props);
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const theme = useTheme();
 
   let items = [...widget.items];
   if (items.length === 0) {
@@ -238,21 +227,7 @@ export const ListPropertySection = ({
   const getTableCellContent = (item: GQLListItem): JSX.Element => {
     return (
       <>
-        {item.iconURL.length > 0 ? (
-          <div className={classes.iconContainer}>
-            {item.iconURL.map((icon, index) => (
-              <img
-                height="16"
-                width="16"
-                key={index}
-                alt={item.label}
-                src={httpOrigin + icon}
-                className={classes.icon}
-                style={{ zIndex: index }}
-              />
-            ))}
-          </div>
-        ) : null}
+        <IconOverlay iconURL={item.iconURL} alt={item.label} customIconStyle={{ marginRight: theme.spacing(2) }} />
         <Typography
           className={`${readOnly || widget.readOnly ? '' : classes.canBeSelectedItem} ${classes.style}`}
           onClick={() => (readOnly || widget.readOnly ? {} : clickHandler(item))}

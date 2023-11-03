@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
-import { getCSSColor, ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,7 +22,7 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GQLReferenceValue, GQLReferenceWidgetStyle } from '../ReferenceWidgetFragment.types';
 import {
   GQLFormDescription,
@@ -51,16 +51,6 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
     '& > *': {
       padding: 0,
     },
-  },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
 }));
 
@@ -105,7 +95,6 @@ export const ValuedReferenceAutocomplete = ({
   addReferenceValues,
   setReferenceValue,
 }: ValuedReferenceAutocompleteProps) => {
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const props: GQLReferenceWidgetStyle = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -243,20 +232,7 @@ export const ValuedReferenceAutocomplete = ({
       onChange={handleAutocompleteChange}
       renderOption={(option: GQLReferenceValue) => (
         <>
-          {option.iconURL.length > 0 && (
-            <div className={classes.iconContainer}>
-              {option.iconURL.map((icon, index) => (
-                <img
-                  height="16"
-                  width="16"
-                  key={index}
-                  alt={option.kind}
-                  src={httpOrigin + icon}
-                  className={classes.icon}
-                  style={{ zIndex: index }}></img>
-              ))}
-            </div>
-          )}
+          <IconOverlay iconURL={option.iconURL} alt={option.kind} />
           <span className={classes.optionLabel} data-testid={`option-${option.label}`}>
             {option.label}
           </span>
@@ -271,20 +247,9 @@ export const ValuedReferenceAutocomplete = ({
             label={option.label}
             data-testid={`reference-value-${option.label}`}
             icon={
-              option.iconURL.length > 0 && (
-                <div className={classes.iconContainer}>
-                  {option.iconURL.map((icon, index) => (
-                    <img
-                      height="16"
-                      width="16"
-                      key={index}
-                      alt={option.kind}
-                      src={httpOrigin + icon}
-                      className={classes.icon}
-                      style={{ zIndex: index }}></img>
-                  ))}
-                </div>
-              )
+              <div>
+                <IconOverlay iconURL={option.iconURL} alt={option.kind} />
+              </div>
             }
             clickable={!readOnly && !widget.readOnly}
             onClick={() => optionClickHandler(option)}

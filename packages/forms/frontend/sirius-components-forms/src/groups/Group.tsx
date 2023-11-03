@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PropertySection } from '../propertysections/PropertySection';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import { GroupProps, GroupStyleProps } from './Group.types';
@@ -69,17 +69,6 @@ const useGroupStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
     paddingTop: '1px',
     paddingBottom: '0px',
   },
-  buttonIcon: {
-    marginRight: theme.spacing(1),
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
 }));
 
 export const Group = ({ editingContextId, formId, group, widgetSubscriptions, setSelection, readOnly }: GroupProps) => {
@@ -88,8 +77,8 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
   };
 
   const classes = useGroupStyles(props);
+  const theme = useTheme();
   const [visibleWidgetIds, setVisibleWidgetIds] = useState<string[]>([]);
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   useEffect(() => {
     setVisibleWidgetIds(group.widgets.map((widget) => widget.id));
@@ -102,21 +91,11 @@ export const Group = ({ editingContextId, formId, group, widgetSubscriptions, se
         {group.widgets.map((widget) => {
           return (
             <ToggleButton className={classes.button} value={widget.id} key={widget.id}>
-              {widget.iconURL.length > 0 && (
-                <div className={classes.iconContainer}>
-                  {widget.iconURL.map((icon, index) => (
-                    <img
-                      height="16"
-                      width="16"
-                      key={index}
-                      alt={widget.label}
-                      src={httpOrigin + icon}
-                      className={classes.buttonIcon}
-                      style={{ zIndex: index }}
-                    />
-                  ))}
-                </div>
-              )}
+              <IconOverlay
+                iconURL={widget.iconURL}
+                alt={widget.label}
+                customIconStyle={{ marginRight: theme.spacing(1) }}
+              />
               {widget.label}
             </ToggleButton>
           );

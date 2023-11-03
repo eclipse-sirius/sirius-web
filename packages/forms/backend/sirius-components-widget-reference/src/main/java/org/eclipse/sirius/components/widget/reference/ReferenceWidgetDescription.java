@@ -47,7 +47,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
     private Function<VariableManager, String> itemKindProvider;
 
-    private Function<VariableManager, List<String>> itemImageURLProvider;
+    private Function<VariableManager, List<String>> itemIconURLProvider;
 
     private Function<VariableManager, String> ownerKindProvider;
 
@@ -113,8 +113,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.itemKindProvider;
     }
 
-    public Function<VariableManager, List<String>> getItemImageURLProvider() {
-        return this.itemImageURLProvider;
+    public Function<VariableManager, List<String>> getItemIconURLProvider() {
+        return this.itemIconURLProvider;
     }
 
     public Function<VariableManager, String> getOwnerKindProvider() {
@@ -199,7 +199,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
 
         private Function<VariableManager, String> itemKindProvider;
 
-        private Function<VariableManager, List<String>> itemImageURLProvider;
+        private Function<VariableManager, List<String>> itemIconURLProvider;
 
         private Function<VariableManager, String> ownerKindProvider;
 
@@ -287,8 +287,8 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder itemImageURLProvider(Function<VariableManager, List<String>> itemImageURLProvider) {
-            this.itemImageURLProvider = Objects.requireNonNull(itemImageURLProvider);
+        public Builder itemIconURLProvider(Function<VariableManager, List<String>> itemIconURLProvider) {
+            this.itemIconURLProvider = Objects.requireNonNull(itemIconURLProvider);
             return this;
         }
 
@@ -385,7 +385,7 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.itemIdProvider = Objects.requireNonNull(this.itemIdProvider);
             referenceWidgetDescription.itemLabelProvider = Objects.requireNonNull(this.itemLabelProvider);
             referenceWidgetDescription.itemKindProvider = Objects.requireNonNull(this.itemKindProvider);
-            referenceWidgetDescription.itemImageURLProvider = Objects.requireNonNull(this.itemImageURLProvider);
+            referenceWidgetDescription.itemIconURLProvider = Objects.requireNonNull(this.itemIconURLProvider);
             referenceWidgetDescription.ownerKindProvider = Objects.requireNonNull(this.ownerKindProvider);
             referenceWidgetDescription.referenceKindProvider = Objects.requireNonNull(this.referenceKindProvider);
             referenceWidgetDescription.isContainmentProvider = Objects.requireNonNull(this.isContainmentProvider);

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,7 +25,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import { useMachine } from '@xstate/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { SelectionDialogProps } from './SelectionDialog.types';
 import {
   HandleCompleteEvent,
@@ -68,16 +68,6 @@ const useSelectionObjectModalStyles = makeStyles((_theme) =>
       overflow: 'auto',
       maxHeight: 300,
     },
-    iconContainer: {
-      position: 'relative',
-      width: '24px',
-      height: '24px',
-    },
-    icon: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-    },
   })
 );
 
@@ -89,7 +79,6 @@ export const SelectionDialog = ({
   onFinish,
 }: SelectionDialogProps) => {
   const classes = useSelectionObjectModalStyles();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<SelectionDialogContext, SelectionDialogEvent>(
     selectionDialogMachine
@@ -162,19 +151,12 @@ export const SelectionDialog = ({
                 data-testid={selectionObject.label}>
                 <ListItemIcon>
                   {selectionObject.iconURL.length > 0 ? (
-                    <div className={classes.iconContainer}>
-                      {selectionObject.iconURL.map((icon, index) => (
-                        <img
-                          height="24"
-                          width="24"
-                          key={index}
-                          alt={selectionObject.label}
-                          src={httpOrigin + icon}
-                          className={classes.icon}
-                          style={{ zIndex: index }}
-                        />
-                      ))}
-                    </div>
+                    <IconOverlay
+                      iconURL={selectionObject.iconURL}
+                      alt={selectionObject.label}
+                      customIconHeight={24}
+                      customIconWidth={24}
+                    />
                   ) : (
                     <CropDinIcon style={{ fontSize: 24 }} />
                   )}

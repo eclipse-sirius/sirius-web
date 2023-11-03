@@ -12,11 +12,10 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -34,19 +33,6 @@ import {
   GQLTool,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
-
-const useStyle = makeStyles(() => ({
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-}));
 
 export const getConnectorToolsQuery = gql`
   query getConnectorTools(
@@ -110,9 +96,6 @@ const isDiagramDescription = (
 export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { connection, onConnectorContextualMenuClose } = useConnector();
-
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const classes = useStyle();
 
   const { addMessages, addErrorMessage } = useMultiToast();
 
@@ -222,19 +205,7 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
       {connectorTools.map((tool) => (
         <MenuItem key={tool.id} onClick={() => invokeTool(tool)}>
           <ListItemIcon>
-            <div className={classes.iconContainer}>
-              {tool.iconURL.map((icon, index) => (
-                <img
-                  height="16"
-                  width="16"
-                  key={index}
-                  alt={tool.label}
-                  title={tool.label}
-                  src={httpOrigin + icon}
-                  className={classes.icon}
-                  style={{ zIndex: index }}></img>
-              ))}
-            </div>
+            <IconOverlay iconURL={tool.iconURL} alt={tool.label} title={tool.label} />
           </ListItemIcon>
           <Typography>{tool.label}</Typography>
         </MenuItem>

@@ -32,6 +32,7 @@ For example, Diagram & Form domains are not root domains because `DiagramDescrip
 - https://github.com/eclipse-sirius/sirius-web/issues/2456[#2456] [sirius-web] The GraphQL field `CreateChildSuccessPayload` now expects to have a list of messages.
 - https://github.com/eclipse-sirius/sirius-web/issues/1982[#1982] [diagram] Change the diagram structure. The Node's 'label' attribute has been renamed into 'insideLabel' and its type changed from `Label` to `InsideLabel` (which is currently identical to `Label` except for the name).
 - https://github.com/eclipse-sirius/sirius-web/issues/2388[#2388] [core] The `IObjectService.getImagePath` API changed and now must return a list containing all the image paths to compose/overlay.
+Due to this data structure modification, all existing diagrams can no longer be opened.
 - https://github.com/eclipse-sirius/sirius-web/issues/2460[#2460] [form] The reference widget no longer declares a `createElementHandlerProvider`, this feature is delegated to the new service `IReferenceWidgetCreateElementHandler`.
 - https://github.com/eclipse-sirius/sirius-web/issues/2453[#2453] [diagram] The GraphQL fields `DeleteFromDiagramSuccessPayload`, `EditLabelSuccessPayload` and `DropOnDiagramSuccessPayload` now expects to have a list of messages.
 - https://github.com/eclipse-sirius/sirius-web/issues/2514[#2514] [diagram] Move and rename the RectangleNodeStyle `withHeader` attribute to InsideLabel `isHeader`.
