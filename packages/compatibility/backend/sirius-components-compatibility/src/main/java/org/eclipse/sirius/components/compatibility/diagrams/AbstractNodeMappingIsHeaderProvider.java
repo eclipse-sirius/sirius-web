@@ -17,7 +17,6 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
 import org.eclipse.sirius.diagram.description.AbstractNodeMapping;
 import org.eclipse.sirius.diagram.description.ContainerMapping;
 import org.eclipse.sirius.diagram.description.style.FlatContainerStyleDescription;
@@ -47,7 +46,7 @@ public class AbstractNodeMappingIsHeaderProvider implements Function<VariableMan
 
     private Boolean isHeader(VariableManager variableManager, LabelStyleDescription labelStyleDescription) {
         if (labelStyleDescription instanceof FlatContainerStyleDescription flatContainerStyleDescription) {
-            return this.abstractNodeMapping instanceof ContainerMapping && new ContainerMappingQuery((ContainerMapping) this.abstractNodeMapping).isListContainer();
+            return this.abstractNodeMapping instanceof ContainerMapping;
         }
         return false;
     }
