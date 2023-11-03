@@ -90,8 +90,13 @@ export const useLayout = (): UseLayoutValue => {
       };
       parentNode = reactFlowInstance.getNode(parentNode.parentNode ?? '');
     }
+
+    // Add an offset to put the node under the mouse for the next refresh
     setReferencePosition({
-      position,
+      position: {
+        x: position.x - 10 > 0 || parentId === '' || !parentId ? position.x - 10 : 0,
+        y: position.y - 10 > 0 || parentId === '' || !parentId ? position.y - 10 : 0,
+      },
       parentId,
     });
   }, []);

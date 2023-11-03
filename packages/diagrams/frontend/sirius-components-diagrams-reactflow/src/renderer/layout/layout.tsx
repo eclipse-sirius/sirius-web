@@ -205,7 +205,12 @@ const layoutDiagram = (
   if (referencePosition) {
     newlyAddedNode = allVisibleNodes
       .filter((node) => !previousDiagram?.nodes.map((n) => n.id).find((n) => n === node.id))
-      .find((node) => node.parentNode === referencePosition.parentId);
+      .find((node) => {
+        if (node.parentNode) {
+          return referencePosition.parentId === node.parentNode;
+        }
+        return !referencePosition.parentId || referencePosition.parentId === '';
+      });
     if (newlyAddedNode) {
       newlyAddedNode = { ...newlyAddedNode, position: referencePosition.position };
     }
