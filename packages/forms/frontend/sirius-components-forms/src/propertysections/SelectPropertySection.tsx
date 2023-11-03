@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
@@ -42,16 +42,6 @@ const useStyle = makeStyles<Theme, SelectStyleProps>((theme) => ({
   },
   iconRoot: {
     minWidth: theme.spacing(3),
-  },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
 }));
 
@@ -111,8 +101,6 @@ export const SelectPropertySection = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyle(props);
-
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [isFocused, setFocus] = useState(false);
 
@@ -237,18 +225,7 @@ export const SelectPropertySection = ({
             }>
             {option.iconURL.length > 0 && (
               <ListItemIcon className={classes.iconRoot}>
-                <div className={classes.iconContainer}>
-                  {option.iconURL.map((icon, index) => (
-                    <img
-                      height="16"
-                      width="16"
-                      key={index}
-                      alt={option.label}
-                      src={httpOrigin + icon}
-                      className={classes.icon}
-                      style={{ zIndex: index }}></img>
-                  ))}
-                </div>
+                <IconOverlay iconURL={option.iconURL} alt={option.label} />
               </ListItemIcon>
             )}
 

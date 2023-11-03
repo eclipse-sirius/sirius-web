@@ -11,25 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { getCSSColor, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useContext } from 'react';
+import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { Theme, useTheme } from '@material-ui/core/styles';
+import { memo } from 'react';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { LabelProps } from './Label.types';
-
-const useStyle = makeStyles(() => ({
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-}));
 
 const labelStyle = (
   theme: Theme,
@@ -59,9 +46,7 @@ const labelStyle = (
 
 export const Label = memo(({ diagramElementId, label, faded, transform }: LabelProps) => {
   const theme: Theme = useTheme();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
-  const classes = useStyle();
 
   const handleClose = () => {
     resetDirectEdit();
@@ -83,23 +68,7 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
       data-testid={`Label - ${label.text}`}
       style={labelStyle(theme, label.style, faded, transform, !!label.iconURL)}
       className="nopan">
-      {label.iconURL.length > 0 ? (
-        <div className={classes.iconContainer}>
-          {label.iconURL.map((icon, index) => (
-            <img
-              height="16"
-              width="16"
-              key={index}
-              alt={label.text}
-              src={httpOrigin + icon}
-              className={classes.icon}
-              style={{ zIndex: index }}
-            />
-          ))}
-        </div>
-      ) : (
-        ''
-      )}
+      <IconOverlay iconURL={label.iconURL} alt={label.text} />
       {label.text}
     </div>
   );

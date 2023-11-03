@@ -183,7 +183,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .itemIdProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getId).orElse(""))
                 .itemKindProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getKind).orElse(""))
                 .itemLabelProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getLabel).orElse(""))
-                .itemImageURLProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of()))
+                .itemIconURLProvider(variableManager -> this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of()))
                 .ownerKindProvider(variableManager -> this.getTypeName(variableManager, feature))
                 .referenceKindProvider(variableManager -> this.getReferenceKind(variableManager, feature))
                 .isContainmentProvider(variableManager -> this.isContainment(variableManager, feature))

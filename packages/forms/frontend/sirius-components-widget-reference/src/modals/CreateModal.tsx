@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { Selection, ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -23,7 +23,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { ModelBrowserTreeView } from '../components/ModelBrowserTreeView';
 import {
   CreateModalProps,
@@ -68,16 +68,6 @@ const useStyle = makeStyles((theme) => ({
   },
   iconRoot: {
     minWidth: theme.spacing(3),
-  },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
   },
 }));
 
@@ -174,7 +164,6 @@ const isSuccessPayload = (
 
 export const CreateModal = ({ editingContextId, widget, onClose, formId }: CreateModalProps) => {
   const classes = useStyle();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ value, context }, dispatch] = useMachine<CreateModalContext, CreateModalEvent>(createModalMachine);
   const { createModal } = value as SchemaValue;
@@ -434,18 +423,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
               <MenuItem value={creationDescription.id} key={creationDescription.id}>
                 {creationDescription.iconURL.length > 0 && (
                   <ListItemIcon className={classes.iconRoot}>
-                    <div className={classes.iconContainer}>
-                      {creationDescription.iconURL.map((icon, index) => (
-                        <img
-                          height="16"
-                          width="16"
-                          key={index}
-                          alt={creationDescription.label}
-                          src={httpOrigin + icon}
-                          className={classes.icon}
-                          style={{ zIndex: index }}></img>
-                      ))}
-                    </div>
+                    <IconOverlay iconURL={creationDescription.iconURL} alt={creationDescription.label} />
                   </ListItemIcon>
                 )}
                 <ListItemText primary={creationDescription.label} />

@@ -128,7 +128,7 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
                 .itemsProvider(variableManager -> this.getReferenceValue(referenceDescription, variableManager))
                 .optionsProvider(variableManager -> this.getReferenceOptions(referenceDescription, variableManager))
                 .itemIdProvider(this::getItemId).itemKindProvider(this::getItemKind)
-                .itemLabelProvider(this::getItemLabel).itemImageURLProvider(this::getItemIconURL)
+                .itemLabelProvider(this::getItemLabel).itemIconURLProvider(this::getItemIconURL)
                 .ownerKindProvider(variableManager -> this.getOwnerKind(variableManager, referenceDescription))
                 .referenceKindProvider(variableManager -> this.getReferenceKind(variableManager, referenceDescription))
                 .isContainmentProvider(variableManager -> this.isContainment(variableManager, referenceDescription))

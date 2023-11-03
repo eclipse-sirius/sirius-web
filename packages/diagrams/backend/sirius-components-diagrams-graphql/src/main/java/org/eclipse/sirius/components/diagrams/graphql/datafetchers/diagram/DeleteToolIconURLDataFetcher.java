@@ -22,12 +22,12 @@ import org.eclipse.sirius.components.graphql.api.URLConstants;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to concatenate the server image URL to the delete element tool image path.
+ * The data fetcher used to concatenate the server icon URL to the delete element tool image path.
  *
  * @author arichard
  */
 @QueryDataFetcher(type = "DeleteTool", field = "iconURL")
-public class DeleteToolImageURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
+public class DeleteToolIconURLDataFetcher implements IDataFetcherWithFieldCoordinates<List<String>> {
 
     @Override
     public List<String> get(DataFetchingEnvironment environment) throws Exception {

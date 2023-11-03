@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
@@ -26,7 +26,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   GQLCreateRootObjectMutationData,
   GQLGetRootDomainsQueryData,
@@ -111,21 +111,10 @@ const useNewRootObjectModalStyles = makeStyles((theme) => ({
   iconRoot: {
     minWidth: theme.spacing(3),
   },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
 }));
 
 export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, onClose }: NewRootObjectModalProps) => {
   const classes = useNewRootObjectModalStyles();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [{ value, context }, dispatch] = useMachine<NewRootObjectModalContext, NewRootObjectModalEvent>(
     newRootObjectModalMachine
   );
@@ -294,18 +283,10 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
                 <MenuItem value={rootObjectCreationDescription.id} key={rootObjectCreationDescription.id}>
                   {rootObjectCreationDescription.iconURL.length > 0 && (
                     <ListItemIcon className={classes.iconRoot}>
-                      <div className={classes.iconContainer}>
-                        {rootObjectCreationDescription.iconURL.map((icon, index) => (
-                          <img
-                            height="16"
-                            width="16"
-                            key={index}
-                            alt={rootObjectCreationDescription.label}
-                            src={httpOrigin + icon}
-                            className={classes.icon}
-                            style={{ zIndex: index }}></img>
-                        ))}
-                      </div>
+                      <IconOverlay
+                        iconURL={rootObjectCreationDescription.iconURL}
+                        alt={rootObjectCreationDescription.label}
+                      />
                     </ListItemIcon>
                   )}
                   <ListItemText primary={rootObjectCreationDescription.label} />
