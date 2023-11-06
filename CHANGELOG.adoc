@@ -11,6 +11,7 @@
 
 - [ADR-111] Add support for image overlay
 - [ADR-112] Provide only valid view descriptions to the renderer
+- [ADR-113] Add support for multiple IObjectService
 
 === Breaking changes
 
