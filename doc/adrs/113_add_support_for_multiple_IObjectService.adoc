@@ -1,0 +1,101 @@
+= ADR-113 - Add support for multiple IObjectService
+
+== Context
+
+Only one `IObjectService` can be provided in a Sirius Web based application.
+The default implementation (`org.eclipse.sirius.components.emf.services.ObjectService`) is a good default implementation but sometimes we need to customize it based on a specific predicate.
+
+== Decision
+
+* Add new `IObjectServiceDelegate`.
+All Sirius Web applications may provide as many `IObjectServiceDelegate` as they want.
+
+[source,java]
+----
+public interface IObjectServiceDelegate {
+    
+    boolean canHandle(Object object);
+    boolean canHandle(IEditingContext editingContext);
+
+    String getId(Object object);
+    String getLabel(Object object);
+    String getKind(Object object);
+    String getFullLabel(Object object);
+    List<String> getImagePath(Object object);
+    Optional<Object> getObject(IEditingContext editingContext, String objectId);
+    List<Object> getContents(IEditingContext editingContext, String objectId);
+    Optional<String> getLabelField(Object object);
+    boolean isLabelEditable(Object object);
+}
+----
+
+* Add new `IDefaultObjectService` and its implementation @Service `DefaultObjectService`.
+The default implementation `DefaultObjectService` is the same than the existing one `ObjectService`.
+
+[source,java]
+----
+public interface IDefaultObjectService {
+    
+    String getId(Object object);
+    String getLabel(Object object);
+    String getKind(Object object);
+    String getFullLabel(Object object);
+    List<String> getImagePath(Object object);
+    Optional<Object> getObject(IEditingContext editingContext, String objectId);
+    List<Object> getContents(IEditingContext editingContext, String objectId);
+    Optional<String> getLabelField(Object object);
+    boolean isLabelEditable(Object object);
+}
+----
+
+* Change @Service `ObjectService` to `ComposedObjectService`.
+`ComposedObjectService` can be moved from `org.eclipse.sirius.components.emf.services` to `org.eclipse.sirius.components.core.services`.
+
+
+[source,java]
+----
+@Service
+public class ComposedObjectService implements IObjectService {
+      private final List<IObjectServiceDelegate> objectServiceDelegates;
+
+      private final IDefaultObjectService defaultObjectService;
+...
+
+      @Override
+      public String getId(Object object) {
+          // Search for a specific provider
+          Optional<IObjectServiceDelegate> optionalObjectServiceDelegate = this.objectServiceDelegates.stream().filter(objectServiceDelegate -> objectServiceDelegate.canHandle(object)).findFirst();
+          if (optionalObjectServiceDelegate.isPresent()) {
+            IObjectServiceDelegate objectServiceDelegate = optionalObjectServiceDelegate.get();
+            return objectServiceDelegate.getId(object);
+          } 
+          // Fallback to default behavior
+          return this.defaultObjectService.getId(object);
+      }
+...
+      @Override
+      public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
+          // Search for a specific provider
+          Optional<IObjectServiceDelegate> optionalObjectServiceDelegate = this.objectServiceDelegates.stream().filter(objectServiceDelegate -> objectServiceDelegate.canHandle(editingContext)).findFirst();
+          if (optionalObjectServiceDelegate.isPresent()) {
+            IObjectServiceDelegate objectServiceDelegate = optionalObjectServiceDelegate.get();
+            return objectServiceDelegate.getObject(editingContext, objectId);
+          } 
+          // Fallback to default behavior
+          return this.defaultObjectService.getObject(editingContext, objectId);
+      }
+}
+----
+
+
+== Status
+
+To be reviewed
+
+== Consequences
+
+A minor breaking change: if some existing applications may be referencing `ObjectService` by excluding it and extending it.
+They may now have to use `IObjectServiceDelegate` instead.
+
+In the near future, we will split the `IObjectService` interface into smaller interfaces like `IIdentityService`, `ILabelService`, `IContentService` etc.
+There will be API breaks around this part of the code later.
