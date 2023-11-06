@@ -60,6 +60,7 @@ Note that double-clicking no longer triggers a direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2509[#2509] [diagram] Fix an issue that prevents using graphical DnD in deep node in some cases.
 - https://github.com/eclipse-sirius/sirius-web/issues/2453[#2453] [diagram] Add support for feedback messages on following actions: DropOnDiagram, DeleteFromDiagram, ReconnectEdge and EditLabel
 - https://github.com/eclipse-sirius/sirius-web/issues/2513[#2513] [diagram] Fix the double node border displayed when node list was containing compartments.
+- https://github.com/eclipse-sirius/sirius-web/issues/2532[#2532] [diagram] Fix the limitation on borders that prevent movement on all sides of their node parent.
 
 === New Features
 

@@ -31,11 +31,14 @@ import {
   useReactFlow,
   useStoreApi,
 } from 'reactflow';
+
+import 'reactflow/dist/style.css';
 import { convertDiagram } from '../converter/convertDiagram';
-import { Diagram, DiagramRendererProps, DiagramRendererState, EdgeData, NodeData } from './DiagramRenderer.types';
+import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
+import { Diagram, DiagramRendererProps, DiagramRendererState, EdgeData, NodeData } from './DiagramRenderer.types';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
@@ -49,8 +52,6 @@ import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
-
-import 'reactflow/dist/style.css';
 
 const GRID_STEP: number = 10;
 
@@ -76,6 +77,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
+  const { onBorderChange } = useBorderChange();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
@@ -145,7 +147,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   }, [selection]);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
-    onNodesChange(changes);
+    onNodesChange(onBorderChange(changes));
 
     const selectionEntries: SelectionEntry[] = changes
       .filter(isNodeSelectChange)
