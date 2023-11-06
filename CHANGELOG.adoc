@@ -113,7 +113,10 @@ An example of use has been added on the domain entity items.
 - https://github.com/eclipse-sirius/sirius-web/issues/2483[#2483] [diagram] Take the header into account in the React Flow layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/2504[#2504] [diagram] Create nodes at the cursor position when using create instance or drop tools.
 - https://github.com/eclipse-sirius/sirius-web/issues/2444[#2444] [form] It is now possible to ignore widgets with invalid descriptions
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2528[#2528] [core] Add support for multiple `IObjectService`.
+It is now possible to contribute specific services to interact with domain objects, through `IObjectServiceDelegate`.
+The new implementation of `IObjectService`, named `ComposedObjectService`, tries first to delegate to the appropriate `IObjectServiceDelegate` and then fallback to a default behavior from `IDefaultObjectService` if needed.
+ 
 == v2023.10.0
 
 === Shapes

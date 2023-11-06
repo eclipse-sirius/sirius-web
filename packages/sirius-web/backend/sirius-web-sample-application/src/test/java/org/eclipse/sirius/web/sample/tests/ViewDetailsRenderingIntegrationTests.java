@@ -37,13 +37,15 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.URLParser;
+import org.eclipse.sirius.components.core.api.IDefaultObjectService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.services.ComposedObjectService;
+import org.eclipse.sirius.components.emf.services.DefaultObjectService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
-import org.eclipse.sirius.components.emf.services.ObjectService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -107,7 +109,8 @@ public class ViewDetailsRenderingIntegrationTests {
         this.view = this.loadFixture("ViewCompletionFixture.xmi");
 
         EMFKindService emfKindService = new EMFKindService(new URLParser());
-        IObjectService objectService = new ObjectService(emfKindService, composedAdapterFactory, new LabelFeatureProviderRegistry());
+        IDefaultObjectService defaultObjectService = new DefaultObjectService(emfKindService, composedAdapterFactory, new LabelFeatureProviderRegistry());
+        IObjectService objectService = new ComposedObjectService(List.of(), defaultObjectService);
         ViewPropertiesDescriptionServiceConfiguration parameters = new ViewPropertiesDescriptionServiceConfiguration(objectService, emfKindService, new IFeedbackMessageService.NoOp());
 
         // @formatter:off

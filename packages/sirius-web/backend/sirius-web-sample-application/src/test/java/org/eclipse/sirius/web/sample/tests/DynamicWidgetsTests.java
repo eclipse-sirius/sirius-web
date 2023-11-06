@@ -35,15 +35,17 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.core.URLParser;
+import org.eclipse.sirius.components.core.api.IDefaultObjectService;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.services.ComposedObjectService;
+import org.eclipse.sirius.components.emf.services.DefaultObjectService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
-import org.eclipse.sirius.components.emf.services.ObjectService;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Button;
@@ -271,12 +273,14 @@ public class DynamicWidgetsTests {
         View wrapperView = ViewFactory.eINSTANCE.createView();
         wrapperView.getDescriptions().add(formDescription);
 
-        IObjectService objectService = new ObjectService(new EMFKindService(new URLParser()), this.composedAdapterFactory, new LabelFeatureProviderRegistry());
+        IDefaultObjectService defaultObjectService = new DefaultObjectService(new EMFKindService(new URLParser()), this.composedAdapterFactory, new LabelFeatureProviderRegistry());
+        IObjectService objectService = new ComposedObjectService(List.of(), defaultObjectService);
         IEditService.NoOp editService = new IEditService.NoOp();
         ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService, new IFormIdProvider.NoOp(), List.of(), new IFeedbackMessageService.NoOp());
 
         var applicationContext = new StaticApplicationContext();
-        applicationContext.registerBean(ObjectService.class, new EMFKindService(new URLParser()), this.composedAdapterFactory, new LabelFeatureProviderRegistry());
+        applicationContext.registerBean(DefaultObjectService.class, new EMFKindService(new URLParser()), this.composedAdapterFactory, new LabelFeatureProviderRegistry());
+        applicationContext.registerBean(ComposedObjectService.class, List.of(), defaultObjectService);
         applicationContext.registerBean(editService.getClass());
 
         var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), applicationContext, objectService);
