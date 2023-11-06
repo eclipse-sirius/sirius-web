@@ -34,21 +34,21 @@ import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
+import org.eclipse.sirius.components.core.api.IDefaultObjectService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Add support for the Flow domain to the Sirius Web server.
+ * Default implementation of the IDefaultObjectService.
  *
  * @author sbegaudeau
  * @author hmarchadour
  */
 @Service
-public class ObjectService implements IObjectService {
+public class DefaultObjectService implements IDefaultObjectService {
 
     public static final String DEFAULT_ICON_PATH = "/icons/svg/Default.svg";
 
@@ -62,9 +62,9 @@ public class ObjectService implements IObjectService {
 
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
 
-    private final Logger logger = LoggerFactory.getLogger(ObjectService.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultObjectService.class);
 
-    public ObjectService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
+    public DefaultObjectService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.labelFeatureProviderRegistry = Objects.requireNonNull(labelFeatureProviderRegistry);

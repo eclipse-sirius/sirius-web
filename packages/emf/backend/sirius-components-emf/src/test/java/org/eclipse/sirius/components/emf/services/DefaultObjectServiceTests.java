@@ -26,23 +26,23 @@ import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IDefaultObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for the EMF-base {@link IObjectService} implementation.
+ * Tests for the EMF-base {@link IDefaultObjectService} implementation.
  *
  * @author pcdavid
  */
-public class ObjectServiceTests {
+public class DefaultObjectServiceTests {
 
     @Test
     public void testFindImagePathOnCompositeImage() {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        ObjectService objectService = new ObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
+        DefaultObjectService objectService = new DefaultObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
         EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
         List<String> imagePath = objectService.getImagePath(attr);
         assertThat(imagePath).hasSize(1);
@@ -55,7 +55,7 @@ public class ObjectServiceTests {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        ObjectService objectService = new ObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
+        DefaultObjectService objectService = new DefaultObjectService(new IEMFKindService.NoOp(), composedAdapterFactory, new LabelFeatureProviderRegistry());
         Resource resource = new XMIResourceImpl();
         resource.setURI(URI.createURI("test.xmi"));
         EObject eObject = EcoreFactory.eINSTANCE.createEClass();
