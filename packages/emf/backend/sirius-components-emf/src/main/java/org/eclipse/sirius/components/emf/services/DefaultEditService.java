@@ -43,7 +43,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
-import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -55,13 +55,13 @@ import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide support for the edition of EMF models.
+ * Used to provide support for the default edition of EMF models.
  *
  * @author sbegaudeau
  * @author lfasani
  */
 @Service
-public class EditService implements IEditService {
+public class DefaultEditService implements IDefaultEditService {
 
     private final IEMFKindService emfKindService;
 
@@ -75,7 +75,7 @@ public class EditService implements IEditService {
 
     private final IEMFMessageService messageService;
 
-    public EditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
+    public DefaultEditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.suggestedRootObjectTypesProvider = Objects.requireNonNull(suggestedRootObjectsProvider);
@@ -220,11 +220,9 @@ public class EditService implements IEditService {
 
     @Override
     public void delete(Object object) {
-        // @formatter:off
         Optional<EObject> optionalEObject = Optional.of(object)
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
-        // @formatter:on
 
         optionalEObject.ifPresent(eObject -> EcoreUtil.deleteAll(Collections.singleton(eObject), true));
     }
@@ -259,13 +257,11 @@ public class EditService implements IEditService {
     }
 
     private List<EClass> getConcreteClasses(EPackage ePackage) {
-        // @formatter:off
         return ePackage.getEClassifiers().stream()
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)
                 .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface())
                 .toList();
-        // @formatter:on
     }
 
     @Override
@@ -274,22 +270,18 @@ public class EditService implements IEditService {
 
         var optionalEClass = this.getMatchingEClass(editingContext, domainId, rootObjectCreationDescriptionId);
 
-        // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
                 .map(EditingContext::getDomain);
-        // @formatter:on
 
         if (optionalEClass.isPresent() && optionalEditingDomain.isPresent()) {
             EClass eClass = optionalEClass.get();
             AdapterFactoryEditingDomain editingDomain = optionalEditingDomain.get();
 
-            // @formatter:off
             var optionalResource = editingDomain.getResourceSet().getResources().stream()
                     .filter(resource -> documentId.toString().equals(resource.getURI().path().substring(1)))
                     .findFirst();
-            // @formatter:on
 
             if (optionalResource.isPresent()) {
                 EObject eObject = EcoreUtil.create(eClass);
@@ -305,7 +297,6 @@ public class EditService implements IEditService {
     }
 
     private Optional<EClass> getMatchingEClass(IEditingContext editingContext, String domainId, String rootObjectCreationDescriptionId) {
-        // @formatter:off
         return Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
@@ -317,7 +308,6 @@ public class EditService implements IEditService {
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)
                 .filter(eClass -> !eClass.isAbstract() && !eClass.isInterface());
-        // @formatter:on
     }
 
     @Override
@@ -325,14 +315,12 @@ public class EditService implements IEditService {
         if (object instanceof EObject) {
             EClass eClass = ((EObject) object).eClass();
             EStructuralFeature eStructuralFeature = eClass.getEStructuralFeature(labelField);
-            // @formatter:off
             if (eStructuralFeature instanceof EAttribute
                     && !eStructuralFeature.isMany()
                     && eStructuralFeature.isChangeable()
                     && eStructuralFeature.getEType().getInstanceClass() == String.class) {
                 ((EObject) object).eSet(eStructuralFeature, newValue);
             }
-            // @formatter:on
         }
     }
 }
