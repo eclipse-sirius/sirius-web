@@ -189,7 +189,7 @@ export const useDropNode = (): UseDropNodeValue => {
       (entry) => entry.droppedNodeDescriptionId === (node as Node<NodeData>).data.descriptionId
     );
     const compatibleNodes = getNodes()
-      .filter((candidate) => !isDescendantOf(node, candidate, getNodeById))
+      .filter((candidate) => !candidate.hidden && !isDescendantOf(node, candidate, getNodeById))
       .filter((n) => dropDataEntry?.droppableOnNodeTypes.includes((n as Node<NodeData>).data.descriptionId))
       .map((n) => n.id);
 
@@ -204,7 +204,7 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const onNodeDrag: NodeDragHandler = (_event, node) => {
     if (draggedNode && !draggedNode.data.isBorderNode) {
-      const intersections = getIntersectingNodes(node);
+      const intersections = getIntersectingNodes(node).filter((node) => !node.hidden);
       const newParentId =
         [...intersections]
           .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
