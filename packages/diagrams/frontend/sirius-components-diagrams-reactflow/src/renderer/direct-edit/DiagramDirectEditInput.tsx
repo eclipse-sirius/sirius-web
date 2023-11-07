@@ -167,7 +167,8 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
 
   const onFinishEditing = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { key } = event;
-    if (key === 'Enter') {
+    if (key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
       doRename();
     } else if (key === 'Escape') {
       onClose();
@@ -181,6 +182,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
         inputRef={textInput}
         placeholder={'Enter the new name'}
         value={state.newLabel}
+        multiline={true}
         onChange={handleChange}
         onKeyDown={onFinishEditing}
         onBlur={doRename}
