@@ -28,7 +28,7 @@ exports[`render pie-chart widget 1`] = `
         stroke-width="1"
       >
         <path
-          d="M9.184850993605149e-15,-150A150,150,0,0,1,142.65847744427302,-46.35254915624211L0,0Z"
+          d="M0,-150A150,150,0,0,1,142.658,-46.353L0,0Z"
           fill="rgb(209, 60, 75)"
         >
           <title>
@@ -37,7 +37,7 @@ exports[`render pie-chart widget 1`] = `
           </title>
         </path>
         <path
-          d="M142.65847744427302,-46.35254915624211A150,150,0,0,1,9.184850993605149e-15,150L0,0Z"
+          d="M142.658,-46.353A150,150,0,0,1,0,150L0,0Z"
           fill="rgb(254, 206, 126)"
         >
           <title>
@@ -46,7 +46,7 @@ exports[`render pie-chart widget 1`] = `
           </title>
         </path>
         <path
-          d="M9.184850993605149e-15,150A150,150,0,0,1,-88.16778784387095,121.35254915624212L0,0Z"
+          d="M0,150A150,150,0,0,1,-88.168,121.353L0,0Z"
           fill="rgb(209, 236, 158)"
         >
           <title>
@@ -55,7 +55,7 @@ exports[`render pie-chart widget 1`] = `
           </title>
         </path>
         <path
-          d="M-88.16778784387095,121.35254915624212A150,150,0,0,1,-2.7554552980815446e-14,-150L0,0Z"
+          d="M-88.168,121.353A150,150,0,0,1,0,-150L0,0Z"
           fill="rgb(66, 136, 181)"
         >
           <title>
@@ -174,7 +174,7 @@ exports[`render pie-chart widget with empty style 1`] = `
         stroke-width="1"
       >
         <path
-          d="M9.184850993605149e-15,-150A150,150,0,0,1,142.65847744427302,-46.35254915624211L0,0Z"
+          d="M0,-150A150,150,0,0,1,142.658,-46.353L0,0Z"
           fill="rgb(209, 60, 75)"
         >
           <title>
@@ -183,7 +183,7 @@ exports[`render pie-chart widget with empty style 1`] = `
           </title>
         </path>
         <path
-          d="M142.65847744427302,-46.35254915624211A150,150,0,0,1,9.184850993605149e-15,150L0,0Z"
+          d="M142.658,-46.353A150,150,0,0,1,0,150L0,0Z"
           fill="rgb(254, 206, 126)"
         >
           <title>
@@ -192,7 +192,7 @@ exports[`render pie-chart widget with empty style 1`] = `
           </title>
         </path>
         <path
-          d="M9.184850993605149e-15,150A150,150,0,0,1,-88.16778784387095,121.35254915624212L0,0Z"
+          d="M0,150A150,150,0,0,1,-88.168,121.353L0,0Z"
           fill="rgb(209, 236, 158)"
         >
           <title>
@@ -201,7 +201,7 @@ exports[`render pie-chart widget with empty style 1`] = `
           </title>
         </path>
         <path
-          d="M-88.16778784387095,121.35254915624212A150,150,0,0,1,-2.7554552980815446e-14,-150L0,0Z"
+          d="M-88.168,121.353A150,150,0,0,1,0,-150L0,0Z"
           fill="rgb(66, 136, 181)"
         >
           <title>
@@ -332,7 +332,7 @@ exports[`render pie-chart widget with help hint 1`] = `
         stroke-width="1"
       >
         <path
-          d="M9.184850993605149e-15,-150A150,150,0,0,1,142.65847744427302,-46.35254915624211L0,0Z"
+          d="M0,-150A150,150,0,0,1,142.658,-46.353L0,0Z"
           fill="rgb(209, 60, 75)"
         >
           <title>
@@ -341,7 +341,7 @@ exports[`render pie-chart widget with help hint 1`] = `
           </title>
         </path>
         <path
-          d="M142.65847744427302,-46.35254915624211A150,150,0,0,1,9.184850993605149e-15,150L0,0Z"
+          d="M142.658,-46.353A150,150,0,0,1,0,150L0,0Z"
           fill="rgb(254, 206, 126)"
         >
           <title>
@@ -350,7 +350,7 @@ exports[`render pie-chart widget with help hint 1`] = `
           </title>
         </path>
         <path
-          d="M9.184850993605149e-15,150A150,150,0,0,1,-88.16778784387095,121.35254915624212L0,0Z"
+          d="M0,150A150,150,0,0,1,-88.168,121.353L0,0Z"
           fill="rgb(209, 236, 158)"
         >
           <title>
@@ -359,7 +359,7 @@ exports[`render pie-chart widget with help hint 1`] = `
           </title>
         </path>
         <path
-          d="M-88.16778784387095,121.35254915624212A150,150,0,0,1,-2.7554552980815446e-14,-150L0,0Z"
+          d="M-88.168,121.353A150,150,0,0,1,0,-150L0,0Z"
           fill="rgb(66, 136, 181)"
         >
           <title>
@@ -478,7 +478,7 @@ exports[`render pie-chart widget with style 1`] = `
         stroke-width="2"
       >
         <path
-          d="M9.184850993605149e-15,-150A150,150,0,0,1,142.65847744427302,-46.35254915624211L0,0Z"
+          d="M0,-150A150,150,0,0,1,142.658,-46.353L0,0Z"
           fill="CadetBlue"
         >
           <title>
@@ -487,7 +487,7 @@ exports[`render pie-chart widget with style 1`] = `
           </title>
         </path>
         <path
-          d="M142.65847744427302,-46.35254915624211A150,150,0,0,1,9.184850993605149e-15,150L0,0Z"
+          d="M142.658,-46.353A150,150,0,0,1,0,150L0,0Z"
           fill="CornflowerBlue"
         >
           <title>
@@ -496,7 +496,7 @@ exports[`render pie-chart widget with style 1`] = `
           </title>
         </path>
         <path
-          d="M9.184850993605149e-15,150A150,150,0,0,1,-88.16778784387095,121.35254915624212L0,0Z"
+          d="M0,150A150,150,0,0,1,-88.168,121.353L0,0Z"
           fill="Lavender"
         >
           <title>
@@ -505,7 +505,7 @@ exports[`render pie-chart widget with style 1`] = `
           </title>
         </path>
         <path
-          d="M-88.16778784387095,121.35254915624212A150,150,0,0,1,-2.7554552980815446e-14,-150L0,0Z"
+          d="M-88.168,121.353A150,150,0,0,1,0,-150L0,0Z"
           fill="LightSteelBlue"
         >
           <title>

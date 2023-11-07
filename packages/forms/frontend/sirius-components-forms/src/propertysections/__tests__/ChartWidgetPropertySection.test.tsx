@@ -141,6 +141,7 @@ const defaultPieChartWidget: GQLChartWidget = {
   chart: defaultPieChart,
   __typename: 'ChartWidget',
   diagnostics: [],
+  readOnly: false,
 };
 const defaultPieChartWidgetWithStyle: GQLChartWidget = {
   id: 'id',
@@ -150,6 +151,7 @@ const defaultPieChartWidgetWithStyle: GQLChartWidget = {
   chart: defaultPieChartWithStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
+  readOnly: false,
 };
 const defaultPieChartWidgetWithEmptyStyle: GQLChartWidget = {
   id: 'id',
@@ -159,6 +161,7 @@ const defaultPieChartWidgetWithEmptyStyle: GQLChartWidget = {
   chart: defaultPieChartWithEmptyStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
+  readOnly: false,
 };
 
 const defaultBarChartWidget: GQLChartWidget = {
@@ -169,6 +172,7 @@ const defaultBarChartWidget: GQLChartWidget = {
   chart: defaultBarChart,
   __typename: 'ChartWidget',
   diagnostics: [],
+  readOnly: false,
 };
 
 const defaultBarChartWidgetWithStyle: GQLChartWidget = {
@@ -179,6 +183,7 @@ const defaultBarChartWidgetWithStyle: GQLChartWidget = {
   chart: defaultBarChartWithStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
+  readOnly: false,
 };
 
 const defaultBarChartWidgetWithEmptyStyle: GQLChartWidget = {
@@ -189,6 +194,7 @@ const defaultBarChartWidgetWithEmptyStyle: GQLChartWidget = {
   chart: defaultBarChartWithEmptyStyle,
   __typename: 'ChartWidget',
   diagnostics: [],
+  readOnly: false,
 };
 
 test('render pie-chart widget', () => {

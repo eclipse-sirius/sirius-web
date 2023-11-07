@@ -10,42 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import {
-  Representation,
-  RepresentationComponent,
-  RepresentationComponentRegistry,
-  RepresentationContext,
-  RepresentationContextValue,
-  ServerContext,
-  theme,
-} from '@eclipse-sirius/sirius-components-core';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
-import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
-import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import {
-  FormRepresentation,
   GQLWidget,
+  PropertySectionComponent,
   PropertySectionComponentRegistry,
   PropertySectionContext,
   PropertySectionContextValue,
   WidgetContribution,
 } from '@eclipse-sirius/sirius-components-forms';
 import {
+  GQLReferenceWidget,
   ReferenceIcon,
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { SiriusWebApplication } from '@eclipse-sirius/sirius-web-application';
 import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { ApolloGraphQLClient } from './ApolloGraphQLClient';
-import { httpOrigin } from './core/URL';
-import { Main } from './main/Main';
-import { ToastProvider } from './toast/ToastProvider';
+import { httpOrigin, wsOrigin } from './core/URL';
+import { GQLSlider } from './widgets/SliderFragment.types';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
 
@@ -59,103 +43,17 @@ if (process.env.NODE_ENV !== 'production') {
   loadErrorMessages();
 }
 
-const baseTheme = createTheme({
-  ...theme,
-  palette: {
-    type: 'light',
-    primary: {
-      main: '#BE1A78',
-      dark: '#851254',
-      light: '#CB4793',
-    },
-    secondary: {
-      main: '#261E58',
-      dark: '#1A153D',
-      light: '#514B79',
-    },
-    text: {
-      primary: '#261E58',
-      disabled: '#B3BFC5',
-      hint: '#B3BFC5',
-    },
-    error: {
-      main: '#DE1000',
-      dark: '#9B0B00',
-      light: '#E43F33',
-    },
-    divider: '#B3BFC5',
-    navigation: {
-      leftBackground: '#BE1A7880',
-      rightBackground: '#261E5880',
-    },
-    action: {
-      hover: '#BE1A7826',
-      selected: '#BE1A7842',
-    },
-  },
-  props: {
-    MuiAppBar: {
-      color: 'secondary',
-    },
-  },
-  overrides: {
-    MuiSnackbarContent: {
-      root: {
-        backgroundColor: '#7269A4',
-      },
-    },
-  },
-});
-
-const siriusWebTheme = createTheme(
-  {
-    overrides: {
-      MuiAvatar: {
-        colorDefault: {
-          backgroundColor: baseTheme.palette.primary.main,
-        },
-      },
-    },
-  },
-  baseTheme
-);
-
-const style = {
-  display: 'grid',
-  gridTemplateColumns: '1fr',
-  gridTemplateRows: '1fr',
-  minHeight: '100vh',
-};
-
-const registry: RepresentationComponentRegistry = {
-  getComponent: (representation: Representation): RepresentationComponent | null => {
-    const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
-    const params = new URLSearchParams(query);
-    const type = params.get('type');
-    if (type === 'Diagram' && representation.label.endsWith('__REACT_FLOW')) {
-      return ReactFlowDiagramRepresentation;
-    } else if (type === 'Diagram') {
-      return DiagramRepresentation;
-    } else if (type === 'Form') {
-      return FormRepresentation;
-    } else if (type === 'FormDescriptionEditor') {
-      return FormDescriptionEditorRepresentation;
-    }
-    return null;
-  },
-};
-
-const representationContextValue: RepresentationContextValue = {
-  registry,
-};
+const isSlider = (widget: GQLWidget): widget is GQLSlider => widget.__typename === 'Slider';
+const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
 
 const propertySectionsRegistry: PropertySectionComponentRegistry = {
-  getComponent: (widget: GQLWidget) => {
-    if (widget.__typename === 'Slider') {
+  getComponent: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+    if (isSlider(widget)) {
       return SliderPropertySection;
-    } else if (widget.__typename === 'ReferenceWidget') {
+    } else if (isReferenceWidget(widget)) {
       return ReferencePropertySection;
     }
+    return null;
   },
   getPreviewComponent: (widget: GQLWidget) => {
     if (widget.__typename === 'Slider') {
@@ -163,6 +61,7 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
     } else if (widget.__typename === 'ReferenceWidget') {
       return ReferencePreview;
     }
+    return null;
   },
   getWidgetContributions: () => {
     const sliderWidgetContribution: WidgetContribution = {
@@ -208,23 +107,8 @@ const propertySectionRegistryValue: PropertySectionContextValue = {
 };
 
 ReactDOM.render(
-  <ApolloProvider client={ApolloGraphQLClient}>
-    <BrowserRouter>
-      <ThemeProvider theme={siriusWebTheme}>
-        <CssBaseline />
-        <ServerContext.Provider value={{ httpOrigin }}>
-          <ToastProvider>
-            <RepresentationContext.Provider value={representationContextValue}>
-              <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-                <div style={style}>
-                  <Main />
-                </div>
-              </PropertySectionContext.Provider>
-            </RepresentationContext.Provider>
-          </ToastProvider>
-        </ServerContext.Provider>
-      </ThemeProvider>
-    </BrowserRouter>
-  </ApolloProvider>,
+  <PropertySectionContext.Provider value={propertySectionRegistryValue}>
+    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} />
+  </PropertySectionContext.Provider>,
   document.getElementById('root')
 );

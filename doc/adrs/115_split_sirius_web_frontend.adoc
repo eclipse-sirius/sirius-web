@@ -1,0 +1,73 @@
+= ADR-115 - Split Sirius Web frontend
+
+== Context
+
+Developers want to have an off-the-shelf Sirius Web frontend.
+They do not want to have to fork everything to create a similar user interface.
+
+The `sirius-web` frontend package contains a lot of things, some are relevant for everybody and some are specific to the Sirius Web example.
+Developers who want to create a Sirius Web based application may not want all these things.
+On the other hand, they want to customize some existing parts of Sirius Web.
+
+== Decision
+
+We will split the `sirius-web` frontend package in two distinct packages: `sirius-web` and `sirius-web-application`.
+The `sirius-web-application` will thus encapsulate most of what is currently known as the Sirius Web frontend.
+Some parts of this package will configurable.
+It will depend on the feedback we receive from developers in the future.
+
+As a first step, the package `sirius-web-application` will only export the new `SiriusWebApplication` and `Views` components.
+The new components are described below:
+
+=== SiriusWebApplication
+
+The `SiriusWebApplication` will require the `http` server URL  et `ws` server URL to work.
+Using this component, one could retrieve all the Sirius Web frontend.
+
+This component will also let developers change the theme of the application.
+If no theme is provided, then the default existing Sirius Web theme will be used.
+It will thus be possible to start a Sirius Web based frontend using only the following code:
+
+[source,ts]
+----
+ReactDOM.render(
+  <SiriusWebApplication
+      httpOrigin="http://localhost:8080"
+      wsOrigin="ws://localhost:8080" />
+};
+----
+
+
+=== Views
+
+The new `Views` component will allow to optionally configure some view-related concerns.
+It will thus give the ability to change the application icon or the navigation bar menu.
+If no application icon or navigation bar menu are provided, then the default existing Sirius Web application icon or navigation bar menu will be used.
+
+[source,ts]
+----
+const CustomIcon = () => <div>Icon</div>
+const CustomMenu = () => <div>Menu</div>
+
+ReactDOM.render(
+  <SiriusWebApplication
+      httpOrigin="http://localhost:8080"
+      wsOrigin="ws://localhost:8080">
+    <Views applicationIcon={<CustomIcon />} applicationBarMenu={<CustomMenu />} />
+  </SiriusWebApplication>
+};
+----
+
+`Views` is just the first component used to describe part of the customization of a Sirius Web application.
+Additional customization will be performed in the future by using other child components.
+`SiriusWebApplication#children` will thus be the entry point of any customization of the Sirius Web application.
+
+
+== Status
+
+Approved
+
+== Consequences
+
+The `sirius-web` frontend package will have a new dependency, the `sirius-web-application` package.
+The index of `sirius-web` will thus use the component `<SiriusWebApplication />`.

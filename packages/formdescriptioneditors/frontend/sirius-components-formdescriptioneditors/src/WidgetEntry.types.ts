@@ -51,7 +51,7 @@ export interface WidgetProps<WidgetType extends GQLWidget> {
   widget: WidgetType;
   selection: Selection;
   setSelection: (newSelection: Selection) => void;
-  onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: GQLWidget) => void;
+  onDropBefore: (event: React.DragEvent<HTMLDivElement>, widget: WidgetType) => void;
 }
 
 export type BarChartWidgetProps = WidgetProps<GQLChartWidget>;

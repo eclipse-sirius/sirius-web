@@ -15,6 +15,7 @@
 - [ADR-112] Provide only valid view descriptions to the renderer
 - [ADR-113] Add support for multiple IObjectService
 - [ADR-114] Add support for multiple IEditService
+- [ADR-115] Split the Sirius Web frontend
 
 === Breaking changes
 
@@ -54,6 +55,19 @@ Add the attribute `displayHeaderSeparator` to the graphql API.
 image:doc/screenshots/compartmentWithHeaderWithoutSeparator.png[Compartment with header without separator,30%]
 - https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] The properties `widthComputationExpression` and `heightComputationExpression` have been removed from `NodeStyleDescription`.
 From now on, use the `defaultWidthExpression` and `defaultHeightExpression` properties from `NodeDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/2537[#2537] [sirius-web] `sirius-web` frontend package has been split in two: `sirius-web` and `sirius-web-application`.
+The package `sirius-web` now depends on `sirius-web-application`.
+A new component `SiriusWebApplication` has been added.
+Developers who want to create a `sirius-web` frontend should use this component as their root component.
+The API of this component will change over time in order to provide additional capabilities.
+API breaks should be expected.
++
+Another component, named `Views` has also been added.
+This component will allow developers to customize some parts of the Sirius Web views.
+It will currently provide the ability to customize the application icon and application menu.
+The API of this component will also change over time so API breaks should be expected in the upcoming releases.
++
+This new package and those new components are the first part of our work to make Sirius Web more reusable.
 
 === Dependency update
 
