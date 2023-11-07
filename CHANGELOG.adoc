@@ -84,6 +84,9 @@ The behavior is controlled by the new _Drop Node_ tools defined on the target el
 - https://github.com/eclipse-sirius/sirius-web/issues/2256[#2256] [diagram] Add the possibility to contribute custom shape.
 See the `EllipseNode` example and link:doc/how-to/contribute-custom-node.adoc[the documentation] for more details.
 Note that the custom shape replaces the parametric SVG, which is deprecated and will be removed in a future version.
+- https://github.com/eclipse-sirius/sirius-web/issues/2512[#2512] [diagram] Add the support for multi-line label in reactflow. 
+That includes the support during the direct edit.
+The user can use 'shift+enter' to insert a line break.
 
 === Improvements
 

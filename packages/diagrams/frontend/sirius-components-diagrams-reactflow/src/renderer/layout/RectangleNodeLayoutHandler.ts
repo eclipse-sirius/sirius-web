@@ -156,7 +156,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
   }
 
   private handleLeafNode(
-    previousDiagram: Diagram | null,
+    _previousDiagram: Diagram | null,
     node: Node<RectangularNodeData, 'rectangularNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
@@ -174,11 +174,5 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
     node.width = forceWidth ?? getNodeOrMinWidth(labelWidth);
     node.height = getNodeOrMinHeight(labelHeight);
-
-    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
-    if (previousNode && previousNode.width && previousNode.height) {
-      node.width = previousNode.width;
-      node.height = previousNode.height;
-    }
   }
 }
