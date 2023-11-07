@@ -117,7 +117,11 @@ An example of use has been added on the domain entity items.
 - https://github.com/eclipse-sirius/sirius-web/issues/2528[#2528] [core] Add support for multiple `IObjectService`.
 It is now possible to contribute specific services to interact with domain objects, through `IObjectServiceDelegate`.
 The new implementation of `IObjectService`, named `ComposedObjectService`, tries first to delegate to the appropriate `IObjectServiceDelegate` and then fallback to a default behavior from `IDefaultObjectService` if needed.
- 
+- https://github.com/eclipse-sirius/sirius-web/issues/2530[#2530] [core] Add support for multiple `IEditService`.
+It is now possible to contribute specific services to edit domain objects, through `IEditServiceDelegate`.
+The new implementation of `IEditService`, named `ComposedEditService`, tries first to delegate to the appropriate `IEditServiceDelegate` and then fallback to a default behavior from `IDefaultEditService` if needed.
+
+
 == v2023.10.0
 
 === Shapes
