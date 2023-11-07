@@ -79,7 +79,8 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader = node.data.label?.isHeader ?? false;
+    const withHeader: boolean = node.data.label?.isHeader ?? false;
+    const displayHeaderSeparator: boolean = node.data.label?.displayHeaderSeparator ?? false;
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -95,7 +96,14 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       } else if (previousNode) {
         child.position = previousNode.position;
       } else {
-        child.position = getChildNodePosition(visibleNodes, child, labelElement, withHeader, borderWidth);
+        child.position = getChildNodePosition(
+          visibleNodes,
+          child,
+          labelElement,
+          withHeader,
+          displayHeaderSeparator,
+          borderWidth
+        );
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
           child.position = getChildNodePosition(
@@ -103,6 +111,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
             child,
             labelElement,
             withHeader,
+            displayHeaderSeparator,
             borderWidth,
             previousSibling
           );
@@ -126,7 +135,6 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
         northBorderNodeFootprintWidth,
         southBorderNodeFootprintWidth
       ) +
-      rectangularNodePadding * 2 +
       borderWidth * 2;
 
     // WARN: the label is not used for the height because children are already position under the label

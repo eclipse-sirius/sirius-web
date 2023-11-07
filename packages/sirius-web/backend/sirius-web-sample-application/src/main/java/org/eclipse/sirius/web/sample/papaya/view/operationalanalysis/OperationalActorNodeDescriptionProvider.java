@@ -43,6 +43,7 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         operationalActorNodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
         operationalActorNodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
         operationalActorNodeStyle.setWithHeader(true);
+        operationalActorNodeStyle.setDisplayHeaderSeparator(false);
 
         var operationalActorEmptyNodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         operationalActorEmptyNodeStyle.setShape("4d9a22c0-dc36-31c9-bb6a-c18c66b51d93");

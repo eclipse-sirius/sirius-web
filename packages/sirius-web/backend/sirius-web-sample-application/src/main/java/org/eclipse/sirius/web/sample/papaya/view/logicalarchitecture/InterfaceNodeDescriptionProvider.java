@@ -42,6 +42,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Interface");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");

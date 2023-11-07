@@ -46,6 +46,7 @@ public class CDPackageNodeDescriptionProvider implements INodeDescriptionProvide
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_3"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(false);
 
         var builder = new PapayaViewBuilder();
         var domainType = builder.domainType(builder.entity("Package"));

@@ -61,6 +61,8 @@ import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescriptio
  * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.RectangularNodeStyleDescriptionImpl#isWithHeader <em>With
  * Header</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.RectangularNodeStyleDescriptionImpl#isDisplayHeaderSeparator
+ * <em>Display Header Separator</em>}</li>
  * </ul>
  *
  * @generated
@@ -345,6 +347,26 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
      * @ordered
      */
     protected boolean withHeader = WITH_HEADER_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isDisplayHeaderSeparator() <em>Display Header Separator</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isDisplayHeaderSeparator()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean DISPLAY_HEADER_SEPARATOR_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isDisplayHeaderSeparator() <em>Display Header Separator</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isDisplayHeaderSeparator()
+     * @generated
+     * @ordered
+     */
+    protected boolean displayHeaderSeparator = DISPLAY_HEADER_SEPARATOR_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -752,6 +774,30 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
      * @generated
      */
     @Override
+    public boolean isDisplayHeaderSeparator() {
+        return this.displayHeaderSeparator;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDisplayHeaderSeparator(boolean newDisplayHeaderSeparator) {
+        boolean oldDisplayHeaderSeparator = this.displayHeaderSeparator;
+        this.displayHeaderSeparator = newDisplayHeaderSeparator;
+        if (this.eNotificationRequired())
+            this.eNotify(
+                    new ENotificationImpl(this, Notification.SET, DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR, oldDisplayHeaderSeparator, this.displayHeaderSeparator));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__FONT_SIZE:
@@ -788,6 +834,8 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return this.getLabelIcon();
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 return this.isWithHeader();
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR:
+                return this.isDisplayHeaderSeparator();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -844,6 +892,9 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return;
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 this.setWithHeader((Boolean) newValue);
+                return;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR:
+                this.setDisplayHeaderSeparator((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -902,6 +953,9 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 this.setWithHeader(WITH_HEADER_EDEFAULT);
                 return;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR:
+                this.setDisplayHeaderSeparator(DISPLAY_HEADER_SEPARATOR_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -944,6 +998,8 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
                 return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
                 return this.withHeader != WITH_HEADER_EDEFAULT;
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR:
+                return this.displayHeaderSeparator != DISPLAY_HEADER_SEPARATOR_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -1065,6 +1121,8 @@ public class RectangularNodeStyleDescriptionImpl extends StyleImpl implements Re
         result.append(this.labelIcon);
         result.append(", withHeader: ");
         result.append(this.withHeader);
+        result.append(", displayHeaderSeparator: ");
+        result.append(this.displayHeaderSeparator);
         result.append(')');
         return result.toString();
     }

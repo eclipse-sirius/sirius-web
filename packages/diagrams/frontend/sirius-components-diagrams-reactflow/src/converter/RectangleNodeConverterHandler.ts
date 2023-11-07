@@ -68,6 +68,7 @@ const toRectangularNode = (
       id: insideLabel.id,
       text: insideLabel.text,
       isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -83,7 +84,7 @@ const toRectangularNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (insideLabel.displayHeaderSeparator) {
+        if (data.label.displayHeaderSeparator) {
           data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };

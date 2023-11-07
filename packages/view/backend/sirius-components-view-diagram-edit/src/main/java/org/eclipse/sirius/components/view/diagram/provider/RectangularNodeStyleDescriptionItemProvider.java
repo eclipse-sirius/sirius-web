@@ -67,6 +67,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
             this.addShowIconPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
             this.addWithHeaderPropertyDescriptor(object);
+            this.addDisplayHeaderSeparatorPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -245,6 +246,19 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
     }
 
     /**
+     * This adds a property descriptor for the Display Header Separator feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDisplayHeaderSeparatorPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RectangularNodeStyleDescription_displayHeaderSeparator_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RectangularNodeStyleDescription_displayHeaderSeparator_feature", "_UI_RectangularNodeStyleDescription_type"),
+                DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns RectangularNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -302,6 +316,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends StyleItemProvid
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__SHOW_ICON:
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__LABEL_ICON:
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER:
+            case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

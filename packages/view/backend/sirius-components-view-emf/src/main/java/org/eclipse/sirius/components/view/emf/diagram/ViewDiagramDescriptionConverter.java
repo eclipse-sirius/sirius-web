@@ -328,12 +328,20 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return false;
         };
 
+        Function<VariableManager, Boolean> displayHeaderSeparatorProvider = variableManager -> {
+            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
+            if (effectiveStyle instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription) {
+                return rectangularNodeStyleDescription.isDisplayHeaderSeparator();
+            }
+            return false;
+        };
+
         return InsideLabelDescription.newInsideLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + InsideLabelDescription.INSIDE_LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
                 .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDescription.getLabelExpression()))
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
-                .displayHeaderSeparatorProvider(isHeaderProvider)
+                .displayHeaderSeparatorProvider(displayHeaderSeparatorProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
     }

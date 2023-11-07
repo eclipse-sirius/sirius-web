@@ -22,6 +22,8 @@ package org.eclipse.sirius.components.view.diagram;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isWithHeader <em>With
  * Header</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isDisplayHeaderSeparator
+ * <em>Display Header Separator</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription()
@@ -51,5 +53,29 @@ public interface RectangularNodeStyleDescription extends NodeStyleDescription {
      * @generated
      */
     void setWithHeader(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Display Header Separator</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Display Header Separator</em>' attribute.
+     * @see #setDisplayHeaderSeparator(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription_DisplayHeaderSeparator()
+     * @model
+     * @generated
+     */
+    boolean isDisplayHeaderSeparator();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isDisplayHeaderSeparator
+     * <em>Display Header Separator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Display Header Separator</em>' attribute.
+     * @see #isDisplayHeaderSeparator()
+     * @generated
+     */
+    void setDisplayHeaderSeparator(boolean value);
 
 } // RectangularNodeStyleDescription

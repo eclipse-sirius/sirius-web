@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Box, Node, Rect, boxToRect, rectToBox } from 'reactflow';
+import { Box, Node, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
 import {
   getBorderNodeExtent,
@@ -67,15 +67,15 @@ export const getNodeOrMinHeight = (nodeHeight: number | undefined): number => {
   return Math.max(nodeHeight ?? -Infinity, defaultHeight);
 };
 
-// WARN: should be moved in RectangularNodeLayoutHandler.ts
 export const getChildNodePosition = (
   allVisibleNodes: Node<NodeData>[],
   child: Node<NodeData>,
   labelElement: HTMLElement | null,
   withHeader: boolean,
+  displayHeaderSeparator: boolean,
   borderWidth: number,
   previousSibling?: Node<NodeData>
-) => {
+): XYPosition => {
   const maxWestBorderNodeWidth = getChildren(child, allVisibleNodes)
     .filter(isWestBorderNode)
     .map((borderNode) => getNodeFootprint(allVisibleNodes, borderNode).width || 0)
@@ -87,11 +87,11 @@ export const getChildNodePosition = (
     .reduce((a, b) => Math.max(a, b), 0);
 
   if (!previousSibling) {
-    const headerFootprint = withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0;
+    const headerFootprint = labelElement ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator) : 0;
 
     return {
       x: rectangularNodePadding + borderWidth + maxWestBorderNodeWidth,
-      y: borderWidth + headerFootprint + rectangularNodePadding + maxNorthBorderNodeHeight,
+      y: borderWidth + headerFootprint + maxNorthBorderNodeHeight,
     };
   } else {
     const previousSiblingsMaxEastBorderNodeWidth = getChildren(previousSibling, allVisibleNodes)
@@ -109,6 +109,23 @@ export const getChildNodePosition = (
         gap,
     };
   }
+};
+
+const getHeaderFootprint = (
+  labelElement: HTMLElement,
+  withHeader: boolean,
+  displayHeaderSeparator: boolean
+): number => {
+  let headerFootprint = 0;
+
+  if (withHeader) {
+    headerFootprint = labelElement.getBoundingClientRect().height;
+    if (displayHeaderSeparator) {
+      headerFootprint += rectangularNodePadding;
+    }
+  }
+
+  return headerFootprint;
 };
 
 /**
@@ -168,7 +185,7 @@ export const setBorderNodesPosition = (
   borderNodes: Node<NodeData>[],
   nodeToLayout: Node<NodeData>,
   previousDiagram: Diagram | null
-) => {
+): void => {
   const borderNodesEast = borderNodes.filter(isEastBorderNode);
   borderNodesEast.forEach((child, index) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);

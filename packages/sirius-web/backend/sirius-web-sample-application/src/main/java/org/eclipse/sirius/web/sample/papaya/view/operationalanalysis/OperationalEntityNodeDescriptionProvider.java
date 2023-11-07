@@ -43,6 +43,7 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(false);
 
         var builder = new PapayaViewBuilder();
 

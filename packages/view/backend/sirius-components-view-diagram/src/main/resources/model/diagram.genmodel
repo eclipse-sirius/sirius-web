@@ -111,6 +111,7 @@
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//RectangularNodeStyleDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//RectangularNodeStyleDescription/withHeader"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//RectangularNodeStyleDescription/displayHeaderSeparator"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//ImageNodeStyleDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ImageNodeStyleDescription/shape"/>

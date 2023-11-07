@@ -136,6 +136,10 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
                 (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
                 DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER, Optional.empty()));
+        controls.add(this.propertiesWidgetCreationService.createCheckbox("nodestyle.displayHeaderSeparator", "Display header separator",
+                style -> ((RectangularNodeStyleDescription) style).isDisplayHeaderSeparator(),
+                (style, newDisplayHeaderSeparator) -> ((RectangularNodeStyleDescription) style).setDisplayHeaderSeparator(newDisplayHeaderSeparator),
+                DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR, Optional.empty()));
 
         controls.addAll(this.getGeneralControlDescription(NodeType.NODE_RECTANGLE));
 

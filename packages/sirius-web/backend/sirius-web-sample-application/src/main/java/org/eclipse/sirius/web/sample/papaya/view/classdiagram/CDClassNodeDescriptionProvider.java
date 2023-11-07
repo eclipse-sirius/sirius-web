@@ -63,6 +63,7 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
                         .borderColor(this.colorProvider.getColor("border_blue"))
                         .labelColor(this.colorProvider.getColor("label_white"))
                         .withHeader(false)
+                        .displayHeaderSeparator(false)
                         .build())
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .conditionalStyles(this.diagramBuilderHelper.newConditionalNodeStyle()
@@ -72,6 +73,7 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
                                 .borderColor(this.colorProvider.getColor("border_green"))
                                 .labelColor(this.colorProvider.getColor("label_white"))
                                 .withHeader(false)
+                                .displayHeaderSeparator(false)
                                 .build())
                         .build())
                 .build();
