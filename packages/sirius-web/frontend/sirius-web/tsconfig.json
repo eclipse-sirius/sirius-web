@@ -5,25 +5,14 @@
     "declarationDir": "build",
     "module": "esnext",
     "target": "ES2019",
-    "lib": [
-      "es6",
-      "dom",
-      "dom.iterable",
-      "es2016",
-      "es2017",
-      "ES2019"
-    ],
+    "lib": ["es6", "dom", "dom.iterable", "es2016", "es2017", "ES2019"],
     "jsx": "react-jsx",
     "sourceMap": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
-    "types": [
-      "node",
-      "reflect-metadata",
-      "jest"
-    ],
+    "types": ["node", "reflect-metadata", "jest"],
     "resolveJsonModule": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -33,9 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "strict": false
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules",
     "build",
