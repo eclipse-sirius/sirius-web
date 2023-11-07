@@ -7,6 +7,7 @@
 
 - Add support for custom nodes in Diagram representations
 - Add the possibility to specify a size ratio on node.
+- Add support for rotatable border node
 
 === Architectural decision records
 
