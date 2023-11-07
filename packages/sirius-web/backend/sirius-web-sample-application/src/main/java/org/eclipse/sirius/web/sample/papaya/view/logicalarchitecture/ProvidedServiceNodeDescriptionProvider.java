@@ -46,6 +46,7 @@ public class ProvidedServiceNodeDescriptionProvider implements INodeDescriptionP
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         nodeStyle.setBorderSize(0);
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
+        nodeStyle.setPositionDependentRotation(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("ProvidedService");
         nodeDescription.setSemanticCandidatesExpression("aql:self.providedServices");

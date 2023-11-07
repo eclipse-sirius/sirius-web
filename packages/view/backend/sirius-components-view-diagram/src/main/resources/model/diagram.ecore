@@ -144,6 +144,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ImageNodeStyleDescription" eSuperTypes="#//NodeStyleDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="positionDependentRotation"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IconLabelNodeStyleDescription" eSuperTypes="#//NodeStyleDescription"/>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeStyle" eSuperTypes="#//Style ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">

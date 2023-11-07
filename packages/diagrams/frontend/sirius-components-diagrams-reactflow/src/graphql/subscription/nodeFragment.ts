@@ -39,6 +39,7 @@ fragment nodeFragment on Node {
       borderStyle
       borderSize
       borderRadius
+      positionDependentRotation
     }
     ... on IconLabelNodeStyle {
       backgroundColor

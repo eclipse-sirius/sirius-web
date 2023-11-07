@@ -60,6 +60,8 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * Icon</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getShape
  * <em>Shape</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isPositionDependentRotation
+ * <em>Position Dependent Rotation</em>}</li>
  * </ul>
  *
  * @generated
@@ -344,6 +346,26 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @ordered
      */
     protected String shape = SHAPE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isPositionDependentRotation() <em>Position Dependent Rotation</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isPositionDependentRotation()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean POSITION_DEPENDENT_ROTATION_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isPositionDependentRotation() <em>Position Dependent Rotation</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isPositionDependentRotation()
+     * @generated
+     * @ordered
+     */
+    protected boolean positionDependentRotation = POSITION_DEPENDENT_ROTATION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -751,6 +773,30 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
      * @generated
      */
     @Override
+    public boolean isPositionDependentRotation() {
+        return this.positionDependentRotation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPositionDependentRotation(boolean newPositionDependentRotation) {
+        boolean oldPositionDependentRotation = this.positionDependentRotation;
+        this.positionDependentRotation = newPositionDependentRotation;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION, oldPositionDependentRotation,
+                    this.positionDependentRotation));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE:
@@ -787,6 +833,8 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
                 return this.getLabelIcon();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return this.getShape();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
+                return this.isPositionDependentRotation();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -843,6 +891,9 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape((String) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
+                this.setPositionDependentRotation((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -901,6 +952,9 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape(SHAPE_EDEFAULT);
                 return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
+                this.setPositionDependentRotation(POSITION_DEPENDENT_ROTATION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -943,6 +997,8 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
                 return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return SHAPE_EDEFAULT == null ? this.shape != null : !SHAPE_EDEFAULT.equals(this.shape);
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
+                return this.positionDependentRotation != POSITION_DEPENDENT_ROTATION_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -1064,6 +1120,8 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
         result.append(this.labelIcon);
         result.append(", shape: ");
         result.append(this.shape);
+        result.append(", positionDependentRotation: ");
+        result.append(this.positionDependentRotation);
         result.append(')');
         return result.toString();
     }

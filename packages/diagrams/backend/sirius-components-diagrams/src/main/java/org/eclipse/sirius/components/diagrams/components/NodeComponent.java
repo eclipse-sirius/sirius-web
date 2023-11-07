@@ -57,6 +57,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public class NodeComponent implements IComponent {
 
     public static final String COLLAPSING_STATE = "collapsingState";
+    public static final String IS_BORDER_NODE = "isBorderNode";
 
     public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds";
 
@@ -151,6 +152,7 @@ public class NodeComponent implements IComponent {
     private Element doRender(VariableManager nodeVariableManager, String targetObjectId, Optional<Node> optionalPreviousNode, Optional<IDiagramEvent> optionalDiagramEvent) {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
+        boolean isBorderNode = containmentKind == NodeContainmentKind.BORDER_NODE;
         INodeDescriptionRequestor nodeDescriptionRequestor = this.props.getNodeDescriptionRequestor();
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
@@ -160,6 +162,7 @@ public class NodeComponent implements IComponent {
         CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, optionalDiagramEvent);
 
         nodeVariableManager.put(NodeComponent.COLLAPSING_STATE, collapsingState);
+        nodeVariableManager.put(NodeComponent.IS_BORDER_NODE, isBorderNode);
 
         String type = nodeDescription.getTypeProvider().apply(nodeVariableManager);
         String targetObjectKind = nodeDescription.getTargetObjectKindProvider().apply(nodeVariableManager);
@@ -223,7 +226,7 @@ public class NodeComponent implements IComponent {
                 .targetObjectKind(targetObjectKind)
                 .targetObjectLabel(targetObjectLabel)
                 .descriptionId(nodeDescription.getId())
-                .borderNode(containmentKind == NodeContainmentKind.BORDER_NODE)
+                .borderNode(isBorderNode)
                 .style(style)
                 .position(position)
                 .size(size)
@@ -280,12 +283,12 @@ public class NodeComponent implements IComponent {
      * the default set.
      *
      * @param optionalDiagramEvent
-     *            The optional diagram event modifying the default modifier set of the node
+     *         The optional diagram event modifying the default modifier set of the node
      * @param optionalPreviousNode
-     *            The previous node from which get the old modifier set. If empty, the old modifier set is set to an
-     *            empty Set
+     *         The previous node from which get the old modifier set. If empty, the old modifier set is set to an
+     *         empty Set
      * @param id
-     *            The ID of the current node
+     *         The ID of the current node
      */
     private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Node> optionalPreviousNode, String id) {
         Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(Set.of()));
@@ -334,11 +337,11 @@ public class NodeComponent implements IComponent {
      * </ul>
      *
      * @param optionalPreviousNode
-     *            The previous node if this node existed during a previous rendering
+     *         The previous node if this node existed during a previous rendering
      * @param nodeDescription
-     *            The description of the node
+     *         The description of the node
      * @param nodeVariableManager
-     *            The variable manager of the node
+     *         The variable manager of the node
      * @return The size of the node
      */
     private Size getSize(Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, VariableManager nodeVariableManager) {

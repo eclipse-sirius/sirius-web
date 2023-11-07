@@ -103,6 +103,13 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(this.createShapeSelectionField());
         controls.add(this.createShapePreviewField());
         controls.addAll(this.getGeneralControlDescription(NodeType.NODE_IMAGE));
+        var isPositionDependentRotation = this.propertiesWidgetCreationService.createCheckbox("nodestyle.positionDependentRotation", "Position-Dependent Rotation",
+                style -> ((ImageNodeStyleDescription) style).isPositionDependentRotation(),
+                (style, newValue) -> ((ImageNodeStyleDescription) style).setPositionDependentRotation(newValue),
+                DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION,
+                Optional.of(variableManager -> "Only used for border node, if set to true, a rotation will be applied if the border node is moved to another side of its parent." +
+                        "The image default orientation is from the left side."));
+        controls.add(isPositionDependentRotation);
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 

@@ -1262,13 +1262,22 @@ public interface DiagramPackage extends EPackage {
     int IMAGE_NODE_STYLE_DESCRIPTION__SHAPE = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Position Dependent Rotation</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Image Node Style Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int IMAGE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+    int IMAGE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Image Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -3550,6 +3559,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getImageNodeStyleDescription_Shape();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#isPositionDependentRotation
+     * <em>Position Dependent Rotation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Position Dependent Rotation</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#isPositionDependentRotation()
+     * @see #getImageNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getImageNodeStyleDescription_PositionDependentRotation();
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription <em>Icon Label Node Style
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4855,6 +4876,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute IMAGE_NODE_STYLE_DESCRIPTION__SHAPE = eINSTANCE.getImageNodeStyleDescription_Shape();
+
+        /**
+         * The meta object literal for the '<em><b>Position Dependent Rotation</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION = eINSTANCE.getImageNodeStyleDescription_PositionDependentRotation();
 
         /**
          * The meta object literal for the

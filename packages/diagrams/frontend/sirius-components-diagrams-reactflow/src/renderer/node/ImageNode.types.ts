@@ -15,4 +15,5 @@ import { NodeData } from '../DiagramRenderer.types';
 
 export interface ImageNodeData extends NodeData {
   imageURL: string;
+  positionDependentRotation: boolean;
 }
