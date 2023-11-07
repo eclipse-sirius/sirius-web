@@ -48,6 +48,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
@@ -138,6 +139,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
         abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         abstractNodeStyle.setWithHeader(false);
+        abstractNodeStyle.setDisplayHeaderSeparator(false);
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         abstractConditionalNodeStyle.setCondition("aql:self.abstract");
@@ -187,6 +189,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
         abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         abstractNodeStyle.setWithHeader(false);
+        abstractNodeStyle.setDisplayHeaderSeparator(false);
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         abstractConditionalNodeStyle.setCondition("aql:self.abstract");

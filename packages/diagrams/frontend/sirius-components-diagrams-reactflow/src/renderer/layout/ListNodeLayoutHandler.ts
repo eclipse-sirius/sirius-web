@@ -92,7 +92,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader = node.data.label?.isHeader;
+    const withHeader: boolean = node.data.label?.isHeader ?? false;
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);

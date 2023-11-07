@@ -188,5 +188,15 @@ public class RectangularNodeStyleDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for DisplayHeaderSeparator.
+     *
+     * @generated
+     */
+    public RectangularNodeStyleDescriptionBuilder displayHeaderSeparator(java.lang.Boolean value) {
+        this.getRectangularNodeStyleDescription().setDisplayHeaderSeparator(value);
+        return this;
+    }
+
 }
 

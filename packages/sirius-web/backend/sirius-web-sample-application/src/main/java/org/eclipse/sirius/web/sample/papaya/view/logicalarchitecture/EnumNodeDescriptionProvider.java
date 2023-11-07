@@ -41,6 +41,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_green_2"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Enum");
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());

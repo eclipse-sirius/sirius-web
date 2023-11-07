@@ -47,6 +47,7 @@ public class CDInterfaceNodeDescriptionProvider implements INodeDescriptionProvi
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(true);
 
         var builder = new PapayaViewBuilder();
         var domainType = builder.domainType(builder.entity("Interface"));

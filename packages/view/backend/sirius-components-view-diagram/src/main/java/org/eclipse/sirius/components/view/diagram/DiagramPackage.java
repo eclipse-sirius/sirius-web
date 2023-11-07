@@ -1094,13 +1094,22 @@ public interface DiagramPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Display Header Separator</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RECTANGULAR_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Rectangular Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -3507,6 +3516,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getRectangularNodeStyleDescription_WithHeader();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isDisplayHeaderSeparator
+     * <em>Display Header Separator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Display Header Separator</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isDisplayHeaderSeparator()
+     * @see #getRectangularNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getRectangularNodeStyleDescription_DisplayHeaderSeparator();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription
      * <em>Image Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4807,6 +4828,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER = eINSTANCE.getRectangularNodeStyleDescription_WithHeader();
+
+        /**
+         * The meta object literal for the '<em><b>Display Header Separator</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR = eINSTANCE.getRectangularNodeStyleDescription_DisplayHeaderSeparator();
 
         /**
          * The meta object literal for the

@@ -46,6 +46,7 @@ public class PackageNodeDescriptionProvider implements INodeDescriptionProvider 
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_3"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(false);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Package");
         nodeDescription.setSemanticCandidatesExpression("aql:self.eContents()");

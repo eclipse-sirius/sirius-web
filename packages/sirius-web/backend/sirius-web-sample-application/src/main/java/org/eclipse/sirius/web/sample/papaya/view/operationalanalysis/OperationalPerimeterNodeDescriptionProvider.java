@@ -44,6 +44,7 @@ public class OperationalPerimeterNodeDescriptionProvider implements INodeDescrip
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray_2"));
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
         nodeStyle.setWithHeader(true);
+        nodeStyle.setDisplayHeaderSeparator(false);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalPerimeter");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalPerimeters");
