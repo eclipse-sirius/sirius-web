@@ -1,0 +1,79 @@
+= ADR-114 - Add support for multiple IEditService
+
+== Context
+
+Only one `IEditService` can be provided in a Sirius Web based application.
+The default implementation (`org.eclipse.sirius.components.emf.services.EditService`) is a good default implementation but sometimes we need to customize it based on a specific predicate.
+
+== Decision
+
+* Add new `IEditServiceDelegate`.
+All Sirius Web applications may provide as many `IEditServiceDelegate` as they want.
+
+[source,java]
+----
+public interface IEditServiceDelegate {
+
+    boolean canHandle(Object object);
+    boolean canHandle(IEditingContext editingContext);
+
+    List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind);
+    List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind);
+    Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
+    Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId);
+    void delete(Object object);
+    void editLabel(Object object, String labelField, String newValue);
+}
+----
+
+* Add new `IDefaultEditService` and its implementation @Service `DefaultEditService`.
+The default implementation `DefaultEditService` is the same than the existing one `EditService`.
+
+[source,java]
+----
+public interface IDefaultEditService {
+    
+    List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind);
+    List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind);
+    Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);
+    Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId);
+    void delete(Object object);
+    void editLabel(Object object, String labelField, String newValue);
+}
+----
+
+* Change @Service `EditService` to `ComposedEditService`.
+`ComposedEditService` will be moved from `org.eclipse.sirius.components.emf.services` to `org.eclipse.sirius.components.core.services`.
+
+
+[source,java]
+----
+@Service
+public class ComposedEditService implements IEditService {
+      private final List<IEditServiceDelegate> editServiceDelegates;
+
+      private final IDefaultEditService defaultEditService;
+...
+
+      @Override
+      public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind) {
+          var optionalDelegate = this.editServiceDelegates.stream()
+                 .filter(delegate -> delegate.canHandle(editingContext, null))
+                 .findFirst();
+          if (optionalDelegate.isPresent()) {
+          	return optionalDelegate.get().getRootCreationDescriptions(editingContext, domainId, suggested, referenceKind);
+          }
+          return this.defaultEditService.getRootCreationDescriptions(editingContext, domainId, suggested, referenceKind);
+      }
+}
+----
+
+
+== Status
+
+To be reviewed
+
+== Consequences
+
+A minor breaking change: if some existing applications may be referencing `EditService` by excluding it and extending it.
+They may now have to use `IEditServiceDelegate` instead.
