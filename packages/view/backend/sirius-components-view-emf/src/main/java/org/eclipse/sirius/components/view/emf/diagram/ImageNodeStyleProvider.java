@@ -77,39 +77,36 @@ public class ImageNodeStyleProvider implements INodeStyleProvider {
         Optional<INodeStyle> iNodeStyle = Optional.empty();
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.equals(Optional.of(ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE))) {
-            // @formatter:off
             iNodeStyle = Optional.of(ParametricSVGNodeStyle.newParametricSVGNodeStyle()
                     .backgroundColor(Optional.ofNullable(nodeStyle.getColor())
-                                             .filter(FixedColor.class::isInstance)
-                                             .map(FixedColor.class::cast)
-                                             .map(FixedColor::getValue)
-                                             .orElse(DEFAULT_BACKGROUND_COLOR))
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse(DEFAULT_BACKGROUND_COLOR))
                     .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
-                                         .filter(FixedColor.class::isInstance)
-                                         .map(FixedColor.class::cast)
-                                         .map(FixedColor::getValue)
-                                         .orElse(DEFAULT_BORDER_COLOR))
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse(DEFAULT_BORDER_COLOR))
                     .borderSize(nodeStyle.getBorderSize())
                     .borderRadius(nodeStyle.getBorderRadius())
                     .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .svgURL("/api/parametricsvgs/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
                     .build());
-            // @formatter:on
         } else if (nodeType.equals(Optional.of(NodeType.NODE_IMAGE))) {
-            // @formatter:off
             iNodeStyle = Optional.of(ImageNodeStyle.newImageNodeStyle()
-                               .scalingFactor(1)
-                               .imageURL("/custom/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
-                               .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
-                                                    .filter(FixedColor.class::isInstance)
-                                                    .map(FixedColor.class::cast)
-                                                    .map(FixedColor::getValue)
-                                                    .orElse(DEFAULT_COLOR))
-                               .borderSize(nodeStyle.getBorderSize())
-                               .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                               .borderRadius(nodeStyle.getBorderRadius())
-                               .build());
-            // @formatter:on
+                    .scalingFactor(1)
+                    .imageURL("/custom/" + ((ImageNodeStyleDescription) nodeStyle).getShape())
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse(DEFAULT_COLOR))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .borderRadius(nodeStyle.getBorderRadius())
+                    .positionDependentRotation(((ImageNodeStyleDescription) nodeStyle).isPositionDependentRotation())
+                    .build());
         }
 
         return iNodeStyle;

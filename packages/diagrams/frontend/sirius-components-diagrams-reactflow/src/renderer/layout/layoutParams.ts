@@ -16,5 +16,6 @@ export const rectangularNodePadding = 8;
 export const defaultNodeMargin = 8;
 export const borderLeftAndRight = 2;
 export const borderTopAndBottom = 2;
+export const borderNodeOffset = 5;
 export const defaultWidth = 150;
 export const defaultHeight = 70;

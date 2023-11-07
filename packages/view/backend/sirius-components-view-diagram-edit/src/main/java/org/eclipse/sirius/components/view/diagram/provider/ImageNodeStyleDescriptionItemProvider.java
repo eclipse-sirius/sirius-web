@@ -66,6 +66,7 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
             this.addShowIconPropertyDescriptor(object);
             this.addLabelIconPropertyDescriptor(object);
             this.addShapePropertyDescriptor(object);
+            this.addPositionDependentRotationPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -244,6 +245,19 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Position Dependent Rotation feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPositionDependentRotationPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ImageNodeStyleDescription_positionDependentRotation_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ImageNodeStyleDescription_positionDependentRotation_feature", "_UI_ImageNodeStyleDescription_type"),
+                DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns ImageNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -301,6 +315,7 @@ public class ImageNodeStyleDescriptionItemProvider extends StyleItemProvider {
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHOW_ICON:
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

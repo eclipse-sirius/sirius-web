@@ -73,6 +73,7 @@ export interface GQLRectangularNodeStyle extends GQLNodeStyle {
 
 export interface GQLImageNodeStyle extends GQLNodeStyle {
   imageURL: string;
+  positionDependentRotation: boolean;
 }
 
 export interface GQLIconLabelNodeStyle extends GQLNodeStyle {

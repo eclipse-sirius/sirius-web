@@ -105,6 +105,7 @@ type ImageNodeStyle {
   borderRadius: Int!
   borderSize: Int!
   borderStyle: LineStyle!
+  positionDependentRotation: Boolean!
 }
 
 type IconLabelNodeStyle {

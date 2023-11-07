@@ -188,5 +188,15 @@ public class ImageNodeStyleDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for PositionDependentRotation.
+     *
+     * @generated
+     */
+    public ImageNodeStyleDescriptionBuilder positionDependentRotation(java.lang.Boolean value) {
+        this.getImageNodeStyleDescription().setPositionDependentRotation(value);
+        return this;
+    }
+
 }
 

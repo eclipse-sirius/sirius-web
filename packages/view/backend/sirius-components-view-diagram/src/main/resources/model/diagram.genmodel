@@ -115,6 +115,7 @@
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//ImageNodeStyleDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ImageNodeStyleDescription/shape"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ImageNodeStyleDescription/positionDependentRotation"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//IconLabelNodeStyleDescription"/>
     <genClasses ecoreClass="diagram.ecore#//EdgeStyle">

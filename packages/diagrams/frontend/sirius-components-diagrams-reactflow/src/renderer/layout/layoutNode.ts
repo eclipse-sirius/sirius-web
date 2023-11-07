@@ -19,7 +19,14 @@ import {
   isSouthBorderNode,
   isWestBorderNode,
 } from './layoutBorderNodes';
-import { defaultHeight, defaultNodeMargin, defaultWidth, gap, rectangularNodePadding } from './layoutParams';
+import {
+  borderNodeOffset,
+  defaultHeight,
+  defaultNodeMargin,
+  defaultWidth,
+  gap,
+  rectangularNodePadding,
+} from './layoutParams';
 
 /**
  * It requires that nodes are already positioned
@@ -202,6 +209,7 @@ export const setBorderNodesPosition = (
         child.extent = getBorderNodeExtent(nodeToLayout, child);
       }
     }
+    child.position.x = child.position.x - borderNodeOffset;
   });
 
   const borderNodesWest = borderNodes.filter(isWestBorderNode);
@@ -219,6 +227,7 @@ export const setBorderNodesPosition = (
         child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) + gap };
       }
     }
+    child.position.x = child.position.x + borderNodeOffset;
   });
 
   const borderNodesSouth = borderNodes.filter(isSouthBorderNode);
@@ -237,6 +246,7 @@ export const setBorderNodesPosition = (
         child.extent = getBorderNodeExtent(nodeToLayout, child);
       }
     }
+    child.position.y = child.position.y - borderNodeOffset;
   });
 
   const borderNodesNorth = borderNodes.filter(isNorthBorderNode);
@@ -254,6 +264,7 @@ export const setBorderNodesPosition = (
         child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
       }
     }
+    child.position.y = child.position.y + borderNodeOffset;
   });
 };
 

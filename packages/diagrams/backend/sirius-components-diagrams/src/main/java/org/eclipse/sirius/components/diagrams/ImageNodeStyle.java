@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class ImageNodeStyle implements INodeStyle {
+
     private String imageURL;
 
     private int scalingFactor;
@@ -37,8 +38,14 @@ public final class ImageNodeStyle implements INodeStyle {
 
     private LineStyle borderStyle;
 
+    private boolean positionDependentRotation;
+
     private ImageNodeStyle() {
         // Prevent instantiation
+    }
+
+    public static Builder newImageNodeStyle() {
+        return new Builder();
     }
 
     public String getImageURL() {
@@ -65,8 +72,8 @@ public final class ImageNodeStyle implements INodeStyle {
         return this.borderStyle;
     }
 
-    public static Builder newImageNodeStyle() {
-        return new Builder();
+    public boolean isPositionDependentRotation() {
+        return this.positionDependentRotation;
     }
 
     @Override
@@ -82,6 +89,7 @@ public final class ImageNodeStyle implements INodeStyle {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
         private String imageURL;
 
         private int scalingFactor;
@@ -93,6 +101,8 @@ public final class ImageNodeStyle implements INodeStyle {
         private int borderRadius;
 
         private LineStyle borderStyle = LineStyle.Solid;
+
+        private boolean positionDependentRotation;
 
         private Builder() {
             // Prevent instantiation
@@ -128,6 +138,11 @@ public final class ImageNodeStyle implements INodeStyle {
             return this;
         }
 
+        public Builder positionDependentRotation(boolean positionDependentRotation) {
+            this.positionDependentRotation = positionDependentRotation;
+            return this;
+        }
+
         public ImageNodeStyle build() {
             ImageNodeStyle style = new ImageNodeStyle();
             style.imageURL = Objects.requireNonNull(this.imageURL);
@@ -136,6 +151,7 @@ public final class ImageNodeStyle implements INodeStyle {
             style.borderSize = this.borderSize;
             style.borderRadius = this.borderRadius;
             style.borderStyle = Objects.requireNonNull(this.borderStyle);
+            style.positionDependentRotation = this.positionDependentRotation;
             return style;
         }
     }

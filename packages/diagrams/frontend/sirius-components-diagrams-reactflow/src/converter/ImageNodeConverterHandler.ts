@@ -49,6 +49,7 @@ const toImageNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     labelEditable,
+    positionDependentRotation: style.positionDependentRotation,
   };
 
   if (insideLabel) {

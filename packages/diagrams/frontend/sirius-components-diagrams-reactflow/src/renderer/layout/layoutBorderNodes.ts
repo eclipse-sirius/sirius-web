@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { CoordinateExtent, Node } from 'reactflow';
 import { BorderNodePositon, NodeData } from '../DiagramRenderer.types';
+import { borderNodeOffset } from './layoutParams';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePositon.EAST;
@@ -33,8 +34,8 @@ export const getBorderNodeExtent = (
   let coordinateExtent: CoordinateExtent | 'parent' = 'parent';
   if (nodeParent.width && nodeParent.height && borderNorde.height && borderNorde.width) {
     coordinateExtent = [
-      [0 - borderNorde.width, 0 - borderNorde.height],
-      [nodeParent.width, nodeParent.height],
+      [0 - borderNorde.width + borderNodeOffset, 0 - borderNorde.height + borderNodeOffset],
+      [nodeParent.width - borderNodeOffset, nodeParent.height - borderNodeOffset],
     ];
   }
   return coordinateExtent;

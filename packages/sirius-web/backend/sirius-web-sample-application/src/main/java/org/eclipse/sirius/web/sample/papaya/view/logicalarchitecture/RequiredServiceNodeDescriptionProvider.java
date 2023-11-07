@@ -41,6 +41,7 @@ public class RequiredServiceNodeDescriptionProvider implements INodeDescriptionP
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         nodeStyle.setBorderSize(0);
         nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
+        nodeStyle.setPositionDependentRotation(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("RequiredService");
         nodeDescription.setSemanticCandidatesExpression("aql:self.requiredServices");
