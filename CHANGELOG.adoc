@@ -72,6 +72,7 @@ Note that double-clicking no longer triggers a direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2532[#2532] [diagram] Fix the limitation on borders that prevent movement on all sides of their node parent.
 - https://github.com/eclipse-sirius/sirius-web/issues/2543[#2543] [diagram] Prevent list items being moved to inconsistent positions
 - https://github.com/eclipse-sirius/sirius-web/issues/2500[#2500] [diagram] Selecting an element in the explorer now correctly selects and focuses on the corresponding edge on the current diagram if there is one.
+- https://github.com/eclipse-sirius/sirius-web/issues/2547[#2547] [diagram] Fix a bug where edge labels could be hidden/covered by other nodes
 
 === New Features
 
