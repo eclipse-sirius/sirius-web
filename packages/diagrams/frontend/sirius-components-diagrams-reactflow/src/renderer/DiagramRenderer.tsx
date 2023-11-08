@@ -32,14 +32,14 @@ import {
   useStoreApi,
 } from 'reactflow';
 
-import { useBorderChange } from './border/useBorderChange';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { convertDiagram } from '../converter/convertDiagram';
+import { Diagram, DiagramRendererProps, DiagramRendererState, EdgeData, NodeData } from './DiagramRenderer.types';
+import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
-import { Diagram, DiagramRendererProps, DiagramRendererState, EdgeData, NodeData } from './DiagramRenderer.types';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
@@ -75,7 +75,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
   const { layout, resetReferencePosition } = useLayout();
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
-  const { onDiagramElementClick } = useDiagramElementPalette();
+  const { onDiagramElementClick, hideDiagramElementPalette } = useDiagramElementPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
@@ -295,7 +295,10 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       onPaneClick={handlePaneClick}
       onEdgeClick={onDiagramElementClick}
       onNodeClick={onDiagramElementClick}
-      onMove={() => hideDiagramPalette()}
+      onMove={() => {
+        hideDiagramPalette();
+        hideDiagramElementPalette();
+      }}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onNodeDrag={onNodeDrag}
