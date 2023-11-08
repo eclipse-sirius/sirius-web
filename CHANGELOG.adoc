@@ -21,6 +21,7 @@
 - [ADR-117] Add support for changing the content of the details view
 - [ADR-118] Use dynamic handles to connect edges between nodes
 - [ADR-119] Share layout data between subscribers
+- [ADR-120] Improve the arrange all action with reactflow
 
 === Breaking changes
 
