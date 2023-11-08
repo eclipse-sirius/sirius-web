@@ -46,7 +46,7 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): Label => {
       position: 'absolute',
       background: 'transparent',
       padding: 10,
-      zIndex: 999,
+      zIndex: 1001,
       ...convertLabelStyle(gqlEdgeLabel.style),
     },
   };
