@@ -1,0 +1,93 @@
+= ADR-120 - Improve the arrange all action with reactflow
+
+== Context
+
+The arrange all is based on ELK.
+It is not easy to force the position and the size of specific nodes with ELK which is needed to support compartment well.
+Also, using ELK forces us to maintain two layout algorithm.
+
+== Decision
+
+Stop using ELK to do the arrange all with reactflow.
+Instead it will use our layout algorithm during the whole diagram lifecycle.
+
+The easiest way to force the layout to be done from scratch is to set the _previous diagram_ to `null`.
+Instead we will remove all node from the _previous diagram_.
+With that second solution, it will be easier to implement an _arrange selection_ action.
+
+=== Remove Diagram Metadata
+
+Reference to `Diagram` in `Layout.tsx` and some in `DiagramRenderer.tsx` will be replaced by `RawDiagram`.
+
+```typescript
+
+interface RawDiagram {
+
+  nodes: Node<NodeData, DiagramNodeType>[];
+
+  edges: Edge<MultiLabelEdgeData>[];
+}
+
+```
+
+=== useLayout hook
+
+Remove the `autoLayout` from `useLayout` hook.
+Add `arrangeAll` to the hook API.
+
+```typescript
+
+const useLayout = () => {
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+
+  const arrangeAll = (afterLayoutCallback: (laidoutDiagram: RawDiagram) => void): void => {
+    const diagramToLayout = { edges: [...reactFlowInstance.getEdges()], nodes: [...reactFlowInstance.getNodes()] };
+    const previousDiagram = { edges: [...reactFlowInstance.getEdges()], nodes: [] };
+
+    layoutDiagram(previousDiagram, diagramToLayout, afterLayoutCallback);
+  }
+
+  const layoutDiagram = (
+    previousLaidoutDiagram: RawDiagram | null,
+    diagramToLayout: RawDiagram,
+    callback: (laidoutDiagram: RawDiagram) => void
+  ) => {
+    ...
+  }
+  
+  return {
+    layout: layoutDiagram,
+    arrangeAll,
+  ...
+  }
+}
+
+```
+
+=== Diagram Panel component
+
+```typescript
+
+const DiagramPanel = () => {
+
+  const reactFlow = useReactFlow<NodeData, EdgeData>();
+  const { arrangeAll } = useLayout();
+
+  const handleArrangeAll = () => {
+    arrangeAll((laidoutDiagram) => {
+      reactFlow.setNodes(laidoutDiagram.nodes);
+      reactFlow.setEdges(laidoutDiagram.edges);
+    });
+  }
+};
+
+```
+
+== Status
+
+To be reviewed
+
+== Consequences
+
+- Remove ELK dependencies.
+
