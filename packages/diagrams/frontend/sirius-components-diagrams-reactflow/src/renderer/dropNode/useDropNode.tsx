@@ -154,7 +154,7 @@ const computeDropPosition = (
 };
 
 export const useDropNode = (): UseDropNodeValue => {
-  const [draggedNode, setDraggedNode] = useState<Node | null>(null);
+  const [draggedNode, setDraggedNode] = useState<Node<NodeData> | null>(null);
   const { dropData, setDropData } = useContext<DropNodeContextValue>(DropNodeContext);
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const [dropNodeCompatibilityData, setDropNodeCompatibilityData] = useState<GQLDropNodeCompatibilityEntry[]>([]);
@@ -235,6 +235,10 @@ export const useDropNode = (): UseDropNodeValue => {
             } else {
               onDragCancelled(draggedNode);
             }
+          } else if (draggedNode.type === 'iconLabelNode') {
+            // For list items, any move which did not change the parent (and potentially
+            // trigger a DnD operation) should be reverted as their layout is fixed.
+            onDragCancelled(draggedNode);
           }
         }
         setDraggedNode(null);
