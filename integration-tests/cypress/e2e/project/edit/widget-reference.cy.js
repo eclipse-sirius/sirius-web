@@ -494,22 +494,9 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
 
     cy.get('[title="Back to the homepage"]').click();
 
-    cy.url().should('eq', Cypress.config().baseUrl + '/projects');
-    cy.get('[title="Blank Studio"]').should('be.visible');
-    cy.getByTestId('create').click();
-
-    cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
-    cy.getByTestId('name').should('be.visible');
-    cy.getByTestId('name').type('Instance');
-    cy.getByTestId('create-project').click();
-    cy.getByTestId('empty').click();
-    cy.getByTestId('Others...-more').click();
-    cy.getByTestId('new-object').click();
-    cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
-    cy.getByTestId('domain').click();
-    cy.getByTestId('domain').get('[data-value^="domain://"]').should('exist').click();
-    cy.getByTestId('create-object').click();
+    cy.get('@domainValue').then((domainValue) => {
+      cy.createInstanceFromDomainModel(domainValue, false);
+    });
 
     cy.createChildObject('Root', 'Entity2s Entity2');
     cy.getByTestId('Name').type('Entity2');
