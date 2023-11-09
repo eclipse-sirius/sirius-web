@@ -19,6 +19,7 @@ import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
 import { useDropNode } from '../dropNode/useDropNode';
+import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ListNodeData } from './ListNode.types';
 
@@ -67,6 +68,7 @@ export const ListNode = memo(({ data, isConnectable, id, selected }: NodeProps<L
         data-testid={`List - ${data?.label?.text}`}>
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
+        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <Handle
           id={`handle--${id}--top`}
           type="source"
