@@ -12,11 +12,12 @@
  *******************************************************************************/
 
 import { Node } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
-import { getBorderNodeExtent } from './layoutBorderNodes';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { RawDiagram } from './layout.types';
+import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
@@ -40,7 +41,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
   public handle(
     layoutEngine: ILayoutEngine,
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<RectangularNodeData, 'rectangularNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
@@ -69,7 +70,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
   private handleParentNode(
     layoutEngine: ILayoutEngine,
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<RectangularNodeData, 'rectangularNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
@@ -167,7 +168,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
   }
 
   private handleLeafNode(
-    _previousDiagram: Diagram | null,
+    _previousDiagram: RawDiagram | null,
     node: Node<RectangularNodeData, 'rectangularNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,

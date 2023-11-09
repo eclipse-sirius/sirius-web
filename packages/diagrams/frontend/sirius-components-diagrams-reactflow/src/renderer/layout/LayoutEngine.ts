@@ -12,13 +12,14 @@
  *******************************************************************************/
 
 import { Node } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { IconLabelNodeLayoutHandler } from './IconLabelNodeLayoutHandler';
 import { ImageNodeLayoutHandler } from './ImageNodeLayoutHandler';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 import { RectangleNodeLayoutHandler } from './RectangleNodeLayoutHandler';
+import { RawDiagram } from './layout.types';
 
 export class LayoutEngine implements ILayoutEngine {
   nodeLayoutHandlers: INodeLayoutHandler<NodeData>[] = [
@@ -29,7 +30,7 @@ export class LayoutEngine implements ILayoutEngine {
   ];
 
   public layoutNodes(
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,

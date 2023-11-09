@@ -26,12 +26,13 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { useState } from 'react';
-import { Node, Panel, useEdges, useNodes, useReactFlow } from 'reactflow';
+import { Node, Panel, useNodes, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
@@ -42,8 +43,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   });
 
   const nodes = useNodes<NodeData>();
-  const edges = useEdges<EdgeData>();
-  const { autoLayout } = useLayout();
+  const { arrangeAll } = useLayout();
   const { fullscreen, onFullscreen } = useFullscreen();
 
   const reactFlow = useReactFlow<NodeData, EdgeData>();
@@ -67,8 +67,8 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   };
 
   const handleArrangeAll = () => {
-    autoLayout(nodes, edges, reactFlow.getZoom()).then(({ nodes }) => {
-      reactFlow.setNodes(nodes);
+    arrangeAll((laidoutDiagram: RawDiagram) => {
+      reactFlow.setNodes(laidoutDiagram.nodes);
     });
   };
 

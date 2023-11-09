@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Node } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { RawDiagram } from './layout.types';
 
 const rectangularNodePadding = 8;
 
@@ -24,7 +25,7 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
   }
   handle(
     _layoutEngine: ILayoutEngine,
-    _previousDiagram: Diagram | null,
+    _previousDiagram: RawDiagram | null,
     node: Node<IconLabelNodeData>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
