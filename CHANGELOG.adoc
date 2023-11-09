@@ -18,6 +18,7 @@
 - [ADR-115] Split the Sirius Web frontend
 - [ADR-116] Add support for changing the content of the explorer
 - [ADR-117] Add support for changing the content of the details view
+- [ADR-118] Use dynamic handles to connect edges between nodes
 
 === Breaking changes
 

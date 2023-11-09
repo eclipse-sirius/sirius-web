@@ -1,0 +1,136 @@
+= ADR-118 - Use dynamic handles to connect edges between nodes
+
+
+== Context
+
+
+With ReactFlow, each edge must be connected to a handle. 
+
+We currently render 4 handles per node (one for each Position available as a prop of the ReactFlow handle component).
+
+
+Inside the MultiLabelEdge component, we choose which of the 4 handles of the source/target node to use. For this, we use an algorithm defined in EdgeLayout that will return us the nearest handle.
+
+
+The issue with this approach is that different edges can use the same handle, and as such edges will overlap near the border of a node. It makes it difficult to reconnect a specific edge and the layout of the edges is ugly.
+
+
+== Decision
+
+
+=== Handles ids
+
+
+Each edge needs to have 2 dedicated handles : 1 for their source and 1 for their target.
+For that we need to define unique ids for the handles.
+
+
+`handle--source--${edge.id}--${index}`
+
+
+`handle--target--${edge.id}--${index}`
+
+
+=== Handles positioning
+
+
+The handles need to be spaced evenly around the border of a node.
+For that we need to wrap the handles of each side in a flex container.
+
+
+=== Data structure
+
+
+Since the number of handles rendered around a node will depend on the number of edges that connect to it, we need to store information about these handles.
+We will add this information to the data structure of the nodes.
+----
+export interface NodeData {
+...
+  connectionHandles: ConnectionHandle[];
+}
+----
+----
+export interface ConnectionHandle extends HandleProps {
+  nodeId: string;
+}
+----
+----
+export type HandleProps = { //This type is from ReactFlow
+    type: HandleType;
+    position: Position;
+    isConnectable?: boolean;
+    isConnectableStart?: boolean;
+    isConnectableEnd?: boolean;
+    onConnect?: OnConnect;
+    isValidConnection?: (connection: Connection) => boolean;
+    id?: string;
+};
+----
+
+
+=== Updating handles position
+
+
+Each time we update the number of handles or change their positions we need to call `updateNodeInternals(nodeId);`
+Since each type of node will need to listen to changes on their `connectionHandles`, we will have a custom hook that will be in charge of updating the handles.
+----
+export const useConnectionHandles = (id: string, connectionHandles: ConnectionHandle[]): UseConnectionHandlesValue => {
+  const updateNodeInternals = useUpdateNodeInternals();
+  const firstUpdate = useRef<boolean>(true);
+
+  const connectionHandlesIdentity = connectionHandles
+    .map((handle) => `${handle.edgeId}#${handle.position}#${handle.nodeId}`)
+    .join(', ');
+
+  useEffect(() => {
+      updateNodeInternals(id);
+  }, [connectionHandlesIdentity]);
+
+
+  return {
+    useConnectionHandles,
+  };
+};
+----
+
+
+===== Initial position after a semantic update
+
+
+After each new diagramRefreshPayload received, we need to update the number of connectionHandles of a node.
+We can also during the layout set the initial position of the handles to avoid recalculating them after updating the nodes. By having the layout calculate the initial positions of the handles we also avoid unnecessary rerenders of the edges.
+
+The main challenge here is that when there will be new edges, we need to make sure that the new handles associated are rendered before the edge. Otherwise, the edge will not be rendered and ReactFlow will throw an error.
+
+We will add virtual source and target connection handles that will be rendered at render n and be used at the next render n+1. This will prevents the edges to be associated with handle not yet rendered.
+
+===== Position after moving a node.
+
+
+Today, the edge is responsible for choosing which handles to connect to since there are 4 handles per nodes, one for each position.
+
+
+With a dynamic number of handles, we will need to update the nodes's `connectionHandles` when moving a node resulting in a change of Position for the end of an edge connected to a node.
+
+
+Updating a node from an edge would result in a "ping pong" between nodes and edges update.
+As such, we should let the moving nodes decide when to update their own `connectionHandles`.
+
+
+== Status
+
+
+To be reviewed
+
+
+== Consequences
+
+
+Custom nodes will need to use the new component `ConnectionHandles` to render handles.
+
+
+
+
+
+
+
