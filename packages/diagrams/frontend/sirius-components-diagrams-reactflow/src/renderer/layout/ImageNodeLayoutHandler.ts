@@ -12,11 +12,12 @@
  *******************************************************************************/
 
 import { Node } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { ImageNodeData } from '../node/ImageNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { getBorderNodeExtent } from './layoutBorderNodes';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { RawDiagram } from './layout.types';
+import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
@@ -37,7 +38,7 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
 
   public handle(
     layoutEngine: ILayoutEngine,
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<ImageNodeData, 'imageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
@@ -54,7 +55,7 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
 
   private handleParentNode(
     layoutEngine: ILayoutEngine,
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<ImageNodeData, 'imageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],

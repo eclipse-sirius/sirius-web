@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Diagram } from '../DiagramRenderer.types';
 import { getEdgeParameters, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+import { RawDiagram } from './layout.types';
 
-export const layoutHandles = (diagram: Diagram) => {
+export const layoutHandles = (diagram: RawDiagram) => {
   diagram.edges.forEach((edge) => {
     const { sourceNode, targetNode, sourceHandle, targetHandle } = edge;
     if (sourceNode && targetNode && sourceHandle && targetHandle) {

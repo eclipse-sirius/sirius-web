@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Box, Node, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
+import { RawDiagram } from './layout.types';
 import {
   getBorderNodeExtent,
   isEastBorderNode,
@@ -168,7 +169,7 @@ const getNodeFootprint = (allVisibleNodes: Node<NodeData>[], node: Node<NodeData
 
 const spreadPositionedNodesFromNonPositionedNodes = (
   nodes: Node<NodeData>[],
-  previousDiagram: Diagram | null
+  previousDiagram: RawDiagram | null
 ): { positionedNodes: Node<NodeData>[]; nonPositionedNodes: Node<NodeData>[] } => {
   const positionedNodes: Node<NodeData>[] = [];
   const nonPositionedNodes: Node<NodeData>[] = [];
@@ -191,7 +192,7 @@ const spreadPositionedNodesFromNonPositionedNodes = (
 export const setBorderNodesPosition = (
   borderNodes: Node<NodeData>[],
   nodeToLayout: Node<NodeData>,
-  previousDiagram: Diagram | null
+  previousDiagram: RawDiagram | null
 ): void => {
   const borderNodesEast = borderNodes.filter(isEastBorderNode);
   borderNodesEast.forEach((child, index) => {
@@ -282,7 +283,7 @@ export const setBorderNodesPosition = (
 export const getNorthBorderNodeFootprintWidth = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: Diagram | null
+  previousDiagram: RawDiagram | null
 ): number => {
   const northBorderNodes = borderNodes.filter(isNorthBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =
@@ -314,7 +315,7 @@ export const getNorthBorderNodeFootprintWidth = (
 export const getSouthBorderNodeFootprintWidth = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: Diagram | null
+  previousDiagram: RawDiagram | null
 ): number => {
   const southBorderNodes = borderNodes.filter(isSouthBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =
@@ -346,7 +347,7 @@ export const getSouthBorderNodeFootprintWidth = (
 export const getEastBorderNodeFootprintHeight = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: Diagram | null
+  previousDiagram: RawDiagram | null
 ): number => {
   const eastBorderNodes = borderNodes.filter(isEastBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =
@@ -378,7 +379,7 @@ export const getEastBorderNodeFootprintHeight = (
 export const getWestBorderNodeFootprintHeight = (
   allVisibleNodes: Node<NodeData>[],
   borderNodes: Node<NodeData>[],
-  previousDiagram: Diagram | null
+  previousDiagram: RawDiagram | null
 ): number => {
   const westBorderNodes = borderNodes.filter(isWestBorderNode);
   const { positionedNodes: previousBorderNodes, nonPositionedNodes: nonPositionedBorderNode } =

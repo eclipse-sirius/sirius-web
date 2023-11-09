@@ -12,14 +12,15 @@
  *******************************************************************************/
 
 import { Node } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { RawDiagram } from './layout.types';
 
 export interface ILayoutEngine {
   registerNodeLayoutHandlerContribution(nodeLayoutHandlerContribution: INodeLayoutHandler<NodeData>);
 
   layoutNodes(
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -32,7 +33,7 @@ export interface INodeLayoutHandler<T extends NodeData> {
 
   handle(
     layoutEngine: ILayoutEngine,
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<T>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],

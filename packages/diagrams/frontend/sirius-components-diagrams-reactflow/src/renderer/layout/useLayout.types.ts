@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, XYPosition } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { XYPosition } from 'reactflow';
+import { RawDiagram } from './layout.types';
 
 export interface UseLayoutValue {
   layout: (
-    previousLaidoutDiagram: Diagram | null,
-    diagramToLayout: Diagram,
-    callback: (laidoutDiagram: Diagram) => void
+    previousLaidoutDiagram: RawDiagram | null,
+    diagramToLayout: RawDiagram,
+    callback: (laidoutDiagram: RawDiagram) => void
   ) => void;
-  autoLayout: (nodes: Node<NodeData>[], edges: Edge[], zoomLevel: number) => Promise<{ nodes: Node<NodeData>[] }>;
+  arrangeAll: (afterLayoutCallback: (laidoutDiagram: RawDiagram) => void) => void;
 
   /**
    * Store the reference position in the layout context for a later use, like in the next refresh to position new created node at the reference position stored in the context.
@@ -46,8 +46,8 @@ export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';
 export interface UseLayoutState {
   hiddenContainer: HTMLDivElement | null;
   currentStep: Step;
-  previousDiagram: Diagram | null;
-  diagramToLayout: Diagram | null;
-  laidoutDiagram: Diagram | null;
-  onLaidoutDiagram: (laidoutDiagram: Diagram) => void;
+  previousDiagram: RawDiagram | null;
+  diagramToLayout: RawDiagram | null;
+  laidoutDiagram: RawDiagram | null;
+  onLaidoutDiagram: (laidoutDiagram: RawDiagram) => void;
 }

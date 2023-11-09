@@ -15,14 +15,12 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
-import { Edge, Node, ReactFlowProvider } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { Node, ReactFlowProvider } from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
-import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
@@ -31,6 +29,7 @@ import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ReferencePosition } from './LayoutContext.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { layoutHandles } from './layoutHandles';
 import { getChildren } from './layoutNode';
@@ -54,13 +53,14 @@ const emptyRectangularNodeProps = {
   type: 'rectangularNode',
 };
 
-const isIconLabelNode = (node: Node<NodeData>): node is Node<IconLabelNodeData> => node.type === 'iconLabelNode';
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
 const isRectangularNode = (node: Node<NodeData>): node is Node<RectangularNodeData> => node.type === 'rectangularNode';
 
-const elk = new ELK();
-
-export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void, httpOrigin: string): HTMLDivElement => {
+export const prepareLayoutArea = (
+  diagram: RawDiagram,
+  renderCallback: () => void,
+  httpOrigin: string
+): HTMLDivElement => {
   const hiddenContainer: HTMLDivElement = document.createElement('div');
   hiddenContainer.id = 'hidden-container';
   hiddenContainer.style.display = 'inline-block';
@@ -190,18 +190,18 @@ export const cleanLayoutArea = (container: HTMLDivElement) => {
 const gap = 20;
 
 export const layout = (
-  previousDiagram: Diagram | null,
-  diagram: Diagram,
+  previousDiagram: RawDiagram | null,
+  diagram: RawDiagram,
   referencePosition: ReferencePosition | null,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
-): Diagram => {
+): RawDiagram => {
   layoutDiagram(previousDiagram, diagram, referencePosition, nodeLayoutHandlerContributions);
   return diagram;
 };
 
 const layoutDiagram = (
-  previousDiagram: Diagram | null,
-  diagram: Diagram,
+  previousDiagram: RawDiagram | null,
+  diagram: RawDiagram,
   referencePosition: ReferencePosition | null,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
@@ -268,167 +268,4 @@ const layoutDiagram = (
   });
 
   layoutHandles(diagram);
-};
-
-export const performDefaultAutoLayout = (
-  nodes: Node<NodeData>[],
-  edges: Edge[],
-  zoomLevel: number
-): Promise<{ nodes: Node<NodeData>[] }> => {
-  const layoutOptions: LayoutOptions = {
-    'elk.algorithm': 'layered',
-    'elk.layered.spacing.nodeNodeBetweenLayers': '100',
-    'org.eclipse.elk.hierarchyHandling': 'INCLUDE_CHILDREN',
-    'layering.strategy': 'NETWORK_SIMPLEX',
-    'elk.spacing.nodeNode': '80',
-    'elk.direction': 'DOWN',
-    'elk.layered.spacing.edgeNodeBetweenLayers': '30',
-  };
-  return performAutoLayout(nodes, edges, layoutOptions, zoomLevel);
-};
-
-export const performAutoLayout = (
-  nodes: Node<NodeData>[],
-  edges: Edge[],
-  layoutOptions: LayoutOptions,
-  zoomLevel: number
-): Promise<{ nodes: Node<NodeData>[] }> => {
-  const graph: ElkNode = {
-    id: 'root',
-    layoutOptions,
-    children: [],
-    edges: [],
-  };
-  const hiddenNodes = nodes.filter((node) => node.hidden);
-  const visibleNodes = nodes.filter((node) => !node.hidden);
-  const nodeId2Node = new Map<string, Node>();
-  visibleNodes.forEach((node) => nodeId2Node.set(node.id, node));
-  const nodeId2ElkNode = new Map<String, ElkNode>();
-  visibleNodes.forEach((node) => {
-    const elkNode: ElkNode = {
-      id: node.id,
-      children: [],
-      labels: [],
-      layoutOptions: {
-        'nodeLabels.placement': '[H_CENTER, V_TOP, INSIDE]',
-      },
-    };
-    if (isRectangularNode(node)) {
-      const rectangularNodeData: RectangularNodeData = node.data;
-
-      const label = document.querySelector<HTMLDivElement>(`[data-id="${rectangularNodeData.label?.id}"]`);
-      if (label) {
-        const elkLabel: ElkLabel = {
-          width: label.getBoundingClientRect().width / zoomLevel,
-          height: label.getBoundingClientRect().height / zoomLevel,
-          text: rectangularNodeData.label?.text,
-        };
-
-        elkNode.labels?.push(elkLabel);
-      }
-    }
-    if (isListNode(node)) {
-      const listNodeData: ListNodeData = node.data;
-
-      const label = document.querySelector<HTMLDivElement>(`[data-id="${listNodeData.label?.id}"]`);
-      if (label) {
-        const elkLabel: ElkLabel = {
-          width: label.getBoundingClientRect().width / zoomLevel,
-          height: label.getBoundingClientRect().height / zoomLevel,
-          text: listNodeData.label?.text,
-        };
-
-        elkNode.labels?.push(elkLabel);
-      }
-    }
-    if (isIconLabelNode(node)) {
-      const iconLabelNodeData: IconLabelNodeData = node.data;
-      const label = document.querySelector<HTMLDivElement>(`[data-id="${iconLabelNodeData.label?.id}"]`);
-      if (label) {
-        const elkLabel: ElkLabel = {
-          width: label.getBoundingClientRect().width / zoomLevel,
-          height: label.getBoundingClientRect().height / zoomLevel,
-          text: iconLabelNodeData.label?.text,
-        };
-
-        elkNode.labels?.push(elkLabel);
-      }
-    }
-
-    const element = document.querySelector(`[data-id="${node.id}"]`);
-    if (element) {
-      elkNode.width = element.getBoundingClientRect().width / zoomLevel;
-      elkNode.height = element.getBoundingClientRect().height / zoomLevel;
-    }
-
-    nodeId2ElkNode.set(elkNode.id, elkNode);
-  });
-  visibleNodes.forEach((node) => {
-    if (graph.children) {
-      if (!!node.parentNode && !!nodeId2ElkNode.get(node.parentNode)) {
-        const elknodeChild = nodeId2ElkNode.get(node.id);
-        const elkNodeParent = nodeId2ElkNode.get(node.parentNode);
-        if (elkNodeParent && elkNodeParent.children && elknodeChild) {
-          elkNodeParent.children.push(elknodeChild);
-        }
-      } else {
-        const elkNodeRoot = nodeId2ElkNode.get(node.id);
-        if (elkNodeRoot) {
-          graph.children.push(elkNodeRoot);
-        }
-      }
-    }
-  });
-
-  edges
-    .filter((edge) => !edge.hidden)
-    .forEach((edge) => {
-      if (graph.edges) {
-        const elkEdge: ElkExtendedEdge = {
-          id: edge.id,
-          sources: [edge.source],
-          targets: [edge.target],
-        };
-        graph.edges.push(elkEdge);
-      }
-    });
-
-  return elk
-    .layout(graph)
-    .then((laidoutGraph) => elkToReactFlow(laidoutGraph.children ?? [], nodeId2Node))
-    .then((laidoutNodes) => {
-      return {
-        nodes: [...laidoutNodes, ...hiddenNodes],
-      };
-    });
-};
-
-const elkToReactFlow = (elkNodes: ElkNode[], nodeId2Node: Map<string, Node>): Node[] => {
-  const nodes: Node[] = [];
-  elkNodes.forEach((elkNode) => {
-    const node = nodeId2Node.get(elkNode.id);
-    if (node) {
-      if (!node.position) {
-        node.position = { x: 0, y: 0 };
-      }
-      node.position.x = elkNode.x ?? 0;
-      node.position.y = elkNode.y ?? 0;
-      node.width = elkNode.width ?? 150;
-      node.height = elkNode.height ?? 70;
-      if (node.style) {
-        if (node.style.width) {
-          node.style.width = `${node.width}px`;
-        }
-        if (node.style.height) {
-          node.style.height = `${node.height}px`;
-        }
-      }
-      nodes.push(node);
-    }
-    if (elkNode.children && elkNode.children.length > 0) {
-      const laidoutChildren = elkToReactFlow(elkNode.children, nodeId2Node);
-      nodes.push(...laidoutChildren);
-    }
-  });
-  return nodes;
 };

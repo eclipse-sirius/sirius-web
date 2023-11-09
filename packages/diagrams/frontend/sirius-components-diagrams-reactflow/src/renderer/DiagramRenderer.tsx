@@ -42,6 +42,7 @@ import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
+import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
@@ -92,8 +93,7 @@ export const DiagramRenderer = ({
       diagramDescription.nodeDescriptions
     );
 
-    const previousDiagram: Diagram = {
-      metadata: { ...convertedDiagram.metadata },
+    const previousDiagram: RawDiagram = {
       nodes: nodes as Node<NodeData, DiagramNodeType>[],
       edges,
     };

@@ -12,11 +12,12 @@
  *******************************************************************************/
 
 import { Node } from 'reactflow';
-import { Diagram, NodeData } from '../DiagramRenderer.types';
+import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { getBorderNodeExtent } from './layoutBorderNodes';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { RawDiagram } from './layout.types';
+import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
@@ -37,7 +38,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
   public handle(
     layoutEngine: ILayoutEngine,
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
@@ -65,7 +66,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   }
 
   handleLeafNode(
-    _previousDiagram: Diagram | null,
+    _previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
@@ -81,7 +82,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
   private handleParentNode(
     layoutEngine: ILayoutEngine,
-    previousDiagram: Diagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],

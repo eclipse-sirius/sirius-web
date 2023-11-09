@@ -50,7 +50,6 @@
     "@types/react-dom": "17.0.9",
     "@vitejs/plugin-react": "4.0.4",
     "@vitest/coverage-v8": "0.34.2",
-    "elkjs": "0.8.2",
     "graphql": "16.8.0",
     "html-to-image": "1.11.11",
     "jsdom": "16.7.0",

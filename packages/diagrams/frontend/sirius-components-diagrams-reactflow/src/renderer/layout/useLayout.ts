@@ -13,13 +13,15 @@
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { useReactFlow, XYPosition } from 'reactflow';
+import { Node, XYPosition, useReactFlow } from 'reactflow';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
-import { Diagram, EdgeData, NodeData } from '../DiagramRenderer.types';
-import { cleanLayoutArea, layout, performDefaultAutoLayout, prepareLayoutArea } from './layout';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { LayoutContext } from './LayoutContext';
 import { LayoutContextContextValue } from './LayoutContext.types';
+import { cleanLayoutArea, layout, prepareLayoutArea } from './layout';
+import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
 
 const initialState: UseLayoutState = {
@@ -46,9 +48,9 @@ export const useLayout = (): UseLayoutValue => {
   };
 
   const layoutDiagram = (
-    previousLaidoutDiagram: Diagram | null,
-    diagramToLayout: Diagram,
-    callback: (laidoutDiagram: Diagram) => void
+    previousLaidoutDiagram: RawDiagram | null,
+    diagramToLayout: RawDiagram,
+    callback: (laidoutDiagram: RawDiagram) => void
   ) => {
     if (state.currentStep === 'INITIAL_STEP') {
       setState((prevState) => ({
@@ -109,9 +111,17 @@ export const useLayout = (): UseLayoutValue => {
     });
   }, []);
 
+  const arrangeAll = (afterLayoutCallback: (laidoutDiagram: RawDiagram) => void): void => {
+    const nodes = [...reactFlowInstance.getNodes()] as Node<NodeData, DiagramNodeType>[];
+    const diagramToLayout: RawDiagram = { edges: [...reactFlowInstance.getEdges()], nodes };
+    const previousDiagram: RawDiagram = { edges: [...reactFlowInstance.getEdges()], nodes: [] };
+
+    layoutDiagram(previousDiagram, diagramToLayout, afterLayoutCallback);
+  };
+
   return {
     layout: layoutDiagram,
-    autoLayout: performDefaultAutoLayout,
+    arrangeAll,
     setReferencePosition: onReferencePositionSet,
     resetReferencePosition,
   };
