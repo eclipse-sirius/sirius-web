@@ -14,5 +14,7 @@
 import 'cypress-file-upload';
 
 import './explorerCommands';
+import './reactFlowCommands';
 import './serverCommands';
+import './studioCommands';
 import './testIdCommands';
