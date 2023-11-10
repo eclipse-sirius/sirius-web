@@ -129,7 +129,7 @@
     "@eclipse-sirius/sirius-components-forms": "*",
     "@eclipse-sirius/sirius-components-selection": "*",
     "@eclipse-sirius/sirius-components-diagrams-reactflow": "*",
-    "axios": "0.21.4",
+    "axios": "1.6.0",
     "graphql": "16.8.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
