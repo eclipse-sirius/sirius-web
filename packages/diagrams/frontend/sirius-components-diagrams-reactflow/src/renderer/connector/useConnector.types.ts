@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart } from 'reactflow';
+import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from 'reactflow';
 
 export interface UseConnectorValue {
   onConnect: OnConnect;
@@ -21,6 +21,7 @@ export interface UseConnectorValue {
   onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   newConnectionStyleProvider: NodeStyleProvider;
   connection: Connection | null;
+  position: XYPosition | null;
 }
 
 export interface NodeStyleProvider {

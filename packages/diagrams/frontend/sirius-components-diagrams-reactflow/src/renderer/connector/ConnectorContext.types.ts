@@ -11,14 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection } from 'reactflow';
+import { Connection, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from './useConnector.types';
 
 export interface ConnectorContextValue {
   connection: Connection | null;
+  position: XYPosition | null;
   candidates: GQLNodeDescription[];
   isNewConnection: boolean;
   setConnection: (connection: Connection) => void;
+  setPosition: (position: XYPosition) => void;
   setCandidates: (candidates: GQLNodeDescription[]) => void;
   setIsNewConnection: (isNewConnection: boolean) => void;
   resetConnection: () => void;
@@ -30,6 +32,7 @@ export interface ConnectorContextProviderProps {
 
 export interface ConnectorContextProviderState {
   connection: Connection | null;
+  position: XYPosition | null;
   candidates: GQLNodeDescription[];
   isNewConnection: boolean;
 }

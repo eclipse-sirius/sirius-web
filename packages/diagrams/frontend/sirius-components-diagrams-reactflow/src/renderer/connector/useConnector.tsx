@@ -20,8 +20,16 @@ import { ConnectorContextValue } from './ConnectorContext.types';
 import { NodeStyleProvider, UseConnectorValue } from './useConnector.types';
 
 export const useConnector = (): UseConnectorValue => {
-  const { connection, setConnection, resetConnection, candidates, isNewConnection, setIsNewConnection } =
-    useContext<ConnectorContextValue>(ConnectorContext);
+  const {
+    connection,
+    setConnection,
+    position,
+    setPosition,
+    resetConnection,
+    candidates,
+    isNewConnection,
+    setIsNewConnection,
+  } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
@@ -69,7 +77,13 @@ export const useConnector = (): UseConnectorValue => {
     }
   };
 
-  const onConnectEnd: OnConnectEnd = (_event: MouseEvent | TouchEvent) => {
+  const onConnectEnd: OnConnectEnd = (event: MouseEvent | TouchEvent) => {
+    if ('clientX' in event && 'clientY' in event) {
+      setPosition({ x: event.clientX || 0, y: event.clientY });
+    } else if ('touches' in event) {
+      const touchEvent = event as TouchEvent;
+      setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
+    }
     setIsNewConnection(false);
   };
 
@@ -81,5 +95,6 @@ export const useConnector = (): UseConnectorValue => {
     onConnectionStartElementClick,
     newConnectionStyleProvider,
     connection,
+    position,
   };
 };

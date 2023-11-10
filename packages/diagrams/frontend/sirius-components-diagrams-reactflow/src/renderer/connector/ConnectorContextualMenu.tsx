@@ -95,7 +95,7 @@ const isDiagramDescription = (
 
 export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const { connection, onConnectorContextualMenuClose } = useConnector();
+  const { connection, position, onConnectorContextualMenuClose } = useConnector();
 
   const { addMessages, addErrorMessage } = useMultiToast();
 
@@ -194,7 +194,12 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
     return null;
   }
   return (
-    <Menu open={!!connection} onClose={onShouldConnectorContextualMenuClose} anchorEl={connectionTarget}>
+    <Menu
+      open={!!connection}
+      onClose={onShouldConnectorContextualMenuClose}
+      anchorEl={connectionTarget}
+      anchorReference="anchorPosition"
+      anchorPosition={{ left: position?.x || 0, top: position?.y || 0 }}>
       {connectorTools.map((tool) => (
         <MenuItem key={tool.id} onClick={() => invokeTool(tool)}>
           <ListItemIcon>
