@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import React, { useState } from 'react';
-import { Connection } from 'reactflow';
+import { Connection, XYPosition } from 'reactflow';
 import {
   ConnectorContextProviderProps,
   ConnectorContextProviderState,
@@ -22,9 +22,11 @@ import { GQLNodeDescription } from './useConnector.types';
 
 const defaultValue: ConnectorContextValue = {
   connection: null,
+  position: null,
   candidates: [],
   isNewConnection: false,
   setConnection: () => {},
+  setPosition: () => {},
   setCandidates: () => {},
   resetConnection: () => {},
   setIsNewConnection: () => {},
@@ -35,12 +37,17 @@ export const ConnectorContext = React.createContext<ConnectorContextValue>(defau
 export const ConnectorContextProvider = ({ children }: ConnectorContextProviderProps) => {
   const [state, setState] = useState<ConnectorContextProviderState>({
     connection: null,
+    position: null,
     candidates: [],
     isNewConnection: false,
   });
 
   const setConnection = (connection: Connection) => {
     setState((prevState) => ({ ...prevState, connection }));
+  };
+
+  const setPosition = (position: XYPosition) => {
+    setState((prevState) => ({ ...prevState, position }));
   };
 
   const setCandidates = (candidates: GQLNodeDescription[]) => {
@@ -64,9 +71,11 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
     <ConnectorContext.Provider
       value={{
         connection: state.connection,
+        position: state.position,
         candidates: state.candidates,
         isNewConnection: state.isNewConnection,
         setConnection,
+        setPosition,
         setCandidates,
         resetConnection,
         setIsNewConnection,
