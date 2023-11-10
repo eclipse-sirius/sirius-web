@@ -19,10 +19,9 @@ import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/li
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Edge, Node, ReactFlowProvider } from 'reactflow';
-import { ConnectionHandle, Diagram, EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Diagram, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
-import { getEdgeParameters } from '../edge/EdgeLayout';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
@@ -255,8 +254,8 @@ const layoutDiagram = (
     }
   });
 
-  setPreviousHandles(previousDiagram, diagram);
-  setNewHandles(previousDiagram, diagram);
+  //setPreviousHandles(previousDiagram, diagram);
+  //setNewHandles(previousDiagram, diagram);
 };
 
 export const performDefaultAutoLayout = (
@@ -421,7 +420,7 @@ const elkToReactFlow = (elkNodes: ElkNode[], nodeId2Node: Map<string, Node>): No
   });
   return nodes;
 };
-
+/*
 const setPreviousHandles = (previousDiagram: Diagram | null, diagram: Diagram) => {
   diagram.edges.forEach((edge) => {
     let previousEdge: Edge<EdgeData> | undefined = previousDiagram?.edges.find((n) => n.id === edge.id);
@@ -528,3 +527,4 @@ const setNewHandles = (previousDiagram: Diagram | null, diagram: Diagram) => {
     }
   });
 };
+*/

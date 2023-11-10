@@ -16,15 +16,13 @@ import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-siriu
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
   ConnectorContextualMenuProps,
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
   GQLDiagramDescription,
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
@@ -32,6 +30,8 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
   GQLRepresentationDescription,
   GQLTool,
+  GetConnectorToolsData,
+  GetConnectorToolsVariables,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 
@@ -116,16 +116,12 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
 
   const { addMessages, addErrorMessage } = useMultiToast();
 
-  const connectionSource: HTMLElement | null = connection
-    ? document.querySelector(`[data-id="${connection.source}"]`)
-    : null;
-
   const connectionTarget: HTMLElement | null = connection
     ? document.querySelector(`[data-id="${connection.target}"]`)
     : null;
 
-  const sourceDiagramElementId = connectionSource?.dataset.id ?? '';
-  const targetDiagramElementId = connectionTarget?.dataset.id ?? '';
+  const sourceDiagramElementId = connection?.source ?? '';
+  const targetDiagramElementId = connection?.target ?? '';
 
   const variables: GetConnectorToolsVariables = {
     editingContextId,
@@ -135,7 +131,7 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   };
   const { data, error } = useQuery<GetConnectorToolsData, GetConnectorToolsVariables>(getConnectorToolsQuery, {
     variables,
-    skip: !connectionSource || !connectionTarget,
+    skip: !sourceDiagramElementId || !targetDiagramElementId,
   });
 
   useEffect(() => {

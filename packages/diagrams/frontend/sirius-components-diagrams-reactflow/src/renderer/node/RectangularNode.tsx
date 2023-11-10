@@ -56,7 +56,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
   };
 
   useConnectionHandles(id, data.connectionHandles);
-
+  //console.log('Coucou Node');
   return (
     <>
       <NodeResizer color={theme.palette.primary.main} isVisible={selected} shouldResize={() => !data.isBorderNode} />

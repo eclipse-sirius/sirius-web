@@ -23,7 +23,14 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon, ConnectionHandle, Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
+import {
+  BorderNodePositon,
+  ConnectionHandle,
+  Diagram,
+  EdgeData,
+  Label,
+  NodeData,
+} from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { ImageNodeData } from '../renderer/node/ImageNode.types';
@@ -53,23 +60,55 @@ const toRectangularNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = [];
+  const numberSourceHandles = (handles: ConnectionHandle[]): string => {
+    return handles.filter((handle) => handle.type === 'source').length.toString();
+  };
+  const numberTargetHandles = (handles: ConnectionHandle[]): string => {
+    return handles.filter((handle) => handle.type === 'target').length.toString();
+  };
+  console.log(insideLabel?.text);
   gqlEdges.forEach((edge) => {
-    if (edge.sourceId === gqlNode.id)
+    if (edge.sourceId === gqlNode.id) {
+      console.log(numberSourceHandles(connectionHandles));
+      console.log(`handle--source--${gqlNode.id}--${numberSourceHandles(connectionHandles)}`);
       connectionHandles.push({
-        id: `handle--source--${edge.id}`,
+        id: `handle--source--${gqlNode.id}--${numberSourceHandles(connectionHandles)}`,
         edgeId: edge.id,
         nodeId: gqlNode.id,
         position: Position.Right,
         type: 'source',
       });
-    if (edge.targetId === gqlNode.id)
+    }
+
+    if (edge.targetId === gqlNode.id) {
+      console.log(numberTargetHandles(connectionHandles));
+      console.log(`handle--target--${gqlNode.id}--${numberTargetHandles(connectionHandles)}`);
       connectionHandles.push({
-        id: `handle--target--${edge.id}`,
+        id: `handle--target--${gqlNode.id}--${numberTargetHandles(connectionHandles)}`,
         edgeId: edge.id,
         nodeId: gqlNode.id,
         position: Position.Left,
         type: 'target',
       });
+    }
+  });
+  console.log(numberSourceHandles(connectionHandles));
+  console.log(`Extra handle--source--${gqlNode.id}--${numberSourceHandles(connectionHandles)}`);
+  connectionHandles.push({
+    id: `handle--source--${gqlNode.id}--${numberSourceHandles(connectionHandles)}`,
+    edgeId: '',
+    nodeId: gqlNode.id,
+    position: Position.Right,
+    type: 'source',
+  });
+  console.log(numberTargetHandles(connectionHandles));
+  console.log(`Extra handle--target--${gqlNode.id}--${numberTargetHandles(connectionHandles)}`);
+  connectionHandles.push({
+    id: `handle--target--${gqlNode.id}--${numberTargetHandles(connectionHandles)}`,
+    edgeId: '',
+    nodeId: gqlNode.id,
+    position: Position.Left,
+    type: 'target',
   });
   const data: RectangularNodeData = {
     targetObjectId,
@@ -530,10 +569,10 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
   const nodeId2Depth = new Map<string, number>();
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
 
-  const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
-    const sourceNode = nodeId2node.get(gqlEdge.sourceId);
-    const targetNode = nodeId2node.get(gqlEdge.targetId);
-
+  let usedHandles: string[] = [];
+  const edges: Edge<EdgeData>[] = gqlDiagram.edges.map((gqlEdge) => {
+    const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
+    const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
@@ -552,6 +591,17 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
     }
 
+    const sourceHandle = sourceNode?.data.connectionHandles
+      .filter((handle) => handle.type === 'source')
+      .find((handle) => !usedHandles.find((usedHandles) => usedHandles === handle.id));
+
+    const targetHandle = targetNode?.data.connectionHandles
+      .filter((handle) => handle.type === 'target')
+      .find((handle) => !usedHandles.find((usedHandles) => usedHandles === handle.id));
+    if (sourceHandle?.id && targetHandle?.id) {
+      usedHandles.push(sourceHandle?.id, targetHandle.id);
+    }
+
     return {
       id: gqlEdge.id,
       type: 'multiLabelEdge',
@@ -566,14 +616,14 @@ export const convertDiagram = (gqlDiagram: GQLDiagram): Diagram => {
       },
       data,
       hidden: gqlEdge.state === GQLViewModifier.Hidden,
-      sourceHandle: `handle--source--${gqlEdge.id}`,
-      targetHandle: `handle--target--${gqlEdge.id}`,
+      sourceHandle: sourceHandle?.id,
+      targetHandle: targetHandle?.id,
       sourceNode: sourceNode,
       targetNode: targetNode,
       interactionWidth: 0.25,
     };
   });
-
+  //id: `handle--target--${gqlNode.id}--${index}`,
   return {
     metadata: {
       id: gqlDiagram.id,

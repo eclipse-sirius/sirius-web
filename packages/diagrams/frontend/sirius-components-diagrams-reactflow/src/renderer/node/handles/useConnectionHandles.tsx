@@ -11,25 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useUpdateNodeInternals } from 'reactflow';
 import { ConnectionHandle } from '../../DiagramRenderer.types';
 import { UseConnectionHandlesValue } from './useConnectionHandles.types';
 
 export const useConnectionHandles = (id: string, connectionHandles: ConnectionHandle[]): UseConnectionHandlesValue => {
   const updateNodeInternals = useUpdateNodeInternals();
-  const firstUpdate = useRef<boolean>(true);
 
   const connectionHandlesIdentity = connectionHandles
     .map((handle) => `${handle.edgeId}#${handle.position}#${handle.nodeId}`)
     .join(', ');
 
   useEffect(() => {
-    if (firstUpdate.current && firstUpdate) {
-      firstUpdate.current = false;
-    } else {
-      updateNodeInternals(id);
-    }
+    console.log('UPDATE NODE INTERNALS');
+    console.log(connectionHandles);
+    updateNodeInternals(id);
   }, [connectionHandlesIdentity]);
 
   return {

@@ -57,7 +57,7 @@ export const useLayout = (): UseLayoutValue => {
       }));
     }
   };
-
+  //const updateNodeInternals = useUpdateNodeInternals();
   useEffect(() => {
     if (state.currentStep === 'BEFORE_LAYOUT' && !state.hiddenContainer && state.diagramToLayout) {
       const layoutArea = prepareLayoutArea(state.diagramToLayout, layoutAreaPrepared, httpOrigin);
@@ -73,6 +73,18 @@ export const useLayout = (): UseLayoutValue => {
         laidoutDiagram: laidoutDiagram,
         currentStep: 'AFTER_LAYOUT',
       }));
+
+      /*let newlyAddedEdges: Edge<EdgeData>[] = laidoutDiagram.edges.filter(
+        (edge) => !state.previousDiagram?.edges.map((n) => n.id).find((n) => n === edge.id)
+      );
+      let nodesToUpdate: string[] = [];
+      newlyAddedEdges.forEach((edge) => {
+        nodesToUpdate.push(edge.source);
+        nodesToUpdate.push(edge.target);
+      });
+      console.log(newlyAddedEdges);
+      console.log(Array.from(new Set(nodesToUpdate)));
+      updateNodeInternals(Array.from(new Set(nodesToUpdate)));*/
     } else if (state.currentStep === 'AFTER_LAYOUT' && state.hiddenContainer && state.laidoutDiagram) {
       cleanLayoutArea(state.hiddenContainer);
       state.onLaidoutDiagram(state.laidoutDiagram);

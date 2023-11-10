@@ -25,16 +25,24 @@ import {
   NodeSelectionChange,
   OnEdgesChange,
   OnNodesChange,
+  Position,
   ReactFlow,
+  getConnectedEdges,
   useEdgesState,
   useNodesState,
   useReactFlow,
   useStoreApi,
 } from 'reactflow';
-
 import 'reactflow/dist/style.css';
 import { convertDiagram } from '../converter/convertDiagram';
-import { Diagram, DiagramRendererProps, DiagramRendererState, EdgeData, NodeData } from './DiagramRenderer.types';
+import {
+  ConnectionHandle,
+  Diagram,
+  DiagramRendererProps,
+  DiagramRendererState,
+  EdgeData,
+  NodeData,
+} from './DiagramRenderer.types';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
@@ -42,9 +50,12 @@ import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
+import { getNodeCenter } from './edge/EdgeLayout';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useLayout } from './layout/useLayout';
+import { NodeContext } from './node/NodeContext';
+import { NodeContextValue } from './node/NodeContext.types';
 import { nodeTypes } from './node/NodeTypes';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { DiagramPalette } from './palette/DiagramPalette';
@@ -52,10 +63,6 @@ import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
-
-import 'reactflow/dist/style.css';
-import { NodeContext } from './node/NodeContext';
-import { NodeContextValue } from './node/NodeContext.types';
 
 const GRID_STEP: number = 10;
 
@@ -155,6 +162,86 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
     onNodesChange(onBorderChange(changes));
 
+    changes.map((change) => {
+      if (change.type === 'position' && change.positionAbsolute) {
+        const movedNode = reactFlowInstance.getNodes().find((node) => change.id === node.id);
+
+        if (movedNode) {
+          const connectedEdges = getConnectedEdges([movedNode], edges);
+          connectedEdges.forEach((edge) => {
+            const { sourceNode, targetNode, id } = edge;
+            if (sourceNode?.id === movedNode.id && targetNode) {
+              const nodeCenterSourceNode = {
+                x: change.positionAbsolute?.x ?? 0 + (movedNode.width ?? 0) / 2,
+                y: change.positionAbsolute?.y ?? 0 + (movedNode.height ?? 0) / 2,
+              };
+              const nodeCenterTargetNode = getNodeCenter(targetNode, nodes);
+              const horizontallDifference = Math.abs(nodeCenterTargetNode.x - nodeCenterSourceNode.x);
+              const verticalDifference = Math.abs(nodeCenterTargetNode.y - nodeCenterSourceNode.y);
+
+              let newPositionSource: Position;
+              if (horizontallDifference > verticalDifference) {
+                newPositionSource = nodeCenterTargetNode.x > nodeCenterSourceNode.x ? Position.Right : Position.Left;
+              } else {
+                newPositionSource = nodeCenterTargetNode.y > nodeCenterSourceNode.y ? Position.Bottom : Position.Top;
+              }
+
+              let newPositionTarget: Position;
+              if (horizontallDifference > verticalDifference) {
+                newPositionTarget = nodeCenterTargetNode.x > nodeCenterSourceNode.x ? Position.Left : Position.Right;
+              } else {
+                newPositionTarget = nodeCenterTargetNode.y > nodeCenterSourceNode.y ? Position.Top : Position.Bottom;
+              }
+
+              const nodeSourceConnectionHandles: ConnectionHandle[] = sourceNode.data.connectionHandles;
+              const nodeTargetConnectionHandles: ConnectionHandle[] = targetNode.data.connectionHandles;
+              const nodeSourceConnectionHandle: ConnectionHandle | undefined = nodeSourceConnectionHandles.find(
+                (connectionHandle) => connectionHandle.edgeId === id
+              );
+              const nodeTargetConnectionHandle: ConnectionHandle | undefined = nodeTargetConnectionHandles.find(
+                (connectionHandle) => connectionHandle.edgeId === id
+              );
+
+              if (
+                nodeSourceConnectionHandle?.position !== newPositionSource &&
+                nodeTargetConnectionHandle?.position !== newPositionTarget
+              ) {
+                nodeSourceConnectionHandles.map((nodeConnectionHandle: ConnectionHandle) => {
+                  if (nodeConnectionHandle.edgeId === id && nodeConnectionHandle.type === 'source') {
+                    nodeConnectionHandle.position = newPositionSource;
+                    //nodeConnectionHandle.id = `handle--source--${id}`;
+                  }
+                  return nodeConnectionHandle;
+                });
+
+                nodeTargetConnectionHandles.map((nodeConnectionHandle: ConnectionHandle) => {
+                  if (nodeConnectionHandle.edgeId === id && nodeConnectionHandle.type === 'target') {
+                    nodeConnectionHandle.position = newPositionTarget;
+                    //nodeConnectionHandle.id = `handle--target--${id}`;
+                  }
+                  return nodeConnectionHandle;
+                });
+
+                reactFlowInstance.setNodes((nodes: Node<NodeData>[]) =>
+                  nodes.map((node) => {
+                    //console.log('reactFlowInstance.setNodes');
+                    if (sourceNode.id === node.id) {
+                      node.data = { ...node.data, connectionHandles: nodeSourceConnectionHandles };
+                    }
+                    if (targetNode.id === node.id) {
+                      node.data = { ...node.data, connectionHandles: nodeTargetConnectionHandles };
+                    }
+                    return node;
+                  })
+                );
+              }
+            }
+          });
+        }
+      }
+      return change;
+    });
+
     const selectionEntries: SelectionEntry[] = changes
       .filter(isNodeSelectChange)
       .filter((change) => change.selected)
@@ -246,6 +333,14 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
   const { backgroundColor, smallGridColor, largeGridColor } = dropFeedbackStyleProvider.getDiagramBackgroundStyle();
 
+  const handleOnNodeDrag = (
+    event: React.MouseEvent<Element, MouseEvent>,
+    node: Node<any, string | undefined>,
+    nodes: Node<any, string | undefined>[]
+  ) => {
+    onNodeDrag(event, node, nodes);
+  };
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -265,7 +360,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       onMove={() => hideDiagramPalette()}
       onDrop={onDrop}
       onDragOver={onDragOver}
-      onNodeDrag={onNodeDrag}
+      onNodeDrag={handleOnNodeDrag}
       onNodeDragStart={onNodeDragStart}
       onNodeDragStop={onNodeDragStop((node: Node) => {
         const resetPosition: NodePositionChange = {
@@ -284,7 +379,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       minZoom={0.1}
       snapToGrid={state.snapToGrid}
       snapGrid={[GRID_STEP, GRID_STEP]}
-      connectionMode={ConnectionMode.Loose}
+      connectionMode={ConnectionMode.Strict}
       zoomOnDoubleClick={false}
       ref={ref}>
       {state.snapToGrid ? (
