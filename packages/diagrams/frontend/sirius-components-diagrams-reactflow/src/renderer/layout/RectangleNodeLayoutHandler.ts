@@ -22,6 +22,7 @@ import {
   findNodeIndex,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
+  getHeaderFootprint,
   getNodeOrMinHeight,
   getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
@@ -88,11 +89,17 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
-
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
+        // WARN: this prevent the created to overlep the TOP header. It is a quick fix but a proper solution should be implemented.
+        const headerHeightFootprint = labelElement
+          ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
+          : 0;
         child.position = createdNode.position;
+        if (child.position.y < borderWidth + headerHeightFootprint) {
+          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        }
       } else if (previousNode) {
         child.position = previousNode.position;
       } else {
