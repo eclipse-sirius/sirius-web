@@ -111,7 +111,7 @@ export const getChildNodePosition = (
   }
 };
 
-const getHeaderFootprint = (
+export const getHeaderFootprint = (
   labelElement: HTMLElement,
   withHeader: boolean,
   displayHeaderSeparator: boolean

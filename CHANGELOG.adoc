@@ -79,6 +79,8 @@ Note that double-clicking no longer triggers a direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2547[#2547] [diagram] Fix a bug where edge labels could be hidden/covered by other nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/2539[#2539] [diagram] Ignore hidden nodes when determining potential drop targets.
 - https://github.com/eclipse-sirius/sirius-web/issues/2550[#2550] [diagram] Palette is now hidden on viewport or zoom change.
+- https://github.com/eclipse-sirius/sirius-web/issues/2562[#2562] [diagram] Prevent a node to be created on the TOP header of its parent.
+The node will be created below the header.
 
 === New Features
 
