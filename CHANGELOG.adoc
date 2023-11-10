@@ -128,6 +128,7 @@ The new implementation of `IObjectService`, named `ComposedObjectService`, tries
 It is now possible to contribute specific services to edit domain objects, through `IEditServiceDelegate`.
 The new implementation of `IEditService`, named `ComposedEditService`, tries first to delegate to the appropriate `IEditServiceDelegate` and then fallback to a default behavior from `IDefaultEditService` if needed.
 - https://github.com/eclipse-sirius/sirius-web/issues/2555[#2555] [diagram] Add distinct edge creation handles (only visible when a node is selected).
+- https://github.com/eclipse-sirius/sirius-web/issues/2559[#2559] [diagram] Allow to target the whole node when creating or reconnecting an edge.
 
 == v2023.10.0
 

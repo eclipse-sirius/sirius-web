@@ -14,6 +14,7 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import {
   ConnectionCreationHandles,
+  ConnectionTargetHandle,
   DiagramElementPalette,
   Label,
   useConnector,
@@ -75,6 +76,7 @@ export const EllipseNode = memo(({ data, isConnectable, id, selected }: NodeProp
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+        <ConnectionTargetHandle nodeId={id} />
         <Handle
           id={`handle--${id}--top`}
           type="source"

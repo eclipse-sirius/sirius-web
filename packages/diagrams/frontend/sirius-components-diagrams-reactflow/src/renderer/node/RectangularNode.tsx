@@ -20,6 +20,7 @@ import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
 import { useDropNode } from '../dropNode/useDropNode';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
+import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { RectangularNodeData } from './RectangularNode.types';
 
@@ -67,6 +68,7 @@ export const RectangularNode = memo(({ data, isConnectable, id, selected }: Node
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+        <ConnectionTargetHandle nodeId={id} />
         <Handle
           id={`handle--${id}--top`}
           type="source"

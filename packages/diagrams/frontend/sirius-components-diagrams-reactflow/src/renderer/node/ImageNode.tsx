@@ -20,6 +20,7 @@ import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDropNode } from '../dropNode/useDropNode';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
+import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ImageNodeData } from './ImageNode.types';
 
@@ -85,6 +86,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
       {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
       {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
       {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+      <ConnectionTargetHandle nodeId={id} />
       <Handle
         id={`handle--${id}--top`}
         type="source"
