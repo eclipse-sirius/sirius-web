@@ -22,8 +22,6 @@ import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
   ConnectorContextualMenuProps,
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
   GQLDiagramDescription,
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
@@ -31,6 +29,8 @@ import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
   GQLRepresentationDescription,
   GQLTool,
+  GetConnectorToolsData,
+  GetConnectorToolsVariables,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 
@@ -106,10 +106,6 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   const connectionTarget: HTMLElement | null = connection
     ? document.querySelector(`[data-id="${connection.target}"]`)
     : null;
-  let connectionTargetHandle: HTMLElement | null = null;
-  if (connection && connectionTarget) {
-    connectionTargetHandle = connectionTarget.querySelector(`[data-handleid="${connection.targetHandle}"]`);
-  }
 
   const sourceDiagramElementId = connectionSource?.dataset.id ?? '';
   const targetDiagramElementId = connectionTarget?.dataset.id ?? '';
@@ -198,10 +194,7 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
     return null;
   }
   return (
-    <Menu
-      open={connectionSource !== null && connectionTarget !== null && connectionTargetHandle !== null}
-      onClose={onShouldConnectorContextualMenuClose}
-      anchorEl={connectionTargetHandle}>
+    <Menu open={!!connection} onClose={onShouldConnectorContextualMenuClose} anchorEl={connectionTarget}>
       {connectorTools.map((tool) => (
         <MenuItem key={tool.id} onClick={() => invokeTool(tool)}>
           <ListItemIcon>

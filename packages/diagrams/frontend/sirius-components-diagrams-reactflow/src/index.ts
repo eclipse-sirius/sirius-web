@@ -25,6 +25,7 @@ export { useConnector } from './renderer/connector/useConnector';
 export { useDrop } from './renderer/drop/useDrop';
 export { useDropNode } from './renderer/dropNode/useDropNode';
 export { ConnectionCreationHandles } from './renderer/handles/ConnectionCreationHandles';
+export { ConnectionTargetHandle } from './renderer/handles/ConnectionTargetHandle';
 export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/LayoutEngine.types';
 export * from './renderer/layout/layoutBorderNodes';
 export * from './renderer/layout/layoutNode';
