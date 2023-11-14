@@ -23,8 +23,8 @@ describe('/projects/:projectId/edit - Node aspect ratio', () => {
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
     cy.getByTestId('Entity1 Node').click();
-    cy.getByTestId('Default Width Expression').type('200');
-    cy.getByTestId('Default Height Expression').type('200');
+    cy.getByTestId('Default Width Expression').should('exist').type('200');
+    cy.getByTestId('Default Height Expression').should('exist').type('200');
     cy.getByTestId('Keep Aspect Ratio').find('input').check();
 
     cy.get('[title="Back to the homepage"]').click();
@@ -141,8 +141,11 @@ describe('/projects/:projectId/edit - Node aspect ratio', () => {
     cy.getByTestId('Default Height Expression').type('20');
 
     cy.getByTestId('Entity1 Node').click();
-    cy.getByTestId('Default Width Expression').type('200');
-    cy.getByTestId('Default Height Expression').type('200');
+    cy.get('@domainValue').then((domainValue) => {
+      cy.getByTestId('Domain Type').invoke('text').should('equal', `${domainValue}::Entity1`);
+    });
+    cy.getByTestId('Default Width Expression').should('exist').type('200');
+    cy.getByTestId('Default Height Expression').should('exist').type('200');
     cy.getByTestId('Keep Aspect Ratio').find('input').check();
     cy.getByTestId('Reused Child Node Descriptions').click();
     cy.getByTestId('option-Node').should('exist');
@@ -248,8 +251,8 @@ describe('/projects/:projectId/edit - Node aspect ratio', () => {
 
     cy.getByTestId('Entity1 Node').click();
     cy.getByTestId('input-Default Width Expression').should('have.text', '');
-    cy.getByTestId('Default Width Expression').type('200');
-    cy.getByTestId('Default Height Expression').type('200');
+    cy.getByTestId('Default Width Expression').should('exist').type('200');
+    cy.getByTestId('Default Height Expression').should('exist').type('200');
     cy.getByTestId('Keep Aspect Ratio').find('input').check();
     cy.getByTestId('Reused Child Node Descriptions').click();
     cy.getByTestId('option-Node').should('exist');

@@ -386,7 +386,7 @@ export const Palette = ({
   };
 
   return (
-    <div className={classes.toolEntries}>
+    <div className={classes.toolEntries} data-testid={'Palette'}>
       {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
         <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
       ))}
