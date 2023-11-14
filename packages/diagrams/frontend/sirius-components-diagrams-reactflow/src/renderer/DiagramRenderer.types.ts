@@ -25,10 +25,6 @@ export interface DiagramRendererProps {
   setSelection: (selection: Selection) => void;
 }
 
-export interface DiagramRendererState {
-  snapToGrid: boolean;
-}
-
 export interface DiagramPaletteState {
   opened: boolean;
   x: number;
