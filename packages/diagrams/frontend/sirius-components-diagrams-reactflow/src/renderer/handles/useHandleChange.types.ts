@@ -10,8 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeChange } from 'reactflow';
+import { Node, NodeChange } from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 
 export interface UseHandleChangeValue {
-  onHandleChange: (changes: NodeChange[]) => NodeChange[];
+  applyHandleChange: (
+    changes: NodeChange[],
+    nodes: Node<NodeData, DiagramNodeType>[]
+  ) => Node<NodeData, DiagramNodeType>[];
 }

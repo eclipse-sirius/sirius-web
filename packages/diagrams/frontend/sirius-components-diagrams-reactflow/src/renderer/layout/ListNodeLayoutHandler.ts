@@ -66,7 +66,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   }
 
   handleLeafNode(
-    _previousDiagram: RawDiagram | null,
+    previousDiagram: RawDiagram | null,
     node: Node<ListNodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
@@ -74,10 +74,27 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   ) {
     const labelElement = document.getElementById(`${node.id}-label-${findNodeIndex(visibleNodes, node.id)}`);
 
-    const nodeWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
-    const nodeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
-    node.height = getNodeOrMinHeight(nodeHeight, node);
+    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
+    const labelHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
+    const minNodeWith = forceWidth ?? getNodeOrMinWidth(labelWidth, node);
+    const minNodeheight = getNodeOrMinHeight(labelHeight, node);
+
+    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    if (previousNode && node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > (previousNode.width ?? 0)) {
+        node.width = minNodeWith;
+      } else {
+        node.width = previousNode.width;
+      }
+      if (minNodeheight > (previousNode.height ?? 0)) {
+        node.height = minNodeheight;
+      } else {
+        node.height = previousNode.height;
+      }
+    } else {
+      node.width = minNodeWith;
+      node.height = minNodeheight;
+    }
   }
 
   private handleParentNode(
@@ -101,14 +118,23 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
 
+    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+      (previouseNode) => previouseNode.id === node.id
+    );
+
     if (!forceWidth) {
+      let previousChildrenContentBoxWidthToConsider: number = 0;
+      if (node.data.nodeDescription?.userResizable) {
+        previousChildrenContentBoxWidthToConsider = (previousNode?.width ?? 0) - borderWidth * 2;
+      }
       const widerWidth = Math.max(
         directNodesChildren.reduce<number>(
           (widerWidth, child) => Math.max(child.width ?? 0, widerWidth),
           labelElement?.getBoundingClientRect().width ?? 0
         ),
         northBorderNodeFootprintWidth,
-        southBorderNodeFootprintWidth
+        southBorderNodeFootprintWidth,
+        previousChildrenContentBoxWidthToConsider
       );
 
       layoutEngine.layoutNodes(previousDiagram, visibleNodes, directNodesChildren, newlyAddedNode, widerWidth);
@@ -157,7 +183,18 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     );
 
     node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
-    node.height = getNodeOrMinHeight(nodeHeight, node);
+
+    const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
+    // TODO: rework this.
+    if (node.data.nodeDescription?.userResizable && previousNode) {
+      if (minNodeheight > (previousNode.height ?? 0)) {
+        node.height = minNodeheight;
+      } else {
+        node.height = previousNode.height;
+      }
+    } else {
+      node.height = minNodeheight;
+    }
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
@@ -168,3 +205,5 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     setBorderNodesPosition(borderNodes, node, previousDiagram);
   }
 }
+
+// TODO: Tester avec un compartiment free form entre attribut et operation.

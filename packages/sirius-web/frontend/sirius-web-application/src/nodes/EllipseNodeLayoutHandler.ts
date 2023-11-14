@@ -19,6 +19,7 @@ import {
   getBorderNodeExtent,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
+  getHeaderFootprint,
   getNodeOrMinHeight,
   getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
@@ -62,9 +63,22 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
+        // WARN: this prevent the created to overlep the TOP header. It is a quick fix but a proper solution should be implemented.
+        const headerHeightFootprint = labelElement ? getHeaderFootprint(labelElement, false, false) : 0;
         child.position = createdNode.position;
+        if (child.position.y < borderWidth + headerHeightFootprint) {
+          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        }
       } else if (previousNode) {
+        // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
+        const headerHeightFootprint = labelElement ? getHeaderFootprint(labelElement, false, false) : 0;
         child.position = previousNode.position;
+        if (child.position.y < borderWidth + headerHeightFootprint) {
+          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        }
+        if (child.position.x < borderWidth) {
+          child.position = { ...child.position, x: borderWidth };
+        }
       } else {
         child.position = child.position = getChildNodePosition(
           visibleNodes,
@@ -114,8 +128,27 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const nodeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
-    node.height = getNodeOrMinHeight(nodeHeight, node);
+
+    const minNodeWith = forceWidth ?? getNodeOrMinWidth(nodeWidth, node); // WARN: not sure yet for the forceWidth to be here.
+    const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
+
+    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    if (previousNode && node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > (previousNode.width ?? 0)) {
+        node.width = minNodeWith;
+      } else {
+        node.width = previousNode.width;
+      }
+      if (minNodeheight > (previousNode.height ?? 0)) {
+        node.height = minNodeheight;
+      } else {
+        node.height = previousNode.height;
+      }
+    } else {
+      node.width = minNodeWith;
+      node.height = minNodeheight;
+    }
+
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }

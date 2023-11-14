@@ -19,6 +19,7 @@ export interface UseDropNodeValue {
   onNodeDragStart: NodeDragHandler;
   onNodeDrag: NodeDragHandler;
   onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler;
+  hasDroppedNodeParentChanged: () => boolean;
   draggedNode: Node<NodeData> | null;
   targetNodeId: string | null;
   compatibleNodeIds: string[];

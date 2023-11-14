@@ -84,8 +84,8 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) =
   let centerA: NodeCenter;
   if (movingNode && movingNode.id === nodeA.id) {
     centerA = {
-      x: movingNode.positionAbsolute?.x ?? 0 + (nodeA.width ?? 0) / 2,
-      y: movingNode.positionAbsolute?.y ?? 0 + (nodeA.height ?? 0) / 2,
+      x: (movingNode.positionAbsolute?.x ?? 0) + (nodeA.width ?? 0) / 2,
+      y: (movingNode.positionAbsolute?.y ?? 0) + (nodeA.height ?? 0) / 2,
     };
   } else {
     centerA = getNodeCenter(nodeA, visiblesNodes);
@@ -94,17 +94,17 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) =
   let centerB: NodeCenter;
   if (movingNode && movingNode.id === nodeB.id) {
     centerB = {
-      x: movingNode.positionAbsolute?.x ?? 0 + (nodeB.width ?? 0) / 2,
-      y: movingNode.positionAbsolute?.y ?? 0 + (nodeB.height ?? 0) / 2,
+      x: (movingNode.positionAbsolute?.x ?? 0) + (nodeB.width ?? 0) / 2,
+      y: (movingNode.positionAbsolute?.y ?? 0) + (nodeB.height ?? 0) / 2,
     };
   } else {
     centerB = getNodeCenter(nodeB, visiblesNodes);
   }
-  const horizontallDifference = Math.abs(centerA.x - centerB.x);
+  const horizontalDifference = Math.abs(centerA.x - centerB.x);
   const verticalDifference = Math.abs(centerA.y - centerB.y);
 
   let position: Position;
-  if (horizontallDifference > verticalDifference) {
+  if (horizontalDifference > verticalDifference) {
     position = centerA.x > centerB.x ? Position.Left : Position.Right;
   } else {
     position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
@@ -118,14 +118,14 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) =
 const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
   if (node.positionAbsolute?.x && node.positionAbsolute?.y) {
     return {
-      x: node.positionAbsolute?.x ?? 0 + (node.width ?? 0) / 2,
-      y: node.positionAbsolute?.y ?? 0 + (node.height ?? 0) / 2,
+      x: (node.positionAbsolute?.x ?? 0) + (node.width ?? 0) / 2,
+      y: (node.positionAbsolute?.y ?? 0) + (node.height ?? 0) / 2,
     };
   } else {
     let parentNode = visiblesNodes.find((nodeParent) => nodeParent.id === node.parentNode);
     let position = {
-      x: node.position?.x ?? 0 + (node.width ?? 0) / 2,
-      y: node.position?.y ?? 0 + (node.height ?? 0) / 2,
+      x: (node.position?.x ?? 0) + (node.width ?? 0) / 2,
+      y: (node.position?.y ?? 0) + (node.height ?? 0) / 2,
     };
     while (parentNode) {
       position = {

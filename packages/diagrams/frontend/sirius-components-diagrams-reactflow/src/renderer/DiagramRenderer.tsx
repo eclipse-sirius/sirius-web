@@ -25,6 +25,7 @@ import {
   OnEdgesChange,
   OnNodesChange,
   ReactFlow,
+  applyNodeChanges,
   useEdgesState,
   useNodesState,
 } from 'reactflow';
@@ -44,6 +45,7 @@ import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
+import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange';
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
 import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
@@ -77,8 +79,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
-  const { onBorderChange } = useBorderChange();
-  const { onHandleChange } = useHandleChange();
   const { getNodeTypes } = useNodeType();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
@@ -121,9 +121,19 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
   const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection(selection, setSelection);
+  const { transformBorderNodeChanges } = useBorderChange();
+  const { applyHandleChange } = useHandleChange();
+  const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
-    onNodesChange(onBorderChange(onHandleChange(changes)));
+    const transformedNodeChanges = transformBorderNodeChanges(changes);
+
+    let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
+
+    newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+    setNodes(newNodes);
+    layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+
     updateSelectionOnNodesChange(changes);
   };
 
