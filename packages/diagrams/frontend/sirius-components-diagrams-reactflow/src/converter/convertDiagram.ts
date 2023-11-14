@@ -112,7 +112,7 @@ export const convertDiagram = (
         if (nodeConverterHandler) {
           const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(node.id);
 
-          nodeConverterHandler.handle(this, node, parentNode, isBorderNode, nodes, nodeDescriptions);
+          nodeConverterHandler.handle(this, node, gqlDiagram.edges, parentNode, isBorderNode, nodes, nodeDescriptions);
         }
       });
     },
@@ -125,8 +125,10 @@ export const convertDiagram = (
 
   const nodeId2Depth = new Map<string, number>();
   nodes.forEach((node) => nodeId2Depth.set(node.id, nodeDepth(nodeId2node, node.id)));
-
+  let usedHandles: string[] = [];
   const edges: Edge[] = gqlDiagram.edges.map((gqlEdge) => {
+    const sourceNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.sourceId);
+    const targetNode: Node<NodeData> | undefined = nodeId2node.get(gqlEdge.targetId);
     const data: MultiLabelEdgeData = {
       targetObjectId: gqlEdge.targetObjectId,
       targetObjectKind: gqlEdge.targetObjectKind,
@@ -145,6 +147,18 @@ export const convertDiagram = (
       data.endLabel = convertEdgeLabel(gqlEdge.endLabel);
     }
 
+    const sourceHandle = sourceNode?.data.connectionHandles
+      .filter((connectionHandle) => connectionHandle.type === 'source')
+      .find((connectionHandle) => !usedHandles.find((usedHandle) => usedHandle === connectionHandle.id));
+
+    const targetHandle = targetNode?.data.connectionHandles
+      .filter((connectionHandle) => connectionHandle.type === 'target')
+      .find((connectionHandle) => !usedHandles.find((usedHandle) => usedHandle === connectionHandle.id));
+
+    if (sourceHandle?.id && targetHandle?.id) {
+      usedHandles.push(sourceHandle?.id, targetHandle.id);
+    }
+
     return {
       id: gqlEdge.id,
       type: 'multiLabelEdge',
@@ -159,6 +173,10 @@ export const convertDiagram = (
       },
       data,
       hidden: gqlEdge.state === GQLViewModifier.Hidden,
+      sourceHandle: sourceHandle?.id,
+      targetHandle: targetHandle?.id,
+      sourceNode: sourceNode,
+      targetNode: targetNode,
     };
   });
 

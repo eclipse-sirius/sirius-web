@@ -14,16 +14,18 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import {
   ConnectionCreationHandles,
+  ConnectionHandles,
   ConnectionTargetHandle,
   DiagramElementPalette,
   Label,
   useConnector,
   useDrop,
   useDropNode,
+  useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo } from 'react';
-import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { NodeProps, NodeResizer } from 'reactflow';
 import { EllipseNodeData } from './EllipseNode.types';
 
 const ellipseNodeStyle = (
@@ -51,15 +53,17 @@ const ellipseNodeStyle = (
   return ellipseNodeStyle;
 };
 
-export const EllipseNode = memo(({ data, isConnectable, id, selected }: NodeProps<EllipseNodeData>) => {
+export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { onConnectionStartElementClick, newConnectionStyleProvider } = useConnector();
+  const { newConnectionStyleProvider } = useConnector();
   const { dropFeedbackStyleProvider } = useDropNode();
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
   };
+
+  useRefreshConnectionHandles(id, data.connectionHandles);
 
   return (
     <>
@@ -82,38 +86,7 @@ export const EllipseNode = memo(({ data, isConnectable, id, selected }: NodeProp
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} />
-        <Handle
-          id={`handle--${id}--top`}
-          type="source"
-          position={Position.Top}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
-        <Handle
-          id={`handle--${id}--left`}
-          type="source"
-          position={Position.Left}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
-        <Handle
-          id={`handle--${id}--right`}
-          type="source"
-          position={Position.Right}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
-        <Handle
-          id={`handle--${id}--bottom`}
-          type="source"
-          position={Position.Bottom}
-          isConnectable={isConnectable}
-          style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-          onMouseDown={onConnectionStartElementClick}
-        />
+        <ConnectionHandles connectionHandles={data.connectionHandles} />
       </div>
     </>
   );

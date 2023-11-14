@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
   GQLNode,
   GQLNodeStyle,
@@ -19,10 +20,12 @@ import {
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
+import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { convertHandles } from './convertHandles';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -30,7 +33,8 @@ const toListNode = (
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<ListNodeData> => {
   const {
     targetObjectId,
@@ -43,6 +47,8 @@ const toListNode = (
     style,
     labelEditable,
   } = gqlNode;
+
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
 
   const data: ListNodeData = {
     targetObjectId,
@@ -62,6 +68,7 @@ const toListNode = (
     faded: state === GQLViewModifier.Faded,
     labelEditable,
     nodeDescription,
+    connectionHandles,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
   };
@@ -123,13 +130,14 @@ export class ListNodeConverterHandler implements INodeConverterHandler {
   handle(
     convertEngine: IConvertEngine,
     gqlNode: GQLNode<GQLRectangularNodeStyle>,
+    gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toListNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    nodes.push(toListNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
     convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
   }

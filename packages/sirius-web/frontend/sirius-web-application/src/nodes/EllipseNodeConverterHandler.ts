@@ -13,24 +13,27 @@
 import {
   AlignmentMap,
   BorderNodePositon,
-  convertLabelStyle,
+  ConnectionHandle,
+  GQLEdge,
   GQLNode,
   GQLNodeDescription,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
   INodeConverterHandler,
+  convertHandles,
+  convertLabelStyle,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
-
 const toEllipseNode = (
   gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<EllipseNodeData> => {
   const {
     targetObjectId,
@@ -44,6 +47,7 @@ const toEllipseNode = (
     labelEditable,
   } = gqlNode;
 
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const data: EllipseNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -63,6 +67,7 @@ const toEllipseNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    connectionHandles,
     labelEditable,
   };
 
@@ -122,13 +127,14 @@ export class EllipseNodeConverterHandler implements INodeConverterHandler {
   handle(
     convertEngine: IConvertEngine,
     gqlNode: GQLNode<GQLEllipseNodeStyle>,
+    gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toEllipseNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    nodes.push(toEllipseNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
     convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
   }

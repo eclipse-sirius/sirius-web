@@ -14,13 +14,15 @@
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
-import { Handle, NodeProps, NodeResizer, Position } from 'reactflow';
+import { NodeProps, NodeResizer } from 'reactflow';
 import { BorderNodePositon } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDropNode } from '../dropNode/useDropNode';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
+import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
+import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ImageNodeData } from './ImageNode.types';
 
@@ -61,12 +63,14 @@ const computeBorderRotation = (data: ImageNodeData): string | undefined => {
   return undefined;
 };
 
-export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<ImageNodeData>) => {
+export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>) => {
   const theme = useTheme();
   const { dropFeedbackStyleProvider } = useDropNode();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { onConnectionStartElementClick, newConnectionStyleProvider } = useConnector();
+  const { newConnectionStyleProvider } = useConnector();
   const rotation = computeBorderRotation(data);
+
+  useRefreshConnectionHandles(id, data.connectionHandles);
   return (
     <>
       <NodeResizer
@@ -88,38 +92,7 @@ export const ImageNode = memo(({ data, isConnectable, id, selected }: NodeProps<
       {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
       {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
       <ConnectionTargetHandle nodeId={id} />
-      <Handle
-        id={`handle--${id}--top`}
-        type="source"
-        position={Position.Top}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
-      <Handle
-        id={`handle--${id}--left`}
-        type="source"
-        position={Position.Left}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
-      <Handle
-        id={`handle--${id}--right`}
-        type="source"
-        position={Position.Right}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
-      <Handle
-        id={`handle--${id}--bottom`}
-        type="source"
-        position={Position.Bottom}
-        isConnectable={isConnectable}
-        style={newConnectionStyleProvider.getHandleStyle(data.descriptionId)}
-        onMouseDown={onConnectionStartElementClick}
-      />
+      <ConnectionHandles connectionHandles={data.connectionHandles} />
     </>
   );
 });

@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
   GQLNode,
   GQLNodeStyle,
@@ -19,10 +20,12 @@ import {
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
+import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { convertHandles } from './convertHandles';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -30,7 +33,8 @@ const toRectangularNode = (
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<RectangularNodeData> => {
   const {
     targetObjectId,
@@ -43,6 +47,8 @@ const toRectangularNode = (
     style,
     labelEditable,
   } = gqlNode;
+
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
 
   const data: RectangularNodeData = {
     targetObjectId,
@@ -65,6 +71,7 @@ const toRectangularNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
     labelEditable,
+    connectionHandles,
   };
 
   if (insideLabel) {
@@ -124,13 +131,14 @@ export class RectangleNodeConverterHandler implements INodeConverterHandler {
   handle(
     convertEngine: IConvertEngine,
     gqlNode: GQLNode<GQLRectangularNodeStyle>,
+    gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toRectangularNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    nodes.push(toRectangularNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
     convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
   }

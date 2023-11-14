@@ -16,6 +16,7 @@ import { Edge, Node } from 'reactflow';
 import { GQLDiagramDescription, GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
+import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
 
 export interface DiagramRendererProps {
@@ -58,6 +59,7 @@ export interface NodeData {
   borderNodePosition: BorderNodePositon | null;
   labelEditable: boolean;
   style: React.CSSProperties;
+  connectionHandles: ConnectionHandle[];
 }
 
 export enum BorderNodePositon {

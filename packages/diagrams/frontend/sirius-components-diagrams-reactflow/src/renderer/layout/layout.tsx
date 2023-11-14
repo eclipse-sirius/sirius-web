@@ -13,25 +13,26 @@
 
 import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
-import { MessageOptions, ServerContext, theme, ToastContext } from '@eclipse-sirius/sirius-components-core';
+import { MessageOptions, ServerContext, ToastContext, theme } from '@eclipse-sirius/sirius-components-core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import ELK, { ElkExtendedEdge, ElkLabel, ElkNode, LayoutOptions } from 'elkjs/lib/elk.bundled.js';
-import { createElement, Fragment } from 'react';
+import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Edge, Node, ReactFlowProvider } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
-import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { Label } from '../Label';
+import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNode } from '../node/RectangularNode';
 import { RectangularNodeData } from '../node/RectangularNode.types';
-import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { ReferencePosition } from './LayoutContext.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
+import { layoutHandles } from './layoutHandles';
 import { getChildren } from './layoutNode';
 
 const emptyNodeProps = {
@@ -265,6 +266,8 @@ const layoutDiagram = (
       }
     }
   });
+
+  layoutHandles(diagram);
 };
 
 export const performDefaultAutoLayout = (

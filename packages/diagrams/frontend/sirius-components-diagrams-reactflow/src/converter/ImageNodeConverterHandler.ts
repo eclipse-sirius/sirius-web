@@ -12,12 +12,15 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ImageNodeData } from '../renderer/node/ImageNode.types';
+import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { convertHandles } from './convertHandles';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -25,7 +28,8 @@ const toImageNode = (
   gqlNode: GQLNode<GQLImageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
-  isBorderNode: boolean
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
 ): Node<ImageNodeData> => {
   const {
     targetObjectId,
@@ -38,6 +42,8 @@ const toImageNode = (
     style,
     labelEditable,
   } = gqlNode;
+
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
 
   const data: ImageNodeData = {
     targetObjectId,
@@ -55,6 +61,7 @@ const toImageNode = (
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     labelEditable,
     positionDependentRotation: style.positionDependentRotation,
+    connectionHandles,
   };
 
   if (insideLabel) {
@@ -109,13 +116,14 @@ export class ImageNodeConverterHandler implements INodeConverterHandler {
   handle(
     convertEngine: IConvertEngine,
     gqlNode: GQLNode<GQLImageNodeStyle>,
+    gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toImageNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    nodes.push(toImageNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
     convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
   }

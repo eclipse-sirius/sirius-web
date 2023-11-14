@@ -27,7 +27,7 @@ import {
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
-import { getEdgeParameters } from './EdgeLayout';
+import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 
 const multiLabelEdgeStyle = (
@@ -59,10 +59,13 @@ export const MultiLabelEdge = memo(
     markerEnd,
     markerStart,
     selected,
+    sourcePosition,
+    targetPosition,
     sourceHandleId,
     targetHandleId,
   }: EdgeProps<MultiLabelEdgeData>) => {
     const theme = useTheme();
+    const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
 
     const sourceNode = useStore<Node<NodeData> | undefined>(
       useCallback((store: ReactFlowState) => store.nodeInternals.get(source), [source])
@@ -75,10 +78,8 @@ export const MultiLabelEdge = memo(
       return null;
     }
 
-    const { sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition } = getEdgeParameters(
-      sourceNode,
-      targetNode
-    );
+    const { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(sourceNode, sourcePosition, sourceHandleId ?? '');
+    const { x: targetX, y: targetY } = getHandleCoordinatesByPosition(targetNode, targetPosition, targetHandleId ?? '');
 
     const [edgePath, labelX, labelY] = getSmoothStepPath({
       sourceX,
@@ -91,20 +92,20 @@ export const MultiLabelEdge = memo(
 
     const { beginLabel, endLabel, label, faded } = data || {};
 
-    const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
     useEffect(() => {
-      if (sourceHandleId?.split('--')[2] !== sourcePosition || targetHandleId?.split('--')[2] !== targetPosition) {
-        reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
-          edges.map((edge) => {
-            if (edge.id === id) {
-              edge.sourceHandle = `handle--${edge.source}--${sourcePosition}`;
-              edge.targetHandle = `handle--${edge.target}--${targetPosition}`;
+      reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
+        edges.map((edge) => {
+          if (edge.id === id) {
+            if (selected) {
+              edge.updatable = true;
+            } else {
+              edge.updatable = false;
             }
-            return edge;
-          })
-        );
-      }
-    }, [sourcePosition, targetPosition]);
+          }
+          return edge;
+        })
+      );
+    }, [selected]);
 
     return (
       <>

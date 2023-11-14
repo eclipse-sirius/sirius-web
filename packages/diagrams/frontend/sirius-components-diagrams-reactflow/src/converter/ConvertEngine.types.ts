@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLNode, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 
 export interface IConvertEngine {
@@ -29,6 +30,7 @@ export interface INodeConverterHandler {
   handle(
     convertEngine: IConvertEngine,
     gqlNode: GQLNode<GQLNodeStyle>,
+    gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
