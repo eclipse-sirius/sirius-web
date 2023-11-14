@@ -1,0 +1,97 @@
+= ADR-115 - Add support for changing the content of the explorer
+
+== Context
+
+The Explorer view displays the same version of a tree to all subscribers.
+There is no way for the frontend to change the tree for a specific subscriber.
+
+== Decision
+
+Addition of a TreeConverter API allowing to redefine the tree content (/packages/trees/frontend/sirius-components-trees/src/views/TreeConverter.types.ts)
+
+[source,typescript]
+----
+interface TreeConverter {
+  convert(tree: GQLTree): GQLTree;
+)
+----
+
+Addition of an ExplorerViewContext providing a default TreeConverter (/packages/trees/frontend/sirius-components-trees/src/views/ExplorerViewContext.tsx)
+
+[source,typescript]
+----
+const converter: TreeConverter = {
+  convert: (tree) => tree;
+};
+const defaultContext: ExplorerViewContextValue = {
+  converter
+};
+export const ExplorerViewContext = React.createContext(defaultContext);
+----
+
+Addition of an ExplorerViewConfiguration providing the context to children (/packages/trees/frontend/sirius-components-trees/src/views/ExplorerViewConfiguration.tsx)
+
+[source,typescript]
+----
+export const ExplorerViewConfiguration = ({ children, converter }: ExplorerViewConfigurationProps) => {
+  return (
+    <ExplorerViewContext.Provider value={{ converter }}>
+      {children}
+    </ExplorerViewContext.Provider>
+  );
+}
+----
+
+Addition of an useExplorerViewConfiguration function to provide the configuration to interested components (/packages/trees/frontend/sirius-components-trees/src/views/useExplorerViewConfiguration.ts)
+
+[source,typescript]
+----
+export const useExplorerViewConfiguration = (): UseExplorerViewConfigurationValue => {
+  const { converter } = useContext(ExplorerViewContext);
+  return {
+    converter
+  };
+}
+----
+
+Update of the ExplorerView to use the converter (/packages/trees/frontend/sirius-components-trees/src/views/ExplorerView.tsx)
+
+[source,typescript]
+----
+const { converter } = useExplorerViewConfiguration();
+
+<TreeView converter={converter} ... />
+----
+
+Update of the TreeView to use the converter (/packages/trees/frontend/sirius-components-trees/src/views/TreeView.tsx)
+
+[source,typescript]
+----
+<Tree tree={converter.convert(tree)} ... />
+----
+
+Export new APIs (/packages/trees/frontend/sirius-components-trees/src/index.ts):
+
+[source,typescript]
+----
+ExplorerViewConfiguration
+ExplorerViewConfigurationProps
+TreeConverter
+----
+
+A sirius consumer may encapsulate its components in a ExplorerViewConfiguration which will provide the required filters.
+
+[source,typescript]
+----
+<ExplorerViewConfiguration converter={MyCustomTreeConverter}>
+    <Workbench ... />
+</ExplorerViewConfiguration>
+----
+
+== Status
+
+Accepted
+
+== Consequences
+
+None, by default the Explorer works as before.

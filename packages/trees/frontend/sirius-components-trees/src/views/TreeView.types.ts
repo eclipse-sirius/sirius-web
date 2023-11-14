@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { TreeConverter } from './TreeConverter.types';
 
 export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
   treeId: string;
@@ -20,6 +21,7 @@ export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds?: string[];
+  converter: TreeConverter;
 }
 
 export interface GQLTreeEventVariables {

@@ -18,6 +18,7 @@ import { TreeToolBarContext } from '../toolbar/TreeToolBarContext';
 import { TreeToolBarContextValue } from '../toolbar/TreeToolBarContext.types';
 import { FilterBar } from '../trees/FilterBar';
 import { ExplorerViewState } from './ExplorerView.types';
+import { useExplorerViewConfiguration } from './ExplorerViewConfiguration';
 import { TreeView } from './TreeView';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const ExplorerView = (props: WorkbenchViewComponentProps) => {
   const styles = useStyles();
+  const { converter } = useExplorerViewConfiguration();
   const initialState: ExplorerViewState = {
     synchronizedWithSelection: true,
     filterBar: false,
@@ -112,6 +114,7 @@ export const ExplorerView = (props: WorkbenchViewComponentProps) => {
           synchronizedWithSelection={state.synchronizedWithSelection}
           textToHighlight={state.filterBarText}
           textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+          converter={converter}
         />
       </div>
     </div>

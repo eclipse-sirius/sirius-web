@@ -16,6 +16,7 @@
 - [ADR-113] Add support for multiple IObjectService
 - [ADR-114] Add support for multiple IEditService
 - [ADR-115] Split the Sirius Web frontend
+- [ADR-116] Add support for changing the content of the explorer
 
 === Breaking changes
 
@@ -115,6 +116,7 @@ That includes the support during the direct edit.
 The user can use 'shift+enter' to insert a line break.
 - https://github.com/eclipse-sirius/sirius-web/issues/2522[#2522] [diagram] Add the support for rotatable border node.
 - https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] Add the possibility to specify a ratio on node to guarantee its aspect.
+- https://github.com/eclipse-sirius/sirius-web/issues/2568[#2568] [trees] Allow developers to modify the content of the explorer view
 
 === Improvements
 
