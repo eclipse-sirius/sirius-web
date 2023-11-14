@@ -122,7 +122,11 @@ describe('/projects/:projectId/edit - Diagram', () => {
 
     cy.getByTestId('share').click();
     cy.url().then(($url) => {
-      cy.task('getClipboard').should('eq', $url);
+      cy.window().then((win) => {
+        win.navigator.clipboard.readText().then((text) => {
+          expect(text).to.eq($url);
+        });
+      });
     });
   });
 

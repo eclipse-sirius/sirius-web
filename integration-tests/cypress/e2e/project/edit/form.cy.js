@@ -15,15 +15,6 @@ describe('/projects/:projectId/edit - Form', () => {
     cy.deleteAllProjects();
   });
 
-  const createNewTreeItemOn = (treeItemName, parentItem) => {
-    cy.getByTestId(`${parentItem}-more`).click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('childCreationDescription').click().get(`[data-value="${treeItemName}"]`).should('exist').click();
-    cy.getByTestId('create-object').click();
-    cy.getByTestId(`${parentItem}-toggle`).next().should('have.attr', 'data-expanded', 'true');
-  };
-
   it('check widget read-only mode in form', () => {
     // Create the view
     cy.createProjectFromTemplate('studio-template').then((res) => {
@@ -35,14 +26,14 @@ describe('/projects/:projectId/edit - Form', () => {
     });
     cy.getByTestId('ViewDocument').dblclick();
     cy.getByTestId('View').dblclick();
-    createNewTreeItemOn('Form Description', 'View');
+    cy.createChildObject('View', 'Form Description');
     cy.getByTestId('New Form Description').click();
     cy.getByTestId('Domain Type').type('flow::System');
     cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
     cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
     cy.getByTestId('ReadOnlyRepresentation').dblclick();
     cy.getByTestId('PageDescription').dblclick();
-    createNewTreeItemOn('Widgets Button Description', 'GroupDescription');
+    cy.createChildObject('GroupDescription', 'Widgets Button Description');
     cy.getByTestId('Button Label Expression').type('Test Button');
     cy.getByTestId('Is Enabled Expression').type('aql:self.temperature==0');
 
@@ -79,20 +70,24 @@ describe('/projects/:projectId/edit - Form', () => {
     cy.getByTestId('ViewDocument').dblclick();
     cy.getByTestId('View').dblclick();
 
-    createNewTreeItemOn('Form Description', 'View');
+    cy.createChildObject('View', 'Form Description');
     cy.getByTestId('New Form Description').click();
     cy.getByTestId('Domain Type').type('flow::System');
     cy.getByTestId('Name').type('{selectall}').type('ReadOnlyRepresentation');
     cy.getByTestId('Title Expression').type('{selectall}').type('ReadOnlyRepresentation');
     cy.getByTestId('ReadOnlyRepresentation').dblclick();
     cy.getByTestId('PageDescription').dblclick();
+    cy.getByTestId('GroupDescription').click();
+    cy.getByTestId('Name').type('Flexbox Group');
 
-    createNewTreeItemOn('Widgets Flexbox Container Description', 'GroupDescription');
-    cy.getByTestId('Label Expression').should('not.be.disabled');
+    cy.createChildObject('GroupDescription', 'Widgets Flexbox Container Description');
+    cy.getByTestId('Name').invoke('text').should('eq', '');
+    cy.getByTestId('Name').type('Flexbox Container');
     cy.getByTestId('Label Expression').type('Test flexbox container');
     cy.getByTestId('Is Enabled Expression').type("aql:self.name='NewSystem'");
 
-    createNewTreeItemOn('Textfield Description', 'FlexboxContainerDescription');
+    cy.createChildObject('Flexbox Container', 'Textfield Description');
+    cy.getByTestId('Name').invoke('text').should('eq', '');
     cy.getByTestId('Label Expression').should('not.be.disabled');
     cy.getByTestId('Label Expression').type('Name');
     cy.getByTestId('Value Expression').type('aql:self.name');
