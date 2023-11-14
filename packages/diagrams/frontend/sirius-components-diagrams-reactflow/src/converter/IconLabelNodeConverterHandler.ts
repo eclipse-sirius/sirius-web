@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
   GQLIconLabelNodeStyle,
   GQLNode,
@@ -19,9 +20,10 @@ import {
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
-import { convertLabelStyle } from './convertDiagram';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { convertLabelStyle } from './convertDiagram';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -43,6 +45,8 @@ const toIconLabelNode = (
     labelEditable,
   } = gqlNode;
 
+  const connectionHandles: ConnectionHandle[] = [];
+
   const data: IconLabelNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -60,6 +64,7 @@ const toIconLabelNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     labelEditable: labelEditable,
+    connectionHandles,
   };
 
   if (insideLabel) {
@@ -98,6 +103,7 @@ export class IconLabelNodeConverterHandler implements INodeConverterHandler {
   handle(
     _convertEngine: IConvertEngine,
     gqlNode: GQLNode<GQLIconLabelNodeStyle>,
+    _gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],

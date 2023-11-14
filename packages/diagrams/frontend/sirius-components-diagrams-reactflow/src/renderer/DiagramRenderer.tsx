@@ -41,6 +41,7 @@ import { useDropNode } from './dropNode/useDropNode';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
+import { useHandleChange } from './handles/useHandleChange';
 import { useLayout } from './layout/useLayout';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
@@ -74,6 +75,7 @@ export const DiagramRenderer = ({
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onBorderChange } = useBorderChange();
+  const { onHandleChange } = useHandleChange();
   const { getNodeTypes } = useNodeType();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
@@ -107,7 +109,7 @@ export const DiagramRenderer = ({
   const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection(selection, setSelection);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
-    onNodesChange(onBorderChange(changes));
+    onNodesChange(onBorderChange(onHandleChange(changes)));
     updateSelectionOnNodesChange(changes);
   };
 
