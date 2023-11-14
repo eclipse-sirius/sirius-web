@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -34,7 +34,7 @@ import {
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { convertDiagram } from '../converter/convertDiagram';
-import { Diagram, DiagramRendererProps, DiagramRendererState, EdgeData, NodeData } from './DiagramRenderer.types';
+import { Diagram, DiagramRendererProps, EdgeData, NodeData } from './DiagramRenderer.types';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
@@ -53,6 +53,7 @@ import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
+import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
 
@@ -73,10 +74,6 @@ export const DiagramRenderer = ({
   const { onDelete } = useDiagramDelete();
 
   const ref = useRef<HTMLDivElement | null>(null);
-  const [state, setState] = useState<DiagramRendererState>({
-    snapToGrid: false,
-  });
-
   const { layout, resetReferencePosition } = useLayout();
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onDiagramElementClick, hideDiagramElementPalette } = useDiagramElementPalette();
@@ -268,12 +265,12 @@ export const DiagramRenderer = ({
     onDiagramBackgroundClick(event);
   };
 
-  const handleSnapToGrid = (snapToGrid: boolean) => setState((prevState) => ({ ...prevState, snapToGrid }));
-
   const onKeyDown = (event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
     onDelete(event);
   };
+
+  const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
   const { onNodeDragStart, onNodeDrag, onNodeDragStop, dropFeedbackStyleProvider } = useDropNode();
 
@@ -314,12 +311,12 @@ export const DiagramRenderer = ({
       })}
       maxZoom={40}
       minZoom={0.1}
-      snapToGrid={state.snapToGrid}
+      snapToGrid={snapToGrid}
       snapGrid={[GRID_STEP, GRID_STEP]}
       connectionMode={ConnectionMode.Loose}
       zoomOnDoubleClick={false}
       ref={ref}>
-      {state.snapToGrid ? (
+      {snapToGrid ? (
         <>
           <Background
             id="small-grid"
@@ -339,7 +336,7 @@ export const DiagramRenderer = ({
       ) : (
         <Background style={{ backgroundColor }} color={backgroundColor} />
       )}
-      <DiagramPanel snapToGrid={state.snapToGrid} onSnapToGrid={handleSnapToGrid} />
+      <DiagramPanel snapToGrid={snapToGrid} onSnapToGrid={onSnapToGrid} />
       <DiagramPalette targetObjectId={diagramRefreshedEventPayload.diagram.id} />
       <ConnectorContextualMenu />
     </ReactFlow>
