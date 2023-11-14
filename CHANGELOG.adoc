@@ -181,7 +181,9 @@ The new implementation of `IEditService`, named `ComposedEditService`, tries fir
 - https://github.com/eclipse-sirius/sirius-web/issues/2608[#2608] [diagram] Improve the placement of handles on the left and right side of nodes so that they are properly centered
 - https://github.com/eclipse-sirius/sirius-web/issues/2262[#2262] [diagram] Share diagram layout data between the subscribers of the representation
 - https://github.com/eclipse-sirius/sirius-web/issues/2621[#2621] [diagram] Set the same ConnectionLine path as the one used to render edges
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2595[#2595] [diagram] Call the layout on node move and resize.
++
+Node will not be outside of their container, nor on a node header because of a move or resize.
 
 == v2023.10.0
 

@@ -65,7 +65,7 @@ const computeNewBorderPosition = (
 export const useBorderChange = (): UseBorderChangeValue => {
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
 
-  const onBorderChange = useCallback((changes: NodeChange[]): NodeChange[] => {
+  const transformBorderNodeChanges = useCallback((changes: NodeChange[]): NodeChange[] => {
     return changes.map((change) => {
       if (change.type === 'position' && change.positionAbsolute) {
         const movedNode = getNodes().find((node) => change.id === node.id);
@@ -88,5 +88,5 @@ export const useBorderChange = (): UseBorderChangeValue => {
     });
   }, []);
 
-  return { onBorderChange };
+  return { transformBorderNodeChanges };
 };

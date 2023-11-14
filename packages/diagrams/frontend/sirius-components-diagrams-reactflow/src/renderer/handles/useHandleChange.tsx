@@ -10,72 +10,74 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange, getConnectedEdges, useReactFlow } from 'reactflow';
+import { Node, NodeChange, NodePositionChange, getConnectedEdges, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getEdgeParametersWhileMoving, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleChangeValue } from './useHandleChange.types';
+
+const isNodePositionChange = (change: NodeChange): change is NodePositionChange =>
+  change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
 export const useHandleChange = (): UseHandleChangeValue => {
-  const { getEdges, getNodes, setNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getEdges } = useReactFlow<NodeData, EdgeData>();
 
-  const onHandleChange = (changes: NodeChange[]): NodeChange[] => {
-    return changes.map((change) => {
-      if (change.type === 'position' && change.positionAbsolute) {
-        const movedNode = getNodes().find((node) => change.id === node.id);
+  const applyHandleChange = (
+    changes: NodeChange[],
+    nodes: Node<NodeData, DiagramNodeType>[]
+  ): Node<NodeData, DiagramNodeType>[] => {
+    return nodes.map((node) => {
+      const nodeDraggingChange: NodePositionChange | undefined = changes
+        .filter(isNodePositionChange)
+        .find((change) => change.id === node.id);
 
-        if (movedNode) {
-          const connectedEdges = getConnectedEdges([movedNode], getEdges());
-          connectedEdges.forEach((edge) => {
-            const { sourceHandle, targetHandle } = edge;
-            const sourceNode = getNodes().find((node) => node.id === edge.sourceNode?.id);
-            const targetNode = getNodes().find((node) => node.id === edge.targetNode?.id);
+      if (nodeDraggingChange) {
+        const connectedEdges = getConnectedEdges([node], getEdges());
+        connectedEdges.forEach((edge) => {
+          const { sourceHandle, targetHandle } = edge;
+          const sourceNode = nodes.find((node) => node.id === edge.sourceNode?.id);
+          const targetNode = nodes.find((node) => node.id === edge.targetNode?.id);
 
-            if (sourceNode && targetNode && sourceHandle && targetHandle) {
-              const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(
-                change,
+          if (sourceNode && targetNode && sourceHandle && targetHandle) {
+            const { sourcePosition, targetPosition } = getEdgeParametersWhileMoving(
+              nodeDraggingChange,
+              sourceNode,
+              targetNode,
+              nodes
+            );
+            const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
+              (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
+            );
+            const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
+              (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
+            );
+
+            if (
+              nodeSourceConnectionHandle?.position !== sourcePosition &&
+              nodeTargetConnectionHandle?.position !== targetPosition
+            ) {
+              const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
                 sourceNode,
                 targetNode,
-                getNodes()
-              );
-              const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
-                (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
-              );
-              const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
-                (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
+                sourcePosition,
+                targetPosition,
+                sourceHandle,
+                targetHandle
               );
 
-              if (
-                nodeSourceConnectionHandle?.position !== sourcePosition &&
-                nodeTargetConnectionHandle?.position !== targetPosition
-              ) {
-                const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
-                  sourceNode,
-                  targetNode,
-                  sourcePosition,
-                  targetPosition,
-                  sourceHandle,
-                  targetHandle
-                );
-
-                setNodes((nodes: Node<NodeData>[]) =>
-                  nodes.map((node) => {
-                    if (sourceNode.id === node.id) {
-                      node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
-                    }
-                    if (targetNode.id === node.id) {
-                      node.data = { ...node.data, connectionHandles: targetConnectionHandles };
-                    }
-                    return node;
-                  })
-                );
+              if (node.id === sourceNode.id) {
+                node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
+              }
+              if (node.id === targetNode.id) {
+                node.data = { ...node.data, connectionHandles: targetConnectionHandles };
               }
             }
-          });
-        }
+          }
+        });
       }
-      return change;
+      return node;
     });
   };
 
-  return { onHandleChange };
+  return { applyHandleChange };
 };

@@ -131,6 +131,8 @@ export const getHeaderFootprint = (
     if (displayHeaderSeparator) {
       headerFootprint += rectangularNodePadding;
     }
+  } else {
+    headerFootprint = rectangularNodePadding;
   }
 
   return headerFootprint;

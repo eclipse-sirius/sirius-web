@@ -16,7 +16,9 @@ import { RawDiagram } from './layout.types';
 
 export const layoutHandles = (diagram: RawDiagram) => {
   diagram.edges.forEach((edge) => {
-    const { sourceNode, targetNode, sourceHandle, targetHandle } = edge;
+    const { sourceNode: sourceEdgeNode, targetNode: targetEdgeNode, sourceHandle, targetHandle } = edge;
+    const sourceNode = diagram.nodes.find((node) => node.id === sourceEdgeNode?.id);
+    const targetNode = diagram.nodes.find((node) => node.id === targetEdgeNode?.id);
     if (sourceNode && targetNode && sourceHandle && targetHandle) {
       const { sourcePosition, targetPosition } = getEdgeParameters(sourceNode, targetNode, diagram.nodes);
 

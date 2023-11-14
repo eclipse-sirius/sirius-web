@@ -212,6 +212,10 @@ export const useDropNode = (): UseDropNodeValue => {
     [element?.top, element?.left, viewport, draggedNode, targetNodeId, droppableOnDiagram, compatibleNodeIds]
   );
 
+  const hasDroppedNodeParentChanged = (): boolean => {
+    return (draggedNode?.parentNode ?? null) !== targetNodeId;
+  };
+
   const theme = useTheme();
   const diagramTargeted = targetNodeId === null && initialParentId !== null;
   const diagramForbidden = diagramTargeted && draggedNode?.id !== null && !droppableOnDiagram;
@@ -226,6 +230,7 @@ export const useDropNode = (): UseDropNodeValue => {
     onNodeDragStart,
     onNodeDrag,
     onNodeDragStop,
+    hasDroppedNodeParentChanged,
     compatibleNodeIds,
     draggedNode,
     targetNodeId,
