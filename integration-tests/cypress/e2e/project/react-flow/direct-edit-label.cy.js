@@ -18,7 +18,12 @@ describe('/projects/:projectId/edit - Direct edit label', () => {
       cy.visit(`/projects/${projectId}/edit`);
     });
   });
-  it('Check node default size is used for node creation', () => {
+  it('Check direct edit is trigger only if related tool exist', () => {
+    cy.getByTestId('DomainNewModel').dblclick();
+    cy.get('[title="domain::Domain"]').then(($div) => {
+      cy.wrap($div.data().testid).as('domainValue');
+    });
+
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
@@ -30,31 +35,9 @@ describe('/projects/:projectId/edit - Direct edit label', () => {
     cy.get('[title="Back to the homepage"]').click();
 
     // Create the domain instance
-    cy.url().should('eq', Cypress.config().baseUrl + '/projects');
-    cy.get('[title="Blank Studio"]').should('be.visible');
-    cy.getByTestId('create').click();
-
-    cy.url().should('eq', Cypress.config().baseUrl + '/new/project');
-    cy.getByTestId('name').should('be.visible');
-    cy.getByTestId('name').type('Instance');
-    cy.getByTestId('create-project').click();
-
-    cy.getByTestId('empty').click();
-    cy.getByTestId('Others...-more').click();
-    cy.getByTestId('new-object').click();
-    cy.getByTestId('domain').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('domain').find('div').first().should('not.have.attr', 'aria-disabled');
-    cy.getByTestId('domain').click();
-    cy.getByTestId('domain').get('[data-value^="domain://"]').should('exist').click();
-    cy.getByTestId('create-object').click();
-
-    cy.getByTestId('Root-more').click();
-    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
-    cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
-    cy.getByTestId('representationDescription').click();
-    cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
-    cy.getByTestId('name').clear().type('diagram__REACT_FLOW');
-    cy.getByTestId('create-representation').click();
+    cy.get('@domainValue').then((domainValue) => {
+      cy.createInstanceFromDomainModel(domainValue, true);
+    });
 
     cy.getByTestId('Root-more').click();
     cy.getByTestId('new-object').click();
@@ -65,7 +48,9 @@ describe('/projects/:projectId/edit - Direct edit label', () => {
     cy.getByTestId('Entity1').click();
     cy.getByTestId('Name').type('Entity1{enter}');
 
+    cy.getByTestId('fit-to-screen').click();
     cy.getByTestId('Rectangle - Entity1').click();
+    cy.getByTestId('Palette').should('exist');
     cy.getByTestId('Edit - Tool').should('not.exist');
     cy.getByTestId('Rectangle - Entity1').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
     cy.getByTestId('name-edit').should('not.exist');
@@ -79,6 +64,7 @@ describe('/projects/:projectId/edit - Direct edit label', () => {
     cy.getByTestId('Entity2').click();
     cy.getByTestId('Name').type('Entity2{enter}');
 
+    cy.getByTestId('fit-to-screen').click();
     cy.getByTestId('Rectangle - Entity2').click();
     cy.getByTestId('Edit - Tool').should('exist');
     cy.getByTestId('Rectangle - Entity2').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2

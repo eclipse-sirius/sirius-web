@@ -85,7 +85,7 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
               <FullscreenIcon />
             </IconButton>
           )}
-          <IconButton size="small" onClick={handleFitToScreen}>
+          <IconButton size="small" onClick={handleFitToScreen} data-testid="fit-to-screen">
             <AspectRatioIcon />
           </IconButton>
           <IconButton size="small" onClick={handleZoomIn}>

@@ -14,8 +14,8 @@ import '@testing-library/user-event';
 
 Cypress.Commands.add('dragAndDropNode', (sourceNodeTestId, targetNodeTestId) => {
   cy.window().then((win) => {
-    const sourceNode = cy.getByTestId(sourceNodeTestId);
-    const targetNode = cy.getByTestId(targetNodeTestId);
+    const sourceNode = cy.getByTestId('rf__wrapper').findByTestId(sourceNodeTestId);
+    const targetNode = cy.getByTestId('rf__wrapper').findByTestId(targetNodeTestId);
 
     targetNode.then((node) => {
       const target = node[0];
