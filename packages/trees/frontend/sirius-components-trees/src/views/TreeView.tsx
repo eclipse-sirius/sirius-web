@@ -80,6 +80,7 @@ export const TreeView = ({
   textToHighlight,
   textToFilter,
   markedItemIds = [],
+  converter,
 }: TreeViewComponentProps) => {
   const [{ value, context }, dispatch] = useMachine<TreeViewContext, TreeViewEvent>(treeViewMachine, {
     context: {
@@ -217,7 +218,7 @@ export const TreeView = ({
         {tree ? (
           <Tree
             editingContextId={editingContextId}
-            tree={tree}
+            tree={converter.convert(tree)}
             onExpand={onExpand}
             onExpandAll={onExpandAll}
             selection={selection}
