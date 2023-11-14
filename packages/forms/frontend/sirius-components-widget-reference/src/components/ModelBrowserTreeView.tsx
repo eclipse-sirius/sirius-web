@@ -43,9 +43,6 @@ export const ModelBrowserTreeView = ({
   const classes = useTreeStyle();
 
   const [state, setState] = useState<ModelBrowserTreeViewState>({ filterBarText: '' });
-  const converter = {
-    convert: (tree) => tree,
-  };
 
   return (
     <>
@@ -71,7 +68,6 @@ export const ModelBrowserTreeView = ({
           textToFilter={state.filterBarText}
           textToHighlight={state.filterBarText}
           markedItemIds={markedItemIds}
-          converter={converter}
         />
       </div>
     </>

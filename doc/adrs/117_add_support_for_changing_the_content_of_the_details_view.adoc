@@ -1,0 +1,97 @@
+= ADR-117 - Add support for changing the content of the details view
+
+== Context
+
+The Details view displays the same version of a form to all users. There is now way for the frontend to change the form for a specific user.
+
+== Decision
+
+* Addition of a FormConverter API allowing to redefine the form content (/packages/forms/frontend/sirius-components-forms/src/views/FormConverter.types.ts)
+
+[source,typescript]
+----
+interface FormConverter {
+  convert(form: GQLForm): GQLForm;
+)
+----
+
+* Addition of an DetailsViewContext providing a default FormConverter (/packages/forms/frontend/sirius-components-forms/src/views/DetailsViewContext.tsx)
+
+[source,typescript]
+----
+const converter: FormConverter = {
+  convert: (form) => form;
+};
+const defaultContext: DetailsViewContextValue = {
+  converter
+};
+export const DetailsViewContext = React.createContext(defaultContext);
+----
+
+* Addition of an DetailsViewConfiguration providing the context to children (/packages/forms/frontend/sirius-components-forms/src/views/DetailsViewConfiguration.tsx)
+
+[source,typescript]
+----
+export const DetailsViewConfiguration = ({ children, converter }: DetailsViewConfigurationProps) => {
+  return (
+    <DetailsViewContext.Provider value={{ converter }}>
+      {children}
+    </DetailsViewContext.Provider>
+  );
+}
+----
+
+* Addition of an useDetailsViewConfiguration function to provide the configuration to interested components (/packages/forms/frontend/sirius-components-forms/src/views/useDetailsViewConfiguration.ts)
+
+[source,typescript]
+----
+export const useDetailsViewConfiguration = (): UseDetailsViewConfigurationValue => {
+  const { converter } = useContext(DetailsViewContext);
+  return {
+    converter
+  };
+}
+----
+
+* Update of the DetailsView to use the converter (/packages/forms/frontend/sirius-components-forms/src/views/DetailsView.tsx)
+
+[source,typescript]
+----
+const { converter } = useDetailsViewConfiguration();
+
+<FormView converter={converter} ... />
+----
+
+* Update of the FormView to use the converter (/packages/forms/frontend/sirius-components-forms/src/views/FormView.tsx)
+
+[source,typescript]
+----
+<Form form={converter.convert(form)} ... />
+----
+
+* Export new APIs (/packages/forms/frontend/sirius-components-forms/src/index.ts):
+
+[source,typescript]
+----
+DetailsViewConfiguration
+DetailsViewConfigurationProps
+FormConverter
+----
+
+* Usage:
+A sirius consumer may encapsulate its components in a DetailsViewConfiguration which will provide the required filters.
+
+[source,typescript]
+----
+<DetailsViewConfiguration converter={MyCustomFormConverter}>
+    <Workbench ... />
+</DetailsViewConfiguration>
+----
+
+== Status
+
+Accepted
+
+== Consequences
+
+None, by default the Details view works as before.

@@ -42,6 +42,7 @@ import {
   SwitchSelectionEvent,
   formBasedViewMachine,
 } from './FormBasedViewMachine';
+import { FormConverter } from './FormConverter.types';
 
 export const getFormEventSubscription = (subscriptionName: string, contributions: Array<WidgetContribution>) => {
   return `
@@ -80,6 +81,7 @@ export const FormBasedView = ({
   setSelection,
   readOnly,
   subscriptionName,
+  converter,
 }: FormBasedViewProps) => {
   const classes = useFormBasedViewStyles();
   const [{ value, context }, dispatch] = useMachine<FormBasedViewContext, FormBasedViewEvent>(formBasedViewMachine);
@@ -144,6 +146,8 @@ export const FormBasedView = ({
     }
   }, [error, dispatch]);
 
+  const formConverter: FormConverter = converter ? converter : { convert: (gqlForm) => gqlForm };
+
   let content: JSX.Element | null = null;
   if (formBasedView === 'empty' || formBasedView === 'unsupportedSelection' || formBasedView === 'complete') {
     content = (
@@ -156,7 +160,7 @@ export const FormBasedView = ({
     content = (
       <Form
         editingContextId={editingContextId}
-        form={form}
+        form={formConverter.convert(form)}
         widgetSubscriptions={widgetSubscriptions}
         setSelection={setSelection}
         readOnly={readOnly}

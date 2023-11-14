@@ -30,5 +30,8 @@ export * from './propertysections/getTextDecorationLineValue';
 export * from './propertysections/useClickHandler';
 export * from './representations/FormRepresentation';
 export * from './views/DetailsView';
+export * from './views/DetailsViewConfiguration';
+export * from './views/DetailsViewConfiguration.types';
+export * from './views/FormConverter.types';
 export * from './views/RelatedElementsView';
 export * from './views/RepresentationsView';
