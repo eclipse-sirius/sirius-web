@@ -31,7 +31,6 @@ import {
   useReactFlow,
   useStoreApi,
 } from 'reactflow';
-
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { convertDiagram } from '../converter/convertDiagram';
@@ -45,6 +44,7 @@ import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
+import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useLayout } from './layout/useLayout';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
@@ -75,7 +75,6 @@ export const DiagramRenderer = ({
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<DiagramRendererState>({
     snapToGrid: false,
-    fitviewLifecycle: 'neverRendered',
   });
 
   const { layout, resetReferencePosition } = useLayout();
@@ -92,6 +91,7 @@ export const DiagramRenderer = ({
   const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
 
   const { nodeConverterHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
+  const { fitToScreen } = useInitialFitToScreen();
 
   useEffect(() => {
     const { diagram } = diagramRefreshedEventPayload;
@@ -111,18 +111,9 @@ export const DiagramRenderer = ({
       setEdges(laidOutDiagram.edges);
       hideDiagramPalette();
       resetReferencePosition();
-      if (state.fitviewLifecycle === 'neverRendered') {
-        setState((prevState) => ({ ...prevState, fitviewLifecycle: 'shouldFitview' }));
-      }
+      fitToScreen();
     });
   }, [diagramRefreshedEventPayload, diagramDescription]);
-
-  useEffect(() => {
-    if (state.fitviewLifecycle === 'shouldFitview') {
-      reactFlowInstance.fitView({ minZoom: 0.5 });
-      setState((prevState) => ({ ...prevState, fitviewLifecycle: 'viewfit' }));
-    }
-  }, [state.fitviewLifecycle]);
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
