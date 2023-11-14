@@ -183,7 +183,13 @@ export const NewObjectModal = ({ editingContextId, item, onObjectCreated, onClos
   }, [newObjectModal, onObjectCreated, objectToSelect]);
   return (
     <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+      <Dialog
+        open={true}
+        onClose={onClose}
+        aria-labelledby="dialog-title"
+        maxWidth="xs"
+        fullWidth
+        data-testid={'new-object-modal'}>
         <DialogTitle id="dialog-title">Create a new object</DialogTitle>
         <DialogContent>
           <div className={classes.form}>

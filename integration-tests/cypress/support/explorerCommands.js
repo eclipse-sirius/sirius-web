@@ -14,10 +14,12 @@
 Cypress.Commands.add('createChildObject', (parent, objectType) => {
   cy.getByTestId(`${parent}-more`).click();
   cy.getByTestId('new-object').click();
+  cy.getByTestId('new-object-modal').should('exist');
   cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
   cy.getByTestId('childCreationDescription').click();
   cy.getByTestId('childCreationDescription').get(`[data-value="${objectType}"]`).should('exist').click();
   cy.getByTestId('create-object').click();
+  cy.getByTestId('new-object-modal').should('not.exist');
 });
 
 Cypress.Commands.add('createRepresentationFromExplorer', (parent, representationType) => {
