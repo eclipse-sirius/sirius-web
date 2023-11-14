@@ -21,7 +21,7 @@ export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds?: string[];
-  converter: TreeConverter;
+  converter?: TreeConverter;
 }
 
 export interface GQLTreeEventVariables {

@@ -15,6 +15,7 @@ import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { Tree } from '../trees/Tree';
+import { TreeConverter } from './TreeConverter.types';
 import {
   GQLGetExpandAllTreePathData,
   GQLGetExpandAllTreePathVariables,
@@ -212,13 +213,15 @@ export const TreeView = ({
     dispatch(handleOnExpandAllEvent);
   };
 
+  const treeConverter: TreeConverter = converter ? converter : { convert: (gqlTree) => gqlTree };
+
   return (
     <>
       <div data-testid={treeId}>
         {tree ? (
           <Tree
             editingContextId={editingContextId}
-            tree={converter.convert(tree)}
+            tree={treeConverter.convert(tree)}
             onExpand={onExpand}
             onExpandAll={onExpandAll}
             selection={selection}

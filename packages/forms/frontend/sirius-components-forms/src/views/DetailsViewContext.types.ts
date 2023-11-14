@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
-import { useDetailsViewConfiguration } from './DetailsViewConfiguration';
-import { FormBasedView } from './FormBasedView';
 
-export const DetailsView = (props: WorkbenchViewComponentProps) => {
-  const { converter } = useDetailsViewConfiguration();
-  return <FormBasedView {...props} subscriptionName="propertiesEvent" converter={converter} />;
-};
+import { FormConverter } from './FormConverter.types';
+export interface DetailsViewContextValue {
+  converter: FormConverter;
+}
