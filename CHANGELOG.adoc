@@ -83,6 +83,7 @@ Note that double-clicking no longer triggers a direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2550[#2550] [diagram] Palette is now hidden on viewport or zoom change.
 - https://github.com/eclipse-sirius/sirius-web/issues/2562[#2562] [diagram] Prevent a node to be created on the TOP header of its parent.
 The node will be created below the header.
+- https://github.com/eclipse-sirius/sirius-web/issues/2571[#2562] [diagram] Fix a bug where edges would stop at the new creation handles instead of the border of their target node
 
 === New Features
 
