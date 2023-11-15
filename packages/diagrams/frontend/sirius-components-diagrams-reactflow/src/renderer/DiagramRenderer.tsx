@@ -11,30 +11,26 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+import { Selection } from '@eclipse-sirius/sirius-components-core';
 import React, { useContext, useEffect, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
   ConnectionMode,
   EdgeChange,
-  EdgeSelectionChange,
   Node,
   NodeChange,
   NodePositionChange,
-  NodeSelectionChange,
   OnEdgesChange,
   OnNodesChange,
   ReactFlow,
   useEdgesState,
   useNodesState,
-  useReactFlow,
-  useStoreApi,
 } from 'reactflow';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { convertDiagram } from '../converter/convertDiagram';
-import { Diagram, DiagramRendererProps, EdgeData, NodeData } from './DiagramRenderer.types';
+import { Diagram, DiagramRendererProps, NodeData } from './DiagramRenderer.types';
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
@@ -53,14 +49,12 @@ import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
+import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
 
 const GRID_STEP: number = 10;
-
-const isNodeSelectChange = (change: NodeChange): change is NodeSelectionChange => change.type === 'select';
-const isEdgeSelectChange = (change: EdgeChange): change is EdgeSelectionChange => change.type === 'select';
 
 export const DiagramRenderer = ({
   diagramRefreshedEventPayload,
@@ -68,8 +62,6 @@ export const DiagramRenderer = ({
   selection,
   setSelection,
 }: DiagramRendererProps) => {
-  const store = useStoreApi();
-  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
 
@@ -95,7 +87,7 @@ export const DiagramRenderer = ({
     const convertedDiagram: Diagram = convertDiagram(
       diagram,
       nodeConverterHandlers,
-      diagramDescription?.nodeDescriptions ?? []
+      diagramDescription.nodeDescriptions
     );
 
     const previousDiagram: Diagram = {
@@ -112,137 +104,16 @@ export const DiagramRenderer = ({
     });
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
-  useEffect(() => {
-    const selectionEntryIds = selection.entries.map((entry) => entry.id);
-    const edgesMatchingWorkbenchSelection = edges.filter((edge) =>
-      selectionEntryIds.includes(edge.data ? edge.data.targetObjectId : '')
-    );
-    const nodesMatchingWorkbenchSelection = nodes.filter((node) =>
-      selectionEntryIds.includes(node.data.targetObjectId)
-    );
-
-    const alreadySelectedNodesMatchingWorkbenchSelection = nodesMatchingWorkbenchSelection.filter(
-      (node) => node.selected
-    );
-    const firstNodeMatchingWorkbenchSelection =
-      alreadySelectedNodesMatchingWorkbenchSelection[0] ?? nodesMatchingWorkbenchSelection[0];
-
-    const alreadySelectedEdgesMatchingWorkbenchSelection = edgesMatchingWorkbenchSelection.filter(
-      (edge) => edge.selected
-    );
-    const firstEdgeMatchingWorkbenchSelection =
-      alreadySelectedEdgesMatchingWorkbenchSelection[0] ?? edgesMatchingWorkbenchSelection[0];
-
-    if (firstNodeMatchingWorkbenchSelection && alreadySelectedEdgesMatchingWorkbenchSelection.length === 0) {
-      const firstNodeIdMatchingWorkbenchSelection = firstNodeMatchingWorkbenchSelection.id;
-
-      // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
-      const reactFlowState = store.getState();
-      const currentlySelectedNodes = reactFlowState.getNodes().filter((node) => node.selected);
-
-      const isAlreadySelected = currentlySelectedNodes
-        .map((node) => node.id)
-        .includes(firstNodeIdMatchingWorkbenchSelection);
-      if (!isAlreadySelected) {
-        reactFlowState.unselectNodesAndEdges();
-        reactFlowState.addSelectedNodes([firstNodeIdMatchingWorkbenchSelection]);
-
-        const selectedNodes = reactFlowState
-          .getNodes()
-          .filter((node) => firstNodeIdMatchingWorkbenchSelection === node.id);
-        reactFlowInstance.fitView({ nodes: selectedNodes, maxZoom: 2, duration: 1000 });
-      }
-    } else if (edgesMatchingWorkbenchSelection.length > 0 && firstEdgeMatchingWorkbenchSelection) {
-      const firstEdgeIdMatchingWorkbenchSelection = firstEdgeMatchingWorkbenchSelection.id;
-
-      const reactFlowState = store.getState();
-      const currentlySelectedEdges = reactFlowState.edges.filter((edge) => edge.selected);
-
-      const isAlreadySelected = currentlySelectedEdges
-        .map((edge) => edge.id)
-        .includes(firstEdgeIdMatchingWorkbenchSelection);
-
-      if (!isAlreadySelected) {
-        reactFlowState.unselectNodesAndEdges();
-        reactFlowState.addSelectedEdges([firstEdgeIdMatchingWorkbenchSelection]);
-
-        const selectedEdges = reactFlowState.edges.filter((edge) => firstEdgeIdMatchingWorkbenchSelection === edge.id);
-        // React Flow does not support "fit on edge", so fit on its source & target nodes to ensure it is visible and in context
-        reactFlowInstance.fitView({
-          nodes: selectedEdges
-            .flatMap((edge) => [edge.source, edge.target])
-            .flatMap((id) => {
-              const nodes = reactFlowState.getNodes().filter((node) => node.id === id);
-              return nodes;
-            }),
-          maxZoom: 2,
-          duration: 1000,
-        });
-      }
-    }
-  }, [selection]);
+  const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection(selection, setSelection);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
     onNodesChange(onBorderChange(changes));
-
-    const selectionEntries: SelectionEntry[] = changes
-      .filter(isNodeSelectChange)
-      .filter((change) => change.selected)
-      .flatMap((change) => nodes.filter((node) => node.id === change.id))
-      .map((node) => {
-        const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
-        return {
-          id: targetObjectId,
-          kind: targetObjectKind,
-          label: targetObjectLabel,
-        };
-      });
-
-    const currentSelectionEntryIds = selection.entries.map((selectionEntry) => selectionEntry.id);
-    const shouldUpdateSelection =
-      selectionEntries.map((entry) => entry.id).filter((entryId) => currentSelectionEntryIds.includes(entryId))
-        .length !== selectionEntries.length;
-
-    if (selectionEntries.length > 0 && shouldUpdateSelection) {
-      setSelection({ entries: selectionEntries });
-    }
-
-    if (selectionEntries.length > 0) {
-      hideDiagramPalette();
-    }
+    updateSelectionOnNodesChange(changes);
   };
 
   const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
     onEdgesChange(changes);
-
-    const selectionEntries: SelectionEntry[] = changes
-      .filter(isEdgeSelectChange)
-      .filter((change) => change.selected)
-      .flatMap((change) => edges.filter((edge) => edge.id === change.id))
-      .map((edge) => {
-        if (edge.data) {
-          const { targetObjectId, targetObjectKind, targetObjectLabel } = edge.data;
-          return {
-            id: targetObjectId,
-            kind: targetObjectKind,
-            label: targetObjectLabel,
-          };
-        } else {
-          return { id: '', kind: '', label: '' };
-        }
-      });
-
-    const currentSelectionEntryIds = selection.entries.map((selectionEntry) => selectionEntry.id);
-    const shouldUpdateSelection =
-      selectionEntries.map((entry) => entry.id).filter((entryId) => currentSelectionEntryIds.includes(entryId))
-        .length !== selectionEntries.length;
-
-    if (selectionEntries.length > 0 && shouldUpdateSelection) {
-      setSelection({ entries: selectionEntries });
-    }
-    if (selectionEntries.length > 0) {
-      hideDiagramPalette();
-    }
+    updateSelectionOnEdgesChange(changes);
   };
 
   const handlePaneClick = (event: React.MouseEvent<Element, MouseEvent>) => {
