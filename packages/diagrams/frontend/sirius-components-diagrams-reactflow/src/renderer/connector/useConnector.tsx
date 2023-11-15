@@ -13,7 +13,14 @@
 
 import { useTheme } from '@material-ui/core/styles';
 import { useContext } from 'react';
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart, OnConnectStartParams } from 'reactflow';
+import {
+  Connection,
+  OnConnect,
+  OnConnectEnd,
+  OnConnectStart,
+  OnConnectStartParams,
+  useUpdateNodeInternals,
+} from 'reactflow';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
@@ -33,6 +40,7 @@ export const useConnector = (): UseConnectorValue => {
 
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const newConnectionStyleProvider: NodeStyleProvider = {
     getNodeStyle: (id: string): React.CSSProperties => {
@@ -63,10 +71,13 @@ export const useConnector = (): UseConnectorValue => {
 
   const onConnectStart: OnConnectStart = (
     _event: React.MouseEvent | React.TouchEvent,
-    _params: OnConnectStartParams
+    params: OnConnectStartParams
   ) => {
     hideDiagramElementPalette();
     resetConnection();
+    if (params.nodeId) {
+      updateNodeInternals(params.nodeId);
+    }
   };
 
   const onConnectorContextualMenuClose = () => resetConnection();

@@ -112,7 +112,7 @@ export const ConnectionCreationHandles = ({ nodeId }: ConnectionCreationHandlesP
         ? Object.values(Position).map((position) => {
             return (
               <Handle
-                id={`handle--${nodeId}--${position}`}
+                id={`creationhandle--${nodeId}--${position}`}
                 type="source"
                 position={position}
                 style={connectionCreationHandleStyle(position, theme, state.isHovered, state.isMouseDown)}

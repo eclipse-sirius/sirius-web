@@ -60,7 +60,7 @@ const getNodeCenter: GetNodeCenter = (node) => {
 
 const getHandleCoordinatesByPosition: GetHandleCoordinatesByPosition = (node, handlePosition) => {
   const handle: HandleElement | undefined = (node[internalsSymbol]?.handleBounds?.source ?? []).find(
-    (handle) => handle.position === handlePosition
+    (handle) => handle.position === handlePosition && !handle.id?.startsWith('creationhandle')
   );
 
   if (handle) {
