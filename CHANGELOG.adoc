@@ -106,6 +106,7 @@ The node will be created below the header.
 It uses our algorithm instead of elk.js to perform the arrange-all.
 - https://github.com/eclipse-sirius/sirius-web/issues/2591[#2591] [diagram] Give the right node descriptions to node convert handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/2601[#2601] [emf] Fix an issue in `EditingContextCrossReferenceAdapter` where references to moved objects were lost.
+- https://github.com/eclipse-sirius/sirius-web/issues/2582[#2582] [diagram] Fix a delay in renderer of palette tools between the one from _getPalette_ backend call and the one declared in frontend.
 
 === New Features
 

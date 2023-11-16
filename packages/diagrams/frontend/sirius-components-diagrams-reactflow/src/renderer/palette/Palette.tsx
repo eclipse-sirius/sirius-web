@@ -56,14 +56,20 @@ import {
   PaletteProps,
 } from './Palette.types';
 import { ToolSection } from './tool-section/ToolSection';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const usePaletteStyle = makeStyles((theme) => ({
-  toolEntries: {
+  palette: {
     display: 'grid',
-    gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
     gridTemplateRows: '28px',
     gridAutoRows: '28px',
     placeItems: 'center',
+  },
+  toolEntries: {
+    gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
+  },
+  loading: {
+    gridTemplateColumns: '36px',
   },
   toolIcon: {
     color: theme.palette.text.primary,
@@ -385,8 +391,16 @@ export const Palette = ({
     hideDiagramElements([diagramElementId], true);
   };
 
+  if (!palette) {
+    return (
+      <div className={`${classes.palette} ${classes.loading}`}>
+        <CircularProgress size={26} />
+      </div>
+    );
+  }
+
   return (
-    <div className={classes.toolEntries} data-testid={'Palette'}>
+    <div className={`${classes.palette} ${classes.toolEntries}`} data-testid={'Palette'}>
       {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
         <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
       ))}

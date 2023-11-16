@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -90,7 +91,10 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
+        String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), GetPaletteInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(diagramInput.id(), message);
         Palette palette = null;
+
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
 
         if (diagramInput instanceof GetPaletteInput toolSectionsInput) {
@@ -114,7 +118,10 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
                 }
             }
         }
-        payloadSink.tryEmitValue(new GetPaletteSuccessPayload(diagramInput.id(), palette));
+        if (palette != null) {
+            payload = new GetPaletteSuccessPayload(diagramInput.id(), palette);
+        }
+        payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
@@ -125,13 +132,11 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
         } else {
             var findNodeById = this.diagramQueryService.findNodeById(diagram, diagramElementId);
             if (findNodeById.isPresent()) {
-                Node node = findNodeById.get();
-                diagramElement = node;
+                diagramElement = findNodeById.get();
             } else {
                 var findEdgeById = this.diagramQueryService.findEdgeById(diagram, diagramElementId);
                 if (findEdgeById.isPresent()) {
-                    Edge edge = findEdgeById.get();
-                    diagramElement = edge;
+                    diagramElement = findEdgeById.get();
                 }
             }
         }
