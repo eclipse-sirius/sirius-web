@@ -20,6 +20,7 @@ const borderHandlesStyle = (position: Position): React.CSSProperties => {
     display: 'flex',
     position: 'absolute',
     justifyContent: 'space-evenly',
+    pointerEvents: 'none',
   };
   switch (position) {
     case Position.Left:

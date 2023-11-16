@@ -69,7 +69,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
       <div
         style={{
           ...rectangularNodeStyle(theme, data.style, selected, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
+          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyleProvider.getNodeStyle(id),
         }}
         onDragOver={onDragOver}

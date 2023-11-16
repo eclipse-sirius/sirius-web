@@ -76,7 +76,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
       <div
         style={{
           ...ellipseNodeStyle(theme, data.style, selected, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
+          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyleProvider.getNodeStyle(id),
         }}
         onDragOver={onDragOver}

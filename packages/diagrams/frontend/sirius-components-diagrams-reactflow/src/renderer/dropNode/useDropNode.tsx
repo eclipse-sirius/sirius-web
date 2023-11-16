@@ -260,23 +260,17 @@ export const useDropNode = (): UseDropNodeValue => {
     getNodeStyle(nodeId: string): React.CSSProperties {
       const isCompatibleDropTarget: boolean = dropData.compatibleNodeIds.includes(nodeId);
       const isSelectedDropTarget: boolean = nodeId === dropData.targetNodeId;
-
-      let opacity: string | undefined = undefined;
-      let boxShadow: string | undefined = undefined;
+      const style: React.CSSProperties = {};
 
       if (dropData.draggedNodeId !== null) {
         if (dropData.draggedNodeId !== nodeId && !isCompatibleDropTarget) {
-          opacity = '0.4';
+          style.opacity = '0.4';
         }
         if (isSelectedDropTarget && isCompatibleDropTarget) {
-          boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
+          style.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
         }
       }
-      if (opacity) {
-        return { opacity, boxShadow };
-      } else {
-        return { boxShadow };
-      }
+      return style;
     },
 
     getDiagramBackgroundStyle(): DiagramBackgroundStyle {

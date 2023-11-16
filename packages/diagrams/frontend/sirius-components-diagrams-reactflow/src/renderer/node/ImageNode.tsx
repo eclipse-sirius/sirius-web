@@ -83,7 +83,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
         src={httpOrigin + data.imageURL}
         style={{
           ...imageNodeStyle(theme, data.style, selected, data.faded, rotation),
-          ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
+          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyleProvider.getNodeStyle(id),
         }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
