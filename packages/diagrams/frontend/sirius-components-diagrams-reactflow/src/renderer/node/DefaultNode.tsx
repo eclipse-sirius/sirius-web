@@ -15,7 +15,7 @@ import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
-import { BorderNodePosition } from '../DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
@@ -25,11 +25,10 @@ import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
-import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeContext } from './NodeContext';
 import { NodeContextValue } from './NodeContext.types';
 
-const freeFormNodeStyle = (
+const defaultNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
@@ -45,10 +44,16 @@ const freeFormNodeStyle = (
     transform: rotation,
     ...style,
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
+    borderTopColor: getCSSColor(String(style.borderTopColor), theme),
+    borderBottomColor: getCSSColor(String(style.borderBottomColor), theme),
+    borderLeftColor: getCSSColor(String(style.borderLeftColor), theme),
+    borderRightColor: getCSSColor(String(style.borderRightColor), theme),
   };
+
   if (selected || hovered) {
     freeFormNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
+
   if (imageURL) {
     freeFormNodeStyle.backgroundImage = `url(${imageURL})`;
     freeFormNodeStyle.backgroundRepeat = 'no-repeat';
@@ -57,7 +62,7 @@ const freeFormNodeStyle = (
   return freeFormNodeStyle;
 };
 
-const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
+const computeBorderRotation = (data: NodeData): string | undefined => {
   if (data?.isBorderNode && data.positionDependentRotation) {
     switch (data.borderNodePosition) {
       case BorderNodePosition.NORTH:
@@ -84,22 +89,22 @@ const outsideBottomLabelAreaStyle = (): React.CSSProperties => {
   };
 };
 
-export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNodeData>) => {
+export const DefaultNode = memo(({ id, data, selected }: NodeProps<NodeData>) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+
   const rotation = computeBorderRotation(data);
   let imageURL: string | undefined = undefined;
   if (data.imageURL) {
     imageURL = httpOrigin + data.imageURL;
   }
 
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
+  const handleOnDrop = (event: React.DragEvent) => onDrop(event, id);
 
   useRefreshConnectionHandles(id, data.connectionHandles);
 
@@ -131,23 +136,23 @@ export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNode
 
   return (
     <>
-      {data.nodeDescription?.userResizable && (
+      {data.nodeDescription.userResizable && (
         <NodeResizer
-          color={theme.palette.selected}
-          isVisible={selected}
+          color={theme.palette.primary.main}
+          isVisible={selected && !data.isBorderNode}
           shouldResize={() => !data.isBorderNode}
-          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+          keepAspectRatio={data.nodeDescription.keepAspectRatio}
         />
       )}
       <div
         style={{
-          ...freeFormNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation, imageURL),
+          ...defaultNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation, imageURL),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
+        data-testid={`Default - ${data.targetObjectLabel}`}>
         {data.insideLabel ? (
           <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
         ) : null}

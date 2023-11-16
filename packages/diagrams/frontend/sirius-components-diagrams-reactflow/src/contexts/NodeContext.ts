@@ -14,7 +14,7 @@ import React from 'react';
 import { NodeTypeContextValue } from './NodeContext.types';
 
 const value: NodeTypeContextValue = {
-  nodeConverterHandlers: [],
+  nodeConverters: [],
   nodeLayoutHandlers: [],
   graphQLNodeStyleFragments: [],
   nodeTypeContributions: [],

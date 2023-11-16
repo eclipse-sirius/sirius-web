@@ -21,7 +21,7 @@ import {
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
-  INodeConverterHandler,
+  INodeConverter,
   convertHandles,
   convertLabelStyle,
   convertLineStyle,
@@ -36,7 +36,7 @@ const toEllipseNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
 ): Node<EllipseNodeData> => {
@@ -79,6 +79,8 @@ const toEllipseNode = (
     connectionHandles,
     labelEditable,
     isNew,
+    imageURL: null,
+    positionDependentRotation: false,
   };
 
   if (insideLabel) {
@@ -146,7 +148,7 @@ const toEllipseNode = (
   return node;
 };
 
-export class EllipseNodeConverterHandler implements INodeConverterHandler {
+export class EllipseNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'EllipseNodeStyle';
   }
@@ -162,7 +164,9 @@ export class EllipseNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    if (nodeDescription) {
+      nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    }
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],

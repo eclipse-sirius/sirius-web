@@ -24,7 +24,7 @@ import {
   getBorderNodeExtent,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
-  getHeaderFootprint,
+  getHeaderFootprintHeight,
   getNodeOrMinHeight,
   getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
@@ -66,14 +66,14 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
       if (!!createdNode) {
         // WARN: this prevent the created to overlep the TOP header. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement ? getHeaderFootprint(labelElement, false, false) : 0;
+        const headerHeightFootprint = labelElement ? getHeaderFootprintHeight(labelElement, false, false) : 0;
         child.position = createdNode.position;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
         }
       } else if (previousPosition) {
         // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement ? getHeaderFootprint(labelElement, false, false) : 0;
+        const headerHeightFootprint = labelElement ? getHeaderFootprintHeight(labelElement, false, false) : 0;
         child.position = previousPosition;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
@@ -152,7 +152,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       node.height = minNodeheight;
     }
 
-    if (node.data.nodeDescription?.keepAspectRatio) {
+    if (node.data.nodeDescription.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
 

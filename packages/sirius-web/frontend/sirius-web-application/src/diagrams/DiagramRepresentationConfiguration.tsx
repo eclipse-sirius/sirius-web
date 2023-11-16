@@ -15,7 +15,7 @@ import { NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams
 import { DiagramRepresentationConfigurationProps } from './DiagramRepresentationConfiguration.types';
 
 export const defaultNodeTypeRegistry: NodeTypeContextValue = {
-  nodeConverterHandlers: [],
+  nodeConverters: [],
   nodeLayoutHandlers: [],
   graphQLNodeStyleFragments: [],
   nodeTypeContributions: [],

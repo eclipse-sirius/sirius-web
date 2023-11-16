@@ -75,7 +75,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
         color={theme.palette.primary.main}
         isVisible={selected}
         shouldResize={() => !data.isBorderNode}
-        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        keepAspectRatio={data.nodeDescription.keepAspectRatio}
       />
       <div
         style={{

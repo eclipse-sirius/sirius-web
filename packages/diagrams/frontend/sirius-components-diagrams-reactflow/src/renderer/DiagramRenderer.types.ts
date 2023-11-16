@@ -53,7 +53,7 @@ export interface NodeData {
   insideLabel: InsideLabel | null;
   outsideLabels: OutsideLabels;
   faded: boolean;
-  nodeDescription: GQLNodeDescription | undefined;
+  nodeDescription: GQLNodeDescription;
   defaultWidth: number | null;
   defaultHeight: number | null;
   isBorderNode: boolean;
@@ -62,6 +62,8 @@ export interface NodeData {
   style: React.CSSProperties;
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
+  imageURL: string | null;
+  positionDependentRotation: boolean;
 }
 
 export enum BorderNodePosition {

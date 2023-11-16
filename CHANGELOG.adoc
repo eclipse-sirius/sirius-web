@@ -9,7 +9,7 @@
 
 - [ADR-122] Use the page object model in integration tests
 - [ADR-123] Improve frontend selection support
-
+- [ADR-124] Improve custom node API to reduce duplication
 
 === Breaking changes
 
@@ -19,24 +19,27 @@ All implementations of this interface must implement these new methods:
 * `List<EdgeDescription> getEdgeDescriptions();` to retrieve all `EdgeDescriptions` created by providers.
 - https://github.com/eclipse-sirius/sirius-web/issues/2658[#2658] [sirius-web] Add dedicated colors for navigation bar in the Sirius Web theme.
 The theme provided by the user must now provide navigation bar colors:
-```ts
+[source,typescript]
+----
 ...
 navigationBar: {
   border: 'yellow',
   background: 'blue',
 },
 ...
-```
+----
 - https://github.com/eclipse-sirius/sirius-web/issues/2669[#2669] [sirius-web] Add dedicated colors for selected elements in the Sirius Web theme.
 The theme provided by the user must now provide selected elements colors:
-```ts
+[source,typescript]
+----
 ...
 selected: 'gray',
 ...
-```
+----
 - https://github.com/eclipse-sirius/sirius-web/issues/2672[#2672] [sirius-web] Add dedicated colors for toast messages in Sirius Web theme.
 The theme provided by the user must now provide toast messages colors:
-```ts
+[source,typescript]
+----
 ...
 success: {
   main: '#43A047',
@@ -54,24 +57,24 @@ info: {
   light: '#24A7FF',
 },
 ...
-```
+----
 - https://github.com/eclipse-sirius/sirius-web/issues/2804[#2804] [sirius-web] Add the ability to declare custom nodes while using the `sirius-web-application` frontend package.
 A new optional component named `DiagramRepresentationConfiguration` has been introduced.
 If you want to add some custom nodes, this new component must be declared under `SiriusWebApplication`:
-```ts
+[source,typescript]
+----
 const nodeTypeRegistry: NodeTypeRegistry = {
   ...
 };
 <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
   <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
 </SiriusWebApplication>
-```
-
+----
+- https://github.com/eclipse-sirius/sirius-web/issues/2628[#2628] [diagram] Improve the API available for custom nodes
 
 === Dependency update
 
 - [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.12
-
 
 === Bug fixes
 
@@ -107,7 +110,6 @@ It is the responsibility of the drop targets (e.g. a diagram) to validate the dr
 - https://github.com/eclipse-sirius/sirius-web/issues/2787[#2787] [view] Add the ability to customize the icons of the node tools and edge tools in the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/2784[#2784] [performance] Expand monitoring capabilities.
 - https://github.com/eclipse-sirius/sirius-web/issues/2480[#2480] [diagram] Merge the rectangle node and the image node into FreeFormNode.
-
 
 == v2023.12.0
 

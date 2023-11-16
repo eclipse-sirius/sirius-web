@@ -13,7 +13,7 @@
 
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
-export type { IConvertEngine, INodeConverterHandler } from './converter/ConvertEngine.types';
+export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
 export { convertLineStyle } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export { convertHandles } from './converter/convertHandles';
@@ -40,6 +40,7 @@ export { computePreviousPosition, computePreviousSize } from './renderer/layout/
 export * from './renderer/layout/layoutBorderNodes';
 export * from './renderer/layout/layoutNode';
 export { useLayout } from './renderer/layout/useLayout';
+export { DefaultNode as NodeWrapper } from './renderer/node/DefaultNode';
 export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';

@@ -13,7 +13,6 @@
 
 import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
-import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition, computePreviousSize } from './bounds';
@@ -25,7 +24,7 @@ import {
   findNodeIndex,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
-  getHeaderFootprint,
+  getHeaderFootprintHeight,
   getNodeOrMinHeight,
   getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
@@ -35,7 +34,7 @@ import {
 } from './layoutNode';
 import { rectangularNodePadding } from './layoutParams';
 
-export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNodeData> {
+export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'freeFormNode';
   }
@@ -43,7 +42,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<FreeFormNodeData, 'freeFormNode'>,
+    node: Node<NodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -72,7 +71,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<FreeFormNodeData, 'freeFormNode'>,
+    node: Node<NodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -97,21 +96,17 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
       if (!!createdNode) {
         // WARN: this prevent the created to overlep the TOP header. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement
-          ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
-          : 0;
+        const headerFootprintHeight = getHeaderFootprintHeight(labelElement, withHeader, displayHeaderSeparator);
         child.position = createdNode.position;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        if (child.position.y < borderWidth + headerFootprintHeight) {
+          child.position = { ...child.position, y: borderWidth + headerFootprintHeight };
         }
       } else if (previousPosition) {
         // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement
-          ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
-          : 0;
+        const headerFootprintHeight = getHeaderFootprintHeight(labelElement, withHeader, displayHeaderSeparator);
         child.position = previousPosition;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        if (child.position.y < borderWidth + headerFootprintHeight) {
+          child.position = { ...child.position, y: borderWidth + headerFootprintHeight };
         }
         if (child.position.x < borderWidth + rectangularNodePadding) {
           child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
@@ -188,7 +183,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       node.height = minNodeheight;
     }
 
-    if (node.data.nodeDescription?.keepAspectRatio) {
+    if (node.data.nodeDescription.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
 
@@ -201,7 +196,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
   private handleLeafNode(
     previousDiagram: RawDiagram | null,
-    node: Node<FreeFormNodeData, 'freeFormNode'>,
+    node: Node<NodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceWidth?: number
@@ -239,7 +234,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       node.height = minNodeheight;
     }
 
-    if (node.data.nodeDescription?.keepAspectRatio) {
+    if (node.data.nodeDescription.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
   }

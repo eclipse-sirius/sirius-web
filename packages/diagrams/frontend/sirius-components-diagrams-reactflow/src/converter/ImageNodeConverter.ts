@@ -14,83 +14,82 @@ import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
-import {
-  GQLIconLabelNodeStyle,
-  GQLNode,
-  GQLNodeStyle,
-  GQLViewModifier,
-} from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
+import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
+import { BorderNodePosition, NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
-const toIconLabelNode = (
+const toImageNode = (
   gqlDiagram: GQLDiagram,
-  gqlNode: GQLNode<GQLIconLabelNodeStyle>,
+  gqlNode: GQLNode<GQLImageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
-  isBorderNode: boolean
-): Node<IconLabelNodeData> => {
+  nodeDescription: GQLNodeDescription,
+  isBorderNode: boolean,
+  gqlEdges: GQLEdge[]
+): Node<NodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    id,
     insideLabel,
     outsideLabels,
+    id,
     state,
     style,
     labelEditable,
   } = gqlNode;
 
-  const connectionHandles: ConnectionHandle[] = [];
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: IconLabelNodeData = {
+  const data: NodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    style: {
-      textAlign: 'left',
-      backgroundColor: style.backgroundColor,
-    },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
-    isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    imageURL: style.imageURL,
+    style: {},
     faded: state === GQLViewModifier.Faded,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
-    labelEditable: labelEditable,
+    isBorderNode: isBorderNode,
+    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    labelEditable,
+    positionDependentRotation: style.positionDependentRotation,
     connectionHandles,
     isNew,
   };
 
   if (insideLabel) {
-    const labelStyle = insideLabel.style;
-
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      style: {
-        ...convertLabelStyle(labelStyle),
+    const {
+      id,
+      text,
+      style: labelStyle,
+      style: { iconURL },
+    } = insideLabel;
+    data.outsideLabels = {
+      BOTTOM_MIDDLE: {
+        id,
+        text,
+        iconURL,
+        style: {
+          ...convertLabelStyle(labelStyle),
+        },
       },
-      iconURL: labelStyle.iconURL,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
   }
 
-  const node: Node<IconLabelNodeData> = {
+  const node: Node<NodeData> = {
     id,
-    type: 'iconLabelNode',
+    type: 'freeFormNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
@@ -119,22 +118,38 @@ const toIconLabelNode = (
   return node;
 };
 
-export class IconLabelNodeConverterHandler implements INodeConverterHandler {
+export class ImageNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'IconLabelNodeStyle';
+    return gqlNode.style.__typename === 'ImageNodeStyle';
   }
 
   handle(
-    _convertEngine: IConvertEngine,
+    convertEngine: IConvertEngine,
     gqlDiagram: GQLDiagram,
-    gqlNode: GQLNode<GQLIconLabelNodeStyle>,
-    _gqlEdges: GQLEdge[],
+    gqlNode: GQLNode<GQLImageNodeStyle>,
+    gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
+    if (nodeDescription) {
+      nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    }
+    convertEngine.convertNodes(
+      gqlDiagram,
+      gqlNode.borderNodes ?? [],
+      gqlNode,
+      nodes,
+      nodeDescription?.borderNodeDescriptions ?? []
+    );
+    convertEngine.convertNodes(
+      gqlDiagram,
+      gqlNode.childNodes ?? [],
+      gqlNode,
+      nodes,
+      nodeDescription?.childNodeDescriptions ?? []
+    );
   }
 }

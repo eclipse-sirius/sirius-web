@@ -95,7 +95,7 @@ export const getChildNodePosition = (
     .reduce((a, b) => Math.max(a, b), 0);
 
   if (!previousSibling) {
-    const headerFootprint = labelElement ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator) : 0;
+    const headerFootprint = getHeaderFootprintHeight(labelElement, withHeader, displayHeaderSeparator);
 
     return {
       x: rectangularNodePadding + borderWidth + maxWestBorderNodeWidth,
@@ -119,23 +119,27 @@ export const getChildNodePosition = (
   }
 };
 
-export const getHeaderFootprint = (
-  labelElement: HTMLElement,
+export const getHeaderFootprintHeight = (
+  labelElement: HTMLElement | null,
   withHeader: boolean,
   displayHeaderSeparator: boolean
 ): number => {
-  let headerFootprint = 0;
-
-  if (withHeader) {
-    headerFootprint = labelElement.getBoundingClientRect().height;
-    if (displayHeaderSeparator) {
-      headerFootprint += rectangularNodePadding;
-    }
-  } else {
-    headerFootprint = rectangularNodePadding;
+  if (!labelElement) {
+    return rectangularNodePadding;
   }
 
-  return headerFootprint;
+  let headerFootprintHeight = 0;
+
+  if (withHeader) {
+    headerFootprintHeight = labelElement.getBoundingClientRect().height;
+    if (displayHeaderSeparator) {
+      headerFootprintHeight += rectangularNodePadding;
+    }
+  } else {
+    headerFootprintHeight = rectangularNodePadding;
+  }
+
+  return headerFootprintHeight;
 };
 
 /**
