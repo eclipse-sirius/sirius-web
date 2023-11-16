@@ -157,6 +157,7 @@ The new implementation of `IEditService`, named `ComposedEditService`, tries fir
 - https://github.com/eclipse-sirius/sirius-web/issues/2559[#2559] [diagram] Allow to target the whole node when creating or reconnecting an edge.
 - https://github.com/eclipse-sirius/sirius-web/issues/2235[#2235] [diagram] Reduce the amount of code in DiagramRenderer
 - https://github.com/eclipse-sirius/sirius-web/issues/2572[#2572] [diagram] Each edges now have a dedicated handle.
+- https://github.com/eclipse-sirius/sirius-web/issues/2584[#2584] [diagram] Add feedback during edge creation.
 
 == v2023.10.0
 

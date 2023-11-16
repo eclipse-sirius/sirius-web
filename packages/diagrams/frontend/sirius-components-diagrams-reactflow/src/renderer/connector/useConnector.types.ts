@@ -25,7 +25,7 @@ export interface UseConnectorValue {
 }
 
 export interface NodeStyleProvider {
-  getNodeStyle: (nodeId: string) => React.CSSProperties;
+  getNodeStyle: (nodeId: string, descriptionId: string) => React.CSSProperties;
   getHandleStyle: (id: string) => React.CSSProperties;
 }
 export interface GQLGetToolSectionsData {

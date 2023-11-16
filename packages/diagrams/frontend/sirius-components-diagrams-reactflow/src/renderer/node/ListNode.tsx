@@ -71,7 +71,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
       <div
         style={{
           ...listNodeStyle(theme, data.style, selected, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(data.descriptionId),
+          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyleProvider.getNodeStyle(id),
         }}
         onDragOver={onDragOver}

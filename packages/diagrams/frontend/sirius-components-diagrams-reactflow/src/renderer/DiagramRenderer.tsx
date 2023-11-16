@@ -55,6 +55,8 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
+import { NodeContext } from './node/NodeContext';
+import { NodeContextValue } from './node/NodeContext.types';
 
 const GRID_STEP: number = 10;
 
@@ -146,7 +148,7 @@ export const DiagramRenderer = ({
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
   const { onNodeDragStart, onNodeDrag, onNodeDragStop, dropFeedbackStyleProvider } = useDropNode();
-
+  const { setHoveredNode } = useContext<NodeContextValue>(NodeContext);
   const { backgroundColor, smallGridColor, largeGridColor } = dropFeedbackStyleProvider.getDiagramBackgroundStyle();
 
   return (
@@ -182,6 +184,10 @@ export const DiagramRenderer = ({
         };
         onNodesChange([resetPosition]);
       })}
+      onNodeMouseEnter={(_event: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
+        setHoveredNode(node);
+      }}
+      onNodeMouseLeave={() => setHoveredNode(null)}
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={snapToGrid}

@@ -21,6 +21,8 @@ import {
   OnConnectStartParams,
   useUpdateNodeInternals,
 } from 'reactflow';
+import { NodeContext } from '../node/NodeContext';
+import { NodeContextValue } from '../node/NodeContext.types';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
@@ -41,17 +43,29 @@ export const useConnector = (): UseConnectorValue => {
   const theme = useTheme();
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const newConnectionStyleProvider: NodeStyleProvider = {
-    getNodeStyle: (id: string): React.CSSProperties => {
-      const nodeStyle: React.CSSProperties = {};
-      if (isNewConnection && candidates.map((node) => node.id).includes(id)) {
-        nodeStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
-        nodeStyle.opacity = 1;
-      } else if (isNewConnection) {
-        nodeStyle.opacity = 0.4;
+    getNodeStyle: (id: string, descriptionId: string): React.CSSProperties => {
+      const style: React.CSSProperties = {};
+      if (isNewConnection) {
+        const isConnectionCompatibleNode = Boolean(
+          candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
+        );
+        const isSelectedNode = hoveredNode?.id === id;
+        if (isConnectionCompatibleNode) {
+          if (isSelectedNode) {
+            // Hightlight the selected target
+            style.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
+          }
+          // Make sure all compatible nodes, even normally faded ones, are fully visible
+          style.opacity = '1';
+        } else {
+          // Force fade all incompatible nodes
+          style.opacity = '0.4';
+        }
       }
-      return nodeStyle;
+      return style;
     },
     getHandleStyle: (id: string): React.CSSProperties => {
       const handleStyle: React.CSSProperties = {};

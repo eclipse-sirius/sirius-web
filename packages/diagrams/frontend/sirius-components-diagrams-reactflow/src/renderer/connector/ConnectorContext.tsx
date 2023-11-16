@@ -64,6 +64,7 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
       connection: null,
       targetCandidates: [],
       isNewConnection: false,
+      selectedNodeId: null,
     }));
   };
 
