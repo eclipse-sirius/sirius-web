@@ -19,6 +19,7 @@ import {
   EdgeLabelRenderer,
   EdgeProps,
   Node,
+  Position,
   ReactFlowState,
   getSmoothStepPath,
   useReactFlow,
@@ -78,8 +79,39 @@ export const MultiLabelEdge = memo(
       return null;
     }
 
-    const { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(sourceNode, sourcePosition, sourceHandleId ?? '');
-    const { x: targetX, y: targetY } = getHandleCoordinatesByPosition(targetNode, targetPosition, targetHandleId ?? '');
+    let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(sourceNode, sourcePosition, sourceHandleId ?? '');
+    let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(targetNode, targetPosition, targetHandleId ?? '');
+
+    const handleRadius = 2;
+    switch (sourcePosition) {
+      case Position.Right:
+        sourceX = sourceX + handleRadius;
+        break;
+      case Position.Left:
+        sourceX = sourceX - handleRadius;
+        break;
+      case Position.Top:
+        sourceY = sourceY - handleRadius;
+        break;
+      case Position.Bottom:
+        sourceY = sourceY + handleRadius;
+        break;
+    }
+
+    switch (targetPosition) {
+      case Position.Right:
+        targetX = targetX + handleRadius;
+        break;
+      case Position.Left:
+        targetX = targetX - handleRadius;
+        break;
+      case Position.Top:
+        targetY = targetY - handleRadius;
+        break;
+      case Position.Bottom:
+        targetY = targetY + handleRadius;
+        break;
+    }
 
     const [edgePath, labelX, labelY] = getSmoothStepPath({
       sourceX,
