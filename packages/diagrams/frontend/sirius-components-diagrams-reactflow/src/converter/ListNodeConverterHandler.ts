@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
   GQLNode,
@@ -30,6 +31,7 @@ import { convertHandles } from './convertHandles';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toListNode = (
+  gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
@@ -119,6 +121,22 @@ const toListNode = (
     node.parentNode = gqlParentNode.id;
   }
 
+  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
+  if (nodeLayoutData) {
+    const {
+      position,
+      size: { height, width },
+    } = nodeLayoutData;
+    node.position = position;
+    node.height = height;
+    node.width = width;
+    node.style = {
+      ...node.style,
+      width: `${node.width}px`,
+      height: `${node.height}px`,
+    };
+  }
+
   return node;
 };
 
@@ -129,6 +147,7 @@ export class ListNodeConverterHandler implements INodeConverterHandler {
 
   handle(
     convertEngine: IConvertEngine,
+    gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLRectangularNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
@@ -137,13 +156,20 @@ export class ListNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toListNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    nodes.push(toListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     convertEngine.convertNodes(
+      gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
       nodeDescription?.borderNodeDescriptions ?? []
     );
-    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescription?.childNodeDescriptions ?? []);
+    convertEngine.convertNodes(
+      gqlDiagram,
+      gqlNode.childNodes ?? [],
+      gqlNode,
+      nodes,
+      nodeDescription?.childNodeDescriptions ?? []
+    );
   }
 }

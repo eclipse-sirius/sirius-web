@@ -24,6 +24,13 @@ fragment diagramFragment on Diagram {
     kind
     label
   }
+  layoutData {
+    nodeLayoutData {
+      id
+      position { x y }
+      size { width height }
+    }
+  }
   nodes {
     ...nodeFragment
     borderNodes {

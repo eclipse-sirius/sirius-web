@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
   GQLIconLabelNodeStyle,
@@ -28,6 +29,7 @@ import { convertLabelStyle } from './convertDiagram';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toIconLabelNode = (
+  gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLIconLabelNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
@@ -92,6 +94,22 @@ const toIconLabelNode = (
     node.parentNode = gqlParentNode.id;
   }
 
+  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
+  if (nodeLayoutData) {
+    const {
+      position,
+      size: { height, width },
+    } = nodeLayoutData;
+    node.position = position;
+    node.height = height;
+    node.width = width;
+    node.style = {
+      ...node.style,
+      width: `${node.width}px`,
+      height: `${node.height}px`,
+    };
+  }
+
   return node;
 };
 
@@ -102,6 +120,7 @@ export class IconLabelNodeConverterHandler implements INodeConverterHandler {
 
   handle(
     _convertEngine: IConvertEngine,
+    gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLIconLabelNodeStyle>,
     _gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
@@ -110,6 +129,6 @@ export class IconLabelNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toIconLabelNode(gqlNode, parentNode, nodeDescription, isBorderNode));
+    nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
   }
 }

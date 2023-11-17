@@ -99,6 +99,7 @@ export const convertDiagram = (
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
   const convertEngine: IConvertEngine = {
     convertNodes(
+      gqlDiagram: GQLDiagram,
       gqlNodesToConvert: GQLNode<GQLNodeStyle>[],
       parentNode: GQLNode<GQLNodeStyle> | null,
       nodes: Node[],
@@ -111,14 +112,22 @@ export const convertDiagram = (
         ].find((handler) => handler.canHandle(node));
         if (nodeConverterHandler) {
           const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(node.id);
-
-          nodeConverterHandler.handle(this, node, gqlDiagram.edges, parentNode, isBorderNode, nodes, nodeDescriptions);
+          nodeConverterHandler.handle(
+            this,
+            gqlDiagram,
+            node,
+            gqlDiagram.edges,
+            parentNode,
+            isBorderNode,
+            nodes,
+            nodeDescriptions
+          );
         }
       });
     },
   };
 
-  convertEngine.convertNodes(gqlDiagram.nodes, null, nodes, nodeDescriptions);
+  convertEngine.convertNodes(gqlDiagram, gqlDiagram.nodes, null, nodes, nodeDescriptions);
 
   const nodeId2node = new Map<string, Node>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));

@@ -13,6 +13,12 @@ union DiagramEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | Diag
 type DiagramRefreshedEventPayload {
   id: ID!
   diagram: Diagram!
+  cause: RefreshCause!
+}
+
+enum RefreshCause {
+  refresh
+  layout
 }
 
 type Diagram implements Representation {
@@ -23,6 +29,17 @@ type Diagram implements Representation {
   position: Position!
   nodes: [Node!]!
   edges: [Edge!]!
+  layoutData: DiagramLayoutData!
+}
+
+type DiagramLayoutData {
+  nodeLayoutData: [NodeLayoutData!]!
+}
+
+type NodeLayoutData {
+  id: ID!
+  position: Position!
+  size: Size!
 }
 
 enum ViewModifier {
@@ -290,6 +307,7 @@ extend type Mutation {
   hideDiagramElement(input: HideDiagramElementInput!): HideDiagramElementPayload!
   fadeDiagramElement(input: FadeDiagramElementInput!): FadeDiagramElementPayload!
   updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
+  layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
 }
 
 input DropNodeInput {
@@ -508,4 +526,26 @@ enum CollapsingState {
 
 union UpdateCollapsingStatePayload = ErrorPayload | SuccessPayload
 
+input LayoutDiagramInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  diagramLayoutData: DiagramLayoutDataInput!
+}
 
+input DiagramLayoutDataInput {
+  nodeLayoutData: [NodeLayoutDataInput!]!
+}
+
+input NodeLayoutDataInput {
+  id: ID!
+  position: PositionInput!
+  size: SizeInput!
+}
+
+input SizeInput {
+  height: Float!
+  width: Float!
+}
+
+union LayoutDiagramPayload = ErrorPayload | SuccessPayload

@@ -13,7 +13,10 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -26,6 +29,9 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreation
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.RenameDiagramInput;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -33,8 +39,11 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +53,7 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Reacts to input that target a specific diagram, and {@link #getDiagramUpdates() publishes} updated versions of the
+ * Reacts to input that target a specific diagram, and {@link #getOutputEvents(IInput)}  publishes} updated versions of the
  * diagram to interested subscribers.
  *
  * @author sbegaudeau
@@ -71,6 +80,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final DiagramEventFlux diagramEventFlux;
+
+    private UUID currentRevisionId = UUID.randomUUID();
 
     public DiagramEventProcessor(DiagramEventProcessorParameters parameters) {
         this.logger.trace("Creating the diagram event processor {}", parameters.diagramContext().getDiagram().getId());
@@ -108,6 +119,31 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
+        if (representationInput instanceof LayoutDiagramInput layoutDiagramInput) {
+            if (layoutDiagramInput.id().equals(this.currentRevisionId)) {
+                var diagram = this.diagramContext.getDiagram();
+                var nodeLayoutData = layoutDiagramInput.diagramLayoutData().nodeLayoutData().stream()
+                        .collect(Collectors.toMap(
+                                NodeLayoutDataInput::id,
+                                nodeLayoutDataInput -> new NodeLayoutData(nodeLayoutDataInput.id(), nodeLayoutDataInput.position(), nodeLayoutDataInput.size())
+                        ));
+
+                var layoutData = new DiagramLayoutData(nodeLayoutData, Map.of(), Map.of());
+                var laidOutDiagram = Diagram.newDiagram(diagram)
+                        .layoutData(layoutData)
+                        .build();
+
+                this.representationPersistenceService.save(this.editingContext, laidOutDiagram);
+                this.diagramContext.reset();
+                this.diagramContext.update(laidOutDiagram);
+                this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT);
+
+                payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
+            } else {
+                payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
+            }
+        }
+
         IRepresentationInput effectiveInput = representationInput;
         if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
             effectiveInput = new RenameDiagramInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
@@ -137,7 +173,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             this.diagramContext.reset();
             this.diagramContext.update(refreshedDiagram);
-            this.diagramEventFlux.diagramRefreshed(changeDescription.getInput(), refreshedDiagram);
+
+            this.currentRevisionId = changeDescription.getInput().id();
+            this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH);
         }
     }
 
@@ -181,7 +219,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public Flux<IPayload> getOutputEvents(IInput input) {
         // @formatter:off
         return Flux.merge(
-            this.diagramEventFlux.getFlux(input),
+            this.diagramEventFlux.getFlux(this.currentRevisionId),
             this.subscriptionManager.getFlux(input)
         );
     }

@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
@@ -25,6 +26,7 @@ import { convertHandles } from './convertHandles';
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
 const toImageNode = (
+  gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLImageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
@@ -105,6 +107,22 @@ const toImageNode = (
     node.parentNode = gqlParentNode.id;
   }
 
+  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
+  if (nodeLayoutData) {
+    const {
+      position,
+      size: { height, width },
+    } = nodeLayoutData;
+    node.position = position;
+    node.height = height;
+    node.width = width;
+    node.style = {
+      ...node.style,
+      width: `${node.width}px`,
+      height: `${node.height}px`,
+    };
+  }
+
   return node;
 };
 
@@ -115,6 +133,7 @@ export class ImageNodeConverterHandler implements INodeConverterHandler {
 
   handle(
     convertEngine: IConvertEngine,
+    gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLImageNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
@@ -123,13 +142,20 @@ export class ImageNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toImageNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     convertEngine.convertNodes(
+      gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
       nodeDescription?.borderNodeDescriptions ?? []
     );
-    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescription?.childNodeDescriptions ?? []);
+    convertEngine.convertNodes(
+      gqlDiagram,
+      gqlNode.childNodes ?? [],
+      gqlNode,
+      nodes,
+      nodeDescription?.childNodeDescriptions ?? []
+    );
   }
 }
