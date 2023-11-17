@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-customnodes</artifactId>
-	<version>2023.10.7</version>
+	<version>2023.10.8</version>
 	<name>sirius-web-customnodes</name>
 	<description>Support for additional custom nodes</description>
 
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>2023.10.7</version>
+			<version>2023.10.8</version>
 		</dependency>
 	</dependencies>
 
