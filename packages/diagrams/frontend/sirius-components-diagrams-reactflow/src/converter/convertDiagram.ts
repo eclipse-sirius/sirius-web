@@ -186,6 +186,7 @@ export const convertDiagram = (
       targetHandle: targetHandle?.id,
       sourceNode: sourceNode,
       targetNode: targetNode,
+      updatable: false,
     };
   });
 
