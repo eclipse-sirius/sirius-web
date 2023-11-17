@@ -139,7 +139,12 @@ export class RectangleNodeConverterHandler implements INodeConverterHandler {
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     nodes.push(toRectangularNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
-    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
-    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
+    convertEngine.convertNodes(
+      gqlNode.borderNodes ?? [],
+      gqlNode,
+      nodes,
+      nodeDescription?.borderNodeDescriptions ?? []
+    );
+    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescription?.childNodeDescriptions ?? []);
   }
 }
