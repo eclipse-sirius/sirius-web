@@ -32,4 +32,7 @@ export interface GQLSubscriber {
 
 export interface GQLDiagramRefreshedEventPayload extends GQLDiagramEventPayload {
   diagram: GQLDiagram;
+  cause: GQLRefreshCause;
 }
+
+export type GQLRefreshCause = 'refresh' | 'layout';

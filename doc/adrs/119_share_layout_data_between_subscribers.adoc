@@ -1,0 +1,90 @@
+= ADR-119 - Share layout data between subscribers
+
+== Context
+
+With the switch away from Sprotty to ReactFlow, we are now computing layout data on the frontend.
+This switch has thus created a new problem since we now need to share those layout data between the frontend and the backend.
+
+We want to share the layout data computed on the frontend with the backend to keep the layout stable over time.
+One should be able to close a diagram with a specific layout and reopen it with the same layout.
+As such, the backend should persist the layout computed on the frontend.
+
+We also want the server to propagate newly received layout data to other subscribers in order to synchronize multiple subscribers.
+As a result, if one were to open a diagram in two different tabs, changes to the layout in one tab should be visible in real time in the other.
+
+== Decision
+
+=== Persist layout data computed in the frontend
+
+The frontend needs to send layout data to the server after the execution of the layout algorithm.
+
+After the execution of the layout on the frontend, the layout data should be sent to the server to be persisted.
+We will introduce a new mutation for that.
+
+```
+type Mutation {
+  layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
+}
+```
+
+The `DiagramEventProcessor` will only consider the input of this mutation if its `id` matches the `id` used to create the refresh in memory.
+We don't want to update a diagram with the layout data of a previous diagram instance.
+For that, the `DiagramEventProcessor` will be updated to store the `id` of the input responsible for the latest diagram refresh.
+It will also create an unique `id` for the retrieval of the initial diagram, when it is first opened.
+
+```
+public class DiagramEventProcessor {
+    private UUID currentRevisionId = UUID.randomUUID();
+}
+```
+
+
+=== Share layout data with subscribers
+
+The diagram returned to the frontend by our subscription will now carry a new layout data field.
+
+```
+
+type Diagram implements Representation {
+  layoutData: DiagramLayoutData!
+}
+
+type DiagramLayoutData {
+  nodeLayoutData: [NodeLayoutData!]!
+}
+
+type NodeLayoutData {
+  id: ID!
+  position: Position!
+  size: Size!
+}
+```
+
+This will allow all subscribers to see the layout data provided by others.
+In order to prevent infinite layout between subscribers, we will need to be able to distinguish the reception of a `DiagramRefreshedEventPayload` created for a regular refresh from one created by the update of the layout data.
+In the first case, the frontend will have to perform a layout but not in the second case.
+For that, a new field will be introduced on `DiagramRefreshedEventPayload`.
+
+```
+type DiagramRefreshedEventPayload {
+  cause: RefreshCause!
+}
+
+enum RefreshCause {
+  refresh
+  layout
+}
+```
+
+
+== Status
+
+Accepted
+
+== Consequences
+
+Now that the layout will be shared between users while being computed on the frontend, we will see a significant increase in the number of HTTP requests to the backend to leverage the newly introduced mutation and new `DiagramRefreshedEventPayload` sent over our subscription to propagate layout data to all subscribers.
+The performance impact of those additional payloads will have to be evaluated.
+
+We may also witness some flickering due to temporary layout computation made by subscribers which do not have all the relevant data to perform the layout computation.
+We may end up propagating the `referencePosition` and remove it as a frontend stored variable in order to minimize this effect.

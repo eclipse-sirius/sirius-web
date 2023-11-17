@@ -12,14 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import java.util.List;
 
 /**
- * Input used to layout diagrams.
+ * Input used to receive diagram layout data.
  *
  * @author sbegaudeau
  */
-public record LayoutDiagramInput(UUID id, String editingContextId, String representationId, DiagramLayoutDataInput diagramLayoutData) implements IDiagramInput {
+public record DiagramLayoutDataInput(List<NodeLayoutDataInput> nodeLayoutData) {
 }

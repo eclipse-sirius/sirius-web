@@ -32,6 +32,7 @@ subscription diagramEvent($input: DiagramEventInput!) {
       diagram {
         ...diagramFragment
       }
+      cause
     }
   }
 }

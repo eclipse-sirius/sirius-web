@@ -45,6 +45,7 @@ import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
+import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { NodeContext } from './node/NodeContext';
 import { NodeContextValue } from './node/NodeContext.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -68,6 +69,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout, resetReferencePosition } = useLayout();
+  const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onDiagramElementClick, hideDiagramElementPalette } = useDiagramElementPalette();
 
@@ -85,24 +87,36 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const { fitToScreen } = useInitialFitToScreen();
 
   useEffect(() => {
-    const { diagram } = diagramRefreshedEventPayload;
+    const { diagram, cause } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(
       diagram,
       nodeConverterHandlers,
       diagramDescription.nodeDescriptions
     );
 
-    const previousDiagram: RawDiagram = {
-      nodes: nodes as Node<NodeData, DiagramNodeType>[],
-      edges,
-    };
-    layout(previousDiagram, convertedDiagram, (laidOutDiagram) => {
-      setNodes(laidOutDiagram.nodes);
-      setEdges(laidOutDiagram.edges);
-      hideDiagramPalette();
-      resetReferencePosition();
-      fitToScreen();
-    });
+    if (cause === 'layout') {
+      const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
+      convertedDiagram.nodes
+        .filter((node) => selectedNodeIds.includes(node.id))
+        .forEach((node) => (node.selected = true));
+
+      setNodes(convertedDiagram.nodes);
+      setEdges(convertedDiagram.edges);
+    } else if (cause === 'refresh') {
+      const previousDiagram: RawDiagram = {
+        nodes: nodes as Node<NodeData, DiagramNodeType>[],
+        edges,
+      };
+      layout(previousDiagram, convertedDiagram, (laidOutDiagram) => {
+        setNodes(laidOutDiagram.nodes);
+        setEdges(laidOutDiagram.edges);
+        hideDiagramPalette();
+        resetReferencePosition();
+        fitToScreen();
+
+        synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
+      });
+    }
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
   const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection(selection, setSelection);

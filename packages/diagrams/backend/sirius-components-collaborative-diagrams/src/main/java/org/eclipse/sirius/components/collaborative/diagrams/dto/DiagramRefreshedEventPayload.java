@@ -23,9 +23,15 @@ import org.eclipse.sirius.components.diagrams.Diagram;
  *
  * @author sbegaudeau
  */
-public record DiagramRefreshedEventPayload(UUID id, Diagram diagram) implements IPayload {
+public record DiagramRefreshedEventPayload(UUID id, Diagram diagram, String cause) implements IPayload {
+
+    public static final String CAUSE_REFRESH = "refresh";
+
+    public static final String CAUSE_LAYOUT = "layout";
+
     public DiagramRefreshedEventPayload {
         Objects.requireNonNull(id);
         Objects.requireNonNull(diagram);
+        Objects.requireNonNull(cause);
     }
 }

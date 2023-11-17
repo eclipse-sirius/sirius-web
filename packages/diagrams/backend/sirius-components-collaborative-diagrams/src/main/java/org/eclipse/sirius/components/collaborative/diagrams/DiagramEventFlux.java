@@ -13,9 +13,9 @@
 package org.eclipse.sirius.components.collaborative.diagrams;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.slf4j.Logger;
@@ -44,10 +44,10 @@ public class DiagramEventFlux {
         this.currentDiagram = Objects.requireNonNull(currentDiagram);
     }
 
-    public void diagramRefreshed(IInput input, Diagram newDiagram) {
+    public void diagramRefreshed(UUID id, Diagram newDiagram, String cause) {
         this.currentDiagram = newDiagram;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(input.id(), this.currentDiagram));
+            EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(id, this.currentDiagram, cause));
             if (emitResult.isFailure()) {
                 String pattern = "An error has occurred while emitting a DiagramRefreshedEventPayload: {}";
                 this.logger.warn(pattern, emitResult);
@@ -55,8 +55,8 @@ public class DiagramEventFlux {
         }
     }
 
-    public Flux<IPayload> getFlux(IInput input) {
-        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(input.id(), this.currentDiagram));
+    public Flux<IPayload> getFlux(UUID id) {
+        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(id, this.currentDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH));
         return Flux.concat(initialRefresh, this.sink.asFlux());
     }
 
