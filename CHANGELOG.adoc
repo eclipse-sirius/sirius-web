@@ -104,6 +104,7 @@ The node will be created below the header.
 - https://github.com/eclipse-sirius/sirius-web/issues/2571[#2562] [diagram] Fix a bug where edges would stop at the new creation handles instead of the border of their target node
 - https://github.com/eclipse-sirius/sirius-web/issues/2549[#2549] [diagram] Prevent the arrange-all to break the layout of node list.
 It uses our algorithm instead of elk.js to perform the arrange-all.
+- https://github.com/eclipse-sirius/sirius-web/issues/2591[#2591] [diagram] Give the right node descriptions to node convert handlers.
 
 === New Features
 
