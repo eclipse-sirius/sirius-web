@@ -20,7 +20,6 @@ import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Edge, Node, ReactFlowProvider } from 'reactflow';
 import { Diagram, NodeData } from '../DiagramRenderer.types';
-import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { ListNode } from '../node/ListNode';
@@ -34,6 +33,7 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { layoutHandles } from './layoutHandles';
 import { getChildren } from './layoutNode';
+import { DiagramLabel } from '../label/DiagramLabel';
 
 const emptyNodeProps = {
   selected: false,
@@ -82,11 +82,10 @@ export const prepareLayoutArea = (diagram: Diagram, renderCallback: () => void, 
   visibleNodes.forEach((node, index) => {
     if (hiddenContainer && node.data.label) {
       const children: JSX.Element[] = [
-        createElement(Label, {
+        createElement(DiagramLabel, {
           diagramElementId: node.id,
           label: node.data.label,
           faded: false,
-          transform: '',
           key: node.data.label.id,
         }),
       ];

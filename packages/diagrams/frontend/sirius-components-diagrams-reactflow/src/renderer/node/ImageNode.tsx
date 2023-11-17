@@ -16,7 +16,6 @@ import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { BorderNodePositon } from '../DiagramRenderer.types';
-import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDropNode } from '../dropNode/useDropNode';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
@@ -25,6 +24,7 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ImageNodeData } from './ImageNode.types';
+import { DiagramLabel } from '../label/DiagramLabel';
 
 const imageNodeStyle = (
   theme: Theme,
@@ -88,7 +88,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
         }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />
-      {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
+      {data.label ? <DiagramLabel diagramElementId={id} label={data.label} faded={data.faded} /> : null}
       {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
       {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
       <ConnectionTargetHandle nodeId={id} />

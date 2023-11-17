@@ -82,12 +82,6 @@ const toListNode = (
       isHeader: insideLabel.isHeader,
       displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
     };
@@ -96,13 +90,14 @@ const toListNode = (
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
         if (data.label.displayHeaderSeparator) {
-          data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+          data.label.borderStyle = {};
+          data.label.borderStyle.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
       }
       if (alignement.secondaryAlignment === 'CENTER') {
         data.style = { ...data.style, alignItems: 'stretch' };
-        data.label.style = { ...data.label.style, justifyContent: 'center' };
+        data.label.borderStyle = { ...data.label.borderStyle, justifyContent: 'center' };
       }
     }
   }

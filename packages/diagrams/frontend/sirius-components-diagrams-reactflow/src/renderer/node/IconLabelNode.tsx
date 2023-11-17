@@ -12,11 +12,13 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { NodeProps } from 'reactflow';
-import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
+import { LabelIcon } from '../label/LabelIcon';
+import { LabelText } from '../label/LabelText';
+import { Label } from '../label/Label';
 
 const iconlabelStyle = (
   style: React.CSSProperties,
@@ -36,6 +38,23 @@ const iconlabelStyle = (
   return iconLabelNodeStyle;
 };
 
+const labelStyle = (faded: Boolean, hasIcon: boolean): React.CSSProperties => {
+  const labelStyle: React.CSSProperties = {
+    opacity: faded ? '0.4' : '',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    whiteSpace: 'pre-line',
+  };
+
+  if (hasIcon) {
+    labelStyle.gap = '8px';
+  }
+
+  return labelStyle;
+};
+
 export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNodeData>) => {
   const theme = useTheme();
   return (
@@ -43,7 +62,14 @@ export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNo
       <div
         style={iconlabelStyle(data.style, theme, selected, data.faded)}
         data-testid={`IconLabel - ${data?.label?.text}`}>
-        {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
+        {data.label ? (
+          <Label diagramElementId={id} label={data.label}>
+            <div style={labelStyle(data.faded, !!data.label.iconURL)}>
+              <LabelIcon />
+              <LabelText />
+            </div>
+          </Label>
+        ) : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}
       </div>
     </div>

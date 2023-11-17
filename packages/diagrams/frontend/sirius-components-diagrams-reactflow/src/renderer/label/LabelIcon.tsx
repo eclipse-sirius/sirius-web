@@ -10,12 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import React from 'react';
+import { LabelContext } from './LabelContext';
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { Label } from '../DiagramRenderer.types';
 
-import { Label } from './DiagramRenderer.types';
-
-export interface LabelProps {
-  diagramElementId: string;
-  label: Label;
-  faded: boolean;
-  transform: string;
-}
+export const LabelIcon = () => {
+  const label = React.useContext<Label | undefined>(LabelContext);
+  if (!label) {
+    return <div />;
+  }
+  return <IconOverlay iconURL={label.iconURL} alt={label.text} />;
+};

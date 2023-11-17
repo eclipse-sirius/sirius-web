@@ -15,7 +15,6 @@ import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
-import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
 import { useDropNode } from '../dropNode/useDropNode';
@@ -25,6 +24,7 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ListNodeData } from './ListNode.types';
+import { DiagramLabel } from '../label/DiagramLabel';
 
 const listNodeStyle = (
   theme: Theme,
@@ -77,7 +77,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`List - ${data?.label?.text}`}>
-        {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
+        {data.label ? <DiagramLabel diagramElementId={id} label={data.label} faded={data.faded} /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} />

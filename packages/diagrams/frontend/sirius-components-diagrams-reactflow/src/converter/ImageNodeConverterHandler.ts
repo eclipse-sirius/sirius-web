@@ -71,12 +71,6 @@ const toImageNode = (
       text: insideLabel.text,
       iconURL: labelStyle.iconURL,
       style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
     };

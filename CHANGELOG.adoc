@@ -18,6 +18,7 @@
 - [ADR-115] Split the Sirius Web frontend
 - [ADR-116] Add support for changing the content of the explorer
 - [ADR-117] Add support for changing the content of the details view
+- [ADR-119] Improve label component API
 
 === Breaking changes
 
@@ -70,6 +71,8 @@ It will currently provide the ability to customize the application icon and appl
 The API of this component will also change over time so API breaks should be expected in the upcoming releases.
 +
 This new package and those new components are the first part of our work to make Sirius Web more reusable.
+- https://github.com/eclipse-sirius/sirius-web/issues/2589[#2589] [diagram] The declaration of labels in diagrams has evolved and must be adapted for custom nodes.
+See [ADR-119] _Improve label component API_ for details.
 
 === Dependency update
 
@@ -153,6 +156,7 @@ The new implementation of `IEditService`, named `ComposedEditService`, tries fir
 - https://github.com/eclipse-sirius/sirius-web/issues/2559[#2559] [diagram] Allow to target the whole node when creating or reconnecting an edge.
 - https://github.com/eclipse-sirius/sirius-web/issues/2235[#2235] [diagram] Reduce the amount of code in DiagramRenderer
 - https://github.com/eclipse-sirius/sirius-web/issues/2572[#2572] [diagram] Each edges now have a dedicated handle.
+- https://github.com/eclipse-sirius/sirius-web/issues/2589[#2589] [diagram] Improve the label component API to facilitate its customization
 
 == v2023.10.0
 
