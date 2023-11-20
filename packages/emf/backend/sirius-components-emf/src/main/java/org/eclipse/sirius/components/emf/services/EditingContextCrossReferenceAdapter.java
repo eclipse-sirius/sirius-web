@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA.
+ * Copyright (c) 2022, 2023 CEA.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -93,7 +93,9 @@ public class EditingContextCrossReferenceAdapter extends ECrossReferenceAdapter 
         if (settings != null) {
             for (Setting setting : this.getNonContainmentReferences(settings)) {
                 try {
-                    EcoreUtil.remove(setting, referencedObject);
+                    if (referencedObject.eResource() == null || referencedObject.eResource().getResourceSet() == null) {
+                        EcoreUtil.remove(setting, referencedObject);
+                    }
                 } catch (NullPointerException e) {
                     // thrown when trying to remove from an object that is present in the being removed Resource.
                     // But we do not care about this resource.
