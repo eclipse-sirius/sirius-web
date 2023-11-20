@@ -25,10 +25,10 @@ import {
   useStore,
 } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
+import { DiagramLabel } from '../label/DiagramLabel';
 
 const multiLabelEdgeStyle = (
   theme: Theme,
@@ -119,23 +119,19 @@ export const MultiLabelEdge = memo(
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={label ? label.id : null} /> : null}
         <EdgeLabelRenderer>
           {beginLabel && (
-            <Label
-              diagramElementId={id}
-              transform={`translate(2%, 0%) translate(${sourceX}px,${sourceY}px)`}
-              label={beginLabel}
-              faded={faded || false}
-            />
+            <div style={{ transform: `translate(2%, 0%) translate(${sourceX}px,${sourceY}px)` }}>
+              <DiagramLabel diagramElementId={id} label={beginLabel} faded={faded || false} />
+            </div>
           )}
           {label && (
-            <Label diagramElementId={id} transform={`translate(${labelX}px,${labelY}px)`} label={label} faded={false} />
+            <div style={{ transform: `translate(${labelX}px,${labelY}px)` }}>
+              <DiagramLabel diagramElementId={id} label={label} faded={false} />
+            </div>
           )}
           {endLabel && (
-            <Label
-              diagramElementId={id}
-              transform={`translate(2%, -100%) translate(${targetX}px,${targetY}px)`}
-              label={endLabel}
-              faded={faded || false}
-            />
+            <div style={{ transform: `translate(2%, -100%) translate(${targetX}px,${targetY}px)` }}>
+              <DiagramLabel diagramElementId={id} label={endLabel} faded={faded || false} />
+            </div>
           )}
         </EdgeLabelRenderer>
       </>

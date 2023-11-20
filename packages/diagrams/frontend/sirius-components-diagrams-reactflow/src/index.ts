@@ -23,7 +23,6 @@ export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle, GraphQLNodeStyleFragment } from './graphql/subscription/nodeFragment.types';
 export { BorderNodePositon } from './renderer/DiagramRenderer.types';
 export type { Diagram, NodeData } from './renderer/DiagramRenderer.types';
-export { Label } from './renderer/Label';
 export { useConnector } from './renderer/connector/useConnector';
 export { useDrop } from './renderer/drop/useDrop';
 export { useDropNode } from './renderer/dropNode/useDropNode';
@@ -43,3 +42,7 @@ export { DiagramPaletteToolContext } from './renderer/palette/DiagramPaletteTool
 export { DiagramPaletteToolContribution } from './renderer/palette/DiagramPaletteToolContribution';
 export type { DiagramPaletteToolContributionComponentProps } from './renderer/palette/DiagramPaletteToolContribution.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
+export { Label } from './renderer/label/Label';
+export { LabelText } from './renderer/label/LabelText';
+export { LabelIcon } from './renderer/label/LabelIcon';
+export { DiagramLabel } from './renderer/label/DiagramLabel';

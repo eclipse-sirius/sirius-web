@@ -82,6 +82,7 @@ export interface Label {
   text: string;
   iconURL: string[];
   style: React.CSSProperties;
+  borderStyle?: React.CSSProperties;
   isHeader?: boolean;
   displayHeaderSeparator?: boolean;
 }

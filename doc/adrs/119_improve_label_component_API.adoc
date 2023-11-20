@@ -1,0 +1,100 @@
+= ADR-119 - Improve the export label component API to facilitate reuse and customization in custom nodes
+
+== Context
+
+Currently, the `Label` component use in the node is poorly customized if using in a custom node.
+
+== Decision
+
+Change the label current API to make it more configurable, while preserving its behavior such as directEdit.
+
+* The new interface `LabelProps` :
+
+[source,typescript]
+----
+interface LabelProps {
+  diagramElementId: string;
+  label: Label;
+  children: ReactNode;
+}
+----
+
+* Two new components:
+
+** `LabelText`, it will be responsible for applying the style defined in the View DSL.
+
+[source,typescript]
+----
+export const LabelText = () => {
+  const theme: Theme = useTheme();
+  const label = React.useContext(LabelContext);
+  if (!label) {
+    return <div />;
+  }
+  return <div style={labelStyle(theme, label.style)}>{label.text}</div>;
+};
+----
+
+** `LabelIcon`, it will be responsible for composed icons.
+
+[source,typescript]
+----
+export const LabelIcon = () => {
+  const label = React.useContext(LabelContext);
+  if (!label) {
+    return <div />;
+  }
+  return <IconOverlay iconURL={label.iconURL} alt={label.text} />;
+};
+----
+
+These two components don't need props, they will retrieve the label data from the context provided in the label comp.
+
+[source,typescript]
+----
+<LabelContext.Provider value={label}>
+     ...
+        {children}
+     ...
+</LabelContext.Provider>
+----
+
+The `Label.tsx` will continue to use the hook `useDiagramDirectEdit()` and component `DiagramDirectEditInput` to be able to trigger _directEdit_.
+But it will no longer declare the label's icon and text directly, but the children passed to it.
+
+For example, we could imagine this usage to display the text before the icon:
+
+[source,typescript]
+----
+<Label diagramElementId={id} label={data.label}>
+    <LabelText />
+    <LabelIcon />
+</LabelCusto>
+----
+
+A default implementation named `DiagramLabel`, will be used for the generic node type.
+
+[source,typescript]
+----
+export const DiagramLabel = ({ diagramElementId, label, faded }: DiagramLabelProps) => {
+  return (
+    <Label diagramElementId={diagramElementId} label={label}>
+      <div style={labelStyle(faded, !!label.iconURL, label.borderStyle)}>
+        <LabelIcon />
+        <LabelText />
+      </div>
+    </Label>
+  )
+};
+----
+
+== Status
+
+Work in progress
+
+== Consequences
+
+For labels, we only export from `sirius-components-diagrams-reactflow` the label components:
+* `Label`
+* `LabelText`
+* `LabelIcon`

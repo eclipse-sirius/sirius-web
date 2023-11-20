@@ -21,6 +21,8 @@ const useStyles = makeStyles<Theme, IconOverlayStyleProps>((_theme) => ({
     position: 'relative',
     width: ({ iconWidth }) => `${iconWidth}px`,
     height: ({ iconHeight }) => `${iconHeight}px`,
+    minWidth: ({ iconWidth }) => `${iconWidth}px`,
+    minHeight: ({ iconHeight }) => `${iconHeight}px`,
   },
   icon: {
     position: 'absolute',
