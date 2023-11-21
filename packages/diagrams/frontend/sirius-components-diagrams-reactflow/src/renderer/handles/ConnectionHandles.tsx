@@ -51,7 +51,12 @@ const borderHandlesStyle = (position: Position): React.CSSProperties => {
   return style;
 };
 
-const handleStyle = (theme: Theme, position: Position, isEdgeSelected: boolean): React.CSSProperties => {
+const handleStyle = (
+  theme: Theme,
+  position: Position,
+  isEdgeSelected: boolean,
+  isVirtualHandle: boolean
+): React.CSSProperties => {
   const style: React.CSSProperties = {
     position: 'relative',
     transform: 'none',
@@ -71,6 +76,10 @@ const handleStyle = (theme: Theme, position: Position, isEdgeSelected: boolean):
   if (isEdgeSelected) {
     style.opacity = 1;
     style.outline = `${theme.palette.primary.main} solid 1px`;
+  }
+  if (isVirtualHandle) {
+    style.position = 'absolute';
+    style.display = 'none';
   }
   return style;
 };
@@ -96,22 +105,30 @@ export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps)
   return (
     <>
       {Object.values(Position).map((position) => {
+        const currentSideHandles = connectionHandles.filter(
+          (connectionHandle) => connectionHandle.position === position
+        );
         return (
           <div style={borderHandlesStyle(position)} key={position}>
-            {connectionHandles
-              .filter((connectionHandle) => connectionHandle.position === position)
-              .map((connectionHandle) => {
-                return (
-                  <Handle
-                    id={connectionHandle.id ?? ''}
-                    style={handleStyle(theme, connectionHandle.position, isHandleSelected(connectionHandle))}
-                    type={connectionHandle.type}
-                    position={connectionHandle.position}
-                    key={connectionHandle.id}
-                    isConnectable={true}
-                  />
-                );
-              })}
+            {currentSideHandles.map((connectionHandle, index) => {
+              const isVirtualHandle =
+                (position === Position.Left || position === Position.Right) && index === currentSideHandles.length - 1;
+              return (
+                <Handle
+                  id={connectionHandle.id ?? ''}
+                  style={handleStyle(
+                    theme,
+                    connectionHandle.position,
+                    isHandleSelected(connectionHandle),
+                    isVirtualHandle
+                  )}
+                  type={connectionHandle.type}
+                  position={connectionHandle.position}
+                  key={connectionHandle.id}
+                  isConnectable={true}
+                />
+              );
+            })}
           </div>
         );
       })}
