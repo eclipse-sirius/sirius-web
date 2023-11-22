@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -33,6 +34,8 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
+import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
+import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
@@ -103,6 +106,10 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private final Disposable changeDescriptionDisposable;
 
+    private final List<IInputPreProcessor> inputPreProcessors;
+    
+    private final List<IInputPostProcessor> inputPostProcessors;
+
     public EditingContextEventProcessor(EditingContextEventProcessorParameters parameters) {
         this.messageService = parameters.messageService();
         this.editingContext = parameters.editingContext();
@@ -112,6 +119,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         this.representationEventProcessorComposedFactory = parameters.representationEventProcessorComposedFactory();
         this.danglingRepresentationDeletionService = parameters.danglingRepresentationDeletionService();
         this.executorService = parameters.executorServiceProvider().getExecutorService(this.editingContext);
+        this.inputPreProcessors = parameters.inputPreProcessors();
+        this.inputPostProcessors = parameters.inputPostProcessors();
         this.changeDescriptionDisposable = this.setupChangeDescriptionSinkConsumer();
     }
 
@@ -233,19 +242,24 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * Finds the proper event handler to perform the task matching the given input event.
      *
      * @param payloadSink
-     *            The sink to publish payload
+     *         The sink to publish payload
      * @param input
-     *            The input event
+     *         The input event
      * @return The response computed by the event handler
      */
     private void doHandle(One<IPayload> payloadSink, IInput input) {
         this.logger.trace("Input received: {}", input);
 
-        if (input instanceof IRepresentationInput representationInput) {
+        AtomicReference<IInput> inputAfterPreProcessing = new AtomicReference<>(input);
+        this.inputPreProcessors.forEach(preProcessor -> inputAfterPreProcessing.set(preProcessor.preProcess(this.editingContext, inputAfterPreProcessing.get(), this.changeDescriptionSink)));
+
+        if (inputAfterPreProcessing.get() instanceof IRepresentationInput representationInput) {
             this.handleRepresentationInput(payloadSink, representationInput);
         } else {
-            this.handleInput(payloadSink, input);
+            this.handleInput(payloadSink, inputAfterPreProcessing.get());
         }
+
+        this.inputPostProcessors.forEach(postProcessor -> postProcessor.postProcess(this.editingContext, inputAfterPreProcessing.get(), this.changeDescriptionSink));
 
     }
 
@@ -253,7 +267,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
      * Refresh all the representations except the one with the given representationId.
      *
      * @param changeDescription
-     *            The description of change to consider in order to determine if the representation should be refreshed
+     *         The description of change to consider in order to determine if the representation should be refreshed
      */
     private void refreshOtherRepresentations(ChangeDescription changeDescription) {
         // @formatter:off

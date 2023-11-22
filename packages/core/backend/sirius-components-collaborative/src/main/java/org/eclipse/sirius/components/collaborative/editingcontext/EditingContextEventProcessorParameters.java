@@ -18,6 +18,8 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.Builder;
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
+import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
+import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorComposedFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
@@ -38,8 +40,11 @@ public record EditingContextEventProcessorParameters(
         List<IEditingContextEventHandler> editingContextEventHandlers,
         IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory,
         IDanglingRepresentationDeletionService danglingRepresentationDeletionService,
-        IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider
+        IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
+        List<IInputPreProcessor> inputPreProcessors,
+        List<IInputPostProcessor> inputPostProcessors
 ) {
+
     public EditingContextEventProcessorParameters {
         Objects.requireNonNull(messageService);
         Objects.requireNonNull(editingContext);
@@ -49,6 +54,8 @@ public record EditingContextEventProcessorParameters(
         Objects.requireNonNull(representationEventProcessorComposedFactory);
         Objects.requireNonNull(danglingRepresentationDeletionService);
         Objects.requireNonNull(executorServiceProvider);
+        Objects.requireNonNull(inputPreProcessors);
+        Objects.requireNonNull(inputPostProcessors);
     }
 
     public static EditingContextEventProcessorParametersBuilder newEditingContextEventProcessorParameters() {
@@ -63,6 +70,7 @@ public record EditingContextEventProcessorParameters(
     @Builder
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class EditingContextEventProcessorParametersBuilder {
+
         private ICollaborativeMessageService messageService;
 
         private IEditingContext editingContext;
@@ -78,6 +86,10 @@ public record EditingContextEventProcessorParameters(
         private IDanglingRepresentationDeletionService danglingRepresentationDeletionService;
 
         private IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider;
+
+        private List<IInputPreProcessor> inputPreProcessors;
+        
+        private List<IInputPostProcessor> inputPostProcessors;
 
         private EditingContextEventProcessorParametersBuilder() {
             // Prevent instantiation
@@ -123,6 +135,16 @@ public record EditingContextEventProcessorParameters(
             return this;
         }
 
+        public EditingContextEventProcessorParametersBuilder inputPreProcessors(List<IInputPreProcessor> inputPreProcessors) {
+            this.inputPreProcessors = Objects.requireNonNull(inputPreProcessors);
+            return this;
+        }
+
+        public EditingContextEventProcessorParametersBuilder inputPostProcessors(List<IInputPostProcessor> inputPostProcessors) {
+            this.inputPostProcessors = Objects.requireNonNull(inputPostProcessors);
+            return this;
+        }
+
         public EditingContextEventProcessorParameters build() {
             return new EditingContextEventProcessorParameters(
                     this.messageService,
@@ -132,7 +154,9 @@ public record EditingContextEventProcessorParameters(
                     this.editingContextEventHandlers,
                     this.representationEventProcessorComposedFactory,
                     this.danglingRepresentationDeletionService,
-                    this.executorServiceProvider
+                    this.executorServiceProvider,
+                    this.inputPreProcessors,
+                    this.inputPostProcessors
             );
         }
     }

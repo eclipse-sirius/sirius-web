@@ -1,0 +1,39 @@
+= ADR-121 - Add process before and after input handling
+
+== Context
+
+Today when you create a representation, you can only do so from the target element.
+It is not possible, for example, to create a new intermediate semantic element to link it.
+
+== Decision
+
+Add the possibility to programmatically make some action before and after the input processing.
+This pre-process should be able to change the input.
+These actions should be able to make some semantic changes.
+
+== Solution
+
+* Add two new interfaces:
+
+[source,java]
+----
+public interface IInputPreProcessor {
+    IInput preProcess(IEditingContext editingContext, IInput input, Many<ChangeDescription> changeDescriptionSink);
+}
+----
+
+[source,java]
+----
+public interface IInputPostProcessor {
+    void postProcess(IEditingContext editingContext, IInput input, Many<ChangeDescription> changeDescriptionSink);
+}
+----
+
+* In the `EditingContextEventProcessor#doHandle`, before invoking the _handleInput_ method, apply all the `IInputPreProcessor#preProcess` implementation on the input.
+The input can be changed by the `IInputPreProcessor`, if several implementations exist, the order must be considered.
+
+* The same way, just after the _handleInput_, apply all the `IInputPostProcessor#postProcess`.
+
+== Status
+
+Accepted
