@@ -16,7 +16,9 @@ import {
   DiagramPaletteContextProviderProps,
   DiagramPaletteContextProviderState,
   DiagramPaletteContextValue,
+  ToolSectionWithLastTool,
 } from './DiagramPaletteContext.types';
+import { GQLTool } from './Palette.types';
 
 const defaultValue: DiagramPaletteContextValue = {
   x: null,
@@ -24,6 +26,8 @@ const defaultValue: DiagramPaletteContextValue = {
   isOpened: false,
   hideDiagramPalette: () => {},
   showDiagramPalette: () => {},
+  getLastToolInvoked: () => null,
+  setLastToolInvoked: () => {},
 };
 
 export const DiagramPaletteContext = React.createContext<DiagramPaletteContextValue>(defaultValue);
@@ -33,6 +37,7 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
     x: null,
     y: null,
     isOpened: false,
+    lastToolsInvoked: [],
   });
 
   const showPalette = useCallback((x: number, y: number) => {
@@ -43,6 +48,27 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
     setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
   }, []);
 
+  const getLastToolInvoked = (toolSectionId: string): GQLTool | null => {
+    return (
+      state.lastToolsInvoked.find(
+        (toolSectionWithDefaultTool) => toolSectionWithDefaultTool.toolSectionId === toolSectionId
+      )?.lastTool || null
+    );
+  };
+
+  const setLastToolInvoked = (toolSectionId: string, tool: GQLTool) => {
+    const lastToolsInvoked: ToolSectionWithLastTool[] = state.lastToolsInvoked;
+    if (lastToolsInvoked.some((toolSectionWithLastTool) => toolSectionWithLastTool.toolSectionId === toolSectionId)) {
+      lastToolsInvoked.splice(
+        lastToolsInvoked.findIndex(
+          (toolSectionWithLastTool) => toolSectionWithLastTool.toolSectionId === toolSectionId
+        ),
+        1
+      );
+    }
+    lastToolsInvoked.push({ toolSectionId: toolSectionId, lastTool: tool });
+  };
+
   return (
     <DiagramPaletteContext.Provider
       value={{
@@ -51,6 +77,8 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
         isOpened: state.isOpened,
         showDiagramPalette: showPalette,
         hideDiagramPalette: hidePalette,
+        getLastToolInvoked,
+        setLastToolInvoked,
       }}>
       {children}
     </DiagramPaletteContext.Provider>

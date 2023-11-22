@@ -25,7 +25,7 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds?: D
 };
 
 export const useDiagramPalette = (): UseDiagramPaletteValue => {
-  const { x, y, isOpened, hideDiagramPalette, showDiagramPalette } =
+  const { x, y, isOpened, hideDiagramPalette, showDiagramPalette, getLastToolInvoked, setLastToolInvoked } =
     useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
   const { domNode } = useStoreApi().getState();
   const element = domNode?.getBoundingClientRect();
@@ -45,5 +45,7 @@ export const useDiagramPalette = (): UseDiagramPaletteValue => {
     hideDiagramPalette,
     showDiagramPalette,
     onDiagramBackgroundClick,
+    getLastToolInvoked,
+    setLastToolInvoked,
   };
 };
