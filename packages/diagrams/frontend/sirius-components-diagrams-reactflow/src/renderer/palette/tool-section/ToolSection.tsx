@@ -18,6 +18,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useCallback, useRef } from 'react';
 import { Tool } from '../../Tool';
 import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
+import { useDiagramPalette } from '../useDiagramPalette';
 import { ToolSectionProps } from './ToolSection.types';
 
 const useToolSectionStyles = makeStyles(() => ({
@@ -46,14 +47,16 @@ const isSingleClickOnDiagramElementTool = (tool: GQLTool): tool is GQLSingleClic
 
 export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onExpand }: ToolSectionProps) => {
   const tools = toolSection.tools.filter(isSingleClickOnDiagramElementTool);
+  const { getLastToolInvoked, setLastToolInvoked } = useDiagramPalette();
 
   const classes = useToolSectionStyles();
 
   const onActiveTool = useCallback(
     (tool) => {
       onToolClick(tool);
+      setLastToolInvoked(toolSection.id, tool);
     },
-    [onToolClick]
+    [onToolClick, setLastToolInvoked, toolSection.id]
   );
 
   let caretContent: JSX.Element | undefined;
@@ -67,7 +70,9 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
       />
     );
   }
-  const defaultTool: GQLTool | undefined = tools[0];
+
+  const defaultTool: GQLTool | undefined = getLastToolInvoked(toolSection.id) || tools[0];
+
   const anchorRef = useRef<HTMLDivElement | null>(null);
   return (
     <>
