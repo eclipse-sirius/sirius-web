@@ -27,6 +27,7 @@ export { Label } from './renderer/Label';
 export { useConnector } from './renderer/connector/useConnector';
 export { useDrop } from './renderer/drop/useDrop';
 export { useDropNode } from './renderer/dropNode/useDropNode';
+export { useDropNodeStyle } from './renderer/dropNode/useDropNodeStyle';
 export { ConnectionCreationHandles } from './renderer/handles/ConnectionCreationHandles';
 export { ConnectionHandles } from './renderer/handles/ConnectionHandles';
 export type { ConnectionHandle } from './renderer/handles/ConnectionHandles.types';

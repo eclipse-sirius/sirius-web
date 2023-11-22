@@ -16,6 +16,7 @@ import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sir
 import { useContext, useEffect, useState } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { DiagramContext } from '../contexts/DiagramContext';
+import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { nodeDescriptionFragment } from '../graphql/query/nodeDescriptionFragment';
@@ -37,6 +38,7 @@ import { DiagramElementPaletteContextProvider } from '../renderer/palette/Diagra
 import { DiagramPaletteContextProvider } from '../renderer/palette/DiagramPaletteContext';
 import {
   DiagramRepresentationState,
+  GQLDiagramDescription,
   GQLDiagramDescriptionData,
   GQLDiagramDescriptionVariables,
   GQLDiagramEventData,
@@ -56,6 +58,11 @@ export const getDiagramDescription = gql`
               id
               nodeDescriptions {
                 ...nodeDescriptionFragment
+              }
+              dropNodeCompatibility {
+                droppedNodeDescriptionId
+                droppableOnDiagram
+                droppableOnNodeTypes
               }
             }
           }
@@ -79,7 +86,6 @@ export const DiagramRepresentation = ({
     diagramRefreshedEventPayload: null,
     complete: false,
     message: null,
-    diagramDescription: undefined,
   });
   const { addErrorMessage } = useMultiToast();
 
@@ -138,6 +144,9 @@ export const DiagramRepresentation = ({
     onComplete,
   });
 
+  const diagramDescription: GQLDiagramDescription | undefined =
+    diagramDescriptionData?.viewer.editingContext.representation.description;
+
   if (state.message) {
     return <div>{state.message}</div>;
   }
@@ -147,7 +156,7 @@ export const DiagramRepresentation = ({
   if (state.complete) {
     return <div>The representation is not available anymore</div>;
   }
-  if (!state.diagramRefreshedEventPayload || !state.diagramDescription) {
+  if (!state.diagramRefreshedEventPayload || !diagramDescription) {
     return <div></div>;
   }
 
@@ -155,30 +164,31 @@ export const DiagramRepresentation = ({
     <ReactFlowProvider>
       <LayoutContextContextProvider>
         <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
-          <DiagramDirectEditContextProvider>
-            <DiagramPaletteContextProvider>
-              <DiagramElementPaletteContextProvider>
-                <ConnectorContextProvider>
-                  <DropNodeContextProvider>
-                    <NodeContextProvider>
-                      <div style={{ display: 'inline-block', position: 'relative' }}>
-                        <MarkerDefinitions />
-                        <FullscreenContextProvider>
-                          <DiagramRenderer
-                            key={state.diagramRefreshedEventPayload.diagram.id}
-                            diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
-                            diagramDescription={state.diagramDescription}
-                            selection={selection}
-                            setSelection={setSelection}
-                          />
-                        </FullscreenContextProvider>
-                      </div>
-                    </NodeContextProvider>
-                  </DropNodeContextProvider>
-                </ConnectorContextProvider>
-              </DiagramElementPaletteContextProvider>
-            </DiagramPaletteContextProvider>
-          </DiagramDirectEditContextProvider>
+          <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
+            <DiagramDirectEditContextProvider>
+              <DiagramPaletteContextProvider>
+                <DiagramElementPaletteContextProvider>
+                  <ConnectorContextProvider>
+                    <DropNodeContextProvider>
+                      <NodeContextProvider>
+                        <div style={{ display: 'inline-block', position: 'relative' }}>
+                          <MarkerDefinitions />
+                          <FullscreenContextProvider>
+                            <DiagramRenderer
+                              key={state.diagramRefreshedEventPayload.diagram.id}
+                              diagramRefreshedEventPayload={state.diagramRefreshedEventPayload}
+                              selection={selection}
+                              setSelection={setSelection}
+                            />
+                          </FullscreenContextProvider>
+                        </div>
+                      </NodeContextProvider>
+                    </DropNodeContextProvider>
+                  </ConnectorContextProvider>
+                </DiagramElementPaletteContextProvider>
+              </DiagramPaletteContextProvider>
+            </DiagramDirectEditContextProvider>
+          </DiagramDescriptionContext.Provider>
         </DiagramContext.Provider>
       </LayoutContextContextProvider>
     </ReactFlowProvider>

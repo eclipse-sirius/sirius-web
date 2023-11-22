@@ -70,6 +70,8 @@ It will currently provide the ability to customize the application icon and appl
 The API of this component will also change over time so API breaks should be expected in the upcoming releases.
 +
 This new package and those new components are the first part of our work to make Sirius Web more reusable.
+- https://github.com/eclipse-sirius/sirius-web/issues/2615[#2615] [diagram] `useDropNode().dropFeedbackStyleProvider` has been removed.
+Use `useDropNodeStyle(node.id)` instead to get the feedback of the drop feedback.
 
 === Dependency update
 
@@ -107,6 +109,7 @@ It uses our algorithm instead of elk.js to perform the arrange-all.
 - https://github.com/eclipse-sirius/sirius-web/issues/2591[#2591] [diagram] Give the right node descriptions to node convert handlers.
 - https://github.com/eclipse-sirius/sirius-web/issues/2601[#2601] [emf] Fix an issue in `EditingContextCrossReferenceAdapter` where references to moved objects were lost.
 - https://github.com/eclipse-sirius/sirius-web/issues/2582[#2582] [diagram] Fix a delay in renderer of palette tools between the one from _getPalette_ backend call and the one declared in frontend.
+- https://github.com/eclipse-sirius/sirius-web/issues/2615[#2615] [diagram] Fix the `useDropNode` lifecycle.
 
 === New Features
 

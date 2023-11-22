@@ -20,7 +20,7 @@ import {
   Label,
   useConnector,
   useDrop,
-  useDropNode,
+  useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Theme, useTheme } from '@material-ui/core/styles';
@@ -57,7 +57,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
-  const { dropFeedbackStyleProvider } = useDropNode();
+  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -77,7 +77,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
         style={{
           ...ellipseNodeStyle(theme, data.style, selected, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
-          ...dropFeedbackStyleProvider.getNodeStyle(id),
+          ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}

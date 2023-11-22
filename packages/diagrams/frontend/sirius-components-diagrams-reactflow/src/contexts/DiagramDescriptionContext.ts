@@ -11,10 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GQLNodeDescription {
-  id: string;
-  borderNodeDescriptions: GQLNodeDescription[];
-  childNodeDescriptions: GQLNodeDescription[];
-  userResizable: boolean;
-  keepAspectRatio: boolean;
-}
+import React from 'react';
+import { DiagramDescriptionContextValue } from './DiagramDescriptionContext.types';
+
+const defaultValue: DiagramDescriptionContextValue = {
+  diagramDescription: {
+    id: '',
+    nodeDescriptions: [],
+    dropNodeCompatibility: [],
+  },
+};
+
+export const DiagramDescriptionContext = React.createContext<DiagramDescriptionContextValue>(defaultValue);

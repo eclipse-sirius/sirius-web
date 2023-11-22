@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLDiagramDescription } from '../graphql/query/nodeDescriptionFragment.types';
+import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
@@ -22,7 +22,6 @@ export interface DiagramRepresentationState {
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload | null;
   complete: boolean;
   message: string | null;
-  diagramDescription: GQLDiagramDescription | undefined;
 }
 
 export interface GQLDiagramEventData {
@@ -58,4 +57,16 @@ export interface GQLEditingContext {
 
 export interface GQLRepresentation {
   description: GQLDiagramDescription;
+}
+
+export interface GQLDiagramDescription {
+  id: string;
+  nodeDescriptions: GQLNodeDescription[];
+  dropNodeCompatibility: GQLDropNodeCompatibility[];
+}
+
+export interface GQLDropNodeCompatibility {
+  droppedNodeDescriptionId: string;
+  droppableOnDiagram: boolean;
+  droppableOnNodeTypes: string[];
 }

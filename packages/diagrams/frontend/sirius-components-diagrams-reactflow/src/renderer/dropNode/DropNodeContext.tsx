@@ -12,23 +12,62 @@
  *******************************************************************************/
 
 import React, { useState } from 'react';
-import { DropNodeContextProviderProps, DropNodeContextValue } from './DropNodeContext.types';
-import { NodeDropData } from './useDropNode.types';
+import { DropNodeContextProviderProps, DropNodeContextState, DropNodeContextValue } from './DropNodeContext.types';
 
 const defaultValue: DropNodeContextValue = {
-  dropData: {
-    initialParentId: null,
-    draggedNodeId: null,
-    targetNodeId: null,
-    compatibleNodeIds: [],
-    droppableOnDiagram: false,
-  },
-  setDropData: () => {},
+  initialParentId: null,
+  draggedNode: null,
+  targetNodeId: null,
+  compatibleNodeIds: [],
+  droppableOnDiagram: false,
+  initializeDrop: () => {},
+  setTargetNodeId: () => {},
+  resetDrop: () => {},
 };
 
 export const DropNodeContext = React.createContext<DropNodeContextValue>(defaultValue);
 
 export const DropNodeContextProvider = ({ children }: DropNodeContextProviderProps) => {
-  const [dropData, setDropData] = useState<NodeDropData>(defaultValue.dropData);
-  return <DropNodeContext.Provider value={{ dropData, setDropData }}>{children}</DropNodeContext.Provider>;
+  const [state, setState] = useState<DropNodeContextState>({
+    initialParentId: null,
+    draggedNode: null,
+    targetNodeId: null,
+    compatibleNodeIds: [],
+    droppableOnDiagram: false,
+  });
+
+  const initializeDrop = (dropData: DropNodeContextState) => {
+    setState((prevState) => ({ ...prevState, ...dropData }));
+  };
+
+  const setTargetNodeId = (targetNodeId: string | null) => {
+    setState((prevState) => ({ ...prevState, targetNodeId }));
+  };
+
+  const resetDrop = () => {
+    setState((prevState) => ({
+      ...prevState,
+      initialParentId: null,
+      draggedNode: null,
+      targetNodeId: null,
+      droppableOnDiagram: false,
+      compatibleNodeIds: [],
+    }));
+  };
+
+  return (
+    <DropNodeContext.Provider
+      value={{
+        initialParentId: state.initialParentId,
+        draggedNode: state.draggedNode,
+        targetNodeId: state.targetNodeId,
+        compatibleNodeIds: state.compatibleNodeIds,
+        droppableOnDiagram: state.droppableOnDiagram,
+        initializeDrop,
+        setTargetNodeId,
+        resetDrop,
+      }}>
+      {children}
+    </DropNodeContext.Provider>
+  );
 };

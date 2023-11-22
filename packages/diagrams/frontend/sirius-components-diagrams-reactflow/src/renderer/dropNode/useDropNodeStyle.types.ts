@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GQLNodeDescription {
-  id: string;
-  borderNodeDescriptions: GQLNodeDescription[];
-  childNodeDescriptions: GQLNodeDescription[];
-  userResizable: boolean;
-  keepAspectRatio: boolean;
+export interface useDropNodeStyleValue {
+  style: React.CSSProperties;
 }

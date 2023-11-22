@@ -11,10 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GQLNodeDescription {
-  id: string;
-  borderNodeDescriptions: GQLNodeDescription[];
-  childNodeDescriptions: GQLNodeDescription[];
-  userResizable: boolean;
-  keepAspectRatio: boolean;
-}
+import { useContext } from 'react';
+import { DiagramDescriptionContext } from './DiagramDescriptionContext';
+import { DiagramDescriptionContextValue } from './DiagramDescriptionContext.types';
+import { UseDiagramDescriptionValue } from './useDiagramDescription.types';
+
+export const useDiagramDescription = (): UseDiagramDescriptionValue => {
+  const { diagramDescription } = useContext<DiagramDescriptionContextValue>(DiagramDescriptionContext);
+  return {
+    diagramDescription,
+  };
+};

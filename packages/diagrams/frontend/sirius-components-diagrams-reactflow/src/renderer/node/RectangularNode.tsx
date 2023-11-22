@@ -18,7 +18,7 @@ import { NodeProps, NodeResizer } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
-import { useDropNode } from '../dropNode/useDropNode';
+import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
 import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
@@ -49,7 +49,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
-  const { dropFeedbackStyleProvider } = useDropNode();
+  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -70,7 +70,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
         style={{
           ...rectangularNodeStyle(theme, data.style, selected, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
-          ...dropFeedbackStyleProvider.getNodeStyle(id),
+          ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
