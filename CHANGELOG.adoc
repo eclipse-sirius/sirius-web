@@ -22,6 +22,7 @@
 - [ADR-118] Use dynamic handles to connect edges between nodes
 - [ADR-119] Share layout data between subscribers
 - [ADR-120] Improve the arrange all action with reactflow
+- [ADR-121] Add process before and after input handling
 
 === Breaking changes
 
@@ -139,6 +140,7 @@ The user can use 'shift+enter' to insert a line break.
 - https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] Add the possibility to specify a ratio on node to guarantee its aspect.
 - https://github.com/eclipse-sirius/sirius-web/issues/2568[#2568] [trees] Allow developers to modify the content of the explorer view
 - https://github.com/eclipse-sirius/sirius-web/issues/2570[#2570] [forms] Allow developers to modify the content of the details view
+- https://github.com/eclipse-sirius/sirius-web/issues/2618[#2618] [core] Add an API to provide pre-process and post-process around input handling.
 
 === Improvements
 
