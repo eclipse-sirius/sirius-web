@@ -15,6 +15,7 @@ import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
+import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
 
@@ -38,10 +39,12 @@ const iconlabelStyle = (
 
 export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNodeData>) => {
   const theme = useTheme();
+  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+
   return (
     <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
       <div
-        style={iconlabelStyle(data.style, theme, selected, data.faded)}
+        style={{ ...iconlabelStyle(data.style, theme, selected, data.faded), ...dropFeedbackStyle }}
         data-testid={`IconLabel - ${data?.label?.text}`}>
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}

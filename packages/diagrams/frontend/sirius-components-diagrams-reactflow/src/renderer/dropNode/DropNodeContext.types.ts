@@ -11,12 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeDropData } from './useDropNode.types';
+import { Node } from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
 
-export type DropNodeContextValue = {
-  dropData: NodeDropData;
-  setDropData: (newDropData: NodeDropData) => void;
+export type DropNodeContextValue = DropNodeContextState & {
+  initializeDrop: (newDropData: DropNodeContextState) => void;
+  setTargetNodeId: (targetNodeId: string | null) => void;
+  resetDrop: () => void;
 };
+
+export interface DropNodeContextState {
+  initialParentId: string | null;
+  draggedNode: Node<NodeData> | null;
+  targetNodeId: string | null;
+  compatibleNodeIds: string[];
+  droppableOnDiagram: boolean;
+}
 
 export interface DropNodeContextProviderProps {
   children: React.ReactNode;

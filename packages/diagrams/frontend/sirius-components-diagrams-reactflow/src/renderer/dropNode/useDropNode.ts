@@ -10,51 +10,29 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useTheme } from '@material-ui/core/styles';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { Node, NodeDragHandler, Viewport, XYPosition, useReactFlow, useStoreApi, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
+import { GQLDropNodeCompatibility } from '../../representation/DiagramRepresentation.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useLayout } from '../layout/useLayout';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import {
   DiagramBackgroundStyle,
-  GQLDropNodeCompatibilityEntry,
   GQLDropNodeData,
   GQLDropNodeInput,
   GQLDropNodePayload,
   GQLDropNodeVariables,
   GQLErrorPayload,
-  GQLGetDropNodeCompatibilityQueryData,
-  GQLGetDropNodeCompatibilityQueryInput,
   GQLSuccessPayload,
-  StyleProvider,
   UseDropNodeValue,
 } from './useDropNode.types';
-
-const dropNodeCompatibilityQuery = gql`
-  query dropNodeCompatibilityQuery($editingContextId: ID!, $diagramId: ID!) {
-    viewer {
-      editingContext(editingContextId: $editingContextId) {
-        representation(representationId: $diagramId) {
-          description {
-            ... on DiagramDescription {
-              dropNodeCompatibility {
-                droppedNodeDescriptionId
-                droppableOnDiagram
-                droppableOnNodeTypes
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 const dropNodeMutation = gql`
   mutation dropNode($input: DropNodeInput!) {
@@ -154,19 +132,18 @@ const computeDropPosition = (
 };
 
 export const useDropNode = (): UseDropNodeValue => {
-  const [draggedNode, setDraggedNode] = useState<Node<NodeData> | null>(null);
-  const { dropData, setDropData } = useContext<DropNodeContextValue>(DropNodeContext);
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const [dropNodeCompatibilityData, setDropNodeCompatibilityData] = useState<GQLDropNodeCompatibilityEntry[]>([]);
-  const { loading, data, error } = useQuery<
-    GQLGetDropNodeCompatibilityQueryData,
-    GQLGetDropNodeCompatibilityQueryInput
-  >(dropNodeCompatibilityQuery, {
-    variables: {
-      diagramId,
-      editingContextId,
-    },
-  });
+  const {
+    initialParentId,
+    draggedNode,
+    targetNodeId,
+    compatibleNodeIds,
+    droppableOnDiagram,
+    initializeDrop,
+    setTargetNodeId,
+    resetDrop,
+  } = useContext<DropNodeContextValue>(DropNodeContext);
+
+  const { diagramDescription } = useDiagramDescription();
 
   const onDropNode = useDropNodeMutation();
   const { getNodes, getIntersectingNodes } = useReactFlow<NodeData, EdgeData>();
@@ -174,28 +151,22 @@ export const useDropNode = (): UseDropNodeValue => {
   const { domNode } = useStoreApi().getState();
   const element = domNode?.getBoundingClientRect();
 
-  useEffect(() => {
-    if (!loading && !error && data) {
-      const entries = data.viewer.editingContext.representation.description.dropNodeCompatibility;
-      setDropNodeCompatibilityData(entries);
-    }
-  }, [data, loading, error, setDropNodeCompatibilityData]);
-
   const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
 
   const onNodeDragStart: NodeDragHandler = (_event, node) => {
-    setDraggedNode(node);
-    const dropDataEntry: GQLDropNodeCompatibilityEntry | undefined = dropNodeCompatibilityData.find(
+    const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
       (entry) => entry.droppedNodeDescriptionId === (node as Node<NodeData>).data.descriptionId
     );
     const compatibleNodes = getNodes()
       .filter((candidate) => !candidate.hidden && !isDescendantOf(node, candidate, getNodeById))
-      .filter((n) => dropDataEntry?.droppableOnNodeTypes.includes((n as Node<NodeData>).data.descriptionId))
-      .map((n) => n.id);
+      .filter((candidate) =>
+        dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
+      )
+      .map((candidate) => candidate.id);
 
-    setDropData({
-      initialParentId: null,
-      draggedNodeId: null,
+    initializeDrop({
+      initialParentId: node.parentNode || null,
+      draggedNode: node,
       targetNodeId: node.parentNode || null,
       compatibleNodeIds: compatibleNodes,
       droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
@@ -204,18 +175,12 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const onNodeDrag: NodeDragHandler = (_event, node) => {
     if (draggedNode && !draggedNode.data.isBorderNode) {
-      const intersections = getIntersectingNodes(node).filter((node) => !node.hidden);
+      const intersections = getIntersectingNodes(node).filter((intersectingNode) => !intersectingNode.hidden);
       const newParentId =
         [...intersections]
           .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
           .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
-      setDropData({
-        initialParentId: node.parentNode || null,
-        draggedNodeId: node.id,
-        targetNodeId: newParentId,
-        compatibleNodeIds: dropData.compatibleNodeIds,
-        droppableOnDiagram: dropData.droppableOnDiagram,
-      });
+      setTargetNodeId(newParentId);
     }
   };
 
@@ -223,15 +188,15 @@ export const useDropNode = (): UseDropNodeValue => {
     (onDragCancelled) => {
       return (event, _node) => {
         const dropPosition = computeDropPosition(event, viewport, element);
-        if (draggedNode && draggedNode.id === dropData.draggedNodeId) {
+        if (draggedNode) {
           const oldParentId: string | null = draggedNode.parentNode || null;
-          const newParentId: string | null = dropData.targetNodeId;
+          const newParentId: string | null = targetNodeId;
           const validNewParent =
-            (newParentId === null && dropData.droppableOnDiagram) ||
-            (newParentId !== null && dropData.compatibleNodeIds.includes(newParentId));
+            (newParentId === null && droppableOnDiagram) ||
+            (newParentId !== null && compatibleNodeIds.includes(newParentId));
           if (oldParentId !== newParentId) {
             if (validNewParent) {
-              onDropNode(dropData.draggedNodeId, newParentId, dropPosition);
+              onDropNode(draggedNode.id, newParentId, dropPosition);
             } else {
               onDragCancelled(draggedNode);
             }
@@ -241,52 +206,30 @@ export const useDropNode = (): UseDropNodeValue => {
             onDragCancelled(draggedNode);
           }
         }
-        setDraggedNode(null);
-        setDropData({
-          initialParentId: null,
-          draggedNodeId: null,
-          targetNodeId: null,
-          droppableOnDiagram: false,
-          compatibleNodeIds: [],
-        });
+        resetDrop();
       };
     },
-    [element?.top, element?.left, viewport, draggedNode, dropData]
+    [element?.top, element?.left, viewport, draggedNode, targetNodeId, droppableOnDiagram, compatibleNodeIds]
   );
 
   const theme = useTheme();
-
-  const dropFeedbackStyleProvider: StyleProvider = {
-    getNodeStyle(nodeId: string): React.CSSProperties {
-      const isCompatibleDropTarget: boolean = dropData.compatibleNodeIds.includes(nodeId);
-      const isSelectedDropTarget: boolean = nodeId === dropData.targetNodeId;
-      const style: React.CSSProperties = {};
-
-      if (dropData.draggedNodeId !== null) {
-        if (dropData.draggedNodeId !== nodeId && !isCompatibleDropTarget) {
-          style.opacity = '0.4';
-        }
-        if (isSelectedDropTarget && isCompatibleDropTarget) {
-          style.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
-        }
-      }
-      return style;
-    },
-
-    getDiagramBackgroundStyle(): DiagramBackgroundStyle {
-      const diagramForbidden = dropData.draggedNodeId !== null && !dropData.droppableOnDiagram;
-      const diagramTargeted = dropData.targetNodeId === null && dropData.initialParentId !== null;
-      const backgroundColor =
-        diagramTargeted && diagramForbidden
-          ? theme.palette.action.disabledBackground
-          : theme.palette.background.default;
-      return {
-        backgroundColor,
-        smallGridColor: diagramForbidden ? backgroundColor : '#f1f1f1',
-        largeGridColor: diagramForbidden ? backgroundColor : '#cccccc',
-      };
-    },
+  const diagramForbidden = draggedNode?.id !== null && !droppableOnDiagram;
+  const diagramTargeted = targetNodeId === null && initialParentId !== null;
+  const backgroundColor =
+    diagramTargeted && diagramForbidden ? theme.palette.action.disabledBackground : theme.palette.background.default;
+  const diagramBackgroundStyle: DiagramBackgroundStyle = {
+    backgroundColor,
+    smallGridColor: diagramForbidden ? backgroundColor : '#f1f1f1',
+    largeGridColor: diagramForbidden ? backgroundColor : '#cccccc',
   };
 
-  return { onNodeDragStart, onNodeDrag, onNodeDragStop, dropData, dropFeedbackStyleProvider };
+  return {
+    onNodeDragStart,
+    onNodeDrag,
+    onNodeDragStop,
+    compatibleNodeIds,
+    draggedNode,
+    targetNodeId,
+    diagramBackgroundStyle,
+  };
 };

@@ -29,6 +29,7 @@ import {
 } from 'reactflow';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
+import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
 import { Diagram, DiagramRendererProps, NodeData } from './DiagramRenderer.types';
 import { useBorderChange } from './border/useBorderChange';
@@ -44,6 +45,8 @@ import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
+import { NodeContext } from './node/NodeContext';
+import { NodeContextValue } from './node/NodeContext.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
@@ -55,17 +58,11 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
-import { NodeContext } from './node/NodeContext';
-import { NodeContextValue } from './node/NodeContext.types';
 
 const GRID_STEP: number = 10;
 
-export const DiagramRenderer = ({
-  diagramRefreshedEventPayload,
-  diagramDescription,
-  selection,
-  setSelection,
-}: DiagramRendererProps) => {
+export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSelection }: DiagramRendererProps) => {
+  const { diagramDescription } = useDiagramDescription();
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
 
@@ -147,9 +144,9 @@ export const DiagramRenderer = ({
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
-  const { onNodeDragStart, onNodeDrag, onNodeDragStop, dropFeedbackStyleProvider } = useDropNode();
+  const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle } = useDropNode();
+  const { backgroundColor, smallGridColor, largeGridColor } = diagramBackgroundStyle;
   const { setHoveredNode } = useContext<NodeContextValue>(NodeContext);
-  const { backgroundColor, smallGridColor, largeGridColor } = dropFeedbackStyleProvider.getDiagramBackgroundStyle();
 
   return (
     <ReactFlow

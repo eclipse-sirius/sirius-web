@@ -18,7 +18,7 @@ import { NodeProps, NodeResizer } from 'reactflow';
 import { BorderNodePositon } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
-import { useDropNode } from '../dropNode/useDropNode';
+import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
 import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
@@ -64,9 +64,9 @@ const computeBorderRotation = (data: ImageNodeData): string | undefined => {
 };
 
 export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>) => {
-  const theme = useTheme();
-  const { dropFeedbackStyleProvider } = useDropNode();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const theme = useTheme();
+  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
   const { newConnectionStyleProvider } = useConnector();
   const rotation = computeBorderRotation(data);
 
@@ -84,7 +84,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
         style={{
           ...imageNodeStyle(theme, data.style, selected, data.faded, rotation),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
-          ...dropFeedbackStyleProvider.getNodeStyle(id),
+          ...dropFeedbackStyle,
         }}
         data-testid={`Image - ${data?.targetObjectLabel}`}
       />

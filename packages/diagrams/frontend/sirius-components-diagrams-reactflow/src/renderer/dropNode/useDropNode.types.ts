@@ -12,34 +12,23 @@
  *******************************************************************************/
 
 import { Node, NodeDragHandler } from 'reactflow';
+import { NodeData } from '../DiagramRenderer.types';
 import { GQLMessage } from '../Tool.types';
 
 export interface UseDropNodeValue {
   onNodeDragStart: NodeDragHandler;
   onNodeDrag: NodeDragHandler;
   onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler;
-  dropData: NodeDropData;
-  dropFeedbackStyleProvider: StyleProvider;
-}
-
-export interface StyleProvider {
-  getNodeStyle(nodeId: string): React.CSSProperties;
-
-  getDiagramBackgroundStyle(): DiagramBackgroundStyle;
+  draggedNode: Node<NodeData> | null;
+  targetNodeId: string | null;
+  compatibleNodeIds: string[];
+  diagramBackgroundStyle: DiagramBackgroundStyle;
 }
 
 export interface DiagramBackgroundStyle {
   backgroundColor: string;
   smallGridColor: string;
   largeGridColor: string;
-}
-
-export interface NodeDropData {
-  initialParentId: string | null;
-  draggedNodeId: string | null;
-  targetNodeId: string | null;
-  compatibleNodeIds: string[];
-  droppableOnDiagram: boolean;
 }
 
 export interface GQLDropNodePayload {
@@ -68,36 +57,4 @@ export interface GQLErrorPayload extends GQLDropNodePayload {
 
 export interface GQLSuccessPayload extends GQLDropNodePayload {
   messages: GQLMessage[];
-}
-
-export interface GQLGetDropNodeCompatibilityQueryInput {
-  editingContextId: string;
-  diagramId: string;
-}
-
-export interface GQLGetDropNodeCompatibilityQueryData {
-  viewer: GQLViewer;
-}
-
-export interface GQLViewer {
-  editingContext: GQLEditingContext;
-}
-
-export interface GQLEditingContext {
-  representation: GQLRepresentation;
-}
-
-export interface GQLRepresentation {
-  description: GQLRepresentationDescription;
-}
-
-export interface GQLRepresentationDescription {
-  __typename: string;
-  dropNodeCompatibility: GQLDropNodeCompatibilityEntry[];
-}
-
-export interface GQLDropNodeCompatibilityEntry {
-  droppedNodeDescriptionId: string;
-  droppableOnDiagram: boolean;
-  droppableOnNodeTypes: string[];
 }

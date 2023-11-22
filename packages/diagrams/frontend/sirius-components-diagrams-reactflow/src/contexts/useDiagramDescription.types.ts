@@ -11,10 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface GQLNodeDescription {
-  id: string;
-  borderNodeDescriptions: GQLNodeDescription[];
-  childNodeDescriptions: GQLNodeDescription[];
-  userResizable: boolean;
-  keepAspectRatio: boolean;
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
+
+export interface UseDiagramDescriptionValue {
+  diagramDescription: GQLDiagramDescription;
 }
