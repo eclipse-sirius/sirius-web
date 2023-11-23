@@ -163,13 +163,15 @@ The new implementation of `IObjectService`, named `ComposedObjectService`, tries
 - https://github.com/eclipse-sirius/sirius-web/issues/2530[#2530] [core] Add support for multiple `IEditService`.
 It is now possible to contribute specific services to edit domain objects, through `IEditServiceDelegate`.
 The new implementation of `IEditService`, named `ComposedEditService`, tries first to delegate to the appropriate `IEditServiceDelegate` and then fallback to a default behavior from `IDefaultEditService` if needed.
-- https://github.com/eclipse-sirius/sirius-web/issues/2555[#2555] [diagram] Add distinct edge creation handles (only visible when a node is selected).
-- https://github.com/eclipse-sirius/sirius-web/issues/2559[#2559] [diagram] Allow to target the whole node when creating or reconnecting an edge.
+- https://github.com/eclipse-sirius/sirius-web/issues/2555[#2555] [diagram] Add distinct edge creation handles (only visible when a node is selected)
+- https://github.com/eclipse-sirius/sirius-web/issues/2559[#2559] [diagram] Allow to target the whole node when creating or reconnecting an edge
 - https://github.com/eclipse-sirius/sirius-web/issues/2235[#2235] [diagram] Reduce the amount of code in DiagramRenderer
-- https://github.com/eclipse-sirius/sirius-web/issues/2572[#2572] [diagram] Each edges now have a dedicated handle.
-- https://github.com/eclipse-sirius/sirius-web/issues/2584[#2584] [diagram] Add feedback during edge creation.
+- https://github.com/eclipse-sirius/sirius-web/issues/2572[#2572] [diagram] Each edges now have a dedicated handle
+- https://github.com/eclipse-sirius/sirius-web/issues/2584[#2584] [diagram] Add feedback during edge creation
 - https://github.com/eclipse-sirius/sirius-web/issues/2608[#2608] [diagram] Improve the placement of handles on the left and right side of nodes so that they are properly centered
 - https://github.com/eclipse-sirius/sirius-web/issues/2262[#2262] [diagram] Share diagram layout data between the subscribers of the representation
+- https://github.com/eclipse-sirius/sirius-web/issues/2621[#2621] [diagram] Set the same ConnectionLine path as the one used to render edges
+
 
 == v2023.10.0
 
