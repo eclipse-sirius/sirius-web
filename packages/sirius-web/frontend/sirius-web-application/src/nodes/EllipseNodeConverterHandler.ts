@@ -24,11 +24,13 @@ import {
   INodeConverterHandler,
   convertHandles,
   convertLabelStyle,
+  convertLineStyle,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
+
 const toEllipseNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLEllipseNodeStyle>,
@@ -60,7 +62,7 @@ const toEllipseNode = (
       backgroundColor: style.color,
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
-      borderStyle: style.borderStyle,
+      borderStyle: convertLineStyle(style.borderStyle),
     },
     label: undefined,
     faded: state === GQLViewModifier.Faded,

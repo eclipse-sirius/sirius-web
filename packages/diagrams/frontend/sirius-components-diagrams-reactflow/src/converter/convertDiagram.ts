@@ -53,6 +53,17 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): Label => {
   };
 };
 
+export const convertLineStyle = (lineStyle: string): string => {
+  if (lineStyle === 'Dash') {
+    return 'dashed';
+  } else if (lineStyle === 'Dot') {
+    return 'dotted';
+  } else if (lineStyle === 'Dash_Dot') {
+    return 'dashed';
+  }
+  return 'solid';
+};
+
 export const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties => {
   const style: React.CSSProperties = {};
 
@@ -168,6 +179,15 @@ export const convertDiagram = (
       usedHandles.push(sourceHandle?.id, targetHandle.id);
     }
 
+    let strokeDasharray: string | undefined = undefined;
+    if (gqlEdge.style.lineStyle === 'Dash') {
+      strokeDasharray = '5,5';
+    } else if (gqlEdge.style.lineStyle === 'Dot') {
+      strokeDasharray = '2,2';
+    } else if (gqlEdge.style.lineStyle === 'Dash_Dot') {
+      strokeDasharray = '10,5,2,2,2,5';
+    }
+
     return {
       id: gqlEdge.id,
       type: 'multiLabelEdge',
@@ -179,6 +199,7 @@ export const convertDiagram = (
       style: {
         stroke: gqlEdge.style.color,
         strokeWidth: gqlEdge.style.size,
+        strokeDasharray,
       },
       data,
       hidden: gqlEdge.state === GQLViewModifier.Hidden,
