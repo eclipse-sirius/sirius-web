@@ -116,6 +116,7 @@ It uses our algorithm instead of elk.js to perform the arrange-all.
 - https://github.com/eclipse-sirius/sirius-web/issues/2615[#2615] [diagram] Fix the `useDropNode` lifecycle.
 - https://github.com/eclipse-sirius/sirius-web/issues/2614[#2614] [diagram] Tool sections now correctly remember the last of their tool invoked and default to that.
 - https://github.com/eclipse-sirius/sirius-web/issues/2593[#2593] [diagram] Fix an issue where and edge could be reconnected if not selected after a semantic change.
+- https://github.com/eclipse-sirius/sirius-web/issues/2624[#2624] [diagram] Fix an issue where edge arrows in react flow diagrams were wrongly drawn.
 
 === New Features
 
