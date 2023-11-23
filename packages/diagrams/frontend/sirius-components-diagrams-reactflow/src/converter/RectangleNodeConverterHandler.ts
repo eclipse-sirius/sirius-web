@@ -24,7 +24,7 @@ import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLabelStyle } from './convertDiagram';
+import { convertLabelStyle, convertLineStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 
@@ -63,7 +63,7 @@ const toRectangularNode = (
       borderColor: style.borderColor,
       borderRadius: style.borderRadius,
       borderWidth: style.borderSize,
-      borderStyle: style.borderStyle,
+      borderStyle: convertLineStyle(style.borderStyle),
     },
     label: undefined,
     faded: state === GQLViewModifier.Faded,
