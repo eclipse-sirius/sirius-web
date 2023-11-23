@@ -16,6 +16,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import {
   Background,
   BackgroundVariant,
+  ConnectionLineType,
   ConnectionMode,
   EdgeChange,
   Node,
@@ -205,6 +206,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
       snapGrid={[GRID_STEP, GRID_STEP]}
       connectionMode={ConnectionMode.Loose}
       zoomOnDoubleClick={false}
+      connectionLineType={ConnectionLineType.SmoothStep}
       ref={ref}>
       {snapToGrid ? (
         <>
