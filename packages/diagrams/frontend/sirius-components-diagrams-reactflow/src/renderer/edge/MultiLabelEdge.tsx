@@ -82,34 +82,38 @@ export const MultiLabelEdge = memo(
     let { x: sourceX, y: sourceY } = getHandleCoordinatesByPosition(sourceNode, sourcePosition, sourceHandleId ?? '');
     let { x: targetX, y: targetY } = getHandleCoordinatesByPosition(targetNode, targetPosition, targetHandleId ?? '');
 
-    const handleRadius = 2;
+    // trick to have the source of the edge positioned at the very border of a node
+    // if the edge has a marker, then only the marker need to touch the node
+    const handleSourceRadius = markerStart == undefined || markerStart.includes('None') ? 2 : 3;
     switch (sourcePosition) {
       case Position.Right:
-        sourceX = sourceX + handleRadius;
+        sourceX = sourceX + handleSourceRadius;
         break;
       case Position.Left:
-        sourceX = sourceX - handleRadius;
+        sourceX = sourceX - handleSourceRadius;
         break;
       case Position.Top:
-        sourceY = sourceY - handleRadius;
+        sourceY = sourceY - handleSourceRadius;
         break;
       case Position.Bottom:
-        sourceY = sourceY + handleRadius;
+        sourceY = sourceY + handleSourceRadius;
         break;
     }
-
+    // trick to have the target of the edge positioned at the very border of a node
+    // if the edge has a marker, then only the marker need to touch the node
+    const handleTargetRadius = markerEnd == undefined || markerEnd.includes('None') ? 2 : 3;
     switch (targetPosition) {
       case Position.Right:
-        targetX = targetX + handleRadius;
+        targetX = targetX + handleTargetRadius;
         break;
       case Position.Left:
-        targetX = targetX - handleRadius;
+        targetX = targetX - handleTargetRadius;
         break;
       case Position.Top:
-        targetY = targetY - handleRadius;
+        targetY = targetY - handleTargetRadius;
         break;
       case Position.Bottom:
-        targetY = targetY + handleRadius;
+        targetY = targetY + handleTargetRadius;
         break;
     }
 

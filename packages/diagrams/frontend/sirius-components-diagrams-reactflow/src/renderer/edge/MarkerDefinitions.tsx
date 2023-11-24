@@ -95,10 +95,10 @@ const getMarker = (markerProps: MarkerProps) => {
   }
 };
 
-const OutputArrowPath = 'm 10 1 L 1 5 M 1 5 L 10 9 z';
-const InputArrowPath = 'm 1 1 L 10 5 M 10 5 L 1 9 z';
-const OutputClosedArrowPath = 'm 10 1 L 1 5 L 9.5 9 L 9.5 1.75 z';
-const InputClosedArrowPath = 'm 1 1 L 10 5 L 1 9 L 1 1 z';
+const OutputArrowPath = 'm 8.75 1 L 1.5 5 L 8.75 9';
+const InputArrowPath = 'm 1 1 L 8 5 L 1 9';
+const OutputClosedArrowPath = 'm 8.5 1 L 1.5 5 L 8.5 9 L 8.5 1 z';
+const InputClosedArrowPath = 'm 1 1 L 8 5 L 1 9 L 1 1 z';
 const DiamondPath = 'm 8 1 L 1 5 L 8 9 L 15 5 L 8 1 z';
 
 const buildMarkerAttributes = (
@@ -119,10 +119,10 @@ const buildMarkerAttributes = (
   };
 };
 
-const buildArrow = (id: string, path: string, edgeColor: string, fill: boolean) => {
+const buildArrow = (id: string, path: string, edgeColor: string, fillColor: string) => {
   return (
-    <marker {...buildMarkerAttributes(id, 10, 10, 10, 5)}>
-      <path fill={fill ? edgeColor : 'white'} d={path} stroke={edgeColor} strokeWidth={1} />
+    <marker {...buildMarkerAttributes(id, 10, 10, 8, 5)}>
+      <path fill={fillColor ? fillColor : 'white'} d={path} stroke={edgeColor} strokeWidth={1} />
     </marker>
   );
 };
@@ -137,7 +137,7 @@ const buildDiamond = (id: string, path: string, edgeColor: string, fill: boolean
 
 const buildCircle = (id: string, edgeColor: string, fill: boolean) => {
   return (
-    <marker {...buildMarkerAttributes(id, 10, 10, 10, 5)}>
+    <marker {...buildMarkerAttributes(id, 10, 10, 9, 5)}>
       <circle r={4.5} cx={5} cy={5} fill={fill ? edgeColor : 'white'} stroke={edgeColor} strokeWidth={1} />
     </marker>
   );
@@ -156,37 +156,37 @@ export const MarkerDefinitions = () => {
 const OutputArrow = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
-  return buildArrow(id, OutputArrowPath, strokeColor, false);
+  return buildArrow(id, OutputArrowPath, strokeColor, theme.palette.background.default);
 };
 
 const InputArrow = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
-  return buildArrow(id, InputArrowPath, strokeColor, false);
+  return buildArrow(id, InputArrowPath, strokeColor, 'transparent');
 };
 
 const OutputClosedArrow = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
-  return buildArrow(id, OutputClosedArrowPath, strokeColor, false);
+  return buildArrow(id, OutputClosedArrowPath, strokeColor, theme.palette.background.default);
 };
 
 const InputClosedArrow = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
-  return buildArrow(id, InputClosedArrowPath, strokeColor, false);
+  return buildArrow(id, InputClosedArrowPath, strokeColor, theme.palette.background.default);
 };
 
 const OutputFillClosedArrow = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
-  return buildArrow(id, OutputClosedArrowPath, strokeColor, true);
+  return buildArrow(id, OutputClosedArrowPath, strokeColor, strokeColor);
 };
 
 const InputFillClosedArrow = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
-  return buildArrow(id, InputClosedArrowPath, strokeColor, true);
+  return buildArrow(id, InputClosedArrowPath, strokeColor, strokeColor);
 };
 
 const Diamond = ({ id, edgeColor }: MarkerProps) => {
@@ -217,8 +217,8 @@ const CrossedCircle = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
   return (
-    <marker {...buildMarkerAttributes(id, 10, 10, 10, 5)}>
-      <circle r={4.5} cx={5} cy={5} stroke={strokeColor} fill={'white'} />
+    <marker {...buildMarkerAttributes(id, 10, 10, 9, 5)}>
+      <circle r={4.5} cx={5} cy={5} stroke={strokeColor} fill={theme.palette.background.default} />
       <path d="M 1 5 L 9 5" stroke={strokeColor} strokeWidth={1} />
       <path d="m 5 1 L 5 9" stroke={strokeColor} strokeWidth={1} />
     </marker>
@@ -229,9 +229,14 @@ const InputArrowWithDiamond = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
   return (
-    <marker {...buildMarkerAttributes(id, 24, 10, 24, 5)}>
-      <path d={InputArrowPath} stroke={strokeColor} strokeWidth={1} />
-      <path d="m 17 1 L 10 5 L 17 9 L 24 5 L 17 1 z" stroke={strokeColor} fill={'white'} strokeWidth={1} />
+    <marker {...buildMarkerAttributes(id, 24, 10, 23, 5)}>
+      <path d={InputArrowPath} stroke={strokeColor} fill={'transparent'} strokeWidth={1} />
+      <path
+        d="m 16 1 L 9 5 L 16 9 L 23 5 L 16 1 z"
+        stroke={strokeColor}
+        fill={theme.palette.background.default}
+        strokeWidth={1}
+      />
     </marker>
   );
 };
@@ -240,9 +245,9 @@ const InputArrowWithFillDiamond = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
   return (
-    <marker {...buildMarkerAttributes(id, 24, 10, 24, 5)}>
-      <path d={InputArrowPath} stroke={strokeColor} strokeWidth={1} />
-      <path d="m 17 1 L 10 5 L 17 9 L 24 5 L 17 1 z" stroke={strokeColor} fill={strokeColor} strokeWidth={1} />
+    <marker {...buildMarkerAttributes(id, 24, 10, 23, 5)}>
+      <path d={InputArrowPath} stroke={strokeColor} fill={'transparent'} strokeWidth={1} />
+      <path d="m 16 1 L 9 5 L 16 9 L 23 5 L 16 1 z" stroke={strokeColor} fill={strokeColor} strokeWidth={1} />
     </marker>
   );
 };
@@ -251,8 +256,13 @@ const ClosedArrowWithVerticalBar = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
   return (
-    <marker {...buildMarkerAttributes(id, 14, 10, 14, 5)}>
-      <path strokeWidth={1} fill={'white'} d={'m 5 1 L 14 5 L 5 9 L 5 1 z'} stroke={strokeColor} />
+    <marker {...buildMarkerAttributes(id, 13, 10, 12, 5)}>
+      <path
+        strokeWidth={1}
+        fill={theme.palette.background.default}
+        d={'m 5 1 L 12 5 L 5 9 L 5 1 z'}
+        stroke={strokeColor}
+      />
       <path fill={strokeColor} d={'m 1 10 V 0'} stroke={strokeColor} />
     </marker>
   );
@@ -262,10 +272,15 @@ const ClosedArrowWithDots = ({ id, edgeColor }: MarkerProps) => {
   const theme = useTheme();
   const strokeColor: string = id.endsWith('--selected') ? theme.palette.primary.main : getCSSColor(edgeColor, theme);
   return (
-    <marker {...buildMarkerAttributes(id, 14, 10, 14, 5)}>
-      <path strokeWidth={1} fill={'white'} d={'m 5 1 L 14 5 L 5 9 L 5 1 z'} stroke={strokeColor} />
-      <circle r={1} cx={1} cy={3} fill={strokeColor} stroke={'none'} />
-      <circle r={1} cx={1} cy={7} fill={strokeColor} stroke={'none'} />
+    <marker {...buildMarkerAttributes(id, 13, 10, 12, 5)}>
+      <path
+        strokeWidth={1}
+        fill={theme.palette.background.default}
+        d={'m 5 1 L 12 5 L 5 9 L 5 1 z'}
+        stroke={strokeColor}
+      />
+      <circle r={1} cx={1} cy={2} fill={strokeColor} stroke={'none'} />
+      <circle r={1} cx={1} cy={8} fill={strokeColor} stroke={'none'} />
     </marker>
   );
 };
