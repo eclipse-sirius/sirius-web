@@ -187,7 +187,7 @@ export const Workbench = ({
             onRepresentationClick={onRepresentationClick}
             onClose={onClose}
           />
-          <RepresentationComponent {...props} />
+          <RepresentationComponent key={`${editingContextId}#${displayedRepresentation.id}`} {...props} />
         </div>
       );
     }

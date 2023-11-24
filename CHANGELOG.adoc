@@ -119,6 +119,7 @@ It uses our algorithm instead of elk.js to perform the arrange-all.
 - https://github.com/eclipse-sirius/sirius-web/issues/2624[#2624] [diagram] Fix an issue where edge arrows in react flow diagrams were wrongly drawn.
 - https://github.com/eclipse-sirius/sirius-web/issues/2625[#2625] [diagram] Fix the line style computation on edge and border node.
 - https://github.com/eclipse-sirius/sirius-web/issues/2633[#2633] [diagram] Make sure the grid is visible when enabled, even when moving a non-droppable node
+- https://github.com/eclipse-sirius/sirius-web/issues/2635[#2635] [diagram] Fix an error when switching between react flow representations.
 
 === New Features
 
