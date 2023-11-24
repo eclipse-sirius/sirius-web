@@ -213,10 +213,9 @@ export const useDropNode = (): UseDropNodeValue => {
   );
 
   const theme = useTheme();
-  const diagramForbidden = draggedNode?.id !== null && !droppableOnDiagram;
   const diagramTargeted = targetNodeId === null && initialParentId !== null;
-  const backgroundColor =
-    diagramTargeted && diagramForbidden ? theme.palette.action.disabledBackground : theme.palette.background.default;
+  const diagramForbidden = diagramTargeted && draggedNode?.id !== null && !droppableOnDiagram;
+  const backgroundColor = diagramForbidden ? theme.palette.action.disabledBackground : theme.palette.background.default;
   const diagramBackgroundStyle: DiagramBackgroundStyle = {
     backgroundColor,
     smallGridColor: diagramForbidden ? backgroundColor : '#f1f1f1',
