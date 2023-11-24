@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
-import { MainAreaComponentProps } from '@eclipse-sirius/sirius-components-core/src/workbench/Workbench.types';
+import { MainAreaComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { NewDocumentArea } from './NewDocumentArea';
