@@ -45,3 +45,5 @@ export { DiagramPaletteToolContext } from './renderer/palette/DiagramPaletteTool
 export { DiagramPaletteToolContribution } from './renderer/palette/DiagramPaletteToolContribution';
 export type { DiagramPaletteToolContributionComponentProps } from './renderer/palette/DiagramPaletteToolContribution.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
+export { useLayout } from './renderer/layout/useLayout';
+export { usePaletteReferencePosition } from './renderer/palette/usePaletteReferencePosition';
