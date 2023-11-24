@@ -4,6 +4,10 @@
 
 === Shapes
 
+- Add support for Portal representation
+- Add support for Gantt representation
+- Add support for Deck representation
+
 
 === Architectural decision records
 
