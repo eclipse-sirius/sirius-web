@@ -164,4 +164,39 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
         cy.getByTestId('tool2_section2 - Tool').should('not.exist');
       });
   });
+
+  it('remembers the last tool invoked from a tool section', () => {
+    // Create a studio project with a Domain diagram
+    cy.createProjectFromTemplate('studio-template').then((res) => {
+      const projectId = res.body.data.createProjectFromTemplate.project.id;
+      cy.visit(`/projects/${projectId}/edit`);
+    });
+
+    // Rename the diagram switch it to React Flow
+    cy.getByTestId('onboard-open-Domain').click();
+    cy.getByTestId('Domain').click();
+    cy.getByTestId('Domain-more').click();
+    cy.getByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').type('Domain__REACT_FLOW{enter}');
+
+    // Open the palette of the "Root" entity.
+    cy.getByTestId('rf__wrapper').findByTestId('Label - Root').click();
+    cy.getByTestId('Palette').should('exist');
+    // It should have the "Text attribute" tool as the default in its first tool section
+    cy.getByTestId('Text - Tool').should('exist');
+    cy.getByTestId('Boolean - Tool').should('not.exist');
+
+    // Expand the palette and invoke the "Boolean attribute" tool
+    cy.getByTestId('expand').click();
+    cy.getByTestId('Boolean - Tool').click();
+    // Check the attribute has been created
+    cy.getByTestId('rf__wrapper').findByTestId('Label - newBoolean').should('exist');
+
+    // Open the palette of the "Root" entity.
+    // It should now have the "Boolean attribute" tool as the default in its first tool section
+    cy.getByTestId('rf__wrapper').findByTestId('Label - Root').click();
+    cy.getByTestId('Palette').should('exist');
+    cy.getByTestId('Text - Tool').should('not.exist');
+    cy.getByTestId('Boolean - Tool').should('exist');
+  });
 });
