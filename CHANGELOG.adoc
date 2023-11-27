@@ -122,6 +122,7 @@ It uses our algorithm instead of elk.js to perform the arrange-all.
 - https://github.com/eclipse-sirius/sirius-web/issues/2633[#2633] [diagram] Make sure the grid is visible when enabled, even when moving a non-droppable node
 - https://github.com/eclipse-sirius/sirius-web/issues/2635[#2635] [diagram] Fix an error when switching between react flow representations.
 - https://github.com/eclipse-sirius/sirius-web/issues/2581[#2581] [diagram] Fix an issue where nodes created by custom tool are always on the default position.
+- https://github.com/eclipse-sirius/sirius-web/issues/2642[#2642] [diagram] Fix an issue where moving the viewport was slow.
 
 === New Features
 
