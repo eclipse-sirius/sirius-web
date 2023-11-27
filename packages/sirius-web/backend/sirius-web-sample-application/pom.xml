@@ -155,6 +155,11 @@
 			<version>2023.12.4</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-deck</artifactId>
+            <version>2023.12.4</version>
+		</dependency>
+		<dependency>
 			<groupId>fr.obeo.dsl.designer.sample.flow</groupId>
 			<artifactId>fr.obeo.dsl.designer.sample.flow</artifactId>
 			<version>${flow.version}</version>
@@ -264,7 +269,13 @@
 			<version>2023.12.4</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.eclipse.sirius</groupId>
+            <artifactId>sirius-components-view-deck-edit</artifactId>
+            <version>2023.12.4</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

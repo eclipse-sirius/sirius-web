@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.configuration.view;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.gantt.TaskDetail;
+import org.eclipse.sirius.components.task.Project;
 import org.eclipse.sirius.components.task.Task;
+import org.eclipse.sirius.components.task.TaskTag;
+
 /**
  * Java Service for the task related views.
  *
@@ -35,5 +39,17 @@ public class TaskJavaService {
         int progress = task.getProgress();
 
         return new TaskDetail(name, description, startDate, endDate, progress);
+    }
+
+    public List<Task> getTasksWithTag(TaskTag tag) {
+        return Optional.ofNullable(tag.eContainer())//
+                .filter(Project.class::isInstance)//
+                .map(Project.class::cast)//
+                .stream()//
+                .map(Project::getOwnedTasks)//
+                .flatMap(List::stream)//
+                .filter(task -> task.getTags().contains(tag))//
+                .toList();
+
     }
 }

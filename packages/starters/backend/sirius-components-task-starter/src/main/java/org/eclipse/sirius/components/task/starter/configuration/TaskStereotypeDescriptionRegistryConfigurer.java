@@ -49,7 +49,6 @@ public class TaskStereotypeDescriptionRegistryConfigurer implements IStereotypeD
     }
 
     private String getTaskExampleContent() {
-        String stereotypeBody = this.stereotypeBuilder.getStereotypeBody(new ClassPathResource("model/task_example.task"));
-        return stereotypeBody;
+        return this.stereotypeBuilder.getStereotypeBody(new ClassPathResource("model/task_example.task"));
     }
 }

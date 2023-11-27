@@ -1,0 +1,9 @@
+= sirius-component-collaborative-deck
+
+== Goal
+
+This project provides support for the deck collaborative edition layer.
+
+== Dependencies
+
+- sirius-component-deck

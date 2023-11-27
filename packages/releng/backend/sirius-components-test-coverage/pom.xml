@@ -117,6 +117,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-deck</artifactId>
+            <version>2023.12.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
 			<version>2023.12.4</version>
 		</dependency>
@@ -172,6 +177,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-deck</artifactId>
+            <version>2023.12.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-selection</artifactId>
 			<version>2023.12.4</version>
 		</dependency>
@@ -204,6 +214,11 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-gantt-graphql</artifactId>
 			<version>2023.12.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-deck-graphql</artifactId>
+            <version>2023.12.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>

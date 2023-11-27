@@ -1,0 +1,9 @@
+= sirius-component-deck
+
+== Goal
+
+This project contains the renderer, description and data structure to create deck diagram.
+
+== Dependencies
+
+Nothing specific
