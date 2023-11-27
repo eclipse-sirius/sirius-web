@@ -18,6 +18,8 @@ import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.t
 import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
+import { RawDiagram } from '../renderer/layout/layout.types';
+import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { IconLabelNodeConverterHandler } from './IconLabelNodeConverterHandler';
@@ -211,6 +213,12 @@ export const convertDiagram = (
     };
   });
 
+  const rawDiagram: RawDiagram = {
+    nodes,
+    edges,
+  };
+  layoutHandles(rawDiagram);
+
   return {
     metadata: {
       id: gqlDiagram.id,
@@ -218,7 +226,7 @@ export const convertDiagram = (
       kind: gqlDiagram.metadata.kind,
       targetObjectId: gqlDiagram.targetObjectId,
     },
-    nodes,
-    edges,
+    nodes: rawDiagram.nodes,
+    edges: rawDiagram.edges,
   };
 };
