@@ -1,0 +1,43 @@
+extend type Subscription {
+  deckEvent(input: DeckEventInput!): DeckEventPayload!
+}
+
+input DeckEventInput {
+  id: ID!
+  editingContextId: ID!
+  deckId: ID!
+}
+
+union DeckEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | DeckRefreshedEventPayload
+
+type DeckRefreshedEventPayload {
+  id: ID!
+  deck: Deck!
+}
+
+type Deck implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  targetObjectId: ID!
+  lanes: [Lane!]!
+}
+
+type Lane {
+  id: ID!
+  targetObjectId: String!
+  targetObjectKind: String!
+  targetObjectLabel: String!
+  title: String!
+  label: String!
+  cards: [Card!]!
+}
+
+type Card {
+  id: ID!
+  targetObjectId: String!
+  targetObjectKind: String!
+  targetObjectLabel: String!
+  title: String!
+  label: String!
+  description: String!
+}

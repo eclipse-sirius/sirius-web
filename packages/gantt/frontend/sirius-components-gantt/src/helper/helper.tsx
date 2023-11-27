@@ -14,7 +14,7 @@ import { Task } from '@ObeoNetwork/gantt-task-react';
 import { TaskType } from '@ObeoNetwork/gantt-task-react/dist/types/public-types';
 import { GQLTask, SelectableTask } from '../representation/GanttRepresentation.types';
 
-export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string) {
+export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): Task[] {
   const tasks: Task[] = [];
   gQLTasks.forEach((gQLTask) => {
     let type: TaskType = 'task';

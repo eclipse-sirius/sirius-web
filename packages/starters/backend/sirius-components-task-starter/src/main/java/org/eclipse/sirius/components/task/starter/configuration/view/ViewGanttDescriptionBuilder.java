@@ -31,13 +31,12 @@ public class ViewGanttDescriptionBuilder {
     public ViewGanttDescriptionBuilder() {
     }
 
-    public GanttDescription createRepresentationDescription(View view) {
+    public void addRepresentationDescription(View view) {
         GanttDescription ganttDescription =  this.createGanttDescription();
         TaskDescription tasksDescription = this.createTasksDescription(ganttDescription);
         ganttDescription.getTaskElementDescriptions().add(tasksDescription);
 
         view.getDescriptions().add(ganttDescription);
-        return ganttDescription;
     }
 
     private GanttDescription createGanttDescription() {

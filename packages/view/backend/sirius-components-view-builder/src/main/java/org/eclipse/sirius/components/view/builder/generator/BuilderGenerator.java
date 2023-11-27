@@ -98,6 +98,10 @@ public class BuilderGenerator {
         Resource formResource = resourceSet.getResource(formURI, true);
         allViewContent.addAll(formResource.getContents());
 
+        URI deckURI = URI.createFileURI(args[1] + "/../sirius-components-view-deck/src/main/resources/model/deck.genmodel");
+        Resource deckResource = resourceSet.getResource(deckURI, true);
+        allViewContent.addAll(deckResource.getContents());
+
         var gen = new BuilderGenerator(args[0], args[2], args[3]);
 
         StreamSupport.stream(Spliterators.spliterator(allViewContent, Spliterator.ORDERED), false).filter(GenModel.class::isInstance).map(GenModel.class::cast).forEach(model -> {

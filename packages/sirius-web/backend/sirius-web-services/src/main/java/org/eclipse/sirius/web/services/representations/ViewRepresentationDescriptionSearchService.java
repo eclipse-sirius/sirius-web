@@ -34,12 +34,14 @@ import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.task.IDeckIdProvider;
 import org.eclipse.sirius.components.view.emf.task.IGanttIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
@@ -78,6 +80,8 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private final IGanttIdProvider ganttIdProvider;
 
+    private final IDeckIdProvider deckIdProvider;
+
     private final IObjectService objectService;
 
     public ViewRepresentationDescriptionSearchService(ViewRepresentationDescriptionSearchServiceParameters parameters, IInMemoryViewRegistry inMemoryViewRegistry) {
@@ -88,6 +92,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
         this.formIdProvider = Objects.requireNonNull(parameters.getFormIdProvider());
         this.objectService = Objects.requireNonNull(parameters.getObjectService());
         this.ganttIdProvider = Objects.requireNonNull(parameters.getGanttIdProvider());
+        this.deckIdProvider = Objects.requireNonNull(parameters.getDeckIdProvider());
         this.inMemoryViewRegistry = Objects.requireNonNull(inMemoryViewRegistry);
     }
 
@@ -206,6 +211,8 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
             result = this.formIdProvider.getId(formDescription);
         } else if (description instanceof GanttDescription ganttDescription) {
             result = this.ganttIdProvider.getId(ganttDescription);
+        } else if (description instanceof DeckDescription deckDescription) {
+            result = this.deckIdProvider.getId(deckDescription);
         } else {
             String descriptionURI = EcoreUtil.getURI(description).toString();
             result = UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();

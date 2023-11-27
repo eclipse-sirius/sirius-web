@@ -14,7 +14,9 @@ package org.eclipse.sirius.components.task.starter.configuration.view;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.springframework.stereotype.Service;
@@ -29,10 +31,11 @@ public class TaskJavaServiceProvider implements IJavaServiceProvider {
 
     @Override
     public List<Class<?>> getServiceClasses(View view) {
-        boolean isTaskRelatedView = view.getDescriptions().stream()
-                .filter(GanttDescription.class::isInstance)
-                .map(GanttDescription.class::cast)
-                .anyMatch(ganttDescription -> ganttDescription.getDomainType().equals("task::Task"));
+        boolean isTaskRelatedView = view.getDescriptions().stream().filter(repDescription -> {
+            return repDescription instanceof GanttDescription || repDescription instanceof DeckDescription;
+        }).map(RepresentationDescription.class::cast).anyMatch(representationDescription -> {
+            return representationDescription.getDomainType().equals("task::Task") || representationDescription.getDomainType().equals("task::Project");
+        });
         if (isTaskRelatedView) {
             return List.of(TaskJavaService.class);
         }

@@ -77,6 +77,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-deck</artifactId>
+			<version>2023.12.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
 			<version>2023.12.4</version>
 			<scope>test</scope>

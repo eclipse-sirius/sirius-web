@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.task.IDeckIdProvider;
 import org.eclipse.sirius.components.view.emf.task.IGanttIdProvider;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.springframework.stereotype.Service;
@@ -43,16 +44,20 @@ public final class ViewRepresentationDescriptionSearchServiceParameters {
 
     private final IGanttIdProvider ganttIdProvider;
 
+    private final IDeckIdProvider deckIdProvider;
+
     private final IObjectService objectService;
 
-    public ViewRepresentationDescriptionSearchServiceParameters(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser,
-            IFormIdProvider formIdProvider, IGanttIdProvider ganttIdProvider, IObjectService objectService) {
+    public ViewRepresentationDescriptionSearchServiceParameters(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IURLParser urlParser, IObjectService objectService,
+            ViewRepresentationIdParameters representationIdParameters) {
+        Objects.requireNonNull(representationIdParameters);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
-        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
-        this.formIdProvider = Objects.requireNonNull(formIdProvider);
-        this.ganttIdProvider = Objects.requireNonNull(ganttIdProvider);
+        this.diagramIdProvider = Objects.requireNonNull(representationIdParameters.getDiagramIdProvider());
+        this.formIdProvider = Objects.requireNonNull(representationIdParameters.getFormIdProvider());
+        this.ganttIdProvider = Objects.requireNonNull(representationIdParameters.getGanttIdProvider());
+        this.deckIdProvider = Objects.requireNonNull(representationIdParameters.getDeckIdProvider());
         this.objectService = Objects.requireNonNull(objectService);
     }
 
@@ -78,6 +83,10 @@ public final class ViewRepresentationDescriptionSearchServiceParameters {
 
     public IGanttIdProvider getGanttIdProvider() {
         return this.ganttIdProvider;
+    }
+
+    public IDeckIdProvider getDeckIdProvider() {
+        return this.deckIdProvider;
     }
 
     public IObjectService getObjectService() {

@@ -18,6 +18,7 @@ import {
   RepresentationContext,
   RepresentationContextValue,
 } from '@eclipse-sirius/sirius-components-core';
+import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
@@ -41,6 +42,8 @@ export const RepresentationContextProvider = ({ children }: RepresentationContex
         return FormDescriptionEditorRepresentation;
       } else if (type === 'Gantt') {
         return GanttRepresentation;
+      } else if (type === 'Deck') {
+        return DeckRepresentation;
       }
       return null;
     },

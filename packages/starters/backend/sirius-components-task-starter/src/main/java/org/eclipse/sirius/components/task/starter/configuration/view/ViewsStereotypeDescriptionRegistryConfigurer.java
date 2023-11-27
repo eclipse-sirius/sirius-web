@@ -40,6 +40,10 @@ public class ViewsStereotypeDescriptionRegistryConfigurer implements IStereotype
 
     private static final String GANTT_VIEW_LABEL = "Gantt View";
 
+    private static final UUID DECK_VIEW_ID = UUID.nameUUIDFromBytes("deck_view".getBytes());
+
+    private static final String DECK_VIEW_LABEL = "Deck View";
+
     private static final String TIMER_NAME = "siriusweb_stereotype_load";
 
     private final StereotypeBuilder stereotypeBuilder;
@@ -51,20 +55,37 @@ public class ViewsStereotypeDescriptionRegistryConfigurer implements IStereotype
     @Override
     public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
         registry.add(new StereotypeDescription(GANTT_VIEW_ID, GANTT_VIEW_LABEL, this::getGanttViewContent));
+        registry.add(new StereotypeDescription(DECK_VIEW_ID, DECK_VIEW_LABEL, this::getDeckViewContent));
     }
 
     private String getGanttViewContent() {
 
-        View view = this.createView();
+        View view = this.createGanttView();
         return this.stereotypeBuilder.getStereotypeBody(List.of(view));
     }
 
-    private View createView() {
+    private String getDeckViewContent() {
+
+        View view = this.createDeckView();
+        return this.stereotypeBuilder.getStereotypeBody(List.of(view));
+    }
+
+    private View createGanttView() {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
 
         View view = ViewFactory.eINSTANCE.createView();
-        new ViewGanttDescriptionBuilder().createRepresentationDescription(view);
+        new ViewGanttDescriptionBuilder().addRepresentationDescription(view);
+
+        return view;
+    }
+
+    private View createDeckView() {
+        ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.eAdapters().add(new ECrossReferenceAdapter());
+
+        View view = ViewFactory.eINSTANCE.createView();
+        new ViewDeckDescriptionBuilder().addRepresentationDescription(view);
 
         return view;
     }

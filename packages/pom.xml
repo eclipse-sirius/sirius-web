@@ -47,6 +47,7 @@
 		<module>charts/backend</module>
 		<module>diagrams/backend</module>
 		<module>gantt/backend</module>
+		<module>deck/backend</module>
 		<module>formdescriptioneditors/backend</module>
 		<module>forms/backend</module>
 		<module>selection/backend</module>
