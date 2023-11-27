@@ -55,8 +55,8 @@ public class DiagramEventFlux {
         }
     }
 
-    public Flux<IPayload> getFlux(UUID id) {
-        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(id, this.currentDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH));
+    public Flux<IPayload> getFlux(UUID id, String cause) {
+        var initialRefresh = Mono.fromCallable(() -> new DiagramRefreshedEventPayload(id, this.currentDiagram, cause));
         return Flux.concat(initialRefresh, this.sink.asFlux());
     }
 

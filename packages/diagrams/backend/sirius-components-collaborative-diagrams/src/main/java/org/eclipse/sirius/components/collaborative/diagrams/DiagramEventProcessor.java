@@ -83,6 +83,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private UUID currentRevisionId = UUID.randomUUID();
 
+    private String currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
+
     public DiagramEventProcessor(DiagramEventProcessorParameters parameters) {
         this.logger.trace("Creating the diagram event processor {}", parameters.diagramContext().getDiagram().getId());
 
@@ -138,10 +140,14 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.diagramContext.update(laidOutDiagram);
                 this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT);
 
+                this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
+
                 payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
             } else {
                 payloadSink.tryEmitValue(new SuccessPayload(layoutDiagramInput.id()));
             }
+
+            return;
         }
 
         IRepresentationInput effectiveInput = representationInput;
@@ -175,6 +181,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             this.diagramContext.update(refreshedDiagram);
 
             this.currentRevisionId = changeDescription.getInput().id();
+            this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
             this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH);
         }
     }
@@ -219,7 +226,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     public Flux<IPayload> getOutputEvents(IInput input) {
         // @formatter:off
         return Flux.merge(
-            this.diagramEventFlux.getFlux(this.currentRevisionId),
+            this.diagramEventFlux.getFlux(this.currentRevisionId, this.currentRevisionCause),
             this.subscriptionManager.getFlux(input)
         );
     }
