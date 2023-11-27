@@ -168,17 +168,10 @@ public class DiagramCreationService implements IDiagramCreationService {
             newDiagram = this.layoutService.incrementalLayout(editingContext, newDiagram, optionalDiagramElementEvent);
         }
 
-        if (newDiagram.getLabel().endsWith("__EXPERIMENTAL")) {
-            DiagramLayoutData previousLayoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of());
-            if (!this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription) && optionalPreviousDiagram.isPresent()) {
-                previousLayoutData = optionalPreviousDiagram.get().getLayoutData();
-            }
-            var diagramLayoutConfiguration = this.diagramLayoutConfigurationProvider.getDiagramLayoutConfiguration(newDiagram, previousLayoutData, optionalDiagramElementEvent);
-            DiagramLayoutData newLayoutData = this.diagramLayoutEngine.layout(diagramLayoutConfiguration);
-            newDiagram = Diagram.newDiagram(newDiagram)
-                    .layoutData(newLayoutData)
-                    .build();
-        }
+        var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of()));
+        newDiagram = Diagram.newDiagram(newDiagram)
+                .layoutData(newLayoutData)
+                .build();
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
