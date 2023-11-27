@@ -40,8 +40,10 @@ export const DiagramElementPaletteContextProvider = ({ children }: DiagramElemen
   }, []);
 
   const hidePalette = useCallback(() => {
-    setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
-  }, []);
+    if (state.isOpened) {
+      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
+    }
+  }, [state.isOpened]);
 
   return (
     <DiagramElementPaletteContext.Provider

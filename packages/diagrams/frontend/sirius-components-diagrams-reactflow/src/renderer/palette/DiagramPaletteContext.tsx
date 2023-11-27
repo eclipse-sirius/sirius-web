@@ -45,8 +45,10 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
   }, []);
 
   const hidePalette = useCallback(() => {
-    setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
-  }, []);
+    if (state.isOpened) {
+      setState((prevState) => ({ ...prevState, x: null, y: null, isOpened: false }));
+    }
+  }, [state.isOpened]);
 
   const getLastToolInvoked = (toolSectionId: string): GQLTool | null => {
     return (
