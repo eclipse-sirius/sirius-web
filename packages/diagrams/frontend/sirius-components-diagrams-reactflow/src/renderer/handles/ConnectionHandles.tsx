@@ -75,7 +75,7 @@ const handleStyle = (
   }
   if (isEdgeSelected) {
     style.opacity = 1;
-    style.outline = `${theme.palette.primary.main} solid 1px`;
+    style.outline = `${theme.palette.diagram.selectedNode} solid 1px`;
   }
   if (isVirtualHandle) {
     style.position = 'absolute';

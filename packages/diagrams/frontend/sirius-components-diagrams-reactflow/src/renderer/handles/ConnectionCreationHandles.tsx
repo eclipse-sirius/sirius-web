@@ -60,7 +60,7 @@ const connectionCreationHandleStyle = (
       break;
   }
   if (isHovered === position || isMouseDown === position) {
-    style.borderColor = theme.palette.primary.main;
+    style.borderColor = theme.palette.diagram.selectedNode;
   }
   return style;
 };

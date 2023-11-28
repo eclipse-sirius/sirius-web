@@ -22,6 +22,10 @@ const fallbackTheme = createTheme({
       border: 'black',
       background: 'black',
     },
+    diagram: {
+      selectedNode: 'gray',
+      selectedEdge: 'gray',
+    },
   },
   typography: {
     h1: {

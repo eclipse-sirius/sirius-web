@@ -22,6 +22,10 @@ declare module '@material-ui/core/styles' {
       border: React.CSSProperties['color'];
       background: React.CSSProperties['color'];
     };
+    diagram: {
+      selectedNode: React.CSSProperties['color'];
+      selectedEdge: React.CSSProperties['color'];
+    };
   }
 }
 
@@ -35,6 +39,10 @@ declare module '@material-ui/core/styles/createPalette' {
       border: React.CSSProperties['color'];
       background: React.CSSProperties['color'];
     };
+    diagram: {
+      selectedNode: React.CSSProperties['color'];
+      selectedEdge: React.CSSProperties['color'];
+    };
   }
   export interface PaletteOptions {
     navigation: {
@@ -44,6 +52,10 @@ declare module '@material-ui/core/styles/createPalette' {
     navigationBar: {
       border: React.CSSProperties['color'];
       background: React.CSSProperties['color'];
+    };
+    diagram: {
+      selectedNode: React.CSSProperties['color'];
+      selectedEdge: React.CSSProperties['color'];
     };
   }
 }

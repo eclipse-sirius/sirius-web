@@ -40,7 +40,7 @@ const rectangularNodeStyle = (
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
   };
   if (selected) {
-    rectangularNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+    rectangularNodeStyle.outline = `${theme.palette.diagram.selectedNode} solid 1px`;
   }
   return rectangularNodeStyle;
 };
@@ -60,7 +60,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
     <>
       {data.nodeDescription?.userResizable && (
         <NodeResizer
-          color={theme.palette.primary.main}
+          color={theme.palette.diagram.selectedNode}
           isVisible={selected}
           shouldResize={() => !data.isBorderNode}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}

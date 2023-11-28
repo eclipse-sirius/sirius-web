@@ -19,6 +19,16 @@ navigationBar: {
 },
 ...
 ```
+- https://github.com/eclipse-sirius/sirius-web/issues/2669[#2669] [sirius-web] Add dedicated colors for diagram selected elements in Sirius Web theme.
+The theme provided by the user must now provide diagram selected elements colors:
+```ts
+...
+diagram: {
+      selectedEdge: 'green',
+      selectedNode: 'red',
+},
+...
+```
 
 === Dependency update
 
@@ -29,7 +39,7 @@ navigationBar: {
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2658[#2658] [sirius-web] Add dedicated colors for navigation bar in Sirius Web theme
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2669[#2669] [sirius-web] Add dedicated colors for diagram selected elements in Sirius Web theme
 
 == v2023.12.0
 
