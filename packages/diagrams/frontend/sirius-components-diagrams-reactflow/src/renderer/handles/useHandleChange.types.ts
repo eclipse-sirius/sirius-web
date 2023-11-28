@@ -10,25 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node, NodeChange, Position } from 'reactflow';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { ConnectionHandle } from './ConnectionHandles.types';
+import { NodeChange } from 'reactflow';
 
 export interface UseHandleChangeValue {
   onHandleChange: (changes: NodeChange[]) => NodeChange[];
 }
-
-export type PopulateHandleIdToOtherHandNode = (
-  edges: Edge<EdgeData>[],
-  nodes: Node<NodeData>[],
-  handlesId: string[],
-  handesIdToOtherEndNode: Map<string, Node<NodeData>>
-) => void;
-
-export type GetUpdatedConnectionHandlesIndexByPosition = (
-  node: Node<NodeData>,
-  nodeConnectionHandle: ConnectionHandle,
-  position: Position,
-  handleIdToOtherEndNode: Map<string, Node<NodeData>>,
-  nodes: Node<NodeData>[]
-) => ConnectionHandle;

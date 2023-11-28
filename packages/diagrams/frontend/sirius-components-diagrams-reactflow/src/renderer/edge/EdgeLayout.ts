@@ -115,7 +115,7 @@ const getParameters: GetParameters = (movingNode, nodeA, nodeB, visiblesNodes) =
   };
 };
 
-export const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
+const getNodeCenter: GetNodeCenter = (node, visiblesNodes) => {
   if (node.positionAbsolute?.x && node.positionAbsolute?.y) {
     return {
       x: node.positionAbsolute?.x ?? 0 + (node.width ?? 0) / 2,

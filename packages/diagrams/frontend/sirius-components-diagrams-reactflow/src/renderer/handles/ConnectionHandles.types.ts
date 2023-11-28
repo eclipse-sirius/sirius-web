@@ -19,8 +19,6 @@ export interface ConnectionHandlesProps {
 
 export interface ConnectionHandle extends HandleProps {
   nodeId: string;
-  index: number;
-  hidden: boolean;
 }
 export interface ConnectionHandlesState {
   selectedHandles: string[];

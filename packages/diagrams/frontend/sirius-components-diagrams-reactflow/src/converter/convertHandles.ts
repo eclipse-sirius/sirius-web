@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Position } from 'reactflow';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
-import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
+import { GQLNode, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 
 export const convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge[]): ConnectionHandle[] => {
@@ -23,11 +23,9 @@ export const convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge
     if (edge.sourceId === gqlNode.id) {
       connectionHandles.push({
         id: `handle--source--${gqlNode.id}--${sourceHandlesCounter}`,
-        index: 0,
         nodeId: gqlNode.id,
         position: Position.Right,
         type: 'source',
-        hidden: edge.state === GQLViewModifier.Hidden,
       });
       sourceHandlesCounter += 1;
     }
@@ -35,31 +33,25 @@ export const convertHandles = (gqlNode: GQLNode<GQLNodeStyle>, gqlEdges: GQLEdge
     if (edge.targetId === gqlNode.id) {
       connectionHandles.push({
         id: `handle--target--${gqlNode.id}--${targetHandlesCounter}`,
-        index: 0,
         nodeId: gqlNode.id,
         position: Position.Left,
         type: 'target',
-        hidden: edge.state === GQLViewModifier.Hidden,
       });
       targetHandlesCounter += 1;
     }
   });
   connectionHandles.push({
     id: `handle--source--${gqlNode.id}--${sourceHandlesCounter}`,
-    index: 0,
     nodeId: gqlNode.id,
     position: Position.Right,
     type: 'source',
-    hidden: true,
   });
 
   connectionHandles.push({
     id: `handle--target--${gqlNode.id}--${targetHandlesCounter}`,
-    index: 0,
     nodeId: gqlNode.id,
     position: Position.Left,
     type: 'target',
-    hidden: true,
   });
 
   return connectionHandles;
