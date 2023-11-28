@@ -44,7 +44,7 @@ const listNodeStyle = (
     borderRightColor: getCSSColor(String(style.borderRightColor), theme),
   };
   if (selected) {
-    listNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+    listNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return listNodeStyle;

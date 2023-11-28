@@ -31,7 +31,7 @@ const iconlabelStyle = (
   };
 
   if (selected) {
-    iconLabelNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+    iconLabelNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return iconLabelNodeStyle;

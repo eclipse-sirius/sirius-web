@@ -44,7 +44,7 @@ const multiLabelEdgeStyle = (
   };
 
   if (selected) {
-    multiLabelEdgeStyle.stroke = `${theme.palette.primary.main}`;
+    multiLabelEdgeStyle.stroke = `${theme.palette.selected}`;
   }
 
   return multiLabelEdgeStyle;

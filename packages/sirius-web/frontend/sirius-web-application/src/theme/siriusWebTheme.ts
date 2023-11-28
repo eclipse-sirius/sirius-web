@@ -47,6 +47,7 @@ export const baseTheme: Theme = createTheme({
       border: '#BE1A78',
       background: '#261E58',
     },
+    selected: '#BE1A78',
     action: {
       hover: '#BE1A7826',
       selected: '#BE1A7842',

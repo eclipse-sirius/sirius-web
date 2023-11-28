@@ -41,7 +41,7 @@ const imageNodeStyle = (
     ...style,
   };
   if (selected) {
-    imageNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+    imageNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return imageNodeStyle;
@@ -74,7 +74,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
   return (
     <>
       <NodeResizer
-        color={theme.palette.primary.main}
+        color={theme.palette.selected}
         isVisible={selected && !data.isBorderNode}
         shouldResize={() => !data.isBorderNode}
         keepAspectRatio={data.nodeDescription?.keepAspectRatio}
