@@ -22,6 +22,7 @@ const fallbackTheme = createTheme({
       border: 'black',
       background: 'black',
     },
+    selected: 'gray',
   },
   typography: {
     h1: {

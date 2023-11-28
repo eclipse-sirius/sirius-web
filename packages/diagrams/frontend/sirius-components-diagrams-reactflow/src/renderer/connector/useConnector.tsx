@@ -55,8 +55,8 @@ export const useConnector = (): UseConnectorValue => {
         const isSelectedNode = hoveredNode?.id === id;
         if (isConnectionCompatibleNode) {
           if (isSelectedNode) {
-            // Hightlight the selected target
-            style.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
+            // Highlight the selected target
+            style.boxShadow = `0px 0px 2px 2px ${theme.palette.selected}`;
           }
           // Make sure all compatible nodes, even normally faded ones, are fully visible
           style.opacity = '1';
@@ -70,7 +70,7 @@ export const useConnector = (): UseConnectorValue => {
     getHandleStyle: (id: string): React.CSSProperties => {
       const handleStyle: React.CSSProperties = {};
       if (isNewConnection && candidates.map((node) => node.id).includes(id)) {
-        handleStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.primary.main}`;
+        handleStyle.boxShadow = `0px 0px 2px 2px ${theme.palette.selected}`;
         handleStyle.opacity = 1;
       } else if (isNewConnection) {
         handleStyle.opacity = 0.4;
