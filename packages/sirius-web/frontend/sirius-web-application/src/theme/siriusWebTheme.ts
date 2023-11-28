@@ -38,6 +38,21 @@ export const baseTheme: Theme = createTheme({
       dark: '#9B0B00',
       light: '#E43F33',
     },
+    success: {
+      main: '#43A047',
+      dark: '#327836',
+      light: '#4EBA54',
+    },
+    warning: {
+      main: '#FF9800',
+      dark: '#D98200',
+      light: '#FFB800',
+    },
+    info: {
+      main: '#2196F3',
+      dark: '#1D7DCC',
+      light: '#24A7FF',
+    },
     divider: '#B3BFC5',
     navigation: {
       leftBackground: '#BE1A7880',
@@ -51,13 +66,6 @@ export const baseTheme: Theme = createTheme({
     action: {
       hover: '#BE1A7826',
       selected: '#BE1A7842',
-    },
-  },
-  overrides: {
-    MuiSnackbarContent: {
-      root: {
-        backgroundColor: '#7269A4',
-      },
     },
   },
 });
