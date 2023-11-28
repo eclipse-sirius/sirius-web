@@ -13,12 +13,12 @@
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useCallback } from 'react';
-import { useViewport } from 'reactflow';
 import { useLayout } from '../layout/useLayout';
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { DiagramPalettePortal } from './DiagramPalettePortal';
 import { Palette } from './Palette';
 import { useDiagramPalette } from './useDiagramPalette';
+import { usePaletteReferencePosition } from './usePaletteReferencePosition';
 
 const useDiagramPaletteStyle = makeStyles((theme) => ({
   toolbar: {
@@ -34,20 +34,16 @@ const useDiagramPaletteStyle = makeStyles((theme) => ({
 }));
 
 export const DiagramPalette = ({ targetObjectId }: DiagramPaletteProps) => {
-  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const { x: paletteX, y: paletteY, isOpened } = useDiagramPalette();
+  const { x, y } = usePaletteReferencePosition();
   const { setReferencePosition, resetReferencePosition } = useLayout();
   const classes = useDiagramPaletteStyle();
 
   const onToolApply = useCallback(() => {
-    if (viewportZoom !== 0 && paletteX && paletteY) {
-      const referencePosition = {
-        x: (paletteX - viewportX) / viewportZoom,
-        y: (paletteY - viewportY) / viewportZoom,
-      };
-      setReferencePosition(referencePosition, '');
+    if (x && y) {
+      setReferencePosition({ x, y }, '');
     }
-  }, [paletteX, paletteY, viewportX, viewportY, viewportZoom]);
+  }, [x, y]);
 
   const onToolApplyError = () => {
     resetReferencePosition();
