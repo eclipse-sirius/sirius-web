@@ -12,13 +12,18 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { useLayout } from '../layout/useLayout';
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { DiagramPalettePortal } from './DiagramPalettePortal';
 import { Palette } from './Palette';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteReferencePosition } from './usePaletteReferencePosition';
+
+export const DiagramPalette = memo(({ targetObjectId }: DiagramPaletteProps) => {
+  const { isOpened } = useDiagramPalette();
+  return isOpened ? <DiagramPaletteContent targetObjectId={targetObjectId} /> : null;
+});
 
 const useDiagramPaletteStyle = makeStyles((theme) => ({
   toolbar: {
@@ -33,8 +38,8 @@ const useDiagramPaletteStyle = makeStyles((theme) => ({
   },
 }));
 
-export const DiagramPalette = ({ targetObjectId }: DiagramPaletteProps) => {
-  const { x: paletteX, y: paletteY, isOpened } = useDiagramPalette();
+const DiagramPaletteContent = ({ targetObjectId }: DiagramPaletteProps) => {
+  const { x: paletteX, y: paletteY } = useDiagramPalette();
   const { x, y } = usePaletteReferencePosition();
   const { setReferencePosition, resetReferencePosition } = useLayout();
   const classes = useDiagramPaletteStyle();
@@ -49,7 +54,7 @@ export const DiagramPalette = ({ targetObjectId }: DiagramPaletteProps) => {
     resetReferencePosition();
   };
 
-  return isOpened && paletteX && paletteY ? (
+  return paletteX && paletteY ? (
     <DiagramPalettePortal>
       <div className={classes.toolbar} style={{ position: 'absolute', left: paletteX, top: paletteY }}>
         <Palette
