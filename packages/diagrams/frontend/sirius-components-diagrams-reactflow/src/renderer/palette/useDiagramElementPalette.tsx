@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useCallback, useContext } from 'react';
-import { XYPosition, useStoreApi } from 'reactflow';
+import { useCallback, useContext, useEffect } from 'react';
+import { XYPosition, useKeyPress, useStoreApi } from 'reactflow';
 import { DiagramElementPaletteContext } from './DiagramElementPaletteContext';
 import { DiagramElementPaletteContextValue } from './DiagramElementPaletteContext.types';
 import { UseDiagramElementPaletteValue } from './useDiagramElementPalette.types';
@@ -38,6 +38,13 @@ export const useDiagramElementPalette = (): UseDiagramElementPaletteValue => {
     },
     [element]
   );
+
+  const escapePressed = useKeyPress('Escape');
+  useEffect(() => {
+    if (escapePressed) {
+      hideDiagramElementPalette();
+    }
+  }, [escapePressed]);
 
   return {
     x,
