@@ -140,6 +140,13 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
     return cleanup;
   }, [initialLabelItemError, initialLabelItemData]);
 
+  useEffect(() => {
+    if (textInput.current) {
+      const text = textInput.current.value;
+      textInput.current.setSelectionRange(text.length, text.length);
+    }
+  }, [textInput.current]);
+
   const doRename = () => {
     renameElement({
       variables: {
@@ -185,7 +192,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
         name="name"
         size="small"
         inputRef={textInput}
-        placeholder={'Enter the new name'}
+        placeholder={'Enter the new value'}
         value={state.newLabel}
         multiline={true}
         onChange={handleChange}
