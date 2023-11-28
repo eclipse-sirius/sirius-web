@@ -13,7 +13,6 @@
 
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
@@ -32,8 +31,6 @@ import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
-import { RawDiagram } from '../layout/layout.types';
-import { useLayout } from '../layout/useLayout';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 
@@ -43,7 +40,6 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   });
 
   const nodes = useNodes<NodeData>();
-  const { arrangeAll } = useLayout();
   const { fullscreen, onFullscreen } = useFullscreen();
 
   const reactFlow = useReactFlow<NodeData, EdgeData>();
@@ -64,12 +60,6 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
 
   const getAllElementsIds = () => {
     return [...reactFlow.getNodes().map((elem) => elem.id), ...reactFlow.getEdges().map((elem) => elem.id)];
-  };
-
-  const handleArrangeAll = () => {
-    arrangeAll((laidoutDiagram: RawDiagram) => {
-      reactFlow.setNodes(laidoutDiagram.nodes);
-    });
   };
 
   return (
@@ -114,9 +104,6 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
               <GridOnIcon />
             </IconButton>
           )}
-          <IconButton size="small" onClick={() => handleArrangeAll()}>
-            <AccountTreeIcon />
-          </IconButton>
           <IconButton
             size="small"
             aria-label="reveal hidden elements"
