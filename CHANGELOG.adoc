@@ -124,6 +124,8 @@ It uses our algorithm instead of elk.js to perform the arrange-all.
 - https://github.com/eclipse-sirius/sirius-web/issues/2581[#2581] [diagram] Fix an issue where nodes created by custom tool are always on the default position.
 - https://github.com/eclipse-sirius/sirius-web/issues/2642[#2642] [diagram] Fix an issue where moving the viewport was slow.
 - https://github.com/eclipse-sirius/sirius-web/issues/2640[#2640] [diagram] Compute the handle position on diagram conversion, which happens every time a diagram refresh payload is received.
+- https://github.com/eclipse-sirius/sirius-web/issues/2647[#2647] [diagram] Split border shorthand CSS properties into non-shorthand properties for list nodes.
+Make some border node transparent when the node is in a list node in the convert engine.
 
 === New Features
 

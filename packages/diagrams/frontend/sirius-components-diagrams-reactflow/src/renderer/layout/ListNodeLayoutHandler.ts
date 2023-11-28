@@ -144,21 +144,6 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     }
 
     directNodesChildren.forEach((child, index) => {
-      // Hide children node borders to prevent a 'bold' aspect.
-      child.data.style = {
-        ...child.data.style,
-        borderTop: 'transparent',
-        borderLeft: 'transparent',
-        borderRight: 'transparent',
-      };
-
-      if (index === directNodesChildren.length - 1) {
-        child.data.style = {
-          ...child.data.style,
-          borderBottom: 'transparent',
-        };
-      }
-
       child.position = {
         x: borderWidth,
         y: borderWidth + (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0),
