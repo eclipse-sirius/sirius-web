@@ -43,14 +43,13 @@ export const baseTheme: Theme = createTheme({
       leftBackground: '#BE1A7880',
       rightBackground: '#261E5880',
     },
+    navigationBar: {
+      border: '#BE1A78',
+      background: '#261E58',
+    },
     action: {
       hover: '#BE1A7826',
       selected: '#BE1A7842',
-    },
-  },
-  props: {
-    MuiAppBar: {
-      color: 'secondary',
     },
   },
   overrides: {

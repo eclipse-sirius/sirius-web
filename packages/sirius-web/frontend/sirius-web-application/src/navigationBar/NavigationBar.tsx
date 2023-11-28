@@ -29,12 +29,13 @@ const useNavigationBarStyles = makeStyles((theme) => ({
   },
   appBarHeader: {
     height: '4px',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.navigationBar.border,
   },
   toolbar: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: theme.palette.navigationBar.background,
   },
   left: {
     display: 'flex',

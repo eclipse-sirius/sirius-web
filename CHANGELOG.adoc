@@ -1,7 +1,37 @@
 = Changelog
 
 
-== v2023.12.0 (work in progress)
+== v2024.1.0 (work in progress)
+
+=== Shapes
+
+=== Architectural decision records
+
+=== Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/2658[#2658] [sirius-web] Add dedicated colors for navigation bar in Sirius Web theme.
+The theme provided by the user must now provide navigation bar colors:
+```ts
+...
+navigationBar: {
+      border: 'yellow',
+      background: 'blue',
+},
+...
+```
+
+=== Dependency update
+
+=== Bug fixes
+
+=== New Features
+
+=== Improvements
+
+- https://github.com/eclipse-sirius/sirius-web/issues/2658[#2658] [sirius-web] Add dedicated colors for navigation bar in Sirius Web theme
+
+
+== v2023.12.0
 
 === Shapes
 
