@@ -13,13 +13,13 @@
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useCallback } from 'react';
-import { useViewport } from 'reactflow';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
 import { useLayout } from '../layout/useLayout';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
 import { DiagramElementPalettePortal } from './DiagramElementPalettePortal';
 import { Palette } from './Palette';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
+import { usePaletteReferencePosition } from './usePaletteReferencePosition';
 
 const useEdgePaletteStyle = makeStyles((theme) => ({
   toolbar: {
@@ -37,8 +37,8 @@ const useEdgePaletteStyle = makeStyles((theme) => ({
 export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
   const { setReferencePosition, resetReferencePosition } = useLayout();
-  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const { x: paletteX, y: paletteY, isOpened } = useDiagramElementPalette();
+  const { x, y } = usePaletteReferencePosition();
   const classes = useEdgePaletteStyle();
 
   const handleDirectEditClick = () => {
@@ -48,14 +48,10 @@ export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElem
   };
 
   const onToolApply = useCallback(() => {
-    if (viewportZoom !== 0 && paletteX && paletteY) {
-      const referencePosition = {
-        x: (paletteX - viewportX) / viewportZoom,
-        y: (paletteY - viewportY) / viewportZoom,
-      };
-      setReferencePosition(referencePosition, diagramElementId);
+    if (x && y) {
+      setReferencePosition({ x, y }, diagramElementId);
     }
-  }, [paletteX, paletteY, viewportX, viewportY, viewportZoom]);
+  }, [x, y]);
 
   const onToolApplyError = () => {
     resetReferencePosition();
