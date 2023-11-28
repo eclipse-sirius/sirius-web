@@ -18,6 +18,10 @@ declare module '@material-ui/core/styles' {
       leftBackground: React.CSSProperties['color'];
       rightBackground: React.CSSProperties['color'];
     };
+    navigationBar: {
+      border: React.CSSProperties['color'];
+      background: React.CSSProperties['color'];
+    };
   }
 }
 
@@ -27,11 +31,19 @@ declare module '@material-ui/core/styles/createPalette' {
       leftBackground: React.CSSProperties['color'];
       rightBackground: React.CSSProperties['color'];
     };
+    navigationBar: {
+      border: React.CSSProperties['color'];
+      background: React.CSSProperties['color'];
+    };
   }
   export interface PaletteOptions {
     navigation: {
       leftBackground: React.CSSProperties['color'];
       rightBackground: React.CSSProperties['color'];
+    };
+    navigationBar: {
+      border: React.CSSProperties['color'];
+      background: React.CSSProperties['color'];
     };
   }
 }
