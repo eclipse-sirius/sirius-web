@@ -118,6 +118,17 @@ describe('Diagram - Direct edit label', () => {
         diagram.getNodes('diagram', 'Entity2').should('exist');
         diagram.getNodes('diagram', 'test').should('not.exist');
       });
+
+      it('Then we can set the correct name when typing directly', () => {
+        const explorer = new Explorer();
+        explorer.createObject('Root', 'Entity2s Entity2');
+        const details = new Details();
+        details.getTextField('Name').type('Entity2{Enter}');
+
+        const diagram = new Diagram();
+        diagram.getNodes('diagram', 'Entity2').type('NewName{enter}');
+        diagram.getNodes('diagram', 'NewName').should('exist');
+      });
     });
   });
 });
