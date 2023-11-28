@@ -16,6 +16,7 @@ import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { computePreviousSize } from './bounds';
 import { RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
@@ -80,16 +81,18 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const minNodeheight = getNodeOrMinHeight(labelHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
-    if (previousNode && node.data.nodeDescription?.userResizable) {
-      if (minNodeWith > (previousNode.width ?? 0)) {
+    const previousDimensions = computePreviousSize(previousNode, node);
+
+    if (node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
       } else {
-        node.width = previousNode.width;
+        node.width = previousDimensions.width;
       }
-      if (minNodeheight > (previousNode.height ?? 0)) {
+      if (minNodeheight > previousDimensions.height) {
         node.height = minNodeheight;
       } else {
-        node.height = previousNode.height;
+        node.height = previousDimensions.height;
       }
     } else {
       node.width = minNodeWith;

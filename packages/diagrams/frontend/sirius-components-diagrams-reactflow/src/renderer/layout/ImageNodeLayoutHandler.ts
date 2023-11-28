@@ -16,6 +16,7 @@ import { NodeData } from '../DiagramRenderer.types';
 import { ImageNodeData } from '../node/ImageNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { computePreviousSize } from './bounds';
 import { RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
@@ -64,10 +65,10 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
-
-    if (previousNode && previousNode.width && previousNode.height) {
-      node.width = getNodeOrMinWidth(previousNode.width, node);
-      node.height = getNodeOrMinHeight(previousNode.height, node);
+    const previousDimensions = computePreviousSize(previousNode, node);
+    if (previousDimensions) {
+      node.width = getNodeOrMinWidth(previousDimensions.width, node);
+      node.height = getNodeOrMinHeight(previousDimensions.height, node);
     } else {
       node.width = getNodeOrMinWidth(undefined, node);
       node.height = getNodeOrMinHeight(undefined, node);

@@ -51,6 +51,7 @@ const toListNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
   const data: ListNodeData = {
     targetObjectId,
@@ -73,6 +74,7 @@ const toListNode = (
     connectionHandles,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
+    isNew,
   };
 
   if (insideLabel) {

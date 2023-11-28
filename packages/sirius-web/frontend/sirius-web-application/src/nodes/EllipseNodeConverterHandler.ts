@@ -52,6 +52,8 @@ const toEllipseNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
+
   const data: EllipseNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -73,6 +75,7 @@ const toEllipseNode = (
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
     connectionHandles,
     labelEditable,
+    isNew,
   };
 
   if (insideLabel) {

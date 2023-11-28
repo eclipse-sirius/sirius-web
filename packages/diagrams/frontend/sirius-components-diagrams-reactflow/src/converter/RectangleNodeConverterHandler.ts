@@ -51,6 +51,7 @@ const toRectangularNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
   const data: RectangularNodeData = {
     targetObjectId,
@@ -74,6 +75,7 @@ const toRectangularNode = (
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
     labelEditable,
     connectionHandles,
+    isNew,
   };
 
   if (insideLabel) {

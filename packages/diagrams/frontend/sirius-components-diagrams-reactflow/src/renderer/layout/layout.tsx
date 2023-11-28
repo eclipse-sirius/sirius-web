@@ -29,6 +29,7 @@ import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ReferencePosition } from './LayoutContext.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { layoutHandles } from './layoutHandles';
@@ -234,12 +235,14 @@ const layoutDiagram = (
   // Update position of root nodes
   nodesToLayout.forEach((node, index) => {
     const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
+    const previousPosition = computePreviousPosition(previousNode, node);
+
     const createdNode = newlyAddedNode?.id === node.id ? newlyAddedNode : undefined;
 
     if (!!createdNode) {
       node.position = createdNode.position;
-    } else if (previousNode) {
-      node.position = previousNode.position;
+    } else if (previousPosition) {
+      node.position = previousPosition;
     } else {
       const maxBorderNodeWidthWest = getChildren(node, allVisibleNodes)
         .filter(isWestBorderNode)

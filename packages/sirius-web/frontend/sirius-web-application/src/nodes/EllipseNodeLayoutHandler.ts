@@ -11,10 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  applyRatioOnNewNodeSizeValue,
-  computeNodesBox,
   Diagram,
   DiagramNodeType,
+  ILayoutEngine,
+  INodeLayoutHandler,
+  NodeData,
+  applyRatioOnNewNodeSizeValue,
+  computeNodesBox,
+  computePreviousPosition,
+  computePreviousSize,
   findNodeIndex,
   getBorderNodeExtent,
   getChildNodePosition,
@@ -25,9 +30,6 @@ import {
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
-  ILayoutEngine,
-  INodeLayoutHandler,
-  NodeData,
   setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node } from 'reactflow';
@@ -59,7 +61,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
-
+      const previousPosition = computePreviousPosition(previousNode, node);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -69,10 +71,10 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
         }
-      } else if (previousNode) {
+      } else if (previousPosition) {
         // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
         const headerHeightFootprint = labelElement ? getHeaderFootprint(labelElement, false, false) : 0;
-        child.position = previousNode.position;
+        child.position = previousPosition;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
         }
@@ -133,16 +135,17 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
-    if (previousNode && node.data.nodeDescription?.userResizable) {
-      if (minNodeWith > (previousNode.width ?? 0)) {
+    const previousDimensions = computePreviousSize(previousNode, node);
+    if (node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
       } else {
-        node.width = previousNode.width;
+        node.width = previousDimensions.width;
       }
-      if (minNodeheight > (previousNode.height ?? 0)) {
+      if (minNodeheight > previousDimensions.height) {
         node.height = minNodeheight;
       } else {
-        node.height = previousNode.height;
+        node.height = previousDimensions.height;
       }
     } else {
       node.width = minNodeWith;

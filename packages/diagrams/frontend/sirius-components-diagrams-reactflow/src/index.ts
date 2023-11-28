@@ -35,8 +35,10 @@ export type { ConnectionHandle } from './renderer/handles/ConnectionHandles.type
 export { ConnectionTargetHandle } from './renderer/handles/ConnectionTargetHandle';
 export { useRefreshConnectionHandles } from './renderer/handles/useRefreshConnectionHandles';
 export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/LayoutEngine.types';
+export { computePreviousPosition, computePreviousSize } from './renderer/layout/bounds';
 export * from './renderer/layout/layoutBorderNodes';
 export * from './renderer/layout/layoutNode';
+export { useLayout } from './renderer/layout/useLayout';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
 export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette';
@@ -44,6 +46,5 @@ export type { DiagramPaletteToolContextValue } from './renderer/palette/DiagramP
 export { DiagramPaletteToolContext } from './renderer/palette/DiagramPaletteToolContext';
 export { DiagramPaletteToolContribution } from './renderer/palette/DiagramPaletteToolContribution';
 export type { DiagramPaletteToolContributionComponentProps } from './renderer/palette/DiagramPaletteToolContribution.types';
-export { DiagramRepresentation } from './representation/DiagramRepresentation';
-export { useLayout } from './renderer/layout/useLayout';
 export { usePaletteReferencePosition } from './renderer/palette/usePaletteReferencePosition';
+export { DiagramRepresentation } from './representation/DiagramRepresentation';
