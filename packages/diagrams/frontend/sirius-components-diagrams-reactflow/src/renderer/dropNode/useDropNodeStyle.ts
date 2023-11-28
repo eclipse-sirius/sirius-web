@@ -12,11 +12,13 @@
  *******************************************************************************/
 
 import { useTheme } from '@material-ui/core/styles';
-import { useDropNode } from '../dropNode/useDropNode';
+import { useContext } from 'react';
+import { DropNodeContext } from './DropNodeContext';
+import { DropNodeContextValue } from './DropNodeContext.types';
 import { useDropNodeStyleValue } from './useDropNodeStyle.types';
 
 export const useDropNodeStyle = (nodeId: string): useDropNodeStyleValue => {
-  const { compatibleNodeIds, targetNodeId, draggedNode } = useDropNode();
+  const { draggedNode, targetNodeId, compatibleNodeIds } = useContext<DropNodeContextValue>(DropNodeContext);
   const theme = useTheme();
 
   const isCompatibleDropTarget: boolean = compatibleNodeIds.includes(nodeId);
