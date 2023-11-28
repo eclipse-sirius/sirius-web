@@ -38,6 +38,5 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
 
     cy.getByTestId('diagram').should('not.exist');
-    cy.getByTestId('diagram-complete-message').should('exist');
   });
 });

@@ -27,11 +27,11 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography');
+    cy.getByTestId('name').type('Topography___SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
-    cy.getByTestId('Topography').click();
+    cy.getByTestId('Topography___SPROTTY').click();
   });
 
   it('test Hide/Fade action is not available on diagram background', () => {

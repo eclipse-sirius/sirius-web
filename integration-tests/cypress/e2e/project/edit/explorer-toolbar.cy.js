@@ -27,11 +27,11 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography');
+    cy.getByTestId('name').type('Topography__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
-    cy.getByTestId('Topography').click();
+    cy.getByTestId('Topography__SPROTTY').click();
   });
 
   it('Deactivate the synchronisation mode does not reveal the semantic element selected on a diagram but activating it will', () => {

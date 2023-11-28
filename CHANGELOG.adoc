@@ -77,6 +77,8 @@ The API of this component will also change over time so API breaks should be exp
 This new package and those new components are the first part of our work to make Sirius Web more reusable.
 - https://github.com/eclipse-sirius/sirius-web/issues/2615[#2615] [diagram] `useDropNode().dropFeedbackStyleProvider` has been removed.
 Use `useDropNodeStyle(node.id)` instead to get the feedback of the drop feedback.
+- https://github.com/eclipse-sirius/sirius-web/issues/2671[#2671] [diagram] Switch to Reactflow by default.
+To open a diagram with Sprotty, suffixes the diagram name with `__SPROTTY`
 
 === Dependency update
 

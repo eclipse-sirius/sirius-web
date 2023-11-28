@@ -30,10 +30,10 @@ export const RepresentationContextProvider = ({ children }: RepresentationContex
       const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
       const params = new URLSearchParams(query);
       const type = params.get('type');
-      if (type === 'Diagram' && representation.label.endsWith('__REACT_FLOW')) {
-        return ReactFlowDiagramRepresentation;
-      } else if (type === 'Diagram') {
+      if (type === 'Diagram' && representation.label.endsWith('__SPROTTY')) {
         return DiagramRepresentation;
+      } else if (type === 'Diagram') {
+        return ReactFlowDiagramRepresentation;
       } else if (type === 'Form') {
         return FormRepresentation;
       } else if (type === 'FormDescriptionEditor') {
