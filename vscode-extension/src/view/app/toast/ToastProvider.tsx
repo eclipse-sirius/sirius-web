@@ -13,10 +13,29 @@
 
 import { ToastContext } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
+import { styled } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { MaterialDesignContent, SnackbarProvider, useSnackbar } from 'notistack';
 import React from 'react';
 import { ToastCloseButtonProps, ToastContextInitializerProps, ToastProviderProps } from './ToastProvider.types';
+
+const StyledMaterialDesignContent = styled(MaterialDesignContent)(({ theme }) => ({
+  '&.notistack-MuiContent-default': {
+    backgroundColor: theme.palette.primary.main,
+  },
+  '&.notistack-MuiContent-success': {
+    backgroundColor: theme.palette.success.main,
+  },
+  '&.notistack-MuiContent-error': {
+    backgroundColor: theme.palette.error.main,
+  },
+  '&.notistack-MuiContent-warning': {
+    backgroundColor: theme.palette.warning.main,
+  },
+  '&.notistack-MuiContent-info': {
+    backgroundColor: theme.palette.info.main,
+  },
+}));
 
 const ToastCloseButton = ({ toastKey }: ToastCloseButtonProps) => {
   const { closeSnackbar } = useSnackbar();
@@ -51,7 +70,14 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
       }}
       action={(key) => <ToastCloseButton toastKey={key} />}
       autoHideDuration={10000}
-      data-testid="toast">
+      data-testid="toast"
+      Components={{
+        default: StyledMaterialDesignContent,
+        success: StyledMaterialDesignContent,
+        error: StyledMaterialDesignContent,
+        warning: StyledMaterialDesignContent,
+        info: StyledMaterialDesignContent,
+      }}>
       <ToastContextInitializer>{children}</ToastContextInitializer>
     </SnackbarProvider>
   );
