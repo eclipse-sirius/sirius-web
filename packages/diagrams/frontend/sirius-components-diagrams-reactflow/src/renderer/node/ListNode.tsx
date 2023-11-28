@@ -38,7 +38,10 @@ const listNodeStyle = (
     opacity: faded ? '0.4' : '',
     ...style,
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
-    borderColor: getCSSColor(String(style.borderColor), theme),
+    borderTopColor: getCSSColor(String(style.borderTopColor), theme),
+    borderBottomColor: getCSSColor(String(style.borderBottomColor), theme),
+    borderLeftColor: getCSSColor(String(style.borderLeftColor), theme),
+    borderRightColor: getCSSColor(String(style.borderRightColor), theme),
   };
   if (selected) {
     listNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;

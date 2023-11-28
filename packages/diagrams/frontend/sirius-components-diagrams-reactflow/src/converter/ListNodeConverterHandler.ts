@@ -60,9 +60,15 @@ const toListNode = (
     descriptionId,
     style: {
       backgroundColor: style.color,
-      borderColor: style.borderColor,
+      borderTopColor: style.borderColor,
+      borderBottomColor: style.borderColor,
+      borderLeftColor: style.borderColor,
+      borderRightColor: style.borderColor,
       borderRadius: style.borderRadius,
-      borderWidth: style.borderSize,
+      borderTopWidth: style.borderSize,
+      borderBottomWidth: style.borderSize,
+      borderLeftWidth: style.borderSize,
+      borderRightWidth: style.borderSize,
       borderStyle: style.borderStyle,
     },
     label: undefined,
@@ -142,6 +148,29 @@ const toListNode = (
   return node;
 };
 
+const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
+  const childrenNodes = nodes.filter(
+    (child) =>
+      gqlChildrenNodes.map((gqlChild) => gqlChild.id).find((gqlChildId) => gqlChildId === child.id) !== undefined
+  );
+  childrenNodes.forEach((child, index) => {
+    // Hide children node borders to prevent a 'bold' aspect.
+    child.data.style = {
+      ...child.data.style,
+      borderTopColor: 'transparent',
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+    };
+
+    if (index === childrenNodes.length - 1) {
+      child.data.style = {
+        ...child.data.style,
+        borderBottomColor: 'transparent',
+      };
+    }
+  });
+};
+
 export class ListNodeConverterHandler implements INodeConverterHandler {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind === 'List';
@@ -173,5 +202,6 @@ export class ListNodeConverterHandler implements INodeConverterHandler {
       nodes,
       nodeDescription?.childNodeDescriptions ?? []
     );
+    adaptChildrenBorderNodes(nodes, gqlNode.childNodes ?? []);
   }
 }
