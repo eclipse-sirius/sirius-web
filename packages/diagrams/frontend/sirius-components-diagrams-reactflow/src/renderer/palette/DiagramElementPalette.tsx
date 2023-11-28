@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
 import { useLayout } from '../layout/useLayout';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
@@ -20,6 +20,11 @@ import { DiagramElementPalettePortal } from './DiagramElementPalettePortal';
 import { Palette } from './Palette';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
 import { usePaletteReferencePosition } from './usePaletteReferencePosition';
+
+export const DiagramElementPalette = memo(({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
+  const { isOpened } = useDiagramElementPalette();
+  return isOpened ? <DiagramElementPaletteContent diagramElementId={diagramElementId} labelId={labelId} /> : null;
+});
 
 const useEdgePaletteStyle = makeStyles((theme) => ({
   toolbar: {
@@ -34,10 +39,10 @@ const useEdgePaletteStyle = makeStyles((theme) => ({
   },
 }));
 
-export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
+const DiagramElementPaletteContent = ({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
   const { setReferencePosition, resetReferencePosition } = useLayout();
-  const { x: paletteX, y: paletteY, isOpened } = useDiagramElementPalette();
+  const { x: paletteX, y: paletteY } = useDiagramElementPalette();
   const { x, y } = usePaletteReferencePosition();
   const classes = useEdgePaletteStyle();
 
@@ -57,7 +62,7 @@ export const DiagramElementPalette = ({ diagramElementId, labelId }: DiagramElem
     resetReferencePosition();
   };
 
-  return isOpened && paletteX && paletteY ? (
+  return paletteX && paletteY ? (
     <DiagramElementPalettePortal>
       <div
         className={classes.toolbar}
