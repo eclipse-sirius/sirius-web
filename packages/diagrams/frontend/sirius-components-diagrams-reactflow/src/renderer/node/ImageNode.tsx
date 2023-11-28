@@ -25,11 +25,14 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ImageNodeData } from './ImageNode.types';
+import { NodeContext } from './NodeContext';
+import { NodeContextValue } from './NodeContext.types';
 
 const imageNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean,
   rotation: string | undefined
 ): React.CSSProperties => {
@@ -40,7 +43,7 @@ const imageNodeStyle = (
     transform: rotation,
     ...style,
   };
-  if (selected) {
+  if (selected || hovered) {
     imageNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
@@ -67,6 +70,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const theme = useTheme();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
   const { newConnectionStyleProvider } = useConnector();
   const rotation = computeBorderRotation(data);
 
@@ -82,7 +86,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
       <img
         src={httpOrigin + data.imageURL}
         style={{
-          ...imageNodeStyle(theme, data.style, selected, data.faded, rotation),
+          ...imageNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}

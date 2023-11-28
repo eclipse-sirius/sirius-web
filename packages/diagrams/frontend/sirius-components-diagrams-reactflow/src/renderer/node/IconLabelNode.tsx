@@ -12,17 +12,20 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { NodeProps } from 'reactflow';
 import { Label } from '../Label';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
+import { NodeContext } from './NodeContext';
+import { NodeContextValue } from './NodeContext.types';
 
 const iconlabelStyle = (
   style: React.CSSProperties,
   theme: Theme,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const iconLabelNodeStyle: React.CSSProperties = {
@@ -30,7 +33,7 @@ const iconlabelStyle = (
     ...style,
   };
 
-  if (selected) {
+  if (selected || hovered) {
     iconLabelNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
@@ -40,11 +43,14 @@ const iconlabelStyle = (
 export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNodeData>) => {
   const theme = useTheme();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
   return (
     <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
       <div
-        style={{ ...iconlabelStyle(data.style, theme, selected, data.faded), ...dropFeedbackStyle }}
+        style={{
+          ...iconlabelStyle(data.style, theme, selected, hoveredNode?.id === id, data.faded),
+          ...dropFeedbackStyle,
+        }}
         data-testid={`IconLabel - ${data?.label?.text}`}>
         {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
         {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}

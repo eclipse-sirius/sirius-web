@@ -39,6 +39,8 @@ export { computePreviousPosition, computePreviousSize } from './renderer/layout/
 export * from './renderer/layout/layoutBorderNodes';
 export * from './renderer/layout/layoutNode';
 export { useLayout } from './renderer/layout/useLayout';
+export { NodeContext } from './renderer/node/NodeContext';
+export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
 export { DiagramElementPalette } from './renderer/palette/DiagramElementPalette';
