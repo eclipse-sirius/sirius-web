@@ -239,6 +239,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
         <Background style={{ backgroundColor }} color={backgroundColor} />
       )}
       <DiagramPanel snapToGrid={snapToGrid} onSnapToGrid={onSnapToGrid} />
+
       <DiagramPalette targetObjectId={diagramRefreshedEventPayload.diagram.id} />
       <ConnectorContextualMenu />
     </ReactFlow>
