@@ -16,7 +16,16 @@
 All implementations of this interface must implement these new methods:
 * `List<NodeDescription> getNodeDescriptions();` to retrieve all `NodeDescriptions` created by providers.
 * `List<EdgeDescription> getEdgeDescriptions();` to retrieve all `EdgeDescriptions` created by providers.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2658[#2658] [sirius-web] Add dedicated colors for navigation bar in the Sirius Web theme.
+The theme provided by the user must now provide navigation bar colors:
+```ts
+...
+navigationBar: {
+  border: 'yellow',
+  background: 'blue',
+},
+...
+```
 
 === Dependency update
 
@@ -33,6 +42,7 @@ All implementations of this interface must implement these new methods:
 * `List<NodeDescription> getNodeDescriptions();` to retrieve all `NodeDescriptions` created by providers.
 * `List<EdgeDescription> getEdgeDescriptions();` to retrieve all `EdgeDescriptions` created by providers.
 - https://github.com/eclipse-sirius/sirius-web/issues/2733[#2733] Leverage the page object model to improve out integration tests
+- https://github.com/eclipse-sirius/sirius-web/issues/2658[#2658] [sirius-web] Add dedicated colors for navigation bar in the Sirius Web theme
 
 
 == v2023.12.0
