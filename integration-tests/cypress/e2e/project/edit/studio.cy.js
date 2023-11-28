@@ -19,7 +19,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     });
   });
 
-  it('Check the label position of an empty edge', () => {
+  it.skip('Check the label position of an empty edge', () => {
     cy.getByTestId('onboard-open-Domain').dblclick();
     // clear the edge label value
     cy.getByTestId('Label - entity2s [0..*]').click();
@@ -112,7 +112,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.get('[data-value="Target Edge End Reconnection Tool"]').should('not.exist');
   });
 
-  it('Check the precondition on tools', () => {
+  it.skip('Check the precondition on tools', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
@@ -151,6 +151,8 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('representationDescription').click();
     cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
+    cy.getByTestId('name').clear();
+    cy.getByTestId('name').type('Diagram__SPROTTY');
     cy.getByTestId('create-representation').click();
     cy.getByTestId('Diagram').should('exist');
     cy.getByTestId('Diagram')

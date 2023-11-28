@@ -40,7 +40,7 @@ describe('/projects/:projectId/edit - Representations', () => {
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('newName');
+    cy.getByTestId('name').type('newName__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography').click();
     cy.getByTestId('create-representation').click();
@@ -79,9 +79,9 @@ describe('/projects/:projectId/edit - Representations', () => {
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('create-representation').click();
-    cy.getByTestId('representation-tab-Topography1').should('exist');
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').should('exist');
 
     cy.get('#diagram>svg.sprotty-graph').should('have.length', 1);
 
@@ -90,40 +90,40 @@ describe('/projects/:projectId/edit - Representations', () => {
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography2');
+    cy.getByTestId('name').type('Topography2__SPROTTY');
     cy.getByTestId('create-representation').click();
-    cy.getByTestId('representation-tab-Topography2').should('exist');
+    cy.getByTestId('representation-tab-Topography2__SPROTTY').should('exist');
 
     cy.wait(2000);
     cy.get('#diagram>svg.sprotty-graph').should('have.length', 1);
 
     console.info('Switching to the Topography diagram');
 
-    cy.getByTestId('representation-tab-Topography1').click();
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').click();
 
     cy.wait(2000);
     cy.get('#diagram>svg.sprotty-graph').should('have.length', 1);
 
-    cy.getByTestId('Topography2-more').click();
+    cy.getByTestId('Topography2__SPROTTY-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
 
     cy.wait(2000);
 
     console.info('Switching to the second Topography diagram');
 
-    cy.getByTestId('representation-tab-Topography2').click();
+    cy.getByTestId('representation-tab-Topography2__SPROTTY').click();
     cy.contains('The diagram does not exist').should('exist');
 
     cy.wait(2000);
 
     console.info('Switching to the Topography diagram');
 
-    cy.getByTestId('representation-tab-Topography1').click();
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').click();
 
     console.info('Deleting the Topography diagram');
     cy.get('#diagram>svg.sprotty-graph').should('have.length', 1);
 
-    cy.getByTestId('Topography1-more').click();
+    cy.getByTestId('Topography1__SPROTTY-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
 
     cy.contains('The diagram does not exist').should('exist');

@@ -27,13 +27,13 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
-    cy.getByTestId('name').clear().type('Topography with auto layout');
+    cy.getByTestId('name').clear().type('Topography with auto layout___SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
 
-    cy.getByTestId('representation-tab-Topography with auto layout').should('exist');
-    cy.getByTestId('representation-tab-Topography with auto layout').then((tab) => {
+    cy.getByTestId('representation-tab-Topography with auto layout___SPROTTY').should('exist');
+    cy.getByTestId('representation-tab-Topography with auto layout___SPROTTY').then((tab) => {
       const representationId = tab[0].dataset.representationid;
       cy.wrap(representationId).as('representationId');
     });

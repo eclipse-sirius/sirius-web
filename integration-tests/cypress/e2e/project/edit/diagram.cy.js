@@ -30,14 +30,14 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('create-representation').click();
 
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography2');
+    cy.getByTestId('name').type('Topography2__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
@@ -47,10 +47,10 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.get('.MuiList-root').type('{uparrow}{enter}');
     cy.getByTestId('zoom-level').find('input').should('have.value', '1.25');
 
-    cy.getByTestId('representation-tab-Topography1').click();
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').click();
     cy.getByTestId('zoom-level').find('input').should('have.value', '1');
 
-    cy.getByTestId('representation-tab-Topography2').click();
+    cy.getByTestId('representation-tab-Topography2__SPROTTY').click();
     cy.getByTestId('zoom-level').find('input').should('have.value', '1');
   });
 
@@ -62,7 +62,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
@@ -84,7 +84,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
@@ -112,7 +112,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
@@ -138,29 +138,29 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('create-representation').click();
 
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography2');
+    cy.getByTestId('name').type('Topography2__SPROTTY');
     cy.getByTestId('create-representation').click();
 
-    cy.getByTestId('Topography1').click();
+    cy.getByTestId('Topography1__SPROTTY').click();
 
-    cy.getByTestId('representation-tab-Topography1').should('have.attr', 'data-testselected', 'true');
-    cy.getByTestId('representation-tab-Topography2').should('have.attr', 'data-testselected', 'false');
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').should('have.attr', 'data-testselected', 'true');
+    cy.getByTestId('representation-tab-Topography2__SPROTTY').should('have.attr', 'data-testselected', 'false');
 
-    cy.getByTestId('Topography2').click();
-    cy.getByTestId('representation-tab-Topography1').should('have.attr', 'data-testselected', 'false');
-    cy.getByTestId('representation-tab-Topography2').should('have.attr', 'data-testselected', 'true');
+    cy.getByTestId('Topography2__SPROTTY').click();
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').should('have.attr', 'data-testselected', 'false');
+    cy.getByTestId('representation-tab-Topography2__SPROTTY').should('have.attr', 'data-testselected', 'true');
 
-    cy.getByTestId('representation-tab-Topography1').click();
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').click();
 
-    cy.getByTestId('representation-tab-Topography1').should('have.attr', 'data-testselected', 'true');
-    cy.getByTestId('representation-tab-Topography2').should('have.attr', 'data-testselected', 'false');
+    cy.getByTestId('representation-tab-Topography1__SPROTTY').should('have.attr', 'data-testselected', 'true');
+    cy.getByTestId('representation-tab-Topography2__SPROTTY').should('have.attr', 'data-testselected', 'false');
   });
 
   it('Icons are displayed', () => {
@@ -171,7 +171,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
@@ -187,7 +187,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography unsynchronized').click();
     cy.getByTestId('create-representation').click();
@@ -216,12 +216,12 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('name').type('Topography1__SPROTTY');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography unsynchronized').click();
     cy.getByTestId('create-representation').click();
 
-    cy.getByTestId('Topography1').click();
+    cy.getByTestId('Topography1__SPROTTY').click();
 
     const dataTransfer = new DataTransfer();
     cy.getByTestId('Central_Unit').trigger('dragstart', { dataTransfer });
