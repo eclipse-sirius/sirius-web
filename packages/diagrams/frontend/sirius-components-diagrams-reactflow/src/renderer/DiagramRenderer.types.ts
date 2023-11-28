@@ -59,6 +59,7 @@ export interface NodeData {
   labelEditable: boolean;
   style: React.CSSProperties;
   connectionHandles: ConnectionHandle[];
+  isNew: boolean;
 }
 
 export enum BorderNodePositon {

@@ -46,6 +46,7 @@ const toImageNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
   const data: ImageNodeData = {
     targetObjectId,
@@ -64,6 +65,7 @@ const toImageNode = (
     labelEditable,
     positionDependentRotation: style.positionDependentRotation,
     connectionHandles,
+    isNew,
   };
 
   if (insideLabel) {

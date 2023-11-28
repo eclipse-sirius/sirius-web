@@ -16,6 +16,7 @@ import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { computePreviousPosition, computePreviousSize } from './bounds';
 import { RawDiagram } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
@@ -91,6 +92,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
+      const previousPosition = computePreviousPosition(previousNode, node);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -102,12 +104,12 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
         }
-      } else if (previousNode) {
+      } else if (previousPosition) {
         // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
         const headerHeightFootprint = labelElement
           ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
           : 0;
-        child.position = previousNode.position;
+        child.position = previousPosition;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
         }
@@ -169,16 +171,17 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
-    if (previousNode && node.data.nodeDescription?.userResizable) {
-      if (minNodeWith > (previousNode.width ?? 0)) {
+    const previousDimensions = computePreviousSize(previousNode, node);
+    if (node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
       } else {
-        node.width = previousNode.width;
+        node.width = previousDimensions.width;
       }
-      if (minNodeheight > (previousNode.height ?? 0)) {
+      if (minNodeheight > previousDimensions.height) {
         node.height = minNodeheight;
       } else {
-        node.height = previousNode.height;
+        node.height = previousDimensions.height;
       }
     } else {
       node.width = minNodeWith;
@@ -218,16 +221,18 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     const minNodeheight = getNodeOrMinHeight(labelHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
-    if (previousNode && node.data.nodeDescription?.userResizable) {
-      if (minNodeWith > (previousNode.width ?? 0)) {
+    const previousDimensions = computePreviousSize(previousNode, node);
+
+    if (node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
       } else {
-        node.width = previousNode.width;
+        node.width = previousDimensions.width;
       }
-      if (minNodeheight > (previousNode.height ?? 0)) {
+      if (minNodeheight > previousDimensions.height) {
         node.height = minNodeheight;
       } else {
-        node.height = previousNode.height;
+        node.height = previousDimensions.height;
       }
     } else {
       node.width = minNodeWith;

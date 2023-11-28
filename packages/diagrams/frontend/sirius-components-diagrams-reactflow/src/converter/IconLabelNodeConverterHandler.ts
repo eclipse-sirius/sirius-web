@@ -48,6 +48,7 @@ const toIconLabelNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = [];
+  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
   const data: IconLabelNodeData = {
     targetObjectId,
@@ -67,6 +68,7 @@ const toIconLabelNode = (
     defaultHeight: gqlNode.defaultHeight,
     labelEditable: labelEditable,
     connectionHandles,
+    isNew,
   };
 
   if (insideLabel) {
