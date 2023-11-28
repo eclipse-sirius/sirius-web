@@ -1,0 +1,28 @@
+= ADR-122 Let the specifier describing node borders
+
+== Context
+
+Color and width Border properties are split into four non-shorthand properties.
+We developers have decided on the style of rectangle node borders inside a list node (compartment).
+We should not make assumptions and let the specifier explain what he wants.
+The tooling should help him as much as possible.
+
+== Decision
+
+When the specifier creates a _NodeDescription_ child of another _NodeDescription_ that layout its children has a list, we will set the child _NodeDescription_ `borderStyle`, `borderWidth` and `borderColor` to `null`.
+
+We will add the property `displaySeparator` to display a separator between the node children.
+
+Optional:
+We could add warning on `borderStyle`, `borderWidth` and `borderColor` if these properties are not `null` on a _NodeDescription_ child of another _NodeDescription_ that layout its children has a list.
+
+WARNING: The specifier will still be able to set `borderStyle`, `borderWidth` and `borderColor` on a _NodeDescription_ child of another _NodeDescription_ that layout its children has a list.
+These properties will be used in the frontend as the specifier specified them.
+
+== Status
+
+To be reviewed.
+
+== Consequences
+
+Diagram will need to be re-created in order to be displayed after these changes.
