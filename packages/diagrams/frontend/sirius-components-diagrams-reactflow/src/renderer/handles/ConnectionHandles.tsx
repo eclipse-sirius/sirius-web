@@ -105,12 +105,14 @@ export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps)
   return (
     <>
       {Object.values(Position).map((position) => {
-        const currentSideHandles = connectionHandles
-          .filter((connectionHandle) => connectionHandle.position === position)
-          .sort((a, b) => a.index - b.index);
+        const currentSideHandles = connectionHandles.filter(
+          (connectionHandle) => connectionHandle.position === position
+        );
         return (
           <div style={borderHandlesStyle(position)} key={position}>
-            {currentSideHandles.map((connectionHandle) => {
+            {currentSideHandles.map((connectionHandle, index) => {
+              const isVirtualHandle =
+                (position === Position.Left || position === Position.Right) && index === currentSideHandles.length - 1;
               return (
                 <Handle
                   id={connectionHandle.id ?? ''}
@@ -118,7 +120,7 @@ export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps)
                     theme,
                     connectionHandle.position,
                     isHandleSelected(connectionHandle),
-                    connectionHandle.hidden
+                    isVirtualHandle
                   )}
                   type={connectionHandle.type}
                   position={connectionHandle.position}
