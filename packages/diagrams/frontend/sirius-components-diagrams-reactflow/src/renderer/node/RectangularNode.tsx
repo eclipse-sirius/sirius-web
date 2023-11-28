@@ -13,7 +13,7 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
@@ -24,12 +24,15 @@ import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
+import { NodeContext } from './NodeContext';
+import { NodeContextValue } from './NodeContext.types';
 import { RectangularNodeData } from './RectangularNode.types';
 
 const rectangularNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const rectangularNodeStyle: React.CSSProperties = {
@@ -39,7 +42,7 @@ const rectangularNodeStyle = (
     ...style,
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
   };
-  if (selected) {
+  if (selected || hovered) {
     rectangularNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
   return rectangularNodeStyle;
@@ -50,6 +53,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -68,7 +72,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
       )}
       <div
         style={{
-          ...rectangularNodeStyle(theme, data.style, selected, data.faded),
+          ...rectangularNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}

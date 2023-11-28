@@ -18,13 +18,15 @@ import {
   ConnectionTargetHandle,
   DiagramElementPalette,
   Label,
+  NodeContext,
+  NodeContextValue,
   useConnector,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { EllipseNodeData } from './EllipseNode.types';
 
@@ -32,6 +34,7 @@ const ellipseNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const ellipseNodeStyle: React.CSSProperties = {
@@ -46,7 +49,7 @@ const ellipseNodeStyle = (
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
   };
 
-  if (selected) {
+  if (selected || hovered) {
     ellipseNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
   }
 
@@ -58,6 +61,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -75,7 +79,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
       />
       <div
         style={{
-          ...ellipseNodeStyle(theme, data.style, selected, data.faded),
+          ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}

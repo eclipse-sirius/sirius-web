@@ -13,7 +13,7 @@
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
@@ -25,11 +25,14 @@ import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { ListNodeData } from './ListNode.types';
+import { NodeContext } from './NodeContext';
+import { NodeContextValue } from './NodeContext.types';
 
 const listNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const listNodeStyle: React.CSSProperties = {
@@ -43,7 +46,7 @@ const listNodeStyle = (
     borderLeftColor: getCSSColor(String(style.borderLeftColor), theme),
     borderRightColor: getCSSColor(String(style.borderRightColor), theme),
   };
-  if (selected) {
+  if (selected || hovered) {
     listNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
@@ -55,6 +58,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -73,7 +77,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
       )}
       <div
         style={{
-          ...listNodeStyle(theme, data.style, selected, data.faded),
+          ...listNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}
