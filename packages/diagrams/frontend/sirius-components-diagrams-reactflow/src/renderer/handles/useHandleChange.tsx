@@ -26,13 +26,11 @@ export const useHandleChange = (): UseHandleChangeValue => {
     changes: NodeChange[],
     nodes: Node<NodeData, DiagramNodeType>[]
   ): Node<NodeData, DiagramNodeType>[] => {
-    return nodes.map((node) => {
-      const nodeDraggingChange: NodePositionChange | undefined = changes
-        .filter(isNodePositionChange)
-        .find((change) => change.id === node.id);
-
-      if (nodeDraggingChange) {
-        const connectedEdges = getConnectedEdges([node], getEdges());
+    const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
+    changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
+      const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id);
+      if (movingNode) {
+        const connectedEdges = getConnectedEdges([movingNode], getEdges());
         connectedEdges.forEach((edge) => {
           const { sourceHandle, targetHandle } = edge;
           const sourceNode = nodes.find((node) => node.id === edge.sourceNode?.id);
@@ -65,15 +63,18 @@ export const useHandleChange = (): UseHandleChangeValue => {
                 targetHandle
               );
 
-              if (node.id === sourceNode.id) {
-                node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
-              }
-              if (node.id === targetNode.id) {
-                node.data = { ...node.data, connectionHandles: targetConnectionHandles };
-              }
+              nodeId2ConnectionHandles.set(sourceNode.id, sourceConnectionHandles);
+              nodeId2ConnectionHandles.set(targetNode.id, targetConnectionHandles);
             }
           }
         });
+      }
+    });
+
+    return nodes.map((node) => {
+      const connectionHandles = nodeId2ConnectionHandles.get(node.id);
+      if (connectionHandles) {
+        node.data = { ...node.data, connectionHandles: connectionHandles };
       }
       return node;
     });

@@ -135,6 +135,7 @@ Make some border node transparent when the node is in a list node in the convert
 This menu was using Sprotty export, which has been replaced by ReactFlow by default (see https://github.com/eclipse-sirius/sirius-web/issues/2671[#2671]).
 The only way to export diagram as SVG image is to use the ReactFlow toolbar located at the top left of each diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/2706[#2706] [diagram] Fix an issue where node children were not correctly positioned.
+- https://github.com/eclipse-sirius/sirius-web/issues/2687[#2687] [diagram] Fix an issue where ConnectionHandles where rerendering too much
 
 === New Features
 

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React from 'react';
+import React, { memo } from 'react';
 import { Handle, Position, ReactFlowState, useStore } from 'reactflow';
 import { ConnectionHandle, ConnectionHandlesProps } from './ConnectionHandles.types';
 
@@ -84,22 +84,18 @@ const handleStyle = (
   return style;
 };
 
-const edgesSelectedSelector = (state: ReactFlowState) =>
-  Array.from(state.edges.values()).filter((edge) => edge.selected);
+const handleSelectedSelector = (state: ReactFlowState) =>
+  Array.from(state.edges.values())
+    .filter((edge) => edge.selected)
+    .flatMap((edge) => [edge.sourceHandle, edge.targetHandle])
+    .join('#');
 
-export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps) => {
+export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesProps) => {
   const theme = useTheme();
-  const edgesSelected = useStore(edgesSelectedSelector);
-  const handlesSelected: string[] = edgesSelected.flatMap((edge) => {
-    if (edge.sourceHandle && edge.targetHandle) {
-      return [edge.sourceHandle, edge.targetHandle];
-    } else {
-      return [];
-    }
-  });
+  const handleSourceSelected = useStore(handleSelectedSelector);
 
-  const isHandleSelected = (connectionHandle: ConnectionHandle) => {
-    return !!handlesSelected.find((selectedHandle) => selectedHandle === connectionHandle.id);
+  const isHandleSelected = (connectionHandle: ConnectionHandle): boolean => {
+    return !!connectionHandle.id && handleSourceSelected.includes(connectionHandle.id);
   };
 
   return (
@@ -134,4 +130,4 @@ export const ConnectionHandles = ({ connectionHandles }: ConnectionHandlesProps)
       })}
     </>
   );
-};
+});
