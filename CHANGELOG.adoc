@@ -1,6 +1,5 @@
 = Changelog
 
-
 == v2024.1.0 (work in progress)
 
 === Shapes
@@ -10,6 +9,11 @@
 
 
 === Breaking changes
+
+- https://github.com/eclipse-sirius/sirius-web/issues/2675[#2675] [view] `IViewDiagramElementFinder` has been updated with new methods.
+All implementations of this interface must implement these new methods:
+* `List<NodeDescription> getNodeDescriptions();` to retrieve all `NodeDescriptions` created by providers.
+* `List<EdgeDescription> getEdgeDescriptions();` to retrieve all `EdgeDescriptions` created by providers.
 
 
 === Dependency update
@@ -23,6 +27,9 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2675[#2675] [view] Improve `IViewDiagramElementFinder` by adding new methods:
+* `List<NodeDescription> getNodeDescriptions();` to retrieve all `NodeDescriptions` created by providers.
+* `List<EdgeDescription> getEdgeDescriptions();` to retrieve all `EdgeDescriptions` created by providers.
 
 
 == v2023.12.0
