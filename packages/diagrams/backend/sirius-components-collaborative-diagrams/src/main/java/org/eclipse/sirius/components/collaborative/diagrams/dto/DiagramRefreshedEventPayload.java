@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
  *
  * @author sbegaudeau
  */
-public record DiagramRefreshedEventPayload(UUID id, Diagram diagram, String cause) implements IPayload {
+public record DiagramRefreshedEventPayload(UUID id, Diagram diagram, String cause, ReferencePosition referencePosition) implements IPayload {
 
     public static final String CAUSE_REFRESH = "refresh";
 

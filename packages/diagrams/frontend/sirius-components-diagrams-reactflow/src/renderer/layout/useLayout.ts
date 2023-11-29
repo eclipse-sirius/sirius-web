@@ -12,14 +12,13 @@
  *******************************************************************************/
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { Node, XYPosition, useReactFlow } from 'reactflow';
+import { useContext, useEffect, useState } from 'react';
+import { Node, useReactFlow } from 'reactflow';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { LayoutContext } from './LayoutContext';
-import { LayoutContextContextValue } from './LayoutContext.types';
 import { cleanLayoutArea, layout, prepareLayoutArea } from './layout';
 import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
@@ -30,6 +29,7 @@ const initialState: UseLayoutState = {
   previousDiagram: null,
   diagramToLayout: null,
   laidoutDiagram: null,
+  referencePosition: null,
   onLaidoutDiagram: () => {},
 };
 
@@ -39,8 +39,6 @@ export const useLayout = (): UseLayoutValue => {
   const [state, setState] = useState<UseLayoutState>(initialState);
 
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-  const { referencePosition, setReferencePosition, resetReferencePosition } =
-    useContext<LayoutContextContextValue>(LayoutContext);
 
   const layoutAreaPrepared = () => {
     const currentStep = 'LAYOUT';
@@ -50,14 +48,35 @@ export const useLayout = (): UseLayoutValue => {
   const layoutDiagram = (
     previousLaidoutDiagram: RawDiagram | null,
     diagramToLayout: RawDiagram,
+    referencePosition: GQLReferencePosition | null,
     callback: (laidoutDiagram: RawDiagram) => void
   ) => {
     if (state.currentStep === 'INITIAL_STEP') {
+      let processedReferencePosition: GQLReferencePosition | null = referencePosition;
+      if (processedReferencePosition) {
+        const {
+          parentId,
+          position: { x, y },
+        } = processedReferencePosition;
+        let parentNode = reactFlowInstance.getNode(processedReferencePosition.parentId ?? '');
+        while (parentNode) {
+          processedReferencePosition = {
+            parentId,
+            position: {
+              x: x - parentNode.position.x,
+              y: y - parentNode.position.y,
+            },
+          };
+          parentNode = reactFlowInstance.getNode(parentNode.parentNode ?? '');
+        }
+      }
+
       setState((prevState) => ({
         ...prevState,
         currentStep: 'BEFORE_LAYOUT',
         previousDiagram: previousLaidoutDiagram,
         diagramToLayout,
+        referencePosition: processedReferencePosition,
         onLaidoutDiagram: callback,
       }));
     }
@@ -74,7 +93,7 @@ export const useLayout = (): UseLayoutValue => {
       const laidoutDiagram = layout(
         state.previousDiagram,
         state.diagramToLayout,
-        referencePosition,
+        state.referencePosition,
         nodeLayoutHandlers
       );
       setState((prevState) => ({
@@ -88,41 +107,18 @@ export const useLayout = (): UseLayoutValue => {
       state.onLaidoutDiagram(state.laidoutDiagram);
       setState(() => initialState);
     }
-  }, [state.currentStep, state.hiddenContainer, referencePosition]);
-
-  const onReferencePositionSet = useCallback((referencePosition: XYPosition, parentId: string | null | undefined) => {
-    let position = { ...referencePosition };
-    let parentNode = reactFlowInstance.getNode(parentId ?? '');
-    while (parentNode) {
-      position = {
-        x: position.x - parentNode.position.x,
-        y: position.y - parentNode.position.y,
-      };
-      parentNode = reactFlowInstance.getNode(parentNode.parentNode ?? '');
-    }
-
-    // Add an offset to put the node under the mouse for the next refresh
-    setReferencePosition({
-      position: {
-        x: position.x - 10 > 0 || parentId === '' || !parentId ? position.x - 10 : 0,
-        y: position.y - 10 > 0 || parentId === '' || !parentId ? position.y - 10 : 0,
-      },
-      parentId,
-    });
-  }, []);
+  }, [state.currentStep, state.hiddenContainer, state.referencePosition]);
 
   const arrangeAll = (afterLayoutCallback: (laidoutDiagram: RawDiagram) => void): void => {
     const nodes = [...reactFlowInstance.getNodes()] as Node<NodeData, DiagramNodeType>[];
     const diagramToLayout: RawDiagram = { edges: [...reactFlowInstance.getEdges()], nodes };
     const previousDiagram: RawDiagram = { edges: [...reactFlowInstance.getEdges()], nodes: [] };
 
-    layoutDiagram(previousDiagram, diagramToLayout, afterLayoutCallback);
+    layoutDiagram(previousDiagram, diagramToLayout, null, afterLayoutCallback);
   };
 
   return {
     layout: layoutDiagram,
     arrangeAll,
-    setReferencePosition: onReferencePositionSet,
-    resetReferencePosition,
   };
 };

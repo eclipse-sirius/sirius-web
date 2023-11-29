@@ -11,34 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { XYPosition } from 'reactflow';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { RawDiagram } from './layout.types';
 
 export interface UseLayoutValue {
   layout: (
     previousLaidoutDiagram: RawDiagram | null,
     diagramToLayout: RawDiagram,
+    referencePosition: GQLReferencePosition | null,
     callback: (laidoutDiagram: RawDiagram) => void
   ) => void;
   arrangeAll: (afterLayoutCallback: (laidoutDiagram: RawDiagram) => void) => void;
-
-  /**
-   * Store the reference position in the layout context for a later use, like in the next refresh to position new created node at the reference position stored in the context.
-   *
-   * The reference position will be reset using resetReferencePosition once it has been used.
-   * In other world, the setReferencePosition caller is responsible to also call the resetReferencePosition
-   *
-   * @param referencePosition The reference position meant to be use in a later use.
-   * @param parentId The element id directly under the reference position, null or undefined if it is the diagram.
-   */
-  setReferencePosition: (referencePosition: XYPosition, parentId: string | null | undefined) => void;
-
-  /**
-   * Reset the reference position stored in the layout context.
-   *
-   * This meant to be used by the caller of setReferencePosition once the reference position has been used.
-   */
-  resetReferencePosition: () => void;
 }
 
 export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';
@@ -49,5 +32,6 @@ export interface UseLayoutState {
   previousDiagram: RawDiagram | null;
   diagramToLayout: RawDiagram | null;
   laidoutDiagram: RawDiagram | null;
+  referencePosition: GQLReferencePosition | null;
   onLaidoutDiagram: (laidoutDiagram: RawDiagram) => void;
 }

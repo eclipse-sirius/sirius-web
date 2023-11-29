@@ -17,11 +17,11 @@ export interface ContextualPaletteStyleProps {
 }
 
 export interface PaletteProps {
+  x: number;
+  y: number;
   diagramElementId: string;
   onDirectEditClick: () => void;
   isDiagramElementPalette: boolean;
-  onToolApply: () => void;
-  onToolApplyError: () => void;
 }
 
 export interface GQLErrorPayload

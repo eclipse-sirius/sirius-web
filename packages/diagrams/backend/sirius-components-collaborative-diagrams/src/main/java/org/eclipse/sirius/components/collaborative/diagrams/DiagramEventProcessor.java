@@ -30,8 +30,12 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.RenameDiagramInput;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -44,6 +48,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,7 +143,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 this.representationPersistenceService.save(this.editingContext, laidOutDiagram);
                 this.diagramContext.reset();
                 this.diagramContext.update(laidOutDiagram);
-                this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT);
+                this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
 
                 this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
 
@@ -182,8 +187,26 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
             this.currentRevisionId = changeDescription.getInput().id();
             this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
-            this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH);
+
+            ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
+            this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH, referencePosition);
         }
+    }
+
+    private ReferencePosition getReferencePosition(IInput diagramInput) {
+        ReferencePosition referencePosition = null;
+        if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
+            String parentId = null;
+            if (!this.diagramContext.getDiagram().getId().equals(input.diagramElementId())) {
+                parentId = input.diagramElementId();
+            }
+            referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()));
+        } else if (diagramInput instanceof DropNodeInput input) {
+            referencePosition = new ReferencePosition(input.targetElementId(), new Position(input.x(), input.y()));
+        } else if (diagramInput instanceof DropOnDiagramInput input) {
+            referencePosition = new ReferencePosition(null, new Position(input.startingPositionX(), input.startingPositionY()));
+        }
+        return referencePosition;
     }
 
     /**

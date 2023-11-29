@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author pcdavid
  */
-public record DropNodeInput(UUID id, String editingContextId, String representationId, String droppedElementId, String targetElementId) implements IDiagramInput {
+public record DropNodeInput(UUID id, String editingContextId, String representationId, String droppedElementId, String targetElementId, double x, double y) implements IDiagramInput {
     public DropNodeInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);

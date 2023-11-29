@@ -20,7 +20,6 @@ import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { GQLDropNodeCompatibility } from '../../representation/DiagramRepresentation.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { useLayout } from '../layout/useLayout';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import {
@@ -77,12 +76,10 @@ const useDropNodeMutation = () => {
     GQLDropNodeData,
     GQLDropNodeVariables
   >(dropNodeMutation);
-  const { setReferencePosition, resetReferencePosition } = useLayout();
 
   useEffect(() => {
     if (dropNodeError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
-      resetReferencePosition();
     }
     if (dropNodeData) {
       const { dropNode } = dropNodeData;
@@ -91,7 +88,6 @@ const useDropNodeMutation = () => {
       }
       if (isErrorPayload(dropNode)) {
         addMessages(dropNode.messages);
-        resetReferencePosition();
       }
     }
   }, [dropNodeData, dropNodeError]);
@@ -103,8 +99,9 @@ const useDropNodeMutation = () => {
       representationId: diagramId,
       droppedElementId,
       targetElementId,
+      x: dropPosition.x,
+      y: dropPosition.y,
     };
-    setReferencePosition(dropPosition, targetElementId);
     dropMutation({ variables: { input } });
   };
 

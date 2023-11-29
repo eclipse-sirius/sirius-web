@@ -50,6 +50,8 @@ export interface GQLDropNodeInput {
   representationId: string;
   droppedElementId: string;
   targetElementId: string | null;
+  x: number;
+  y: number;
 }
 
 export interface GQLErrorPayload extends GQLDropNodePayload {

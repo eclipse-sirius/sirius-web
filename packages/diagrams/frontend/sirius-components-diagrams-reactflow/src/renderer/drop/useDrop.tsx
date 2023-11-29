@@ -16,7 +16,6 @@ import { useCallback, useContext, useEffect } from 'react';
 import { Viewport, XYPosition, useStoreApi, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { useLayout } from '../layout/useLayout';
 import {
   GQLDropOnDiagramData,
   GQLDropOnDiagramInput,
@@ -69,7 +68,6 @@ const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropO
 export const useDrop = (): UseDropValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const { setReferencePosition, resetReferencePosition } = useLayout();
   const [dropMutation, { data: droponDiagramElementData, error: droponDiagramError }] = useMutation<
     GQLDropOnDiagramData,
     GQLDropOnDiagramVariables
@@ -81,7 +79,6 @@ export const useDrop = (): UseDropValue => {
   useEffect(() => {
     if (droponDiagramError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
-      resetReferencePosition();
     }
     if (droponDiagramElementData) {
       const { dropOnDiagram } = droponDiagramElementData;
@@ -90,7 +87,6 @@ export const useDrop = (): UseDropValue => {
       }
       if (isErrorPayload(dropOnDiagram)) {
         addMessages(dropOnDiagram.messages);
-        resetReferencePosition();
       }
     }
   }, [droponDiagramElementData, droponDiagramError]);
@@ -115,12 +111,10 @@ export const useDrop = (): UseDropValue => {
         editingContextId,
         representationId: diagramId,
         objectIds: selectedIds,
-        startingPositionX: 100,
-        startingPositionY: 100,
+        startingPositionX: dropPosition.x,
+        startingPositionY: dropPosition.y,
         diagramTargetElementId: diagramElementId ? diagramElementId : diagramId,
       };
-
-      setReferencePosition(dropPosition, diagramElementId);
       dropMutation({ variables: { input } });
     },
     [element?.top, element?.left, viewport]

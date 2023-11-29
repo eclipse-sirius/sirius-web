@@ -12,14 +12,13 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
+import { useViewport } from 'reactflow';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
-import { useLayout } from '../layout/useLayout';
 import { DiagramElementPaletteProps } from './DiagramElementPalette.types';
 import { DiagramElementPalettePortal } from './DiagramElementPalettePortal';
 import { Palette } from './Palette';
 import { useDiagramElementPalette } from './useDiagramElementPalette';
-import { usePaletteReferencePosition } from './usePaletteReferencePosition';
 
 export const DiagramElementPalette = memo(({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { isOpened } = useDiagramElementPalette();
@@ -41,25 +40,22 @@ const useEdgePaletteStyle = makeStyles((theme) => ({
 
 const DiagramElementPaletteContent = ({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
-  const { setReferencePosition, resetReferencePosition } = useLayout();
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const { x: paletteX, y: paletteY } = useDiagramElementPalette();
-  const { x, y } = usePaletteReferencePosition();
   const classes = useEdgePaletteStyle();
+
+  let x: number = 0;
+  let y: number = 0;
+
+  if (viewportZoom !== 0 && paletteX && paletteY) {
+    x = (paletteX - viewportX) / viewportZoom;
+    y = (paletteY - viewportY) / viewportZoom;
+  }
 
   const handleDirectEditClick = () => {
     if (labelId) {
       setCurrentlyEditedLabelId('palette', labelId, null);
     }
-  };
-
-  const onToolApply = useCallback(() => {
-    if (x && y) {
-      setReferencePosition({ x, y }, diagramElementId);
-    }
-  }, [x, y]);
-
-  const onToolApplyError = () => {
-    resetReferencePosition();
   };
 
   return paletteX && paletteY ? (
@@ -69,11 +65,11 @@ const DiagramElementPaletteContent = ({ diagramElementId, labelId }: DiagramElem
         style={{ position: 'absolute', left: paletteX, top: paletteY }}
         onClick={(event) => event.stopPropagation()}>
         <Palette
+          x={x}
+          y={y}
           diagramElementId={diagramElementId}
           onDirectEditClick={handleDirectEditClick}
           isDiagramElementPalette={true}
-          onToolApply={onToolApply}
-          onToolApplyError={onToolApplyError}
         />
       </div>
     </DiagramElementPalettePortal>

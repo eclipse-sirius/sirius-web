@@ -18,6 +18,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { Fragment, createElement } from 'react';
 import ReactDOM from 'react-dom';
 import { Node, ReactFlowProvider } from 'reactflow';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
@@ -26,7 +27,6 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNode } from '../node/RectangularNode';
 import { RectangularNodeData } from '../node/RectangularNode.types';
-import { ReferencePosition } from './LayoutContext.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
@@ -193,7 +193,7 @@ const gap = 20;
 export const layout = (
   previousDiagram: RawDiagram | null,
   diagram: RawDiagram,
-  referencePosition: ReferencePosition | null,
+  referencePosition: GQLReferencePosition | null,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ): RawDiagram => {
   layoutDiagram(previousDiagram, diagram, referencePosition, nodeLayoutHandlerContributions);
@@ -203,7 +203,7 @@ export const layout = (
 const layoutDiagram = (
   previousDiagram: RawDiagram | null,
   diagram: RawDiagram,
-  referencePosition: ReferencePosition | null,
+  referencePosition: GQLReferencePosition | null,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);

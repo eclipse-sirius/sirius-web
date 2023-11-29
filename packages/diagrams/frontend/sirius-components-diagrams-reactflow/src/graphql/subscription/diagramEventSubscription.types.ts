@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { GQLDiagram } from './diagramFragment.types';
+import { GQLPosition } from './nodeFragment.types';
 
 export interface GQLDiagramEventPayload {
   id: string;
@@ -33,6 +34,12 @@ export interface GQLSubscriber {
 export interface GQLDiagramRefreshedEventPayload extends GQLDiagramEventPayload {
   diagram: GQLDiagram;
   cause: GQLRefreshCause;
+  referencePosition: GQLReferencePosition | null;
 }
 
 export type GQLRefreshCause = 'refresh' | 'layout';
+
+export interface GQLReferencePosition {
+  parentId: string | null;
+  position: GQLPosition;
+}

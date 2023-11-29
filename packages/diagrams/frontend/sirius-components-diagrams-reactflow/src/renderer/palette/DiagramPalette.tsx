@@ -12,13 +12,12 @@
  *******************************************************************************/
 
 import { makeStyles } from '@material-ui/core/styles';
-import { memo, useCallback } from 'react';
-import { useLayout } from '../layout/useLayout';
+import { memo } from 'react';
+import { useViewport } from 'reactflow';
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { DiagramPalettePortal } from './DiagramPalettePortal';
 import { Palette } from './Palette';
 import { useDiagramPalette } from './useDiagramPalette';
-import { usePaletteReferencePosition } from './usePaletteReferencePosition';
 
 export const DiagramPalette = memo(({ targetObjectId }: DiagramPaletteProps) => {
   const { isOpened } = useDiagramPalette();
@@ -39,30 +38,27 @@ const useDiagramPaletteStyle = makeStyles((theme) => ({
 }));
 
 const DiagramPaletteContent = ({ targetObjectId }: DiagramPaletteProps) => {
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const { x: paletteX, y: paletteY } = useDiagramPalette();
-  const { x, y } = usePaletteReferencePosition();
-  const { setReferencePosition, resetReferencePosition } = useLayout();
   const classes = useDiagramPaletteStyle();
 
-  const onToolApply = useCallback(() => {
-    if (x && y) {
-      setReferencePosition({ x, y }, '');
-    }
-  }, [x, y]);
+  let x: number = 0;
+  let y: number = 0;
 
-  const onToolApplyError = () => {
-    resetReferencePosition();
-  };
+  if (viewportZoom !== 0 && paletteX && paletteY) {
+    x = (paletteX - viewportX) / viewportZoom;
+    y = (paletteY - viewportY) / viewportZoom;
+  }
 
   return paletteX && paletteY ? (
     <DiagramPalettePortal>
       <div className={classes.toolbar} style={{ position: 'absolute', left: paletteX, top: paletteY }}>
         <Palette
+          x={x}
+          y={y}
           diagramElementId={targetObjectId}
           onDirectEditClick={() => {}}
           isDiagramElementPalette={false}
-          onToolApply={onToolApply}
-          onToolApplyError={onToolApplyError}
         />
       </div>
     </DiagramPalettePortal>
