@@ -57,20 +57,22 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
     }
   };
 
-  if (label.id === currentlyEditedLabelId) {
-    return (
+  const content: JSX.Element =
+    label.id === currentlyEditedLabelId ? (
       <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} transform={transform} />
+    ) : (
+      <>
+        <IconOverlay iconURL={label.iconURL} alt={label.text} />
+        {label.text}
+      </>
     );
-  }
-
   return (
     <div
       data-id={label.id}
       data-testid={`Label - ${label.text}`}
       style={labelStyle(theme, label.style, faded, transform, !!label.iconURL)}
       className="nopan">
-      <IconOverlay iconURL={label.iconURL} alt={label.text} />
-      {label.text}
+      {content}
     </div>
   );
 });
