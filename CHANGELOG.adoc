@@ -84,6 +84,7 @@ info: {
 - https://github.com/eclipse-sirius/sirius-web/issues/2766[#2766] [tree] Tree representations (including the explorer) now support dragging any kind of element (not just semantic elements).
 It is the responsibility of the drop targets (e.g. a diagram) to validate the dropped element(s) type and ignore the one it does not support.
 - https://github.com/eclipse-sirius/sirius-web/issues/2772[#2772] Improve performance of the Palette
+- https://github.com/eclipse-sirius/sirius-web/issues/2679[#2679] [diagram] When editing a label, place input element closer to the label's location (centered).
 
 
 == v2023.12.0
