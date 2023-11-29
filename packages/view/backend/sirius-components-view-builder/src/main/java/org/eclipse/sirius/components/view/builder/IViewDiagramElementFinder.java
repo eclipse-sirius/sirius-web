@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -25,4 +26,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 public interface IViewDiagramElementFinder {
     Optional<NodeDescription> getNodeDescription(String name);
     Optional<EdgeDescription> getEdgeDescription(String name);
+    List<NodeDescription> getNodeDescriptions();
+    List<EdgeDescription> getEdgeDescriptions();
 }
