@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { Handle, Position, useStore } from 'reactflow';
+import React, { memo } from 'react';
+import { Handle, Position, ReactFlowState, useStore } from 'reactflow';
+import { useConnector } from '../connector/useConnector';
 import { ConnectionTargetHandleProps } from './ConnectionTargetHandle.types';
-
 const targetHandleNodeStyle: React.CSSProperties = {
   position: 'absolute',
   top: 0,
@@ -27,10 +27,24 @@ const targetHandleNodeStyle: React.CSSProperties = {
   pointerEvents: 'all',
   cursor: 'crosshair',
 };
+const connectionNodeIdSelector = (state: ReactFlowState) => !!state.connectionNodeId;
+export const ConnectionTargetHandle = memo(({ nodeId }: ConnectionTargetHandleProps) => {
+  const isConnecting = useStore(connectionNodeIdSelector);
+  const { isNewConnection, setPosition, setFrozen } = useConnector();
 
-export const ConnectionTargetHandle = ({ nodeId }: ConnectionTargetHandleProps) => {
-  const connectionNodeId = useStore((state) => state.connectionNodeId);
-  const isConnecting = !!connectionNodeId;
+  const handleOnMouseUp = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (isNewConnection) {
+      event.stopPropagation();
+      setFrozen(true);
+      if ('clientX' in event && 'clientY' in event) {
+        setPosition({ x: event.clientX || 0, y: event.clientY });
+      } else if ('touches' in event) {
+        const touchEvent = event as TouchEvent;
+        setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
+      }
+    }
+  };
+
   if (isConnecting) {
     return (
       <Handle
@@ -40,9 +54,10 @@ export const ConnectionTargetHandle = ({ nodeId }: ConnectionTargetHandleProps) 
         style={targetHandleNodeStyle}
         isConnectableEnd={true}
         isConnectableStart={false}
+        onMouseUp={handleOnMouseUp}
       />
     );
   } else {
     return null;
   }
-};
+});

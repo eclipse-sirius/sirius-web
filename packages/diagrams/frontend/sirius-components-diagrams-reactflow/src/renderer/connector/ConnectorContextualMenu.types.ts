@@ -11,9 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Connection, XYPosition } from 'reactflow';
+
 export interface ConnectorContextualMenuProps {}
 
-export interface ConnectorContextualMenuState {}
+export interface ConnectorContextualMenuState {
+  connection: Connection;
+  position: XYPosition;
+  connectionTargetElementPosition: XYPosition;
+}
 
 export interface GetConnectorToolsVariables {
   editingContextId: string;

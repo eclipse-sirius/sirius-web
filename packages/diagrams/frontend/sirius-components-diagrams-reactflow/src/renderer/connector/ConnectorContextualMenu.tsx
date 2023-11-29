@@ -17,11 +17,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import { useContext, useEffect } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
+import { useStoreApi, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
   ConnectorContextualMenuProps,
+  ConnectorContextualMenuState,
   GQLDiagramDescription,
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
@@ -93,32 +95,79 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
-  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const { connection, position, onConnectorContextualMenuClose } = useConnector();
+const connectorContextualMenuComponenteStyle = (shouldBeHidden: boolean): React.CSSProperties => {
+  if (shouldBeHidden) {
+    return {
+      opacity: 0,
+    };
+  }
+  return {};
+};
 
+const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
+  const { onConnectorContextualMenuClose, position } = useConnector();
+  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { addMessages, addErrorMessage } = useMultiToast();
 
-  const connectionSource: HTMLElement | null = connection
-    ? document.querySelector(`[data-id="${connection.source}"]`)
-    : null;
+  const store = useStoreApi();
+  const { connectionEndHandle, connectionStartHandle } = store.getState();
 
-  const connectionTarget: HTMLElement | null = connection
-    ? document.querySelector(`[data-id="${connection.target}"]`)
-    : null;
+  const [state, setState] = useState<ConnectorContextualMenuState>({
+    connection: {
+      source: connectionStartHandle?.nodeId || null,
+      sourceHandle: connectionStartHandle?.handleId || null,
+      target: connectionEndHandle?.nodeId || null,
+      targetHandle: connectionEndHandle?.handleId || null,
+    },
+    position: {
+      x: position ? position.x : 0,
+      y: position ? position.y : 0,
+    },
+    connectionTargetElementPosition: {
+      x: 0,
+      y: 0,
+    },
+  });
 
-  const sourceDiagramElementId = connectionSource?.dataset.id ?? '';
-  const targetDiagramElementId = connectionTarget?.dataset.id ?? '';
+  const connectionTargetElement: HTMLElement | null = document.querySelector(`[data-id="${state.connection.target}"]`);
+  // Update menu position when moving viewport.
+  const { x, y } = useViewport();
+  useEffect(() => {
+    const targetbounds = connectionTargetElement?.getBoundingClientRect();
+    if (targetbounds) {
+      if (state.connectionTargetElementPosition.x && state.connectionTargetElementPosition.y) {
+        setState((prevState) => ({
+          ...prevState,
+          connectionTargetElementPosition: {
+            x: targetbounds.x,
+            y: targetbounds.y,
+          },
+          position: {
+            x: state.position.x - (state.connectionTargetElementPosition.x - targetbounds.x),
+            y: state.position.y - (state.connectionTargetElementPosition.y - targetbounds.y),
+          },
+        }));
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          connectionTargetElementPosition: {
+            x: targetbounds.x,
+            y: targetbounds.y,
+          },
+        }));
+      }
+    }
+  }, [x, y]);
 
   const variables: GetConnectorToolsVariables = {
     editingContextId,
     representationId: diagramId,
-    sourceDiagramElementId,
-    targetDiagramElementId,
+    sourceDiagramElementId: state.connection.source || '',
+    targetDiagramElementId: state.connection.target || '',
   };
   const { data, error } = useQuery<GetConnectorToolsData, GetConnectorToolsVariables>(getConnectorToolsQuery, {
     variables,
-    skip: !connectionSource || !connectionTarget,
+    skip: !state.connection.source || !state.connection.target,
   });
 
   useEffect(() => {
@@ -145,8 +194,8 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
       id: crypto.randomUUID(),
       editingContextId,
       representationId: diagramId,
-      diagramSourceElementId: sourceDiagramElementId,
-      diagramTargetElementId: targetDiagramElementId,
+      diagramSourceElementId: state.connection.source || '',
+      diagramTargetElementId: state.connection.target || '',
       toolId: tool.id,
       sourcePositionX: 0,
       sourcePositionY: 0,
@@ -154,6 +203,7 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
       targetPositionY: 0,
     };
     invokeSingleClickOnTwoDiagramElementsTool({ variables: { input } });
+    onShouldConnectorContextualMenuClose();
   };
 
   const onShouldConnectorContextualMenuClose = () => {
@@ -178,8 +228,10 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   }, [invokeSingleClickOnTwoDiagramElementToolData, invokeSingleClickOnTwoDiagramElementToolError]);
 
   const connectorTools: GQLTool[] = [];
+
   const representationDescription: GQLRepresentationDescription | null | undefined =
     data?.viewer.editingContext?.representation?.description;
+
   if (representationDescription && isDiagramDescription(representationDescription)) {
     representationDescription.connectorTools.forEach((tool) => connectorTools.push(tool));
   }
@@ -190,16 +242,44 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
     }
   }, [connectorTools]);
 
+  useEffect(() => {
+    if (data && connectorTools.length <= 1) {
+      onShouldConnectorContextualMenuClose();
+    }
+  }, [data]);
+
   if (!data || connectorTools.length <= 1) {
     return null;
   }
+
+  const isPopUpRenderedInDomNode = (): boolean => {
+    const domNode = store.getState().domNode;
+    const targetbounds = domNode?.getBoundingClientRect();
+    if (targetbounds) {
+      if (state.position.x > targetbounds.right) {
+        return false;
+      }
+      if (state.position.x < targetbounds.left) {
+        return false;
+      }
+      if (state.position.y < targetbounds.top) {
+        return false;
+      }
+      if (state.position.y > targetbounds.bottom) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   return (
     <Menu
-      open={!!connection}
+      open
       onClose={onShouldConnectorContextualMenuClose}
-      anchorEl={connectionTarget}
+      anchorEl={connectionTargetElement}
       anchorReference="anchorPosition"
-      anchorPosition={{ left: position?.x || 0, top: position?.y || 0 }}>
+      anchorPosition={{ left: state.position.x, top: state.position.y }}
+      style={connectorContextualMenuComponenteStyle(!isPopUpRenderedInDomNode())}>
       {connectorTools.map((tool) => (
         <MenuItem key={tool.id} onClick={() => invokeTool(tool)}>
           <ListItemIcon>
@@ -210,4 +290,9 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
       ))}
     </Menu>
   );
+});
+
+export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
+  const { isFrozen } = useConnector();
+  return isFrozen ? <ConnectorContextualMenuComponent /> : null;
 };

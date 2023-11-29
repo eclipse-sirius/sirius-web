@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -65,7 +65,7 @@ const connectionCreationHandleStyle = (
   return style;
 };
 
-export const ConnectionCreationHandles = ({ nodeId }: ConnectionCreationHandlesProps) => {
+export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHandlesProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { onConnectionStartElementClick } = useConnector();
   const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
@@ -127,4 +127,4 @@ export const ConnectionCreationHandles = ({ nodeId }: ConnectionCreationHandlesP
         : null}
     </>
   );
-};
+});

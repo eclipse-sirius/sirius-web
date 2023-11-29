@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import React, { useState } from 'react';
-import { Connection, XYPosition } from 'reactflow';
+import { XYPosition } from 'reactflow';
 import {
   ConnectorContextProviderProps,
   ConnectorContextProviderState,
@@ -21,11 +21,11 @@ import {
 import { GQLNodeDescription } from './useConnector.types';
 
 const defaultValue: ConnectorContextValue = {
-  connection: null,
   position: null,
   candidates: [],
   isNewConnection: false,
-  setConnection: () => {},
+  isFrozen: false,
+  setFrozen: () => {},
   setPosition: () => {},
   setCandidates: () => {},
   resetConnection: () => {},
@@ -36,14 +36,14 @@ export const ConnectorContext = React.createContext<ConnectorContextValue>(defau
 
 export const ConnectorContextProvider = ({ children }: ConnectorContextProviderProps) => {
   const [state, setState] = useState<ConnectorContextProviderState>({
-    connection: null,
     position: null,
     candidates: [],
     isNewConnection: false,
+    isFrozen: false,
   });
 
-  const setConnection = (connection: Connection) => {
-    setState((prevState) => ({ ...prevState, connection }));
+  const setFrozen = (isFrozen: boolean) => {
+    setState((prevState) => ({ ...prevState, isFrozen }));
   };
 
   const setPosition = (position: XYPosition) => {
@@ -61,7 +61,6 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
   const resetConnection = () => {
     setState((prevState) => ({
       ...prevState,
-      connection: null,
       targetCandidates: [],
       isNewConnection: false,
       selectedNodeId: null,
@@ -71,11 +70,11 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
   return (
     <ConnectorContext.Provider
       value={{
-        connection: state.connection,
         position: state.position,
         candidates: state.candidates,
         isNewConnection: state.isNewConnection,
-        setConnection,
+        isFrozen: state.isFrozen,
+        setFrozen,
         setPosition,
         setCandidates,
         resetConnection,

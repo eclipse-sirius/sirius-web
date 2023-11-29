@@ -19,6 +19,7 @@ import {
   OnConnectEnd,
   OnConnectStart,
   OnConnectStartParams,
+  useStore,
   useUpdateNodeInternals,
 } from 'reactflow';
 import { NodeContext } from '../node/NodeContext';
@@ -30,14 +31,14 @@ import { NodeStyleProvider, UseConnectorValue } from './useConnector.types';
 
 export const useConnector = (): UseConnectorValue => {
   const {
-    connection,
-    setConnection,
     position,
     setPosition,
     resetConnection,
     candidates,
     isNewConnection,
     setIsNewConnection,
+    setFrozen,
+    isFrozen,
   } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const theme = useTheme();
@@ -79,9 +80,7 @@ export const useConnector = (): UseConnectorValue => {
     },
   };
 
-  const onConnect: OnConnect = (connection: Connection) => {
-    setConnection(connection);
-  };
+  const onConnect: OnConnect = (_connection: Connection) => {};
 
   const onConnectStart: OnConnectStart = (
     _event: React.MouseEvent | React.TouchEvent,
@@ -94,7 +93,11 @@ export const useConnector = (): UseConnectorValue => {
     }
   };
 
-  const onConnectorContextualMenuClose = () => resetConnection();
+  const onConnectorContextualMenuClose = () => {
+    resetConnection();
+    cancelConnection();
+    setFrozen(false);
+  };
 
   const onConnectionStartElementClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.button === 0) {
@@ -102,14 +105,17 @@ export const useConnector = (): UseConnectorValue => {
     }
   };
 
-  const onConnectEnd: OnConnectEnd = (event: MouseEvent | TouchEvent) => {
-    if ('clientX' in event && 'clientY' in event) {
-      setPosition({ x: event.clientX || 0, y: event.clientY });
-    } else if ('touches' in event) {
-      const touchEvent = event as TouchEvent;
-      setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
+  const onConnectEnd: OnConnectEnd = (_event: MouseEvent | TouchEvent) => {
+    if (!isFrozen) {
+      resetConnection();
     }
-    setIsNewConnection(false);
+  };
+
+  const cancelConnection = useStore((state) => state.cancelConnection);
+
+  const cancelConnectionLine = () => {
+    cancelConnection();
+    resetConnection();
   };
 
   return {
@@ -118,8 +124,12 @@ export const useConnector = (): UseConnectorValue => {
     onConnectEnd,
     onConnectorContextualMenuClose,
     onConnectionStartElementClick,
+    setPosition,
+    cancelConnectionLine,
+    setFrozen,
     newConnectionStyleProvider,
-    connection,
+    isNewConnection,
     position,
+    isFrozen,
   };
 };

@@ -29,12 +29,14 @@ import {
   useEdgesState,
   useNodesState,
 } from 'reactflow';
+import 'reactflow/dist/style.css';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
 import { convertDiagram } from '../converter/convertDiagram';
 import { Diagram, DiagramRendererProps, NodeData } from './DiagramRenderer.types';
 import { useBorderChange } from './border/useBorderChange';
+import { ConnectionLine } from './connector/ConnectionLine';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useDiagramDelete } from './delete/useDiagramDelete';
@@ -61,8 +63,6 @@ import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
-
-import 'reactflow/dist/style.css';
 
 const GRID_STEP: number = 10;
 
@@ -192,6 +192,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onKeyDown={onKeyDown}
       onConnect={onConnect}
       onConnectStart={onConnectStart}
+      connectionLineComponent={ConnectionLine}
       onConnectEnd={onConnectEnd}
       onEdgesChange={handleEdgesChange}
       onEdgeUpdate={reconnectEdge}
