@@ -14,11 +14,17 @@ type DiagramRefreshedEventPayload {
   id: ID!
   diagram: Diagram!
   cause: RefreshCause!
+  referencePosition: ReferencePosition
 }
 
 enum RefreshCause {
   refresh
   layout
+}
+
+type ReferencePosition {
+  parentId: ID
+  position: Position!
 }
 
 type Diagram implements Representation {
@@ -316,6 +322,8 @@ input DropNodeInput {
   representationId: ID!
   droppedElementId: ID!
   targetElementId: ID
+  x: Float!
+  y: Float!
 }
 
 input ArrangeAllInput {

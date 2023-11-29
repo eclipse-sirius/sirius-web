@@ -49,7 +49,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
         edges: getEdges(),
       };
 
-      layout(diagramToLayout, diagramToLayout, (laidOutDiagram) => {
+      layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
         nodes.map((node) => {
           const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
           if (existingNode) {

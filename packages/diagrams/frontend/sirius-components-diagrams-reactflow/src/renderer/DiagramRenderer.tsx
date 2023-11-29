@@ -71,7 +71,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
   const { onDelete } = useDiagramDelete();
 
   const ref = useRef<HTMLDivElement | null>(null);
-  const { layout, resetReferencePosition } = useLayout();
+  const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onDiagramElementClick, hideDiagramElementPalette } = useDiagramElementPalette();
@@ -109,11 +109,10 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
         nodes: nodes as Node<NodeData, DiagramNodeType>[],
         edges,
       };
-      layout(previousDiagram, convertedDiagram, (laidOutDiagram) => {
+      layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
         setNodes(laidOutDiagram.nodes);
         setEdges(laidOutDiagram.edges);
         hideDiagramPalette();
-        resetReferencePosition();
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
       });

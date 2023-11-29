@@ -108,7 +108,7 @@ class DropNodeEventHandlerTests {
         var handler = new DropNodeEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, null);
+        var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, null, 0, 0);
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -132,7 +132,7 @@ class DropNodeEventHandlerTests {
         var handler = new DropNodeEventHandler(this.objectService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
                 new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
 
-        var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, TARGET_ELEMENT_ID);
+        var input = new DropNodeInput(UUID.randomUUID(), "editingContextId", "representationId", DROPPED_ELEMENT_ID, TARGET_ELEMENT_ID, 0, 0);
 
         Sinks.One<IPayload> payloadSink = Sinks.one();
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

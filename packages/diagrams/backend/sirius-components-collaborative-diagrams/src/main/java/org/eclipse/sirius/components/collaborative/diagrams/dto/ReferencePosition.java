@@ -10,7 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface UsePaletteReferencePositionValue {
-  x: number | null;
-  y: number | null;
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
+
+import java.util.Objects;
+
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
+
+/**
+ * Payload used to share the reference position.
+ *
+ * @author sbegaudeau
+ */
+public record ReferencePosition(String parentId, Position position) {
+    public ReferencePosition {
+        Objects.requireNonNull(position);
+    }
 }

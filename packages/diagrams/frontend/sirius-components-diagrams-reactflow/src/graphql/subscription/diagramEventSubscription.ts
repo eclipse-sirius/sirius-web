@@ -33,6 +33,10 @@ subscription diagramEvent($input: DiagramEventInput!) {
         ...diagramFragment
       }
       cause
+      referencePosition {
+        parentId
+        position { x y }
+      }
     }
   }
 }
