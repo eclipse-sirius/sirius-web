@@ -63,6 +63,7 @@ info: {
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2812[#2812] [trees] Fix an issue that prevents icon to be displayed in treeNodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/2580[#2580] [diagram] Cancel direct edit on 'Esc'.
 
 === New Features
 

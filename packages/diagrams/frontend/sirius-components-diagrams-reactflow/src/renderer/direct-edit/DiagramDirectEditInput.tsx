@@ -77,10 +77,10 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
     newLabel: initialLabel,
   });
 
+  const editionFinished = useRef<boolean>(false);
+
   const { addErrorMessage, addMessages } = useMultiToast();
-
   const { hideDiagramElementPalette } = useDiagramElementPalette();
-
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
   const textInput = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
@@ -159,21 +159,29 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newLabel = event.target.value;
-
     setState((prevState) => {
       return { ...prevState, newLabel: newLabel };
     });
   };
 
+  const onBlur = () => {
+    if (!editionFinished.current) {
+      doRename();
+    }
+  };
+
   const onFinishEditing = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { key } = event;
     if (key === 'Enter' && !event.shiftKey) {
+      editionFinished.current = true;
       event.preventDefault();
       doRename();
     } else if (key === 'Escape') {
+      editionFinished.current = true;
       onClose();
     }
   };
+
   return (
     <>
       <TextField
@@ -185,7 +193,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
         multiline={true}
         onChange={handleChange}
         onKeyDown={onFinishEditing}
-        onBlur={doRename}
+        onBlur={onBlur}
         autoFocus
         data-testid="name-edit"
         style={{ transform }}

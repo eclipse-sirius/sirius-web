@@ -99,6 +99,25 @@ describe('Diagram - Direct edit label', () => {
         diagram.getNodes('diagram', 'Entity2').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
         cy.getByTestId('name-edit').should('exist');
       });
+
+      it('Then during edit triggering escape cancelled the current edition', () => {
+        const explorer = new Explorer();
+        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.getTreeItemByLabel('Entity2').click();
+
+        const details = new Details();
+        details.getTextField('Name').type('Entity2{Enter}');
+
+        const diagram = new Diagram();
+        diagram.fitToScreen();
+        diagram.getNodes('diagram', 'Entity2').click();
+        diagram.getPalette().should('exist');
+
+        cy.getByTestId('Edit - Tool').click();
+        cy.getByTestId('name-edit').should('exist').type('test{esc}');
+        diagram.getNodes('diagram', 'Entity2').should('exist');
+        diagram.getNodes('diagram', 'test').should('not.exist');
+      });
     });
   });
 });
