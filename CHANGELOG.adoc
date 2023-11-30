@@ -140,6 +140,7 @@ The only way to export diagram as SVG image is to use the ReactFlow toolbar loca
 - https://github.com/eclipse-sirius/sirius-web/issues/2684[#2684] [diagram] Fix an issue where the edges' arrows where not exported during the SVG export.
 - https://github.com/eclipse-sirius/sirius-web/issues/2726[#2726] [diagram] Fix an issue that prevents last tool used in a tool section to be added to another palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/2728[#2728] [diagram] Prevents unnecessary rerenders in DiagramPanel
+- https://github.com/eclipse-sirius/sirius-web/issues/2683[#2683] [diagram] Hide diagram element palette when the element itself is moved.
 
 === New Features
 
@@ -156,7 +157,7 @@ Note that the custom shape replaces the parametric SVG, which is deprecated and 
 That includes the support during the direct edit.
 The user can use 'shift+enter' to insert a line break.
 - https://github.com/eclipse-sirius/sirius-web/issues/2522[#2522] [diagram] Add the support for rotatable border node.
-- https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] Add the possibility to specify a ratio on node to guarantee its aspect.
+- https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] Add the possibility to specify a ratio on node to guarantee its appearance.
 - https://github.com/eclipse-sirius/sirius-web/issues/2568[#2568] [trees] Allow developers to modify the content of the explorer view
 - https://github.com/eclipse-sirius/sirius-web/issues/2570[#2570] [forms] Allow developers to modify the content of the details view
 - https://github.com/eclipse-sirius/sirius-web/issues/2618[#2618] [core] Add an API to provide pre-process and post-process around input handling.

@@ -113,6 +113,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
         setNodes(laidOutDiagram.nodes);
         setEdges(laidOutDiagram.edges);
         hideDiagramPalette();
+        hideDiagramElementPalette();
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
       });
@@ -126,6 +127,10 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
     const transformedNodeChanges = transformBorderNodeChanges(changes);
+
+    if (transformedNodeChanges.some((change) => change.type === 'position')) {
+      hideDiagramElementPalette();
+    }
 
     let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
 
