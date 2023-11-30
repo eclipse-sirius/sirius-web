@@ -204,6 +204,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         hideDiagramPalette();
         hideDiagramElementPalette();
       }}
+      nodeDragThreshold={1}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onNodeDrag={onNodeDrag}
