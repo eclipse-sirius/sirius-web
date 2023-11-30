@@ -38,9 +38,11 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
       let currentlyEditedLabelId: string | undefined | null = nodes.find((node) => node.selected)?.data.label?.id;
-      const isLabelEditable: boolean = nodes.find((node) => node.selected)?.data.labelEditable || false;
+      let isLabelEditable: boolean = nodes.find((node) => node.selected)?.data.labelEditable || false;
       if (!currentlyEditedLabelId) {
         currentlyEditedLabelId = edges.find((edge) => edge.selected)?.data?.label?.id;
+        // GQLEdge does not expose a labelEditable flag, so we currently assume all edge (center) labels are editable.
+        isLabelEditable = true;
       }
 
       if (currentlyEditedLabelId && isLabelEditable) {
