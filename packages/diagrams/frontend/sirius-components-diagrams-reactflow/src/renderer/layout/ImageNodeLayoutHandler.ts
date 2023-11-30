@@ -49,8 +49,7 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     if (directChildren.length > 0) {
       this.handleParentNode(layoutEngine, previousDiagram, node, visibleNodes, directChildren, newlyAddedNode);
     } else {
-      node.width = forceWidth ?? getNodeOrMinWidth(undefined, node);
-      node.height = getNodeOrMinHeight(undefined, node);
+      this.handleLeafNode(previousDiagram, node, forceWidth);
     }
   }
 
@@ -112,5 +111,37 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
       borderNode.extent = getBorderNodeExtent(node, borderNode);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
+  }
+
+  private handleLeafNode(
+    previousDiagram: RawDiagram | null,
+    node: Node<ImageNodeData, 'imageNode'>,
+    forceWidth?: number
+  ) {
+    const minNodeWith = forceWidth ?? getNodeOrMinWidth(undefined, node);
+    const minNodeHeight = getNodeOrMinHeight(undefined, node);
+
+    const previousNode = (previousDiagram?.nodes ?? []).find((previous) => previous.id === node.id);
+    const previousDimensions = computePreviousSize(previousNode, node);
+
+    if (node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > previousDimensions.width) {
+        node.width = minNodeWith;
+      } else {
+        node.width = previousDimensions.width;
+      }
+      if (minNodeHeight > previousDimensions.height) {
+        node.height = minNodeHeight;
+      } else {
+        node.height = previousDimensions.height;
+      }
+    } else {
+      node.width = minNodeWith;
+      node.height = minNodeHeight;
+    }
+
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
   }
 }
