@@ -130,6 +130,7 @@ It uses our algorithm instead of elk.js to perform the arrange-all.
 Make some border node transparent when the node is in a list node in the convert engine.
 - https://github.com/eclipse-sirius/sirius-web/issues/2646[#2646] [diagram] Fix an issue where the palette was re rendering too much.
 - https://github.com/eclipse-sirius/sirius-web/issues/2685[#2685] [diagram] Fix direct edit of edge labels with F2.
+- https://github.com/eclipse-sirius/sirius-web/issues/2464[#2464] [diagram] Apply the fit-to-screen after the first layout
 
 === New Features
 
