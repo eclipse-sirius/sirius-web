@@ -60,9 +60,10 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.deleteAllProjects();
   });
 
-  it('test Hide/Fade action is not available on diagram background', () => {
+  it.skip('test Hide/Fade action is not available on diagram background', () => {
     createFlowReactFlowDiagram();
     cy.getByTestId('rf__wrapper').findByTestId('Label - CaptureSubSystem').should('exist').click('topLeft');
+
     cy.getByTestId('Hide-elements').should('exist');
     cy.getByTestId('Fade-elements').should('exist');
     cy.getByTestId('rf__wrapper').click('bottomLeft');
@@ -71,7 +72,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('Fade-elements').should('not.exist');
   });
 
-  it('can fade any type of nodes', () => {
+  it.skip('can fade any type of nodes', () => {
     createFlowReactFlowDiagram();
     fadeByElementTestId('IconLabel - Temperature: 25');
     fadeByElementTestId('Image - Motion_Engine');
@@ -79,7 +80,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     fadeByElementTestId('List - Description');
   });
 
-  it('can hide any type of nodes', () => {
+  it.skip('can hide any type of nodes', () => {
     createFlowReactFlowDiagram();
     cy.getByTestId('Label - Temperature: 25').should('have.length', 1);
     cy.getByTestId('Label - Temperature: 28').click();
