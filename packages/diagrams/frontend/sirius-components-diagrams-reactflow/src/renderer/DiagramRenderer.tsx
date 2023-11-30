@@ -103,6 +103,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
 
       setNodes(convertedDiagram.nodes);
       setEdges(convertedDiagram.edges);
+      fitToScreen();
     } else if (cause === 'refresh') {
       const previousDiagram: RawDiagram = {
         nodes: nodes as Node<NodeData, DiagramNodeType>[],
@@ -113,7 +114,6 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload, selection, setSe
         setEdges(laidOutDiagram.edges);
         hideDiagramPalette();
         resetReferencePosition();
-        fitToScreen();
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
       });
