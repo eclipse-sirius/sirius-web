@@ -110,6 +110,9 @@ export const useDiagramSelection = (
           duration: 1000,
         });
       }
+    } else {
+      const reactFlowState = store.getState();
+      reactFlowState.unselectNodesAndEdges();
     }
   }, [selection]);
 
