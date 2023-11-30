@@ -200,9 +200,13 @@ export const setBorderNodesPosition = (
   borderNodesEast.forEach((child, index) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
+      let newY = previousBorderNode.position.y;
+      if (nodeToLayout.height && newY > nodeToLayout.height) {
+        newY = nodeToLayout.height - borderNodeOffset;
+      }
       child.position = {
         x: nodeToLayout.width ?? 0,
-        y: previousBorderNode.position.y,
+        y: newY,
       };
     } else {
       child.position = { x: nodeToLayout.width ?? 0, y: defaultNodeMargin };
@@ -219,9 +223,13 @@ export const setBorderNodesPosition = (
   borderNodesWest.forEach((child, index) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
+      let newY = previousBorderNode.position.y;
+      if (nodeToLayout.height && newY > nodeToLayout.height) {
+        newY = nodeToLayout.height - borderNodeOffset;
+      }
       child.position = {
         x: 0 - (child.width ?? 0),
-        y: previousBorderNode.position.y,
+        y: newY,
       };
     } else {
       child.position = { x: 0 - (child.width ?? 0), y: defaultNodeMargin };
@@ -237,8 +245,12 @@ export const setBorderNodesPosition = (
   borderNodesSouth.forEach((child, index) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
+      let newX = previousBorderNode.position.x;
+      if (nodeToLayout.width && newX > nodeToLayout.width) {
+        newX = nodeToLayout.width - borderNodeOffset;
+      }
       child.position = {
-        x: previousBorderNode.position.x,
+        x: newX,
         y: nodeToLayout.height ?? 0,
       };
     } else {
@@ -256,8 +268,12 @@ export const setBorderNodesPosition = (
   borderNodesNorth.forEach((child, index) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
+      let newX = previousBorderNode.position.x;
+      if (nodeToLayout.width && newX > nodeToLayout.width) {
+        newX = nodeToLayout.width - borderNodeOffset;
+      }
       child.position = {
-        x: previousBorderNode.position.x,
+        x: newX,
         y: 0 - (child.height ?? 0),
       };
     } else {

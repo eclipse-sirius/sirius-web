@@ -12,9 +12,10 @@
  *******************************************************************************/
 import { useCallback } from 'react';
 import { Node, NodeChange, useReactFlow, XYPosition } from 'reactflow';
-import { BorderNodePositon, EdgeData, NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { borderNodeOffset } from '../layout/layoutParams';
 import { UseBorderChangeValue } from './useBorderChange.types';
+import { findBorderNodePosition } from '../layout/layoutBorderNodes';
 
 const isNewPositionInsideIsParent = (newNodePosition: XYPosition, movedNode: Node, parentNode: Node): boolean => {
   if (movedNode.width && movedNode.height && parentNode?.positionAbsolute && parentNode.width && parentNode.height) {
@@ -26,40 +27,6 @@ const isNewPositionInsideIsParent = (newNodePosition: XYPosition, movedNode: Nod
     );
   }
   return false;
-};
-
-const computeNewBorderPosition = (
-  newNodePosition: XYPosition,
-  movedNode: Node,
-  parentNode: Node | undefined
-): BorderNodePositon | null => {
-  if (movedNode.width && movedNode.height && parentNode?.positionAbsolute && parentNode.width && parentNode.height) {
-    if (
-      Math.trunc(newNodePosition.x + movedNode.width) - borderNodeOffset ===
-      Math.trunc(parentNode.positionAbsolute.x)
-    ) {
-      return BorderNodePositon.WEST;
-    }
-    if (
-      Math.trunc(newNodePosition.x) + borderNodeOffset ===
-      Math.trunc(parentNode.positionAbsolute.x + parentNode.width)
-    ) {
-      return BorderNodePositon.EAST;
-    }
-    if (
-      Math.trunc(newNodePosition.y + movedNode.height) - borderNodeOffset ===
-      Math.trunc(parentNode.positionAbsolute.y)
-    ) {
-      return BorderNodePositon.NORTH;
-    }
-    if (
-      Math.trunc(newNodePosition.y) + borderNodeOffset ===
-      Math.trunc(parentNode.positionAbsolute.y + parentNode.height)
-    ) {
-      return BorderNodePositon.SOUTH;
-    }
-  }
-  return null;
 };
 
 export const useBorderChange = (): UseBorderChangeValue => {
@@ -76,11 +43,7 @@ export const useBorderChange = (): UseBorderChangeValue => {
             change.position = movedNode.position;
             change.positionAbsolute = movedNode.positionAbsolute;
           } else {
-            movedNode.data.borderNodePosition = computeNewBorderPosition(
-              change.positionAbsolute,
-              movedNode,
-              parentNode
-            );
+            movedNode.data.borderNodePosition = findBorderNodePosition(change.position, movedNode, parentNode);
           }
         }
       }

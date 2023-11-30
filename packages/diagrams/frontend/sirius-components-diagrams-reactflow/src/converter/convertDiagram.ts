@@ -26,6 +26,7 @@ import { IconLabelNodeConverterHandler } from './IconLabelNodeConverterHandler';
 import { ImageNodeConverterHandler } from './ImageNodeConverterHandler';
 import { ListNodeConverterHandler } from './ListNodeConverterHandler';
 import { RectangleNodeConverterHandler } from './RectangleNodeConverterHandler';
+import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -218,6 +219,8 @@ export const convertDiagram = (
     edges,
   };
   layoutHandles(rawDiagram);
+  computeBorderNodeExtents(rawDiagram.nodes);
+  computeBorderNodePositions(rawDiagram.nodes);
 
   return {
     metadata: {
