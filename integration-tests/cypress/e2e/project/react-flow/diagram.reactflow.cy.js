@@ -103,4 +103,19 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('representation-tab-Topography1__REACT_FLOW').should('have.attr', 'data-testselected', 'true');
     cy.getByTestId('representation-tab-Topography2__REACT_FLOW').should('have.attr', 'data-testselected', 'false');
   });
+
+  it('diagram selection is synchronized with the explorer', () => {
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.createRepresentationFromExplorer('Robot', 'Topography');
+    // Wait for the diagram to be render
+    cy.getByTestId('Image - Wifi').should('exist');
+    cy.getByTestId('Central_Unit').dblclick();
+    cy.getByTestId('DSP').click();
+    cy.get('div.react-flow__node.selected').findByTestId('Image - DSP').should('exist');
+    cy.get('div.react-flow__node.selected').findByTestId('Image - Motion_Engine').should('not.exist');
+    cy.getByTestId('Motion_Engine').click();
+    cy.get('div.react-flow__node.selected').findByTestId('Image - DSP').should('not.exist');
+    cy.get('div.react-flow__node.selected').findByTestId('Image - Motion_Engine').should('exist');
+  });
 });
