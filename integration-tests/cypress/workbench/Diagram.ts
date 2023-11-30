@@ -41,15 +41,21 @@ export class Diagram {
               force: true,
               view: win,
             });
-            // eslint-disable-next-line cypress/no-unnecessary-waiting
-            cy.wait(400); // the time needed to calculate compatible nodes
-            cy.getByTestId('rf__wrapper').findByTestId(sourceNodeTestId).trigger('mousemove', {
-              clientX: x,
-              clientY: y,
+            // Move a first time to trigger nodeDrag (needed since nodeDragThreshold={1})
+            cy.getByTestId('rf__wrapper').findByTestId(sourceNodeTestId).trigger('mousemove', 500, 500, {
               force: true,
               view: win,
             });
-            cy.getByTestId('rf__wrapper').findByTestId(sourceNodeTestId).trigger('mouseup', { view: win });
+            // eslint-disable-next-line cypress/no-unnecessary-waiting
+            cy.wait(400); // the time needed to calculate compatible nodes
+            //Warning : THERE IS AN ISSUE WITH THE COORDINATES HERE, the code is not doing what is meant to do ...
+            cy.getByTestId('rf__wrapper').findByTestId(sourceNodeTestId).trigger('mousemove', x, y, {
+              force: true,
+              view: win,
+            });
+            cy.getByTestId('rf__wrapper').findByTestId(sourceNodeTestId).trigger('mouseup', {
+              view: win,
+            });
             // eslint-disable-next-line cypress/no-unnecessary-waiting
             cy.wait(500); // the time needed to process the drop action
           }

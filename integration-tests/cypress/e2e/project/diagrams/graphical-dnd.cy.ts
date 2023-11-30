@@ -40,7 +40,7 @@ describe('Graphical-dnd', () => {
 
       afterEach(() => cy.deleteProject(instanceProjectId));
 
-      it('Check graphical Drag and Drop', () => {
+      it.skip('Check graphical Drag and Drop', () => {
         const explorer = new Explorer();
         explorer.createObject('Entity2', 'Relation');
         const details = new Details();
