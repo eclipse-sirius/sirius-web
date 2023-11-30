@@ -77,7 +77,6 @@ export const useDiagramSelection = (
         .map((node) => node.id)
         .includes(firstNodeIdMatchingWorkbenchSelection);
       if (!isAlreadySelected) {
-        reactFlowState.unselectNodesAndEdges();
         reactFlowState.addSelectedNodes([firstNodeIdMatchingWorkbenchSelection]);
 
         const selectedNodes = reactFlowState
@@ -96,7 +95,6 @@ export const useDiagramSelection = (
         .includes(firstEdgeIdMatchingWorkbenchSelection);
 
       if (!isAlreadySelected) {
-        reactFlowState.unselectNodesAndEdges();
         reactFlowState.addSelectedEdges([firstEdgeIdMatchingWorkbenchSelection]);
 
         const selectedEdges = reactFlowState.edges.filter((edge) => firstEdgeIdMatchingWorkbenchSelection === edge.id);
