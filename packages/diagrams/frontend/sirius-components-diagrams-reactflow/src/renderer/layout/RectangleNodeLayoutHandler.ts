@@ -92,7 +92,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
-      const previousPosition = computePreviousPosition(previousNode, node);
+      const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
