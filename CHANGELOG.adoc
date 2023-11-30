@@ -131,6 +131,9 @@ Make some border node transparent when the node is in a list node in the convert
 - https://github.com/eclipse-sirius/sirius-web/issues/2646[#2646] [diagram] Fix an issue where the palette was re rendering too much.
 - https://github.com/eclipse-sirius/sirius-web/issues/2685[#2685] [diagram] Fix direct edit of edge labels with F2.
 - https://github.com/eclipse-sirius/sirius-web/issues/2464[#2464] [diagram] Apply the fit-to-screen after the first layout
+- https://github.com/eclipse-sirius/sirius-web/issues/2703[#2703] [diagram] Remove the explorer menu used to export diagrams as SVG image.
+This menu was using Sprotty export, which has been replaced by ReactFlow by default (see https://github.com/eclipse-sirius/sirius-web/issues/2671[#2671]).
+The only way to export diagram as SVG image is to use the ReactFlow toolbar located at the top left of each diagram.
 
 === New Features
 
