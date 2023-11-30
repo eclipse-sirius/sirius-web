@@ -141,6 +141,7 @@ The only way to export diagram as SVG image is to use the ReactFlow toolbar loca
 - https://github.com/eclipse-sirius/sirius-web/issues/2726[#2726] [diagram] Fix an issue that prevents last tool used in a tool section to be added to another palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/2728[#2728] [diagram] Prevents unnecessary rerenders in DiagramPanel
 - https://github.com/eclipse-sirius/sirius-web/issues/2683[#2683] [diagram] Hide diagram element palette when the element itself is moved.
+- https://github.com/eclipse-sirius/sirius-web/issues/2689[#2689] [diagram] Fix the borderNode moves that is no longer anchored to its parent.
 
 === New Features
 
