@@ -10,38 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import GetAppIcon from '@material-ui/icons/Image';
-import React, { Fragment, forwardRef, useContext } from 'react';
+import { Fragment, forwardRef } from 'react';
 
 export const DiagramTreeItemContextMenuContribution = forwardRef(
-  (
-    { editingContextId, item, onClose }: TreeItemContextMenuComponentProps,
-    ref: React.ForwardedRef<HTMLAnchorElement>
-  ) => {
-    const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-
-    return (
-      <Fragment key="diagram-tree-item-context-menu-contribution">
-        <MenuItem
-          key="exportSVG"
-          divider
-          ref={ref}
-          component="a"
-          onClick={onClose}
-          href={`${httpOrigin}/api/editingcontexts/${editingContextId}/representations/${item.id}`}
-          type="application/octet-stream"
-          data-testid="exportSVG">
-          <ListItemIcon>
-            <GetAppIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Export to SVG" />
-        </MenuItem>
-      </Fragment>
-    );
+  ({}: TreeItemContextMenuComponentProps, _: React.ForwardedRef<HTMLLIElement>) => {
+    return <Fragment key="diagram-tree-item-context-menu-contribution"></Fragment>;
   }
 );
