@@ -24,8 +24,8 @@ import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import { useState } from 'react';
-import { Node, Panel, useNodes, useReactFlow } from 'reactflow';
+import { memo, useState } from 'react';
+import { Panel, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
@@ -34,17 +34,20 @@ import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 
-export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) => {
+export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
   });
 
-  const nodes = useNodes<NodeData>();
+  const reactFlow = useReactFlow<NodeData, EdgeData>();
+  const { getEdges, getNodes } = reactFlow;
+
+  const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
+  const getSelectedNodes = () => getNodes().filter((node) => node.selected);
+
   const { fullscreen, onFullscreen } = useFullscreen();
 
-  const reactFlow = useReactFlow<NodeData, EdgeData>();
-  const selectedNodes: Node<NodeData>[] = nodes.filter((node) => node.selected);
-  const handleFitToScreen = () => reactFlow.fitView({ duration: 200, nodes: selectedNodes });
+  const handleFitToScreen = () => reactFlow.fitView({ duration: 200, nodes: getSelectedNodes() });
   const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
   const handleZoomOut = () => reactFlow.zoomOut({ duration: 200 });
   const handleShare = () => setState((prevState) => ({ ...prevState, dialogOpen: 'Share' }));
@@ -57,10 +60,6 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
   const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
 
   const { exportToImage } = useExportToImage();
-
-  const getAllElementsIds = () => {
-    return [...reactFlow.getNodes().map((elem) => elem.id), ...reactFlow.getEdges().map((elem) => elem.id)];
-  };
 
   return (
     <>
@@ -125,4 +124,4 @@ export const DiagramPanel = ({ snapToGrid, onSnapToGrid }: DiagramPanelProps) =>
       {state.dialogOpen === 'Share' ? <ShareDiagramDialog onClose={handleCloseDialog} /> : null}
     </>
   );
-};
+});
