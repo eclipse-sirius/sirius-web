@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { Page } from '../pages/Page';
 import { ToolbarAction } from '../toolbaraction/ToolbarAction';
@@ -24,6 +24,7 @@ const useFormStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    gap: theme.spacing(1),
   },
   tabsRoot: {
     minHeight: theme.spacing(4),
