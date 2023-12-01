@@ -26,6 +26,7 @@ The reference widget graphql schema and the frontend have been updated according
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2984[#2984] [deck] Handle successPayload messages in Deck representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/2666[#2666] [formdescriptioneditors] Change widget reference preview to match its new look.
 
 === New Features
 
