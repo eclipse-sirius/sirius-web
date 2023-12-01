@@ -63,6 +63,10 @@ const formEventSubscription = (contributions: Array<WidgetContribution>) =>
 
 const useFormRepresentationStyles = makeStyles((theme) => ({
   page: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+    paddingTop: theme.spacing(1),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     overflowY: 'scroll',

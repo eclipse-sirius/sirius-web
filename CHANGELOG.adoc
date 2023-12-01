@@ -197,6 +197,7 @@ The new implementation of `IEditService`, named `ComposedEditService`, tries fir
 - https://github.com/eclipse-sirius/sirius-web/issues/2595[#2595] [diagram] Call the layout on node move and resize.
 Node will not be outside of their container, nor on a node header because of a move or resize.
 - https://github.com/eclipse-sirius/sirius-web/issues/2552[#2552] [diagram] Hide the diagram palette on 'Esc'
+- https://github.com/eclipse-sirius/sirius-web/issues/2600[#2600] [form] Add a small margin at the top of a page
 
 == v2023.10.0
 
