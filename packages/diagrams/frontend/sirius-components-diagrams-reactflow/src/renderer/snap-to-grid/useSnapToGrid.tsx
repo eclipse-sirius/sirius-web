@@ -17,10 +17,8 @@ import { UseSnapToGridValue } from './useSnapToGrid.types';
 export const useSnapToGrid = (): UseSnapToGridValue => {
   const [state, setState] = useState<boolean>(false);
 
-  const onSnapToGrid = (snapToGrid: boolean) => setState(snapToGrid);
-
   return {
     snapToGrid: state,
-    onSnapToGrid,
+    onSnapToGrid: setState,
   };
 };
