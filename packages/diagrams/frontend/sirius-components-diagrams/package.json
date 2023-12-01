@@ -23,6 +23,7 @@
     }
   },
   "scripts": {
+    "start": "vite build --mode 'development' && cp src/index.d.ts dist/ && mkdir -p dist/representation && cp src/representation/DiagramRepresentation.d.ts dist/representation/",
     "build": "vite build && cp src/index.d.ts dist/ && mkdir -p dist/representation && cp src/representation/DiagramRepresentation.d.ts dist/representation/",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
