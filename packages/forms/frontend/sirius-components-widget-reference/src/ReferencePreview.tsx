@@ -10,24 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ServerContext, ServerContextValue, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
 import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GQLReferenceWidgetStyle } from './ReferenceWidgetFragment.types';
+import Chip from '@material-ui/core/Chip';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import AddIcon from '@material-ui/icons/Add';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
-  style: {
+  referenceValueStyle: {
     color: ({ color }) => (color ? getCSSColor(color, theme) : undefined),
     fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
     fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
@@ -43,6 +45,9 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  propertySection: {
+    overflowX: 'hidden',
+  },
 }));
 
 type ReferenceWidgetProps = WidgetProps<GQLReferenceWidget>;
@@ -57,7 +62,6 @@ export const ReferencePreview = ({ widget }: ReferenceWidgetProps) => {
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const classes = useStyles(props);
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [selected, setSelected] = useState<boolean>(false);
   const { selection } = useSelection();
@@ -72,27 +76,87 @@ export const ReferencePreview = ({ widget }: ReferenceWidgetProps) => {
     }
   }, [selection, widget]);
 
+  const options = [{ label: 'Referenced Value', iconURL: '/api/images/icons/full/obj16/Entity.svg' }];
+
   return (
-    <div>
+    <div className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>
         <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
           {widget.label}
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
-      <List dense>
-        <ListItem>
-          <ListItemIcon>
-            <img width="16" height="16" alt={''} src={httpOrigin + '/api/images/icons/full/obj16/Entity.svg'} />
-          </ListItemIcon>
-          <ListItemText data-testid={`reference-value`} classes={{ primary: classes.style }}>
-            Referenced Value
-          </ListItemText>
-          <IconButton aria-label="clearReference" onClick={() => {}} data-testid={`clear-reference-${widget.id}`}>
-            <DeleteIcon />
-          </IconButton>
-        </ListItem>
-      </List>
+      <Autocomplete
+        data-testid={widget.label}
+        multiple
+        filterSelectedOptions
+        disabled={false}
+        open={false}
+        loading={false}
+        options={options}
+        value={options}
+        disableClearable
+        renderTags={(value, getTagProps) =>
+          value.map(({ label, iconURL }, index) => (
+            <Chip
+              key={index}
+              classes={{ label: classes.referenceValueStyle }}
+              label={label}
+              data-testid={`reference-value-${label}`}
+              icon={
+                <div>
+                  <IconOverlay iconURL={[iconURL]} alt={''} />
+                </div>
+              }
+              {...getTagProps({ index })}
+            />
+          ))
+        }
+        renderInput={(params) => (
+          <TextField
+            inputRef={ref}
+            {...params}
+            variant="standard"
+            error={widget.diagnostics.length > 0}
+            helperText={widget.diagnostics[0]?.message}
+            InputProps={{
+              readOnly: true,
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {params.InputProps.endAdornment}
+                  <InputAdornment position="end" className={classes.endAdornmentButton}>
+                    <IconButton
+                      aria-label="edit"
+                      size="small"
+                      title="Edit"
+                      disabled={false}
+                      data-testid={`${widget.label}-more`}>
+                      <MoreHorizIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="add"
+                      size="small"
+                      title="Create an object"
+                      disabled={false}
+                      data-testid={`${widget.label}-add`}>
+                      <AddIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="clear"
+                      size="small"
+                      title="Clear"
+                      disabled={false}
+                      data-testid={`${widget.label}-clear`}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </InputAdornment>
+                </>
+              ),
+            }}
+          />
+        )}
+      />
     </div>
   );
 };
