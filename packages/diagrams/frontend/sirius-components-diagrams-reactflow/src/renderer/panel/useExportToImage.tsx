@@ -34,7 +34,13 @@ export const useExportToImage = (): UseExportToImage => {
     const transform: Transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2, 0.2);
 
     const viewport: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__viewport');
-    if (viewport) {
+    const edges: HTMLElement | null = document.querySelector<HTMLElement>('.react-flow__edges');
+    const edgeMarkersDefs: HTMLElement | null = document.getElementById('edge-markers-defs');
+
+    if (viewport && edges && edgeMarkersDefs) {
+      const clonedEdgeMarkersDefs: Node = edgeMarkersDefs.cloneNode(true);
+      edges.insertBefore(clonedEdgeMarkersDefs, edges.firstChild);
+
       toSvg(viewport, {
         backgroundColor: '#ffffff',
         width: imageWidth,
@@ -44,7 +50,9 @@ export const useExportToImage = (): UseExportToImage => {
           height: imageHeight.toString(),
           transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
         },
-      }).then(downloadImage);
+      })
+        .then(downloadImage)
+        .finally(() => edges.removeChild(clonedEdgeMarkersDefs));
     }
   }, []);
   return { exportToImage };

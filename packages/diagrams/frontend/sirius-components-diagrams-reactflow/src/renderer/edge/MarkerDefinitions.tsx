@@ -148,7 +148,7 @@ export const MarkerDefinitions = () => {
   const allMarkerProps = useStore<MarkerProps[]>(selector, equalityFunction);
   return (
     <svg id="edge-markers" style={{ position: 'absolute', zIndex: -1, top: '0px' }}>
-      <defs>{allMarkerProps.map((markerProps) => getMarker(markerProps))}</defs>
+      <defs id="edge-markers-defs">{allMarkerProps.map((markerProps) => getMarker(markerProps))}</defs>
     </svg>
   );
 };
