@@ -94,6 +94,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 - https://github.com/eclipse-sirius/sirius-web/issues/1545[#1545] [core] The current selection can now be read and set from anywhere using the new `useSelection()` hook.
 - https://github.com/eclipse-sirius/sirius-web/issues/2736[#2736] [gantt] Add a starter project for beans related to task meta-model.
 - https://github.com/eclipse-sirius/sirius-web/issues/2819[#2819] [deck] Contribute the first version of the Deck representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/2765[#2765] [portal] Contribute the first version of the Portal representation.
 
 === Improvements
 
