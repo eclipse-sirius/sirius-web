@@ -71,7 +71,15 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
     );
   }
 
-  const defaultTool: GQLTool | undefined = getLastToolInvoked(toolSection.id) || tools[0];
+  const checkLastToolInvoked = (): GQLTool | undefined => {
+    const lastToolInvoked = getLastToolInvoked(toolSection.id);
+    if (lastToolInvoked && tools.some((tool) => tool.id === lastToolInvoked.id)) {
+      return lastToolInvoked;
+    }
+    return undefined;
+  };
+
+  const defaultTool: GQLTool | undefined = checkLastToolInvoked() || tools[0];
 
   const anchorRef = useRef<HTMLDivElement | null>(null);
   return (

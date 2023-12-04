@@ -138,6 +138,7 @@ The only way to export diagram as SVG image is to use the ReactFlow toolbar loca
 - https://github.com/eclipse-sirius/sirius-web/issues/2687[#2687] [diagram] Fix an issue where ConnectionHandles where rerendering too much
 - https://github.com/eclipse-sirius/sirius-web/issues/2698[#2698] [diagram] Fix an issue that prevents _imageNode_ to be resizable.
 - https://github.com/eclipse-sirius/sirius-web/issues/2684[#2684] [diagram] Fix an issue where the edges' arrows where not exported during the SVG export.
+- https://github.com/eclipse-sirius/sirius-web/issues/2726[#2726] [diagram] Fix an issue that prevents last tool used in a tool section to be added to another palette.
 
 === New Features
 
