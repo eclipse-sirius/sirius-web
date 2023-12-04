@@ -16,7 +16,7 @@ import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.typ
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
 import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
-import { Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
+import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
@@ -41,7 +41,7 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   return depth;
 };
 
-const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): Label => {
+const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
   return {
     id: gqlEdgeLabel.id,
     text: gqlEdgeLabel.text,

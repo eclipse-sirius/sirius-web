@@ -59,7 +59,7 @@ const toIconLabelNode = (
       textAlign: 'left',
       backgroundColor: style.backgroundColor,
     },
-    label: undefined,
+    insideLabel: null,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: state === GQLViewModifier.Faded,
@@ -74,13 +74,15 @@ const toIconLabelNode = (
   if (insideLabel) {
     const labelStyle = insideLabel.style;
 
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       style: {
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
+      isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
   }
 

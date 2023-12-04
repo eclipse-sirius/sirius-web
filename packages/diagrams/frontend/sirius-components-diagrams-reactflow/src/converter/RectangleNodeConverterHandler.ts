@@ -66,7 +66,7 @@ const toRectangularNode = (
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
     },
-    label: undefined,
+    insideLabel: null,
     faded: state === GQLViewModifier.Faded,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
@@ -80,7 +80,7 @@ const toRectangularNode = (
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       isHeader: insideLabel.isHeader,
@@ -100,14 +100,14 @@ const toRectangularNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (data.label.displayHeaderSeparator) {
-          data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+        if (data.insideLabel.displayHeaderSeparator) {
+          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
       }
       if (alignement.secondaryAlignment === 'CENTER') {
         data.style = { ...data.style, alignItems: 'stretch' };
-        data.label.style = { ...data.label.style, justifyContent: 'center' };
+        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
       }
     }
   }

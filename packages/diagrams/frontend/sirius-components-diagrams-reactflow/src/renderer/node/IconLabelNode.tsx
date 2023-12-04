@@ -51,9 +51,11 @@ export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNo
           ...iconlabelStyle(data.style, theme, selected, hoveredNode?.id === id, data.faded),
           ...dropFeedbackStyle,
         }}
-        data-testid={`IconLabel - ${data?.label?.text}`}>
-        {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.label?.id ?? null} /> : null}
+        data-testid={`IconLabel - ${data?.insideLabel?.text}`}>
+        {data.insideLabel ? (
+          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+        ) : null}
+        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data?.insideLabel?.id ?? null} /> : null}
       </div>
     </div>
   );

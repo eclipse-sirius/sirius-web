@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { EdgeData, Label } from '../DiagramRenderer.types';
+import { EdgeData, EdgeLabel } from '../DiagramRenderer.types';
 
 export interface MultiLabelEdgeData extends EdgeData {
-  beginLabel?: Label;
-  endLabel?: Label;
+  beginLabel?: EdgeLabel;
+  endLabel?: EdgeLabel;
 }

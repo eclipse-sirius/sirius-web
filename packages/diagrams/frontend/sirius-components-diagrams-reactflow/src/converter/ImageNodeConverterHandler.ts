@@ -53,7 +53,7 @@ const toImageNode = (
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    label: undefined,
+    insideLabel: null,
     imageURL: style.imageURL,
     style: {},
     faded: state === GQLViewModifier.Faded,
@@ -70,7 +70,7 @@ const toImageNode = (
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       iconURL: labelStyle.iconURL,
@@ -83,6 +83,8 @@ const toImageNode = (
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
+      isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
 
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
@@ -92,7 +94,7 @@ const toImageNode = (
       }
       if (alignement.secondaryAlignment === 'CENTER') {
         data.style = { ...data.style, alignItems: 'stretch' };
-        data.label.style = { ...data.label.style, justifyContent: 'center' };
+        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
       }
     }
   }

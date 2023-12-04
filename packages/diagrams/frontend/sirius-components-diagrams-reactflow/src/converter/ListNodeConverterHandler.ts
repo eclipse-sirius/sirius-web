@@ -71,7 +71,7 @@ const toListNode = (
       borderRightWidth: style.borderSize,
       borderStyle: style.borderStyle,
     },
-    label: undefined,
+    insideLabel: null,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: state === GQLViewModifier.Faded,
@@ -85,7 +85,7 @@ const toListNode = (
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       iconURL: labelStyle.iconURL,
@@ -105,14 +105,14 @@ const toListNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (data.label.displayHeaderSeparator) {
-          data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+        if (data.insideLabel.displayHeaderSeparator) {
+          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
       }
       if (alignement.secondaryAlignment === 'CENTER') {
         data.style = { ...data.style, alignItems: 'stretch' };
-        data.label.style = { ...data.label.style, justifyContent: 'center' };
+        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
       }
     }
   }

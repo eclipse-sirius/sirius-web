@@ -83,8 +83,8 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader: boolean = node.data.label?.isHeader ?? false;
-    const displayHeaderSeparator: boolean = node.data.label?.displayHeaderSeparator ?? false;
+    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
+    const displayHeaderSeparator: boolean = node.data.insideLabel?.displayHeaderSeparator ?? false;
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);

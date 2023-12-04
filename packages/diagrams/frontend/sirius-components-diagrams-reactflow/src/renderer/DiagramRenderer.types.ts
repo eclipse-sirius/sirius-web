@@ -46,7 +46,7 @@ export interface NodeData {
   targetObjectKind: string;
   targetObjectLabel: string;
   descriptionId: string;
-  label: Label | undefined;
+  insideLabel: InsideLabel | null;
   faded: boolean;
   nodeDescription: GQLNodeDescription | undefined;
   defaultWidth: number | null;
@@ -70,15 +70,22 @@ export interface EdgeData {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
-  label: Label | null;
+  label: EdgeLabel | null;
   faded: boolean;
 }
 
-export interface Label {
+export interface InsideLabel {
   id: string;
   text: string;
   iconURL: string[];
   style: React.CSSProperties;
-  isHeader?: boolean;
-  displayHeaderSeparator?: boolean;
+  isHeader: boolean;
+  displayHeaderSeparator: boolean;
+}
+
+export interface EdgeLabel {
+  id: string;
+  text: string;
+  iconURL: string[];
+  style: React.CSSProperties;
 }
