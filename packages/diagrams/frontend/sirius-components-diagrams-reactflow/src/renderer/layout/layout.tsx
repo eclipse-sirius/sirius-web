@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,14 +80,14 @@ export const prepareLayoutArea = (
    */
   const labelElements: JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
-    if (hiddenContainer && node.data.label) {
+    if (hiddenContainer && node.data.insideLabel) {
       const children: JSX.Element[] = [
         createElement(Label, {
           diagramElementId: node.id,
-          label: node.data.label,
+          label: node.data.insideLabel,
           faded: false,
           transform: '',
-          key: node.data.label.id,
+          key: node.data.insideLabel.id,
         }),
       ];
       const element: JSX.Element = createElement('div', {

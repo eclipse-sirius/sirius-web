@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 import {
   AlignmentMap,
-  BorderNodePositon,
+  BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
   GQLEdge,
@@ -25,6 +25,7 @@ import {
   convertHandles,
   convertLabelStyle,
   convertLineStyle,
+  convertOutsideLabels,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
@@ -46,6 +47,7 @@ const toEllipseNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
     style,
     labelEditable,
@@ -66,13 +68,14 @@ const toEllipseNode = (
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
     },
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     connectionHandles,
     labelEditable,
     isNew,
@@ -80,10 +83,11 @@ const toEllipseNode = (
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -99,14 +103,14 @@ const toEllipseNode = (
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (data.label.isHeader) {
-          data.label.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+        if (data.insideLabel.isHeader) {
+          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
         }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
       }
       if (alignement.secondaryAlignment === 'CENTER') {
         data.style = { ...data.style, alignItems: 'stretch' };
-        data.label.style = { ...data.label.style, justifyContent: 'center' };
+        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
       }
     }
   }

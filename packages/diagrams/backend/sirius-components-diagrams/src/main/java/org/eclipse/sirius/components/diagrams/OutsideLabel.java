@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams;
 
-import { EdgeData, EdgeLabel } from '../DiagramRenderer.types';
-
-export interface MultiLabelEdgeData extends EdgeData {
-  beginLabel?: EdgeLabel;
-  endLabel?: EdgeLabel;
+/**
+ * The outside label.
+ *
+ * @author gcoutable
+ */
+public record OutsideLabel(String id, String type, String text, OutsideLabelLocation outsideLabelLocation, LabelStyle style) {
 }

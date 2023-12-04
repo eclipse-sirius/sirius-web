@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,9 +91,13 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`List - ${data?.label?.text}`}>
-        {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
+        data-testid={`List - ${data?.insideLabel?.text}`}>
+        {data.insideLabel ? (
+          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+        ) : null}
+        {selected ? (
+          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+        ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />

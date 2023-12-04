@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,9 @@ import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ImageNodeData } from '../renderer/node/ImageNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
+import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -39,6 +39,7 @@ const toImageNode = (
     targetObjectKind,
     descriptionId,
     insideLabel,
+    outsideLabels,
     id,
     state,
     style,
@@ -53,7 +54,8 @@ const toImageNode = (
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     imageURL: style.imageURL,
     style: {},
     faded: state === GQLViewModifier.Faded,
@@ -70,7 +72,7 @@ const toImageNode = (
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       iconURL: labelStyle.iconURL,
@@ -83,6 +85,8 @@ const toImageNode = (
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
+      isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
 
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
@@ -92,7 +96,7 @@ const toImageNode = (
       }
       if (alignement.secondaryAlignment === 'CENTER') {
         data.style = { ...data.style, alignItems: 'stretch' };
-        data.label.style = { ...data.label.style, justifyContent: 'center' };
+        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
       }
     }
   }

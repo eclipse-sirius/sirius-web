@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { edgeFragment } from './edgeFragment';
-import { insideLabelFragment, labelFragment } from './labelFragment';
+import { insideLabelFragment, labelFragment, outsideLabelFragment } from './labelFragment';
 import { nodeFragment } from './nodeFragment';
 import { GraphQLNodeStyleFragment } from './nodeFragment.types';
 
@@ -76,4 +76,5 @@ ${nodeFragment(contributions)}
 ${edgeFragment}
 ${labelFragment}
 ${insideLabelFragment}
+${outsideLabelFragment}
 `;

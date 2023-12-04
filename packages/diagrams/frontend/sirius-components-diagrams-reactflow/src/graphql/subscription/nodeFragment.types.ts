@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLInsideLabel } from './labelFragment.types';
+import { GQLInsideLabel, GQLOutsideLabel } from './labelFragment.types';
 
 export interface GQLNode<T extends GQLNodeStyle> {
   id: string;
@@ -21,6 +21,7 @@ export interface GQLNode<T extends GQLNodeStyle> {
   descriptionId: string;
   state: GQLViewModifier;
   insideLabel: GQLInsideLabel | undefined;
+  outsideLabels: GQLOutsideLabel[];
   style: T;
   childrenLayoutStrategy?: ILayoutStrategy;
   borderNodes: GQLNode<GQLNodeStyle>[] | undefined;
