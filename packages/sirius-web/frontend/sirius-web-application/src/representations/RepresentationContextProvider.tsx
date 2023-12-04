@@ -24,6 +24,7 @@ import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclips
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
+import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { RepresentationContextProviderProps } from './RepresentationContextProvider.types';
 
 export const RepresentationContextProvider = ({ children }: RepresentationContextProviderProps) => {
@@ -44,6 +45,8 @@ export const RepresentationContextProvider = ({ children }: RepresentationContex
         return GanttRepresentation;
       } else if (type === 'Deck') {
         return DeckRepresentation;
+      } else if (type === 'Portal') {
+        return PortalRepresentation;
       }
       return null;
     },

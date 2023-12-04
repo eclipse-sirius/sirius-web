@@ -127,7 +127,7 @@ export const DiagramRepresentation = ({ editingContextId, representationId }: Re
   }, [diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError]);
 
   const onComplete = () => {
-    setState((prevState) => ({ ...prevState, diagram: null, complete: true }));
+    setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: null, complete: true }));
   };
 
   const { graphQLNodeStyleFragments } = useContext<NodeTypeContextValue>(NodeTypeContext);

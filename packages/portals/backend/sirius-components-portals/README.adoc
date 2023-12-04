@@ -1,0 +1,12 @@
+= sirius-components-portals
+
+== Goal
+
+This project is used to compute portal representations.
+
+== Dependencies
+
+- sirius-components-representations
+
+This project should not depend on anything else without a good reason to do so.
+In the future, this project will depend on sirius-components-components and sirius-components-graphql-annotations too.

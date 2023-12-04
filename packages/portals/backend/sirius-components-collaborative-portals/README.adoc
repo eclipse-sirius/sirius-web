@@ -1,0 +1,9 @@
+= sirius-components-collaborative-portals
+
+== Goal
+
+This project provides support for our portal collaborative edition layer.
+
+== Dependencies
+
+- sirius-components-portals

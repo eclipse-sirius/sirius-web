@@ -53,6 +53,7 @@
 		<module>selection/backend</module>
 		<module>trees/backend</module>
 		<module>validation/backend</module>
+		<module>portals/backend</module>
 		<module>compatibility/backend</module>
 		<module>domain/backend</module>
 		<module>view/backend</module>
