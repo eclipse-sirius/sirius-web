@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -127,7 +127,7 @@ export const DiagramRepresentation = ({ editingContextId, representationId }: Re
   }, [diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError]);
 
   const onComplete = () => {
-    setState((prevState) => ({ ...prevState, diagram: null, complete: true }));
+    setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: null, complete: true }));
   };
 
   const { graphQLNodeStyleFragments } = useContext<NodeTypeContextValue>(NodeTypeContext);
