@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLabelStyle } from './convertDiagram';
+import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -42,6 +42,7 @@ const toIconLabelNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
     style,
     labelEditable,
@@ -59,7 +60,8 @@ const toIconLabelNode = (
       textAlign: 'left',
       backgroundColor: style.backgroundColor,
     },
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
     faded: state === GQLViewModifier.Faded,
@@ -74,13 +76,15 @@ const toIconLabelNode = (
   if (insideLabel) {
     const labelStyle = insideLabel.style;
 
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       style: {
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
+      isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
   }
 

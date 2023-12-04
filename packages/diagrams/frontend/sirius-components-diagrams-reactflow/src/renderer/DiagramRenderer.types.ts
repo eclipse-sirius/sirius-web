@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,12 +41,17 @@ export interface DiagramMetadata {
   targetObjectId: string;
 }
 
+export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';
+
+export type OutsideLabels = Partial<Record<OutsideLabelLocation, OutsideLabel>>;
+
 export interface NodeData {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
   descriptionId: string;
-  label: Label | undefined;
+  insideLabel: InsideLabel | null;
+  outsideLabels: OutsideLabels;
   faded: boolean;
   nodeDescription: GQLNodeDescription | undefined;
   defaultWidth: number | null;
@@ -70,15 +75,29 @@ export interface EdgeData {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
-  label: Label | null;
+  label: EdgeLabel | null;
   faded: boolean;
 }
 
-export interface Label {
+export interface InsideLabel {
   id: string;
   text: string;
   iconURL: string[];
   style: React.CSSProperties;
-  isHeader?: boolean;
-  displayHeaderSeparator?: boolean;
+  isHeader: boolean;
+  displayHeaderSeparator: boolean;
+}
+
+export interface EdgeLabel {
+  id: string;
+  text: string;
+  iconURL: string[];
+  style: React.CSSProperties;
+}
+
+export interface OutsideLabel {
+  id: string;
+  text: string;
+  iconURL: string[];
+  style: React.CSSProperties;
 }

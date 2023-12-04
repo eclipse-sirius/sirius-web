@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,7 +100,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .fontSize(16)
                 .iconURL(List.of())
                 .build();
-        InsideLabel insdieLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
+        InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
                 .type("labelType")
                 .text("text")
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
@@ -118,7 +118,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .targetObjectKind("")
                 .targetObjectLabel("")
                 .descriptionId(NODE_DESCRIPTION_ID)
-                .insideLabel(insdieLabel)
+                .insideLabel(insideLabel)
                 .style(new TestDiagramBuilder().getRectangularNodeStyle())
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())
                 .position(Position.UNDEFINED)

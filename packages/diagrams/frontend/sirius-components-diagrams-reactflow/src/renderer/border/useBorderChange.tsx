@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,9 @@
 import { useCallback } from 'react';
 import { Node, NodeChange, useReactFlow, XYPosition } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { findBorderNodePosition } from '../layout/layoutBorderNodes';
 import { borderNodeOffset } from '../layout/layoutParams';
 import { UseBorderChangeValue } from './useBorderChange.types';
-import { findBorderNodePosition } from '../layout/layoutBorderNodes';
 
 const isNewPositionInsideIsParent = (newNodePosition: XYPosition, movedNode: Node, parentNode: Node): boolean => {
   if (movedNode.width && movedNode.height && parentNode?.positionAbsolute && parentNode.width && parentNode.height) {

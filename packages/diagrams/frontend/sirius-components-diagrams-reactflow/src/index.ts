@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,15 +14,16 @@
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
 export type { IConvertEngine, INodeConverterHandler } from './converter/ConvertEngine.types';
-export { convertLabelStyle, convertLineStyle } from './converter/convertDiagram';
+export { convertLineStyle } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export { convertHandles } from './converter/convertHandles';
+export { convertLabelStyle, convertOutsideLabels } from './converter/convertLabel';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
 export type { GQLDiagram } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle, GraphQLNodeStyleFragment } from './graphql/subscription/nodeFragment.types';
-export { BorderNodePositon } from './renderer/DiagramRenderer.types';
+export { BorderNodePositon as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, NodeData } from './renderer/DiagramRenderer.types';
 export { Label } from './renderer/Label';
 export { useConnector } from './renderer/connector/useConnector';

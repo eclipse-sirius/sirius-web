@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,12 @@
  *******************************************************************************/
 
 import { Edge, Node } from 'reactflow';
+import { convertLabelStyle } from '../converter/convertLabel';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
-import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
+import { GQLLabel } from '../graphql/subscription/labelFragment.types';
 import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
-import { Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
+import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
@@ -41,7 +42,7 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   return depth;
 };
 
-const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): Label => {
+const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
   return {
     id: gqlEdgeLabel.id,
     text: gqlEdgeLabel.text,
@@ -65,37 +66,6 @@ export const convertLineStyle = (lineStyle: string): string => {
     return 'dashed';
   }
   return 'solid';
-};
-
-export const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties => {
-  const style: React.CSSProperties = {};
-
-  if (gqlLabelStyle.bold) {
-    style.fontWeight = 'bold';
-  }
-  if (gqlLabelStyle.italic) {
-    style.fontStyle = 'italic';
-  }
-  if (gqlLabelStyle.fontSize) {
-    style.fontSize = gqlLabelStyle.fontSize;
-  }
-  if (gqlLabelStyle.color) {
-    style.color = gqlLabelStyle.color;
-  }
-
-  let decoration: string = '';
-  if (gqlLabelStyle.strikeThrough) {
-    decoration = decoration + 'line-through';
-  }
-  if (gqlLabelStyle.underline) {
-    const separator: string = decoration.length > 0 ? ' ' : '';
-    decoration = decoration + separator + 'underline';
-  }
-  if (decoration.length > 0) {
-    style.textDecoration = decoration;
-  }
-
-  return style;
 };
 
 const defaultNodeConverterHandlers: INodeConverterHandler[] = [

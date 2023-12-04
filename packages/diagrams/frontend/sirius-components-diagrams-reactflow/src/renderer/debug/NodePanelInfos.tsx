@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo and others.
+ * Copyright (c) 2023, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,7 @@ export const NodePanelInfos = ({ title, node }: NodePanelInfosProps) => {
           <ListItemText classes={{ root: classes.listItemText }} primary={`Type : Node`} />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
-          <ListItemText classes={{ root: classes.listItemText }} primary={`Label : ${node?.data.label?.text}`} />
+          <ListItemText classes={{ root: classes.listItemText }} primary={`Label : ${node?.data.insideLabel?.text}`} />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
           <ListItemText classes={{ root: classes.listItemText }} primary={`Node id : ${node?.id}`} />

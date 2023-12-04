@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { CoordinateExtent, Node, XYPosition } from 'reactflow';
 import { BorderNodePositon, NodeData } from '../DiagramRenderer.types';
-import { borderNodeOffset } from './layoutParams';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { borderNodeOffset } from './layoutParams';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePositon.EAST;

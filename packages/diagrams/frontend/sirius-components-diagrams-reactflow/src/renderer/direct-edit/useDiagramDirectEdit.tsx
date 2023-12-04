@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,8 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       event.preventDefault();
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
-      let currentlyEditedLabelId: string | undefined | null = getNodes().find((node) => node.selected)?.data.label?.id;
+      let currentlyEditedLabelId: string | undefined | null = getNodes().find((node) => node.selected)?.data.insideLabel
+        ?.id;
       let isLabelEditable: boolean = getNodes().find((node) => node.selected)?.data.labelEditable || false;
       if (!currentlyEditedLabelId) {
         currentlyEditedLabelId = getEdges().find((edge) => edge.selected)?.data?.label?.id;
