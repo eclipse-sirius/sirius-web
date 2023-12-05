@@ -27,3 +27,26 @@ The `DiagramPaletteToolContribution` need two props, the _component_ and a _canH
 It must return true only for the palette where the custom tool needs to be added.
 To compute that, this function has two parameters the _diagramId_ and the _diagramElementId_, note that for the diagram palette _diagramId_ = _diagramElementId_.
 To retrieve the node metadata, you can use the hook `useNodes` and filter all the node by the _diagramElementId_.
+
+== Specify a reference position
+
+Depending on the tool purpose, the click coordinates may be necessary for the result action.
+For example, when the tool creates a new element on the diagram.
+To achieve this, we've added a new API `IDiagramInputReferencePositionProvider`.
+Where it's possible to define the way the reference position must be retrieved depending on the input.
+
+[source,java]
+----
+public interface IDiagramInputReferencePositionProvider {
+
+    boolean canHandle(IInput diagramInput);
+
+    ReferencePosition getReferencePosition(IInput diagramInput, IDiagramContext diagramContext);
+}
+----
+
+For the generic tool used in sirius-component, the provider is specified in the service `GenericDiagramToolReferencePositionProvider`.
+
+The basic case is to use the position of the pallet as a reference position.
+These coordinates are available in the props `DiagramPaletteToolContributionComponentProps`.
+

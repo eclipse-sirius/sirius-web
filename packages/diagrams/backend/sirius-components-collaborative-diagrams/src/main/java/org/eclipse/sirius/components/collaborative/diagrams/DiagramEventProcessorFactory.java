@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramConfigura
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -55,8 +56,10 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
+    private final List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
+
     public DiagramEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IDiagramCreationService diagramCreationService,
-            List<IDiagramEventHandler> diagramEventHandlers, IRepresentationPersistenceService representationPersistenceService) {
+            List<IDiagramEventHandler> diagramEventHandlers, IRepresentationPersistenceService representationPersistenceService, List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramEventHandlers = Objects.requireNonNull(diagramEventHandlers);
@@ -64,6 +67,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(configuration.getRepresentationRefreshPolicyRegistry());
+        this.diagramInputReferencePositionProviders = Objects.requireNonNull(diagramInputReferencePositionProviders);
     }
 
     @Override
@@ -89,6 +93,7 @@ public class DiagramEventProcessorFactory implements IRepresentationEventProcess
                         .representationDescriptionSearchService(this.representationDescriptionSearchService)
                         .representationRefreshPolicyRegistry(this.representationRefreshPolicyRegistry)
                         .representationPersistenceService(this.representationPersistenceService)
+                        .diagramInputReferencePositionProviders(this.diagramInputReferencePositionProviders)
                         .build();
 
                 IRepresentationEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);

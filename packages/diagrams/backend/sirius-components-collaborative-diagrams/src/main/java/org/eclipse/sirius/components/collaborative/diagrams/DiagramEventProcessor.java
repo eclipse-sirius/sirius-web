@@ -29,10 +29,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreation
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.NodeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
@@ -48,7 +46,6 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
-import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +83,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final DiagramEventFlux diagramEventFlux;
 
+    private final List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
+
     private UUID currentRevisionId = UUID.randomUUID();
 
     private String currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
@@ -101,12 +100,13 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.representationRefreshPolicyRegistry = parameters.representationRefreshPolicyRegistry();
         this.representationPersistenceService = parameters.representationPersistenceService();
         this.diagramCreationService = parameters.diagramCreationService();
+        this.diagramInputReferencePositionProviders = parameters.diagramInputReferencePositionProviders();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
-        Diagram diagram = this.diagramCreationService.refresh(editingContext, diagramContext).orElse(null);
+        Diagram diagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
         this.representationPersistenceService.save(parameters.editingContext(), diagram);
-        diagramContext.update(diagram);
+        this.diagramContext.update(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
         if (diagram != null) {
@@ -194,19 +194,11 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     }
 
     private ReferencePosition getReferencePosition(IInput diagramInput) {
-        ReferencePosition referencePosition = null;
-        if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
-            String parentId = null;
-            if (!this.diagramContext.getDiagram().getId().equals(input.diagramElementId())) {
-                parentId = input.diagramElementId();
-            }
-            referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()));
-        } else if (diagramInput instanceof DropNodeInput input) {
-            referencePosition = new ReferencePosition(input.targetElementId(), new Position(input.x(), input.y()));
-        } else if (diagramInput instanceof DropOnDiagramInput input) {
-            referencePosition = new ReferencePosition(null, new Position(input.startingPositionX(), input.startingPositionY()));
-        }
-        return referencePosition;
+        return this.diagramInputReferencePositionProviders.stream()
+                .filter(handler -> handler.canHandle(diagramInput))
+                .findFirst()
+                .map(provider -> provider.getReferencePosition(diagramInput, this.diagramContext))
+                .orElse(null);
     }
 
     /**
@@ -214,7 +206,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
      * diagram (not other diagrams).
      *
      * @param changeDescription
-     *            The change description
+     *         The change description
      * @return <code>true</code> if the diagram should be refreshed, <code>false</code> otherwise
      */
     public boolean shouldRefresh(ChangeDescription changeDescription) {

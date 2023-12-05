@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 
@@ -37,8 +38,10 @@ public record DiagramEventProcessorParameters(
         IDiagramCreationService diagramCreationService,
         IRepresentationDescriptionSearchService representationDescriptionSearchService,
         IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
-        IRepresentationPersistenceService representationPersistenceService
+        IRepresentationPersistenceService representationPersistenceService,
+        List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders
 ) {
+
     public DiagramEventProcessorParameters {
         Objects.requireNonNull(editingContext);
         Objects.requireNonNull(diagramContext);
@@ -48,6 +51,7 @@ public record DiagramEventProcessorParameters(
         Objects.requireNonNull(representationDescriptionSearchService);
         Objects.requireNonNull(representationRefreshPolicyRegistry);
         Objects.requireNonNull(representationPersistenceService);
+        Objects.requireNonNull(diagramInputReferencePositionProviders);
     }
 
     public static Builder newDiagramEventProcessorParameters() {
@@ -62,6 +66,7 @@ public record DiagramEventProcessorParameters(
     @SuppressWarnings("checkstyle:HiddenField")
     @org.eclipse.sirius.components.annotations.Builder
     public static final class Builder {
+
         private IEditingContext editingContext;
 
         private IDiagramContext diagramContext;
@@ -77,6 +82,8 @@ public record DiagramEventProcessorParameters(
         private IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
         private IRepresentationPersistenceService representationPersistenceService;
+
+        private List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders;
 
         private Builder() {
             // Prevent instantiation
@@ -122,6 +129,11 @@ public record DiagramEventProcessorParameters(
             return this;
         }
 
+        public Builder diagramInputReferencePositionProviders(List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders) {
+            this.diagramInputReferencePositionProviders = Objects.requireNonNull(diagramInputReferencePositionProviders);
+            return this;
+        }
+
         public DiagramEventProcessorParameters build() {
             return new DiagramEventProcessorParameters(
                     this.editingContext,
@@ -131,7 +143,8 @@ public record DiagramEventProcessorParameters(
                     this.diagramCreationService,
                     this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
-                    this.representationPersistenceService
+                    this.representationPersistenceService,
+                    this.diagramInputReferencePositionProviders
             );
         }
     }
