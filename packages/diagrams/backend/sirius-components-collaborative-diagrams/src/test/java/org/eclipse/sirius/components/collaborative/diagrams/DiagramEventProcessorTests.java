@@ -89,6 +89,7 @@ public class DiagramEventProcessorTests {
                 .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
                 .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
+                .diagramInputReferencePositionProviders(List.of())
                 .build();
 
         DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
@@ -113,6 +114,7 @@ public class DiagramEventProcessorTests {
                 .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
                 .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
+                .diagramInputReferencePositionProviders(List.of())
                 .build();
 
         DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
@@ -141,6 +143,7 @@ public class DiagramEventProcessorTests {
                 .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
                 .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
+                .diagramInputReferencePositionProviders(List.of())
                 .build();
 
         DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);
@@ -176,6 +179,7 @@ public class DiagramEventProcessorTests {
                 .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
                 .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
+                .diagramInputReferencePositionProviders(List.of())
                 .build();
 
         DiagramEventProcessor diagramEventProcessor = new DiagramEventProcessor(parameters);

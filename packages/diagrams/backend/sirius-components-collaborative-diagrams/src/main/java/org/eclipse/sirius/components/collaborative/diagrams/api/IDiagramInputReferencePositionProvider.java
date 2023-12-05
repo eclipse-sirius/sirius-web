@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.api;
 
-export interface DiagramPaletteToolContributionProps {
-  canHandle: (diagramId: string, diagramElementId: string) => boolean;
-  component: (props: DiagramPaletteToolContributionComponentProps) => JSX.Element | null;
-}
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
+import org.eclipse.sirius.components.core.api.IInput;
 
-export interface DiagramPaletteToolContributionComponentProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  key: string;
+/**
+ * Provides diagram input reference position for a diagram.
+ *
+ * @author frouene
+ */
+public interface IDiagramInputReferencePositionProvider {
+
+    boolean canHandle(IInput diagramInput);
+
+    ReferencePosition getReferencePosition(IInput diagramInput, IDiagramContext diagramContext);
 }

@@ -405,6 +405,8 @@ export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramEl
       ))}
       {diagramPaletteToolComponents.map((component, index) => {
         const props: DiagramPaletteToolContributionComponentProps = {
+          x,
+          y,
           diagramElementId,
           key: index.toString(),
         };
