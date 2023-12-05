@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Node.Builder;
+import org.eclipse.sirius.components.diagrams.OutsideLabel;
 import org.eclipse.sirius.components.diagrams.components.LabelType;
 import org.eclipse.sirius.components.diagrams.elements.DiagramElementProps;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
@@ -90,6 +91,11 @@ public class DiagramElementFactory implements IElementFactory {
                 .findFirst()
                 .orElse(null);
 
+        List<OutsideLabel> outsideLabels = children.stream()
+                .filter(OutsideLabel.class::isInstance)
+                .map(OutsideLabel.class::cast)
+                .toList();
+
         List<Node> childNodes = new ArrayList<>();
         List<Node> borderNodes = new ArrayList<>();
 
@@ -118,6 +124,7 @@ public class DiagramElementFactory implements IElementFactory {
                 .state(props.getState())
                 .modifiers(props.getModifiers())
                 .collapsingState(props.getCollapsingState())
+                .outsideLabels(outsideLabels)
                 .labelEditable(props.isLabelEditable());
 
         if (insideLabel != null) {

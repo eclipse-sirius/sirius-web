@@ -47,3 +47,21 @@ fragment insideLabelFragment on InsideLabel {
   }
 }
 `;
+
+export const outsideLabelFragment = `
+fragment outsideLabelFragment on OutsideLabel {
+  id
+  type
+  text
+  outsideLabelLocation
+  style {
+    color
+    fontSize
+    bold
+    italic
+    underline
+    strikeThrough
+    iconURL
+  }
+}
+`;

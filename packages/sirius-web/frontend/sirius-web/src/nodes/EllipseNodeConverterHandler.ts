@@ -12,7 +12,7 @@
  *******************************************************************************/
 import {
   AlignmentMap,
-  BorderNodePositon,
+  BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
   GQLEdge,
@@ -25,6 +25,7 @@ import {
   convertHandles,
   convertLabelStyle,
   convertLineStyle,
+  convertOutsideLabels,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
@@ -46,6 +47,7 @@ const toEllipseNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
     style,
     labelEditable,
@@ -67,12 +69,13 @@ const toEllipseNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     connectionHandles,
     labelEditable,
     isNew,

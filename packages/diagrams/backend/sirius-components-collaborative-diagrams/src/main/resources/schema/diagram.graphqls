@@ -57,6 +57,7 @@ enum ViewModifier {
 type Node {
   id: ID!
   insideLabel: InsideLabel
+  outsideLabels: [OutsideLabel!]!
   descriptionId: ID!
   type: String!
   targetObjectId: String!
@@ -110,6 +111,20 @@ type InsideLabel {
 
 enum InsideLabelLocation {
   TOP_CENTER
+}
+
+type OutsideLabel {
+id: ID!
+text: String!
+outsideLabelLocation: OutsideLabelLocation!
+type: String!
+style: LabelStyle!
+}
+
+enum OutsideLabelLocation {
+  BOTTOM_BEGIN
+  BOTTOM_MIDDLE,
+  BOTTOM_END
 }
 
 type LabelStyle {

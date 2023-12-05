@@ -15,7 +15,7 @@ import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-compon
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
-import { BorderNodePositon } from '../DiagramRenderer.types';
+import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
@@ -53,11 +53,11 @@ const imageNodeStyle = (
 const computeBorderRotation = (data: ImageNodeData): string | undefined => {
   if (data?.isBorderNode && data.positionDependentRotation) {
     switch (data.borderNodePosition) {
-      case BorderNodePositon.NORTH:
+      case BorderNodePosition.NORTH:
         return 'rotate(90deg)';
-      case BorderNodePositon.EAST:
+      case BorderNodePosition.EAST:
         return 'rotate(180deg)';
-      case BorderNodePositon.SOUTH:
+      case BorderNodePosition.SOUTH:
         return 'rotate(270deg)';
       default:
         return undefined;

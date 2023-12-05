@@ -20,13 +20,14 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLabelStyle, convertLineStyle } from './convertDiagram';
+import { convertLineStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
+import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -45,6 +46,7 @@ const toRectangularNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
     style,
     labelEditable,
@@ -67,12 +69,13 @@ const toRectangularNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     labelEditable,
     connectionHandles,
     isNew,

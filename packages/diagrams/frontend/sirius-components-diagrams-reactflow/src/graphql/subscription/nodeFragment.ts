@@ -24,6 +24,9 @@ fragment nodeFragment on Node {
   insideLabel {
     ...insideLabelFragment
   }
+  outsideLabels {
+    ...outsideLabelFragment
+  }
   style {
     __typename
     ... on RectangularNodeStyle {

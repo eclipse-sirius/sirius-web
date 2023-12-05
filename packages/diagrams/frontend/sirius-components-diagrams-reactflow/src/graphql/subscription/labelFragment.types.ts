@@ -22,11 +22,23 @@ export interface GQLInsideLabel {
   id: string;
   type: string;
   text: string;
-  insideLabelLocation: InsideLabelLocation;
+  insideLabelLocation: GQLInsideLabelLocation;
   style: GQLLabelStyle;
   isHeader: boolean;
   displayHeaderSeparator: boolean;
 }
+
+export type GQLInsideLabelLocation = 'TOP_CENTER';
+
+export interface GQLOutsideLabel {
+  id: string;
+  type: string;
+  text: string;
+  outsideLabelLocation: GQLOutsideLabelLocation;
+  style: GQLLabelStyle;
+}
+
+export type GQLOutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';
 
 export interface GQLLabelStyle {
   color: string;
@@ -37,5 +49,3 @@ export interface GQLLabelStyle {
   strikeThrough: boolean;
   iconURL: string[];
 }
-
-export type InsideLabelLocation = 'TOP_CENTER';

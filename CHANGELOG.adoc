@@ -186,6 +186,9 @@ This new package and those new components are the first part of our work to make
 Use `useDropNodeStyle(node.id)` instead to get the feedback of the drop feedback.
 - https://github.com/eclipse-sirius/sirius-web/issues/2671[#2671] [diagram] Switch to Reactflow by default.
 To open a diagram with Sprotty, suffixes the diagram name with `__SPROTTY`
+- https://github.com/eclipse-sirius/sirius-web/issues/2484[#2484] [core] [diagram] Split the frontend label into edge label, inside label and outside label.
+Add the data structure for outside labels.
+
 
 
 === Dependency update

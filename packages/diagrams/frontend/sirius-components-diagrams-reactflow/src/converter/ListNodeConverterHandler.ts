@@ -20,13 +20,13 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLabelStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
+import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -44,6 +44,7 @@ const toListNode = (
     targetObjectKind,
     descriptionId,
     insideLabel,
+    outsideLabels,
     id,
     state,
     style,
@@ -72,8 +73,9 @@ const toListNode = (
       borderStyle: style.borderStyle,
     },
     insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
     labelEditable,
     nodeDescription,

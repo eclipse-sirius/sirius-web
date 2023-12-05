@@ -41,25 +41,30 @@ export interface DiagramMetadata {
   targetObjectId: string;
 }
 
+export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';
+
+export type OutsideLabels = Partial<Record<OutsideLabelLocation, OutsideLabel>>;
+
 export interface NodeData {
   targetObjectId: string;
   targetObjectKind: string;
   targetObjectLabel: string;
   descriptionId: string;
   insideLabel: InsideLabel | null;
+  outsideLabels: OutsideLabels;
   faded: boolean;
   nodeDescription: GQLNodeDescription | undefined;
   defaultWidth: number | null;
   defaultHeight: number | null;
   isBorderNode: boolean;
-  borderNodePosition: BorderNodePositon | null;
+  borderNodePosition: BorderNodePosition | null;
   labelEditable: boolean;
   style: React.CSSProperties;
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
 }
 
-export enum BorderNodePositon {
+export enum BorderNodePosition {
   NORTH,
   EAST,
   SOUTH,
@@ -84,6 +89,13 @@ export interface InsideLabel {
 }
 
 export interface EdgeLabel {
+  id: string;
+  text: string;
+  iconURL: string[];
+  style: React.CSSProperties;
+}
+
+export interface OutsideLabel {
   id: string;
   text: string;
   iconURL: string[];
