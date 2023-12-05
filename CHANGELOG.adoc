@@ -54,6 +54,7 @@ Its body operations are now bind on set/add instead of click.
 - https://github.com/eclipse-sirius/sirius-web/issues/2978[#2978] [diagram] Fix issues with ReactFlow edge and drag events that were slowing down the application.
 - https://github.com/eclipse-sirius/sirius-web/issues/3000[#3000] [portal] Portals which already contain representation now open in "direct" mode.
 - https://github.com/eclipse-sirius/sirius-web/issues/2875[#2875] [forms] Make the Representations view a plain FormBasedView
+- https://github.com/eclipse-sirius/sirius-web/issues/2732[#2732] [diagram] Add missing support for feedback messages on tool action.
 
 == v2024.1.0
 

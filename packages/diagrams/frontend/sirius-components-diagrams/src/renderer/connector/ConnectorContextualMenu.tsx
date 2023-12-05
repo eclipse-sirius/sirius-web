@@ -26,8 +26,10 @@ import {
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
   GQLInvokeSingleClickOnTwoDiagramElementsToolInput,
+  GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
   GQLRepresentationDescription,
+  GQLSuccessPayload,
   GQLTool,
   GetConnectorToolsData,
   GetConnectorToolsVariables,
@@ -93,6 +95,11 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
+const isErrorPayload = (payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload';
+
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
@@ -116,7 +123,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
     sourceDiagramElementId,
     targetDiagramElementId,
   };
-  const { data, error } = useQuery<GetConnectorToolsData, GetConnectorToolsVariables>(getConnectorToolsQuery, {
+  const { loading, data, error } = useQuery<GetConnectorToolsData, GetConnectorToolsVariables>(getConnectorToolsQuery, {
     variables,
     skip: !connectionSource || !connectionTarget,
   });
@@ -164,11 +171,11 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   useEffect(() => {
     if (invokeSingleClickOnTwoDiagramElementToolData) {
       const payload = invokeSingleClickOnTwoDiagramElementToolData.invokeSingleClickOnTwoDiagramElementsTool;
-      const isErrorPayload = payload.__typename === 'ErrorPayload';
-      if (isErrorPayload) {
-        const errorPayload = payload as GQLErrorPayload;
-        addMessages(errorPayload.messages);
-      } else {
+      if (isErrorPayload(payload)) {
+        addMessages(payload.messages);
+      }
+      if (isSuccessPayload(payload)) {
+        addMessages(payload.messages);
         onShouldConnectorContextualMenuClose();
       }
     }
@@ -189,6 +196,12 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       addTempConnectionLine();
     }
   }, [connection, connectorTools.length]);
+
+  useEffect(() => {
+    if (!loading && connection && data && connectorTools.length === 0) {
+      addMessages([{ body: 'No edge found between source and target selected', level: 'WARNING' }]);
+    }
+  }, [loading, data, connection, connectorTools.length]);
 
   useEffect(() => {
     return () => removeTempConnectionLine();

@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '../Tool.types';
+
 export interface UseFadeDiagramElements {
   fadeDiagramElements: (nodeId: string[], fade: boolean) => void;
 }
@@ -29,10 +31,15 @@ export interface GQLFadeDiagramElementVariables {
 export interface GQLFadeDiagramElementPayload {
   __typename: string;
 }
+
 export interface GQLFadeDiagramElementData {
   fadeDiagramElement: GQLFadeDiagramElementPayload;
 }
 
 export interface GQLErrorPayload extends GQLFadeDiagramElementPayload {
-  message: string;
+  messages: GQLMessage[];
+}
+
+export interface GQLSuccessPayload extends GQLFadeDiagramElementPayload {
+  messages: GQLMessage[];
 }

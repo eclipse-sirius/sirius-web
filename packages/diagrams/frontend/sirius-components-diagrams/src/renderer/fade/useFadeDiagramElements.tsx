@@ -21,6 +21,7 @@ import {
   GQLFadeDiagramElementInput,
   GQLFadeDiagramElementPayload,
   GQLFadeDiagramElementVariables,
+  GQLSuccessPayload,
   UseFadeDiagramElements,
 } from './useFadeDiagramElements.types';
 
@@ -30,6 +31,10 @@ const fadeDiagramElementMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
         messages {
@@ -43,12 +48,14 @@ const fadeDiagramElementMutation = gql`
 
 const isErrorPayload = (payload: GQLFadeDiagramElementPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLFadeDiagramElementPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const useFadeDiagramElements = (): UseFadeDiagramElements => {
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const [fadeElementMutation, { data: fadeDiagramElementData, error: fadeDiagramElementError }] = useMutation<
+  const [fadeElementMutation, { error: fadeDiagramElementError }] = useMutation<
     GQLFadeDiagramElementData,
     GQLFadeDiagramElementVariables
   >(fadeDiagramElementMutation);
@@ -57,16 +64,10 @@ export const useFadeDiagramElements = (): UseFadeDiagramElements => {
     if (fadeDiagramElementError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (fadeDiagramElementData) {
-      const { fadeDiagramElement } = fadeDiagramElementData;
-      if (isErrorPayload(fadeDiagramElement)) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-    }
-  }, [fadeDiagramElementData, fadeDiagramElementError]);
+  }, [fadeDiagramElementError]);
 
   const fadeDiagramElements = useCallback(
-    (nodeId: string[], fade: boolean) => {
+    async (nodeId: string[], fade: boolean) => {
       const input: GQLFadeDiagramElementInput = {
         id: crypto.randomUUID(),
         editingContextId,
@@ -74,7 +75,13 @@ export const useFadeDiagramElements = (): UseFadeDiagramElements => {
         elementIds: nodeId,
         fade,
       };
-      fadeElementMutation({ variables: { input } });
+      const { data: fadeDiagramElementData } = await fadeElementMutation({ variables: { input } });
+      if (fadeDiagramElementData) {
+        const { fadeDiagramElement } = fadeDiagramElementData;
+        if (isSuccessPayload(fadeDiagramElement) || isErrorPayload(fadeDiagramElement)) {
+          addMessages(fadeDiagramElement.messages);
+        }
+      }
     },
     [editingContextId, diagramId, fadeElementMutation]
   );

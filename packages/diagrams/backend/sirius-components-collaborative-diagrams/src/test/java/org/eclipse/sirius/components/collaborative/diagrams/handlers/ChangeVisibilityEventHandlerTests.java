@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.FadeDiagramEleme
 import org.eclipse.sirius.components.collaborative.diagrams.dto.HideDiagramElementInput;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -69,7 +70,7 @@ public class ChangeVisibilityEventHandlerTests {
 
     @Test
     public void testHideElement() {
-        var handler = new HideDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService);
+        var handler = new HideDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService, new IFeedbackMessageService.NoOp());
 
         var input = new HideDiagramElementInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, Set.of(NODE_ID), true);
 
@@ -90,7 +91,7 @@ public class ChangeVisibilityEventHandlerTests {
 
     @Test
     public void testUnhideElement() {
-        var handler = new HideDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService);
+        var handler = new HideDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService, new IFeedbackMessageService.NoOp());
 
         var input = new HideDiagramElementInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, Set.of(NODE_ID), false);
 
@@ -111,7 +112,7 @@ public class ChangeVisibilityEventHandlerTests {
 
     @Test
     public void testFadeElement() {
-        var handler = new FadeDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService);
+        var handler = new FadeDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService, new IFeedbackMessageService.NoOp());
 
         var input = new FadeDiagramElementInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, Set.of(NODE_ID), true);
 
@@ -132,7 +133,7 @@ public class ChangeVisibilityEventHandlerTests {
 
     @Test
     public void testUnfadeElement() {
-        var handler = new FadeDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService);
+        var handler = new FadeDiagramElementEventHandler(new ICollaborativeDiagramMessageService.NoOp(), new SimpleMeterRegistry(), this.diagramQueryService, new IFeedbackMessageService.NoOp());
 
         var input = new FadeDiagramElementInput(UUID.randomUUID(), EDITING_CONTEXT_ID, REPRESENTATION_ID, Set.of(NODE_ID), false);
 

@@ -21,6 +21,7 @@ import {
   GQLHideDiagramElementInput,
   GQLHideDiagramElementPayload,
   GQLHideDiagramElementVariables,
+  GQLSuccessPayload,
   UseHideDiagramElements,
 } from './useHideDiagramElements.types';
 
@@ -30,6 +31,10 @@ const hideDiagramElementMutation = gql`
       __typename
       ... on SuccessPayload {
         id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
         messages {
@@ -43,12 +48,14 @@ const hideDiagramElementMutation = gql`
 
 const isErrorPayload = (payload: GQLHideDiagramElementPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLHideDiagramElementPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const useHideDiagramElements = (): UseHideDiagramElements => {
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const [hideElementMutation, { data: hideDiagramElementData, error: hideDiagramElementError }] = useMutation<
+  const [hideElementMutation, { error: hideDiagramElementError }] = useMutation<
     GQLHideDiagramElementData,
     GQLHideDiagramElementVariables
   >(hideDiagramElementMutation);
@@ -57,16 +64,10 @@ export const useHideDiagramElements = (): UseHideDiagramElements => {
     if (hideDiagramElementError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (hideDiagramElementData) {
-      const { hideDiagramElement } = hideDiagramElementData;
-      if (isErrorPayload(hideDiagramElement)) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-    }
-  }, [hideDiagramElementData, hideDiagramElementError]);
+  }, [hideDiagramElementError]);
 
   const hideDiagramElements = useCallback(
-    (nodeId: string[], hide: boolean) => {
+    async (nodeId: string[], hide: boolean) => {
       const input: GQLHideDiagramElementInput = {
         id: crypto.randomUUID(),
         editingContextId,
@@ -74,7 +75,13 @@ export const useHideDiagramElements = (): UseHideDiagramElements => {
         elementIds: nodeId,
         hide,
       };
-      hideElementMutation({ variables: { input } });
+      const { data: hideDiagramElementData } = await hideElementMutation({ variables: { input } });
+      if (hideDiagramElementData) {
+        const { hideDiagramElement } = hideDiagramElementData;
+        if (isSuccessPayload(hideDiagramElement) || isErrorPayload(hideDiagramElement)) {
+          addMessages(hideDiagramElement.messages);
+        }
+      }
     },
     [editingContextId, diagramId, hideElementMutation]
   );
