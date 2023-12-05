@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '../Tool.types';
+
 export interface UseHideDiagramElements {
   hideDiagramElements: (nodeId: string[], hide: boolean) => void;
 }
@@ -29,10 +31,15 @@ export interface GQLHideDiagramElementVariables {
 export interface GQLHideDiagramElementPayload {
   __typename: string;
 }
+
 export interface GQLHideDiagramElementData {
   hideDiagramElement: GQLHideDiagramElementPayload;
 }
 
 export interface GQLErrorPayload extends GQLHideDiagramElementPayload {
-  message: string;
+  messages: GQLMessage[];
+}
+
+export interface GQLSuccessPayload extends GQLHideDiagramElementPayload {
+  messages: GQLMessage[];
 }

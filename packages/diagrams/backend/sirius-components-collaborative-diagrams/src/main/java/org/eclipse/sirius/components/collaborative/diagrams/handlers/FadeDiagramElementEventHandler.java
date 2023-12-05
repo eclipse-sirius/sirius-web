@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.FadeDiagramEleme
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -57,15 +58,15 @@ public class FadeDiagramElementEventHandler implements IDiagramEventHandler {
 
     private final IDiagramQueryService diagramQueryService;
 
-    public FadeDiagramElementEventHandler(ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry, IDiagramQueryService diagramQueryService) {
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public FadeDiagramElementEventHandler(ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry, IDiagramQueryService diagramQueryService, IFeedbackMessageService feedbackMessageService) {
         this.messageService = Objects.requireNonNull(messageService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
-
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
@@ -115,7 +116,7 @@ public class FadeDiagramElementEventHandler implements IDiagramEventHandler {
     private void sendResponse(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, List<String> errors, boolean atLeastOneSuccess, IDiagramContext diagramContext,
             FadeDiagramElementInput diagramInput) {
         var changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE, diagramInput.representationId(), diagramInput);
-        IPayload payload = new SuccessPayload(diagramInput.id());
+        IPayload payload = new SuccessPayload(diagramInput.id(), this.feedbackMessageService.getFeedbackMessages());
         if (!errors.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(this.messageService.deleteFailed());

@@ -95,3 +95,7 @@ export interface GQLMessage {
 export interface GQLErrorPayload extends GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
   messages: GQLMessage[];
 }
+
+export interface GQLSuccessPayload extends GQLInvokeSingleClickOnTwoDiagramElementsToolPayload {
+  messages: GQLMessage[];
+}
