@@ -83,6 +83,7 @@ To open a diagram with Sprotty, suffixes the diagram name with `__SPROTTY`
 === Dependency update
 
 - Remove the dependency to elk.js
+- Switch to EMFJson 2.3.5
 
 
 === Bug fixes
