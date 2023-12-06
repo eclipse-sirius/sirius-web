@@ -81,7 +81,26 @@ const toRectangularNode = (
     isNew,
   };
 
-  if (insideLabel) {
+  if (insideLabel && insideLabel.text.startsWith('out__')) {
+    const {
+      id,
+      text,
+      style: labelStyle,
+      style: { iconURL },
+    } = insideLabel;
+    data.outsideLabels = {
+      BOTTOM_MIDDLE: {
+        id,
+        text,
+        iconURL,
+        style: {
+          ...convertLabelStyle(labelStyle),
+        },
+      },
+    };
+  }
+
+  if (insideLabel && !insideLabel.text.startsWith('out__')) {
     const labelStyle = insideLabel.style;
     data.insideLabel = {
       id: insideLabel.id,
