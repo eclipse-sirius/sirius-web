@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-const { defineConfig } = require('cypress');
+import { defineConfig } from 'cypress';
 
-module.exports = defineConfig({
+export default defineConfig({
   screenshotsFolder: 'target/screenshots',
   video: false,
   reporter: 'junit',
@@ -22,6 +22,9 @@ module.exports = defineConfig({
   },
   viewportWidth: 1920,
   viewportHeight: 1080,
+  defaultCommandTimeout: 60000,
+  requestTimeout: 60000,
+  responseTimeout: 60000,
   env: {
     baseAPIUrl: 'http://localhost:8080',
   },
@@ -29,7 +32,6 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config);
     },
-    baseUrl: 'http://localhost:5173',
-    experimentalRunAllSpecs: true,
+    baseUrl: 'http://localhost:8080',
   },
 });

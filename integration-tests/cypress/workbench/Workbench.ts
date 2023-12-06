@@ -11,12 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export class Diagram {
-  getDiagram(diagramLabel) {
-    return cy.get(`[data-representation-kind="diagram"][data-representation-label="${diagramLabel}"]`);
+export class Workbench {
+  public openRepresentation(representationLabel): void {
+    cy.getByTestId(`onboard-open-${representationLabel}`).click();
   }
 
-  getNodes(diagramLabel, nodeLabel) {
-    return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
+  public closeRepresentation(representationLabel): void {
+    cy.getByTestId(`close-representation-tab-${representationLabel}`).click();
+  }
+
+  public performAction(actionLabel): void {
+    cy.get('[data-testid="onboard-area"]')
+      .find('[data-testid="actions"]')
+      .contains(new RegExp('^' + actionLabel + '$', 'g'))
+      .click();
   }
 }

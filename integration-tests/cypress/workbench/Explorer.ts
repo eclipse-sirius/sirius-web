@@ -12,33 +12,37 @@
  *******************************************************************************/
 
 export class Explorer {
-  getExplorerView() {
+  public getExplorerView(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('explorer://');
   }
 
-  getTreeItemByLabel(treeItemLabel) {
+  public getTreeItemByLabel(treeItemLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getExplorerView().contains('[data-treeitemid]', treeItemLabel);
   }
 
-  getTreeItems() {
+  public getTreeItems(): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getExplorerView().find('[data-treeitemid]');
   }
 
-  getSelectedTreeItems() {
+  public getSelectedTreeItems(): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getExplorerView().find('[data-treeitemid][data-testid="selected"]');
   }
 
-  expand(treeItemLabel) {
+  public expand(treeItemLabel: string): void {
     this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-expanded', 'false');
     this.getTreeItemByLabel(treeItemLabel).dblclick();
   }
 
-  collapse(treeItemLabel) {
+  public collapse(treeItemLabel: string): void {
     this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-expanded', 'true');
     this.getTreeItemByLabel(treeItemLabel).dblclick();
   }
 
-  createRepresentation(treeItemLabel, representationDescriptionName, representationLabel) {
+  public createRepresentation(
+    treeItemLabel: string,
+    representationDescriptionName: string,
+    representationLabel: string
+  ): void {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
@@ -48,7 +52,7 @@ export class Explorer {
     cy.getByTestId('create-representation').click();
   }
 
-  rename(treeItemLabel, newName) {
+  public rename(treeItemLabel: string, newName: string): void {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
     cy.getByTestId('name-edit').should('exist');

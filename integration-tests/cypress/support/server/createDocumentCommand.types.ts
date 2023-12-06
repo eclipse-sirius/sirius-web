@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import 'cypress-file-upload';
+export interface CreateDocumentData {
+  createDocument: CreateDocumentPayload;
+}
 
-import './explorerCommands';
-import './reactFlowCommands';
-import './server/deleteProjectCommand';
-import './serverCommands';
-import './studioCommands';
-import './testIdCommands';
+export interface CreateDocumentPayload {
+  __typename: string;
+}
+
+export interface CreateDocumentSuccessPayload extends CreateDocumentPayload {
+  document: Document;
+}
+
+export interface Document {
+  id: string;
+}
