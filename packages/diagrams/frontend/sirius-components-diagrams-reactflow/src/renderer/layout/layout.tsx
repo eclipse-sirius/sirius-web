@@ -97,6 +97,60 @@ export const prepareLayoutArea = (
       });
       labelElements.push(element);
     }
+    if (hiddenContainer && Object.keys(node.data.outsideLabels).find((key) => key.startsWith('BOTTOM_'))) {
+      const outsideLabels = node.data.outsideLabels;
+      if (outsideLabels.BOTTOM_BEGIN) {
+        const children: JSX.Element[] = [
+          createElement(Label, {
+            diagramElementId: node.id,
+            label: outsideLabels.BOTTOM_BEGIN,
+            faded: false,
+            transform: '',
+            key: outsideLabels.BOTTOM_BEGIN.id,
+          }),
+        ];
+        const element: JSX.Element = createElement('div', {
+          id: `${node.id}-outside-label-BOTTOM_BEGIN-${index}`,
+          key: `${node.id}-outside-label-BOTTOM_BEGIN-${index}`,
+          children,
+        });
+        labelElements.push(element);
+      }
+      if (outsideLabels.BOTTOM_MIDDLE) {
+        const children: JSX.Element[] = [
+          createElement(Label, {
+            diagramElementId: node.id,
+            label: outsideLabels.BOTTOM_MIDDLE,
+            faded: false,
+            transform: '',
+            key: outsideLabels.BOTTOM_MIDDLE.id,
+          }),
+        ];
+        const element: JSX.Element = createElement('div', {
+          id: `${node.id}-outside-label-BOTTOM_MIDDLE-${index}`,
+          key: `${node.id}-outside-label-BOTTOM_MIDDLE-${index}`,
+          children,
+        });
+        labelElements.push(element);
+      }
+      if (outsideLabels.BOTTOM_END) {
+        const children: JSX.Element[] = [
+          createElement(Label, {
+            diagramElementId: node.id,
+            label: outsideLabels.BOTTOM_END,
+            faded: false,
+            transform: '',
+            key: outsideLabels.BOTTOM_END.id,
+          }),
+        ];
+        const element: JSX.Element = createElement('div', {
+          id: `${node.id}-outside-label-BOTTOM_END-${index}`,
+          key: `${node.id}-outside-label-BOTTOM_END-${index}`,
+          children,
+        });
+        labelElements.push(element);
+      }
+    }
   });
 
   // The container used to render label is a flex container authorizing wrapping.

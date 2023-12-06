@@ -155,14 +155,50 @@ const getNodeFootprint = (allVisibleNodes: Node<NodeData>[], node: Node<NodeData
 
   const footPrint: Box = [node, ...borderNodes].reduce<Box>(
     (currentFootPrint, child) => {
-      const nodeBox = rectToBox({
-        x: node !== child && child.data.isBorderNode ? node.position.x + child.position.x : child.position.x,
-        y: node !== child && child.data.isBorderNode ? node.position.y + child.position.y : child.position.y,
+      let childBox = rectToBox({
+        x: child.position.x,
+        y: child.position.y,
         width: child.width ?? 0,
         height: child.height ?? 0,
       });
 
-      return getBoundsOfBoxes(currentFootPrint, nodeBox);
+      if (child === node) {
+        const outsideLabels = child.data.outsideLabels;
+        if (Object.keys(outsideLabels).filter((key) => key.startsWith('BOTTOM_')).length > 0) {
+          const nodeIndex = findNodeIndex(allVisibleNodes, child.id);
+          let labelHeight: number = 0;
+          if (outsideLabels.BOTTOM_BEGIN) {
+            const labelElement = document.getElementById(`${node.id}-outside-label-BOTTOM_BEGIN-${nodeIndex}`);
+            const labelRect = labelElement?.getBoundingClientRect();
+            if (labelHeight < (labelRect?.height ?? 0)) {
+              labelHeight = labelRect?.height ?? 0;
+            }
+          }
+          if (outsideLabels.BOTTOM_MIDDLE) {
+            const labelElement = document.getElementById(`${node.id}-outside-label-BOTTOM_MIDDLE-${nodeIndex}`);
+            const labelRect = labelElement?.getBoundingClientRect();
+            if (labelHeight < (labelRect?.height ?? 0)) {
+              labelHeight = labelRect?.height ?? 0;
+            }
+          }
+          if (outsideLabels.BOTTOM_END) {
+            const labelElement = document.getElementById(`${node.id}-outside-label-BOTTOM_END-${nodeIndex}`);
+            const labelRect = labelElement?.getBoundingClientRect();
+            if (labelHeight < (labelRect?.height ?? 0)) {
+              labelHeight = labelRect?.height ?? 0;
+            }
+          }
+
+          childBox = rectToBox({
+            x: child.position.x,
+            y: child.position.y,
+            width: child.width ?? 0,
+            height: (child.height ?? 0) + labelHeight,
+          });
+        }
+      }
+
+      return getBoundsOfBoxes(currentFootPrint, childBox);
     },
     { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity }
   );

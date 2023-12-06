@@ -55,6 +55,17 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
+const outsideBottomLabelAreaStyle = (): React.CSSProperties => {
+  return {
+    display: 'grid',
+    gridTemplateColumns: `1fr 1fr 1fr`,
+    gridTemplateRows: `min-content`,
+    gridTemplateAreas: `
+    'BOTTOM_BEGIN   BOTTOM_MIDDLE   BOTTOM_END'
+    `,
+  };
+};
+
 export const RectangularNode = memo(({ data, id, selected }: NodeProps<RectangularNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
@@ -67,6 +78,33 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
   };
 
   useRefreshConnectionHandles(id, data.connectionHandles);
+
+  const outsideBottomlabels: JSX.Element[] = [];
+  if (data.outsideLabels.BOTTOM_BEGIN) {
+    const outsideLabel = data.outsideLabels.BOTTOM_BEGIN;
+    outsideBottomlabels.push(
+      <div style={{ gridArea: 'BOTTOM_BEGIN' }} key={outsideLabel.id}>
+        <Label diagramElementId={id} label={outsideLabel} faded={data.faded} transform="" />
+      </div>
+    );
+  }
+  if (data.outsideLabels.BOTTOM_MIDDLE) {
+    const outsideLabel = data.outsideLabels.BOTTOM_MIDDLE;
+    outsideBottomlabels.push(
+      <div style={{ gridArea: 'BOTTOM_MIDDLE' }} key={outsideLabel.id}>
+        <Label diagramElementId={id} label={outsideLabel} faded={data.faded} transform="" />
+      </div>
+    );
+  }
+  if (data.outsideLabels.BOTTOM_END) {
+    const outsideLabel = data.outsideLabels.BOTTOM_END;
+    outsideBottomlabels.push(
+      <div style={{ gridArea: 'BOTTOM_END' }} key={outsideLabel.id}>
+        <Label diagramElementId={id} label={outsideLabel} faded={data.faded} transform="" />
+      </div>
+    );
+  }
+
   return (
     <>
       {data.nodeDescription?.userResizable && (
@@ -97,6 +135,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
         <ConnectionTargetHandle nodeId={id} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
       </div>
+      <div style={{ ...outsideBottomLabelAreaStyle() }}>{outsideBottomlabels}</div>
     </>
   );
 });
