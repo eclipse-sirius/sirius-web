@@ -11,15 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { NewProject } from '../../../pages/NewProject';
+
 describe('/new/project', () => {
-  beforeEach(() => {
-    cy.visit('/new/project');
-  });
+  beforeEach(() => new NewProject().visit());
 
   it('contains a proper project creation form', () => {
-    cy.getByTestId('name').should('have.attr', 'type', 'text');
-    cy.getByTestId('name').should('have.attr', 'name', 'name');
-    cy.getByTestId('name').should('have.attr', 'placeholder', 'Enter the project name');
+    new NewProject()
+      .getNameField()
+      .should('have.attr', 'type', 'text')
+      .should('have.attr', 'name', 'name')
+      .should('have.attr', 'placeholder', 'Enter the project name');
   });
 
   it('focuses the name textfield automatically', () => {
@@ -27,26 +29,28 @@ describe('/new/project', () => {
   });
 
   it('requires a name', () => {
-    cy.getByTestId('create-project').should('be.disabled');
+    new NewProject().getCreateProjectButton().should('be.disabled');
   });
 
   it('requires a valid name', () => {
-    cy.getByTestId('name').type('Cy');
-    cy.getByTestId('create-project').should('be.disabled');
+    const newProject = new NewProject();
+    newProject.getNameField().type('Cy');
+    newProject.getCreateProjectButton().should('be.disabled');
 
-    cy.getByTestId('name').type('Cypress Project');
-    cy.getByTestId('create-project').should('be.enabled');
+    newProject.getNameField().type('Cypress Project');
+    newProject.getCreateProjectButton().should('be.enabled');
   });
 
   it('navigates to the edit project view on successful project creation with enter', () => {
-    cy.getByTestId('name').type('Cypress Project{enter}');
+    new NewProject().getNameField().type('Cypress Project{enter}');
 
     cy.url().should('match', new RegExp(Cypress.config().baseUrl + '/projects/[a-z0-9-]*/edit'));
   });
 
   it('navigates to the edit project view on successful project creation by clicking on the create button', () => {
-    cy.getByTestId('name').type('Cypress Project');
-    cy.getByTestId('create-project').click();
+    const newProject = new NewProject();
+    newProject.getNameField().type('Cypress Project');
+    newProject.getCreateProjectButton().click();
 
     cy.url().should('match', new RegExp(Cypress.config().baseUrl + '/projects/[a-z0-9-]*/edit'));
   });

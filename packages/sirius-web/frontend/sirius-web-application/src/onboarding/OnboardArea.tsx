@@ -106,7 +106,7 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
   }, [editingContextId, objectId, loading, data, error]);
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} data-testid="onboard-area">
       <div className={classes.grid}>
         <NewDocumentArea
           editingContextId={editingContextId}

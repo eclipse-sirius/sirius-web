@@ -169,7 +169,10 @@ export const DiagramRepresentation = ({
                 <ConnectorContextProvider>
                   <DropNodeContextProvider>
                     <NodeContextProvider>
-                      <div style={{ display: 'inline-block', position: 'relative' }}>
+                      <div
+                        style={{ display: 'inline-block', position: 'relative' }}
+                        data-representation-kind="diagram"
+                        data-representation-label={state.diagramRefreshedEventPayload.diagram.metadata.label}>
                         <MarkerDefinitions />
                         <FullscreenContextProvider>
                           <DiagramRenderer
