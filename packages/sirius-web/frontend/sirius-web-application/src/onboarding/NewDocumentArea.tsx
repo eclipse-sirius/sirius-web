@@ -96,7 +96,7 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
 
   return (
     <>
-      <Card>
+      <Card data-testid="actions">
         <CardContent className={classes.cardContent}>
           <Typography variant="h6">{'Create a new Model'}</Typography>
           <Typography color="textSecondary">

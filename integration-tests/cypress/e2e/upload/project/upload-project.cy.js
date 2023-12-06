@@ -11,18 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { UploadProject } from '../../../pages/UploadProject';
+
 describe('/upload/project', () => {
-  beforeEach(() => {
-    cy.visit('/upload/project');
-  });
+  beforeEach(() => new UploadProject().visit());
 
   it('contains a proper project upload form', () => {
-    cy.getByTestId('file').should('have.attr', 'type', 'file');
-    cy.getByTestId('file').should('have.attr', 'name', 'file');
-    cy.getByTestId('file').closest('form').should('have.attr', 'enctype', 'multipart/form-data');
+    new UploadProject()
+      .getFileInput()
+      .should('have.attr', 'type', 'file')
+      .should('have.attr', 'name', 'file')
+      .closest('form')
+      .should('have.attr', 'enctype', 'multipart/form-data');
   });
 
   it('requires a file', () => {
-    cy.getByTestId('upload-project').should('be.disabled');
+    new UploadProject().getUploadProjectButton().should('be.disabled');
   });
 });

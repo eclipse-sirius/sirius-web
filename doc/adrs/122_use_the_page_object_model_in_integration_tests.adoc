@@ -1,0 +1,27 @@
+= ADR-122 - Use the page object model in integration tests
+
+== Context
+
+Our Cypress based integration tests can be dramatically improved.
+There are countless instances of code copied and pasted and a general lack of quality in the code of those tests.
+
+== Decision
+
+We will start using the page object model in order to encapsulate some common logic shared by our tests.
+It will allow us to write more explicit tests with a higher level of abstraction than `getByTestId`.
+It will also let us fix bugs in a single location instead of having to fix them everywhere the code has been copied.
+
+== Solution
+
+Various classes will be created in order to represent the major interactions of each page in the `integration-tests/cypress/pages` folder.
+On top of that, we will have another set of classes in order to perform the main queries and interactions with the various representations in the `integration-tests/cypress/workbench` folder.
+Finally, we may have some use cases that we want to setup before starting the tests, those use cases will be encapsulated in classes located in `integration-tests/cypress/usecases`.
+
+Using those abstractions, we will have as little queries matching implementation details as possible in the test themselves.
+Seeing `getByTestId` in a test should thus be an anomaly and not the norm anymore.
+
+This effort will kickstart a period of stabilisation of improvements of our integration tests to make them more stable, easier to maintain and easier to write.
+
+== Status
+
+Accepted
