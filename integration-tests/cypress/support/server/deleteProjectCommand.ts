@@ -11,11 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { v4 as uuid } from 'uuid';
+import { DeleteProjectData } from './deleteProjectCommand.types';
+import { MutationResponse } from './graphql.types';
+
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 
 Cypress.Commands.add('deleteProject', (projectId) => {
-  const deleteProjectMutation = `
+  const query = `
     mutation deleteProject($input: DeleteProjectInput!) {
       deleteProject(input: $input) {
         __typename
@@ -24,14 +26,13 @@ Cypress.Commands.add('deleteProject', (projectId) => {
     `;
   const variables = {
     input: {
-      id: uuid(),
+      id: crypto.randomUUID(),
       projectId,
     },
   };
-  return cy.request({
+  return cy.request<MutationResponse<DeleteProjectData>>({
     method: 'POST',
-    mode: 'cors',
     url,
-    body: { query: deleteProjectMutation, variables },
+    body: { query, variables },
   });
 });

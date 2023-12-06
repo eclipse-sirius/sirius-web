@@ -5,12 +5,13 @@
   "private": true,
   "devDependencies": {
     "cypress": "12.11.0",
-    "cypress-file-upload": "5.0.8"
+    "cypress-file-upload": "5.0.8",
+    "typescript": "5.1.6"
   },
   "scripts": {
     "start": "cypress open",
-    "start:dev": "cypress open --config-file cypress-dev.config.js",
-    "format-lint": "prettier --list-different \"cypress/**/*.js\""
+    "start:dev": "cypress open --config-file cypress-dev.config.ts",
+    "format-lint": "prettier --list-different \"cypress/**/*.ts\""
   },
   "dependencies": {
     "prettier": "2.7.1"

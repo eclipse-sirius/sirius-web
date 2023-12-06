@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -11,16 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export class NewProject {
-  visit() {
-    cy.visit('/new/project');
-  }
-
-  getNameField() {
-    return cy.getByTestId('name');
-  }
-
-  getCreateProjectButton() {
-    return cy.getByTestId('create-project');
-  }
+export interface QueryResponse<T> {
+  data: QueryData<T>;
 }
+
+export interface QueryData<T> {
+  viewer: Viewer<T>;
+}
+
+export type Viewer<T> = {
+  [Key in keyof T]: T[Key];
+};
+
+export interface MutationResponse<T> {
+  data: MutationData<T>;
+}
+
+export type MutationData<T> = {
+  [Key in keyof T]: T[Key];
+};

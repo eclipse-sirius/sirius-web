@@ -12,23 +12,23 @@
  *******************************************************************************/
 
 export class Projects {
-  visit() {
-    cy.visit('/projects');
+  public visit(): Cypress.Chainable<Cypress.AUTWindow> {
+    return cy.visit('/projects');
   }
 
-  getCreateProjectLink() {
+  public getCreateProjectLink(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('create');
   }
 
-  getUploadProjectLink() {
+  public getUploadProjectLink(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('upload');
   }
 
-  getProjectLink(name) {
+  public getProjectLink(name: string): Cypress.Chainable<JQuery<HTMLAnchorElement>> {
     return cy.getByTestId('projects').contains('a', name);
   }
 
-  deleteProject(name) {
+  public deleteProject(name: string): void {
     cy.getByTestId('projects').contains('tr', name).find('[data-testid="more"]').click();
     cy.getByTestId('delete').click();
     cy.getByTestId('delete-project').click();

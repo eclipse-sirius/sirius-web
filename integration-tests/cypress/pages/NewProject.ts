@@ -11,19 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export class Workbench {
-  openRepresentation(representationLabel) {
-    cy.getByTestId(`onboard-open-${representationLabel}`).click();
+export class NewProject {
+  public visit(): Cypress.Chainable<Cypress.AUTWindow> {
+    return cy.visit('/new/project');
   }
 
-  closeRepresentation(representationLabel) {
-    cy.getByTestId(`close-representation-tab-${representationLabel}`).click();
+  public getNameField(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('name');
   }
 
-  performAction(actionLabel) {
-    cy.get('[data-testid="onboard-area"]')
-      .find('[data-testid="actions"]')
-      .contains(new RegExp('^' + actionLabel + '$', 'g'))
-      .click();
+  public getCreateProjectButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('create-project');
   }
 }
