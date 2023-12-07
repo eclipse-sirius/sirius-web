@@ -88,8 +88,9 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2735[#2735] [gantt] Contribute the first version of the Gantt representation.
-- https://github.com/eclipse-sirius/sirius-web/issues/2403[2403] [view] Add support for If and Let constructs in the operations DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/2403[#2403] [view] Add support for If and Let constructs in the operations DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/1545[#1545] [core] The current selection can now be read and set from anywhere using the new `useSelection()` hook.
+- https://github.com/eclipse-sirius/sirius-web/issues/2736[#2736] [gantt] Add a starter project for beans related to task meta-model.
 
 === Improvements
 

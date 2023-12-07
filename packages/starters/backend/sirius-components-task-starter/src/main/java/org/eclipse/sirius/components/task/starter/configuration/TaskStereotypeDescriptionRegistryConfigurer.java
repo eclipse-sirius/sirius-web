@@ -10,14 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.task.configuration;
+package org.eclipse.sirius.components.task.starter.configuration;
 
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
-import org.eclipse.sirius.web.sample.configuration.StereotypeBuilder;
+import org.eclipse.sirius.components.task.starter.helper.StereotypeBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 

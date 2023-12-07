@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.task.configuration.view;
+package org.eclipse.sirius.web.sample.gantt;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
@@ -23,27 +23,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration of the EMF support for task.
+ * Configuration of the EMF support for task MM and representation description related to Task.
  *
  * @author lfasani
  */
 @Configuration
-public class TaskGanttEMFConfiguration {
+public class GanttEMFConfiguration {
 
     @Bean
-    EPackage viewGanttEPackage() {
+    public EPackage viewGanttEPackage() {
         return GanttPackage.eINSTANCE;
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
-    ChildExtenderProvider ganttChildExtenderProvider() {
-        return new ChildExtenderProvider(ViewPackage.eNS_URI, GanttItemProviderAdapterFactory.ViewChildCreationExtender::new);
+    public AdapterFactory viewGanttAdapterFactory() {
+        return new GanttItemProviderAdapterFactory();
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
-    AdapterFactory ganttAdapterFactory() {
-        return new GanttItemProviderAdapterFactory();
+    public ChildExtenderProvider ganttChildExtenderProvider() {
+        return new ChildExtenderProvider(ViewPackage.eNS_URI, GanttItemProviderAdapterFactory.ViewChildCreationExtender::new);
     }
 }

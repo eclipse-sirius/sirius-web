@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.task.configuration.view;
+package org.eclipse.sirius.components.task.starter.configuration.view;
 
 import java.util.Optional;
 
 import org.eclipse.sirius.components.gantt.TaskDetail;
 import org.eclipse.sirius.components.task.Task;
-
 /**
  * Java Service for the task related views.
  *

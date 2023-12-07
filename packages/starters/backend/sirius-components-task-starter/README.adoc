@@ -1,0 +1,5 @@
+= sirius-components-task-starter
+
+== Goal
+
+This project provides an autoconfiguration for Task MM and representations based on Task.
