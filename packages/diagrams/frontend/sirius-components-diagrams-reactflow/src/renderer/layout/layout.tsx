@@ -32,7 +32,6 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
-import { layoutHandles } from './layoutHandles';
 import { getChildren } from './layoutNode';
 
 const emptyNodeProps = {
@@ -269,6 +268,4 @@ const layoutDiagram = (
       }
     }
   });
-
-  layoutHandles(diagram);
 };
