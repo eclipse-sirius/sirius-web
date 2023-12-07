@@ -19,6 +19,7 @@ import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/
 import { Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
+import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
@@ -26,7 +27,6 @@ import { IconLabelNodeConverterHandler } from './IconLabelNodeConverterHandler';
 import { ImageNodeConverterHandler } from './ImageNodeConverterHandler';
 import { ListNodeConverterHandler } from './ListNodeConverterHandler';
 import { RectangleNodeConverterHandler } from './RectangleNodeConverterHandler';
-import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -49,7 +49,7 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): Label => {
     style: {
       position: 'absolute',
       background: 'transparent',
-      padding: 10,
+      padding: 5,
       zIndex: 1001,
       ...convertLabelStyle(gqlEdgeLabel.style),
     },
