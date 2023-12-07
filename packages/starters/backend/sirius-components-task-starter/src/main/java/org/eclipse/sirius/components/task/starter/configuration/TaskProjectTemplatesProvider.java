@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.task.configuration;
+package org.eclipse.sirius.components.task.starter.configuration;
 
 import java.util.List;
 

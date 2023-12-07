@@ -10,22 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.task.configuration;
+package org.eclipse.sirius.components.task.starter.configuration;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.task.TaskPackage;
+import org.eclipse.sirius.components.task.provider.TaskItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration of the EMF support for Task MM.
+ * Configuration of the EMF support for task MM and representation description related to Task.
  *
  * @author lfasani
  */
 @Configuration
 public class TaskEMFConfiguration {
+
     @Bean
-    EPackage taskEPackage() {
+    public EPackage taskEPackage() {
         return TaskPackage.eINSTANCE;
+    }
+
+    @Bean
+    public AdapterFactory taskAdapterFactory() {
+        return new TaskItemProviderAdapterFactory();
     }
 }

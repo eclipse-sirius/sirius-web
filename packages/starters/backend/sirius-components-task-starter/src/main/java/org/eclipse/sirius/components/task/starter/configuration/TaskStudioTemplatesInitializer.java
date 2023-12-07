@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.task.configuration;
+package org.eclipse.sirius.components.task.starter.configuration;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,11 +27,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.task.starter.helper.StereotypeBuilder;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
-import org.eclipse.sirius.web.sample.configuration.StereotypeBuilder;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
 import org.slf4j.Logger;
