@@ -217,7 +217,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
 
     cy.getByTestId('rf__wrapper').click(100, 100);
     cy.getByTestId('Palette').should('exist');
-    cy.get('.react-flow__renderer').type('{esc}');
+    cy.get('body').type('{esc}');
     cy.getByTestId('Palette').should('not.exist');
   });
 
@@ -237,7 +237,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
 
     cy.getByTestId('rf__wrapper').findByTestId('Label - Root').click();
     cy.getByTestId('Palette').should('exist');
-    cy.get('.react-flow__renderer').type('{esc}');
+    cy.get('body').type('{esc}');
     cy.getByTestId('Palette').should('not.exist');
   });
 });

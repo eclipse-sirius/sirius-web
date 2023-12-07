@@ -20,7 +20,7 @@ export const useRefreshConnectionHandles = (id: string, connectionHandles: Conne
   const firstUpdate = useRef<boolean>(true);
 
   const connectionHandlesIdentity = connectionHandles
-    .map((handle) => `${handle.id}#${handle.position}#${handle.nodeId}`)
+    .map((handle) => `${handle.id}#${handle.index}#${handle.position}#${handle.nodeId}`)
     .join(', ');
 
   useEffect(() => {
