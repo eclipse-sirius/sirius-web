@@ -63,6 +63,7 @@ export const getDiagramDescription = gql`
                 droppableOnDiagram
                 droppableOnNodeTypes
               }
+              debug
             }
           }
         }

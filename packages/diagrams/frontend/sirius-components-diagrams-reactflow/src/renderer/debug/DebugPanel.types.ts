@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import React from 'react';
-import { DiagramDescriptionContextValue } from './DiagramDescriptionContext.types';
-
-const defaultValue: DiagramDescriptionContextValue = {
-  diagramDescription: {
-    id: '',
-    nodeDescriptions: [],
-    dropNodeCompatibility: [],
-    debug: false,
-  },
-};
-
-export const DiagramDescriptionContext = React.createContext<DiagramDescriptionContextValue>(defaultValue);
+export interface DebugPanelProps {
+  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
+}
