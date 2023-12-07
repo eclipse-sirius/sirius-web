@@ -37,6 +37,7 @@ import { Diagram, DiagramRendererProps, NodeData } from './DiagramRenderer.types
 import { useBorderChange } from './border/useBorderChange';
 import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
+import { DebugPanel } from './debug/DebugPanel';
 import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
@@ -74,6 +75,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
+
   const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
   const { onDiagramElementClick, hideDiagramElementPalette } = useDiagramElementPalette();
 
@@ -248,8 +250,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         <Background style={{ backgroundColor }} color={backgroundColor} />
       )}
       <DiagramPanel snapToGrid={snapToGrid} onSnapToGrid={onSnapToGrid} />
-
       <DiagramPalette targetObjectId={diagramRefreshedEventPayload.diagram.id} />
+      {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
       <ConnectorContextualMenu />
     </ReactFlow>
   );

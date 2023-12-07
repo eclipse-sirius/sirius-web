@@ -63,6 +63,7 @@ export interface GQLDiagramDescription {
   id: string;
   nodeDescriptions: GQLNodeDescription[];
   dropNodeCompatibility: GQLDropNodeCompatibility[];
+  debug: boolean;
 }
 
 export interface GQLDropNodeCompatibility {

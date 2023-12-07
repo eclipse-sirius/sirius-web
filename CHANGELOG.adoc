@@ -87,6 +87,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 - https://github.com/eclipse-sirius/sirius-web/issues/2579[#2579] [diagram] Fix the invalid text cursor position when editing a label by typing text directly.
 
 === New Features
+- https://github.com/eclipse-sirius/sirius-web/issues/2413[#2413] Add a debug mode for React Flow diagrams
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2735[#2735] [gantt] Contribute the first version of the Gantt representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/2403[#2403] [view] Add support for If and Let constructs in the operations DSL.
