@@ -143,6 +143,19 @@ export const MultiLabelEdge = memo(
       );
     }, [selected]);
 
+    const getTranslateFromHandlePositon = (position: Position) => {
+      switch (position) {
+        case Position.Right:
+          return 'translate(2%, -100%)';
+        case Position.Left:
+          return 'translate(-102%, -100%)';
+        case Position.Top:
+          return 'translate(2%, -100%)';
+        case Position.Bottom:
+          return 'translate(2%, 0%)';
+      }
+    };
+
     return (
       <>
         <BaseEdge
@@ -157,7 +170,7 @@ export const MultiLabelEdge = memo(
           {beginLabel && (
             <Label
               diagramElementId={id}
-              transform={`translate(2%, 0%) translate(${sourceX}px,${sourceY}px)`}
+              transform={`${getTranslateFromHandlePositon(sourcePosition)} translate(${sourceX}px,${sourceY}px)`}
               label={beginLabel}
               faded={faded || false}
             />
@@ -168,7 +181,7 @@ export const MultiLabelEdge = memo(
           {endLabel && (
             <Label
               diagramElementId={id}
-              transform={`translate(2%, -100%) translate(${targetX}px,${targetY}px)`}
+              transform={`${getTranslateFromHandlePositon(targetPosition)} translate(${targetX}px,${targetY}px)`}
               label={endLabel}
               faded={faded || false}
             />

@@ -106,6 +106,7 @@ It is the responsibility of the drop targets (e.g. a diagram) to validate the dr
 - https://github.com/eclipse-sirius/sirius-web/issues/2718[#2718] Replacing useNodes and useEdges by useReactFlow to imporove performances.
 - https://github.com/eclipse-sirius/sirius-web/issues/2787[#2787] [view] Add the ability to customize the icons of the node tools and edge tools in the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/2784[#2784] [performance] Expand monitoring capabilities.
+- https://github.com/eclipse-sirius/sirius-web/issues/2760[#2760] Begin and end label placement of and edge takes into account handle position.
 
 
 == v2023.12.0
