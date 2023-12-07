@@ -169,6 +169,12 @@ jobs:
         run: |
           docker build -t siriusweb packages/sirius-web/backend/sirius-web-sample-application
 
+      - name: Check the integration test code
+        run: |
+          npm ci
+          npm run eslint
+        working-directory: integration-tests
+
       - name: Run end to end tests against the application
         if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
         uses: cypress-io/github-action@v5

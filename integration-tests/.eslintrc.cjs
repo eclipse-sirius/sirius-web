@@ -10,25 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { defineConfig } from 'cypress';
-
-export default defineConfig({
-  screenshotsFolder: 'target/screenshots',
-  video: false,
-  reporter: 'junit',
-  reporterOptions: {
-    mochaFile: 'target/result-[hash].xml',
-    toConsole: true,
-  },
-  viewportWidth: 1920,
-  viewportHeight: 1080,
-  defaultCommandTimeout: 60000,
-  requestTimeout: 60000,
-  responseTimeout: 60000,
-  env: {
-    baseAPIUrl: 'http://localhost:8080',
-  },
-  e2e: {
-    baseUrl: 'http://localhost:8080',
-  },
-});
+/* eslint-env node */
+module.exports = {
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:cypress/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
