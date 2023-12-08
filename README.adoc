@@ -78,6 +78,7 @@ To build the components in this repository on your own, you will need the follow
 * To build the backend components:
 ** https://adoptium.net/temurin/releases/[Java 17]
 ** https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/[Apache Maven 3.6.3]
+** https://www.docker.com/[Docker] must be installed and running for some of the backend components tests to run.
 * To build the frontend components:
 ** LTS versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 18.7.0 is required along with npm >= 8.15.0.
 ** https://turbo.build[TurboRepo] (`npm install -g turbo`)
@@ -168,6 +169,9 @@ mvn clean install -f packages/pom.xml
 +
 TIP: If you are behind a proxy, you may get Maven errors about checkstyle.org not being available.
 In this case you need to explicitly disable CheckStyle from the build: `mvn clean install -f releng/org.eclipse.sirius.emfjson.releng/pom.xml -P\!checkstyle`
++
+NOTE: https://www.docker.com/[Docker] must be installed and running for some of the backend components tests to run.
+If Docker is not present, you can still build the backend by skipping the tests execution with `mvn clean install -f packages/pom.xml -DskipTests`.
 
 5. You can find in the output artifacts in the various `target` folders of the backend components and the `dist` folders of the frontend components.
 You could publish those to your maven or npm repository to consume them in other applications.
