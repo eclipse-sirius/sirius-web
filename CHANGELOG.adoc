@@ -77,6 +77,7 @@ info: {
 - https://github.com/eclipse-sirius/sirius-web/issues/2669[#2669] [sirius-web] Add dedicated colors for selected elements in the Sirius Web theme
 - https://github.com/eclipse-sirius/sirius-web/issues/2672[#2672] [sirius-web] Add dedicated colors for toast messages in the Sirius Web theme
 - https://github.com/eclipse-sirius/sirius-web/issues/2720[#2720] [releng] Improve our build process to be faster in development mode
+- https://github.com/eclipse-sirius/sirius-web/issues/2780[#2780] [releng] Upgrade github/aws actions versions in workflows
 
 
 == v2023.12.0
