@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useCallback, useContext } from 'react';
-import { useEdges, useNodes } from 'reactflow';
+import { useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramDirectEditContext } from './DiagramDirectEditContext';
 import { DiagramDirectEditContextValue } from './DiagramDirectEditContext.types';
@@ -22,8 +22,7 @@ const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»�
 export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
-  const nodes = useNodes<NodeData>();
-  const edges = useEdges<EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
 
   const onDirectEdit = useCallback(
     (event: React.KeyboardEvent<Element>) => {
@@ -37,10 +36,10 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       event.preventDefault();
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
-      let currentlyEditedLabelId: string | undefined | null = nodes.find((node) => node.selected)?.data.label?.id;
-      let isLabelEditable: boolean = nodes.find((node) => node.selected)?.data.labelEditable || false;
+      let currentlyEditedLabelId: string | undefined | null = getNodes().find((node) => node.selected)?.data.label?.id;
+      let isLabelEditable: boolean = getNodes().find((node) => node.selected)?.data.labelEditable || false;
       if (!currentlyEditedLabelId) {
-        currentlyEditedLabelId = edges.find((edge) => edge.selected)?.data?.label?.id;
+        currentlyEditedLabelId = getEdges().find((edge) => edge.selected)?.data?.label?.id;
         // GQLEdge does not expose a labelEditable flag, so we currently assume all edge (center) labels are editable.
         isLabelEditable = true;
       }
@@ -53,7 +52,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
         }
       }
     },
-    [setCurrentlyEditedLabelId, nodes]
+    [setCurrentlyEditedLabelId]
   );
 
   return {

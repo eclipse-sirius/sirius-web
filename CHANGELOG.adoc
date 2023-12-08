@@ -101,6 +101,7 @@ It is the responsibility of the drop targets (e.g. a diagram) to validate the dr
 - https://github.com/eclipse-sirius/sirius-web/issues/2772[#2772] Improve performance of the Palette
 - https://github.com/eclipse-sirius/sirius-web/issues/2679[#2679] [diagram] When editing a label, place input element closer to the label's location (centered).
 - https://github.com/eclipse-sirius/sirius-web/issues/2804[#2804] [sirius-web] Add the ability to declare custom nodes while using the `sirius-web-application` frontend package.
+- https://github.com/eclipse-sirius/sirius-web/issues/2718[#2718] Replacing useNodes and useEdges by useReactFlow to imporove performances.
 
 
 == v2023.12.0

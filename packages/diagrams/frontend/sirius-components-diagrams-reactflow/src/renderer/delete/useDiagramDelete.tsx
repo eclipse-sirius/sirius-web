@@ -13,10 +13,10 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
-import { useNodes } from 'reactflow';
+import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import {
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
@@ -56,7 +56,7 @@ const isSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLD
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const nodes = useNodes<NodeData>();
+  const { getNodes } = useReactFlow<NodeData, EdgeData>();
 
   const [deleteElementsMutation, { data: deleteElementsData, error: deleteElementsError }] = useMutation<
     GQLDeleteFromDiagramData,
@@ -75,31 +75,30 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
     }
   }, [deleteElementsData, deleteElementsError]);
 
-  const onDelete = useCallback(
-    (event: React.KeyboardEvent<Element>) => {
-      const { key } = event;
-      /*If a modifier key is hit alone, do nothing*/
-      const isTextField = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement;
-      if (((event.altKey || event.shiftKey) && event.getModifierState(key)) || isTextField) {
-        return;
-      }
-      event.preventDefault();
+  const onDelete = useCallback((event: React.KeyboardEvent<Element>) => {
+    const { key } = event;
+    /*If a modifier key is hit alone, do nothing*/
+    const isTextField = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement;
+    if (((event.altKey || event.shiftKey) && event.getModifierState(key)) || isTextField) {
+      return;
+    }
+    event.preventDefault();
 
-      if (key === 'Delete' && editingContextId && diagramId) {
-        const nodeToDeleteIds: string[] = nodes.filter((node) => node.selected).map((node) => node.id);
-        const input: GQLDeleteFromDiagramInput = {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: diagramId,
-          nodeIds: nodeToDeleteIds,
-          edgeIds: [],
-          deletionPolicy: GQLDeletionPolicy.SEMANTIC,
-        };
-        deleteElementsMutation({ variables: { input } });
-      }
-    },
-    [nodes]
-  );
+    if (key === 'Delete' && editingContextId && diagramId) {
+      const nodeToDeleteIds: string[] = getNodes()
+        .filter((node) => node.selected)
+        .map((node) => node.id);
+      const input: GQLDeleteFromDiagramInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: diagramId,
+        nodeIds: nodeToDeleteIds,
+        edgeIds: [],
+        deletionPolicy: GQLDeletionPolicy.SEMANTIC,
+      };
+      deleteElementsMutation({ variables: { input } });
+    }
+  }, []);
 
   return {
     onDelete,
