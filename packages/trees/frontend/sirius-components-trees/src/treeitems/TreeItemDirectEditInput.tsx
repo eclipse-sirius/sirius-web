@@ -123,22 +123,17 @@ export const TreeItemDirectEditInput = ({
   }, [renameTreeItemData, renameTreeItemError]);
 
   const doRename = () => {
-    const isNameValid = state.newLabel.length >= 1;
-    if (isNameValid) {
-      renameTreeItem({
-        variables: {
-          input: {
-            id: crypto.randomUUID(),
-            editingContextId: editingContextId,
-            representationId: treeId,
-            treeItemId: treeItemId,
-            newLabel: state.newLabel,
-          },
+    renameTreeItem({
+      variables: {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId: editingContextId,
+          representationId: treeId,
+          treeItemId: treeItemId,
+          newLabel: state.newLabel,
         },
-      });
-    } else {
-      onClose();
-    }
+      },
+    });
   };
 
   const handleChange = (event) => {
