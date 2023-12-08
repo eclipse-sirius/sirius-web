@@ -12,18 +12,18 @@
  *******************************************************************************/
 import { DRAG_SOURCES_TYPE, IconOverlay, Selection, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { isFilterCandidate, splitText } from './filterTreeItem';
 import { TreeItemProps } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
+import { isFilterCandidate, splitText } from './filterTreeItem';
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -370,16 +370,15 @@ export const TreeItem = ({
     }
   };
 
-  const { kind } = item;
-  const draggable = kind.startsWith('siriusComponents://semantic') && item.selectable;
   const dragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
-    const entries = selection.entries.filter((entry) => entry.kind.startsWith('siriusComponents://semantic'));
-
-    if (draggable && !selection.entries.map((entry) => entry.id).includes(item.id)) {
+    const isDraggedItemSelected = selection.entries.map((entry) => entry.id).includes(item.id);
+    if (!isDraggedItemSelected) {
+      // If we're dragging a non-selected item, drag it alone
       const itemEntry: SelectionEntry = { id: item.id, label: item.label, kind: item.kind };
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemEntry]));
-    } else if (entries.length > 0) {
-      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(entries));
+    } else if (selection.entries.length > 0) {
+      // Otherwise drag the whole selection
+      event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify(selection.entries));
     }
   };
 
@@ -417,7 +416,7 @@ export const TreeItem = ({
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
-            draggable={draggable}
+            draggable={true}
             onClick={onClick}
             onDragStart={dragStart}
             onDragOver={dragOver}

@@ -80,6 +80,8 @@ info: {
 - https://github.com/eclipse-sirius/sirius-web/issues/2720[#2720] [releng] Improve our build process to be faster in development mode
 - https://github.com/eclipse-sirius/sirius-web/issues/2780[#2780] [releng] Upgrade github/aws actions versions in workflows
 - https://github.com/eclipse-sirius/sirius-web/issues/2644[#2644] [diagram] Highlight nodes on hover in React Flow diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/2766[#2766] [tree] Tree representations (including the explorer) now support dragging any kind of element (not just semantic elements).
+It is the responsibility of the drop targets (e.g. a diagram) to validate the dropped element(s) type and ignore the one it does not support.
 
 
 == v2023.12.0
