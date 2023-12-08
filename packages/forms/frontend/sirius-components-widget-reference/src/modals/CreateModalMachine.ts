@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -341,7 +341,7 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
       updateDomains: assign((_, event) => {
         const { data } = event as FetchedDomainsEvent;
         const { domains } = data.viewer.editingContext;
-        const selectedDomainId = domains.length > 0 ? domains[0].id : '';
+        const selectedDomainId = domains[0]?.id || '';
         return { domains, selectedDomainId };
       }),
       updateDomain: assign((_, event) => {
@@ -351,15 +351,13 @@ export const createModalMachine = Machine<CreateModalContext, CreateModalStateSc
       updateChildCreationDescriptions: assign((_, event) => {
         const { data } = event as FetchedChildCreationDescriptionsEvent;
         const { referenceWidgetChildCreationDescriptions } = data.viewer.editingContext;
-        const selectedChildCreationDescriptionId =
-          referenceWidgetChildCreationDescriptions.length > 0 ? referenceWidgetChildCreationDescriptions[0].id : '';
+        const selectedChildCreationDescriptionId = referenceWidgetChildCreationDescriptions[0]?.id || '';
         return { creationDescriptions: referenceWidgetChildCreationDescriptions, selectedChildCreationDescriptionId };
       }),
       updateRootChildCreationDescriptions: assign((_, event) => {
         const { data } = event as FetchedRootObjectCreationDescriptionsEvent;
         const { referenceWidgetRootCreationDescriptions } = data.viewer.editingContext;
-        const selectedChildCreationDescriptionId =
-          referenceWidgetRootCreationDescriptions.length > 0 ? referenceWidgetRootCreationDescriptions[0].id : '';
+        const selectedChildCreationDescriptionId = referenceWidgetRootCreationDescriptions[0]?.id || '';
         return { creationDescriptions: referenceWidgetRootCreationDescriptions, selectedChildCreationDescriptionId };
       }),
       updateChildCreationDescription: assign((_, event) => {

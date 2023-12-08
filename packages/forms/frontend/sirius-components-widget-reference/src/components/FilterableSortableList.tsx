@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,7 +72,7 @@ const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => 
     textToHighlight === null ||
     textToHighlight === '' ||
     (splitLabelWithTextToHighlight.length === 1 &&
-      splitLabelWithTextToHighlight[0].toLocaleLowerCase() !== label.toLocaleLowerCase())
+      splitLabelWithTextToHighlight[0]?.toLocaleLowerCase() !== label.toLocaleLowerCase())
   ) {
     itemLabel = <>{label}</>;
   } else {
@@ -166,16 +166,18 @@ export const FilterableSortableList = ({
     if (state.draggingItemId) {
       const newList = Array.from(items);
       const draggedItem = newList.find((item) => item.id === state.draggingItemId);
-      const draggedItemIndex = newList.indexOf(draggedItem);
-      newList.splice(draggedItemIndex, 1);
-      newList.splice(index, 0, draggedItem);
-      setItems(newList);
-      setState((prevState) => {
-        return {
-          ...prevState,
-          draggingIndex: index,
-        };
-      });
+      if (draggedItem) {
+        const draggedItemIndex = newList.indexOf(draggedItem);
+        newList.splice(draggedItemIndex, 1);
+        newList.splice(index, 0, draggedItem);
+        setItems(newList);
+        setState((prevState) => {
+          return {
+            ...prevState,
+            draggingIndex: index,
+          };
+        });
+      }
     }
   };
 
@@ -212,11 +214,11 @@ export const FilterableSortableList = ({
               return (
                 splitLabelWithTextToHighlight.length > 1 ||
                 (splitLabelWithTextToHighlight.length === 1 &&
-                  splitLabelWithTextToHighlight[0].toLocaleLowerCase() === state.filterBarText.toLocaleLowerCase())
+                  splitLabelWithTextToHighlight[0]?.toLocaleLowerCase() === state.filterBarText.toLocaleLowerCase())
               );
             })
             .map(({ id, kind, label }, index) => {
-              const iconURL = options.find((option) => option.id === id)?.iconURL;
+              const iconURL = options.find((option) => option.id === id)?.iconURL ?? [];
               const labelId = `transfer-list-item-${id}-label`;
               const selected = selectedItems.some((entry) => entry.id === id);
               const hover = state.hoveringItemId === id;

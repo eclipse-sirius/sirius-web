@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,11 +28,12 @@ import { GQLReferenceWidgetStyle } from './ReferenceWidgetFragment.types';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : undefined),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
+    textDecorationLine: ({ underline, strikeThrough }) =>
+      getTextDecorationLineValue(underline ?? null, strikeThrough ?? null),
   },
   selected: {
     color: theme.palette.primary.main,

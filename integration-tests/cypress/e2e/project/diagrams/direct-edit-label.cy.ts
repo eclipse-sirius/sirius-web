@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,6 @@ describe('Diagram - Direct edit label', () => {
         const diagram = new Diagram();
         diagram.fitToScreen();
         diagram.getNodes('diagram', 'Entity1').click();
-
         diagram.getPalette().should('exist');
         cy.getByTestId('Edit - Tool').should('not.exist');
 
@@ -94,8 +93,8 @@ describe('Diagram - Direct edit label', () => {
         diagram.fitToScreen();
         diagram.getNodes('diagram', 'Entity2').click();
         diagram.getPalette().should('exist');
-
         cy.getByTestId('Edit - Tool').should('exist');
+
         diagram.getNodes('diagram', 'Entity2').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
         cy.getByTestId('name-edit').should('exist');
       });

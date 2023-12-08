@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -363,7 +363,7 @@ export const ReferencePropertySection = ({
     clearReference({ variables });
   };
 
-  const callSetReferenceValue = (newValueId: string) => {
+  const callSetReferenceValue = (newValueId: string | null) => {
     if (newValueId) {
       const variables = {
         input: {
@@ -455,7 +455,7 @@ export const ReferencePropertySection = ({
             if (semanticElementIds.length > 1) {
               addErrorMessage('Single-valued reference can only accept a single value');
             } else {
-              callSetReferenceValue(semanticElementIds[0]);
+              callSetReferenceValue(semanticElementIds[0] ?? null);
             }
           }
         }
@@ -473,14 +473,14 @@ export const ReferencePropertySection = ({
     setModalDisplayed('create');
   };
 
-  const setSelectedElement = (selectedElementId: string) => {
+  const setSelectedElement = (selectedElementId: string | null) => {
     setModalDisplayed(null);
     if (selectedElementId && selectedElementId.length > 0) {
       callSetReferenceValue(selectedElementId);
     }
   };
 
-  const addNewElement = (selectedElementId: string): void => {
+  const addNewElement = (selectedElementId: string | null): void => {
     setModalDisplayed(null);
     if (selectedElementId) {
       if (widget.reference.manyValued) {

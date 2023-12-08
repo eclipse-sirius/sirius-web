@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
-import { getCSSColor, IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -38,11 +38,12 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
     paddingLeft: theme.spacing(0.5),
   },
   referenceValueStyle: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : undefined),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
+    textDecorationLine: ({ underline, strikeThrough }) =>
+      getTextDecorationLineValue(underline ?? null, strikeThrough ?? null),
   },
   endAdornmentButton: {
     position: 'absolute',
@@ -161,7 +162,7 @@ export const ValuedReferenceAutocomplete = ({
     });
   };
 
-  const getOnlyNewValueIds = (updatedValues) => {
+  const getOnlyNewValueIds = (updatedValues: GQLReferenceValue[]): string[] => {
     if (widget.referenceValues?.length > 0) {
       return updatedValues
         .filter((updatedValue) => widget.referenceValues.some((value) => value.id !== updatedValue.id))
@@ -171,7 +172,7 @@ export const ValuedReferenceAutocomplete = ({
     }
   };
 
-  const handleAutocompleteChange = (_event, updatedValues, reason) => {
+  const handleAutocompleteChange = (_event, updatedValues: GQLReferenceValue[], reason: string) => {
     if (reason === 'remove-option') {
       handleRemoveReferenceValue(updatedValues);
     } else {
@@ -179,7 +180,7 @@ export const ValuedReferenceAutocomplete = ({
       if (widget.reference.manyValued) {
         addReferenceValues(newValueIds);
       } else {
-        setReferenceValue(newValueIds[0]);
+        setReferenceValue(newValueIds[0] ?? null);
       }
     }
   };
