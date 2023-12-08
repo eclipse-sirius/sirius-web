@@ -141,20 +141,17 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
   }, [initialLabelItemError, initialLabelItemData]);
 
   const doRename = () => {
-    const isNameValid = state.newLabel.length >= 1;
-    if (isNameValid) {
-      renameElement({
-        variables: {
-          input: {
-            id: crypto.randomUUID(),
-            editingContextId: editingContextId,
-            representationId: diagramId,
-            labelId: labelId,
-            newText: state.newLabel,
-          },
+    renameElement({
+      variables: {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId: editingContextId,
+          representationId: diagramId,
+          labelId: labelId,
+          newText: state.newLabel,
         },
-      });
-    }
+      },
+    });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
