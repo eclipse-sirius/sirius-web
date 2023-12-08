@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -289,32 +289,36 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
 
   const onCreateObject = () => {
     let input: GQLCreateElementInReferenceInput | null = null;
-    if (createModal === 'validForChild') {
-      dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
-      input = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        containerId,
-        domainId: null,
-        creationDescriptionId: selectedChildCreationDescriptionId,
-        descriptionId: widget.descriptionId,
-      };
-    } else if (createModal === 'validForRoot') {
-      dispatch({ type: 'CREATE_ROOT' } as CreateRootEvent);
-      input = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        referenceWidgetId: widget.id,
-        containerId,
-        domainId: selectedDomainId,
-        creationDescriptionId: selectedChildCreationDescriptionId,
-        descriptionId: widget.descriptionId,
-      };
+    if (containerId) {
+      if (createModal === 'validForChild') {
+        dispatch({ type: 'CREATE_CHILD' } as CreateChildEvent);
+        input = {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          containerId,
+          domainId: null,
+          creationDescriptionId: selectedChildCreationDescriptionId,
+          descriptionId: widget.descriptionId,
+        };
+      } else if (createModal === 'validForRoot') {
+        dispatch({ type: 'CREATE_ROOT' } as CreateRootEvent);
+        input = {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          containerId,
+          domainId: selectedDomainId,
+          creationDescriptionId: selectedChildCreationDescriptionId,
+          descriptionId: widget.descriptionId,
+        };
+      }
     }
-    createElementInReference({ variables: { input } });
+    if (input) {
+      createElementInReference({ variables: { input } });
+    }
   };
 
   const onDomainChange = (event) => {

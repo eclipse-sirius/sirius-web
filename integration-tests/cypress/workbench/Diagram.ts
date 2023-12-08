@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,9 @@ export class Diagram {
 
   public fitToScreen() {
     cy.getByTestId('fit-to-screen').click();
+
+    /* eslint-disable-next-line cypress/no-unnecessary-waiting */
+    cy.wait(4000);
   }
 
   public getNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
