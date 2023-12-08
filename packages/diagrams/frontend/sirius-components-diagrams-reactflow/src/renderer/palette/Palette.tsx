@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
@@ -55,6 +55,7 @@ import {
   GQLUpdateCollapsingStateInput,
   GQLUpdateCollapsingStateVariables,
   PaletteProps,
+  PaletteState,
 } from './Palette.types';
 import { ToolSection } from './tool-section/ToolSection';
 
@@ -201,18 +202,34 @@ const isDiagramDescription = (
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
 export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramElementPalette }: PaletteProps) => {
-  const [palette, setPalette] = useState<GQLPalette | undefined>(undefined);
-  const [toolSectionExpandId, setToolSectionExpandId] = useState<string | undefined>(undefined);
+  const [state, setState] = useState<PaletteState>({ expandedToolSectionId: null });
+
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
   const nodes = useNodes<NodeData>();
   const edges = useEdges<EdgeData>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-  const { addMessages } = useMultiToast();
+
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const diagramPaletteToolComponents = useContext<DiagramPaletteToolContextValue>(DiagramPaletteToolContext)
     .filter((contribution) => contribution.props.canHandle(diagramId, diagramElementId))
     .map((contribution) => contribution.props.component);
+
+  const { data: paletteData, error: paletteError } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(
+    getPaletteQuery,
+    {
+      variables: {
+        editingContextId,
+        diagramId,
+        diagramElementId,
+      },
+    }
+  );
+
+  const description: GQLRepresentationDescription | undefined =
+    paletteData?.viewer.editingContext.representation.description;
+  const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
 
   const toolCount =
     (palette
@@ -225,32 +242,14 @@ export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramEl
     diagramPaletteToolComponents.length;
   const classes = usePaletteStyle({ toolCount });
 
-  const [getPalette, { loading: paletteLoading, data: paletteData, error: paletteError }] = useLazyQuery<
-    GQLGetToolSectionsData,
-    GQLGetToolSectionsVariables
-  >(getPaletteQuery);
-
   useEffect(() => {
-    if (!paletteLoading) {
-      if (paletteData) {
-        const representationDescription: GQLRepresentationDescription =
-          paletteData.viewer.editingContext.representation.description;
-        if (isDiagramDescription(representationDescription)) {
-          setPalette(representationDescription.palette);
-        }
-      }
+    if (paletteError) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-  }, [paletteLoading, paletteData, paletteError, setPalette, isSingleClickOnDiagramElementTool, isDiagramDescription]);
+  }, [paletteError]);
 
-  useEffect(() => {
-    getPalette({
-      variables: {
-        editingContextId: editingContextId,
-        diagramId,
-        diagramElementId,
-      },
-    });
-  }, [editingContextId, diagramId, getPalette]);
+  const handleToolSectionExpand = (expandedToolSectionId: string | null) =>
+    setState((prevState) => ({ ...prevState, expandedToolSectionId }));
 
   const [deleteElementsMutation] = useMutation<GQLDeleteFromDiagramData, GQLDeleteFromDiagramVariables>(
     deleteFromDiagramMutation
@@ -399,8 +398,8 @@ export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramEl
           toolSection={toolSection}
           onToolClick={handleToolClick}
           key={toolSection.id}
-          onExpand={setToolSectionExpandId}
-          toolSectionExpandId={toolSectionExpandId}
+          onExpand={handleToolSectionExpand}
+          toolSectionExpandId={state.expandedToolSectionId}
         />
       ))}
       {diagramPaletteToolComponents.map((component, index) => {

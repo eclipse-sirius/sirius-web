@@ -24,6 +24,10 @@ export interface PaletteProps {
   isDiagramElementPalette: boolean;
 }
 
+export interface PaletteState {
+  expandedToolSectionId: string | null;
+}
+
 export interface GQLErrorPayload
   extends GQLInvokeSingleClickOnDiagramElementToolPayload,
     GQLDeleteFromDiagramPayload,
