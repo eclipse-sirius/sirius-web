@@ -19,7 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useEdges, useNodes } from 'reactflow';
+import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -206,8 +206,7 @@ export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramEl
 
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
-  const nodes = useNodes<NodeData>();
-  const edges = useEdges<EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -299,11 +298,11 @@ export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramEl
   );
 
   const invokeDelete = (diagramElementId: string, deletionPolicy: GQLDeletionPolicy) => {
-    const nodeId = nodes.find((node) => node.id === diagramElementId);
+    const nodeId = getNodes().find((node) => node.id === diagramElementId);
     if (nodeId) {
       invokeDeleteMutation([diagramElementId], [], deletionPolicy);
     } else {
-      const edgeId = edges.find((edge) => edge.id === diagramElementId);
+      const edgeId = getEdges().find((edge) => edge.id === diagramElementId);
       if (edgeId) {
         invokeDeleteMutation([], [diagramElementId], deletionPolicy);
       }

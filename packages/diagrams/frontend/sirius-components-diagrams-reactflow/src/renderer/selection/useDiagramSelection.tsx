@@ -20,8 +20,6 @@ import {
   NodeSelectionChange,
   OnEdgesChange,
   OnNodesChange,
-  useEdges,
-  useNodes,
   useReactFlow,
   useStoreApi,
 } from 'reactflow';
@@ -38,19 +36,16 @@ export const useDiagramSelection = (
   setSelection: (selection: Selection) => void
 ): UseDiagramSelectionValue => {
   const { hideDiagramPalette } = useDiagramPalette();
-
   const store = useStoreApi();
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
-
-  const nodes = useNodes<NodeData>();
-  const edges = useEdges<MultiLabelEdgeData>();
+  const { getNodes, getEdges } = useReactFlow<NodeData, MultiLabelEdgeData>();
 
   useEffect(() => {
     const selectionEntryIds = selection.entries.map((entry) => entry.id);
-    const edgesMatchingWorkbenchSelection = edges.filter((edge) =>
+    const edgesMatchingWorkbenchSelection = getEdges().filter((edge) =>
       selectionEntryIds.includes(edge.data ? edge.data.targetObjectId : '')
     );
-    const nodesMatchingWorkbenchSelection = nodes.filter((node) =>
+    const nodesMatchingWorkbenchSelection = getNodes().filter((node) =>
       selectionEntryIds.includes(node.data.targetObjectId)
     );
 
@@ -71,7 +66,7 @@ export const useDiagramSelection = (
 
       // Support single graphical selection to display the palette on node containing compartment based on the same targetObjectId.
       const reactFlowState = store.getState();
-      const currentlySelectedNodes = reactFlowState.getNodes().filter((node) => node.selected);
+      const currentlySelectedNodes = getNodes().filter((node) => node.selected);
 
       const isAlreadySelected = currentlySelectedNodes
         .map((node) => node.id)
@@ -120,7 +115,7 @@ export const useDiagramSelection = (
     const selectionEntries: SelectionEntry[] = changes
       .filter(isNodeSelectChange)
       .filter((change) => change.selected)
-      .flatMap((change) => nodes.filter((node) => node.id === change.id))
+      .flatMap((change) => getNodes().filter((node) => node.id === change.id))
       .map((node) => {
         const { targetObjectId, targetObjectKind, targetObjectLabel } = node.data;
         return {
@@ -148,7 +143,7 @@ export const useDiagramSelection = (
     const selectionEntries: SelectionEntry[] = changes
       .filter(isEdgeSelectChange)
       .filter((change) => change.selected)
-      .flatMap((change) => edges.filter((edge) => edge.id === change.id))
+      .flatMap((change) => getEdges().filter((edge) => edge.id === change.id))
       .map((edge) => {
         if (edge.data) {
           const { targetObjectId, targetObjectKind, targetObjectLabel } = edge.data;
