@@ -15,12 +15,11 @@ import { GQLFlexDirection, GQLFlexWrap } from '@eclipse-sirius/sirius-components
 import { GQLContainerBorderStyle } from '@eclipse-sirius/sirius-components-forms/src';
 
 export interface FlexboxContainerWidgetState {
-  message: string | null;
   selected: boolean;
 }
 
 export interface FlexboxContainerWidgetStyleProps {
   flexDirection: GQLFlexDirection;
   flexWrap: GQLFlexWrap;
-  borderStyle: GQLContainerBorderStyle | null;
+  borderStyle: GQLContainerBorderStyle | undefined;
 }

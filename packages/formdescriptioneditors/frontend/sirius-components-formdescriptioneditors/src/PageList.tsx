@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
+import { Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -115,15 +115,16 @@ export const PageList = ({
 
   const { pages } = formDescriptionEditor;
 
-  const [state, setState] = useState<PageListState>({ message: null, selectedPage: pages[0], pages });
-  const { message } = state;
+  const [state, setState] = useState<PageListState>({ selectedPage: pages[0], pages });
+
+  const { addErrorMessage } = useMultiToast();
 
   useEffect(() => {
     const entry = selection.entries.at(0);
     if (!entry) {
       return;
     }
-    let pageToSelect: GQLPage;
+    let pageToSelect: GQLPage | undefined;
     pageToSelect = state.pages.find((page) => entry.id === page.id);
     if (!pageToSelect) {
       pageToSelect = state.pages.find((page) => page.groups.some((group) => entry.id === group.id));
@@ -141,7 +142,7 @@ export const PageList = ({
         page.groups.some((group) => group.widgets.some((widget) => recursiveWidgetSearch(widget, entry.id)))
       );
     }
-    if (pageToSelect && pageToSelect.id !== state.selectedPage.id) {
+    if (pageToSelect && pageToSelect.id !== state.selectedPage?.id) {
       setState((prevState) => {
         return { ...prevState, selectedPage: pageToSelect };
       });
@@ -150,13 +151,13 @@ export const PageList = ({
 
   useEffect(() => {
     setState((prevState) => {
-      const selectedPage = pages.find((page) => page.id === state.selectedPage.id);
+      const selectedPage = pages.find((page) => page.id === state.selectedPage?.id);
       if (selectedPage) {
         return { ...prevState, selectedPage, pages };
       }
       return { ...prevState, selectedPage: pages[0], pages };
     });
-  }, [pages, state.selectedPage.id]);
+  }, [pages, state.selectedPage?.id]);
 
   const onChangeTab = (_: React.ChangeEvent<{}>, value: string) => {
     const selectedPage = pages.find((page) => page.id === value);
@@ -173,16 +174,12 @@ export const PageList = ({
   useEffect(() => {
     if (!addPageLoading) {
       if (addPageError) {
-        setState((prevState) => {
-          return { ...prevState, message: addPageError.message };
-        });
+        addErrorMessage(addPageError.message);
       }
       if (addPageData) {
         const { addPage } = addPageData;
         if (isErrorPayload(addPage)) {
-          setState((prevState) => {
-            return { ...prevState, message: addPage.message };
-          });
+          addErrorMessage(addPage.message);
         }
       }
     }
@@ -196,16 +193,12 @@ export const PageList = ({
   useEffect(() => {
     if (!movePageLoading) {
       if (movePageError) {
-        setState((prevState) => {
-          return { ...prevState, message: movePageError.message };
-        });
+        addErrorMessage(movePageError.message);
       }
       if (movePageData) {
         const { movePage } = movePageData;
         if (isErrorPayload(movePage)) {
-          setState((prevState) => {
-            return { ...prevState, message: movePage.message };
-          });
+          addErrorMessage(movePage.message);
         }
       }
     }
@@ -219,16 +212,12 @@ export const PageList = ({
   useEffect(() => {
     if (!deletePageLoading) {
       if (deletePageError) {
-        setState((prevState) => {
-          return { ...prevState, message: deletePageError.message };
-        });
+        addErrorMessage(deletePageError.message);
       }
       if (deletePageData) {
         const { deletePage } = deletePageData;
         if (isErrorPayload(deletePage)) {
-          setState((prevState) => {
-            return { ...prevState, message: deletePage.message };
-          });
+          addErrorMessage(deletePage.message);
         }
       }
     }
@@ -258,7 +247,7 @@ export const PageList = ({
         id: crypto.randomUUID(),
         editingContextId,
         representationId,
-        pageId: state.selectedPage.id,
+        pageId: state.selectedPage?.id,
       };
       const deletePageVariables: GQLDeletePageMutationVariables = { input: deletePageInput };
       deletePage({ variables: deletePageVariables });
@@ -360,9 +349,9 @@ export const PageList = ({
     }
   };
 
-  const selectedPageToolbar = (
+  const selectedPageToolbar: JSX.Element | undefined = state.selectedPage && (
     <ToolbarActions
-      data-testid={`Page-ToolbarActions-${state.selectedPage.id}`}
+      data-testid={`Page-ToolbarActions-${state.selectedPage?.id}`}
       editingContextId={editingContextId}
       representationId={representationId}
       formDescriptionEditor={formDescriptionEditor}
@@ -378,7 +367,7 @@ export const PageList = ({
       <div className={classes.pagesListDropAreaAndToolbar}>
         <Tabs
           classes={{ root: classes.tabsRoot }}
-          value={state.selectedPage.id}
+          value={state.selectedPage?.id}
           onChange={onChangeTab}
           variant="scrollable"
           scrollButtons="on"
@@ -421,23 +410,16 @@ export const PageList = ({
         </div>
         {selectedPageToolbar}
       </div>
-      <Page
-        editingContextId={editingContextId}
-        page={state.selectedPage}
-        formDescriptionEditor={formDescriptionEditor}
-        representationId={representationId}
-        selection={selection}
-        setSelection={setSelection}
-      />
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
+      {state.selectedPage && (
+        <Page
+          editingContextId={editingContextId}
+          page={state.selectedPage}
+          formDescriptionEditor={formDescriptionEditor}
+          representationId={representationId}
+          selection={selection}
+          setSelection={setSelection}
+        />
+      )}
     </div>
   );
 };

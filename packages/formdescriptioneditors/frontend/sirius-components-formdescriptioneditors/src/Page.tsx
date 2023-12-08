@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useRef, useState } from 'react';
@@ -29,6 +28,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { Group } from './Group';
 import { PageProps, PageState } from './Page.types';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -74,10 +74,10 @@ export const Page = ({
 }: PageProps) => {
   const classes = usePageStyles();
 
-  const initialState: PageState = { message: null, selected: false };
-  const [state, setState] = useState<PageState>(initialState);
-  const { message } = state;
+  const initialState: PageState = { selected: false };
+  const [_state, setState] = useState<PageState>(initialState);
 
+  const { addErrorMessage } = useMultiToast();
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -101,16 +101,12 @@ export const Page = ({
   useEffect(() => {
     if (!addGroupLoading) {
       if (addGroupError) {
-        setState((prevState) => {
-          return { ...prevState, message: addGroupError.message };
-        });
+        addErrorMessage(addGroupError.message);
       }
       if (addGroupData) {
         const { addGroup } = addGroupData;
         if (isErrorPayload(addGroup)) {
-          setState((prevState) => {
-            return { ...prevState, message: addGroup.message };
-          });
+          addErrorMessage(addGroup.message);
         }
       }
     }
@@ -124,16 +120,12 @@ export const Page = ({
   useEffect(() => {
     if (!moveGroupLoading) {
       if (moveGroupError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveGroupError.message };
-        });
+        addErrorMessage(moveGroupError.message);
       }
       if (moveGroupData) {
         const { moveGroup } = moveGroupData;
         if (isErrorPayload(moveGroup)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveGroup.message };
-          });
+          addErrorMessage(moveGroup.message);
         }
       }
     }
@@ -216,15 +208,6 @@ export const Page = ({
         onDrop={handleDrop}>
         <Typography variant="body1">{'Drag and drop a group here'}</Typography>
       </div>
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
     </div>
   );
 };

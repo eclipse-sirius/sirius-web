@@ -490,7 +490,7 @@ export const FormDescriptionEditorRepresentation = ({
       </div>
       {content}
       <Toast
-        message={message}
+        message={message ?? undefined}
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />

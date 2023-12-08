@@ -23,7 +23,6 @@ export interface PageListProps {
 }
 
 export interface PageListState {
-  message: string | null;
-  selectedPage: GQLPage;
+  selectedPage: GQLPage | undefined;
   pages: GQLPage[];
 }

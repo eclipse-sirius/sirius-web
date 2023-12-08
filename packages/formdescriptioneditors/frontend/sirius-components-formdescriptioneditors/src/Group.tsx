@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { Selection, getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
   PropertySectionContext,
@@ -64,7 +64,8 @@ const useGroupEntryStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
     flexDirection: 'column',
     flexGrow: 1,
     borderWidth: ({ borderStyle }) => (borderStyle ? borderStyle.size : 1),
-    borderColor: ({ borderStyle }) => (borderStyle ? getCSSColor(borderStyle?.color, theme) || 'transparent' : 'gray'),
+    borderColor: ({ borderStyle }) =>
+      borderStyle ? getCSSColor(borderStyle?.color ?? '', theme) || 'transparent' : 'gray',
     borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
     borderRadius: ({ borderStyle }) => (borderStyle ? borderStyle.radius : 10),
     paddingTop: '1px',
@@ -156,9 +157,11 @@ export const Group = ({
     borderStyle: group.borderStyle,
   });
 
-  const initialState: GroupState = { message: null, selected: false };
+  const initialState: GroupState = { selected: false };
   const [state, setState] = useState<GroupState>(initialState);
-  const { message, selected } = state;
+  const { selected } = state;
+
+  const { addErrorMessage } = useMultiToast();
 
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -183,16 +186,12 @@ export const Group = ({
   useEffect(() => {
     if (!addWidgetLoading) {
       if (addWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: addWidgetError.message };
-        });
+        addErrorMessage(addWidgetError.message);
       }
       if (addWidgetData) {
         const { addWidget } = addWidgetData;
         if (isErrorPayload(addWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: addWidget.message };
-          });
+          addErrorMessage(addWidget.message);
         }
       }
     }
@@ -206,16 +205,12 @@ export const Group = ({
   useEffect(() => {
     if (!moveWidgetLoading) {
       if (moveWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveWidgetError.message };
-        });
+        addErrorMessage(moveWidgetError.message);
       }
       if (moveWidgetData) {
         const { moveWidget } = moveWidgetData;
         if (isErrorPayload(moveWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveWidget.message };
-          });
+          addErrorMessage(moveWidget.message);
         }
       }
     }
@@ -229,16 +224,12 @@ export const Group = ({
   useEffect(() => {
     if (!addGroupLoading) {
       if (addGroupError) {
-        setState((prevState) => {
-          return { ...prevState, message: addGroupError.message };
-        });
+        addErrorMessage(addGroupError.message);
       }
       if (addGroupData) {
         const { addGroup } = addGroupData;
         if (isErrorPayload(addGroup)) {
-          setState((prevState) => {
-            return { ...prevState, message: addGroup.message };
-          });
+          addErrorMessage(addGroup.message);
         }
       }
     }
@@ -252,16 +243,12 @@ export const Group = ({
   useEffect(() => {
     if (!deleteGroupLoading) {
       if (deleteGroupError) {
-        setState((prevState) => {
-          return { ...prevState, message: deleteGroupError.message };
-        });
+        addErrorMessage(deleteGroupError.message);
       }
       if (deleteGroupData) {
         const { deleteGroup } = deleteGroupData;
         if (isErrorPayload(deleteGroup)) {
-          setState((prevState) => {
-            return { ...prevState, message: deleteGroup.message };
-          });
+          addErrorMessage(deleteGroup.message);
         }
       }
     }
@@ -275,16 +262,12 @@ export const Group = ({
   useEffect(() => {
     if (!moveGroupLoading) {
       if (moveGroupError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveGroupError.message };
-        });
+        addErrorMessage(moveGroupError.message);
       }
       if (moveGroupData) {
         const { moveGroup } = moveGroupData;
         if (isErrorPayload(moveGroup)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveGroup.message };
-          });
+          addErrorMessage(moveGroup.message);
         }
       }
     }
@@ -325,20 +308,20 @@ export const Group = ({
   };
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
   };
   const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
 
     const id: string = event.dataTransfer.getData('draggedElementId');
     const type: string = event.dataTransfer.getData('draggedElementType');
@@ -384,7 +367,7 @@ export const Group = ({
   };
   const handleDropBottom: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
 
     const id: string = event.dataTransfer.getData('draggedElementId');
     const type: string = event.dataTransfer.getData('draggedElementType');
@@ -430,7 +413,7 @@ export const Group = ({
     setVisibleWidgetIds(group.widgets.map((widget: GQLWidget) => widget.id));
   }, [group]);
 
-  let widgetSelector = undefined;
+  let widgetSelector: JSX.Element | undefined = undefined;
   if (group.displayMode === 'TOGGLEABLE_AREAS') {
     widgetSelector = (
       <ToggleButtonGroup
@@ -530,15 +513,6 @@ export const Group = ({
           </div>
         </div>
       </GroupTooltip>
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
     </div>
   );
 };

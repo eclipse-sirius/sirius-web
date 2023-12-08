@@ -25,18 +25,13 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
     backgroundColor: ({ backgroundColor }) =>
       backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
     color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     '&:hover': {
       backgroundColor: ({ backgroundColor }) =>
         backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
-      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     },
   },
   icon: {
@@ -62,14 +57,14 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
   const [state, setState] = useState<ButtonWidgetState>(initialState);
 
   const props: ButtonStyleProps = {
-    backgroundColor: widget.style?.backgroundColor ?? null,
-    foregroundColor: widget.style?.foregroundColor ?? null,
-    fontSize: widget.style?.fontSize ?? null,
-    italic: widget.style?.italic ?? null,
-    bold: widget.style?.bold ?? null,
-    underline: widget.style?.underline ?? null,
-    strikeThrough: widget.style?.strikeThrough ?? null,
-    iconOnly: state.buttonLabel ? false : true,
+    backgroundColor: widget.style?.backgroundColor ?? undefined,
+    foregroundColor: widget.style?.foregroundColor ?? undefined,
+    fontSize: widget.style?.fontSize ?? undefined,
+    italic: widget.style?.italic ?? undefined,
+    bold: widget.style?.bold ?? undefined,
+    underline: widget.style?.underline ?? undefined,
+    strikeThrough: widget.style?.strikeThrough ?? undefined,
+    iconOnly: !state.buttonLabel,
   };
   const classes = useStyles(props);
 
@@ -85,7 +80,7 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
   };
 
   useEffect(() => {
-    let newURL: string = null;
+    let newURL: string | null = null;
     let validURL: boolean = true;
     if (!widget.imageURL) {
       validURL = false;
@@ -95,9 +90,9 @@ export const ButtonWidget = ({ widget, selection }: ButtonWidgetProps) => {
       newURL = httpOrigin + widget.imageURL;
     }
 
-    const buttonLabel: string = widget.buttonLabel;
-    const isButtonLabelBlank: boolean = buttonLabel == null || buttonLabel.trim() === '';
-    let newButtonLabel: string = null;
+    const buttonLabel: string = widget.buttonLabel ?? '';
+    const isButtonLabelBlank: boolean = buttonLabel.trim() === '';
+    let newButtonLabel: string | null = null;
     if (validURL && isButtonLabelBlank) {
       newButtonLabel = null;
     } else if (!isButtonLabelBlank && !buttonLabel.startsWith('aql:')) {

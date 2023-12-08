@@ -12,13 +12,12 @@
  *******************************************************************************/
 
 import { useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
 import { GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { addToolbarActionMutation, moveToolbarActionMutation } from './FormDescriptionEditorEventFragment';
 import {
   GQLAddToolbarActionInput,
@@ -33,6 +32,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionsProps } from './ToolbarActions.types';
 import { ToolbarActionWidget } from './ToolbarActionWidget';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 
 const useToolbarActionsStyles = makeStyles<Theme>((theme: Theme) => ({
   toolbar: {
@@ -79,7 +79,7 @@ export const ToolbarActions = ({
 }: ToolbarActionsProps) => {
   const classes = useToolbarActionsStyles();
 
-  const [message, setMessage] = useState<string | null>(null);
+  const { addErrorMessage } = useMultiToast();
 
   const [
     addToolbarAction,
@@ -89,12 +89,12 @@ export const ToolbarActions = ({
   useEffect(() => {
     if (!addToolbarActionLoading) {
       if (addToolbarActionError) {
-        setMessage(addToolbarActionError.message);
+        addErrorMessage(addToolbarActionError.message);
       }
       if (addToolbarActionData) {
         const { addToolbarAction } = addToolbarActionData;
         if (isErrorPayload(addToolbarAction)) {
-          setMessage(addToolbarAction.message);
+          addErrorMessage(addToolbarAction.message);
         }
       }
     }
@@ -108,12 +108,12 @@ export const ToolbarActions = ({
   useEffect(() => {
     if (!moveToolbarActionLoading) {
       if (moveToolbarActionError) {
-        setMessage(moveToolbarActionError.message);
+        addErrorMessage(moveToolbarActionError.message);
       }
       if (moveToolbarActionData) {
         const { moveToolbarAction } = moveToolbarActionData;
         if (isErrorPayload(moveToolbarAction)) {
-          setMessage(moveToolbarAction.message);
+          addErrorMessage(moveToolbarAction.message);
         }
       }
     }
@@ -132,19 +132,19 @@ export const ToolbarActions = ({
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
   };
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
 
     const id: string = event.dataTransfer.getData('draggedElementId');
     const type: string = event.dataTransfer.getData('draggedElementType');
@@ -202,7 +202,6 @@ export const ToolbarActions = ({
           </IconButton>
         </Tooltip>
       </div>
-      <Toast message={message} open={!!message} onClose={() => setMessage(null)} />
     </div>
   );
 };

@@ -25,6 +25,5 @@ export interface GroupProps {
 }
 
 export interface GroupState {
-  message: string | null;
   selected: boolean;
 }

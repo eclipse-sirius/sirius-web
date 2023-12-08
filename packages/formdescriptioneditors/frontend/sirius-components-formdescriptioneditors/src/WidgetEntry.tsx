@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast } from '@eclipse-sirius/sirius-components-core';
+import { Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
   GQLChartWidget,
@@ -35,7 +35,7 @@ import {
 import { GQLContainer } from '@eclipse-sirius/sirius-components-forms/src';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BarChartWidget } from './BarChartWidget';
 import { ButtonWidget } from './ButtonWidget';
 import { CheckboxWidget } from './CheckboxWidget';
@@ -68,7 +68,7 @@ import { RichTextWidget } from './RichTextWidget';
 import { SelectWidget } from './SelectWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
-import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
+import { WidgetEntryProps, WidgetEntryStyleProps } from './WidgetEntry.types';
 import { isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
 
 const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>((theme) => ({
@@ -132,11 +132,8 @@ export const WidgetEntry = ({
 }: WidgetEntryProps) => {
   const classes = useWidgetEntryStyles({ flexDirection, flexGrow, kind: widget.__typename });
 
-  const initialState: WidgetEntryState = { message: null };
-  const [state, setState] = useState<WidgetEntryState>(initialState);
-  const { message } = state;
-
   const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+  const { addErrorMessage } = useMultiToast();
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -146,16 +143,12 @@ export const WidgetEntry = ({
   useEffect(() => {
     if (!addWidgetLoading) {
       if (addWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: addWidgetError.message };
-        });
+        addErrorMessage(addWidgetError.message);
       }
       if (addWidgetData) {
         const { addWidget } = addWidgetData;
         if (isErrorPayload(addWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: addWidget.message };
-          });
+          addErrorMessage(addWidget.message);
         }
       }
     }
@@ -167,16 +160,12 @@ export const WidgetEntry = ({
   useEffect(() => {
     if (!deleteWidgetLoading) {
       if (deleteWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: deleteWidgetError.message };
-        });
+        addErrorMessage(deleteWidgetError.message);
       }
       if (deleteWidgetData) {
         const { deleteWidget } = deleteWidgetData;
         if (isErrorPayload(deleteWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: deleteWidget.message };
-          });
+          addErrorMessage(deleteWidget.message);
         }
       }
     }
@@ -190,16 +179,12 @@ export const WidgetEntry = ({
   useEffect(() => {
     if (!moveWidgetLoading) {
       if (moveWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveWidgetError.message };
-        });
+        addErrorMessage(moveWidgetError.message);
       }
       if (moveWidgetData) {
         const { moveWidget } = moveWidgetData;
         if (isErrorPayload(moveWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveWidget.message };
-          });
+          addErrorMessage(moveWidget.message);
         }
       }
     }
@@ -241,19 +226,19 @@ export const WidgetEntry = ({
   };
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
   };
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
     onDropBefore(event, widget);
   };
 
@@ -265,7 +250,7 @@ export const WidgetEntry = ({
       return;
     }
 
-    let children: GQLWidget[] = null;
+    let children: GQLWidget[] = [];
     if (isGroup(container)) {
       children = (container as GQLGroup).widgets;
     } else if (isFlexboxContainer(container)) {
@@ -554,7 +539,6 @@ export const WidgetEntry = ({
           {widgetElement}
         </div>
       </WidgetTooltip>
-      <Toast message={message} open={!!message} onClose={() => setState({ message: null })} />
     </div>
   );
 };

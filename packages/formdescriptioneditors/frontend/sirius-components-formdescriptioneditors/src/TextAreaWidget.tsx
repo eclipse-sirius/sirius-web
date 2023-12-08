@@ -21,11 +21,11 @@ import { TextareaWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
   style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : undefined),
+    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : undefined),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
   selected: {
@@ -40,13 +40,13 @@ const useStyles = makeStyles<Theme, TextfieldStyleProps>((theme) => ({
 
 export const TextAreaWidget = ({ widget, selection }: TextareaWidgetProps) => {
   const props: TextfieldStyleProps = {
-    backgroundColor: widget.style?.backgroundColor ?? null,
-    foregroundColor: widget.style?.foregroundColor ?? null,
-    fontSize: widget.style?.fontSize ?? null,
-    italic: widget.style?.italic ?? null,
-    bold: widget.style?.bold ?? null,
-    underline: widget.style?.underline ?? null,
-    strikeThrough: widget.style?.strikeThrough ?? null,
+    backgroundColor: widget.style?.backgroundColor ?? undefined,
+    foregroundColor: widget.style?.foregroundColor ?? undefined,
+    fontSize: widget.style?.fontSize ?? undefined,
+    italic: widget.style?.italic ?? undefined,
+    bold: widget.style?.bold ?? undefined,
+    underline: widget.style?.underline ?? undefined,
+    strikeThrough: widget.style?.strikeThrough ?? undefined,
   };
   const classes = useStyles(props);
 

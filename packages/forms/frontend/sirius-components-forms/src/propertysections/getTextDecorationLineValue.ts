@@ -10,7 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export const getTextDecorationLineValue = (underline: boolean | null, strikeThrough: boolean | null): string => {
+export const getTextDecorationLineValue = (
+  underline: boolean | null | undefined,
+  strikeThrough: boolean | null | undefined
+): string => {
   let value: string | undefined = null;
   if (underline) {
     if (strikeThrough) {

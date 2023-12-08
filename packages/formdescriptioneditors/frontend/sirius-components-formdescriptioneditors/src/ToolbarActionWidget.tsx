@@ -15,8 +15,8 @@ import {
   Selection,
   ServerContext,
   ServerContextValue,
-  Toast,
   getCSSColor,
+  useMultiToast,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   ButtonStyleProps,
@@ -47,18 +47,13 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
     backgroundColor: ({ backgroundColor }) =>
       backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.light,
     color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     '&:hover': {
       backgroundColor: ({ backgroundColor }) =>
         backgroundColor ? getCSSColor(backgroundColor, theme) : theme.palette.primary.main,
-      color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : 'white'),
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     },
   },
   selected: {
@@ -66,17 +61,12 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
     lineHeight: 1.25,
     backgroundColor: theme.palette.secondary.light,
     color: 'white',
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     '&:hover': {
       backgroundColor: theme.palette.secondary.main,
-      color: 'white',
-      fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-      fontStyle: ({ italic }) => (italic ? 'italic' : null),
-      fontWeight: ({ bold }) => (bold ? 'bold' : null),
-      textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
     },
   },
   toolbarAction: {
@@ -121,24 +111,24 @@ export const ToolbarActionWidget = ({
     buttonLabel: toolbarAction.buttonLabel,
     imageURL: toolbarAction.imageURL,
     validImage: false,
-    message: null,
     selected: false,
   };
   const [state, setState] = useState<ToolbarActionState>(initialState);
 
   const props: ButtonStyleProps = {
-    backgroundColor: toolbarAction.style?.backgroundColor ?? null,
-    foregroundColor: toolbarAction.style?.foregroundColor ?? null,
-    fontSize: toolbarAction.style?.fontSize ?? null,
-    italic: toolbarAction.style?.italic ?? null,
-    bold: toolbarAction.style?.bold ?? null,
-    underline: toolbarAction.style?.underline ?? null,
-    strikeThrough: toolbarAction.style?.strikeThrough ?? null,
-    iconOnly: state.buttonLabel ? false : true,
+    backgroundColor: toolbarAction.style?.backgroundColor ?? undefined,
+    foregroundColor: toolbarAction.style?.foregroundColor ?? undefined,
+    fontSize: toolbarAction.style?.fontSize ?? undefined,
+    italic: toolbarAction.style?.italic ?? undefined,
+    bold: toolbarAction.style?.bold ?? undefined,
+    underline: toolbarAction.style?.underline ?? undefined,
+    strikeThrough: toolbarAction.style?.strikeThrough ?? undefined,
+    iconOnly: !state.buttonLabel,
   };
   const classes = useStyles(props);
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+  const { addErrorMessage } = useMultiToast();
 
   const onErrorLoadingImage = () => {
     setState((prevState) => {
@@ -150,7 +140,7 @@ export const ToolbarActionWidget = ({
   };
 
   useEffect(() => {
-    let newURL: string = null;
+    let newURL: string | null = null;
     let validURL: boolean = true;
     if (!toolbarAction.imageURL) {
       validURL = false;
@@ -160,12 +150,12 @@ export const ToolbarActionWidget = ({
       newURL = httpOrigin + toolbarAction.imageURL;
     }
 
-    const buttonLabel: string = toolbarAction.buttonLabel;
+    const buttonLabel: string | null = toolbarAction.buttonLabel;
     const isButtonLabelBlank: boolean = buttonLabel == null || buttonLabel.trim() === '';
-    let newButtonLabel: string = null;
+    let newButtonLabel: string | null = null;
     if (validURL && isButtonLabelBlank) {
       newButtonLabel = null;
-    } else if (!isButtonLabelBlank && !buttonLabel.startsWith('aql:')) {
+    } else if (!isButtonLabelBlank && !buttonLabel?.startsWith('aql:')) {
       newButtonLabel = buttonLabel;
     } else {
       newButtonLabel = 'Lorem';
@@ -212,22 +202,12 @@ export const ToolbarActionWidget = ({
   useEffect(() => {
     if (!deleteToolbarActionLoading) {
       if (deleteToolbarActionError) {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            message: deleteToolbarActionError.message,
-          };
-        });
+        addErrorMessage(deleteToolbarActionError.message);
       }
       if (deleteToolbarActionData) {
         const { deleteToolbarAction } = deleteToolbarActionData;
         if (isErrorPayload(deleteToolbarAction)) {
-          setState((prevState) => {
-            return {
-              ...prevState,
-              message: deleteToolbarAction.message,
-            };
-          });
+          addErrorMessage(deleteToolbarAction.message);
         }
       }
     }
@@ -241,22 +221,12 @@ export const ToolbarActionWidget = ({
   useEffect(() => {
     if (!moveToolbarActionLoading) {
       if (moveToolbarActionError) {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            message: moveToolbarActionError.message,
-          };
-        });
+        addErrorMessage(moveToolbarActionError.message);
       }
       if (moveToolbarActionData) {
         const { moveToolbarAction } = moveToolbarActionData;
         if (isErrorPayload(moveToolbarAction)) {
-          setState((prevState) => {
-            return {
-              ...prevState,
-              message: moveToolbarAction.message,
-            };
-          });
+          addErrorMessage(moveToolbarAction.message);
         }
       }
     }
@@ -269,19 +239,19 @@ export const ToolbarActionWidget = ({
   };
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<Element>) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<Element>) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<Element>) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
   };
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
     onDropBefore(event, toolbarAction);
   };
   const onDropBefore = (event: React.DragEvent<HTMLDivElement>, toolbarAction: GQLButton) => {
@@ -389,18 +359,6 @@ export const ToolbarActionWidget = ({
           {state.buttonLabel}
         </Button>
       </div>
-      <Toast
-        message={state.message}
-        open={!!state.message}
-        onClose={() =>
-          setState((prevState) => {
-            return {
-              ...prevState,
-              message: null,
-            };
-          })
-        }
-      />
     </div>
   );
 };
