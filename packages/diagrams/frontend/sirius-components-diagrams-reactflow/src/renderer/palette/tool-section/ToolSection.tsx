@@ -65,7 +65,7 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
       <ExpandMoreIcon
         className={classes.arrow}
         style={{ fontSize: 20 }}
-        onClick={() => onExpand(toolSectionExpandId === toolSection.id ? undefined : toolSection.id)}
+        onClick={() => onExpand(toolSectionExpandId === toolSection.id ? null : toolSection.id)}
         data-testid="expand"
       />
     );
@@ -92,7 +92,7 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
       )}
       <Popper open={toolSectionExpandId === toolSection.id} anchorEl={anchorRef.current} transition disablePortal>
         <Paper className={classes.toolList}>
-          <ClickAwayListener onClickAway={() => onExpand(undefined)}>
+          <ClickAwayListener onClickAway={() => onExpand(null)}>
             <div>
               {tools.map((tool) => (
                 <Tool tool={tool} onClick={() => onActiveTool(tool)} key={tool.id} />
