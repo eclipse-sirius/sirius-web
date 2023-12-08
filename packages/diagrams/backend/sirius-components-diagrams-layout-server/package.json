@@ -29,6 +29,6 @@
     "vite": "4.3.9",
     "vite-plugin-electron": "0.11.2",
     "vite-plugin-electron-renderer": "0.14.1",
-    "reactflow": "11.8.1"
+    "reactflow": "11.10.1"
   }
 }
