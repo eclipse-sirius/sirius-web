@@ -14,8 +14,10 @@ package org.eclipse.sirius.components.view.diagram.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -29,6 +31,8 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getTargetElementDescriptions <em>Target
  * Element Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl#getIconURLsExpression <em>Icon UR Ls
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -43,6 +47,26 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @ordered
      */
     protected EList<DiagramElementDescription> targetElementDescriptions;
+
+    /**
+     * The default value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIconURLsExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String ICON_UR_LS_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIconURLsExpression()
+     * @generated
+     * @ordered
+     */
+    protected String iconURLsExpression = ICON_UR_LS_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -82,10 +106,35 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
      * @generated
      */
     @Override
+    public String getIconURLsExpression() {
+        return this.iconURLsExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIconURLsExpression(String newIconURLsExpression) {
+        String oldIconURLsExpression = this.iconURLsExpression;
+        this.iconURLsExpression = newIconURLsExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION, oldIconURLsExpression, this.iconURLsExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS:
                 return this.getTargetElementDescriptions();
+            case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
+                return this.getIconURLsExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -103,6 +152,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
                 this.getTargetElementDescriptions().clear();
                 this.getTargetElementDescriptions().addAll((Collection<? extends DiagramElementDescription>) newValue);
                 return;
+            case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
+                this.setIconURLsExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -118,6 +170,9 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
             case DiagramPackage.EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS:
                 this.getTargetElementDescriptions().clear();
                 return;
+            case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
+                this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -132,8 +187,27 @@ public class EdgeToolImpl extends ToolImpl implements EdgeTool {
         switch (featureID) {
             case DiagramPackage.EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS:
                 return this.targetElementDescriptions != null && !this.targetElementDescriptions.isEmpty();
+            case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
+                return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (this.eIsProxy())
+            return super.toString();
+
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (iconURLsExpression: ");
+        result.append(this.iconURLsExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // EdgeToolImpl

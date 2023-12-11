@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.view.diagram.SelectionDescription;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getSelectionDescription <em>Selection
  * Description</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getIconURLsExpression <em>Icon UR Ls
+ * Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -43,6 +45,26 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @ordered
      */
     protected SelectionDescription selectionDescription;
+
+    /**
+     * The default value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIconURLsExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String ICON_UR_LS_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getIconURLsExpression() <em>Icon UR Ls Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIconURLsExpression()
+     * @generated
+     * @ordered
+     */
+    protected String iconURLsExpression = ICON_UR_LS_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -117,6 +139,29 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @generated
      */
     @Override
+    public String getIconURLsExpression() {
+        return this.iconURLsExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIconURLsExpression(String newIconURLsExpression) {
+        String oldIconURLsExpression = this.iconURLsExpression;
+        this.iconURLsExpression = newIconURLsExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION, oldIconURLsExpression, this.iconURLsExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
@@ -135,6 +180,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
                 return this.getSelectionDescription();
+            case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
+                return this.getIconURLsExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -149,6 +196,9 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
                 this.setSelectionDescription((SelectionDescription) newValue);
+                return;
+            case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
+                this.setIconURLsExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -165,6 +215,9 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
             case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
                 this.setSelectionDescription((SelectionDescription) null);
                 return;
+            case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
+                this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -179,8 +232,27 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL__SELECTION_DESCRIPTION:
                 return this.selectionDescription != null;
+            case DiagramPackage.NODE_TOOL__ICON_UR_LS_EXPRESSION:
+                return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String toString() {
+        if (this.eIsProxy())
+            return super.toString();
+
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (iconURLsExpression: ");
+        result.append(this.iconURLsExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // NodeToolImpl

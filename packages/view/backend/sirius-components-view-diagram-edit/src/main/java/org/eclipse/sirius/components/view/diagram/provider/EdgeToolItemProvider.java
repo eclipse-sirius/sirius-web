@@ -19,6 +19,8 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 
@@ -49,6 +51,7 @@ public class EdgeToolItemProvider extends ToolItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addTargetElementDescriptionsPropertyDescriptor(object);
+            this.addIconURLsExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -64,6 +67,18 @@ public class EdgeToolItemProvider extends ToolItemProvider {
                 this.getString("_UI_EdgeTool_targetElementDescriptions_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeTool_targetElementDescriptions_feature", "_UI_EdgeTool_type"),
                 DiagramPackage.Literals.EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Icon UR Ls Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addIconURLsExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeTool_iconURLsExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeTool_iconURLsExpression_feature", "_UI_EdgeTool_type"),
+                DiagramPackage.Literals.EDGE_TOOL__ICON_UR_LS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -107,6 +122,12 @@ public class EdgeToolItemProvider extends ToolItemProvider {
     @Override
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
+
+        switch (notification.getFeatureID(EdgeTool.class)) {
+            case DiagramPackage.EDGE_TOOL__ICON_UR_LS_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+        }
         super.notifyChanged(notification);
     }
 

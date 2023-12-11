@@ -2091,13 +2091,22 @@ public interface DiagramPackage extends EPackage {
     int EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS = TOOL_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__ICON_UR_LS_EXPRESSION = TOOL_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 1;
+    int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2269,13 +2278,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_TOOL__SELECTION_DESCRIPTION = TOOL_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__ICON_UR_LS_EXPRESSION = TOOL_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 1;
+    int NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3961,6 +3979,18 @@ public interface DiagramPackage extends EPackage {
     EReference getEdgeTool_TargetElementDescriptions();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getIconURLsExpression <em>Icon UR Ls
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon UR Ls Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeTool#getIconURLsExpression()
+     * @see #getEdgeTool()
+     * @generated
+     */
+    EAttribute getEdgeTool_IconURLsExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool
      * <em>Edge Reconnection Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4013,6 +4043,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getNodeTool_SelectionDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeTool#getIconURLsExpression <em>Icon UR Ls
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon UR Ls Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeTool#getIconURLsExpression()
+     * @see #getNodeTool()
+     * @generated
+     */
+    EAttribute getNodeTool_IconURLsExpression();
 
     /**
      * Returns the meta object for class
@@ -5179,6 +5221,14 @@ public interface DiagramPackage extends EPackage {
         EReference EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS = eINSTANCE.getEdgeTool_TargetElementDescriptions();
 
         /**
+         * The meta object literal for the '<em><b>Icon UR Ls Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_TOOL__ICON_UR_LS_EXPRESSION = eINSTANCE.getEdgeTool_IconURLsExpression();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeReconnectionToolImpl <em>Edge Reconnection
          * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5224,6 +5274,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_TOOL__SELECTION_DESCRIPTION = eINSTANCE.getNodeTool_SelectionDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Icon UR Ls Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_TOOL__ICON_UR_LS_EXPRESSION = eINSTANCE.getNodeTool_IconURLsExpression();
 
         /**
          * The meta object literal for the

@@ -155,7 +155,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
             diagramPalette = Palette.newPalette(diagramPaletteId)
                     .tools(toolFinder.findNodeTools(viewDiagramDescription).stream()
                             .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                            .map(this::createDiagramRootNodeTool)
+                            .map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter))
                             .toList())
                     .toolSections(toolFinder.findToolSections(viewDiagramDescription).stream()
                             .map(toolSection -> this.createToolSection(toolSection, variableManager, interpreter))
@@ -171,27 +171,29 @@ public class ViewPaletteProvider implements IPaletteProvider {
         return ToolSection.newToolSection(toolSelectionId)
                 .label(toolSection.getName())
                 .iconURL(List.of())
-                .tools(toolSection.getNodeTools().stream().map(this::createDiagramRootNodeTool).toList())
+                .tools(toolSection.getNodeTools().stream().map(tool -> this.createDiagramRootNodeTool(tool, variableManager, interpreter)).toList())
                 .build();
     }
 
-    private ITool createDiagramRootNodeTool(NodeTool viewNodeTool) {
-        return this.createNodeTool(viewNodeTool, true);
+    private ITool createDiagramRootNodeTool(NodeTool viewNodeTool, VariableManager variableManager, AQLInterpreter interpreter) {
+        return this.createNodeTool(viewNodeTool, true, variableManager, interpreter);
     }
 
-    private ITool createNodeTool(NodeTool viewNodeTool) {
-        return this.createNodeTool(viewNodeTool, false);
+    private ITool createNodeTool(NodeTool viewNodeTool, VariableManager variableManager, AQLInterpreter interpreter) {
+        return this.createNodeTool(viewNodeTool, false, variableManager, interpreter);
     }
 
-    private ITool createNodeTool(NodeTool viewNodeTool, boolean appliesToDiagramRoot) {
+    private ITool createNodeTool(NodeTool viewNodeTool, boolean appliesToDiagramRoot, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolId = this.idProvider.apply(viewNodeTool).toString();
+        List<String> iconURLProvider = this.nodeToolIconURLProvider(viewNodeTool, interpreter, variableManager);
         String selectionDescriptionId = "";
         if (viewNodeTool.getSelectionDescription() != null) {
             selectionDescriptionId = this.objectService.getId(viewNodeTool.getSelectionDescription());
         }
+
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(viewNodeTool.getName())
-                .iconURL(List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON))
+                .iconURL(iconURLProvider)
                 .selectionDescriptionId(selectionDescriptionId)
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
@@ -210,11 +212,11 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 var tools = new ArrayList<ITool>();
                 tools.addAll(toolFinder.findNodeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(this::createNodeTool)
+                        .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                         .toList());
                 tools.addAll(toolFinder.findEdgeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription))
+                        .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
                         .toList());
                 var toolSections = new ArrayList<ToolSection>();
                 toolSections.addAll(toolFinder.findToolSections(viewNodeDescription).stream()
@@ -236,11 +238,11 @@ public class ViewPaletteProvider implements IPaletteProvider {
         var tools = new ArrayList<ITool>();
         tools.addAll(toolSection.getNodeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(this::createNodeTool)
+                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                 .toList());
         tools.addAll(toolSection.getEdgeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription))
+                .map(viewEdgeTools -> this.createEdgeTool(viewEdgeTools, diagramDescription, nodeDescription, variableManager, interpreter))
                 .toList());
 
         return ToolSection.newToolSection(toolSelectionId)
@@ -250,11 +252,13 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    private ITool createEdgeTool(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, NodeDescription nodeDescription) {
+    private ITool createEdgeTool(EdgeTool viewEdgeTool, DiagramDescription diagramDescription, NodeDescription nodeDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolId = this.idProvider.apply(viewEdgeTool).toString();
+        List<String> iconURLProvider = this.edgeToolIconURLProvider(viewEdgeTool, interpreter, variableManager);
+
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(viewEdgeTool.getName())
-                .iconURL(List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON))
+                .iconURL(iconURLProvider)
                 .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                         .sources(List.of(nodeDescription))
                         .targets(viewEdgeTool.getTargetElementDescriptions().stream().filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
@@ -283,7 +287,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                         .toList());
                 toolSections.addAll(extraToolSections);
                 edgePalette = Palette.newPalette(edgePaletteId)
-                        .tools(toolFinder.findNodeTools(viewEdgeDescription).stream().map(this::createNodeTool).toList())
+                        .tools(toolFinder.findNodeTools(viewEdgeDescription).stream().map(tool -> this.createNodeTool(tool, variableManager, interpreter)).toList())
                         .toolSections(toolSections)
                         .build();
 
@@ -300,7 +304,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .iconURL(List.of())
                 .tools(toolSection.getNodeTools().stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(this::createNodeTool)
+                        .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
                         .toList())
                 .build();
     }
@@ -499,5 +503,35 @@ public class ViewPaletteProvider implements IPaletteProvider {
             return result.getStatus().compareTo(Status.WARNING) <= 0 && result.asBoolean().orElse(Boolean.FALSE);
         }
         return true;
+    }
+
+    private List<String> nodeToolIconURLProvider(NodeTool nodeTool, AQLInterpreter interpreter, VariableManager variableManager) {
+        List<String> iconURL = null;
+        String iconURLsExpression = nodeTool.getIconURLsExpression();
+        if (iconURLsExpression == null || iconURLsExpression.isBlank()) {
+            iconURL = List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON);
+        } else {
+            iconURL = this.evaluateListString(interpreter, variableManager, iconURLsExpression);
+        }
+        return iconURL;
+    }
+
+    private List<String> edgeToolIconURLProvider(EdgeTool edgeTool, AQLInterpreter interpreter, VariableManager variableManager) {
+        List<String> iconURL = null;
+        String iconURLsExpression = edgeTool.getIconURLsExpression();
+        if (iconURLsExpression == null || iconURLsExpression.isBlank()) {
+            iconURL = List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON);
+        } else {
+            iconURL = this.evaluateListString(interpreter, variableManager, iconURLsExpression);
+        }
+        return iconURL;
+    }
+
+    private List<String> evaluateListString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
+        List<Object> objects = interpreter.evaluateExpression(variableManager.getVariables(), expression).asObjects().orElse(List.of());
+        return objects.stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .toList();
     }
 }

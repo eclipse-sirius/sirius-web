@@ -23,6 +23,8 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getTargetElementDescriptions <em>Target Element
  * Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getIconURLsExpression <em>Icon UR Ls
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeTool()
@@ -41,5 +43,28 @@ public interface EdgeTool extends Tool {
      * @generated
      */
     EList<DiagramElementDescription> getTargetElementDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Icon UR Ls Expression</em>' attribute.
+     * @see #setIconURLsExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeTool_IconURLsExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getIconURLsExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeTool#getIconURLsExpression <em>Icon
+     * UR Ls Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Icon UR Ls Expression</em>' attribute.
+     * @see #getIconURLsExpression()
+     * @generated
+     */
+    void setIconURLsExpression(String value);
 
 } // EdgeTool
