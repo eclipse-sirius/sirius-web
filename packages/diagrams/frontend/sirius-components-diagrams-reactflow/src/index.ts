@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 export { NodeTypeContext } from './contexts/NodeContext';
-export type { NodeTypeContextValue } from './contexts/NodeContext.types';
+export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
 export type { IConvertEngine, INodeConverterHandler } from './converter/ConvertEngine.types';
 export { convertLabelStyle, convertLineStyle } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';

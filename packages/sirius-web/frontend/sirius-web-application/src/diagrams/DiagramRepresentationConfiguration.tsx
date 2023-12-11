@@ -11,6 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export { SiriusWebApplication } from './application/SiriusWebApplication';
-export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
-export { Views } from './views/Views';
+import { NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { DiagramRepresentationConfigurationProps } from './DiagramRepresentationConfiguration.types';
+
+export const defaultNodeTypeRegistry: NodeTypeContextValue = {
+  nodeConverterHandlers: [],
+  nodeLayoutHandlers: [],
+  graphQLNodeStyleFragments: [],
+  nodeTypeContributions: [],
+};
+
+export const DiagramRepresentationConfiguration = ({}: DiagramRepresentationConfigurationProps) => {
+  return null;
+};
