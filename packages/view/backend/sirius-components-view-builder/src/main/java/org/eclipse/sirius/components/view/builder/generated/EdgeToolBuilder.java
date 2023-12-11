@@ -85,6 +85,16 @@ public class EdgeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for IconURLsExpression.
+     *
+     * @generated
+     */
+    public EdgeToolBuilder iconURLsExpression(java.lang.String value) {
+        this.getEdgeTool().setIconURLsExpression(value);
+        return this;
+    }
+
 
 }
 

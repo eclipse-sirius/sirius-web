@@ -83,5 +83,15 @@ public class NodeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for IconURLsExpression.
+     *
+     * @generated
+     */
+    public NodeToolBuilder iconURLsExpression(java.lang.String value) {
+        this.getNodeTool().setIconURLsExpression(value);
+        return this;
+    }
+
 }
 

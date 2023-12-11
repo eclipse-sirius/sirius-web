@@ -160,6 +160,7 @@
     <genClasses ecoreClass="diagram.ecore#//DropTool"/>
     <genClasses ecoreClass="diagram.ecore#//EdgeTool">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeTool/targetElementDescriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeTool/iconURLsExpression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//EdgeReconnectionTool"/>
     <genClasses ecoreClass="diagram.ecore#//LabelEditTool">
@@ -167,6 +168,7 @@
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//NodeTool">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeTool/selectionDescription"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeTool/iconURLsExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//SourceEdgeEndReconnectionTool"/>
     <genClasses ecoreClass="diagram.ecore#//TargetEdgeEndReconnectionTool"/>
