@@ -12,12 +12,18 @@
  *******************************************************************************/
 import { ApolloProvider } from '@apollo/client';
 import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
 import React, { useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from '../../src/toast/ToastProvider';
 import { createApolloGraphQLClient } from '../ApolloGraphQLClient';
+import {
+  DiagramRepresentationConfiguration,
+  defaultNodeTypeRegistry,
+} from '../diagrams/DiagramRepresentationConfiguration';
+import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepresentationConfiguration.types';
 import { RepresentationContextProvider } from '../representations/RepresentationContextProvider';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
@@ -40,6 +46,7 @@ export const SiriusWebApplication = ({ httpOrigin, wsOrigin, theme, children }: 
   const apolloClient = useMemo(() => createApolloGraphQLClient(httpOrigin, wsOrigin), [httpOrigin, wsOrigin]);
 
   const value: ViewsContextValue = { ...defaultValue };
+  let nodeTypeRegistryValue: NodeTypeContextValue = { ...defaultNodeTypeRegistry };
   React.Children.forEach(children, (child) => {
     if (React.isValidElement(child) && child.type === Views) {
       const { applicationIcon, applicationBarMenu } = child.props as ViewsProps;
@@ -48,6 +55,11 @@ export const SiriusWebApplication = ({ httpOrigin, wsOrigin, theme, children }: 
       }
       if (applicationBarMenu) {
         value.applicationBarMenu = applicationBarMenu;
+      }
+    } else if (React.isValidElement(child) && child.type === DiagramRepresentationConfiguration) {
+      const { nodeTypeRegistry } = child.props as DiagramRepresentationConfigurationProps;
+      if (nodeTypeRegistry) {
+        nodeTypeRegistryValue = nodeTypeRegistry;
       }
     }
   });
@@ -60,11 +72,13 @@ export const SiriusWebApplication = ({ httpOrigin, wsOrigin, theme, children }: 
           <ServerContext.Provider value={{ httpOrigin }}>
             <ToastProvider>
               <RepresentationContextProvider>
-                <ViewsContext.Provider value={value}>
-                  <div style={style}>
-                    <Router />
-                  </div>
-                </ViewsContext.Provider>
+                <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                  <ViewsContext.Provider value={value}>
+                    <div style={style}>
+                      <Router />
+                    </div>
+                  </ViewsContext.Provider>
+                </NodeTypeContext.Provider>
               </RepresentationContextProvider>
             </ToastProvider>
           </ServerContext.Provider>

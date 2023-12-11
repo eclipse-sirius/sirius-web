@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import {
   GQLWidget,
   PropertySectionComponent,
@@ -25,10 +26,17 @@ import {
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
-import { SiriusWebApplication } from '@eclipse-sirius/sirius-web-application';
+import {
+  DiagramRepresentationConfiguration,
+  NodeTypeRegistry,
+  SiriusWebApplication,
+} from '@eclipse-sirius/sirius-web-application';
 import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
+import { EllipseNode } from './nodes/EllipseNode';
+import { EllipseNodeConverterHandler } from './nodes/EllipseNodeConverterHandler';
+import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';
 import { GQLSlider } from './widgets/SliderFragment.types';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
@@ -106,9 +114,23 @@ const propertySectionRegistryValue: PropertySectionContextValue = {
   propertySectionsRegistry,
 };
 
+const nodeTypeRegistry: NodeTypeRegistry = {
+  graphQLNodeStyleFragments: [
+    {
+      type: 'EllipseNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
+  ],
+  nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
+  nodeConverterHandlers: [new EllipseNodeConverterHandler()],
+  nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
+};
+
 ReactDOM.render(
   <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} />
+    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
+      <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
+    </SiriusWebApplication>
   </PropertySectionContext.Provider>,
   document.getElementById('root')
 );
