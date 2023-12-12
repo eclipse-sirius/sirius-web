@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { SelectionEntry, ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import { SelectionEntry, IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { TreeItem as MuiTreeItem } from '@material-ui/lab';
 import TreeView from '@material-ui/lab/TreeView';
-import React, { useContext } from 'react';
+import React from 'react';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import { TreeItemProps, TreePropertySectionProps } from './TreePropertySection.types';
 
@@ -33,7 +33,6 @@ const useTreeItemWidgetStyles = makeStyles((theme) => ({
 
 const TreeItem = ({ node, nodes, setSelection }: TreeItemProps) => {
   const styles = useTreeItemWidgetStyles();
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
     if (node.selectable) {
@@ -47,9 +46,7 @@ const TreeItem = ({ node, nodes, setSelection }: TreeItemProps) => {
   };
   const label = (
     <div className={styles.label} onClick={handleClick}>
-      {node.imageURL ? (
-        <img height="16" width="16" title={node.label} alt={node.label} src={httpOrigin + node.imageURL} />
-      ) : null}
+      <IconOverlay iconURL={node.iconURL} alt={node.label} />
       <Typography>{node.label}</Typography>
     </div>
   );
@@ -81,7 +78,7 @@ export const TreePropertySection = ({
         parentId: null,
         label: 'None',
         kind: 'siriusComponents://unknown',
-        imageURL: null,
+        iconURL: [],
         selectable: false,
       },
     ];

@@ -62,6 +62,7 @@ info: {
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2812[#2812] [trees] Fix an issue that prevents icon to be displayed in treeNodes.
 
 === New Features
 

@@ -391,7 +391,7 @@ export interface GQLTreeNode {
   parentId: string;
   label: string;
   kind: string;
-  imageURL: string;
+  iconURL: string[];
   selectable: Boolean;
 }
 
