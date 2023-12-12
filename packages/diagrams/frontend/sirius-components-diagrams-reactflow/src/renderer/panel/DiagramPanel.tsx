@@ -66,24 +66,42 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
       <Panel position="top-left">
         <Paper>
           {fullscreen ? (
-            <IconButton size="small" onClick={() => onFullscreen(false)}>
+            <IconButton
+              size="small"
+              aria-label="exit full screen mode"
+              title="Exit full screen mode"
+              onClick={() => onFullscreen(false)}>
               <FullscreenExitIcon />
             </IconButton>
           ) : (
-            <IconButton size="small" onClick={() => onFullscreen(true)}>
+            <IconButton
+              size="small"
+              aria-label="toggle full screen mode"
+              title="Toggle full screen mode"
+              onClick={() => onFullscreen(true)}>
               <FullscreenIcon />
             </IconButton>
           )}
-          <IconButton size="small" onClick={handleFitToScreen} data-testid="fit-to-screen">
+          <IconButton
+            size="small"
+            aria-label="fit to screen"
+            title="Fit to screen"
+            onClick={handleFitToScreen}
+            data-testid="fit-to-screen">
             <AspectRatioIcon />
           </IconButton>
-          <IconButton size="small" onClick={handleZoomIn}>
+          <IconButton size="small" aria-label="zoom in" title="Zoom in" onClick={handleZoomIn}>
             <ZoomInIcon />
           </IconButton>
-          <IconButton size="small" onClick={handleZoomOut}>
+          <IconButton size="small" aria-label="zoom out" title="Zoom out" onClick={handleZoomOut}>
             <ZoomOutIcon />
           </IconButton>
-          <IconButton size="small" onClick={handleShare} data-testid="share">
+          <IconButton
+            size="small"
+            aria-label="share diagram"
+            title="Share diagram"
+            onClick={handleShare}
+            data-testid="share">
             <ShareIcon />
           </IconButton>
           <IconButton
@@ -95,11 +113,19 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
             <ImageIcon />
           </IconButton>
           {snapToGrid ? (
-            <IconButton size="small" onClick={() => onSnapToGrid(false)}>
+            <IconButton
+              size="small"
+              aria-label="exit snap to grid mode"
+              title="Exit snap to grid mode"
+              onClick={() => onSnapToGrid(false)}>
               <GridOffIcon />
             </IconButton>
           ) : (
-            <IconButton size="small" onClick={() => onSnapToGrid(true)}>
+            <IconButton
+              size="small"
+              aria-label="toggle snap to grid mode"
+              title="Toggle snap to grid mode"
+              onClick={() => onSnapToGrid(true)}>
               <GridOnIcon />
             </IconButton>
           )}
