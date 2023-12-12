@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -32,5 +32,9 @@ export class Projects {
     cy.getByTestId('projects').contains('tr', name).find('[data-testid="more"]').click();
     cy.getByTestId('delete').click();
     cy.getByTestId('delete-project').click();
+  }
+
+  public goBackToTheHomepage(): void {
+    cy.get('[title="Back to the homepage"]').click();
   }
 }
