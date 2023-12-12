@@ -13,6 +13,7 @@
 
 import { CreateDocumentData } from './support/server/createDocumentCommand.types';
 import { CreateProjectData } from './support/server/createProjectCommand.types';
+import { CreateProjectFromTemplateData } from './support/server/createProjectFromTemplateCommand.types';
 import { DeleteProjectData } from './support/server/deleteProjectCommand.types';
 import { MutationResponse } from './support/server/graphql.types';
 
@@ -25,6 +26,7 @@ declare global {
       findByTestId: (testId: string) => Chainable<JQuery<HTMLElement>>;
 
       createProject: (name: string) => Chainable<Response<MutationResponse<CreateProjectData>>>;
+      createProjectFromTemplate: (name: string) => Chainable<Response<MutationResponse<CreateProjectFromTemplateData>>>;
       deleteProject: (projectId: string) => Chainable<Response<MutationResponse<DeleteProjectData>>>;
 
       createDocument: (

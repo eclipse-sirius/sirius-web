@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CreateDocumentData } from './createDocumentCommand.types';
+import { CreateDocumentData, CreateDocumentVariables } from './createDocumentCommand.types';
 import { MutationResponse } from './graphql.types';
 
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
@@ -26,7 +26,7 @@ Cypress.Commands.add('createDocument', (editingContextId: string, stereotypeDesc
     }
   }
   `;
-  const variables = {
+  const variables: CreateDocumentVariables = {
     input: {
       id: crypto.randomUUID(),
       editingContextId,

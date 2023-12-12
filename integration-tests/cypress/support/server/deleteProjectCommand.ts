@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { DeleteProjectData } from './deleteProjectCommand.types';
+import { DeleteProjectData, DeleteProjectVariables } from './deleteProjectCommand.types';
 import { MutationResponse } from './graphql.types';
 
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
@@ -24,7 +24,8 @@ Cypress.Commands.add('deleteProject', (projectId) => {
       }
     }
     `;
-  const variables = {
+
+  const variables: DeleteProjectVariables = {
     input: {
       id: crypto.randomUUID(),
       projectId,

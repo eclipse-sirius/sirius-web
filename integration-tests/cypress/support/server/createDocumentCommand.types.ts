@@ -11,6 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export interface CreateDocumentVariables {
+  input: CreateDocumentInput;
+}
+
+export interface CreateDocumentInput {
+  id: string;
+  editingContextId: string;
+  stereotypeDescriptionId: string;
+  name: string;
+}
+
 export interface CreateDocumentData {
   createDocument: CreateDocumentPayload;
 }

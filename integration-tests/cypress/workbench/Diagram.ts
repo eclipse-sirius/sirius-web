@@ -16,7 +16,15 @@ export class Diagram {
     return cy.get(`[data-representation-kind="diagram"][data-representation-label="${diagramLabel}"]`);
   }
 
+  public fitToScreen() {
+    cy.getByTestId('fit-to-screen').click();
+  }
+
   public getNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
+  }
+
+  public getPalette(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.getByTestId('Palette');
   }
 }

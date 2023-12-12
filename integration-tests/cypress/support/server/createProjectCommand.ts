@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { CreateProjectData, CreateProjectPayload, CreateProjectSuccessPayload } from './createProjectCommand.types';
+import {
+  CreateProjectData,
+  CreateProjectPayload,
+  CreateProjectSuccessPayload,
+  CreateProjectVariables,
+} from './createProjectCommand.types';
 import { MutationResponse } from './graphql.types';
 
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
@@ -32,7 +37,7 @@ Cypress.Commands.add('createProject', (name) => {
      }
    }
    `;
-  const variables = {
+  const variables: CreateProjectVariables = {
     input: {
       id: crypto.randomUUID(),
       name,

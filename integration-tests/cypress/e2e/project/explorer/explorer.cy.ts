@@ -25,7 +25,7 @@ describe('Explorer', () => {
     beforeEach(() =>
       new Flow().createRobotProject(projectName).then((createdProjectData) => {
         projectId = createdProjectData.projectId;
-        new Project().visit(createdProjectData.projectId);
+        new Project().visit(projectId);
       })
     );
 
@@ -77,7 +77,7 @@ describe('Explorer', () => {
         const explorer = new Explorer();
         explorer.getTreeItemByLabel('robot').click();
         explorer.getTreeItemByLabel('robot').type('renamed-robot{enter}');
-        explorer.getTreeItemByLabel('robot').should('exist');
+        explorer.getTreeItemByLabel('renamed-robot').should('exist');
       });
 
       it('Then we can rename a selected document by start typing (direct edit)', () => {
