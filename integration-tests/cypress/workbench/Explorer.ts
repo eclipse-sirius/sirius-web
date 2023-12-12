@@ -17,7 +17,7 @@ export class Explorer {
   }
 
   public getTreeItemByLabel(treeItemLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
-    return this.getExplorerView().contains('[data-treeitemid]', treeItemLabel);
+    return this.getExplorerView().get(`[data-treeitemlabel="${treeItemLabel}"]`);
   }
 
   public getTreeItems(): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -38,6 +38,33 @@ export class Explorer {
     this.getTreeItemByLabel(treeItemLabel).dblclick();
   }
 
+  public createRootObject(documentTreeItemLabel: string, domain: string, entity: string) {
+    this.getTreeItemByLabel(documentTreeItemLabel).find('button').click();
+    cy.getByTestId('new-object').click();
+
+    cy.getByTestId('create-object').should('not.be.disabled');
+
+    cy.getByTestId('domain').click();
+    cy.getByTestId('domain').get(`[data-value="domain://${domain}"]`).click();
+
+    cy.getByTestId('type').click();
+    cy.getByTestId('type').get(`[data-value="${entity}`).should('exist').click();
+
+    cy.getByTestId('create-object').click();
+  }
+
+  public createObject(objectTreeItemLabel: string, childCreationDescriptionLabel: string) {
+    this.getTreeItemByLabel(objectTreeItemLabel).find('button').click();
+    cy.getByTestId('new-object').click();
+
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription')
+      .get(`[data-value="${childCreationDescriptionLabel}"]`)
+      .should('exist')
+      .click();
+    cy.getByTestId('create-object').click();
+  }
+
   public createRepresentation(
     treeItemLabel: string,
     representationDescriptionName: string,
@@ -55,8 +82,13 @@ export class Explorer {
   public rename(treeItemLabel: string, newName: string): void {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
-    cy.getByTestId('name-edit').should('exist');
+    cy.getByTestId('name-edit');
     cy.getByTestId('name-edit').get('input').should('have.value', treeItemLabel);
     cy.getByTestId('name-edit').type(`${newName}{enter}`);
+  }
+
+  public delete(treeItemLabel: string): void {
+    this.getTreeItemByLabel(treeItemLabel).find('button').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
   }
 }

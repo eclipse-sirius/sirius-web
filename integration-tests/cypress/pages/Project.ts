@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 export class Project {
-  public visit(name: string): Cypress.Chainable<Cypress.AUTWindow> {
-    return cy.visit(`/projects/${name}/edit`);
+  public visit(projectId: string): Cypress.Chainable<Cypress.AUTWindow> {
+    return cy.visit(`/projects/${projectId}/edit`);
   }
 }

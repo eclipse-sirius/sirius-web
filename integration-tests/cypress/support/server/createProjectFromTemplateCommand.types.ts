@@ -11,28 +11,34 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface CreateProjectVariables {
-  input: CreateProjectInput;
-}
+export interface CreateProjectFromTemplateVariables {}
 
-export interface CreateProjectInput {
+export interface CreateProjectFromTemplateInput {
   id: string;
-  name: string;
-  natures: string[];
+  templateId: string;
 }
 
-export interface CreateProjectData {
-  createProject: CreateProjectPayload;
+export interface CreateProjectFromTemplateData {
+  createProjectFromTemplate: CreateProjectFromTemplatePayload;
 }
 
-export interface CreateProjectPayload {
+export interface CreateProjectFromTemplatePayload {
   __typename: string;
 }
 
-export interface CreateProjectSuccessPayload extends CreateProjectPayload {
+export interface CreateProjectFromTemplateSuccessPayload extends CreateProjectFromTemplatePayload {
   project: Project;
+  representationToOpen: Representation;
 }
 
 export interface Project {
   id: string;
+}
+
+export interface Representation {
+  id: string;
+}
+
+export interface ErrorPayload extends CreateProjectFromTemplatePayload {
+  message: string;
 }
