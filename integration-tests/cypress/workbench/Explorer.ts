@@ -66,6 +66,11 @@ export class Explorer {
     cy.getByTestId('create-object').click();
   }
 
+  public select(treeItemLabel: string): void {
+    this.getTreeItemByLabel(treeItemLabel).should('exist');
+    this.getTreeItemByLabel(treeItemLabel).click();
+  }
+
   public createRepresentation(
     treeItemLabel: string,
     representationDescriptionName: string,
