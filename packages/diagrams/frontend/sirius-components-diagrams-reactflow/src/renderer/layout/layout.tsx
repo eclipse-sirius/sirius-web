@@ -22,11 +22,11 @@ import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSub
 import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
+import { FreeFormNode } from '../node/FreeFormNode';
+import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { RectangularNode } from '../node/RectangularNode';
-import { RectangularNodeData } from '../node/RectangularNode.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
@@ -55,7 +55,7 @@ const emptyRectangularNodeProps = {
 };
 
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
-const isRectangularNode = (node: Node<NodeData>): node is Node<RectangularNodeData> => node.type === 'rectangularNode';
+const isRectangularNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'rectangularNode';
 
 export const prepareLayoutArea = (
   diagram: RawDiagram,
@@ -173,7 +173,7 @@ export const prepareLayoutArea = (
     if (hiddenContainer && node) {
       const children: JSX.Element[] = [];
       if (isRectangularNode(node)) {
-        const element = createElement(RectangularNode, {
+        const element = createElement(FreeFormNode, {
           ...emptyRectangularNodeProps,
           id: node.id,
           data: node.data,

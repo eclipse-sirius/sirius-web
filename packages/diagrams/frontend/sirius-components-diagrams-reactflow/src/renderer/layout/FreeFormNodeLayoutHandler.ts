@@ -13,9 +13,8 @@
 
 import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
-import { ImageNodeData } from '../node/ImageNode.types';
+import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition, computePreviousSize } from './bounds';
 import { RawDiagram } from './layout.types';
@@ -36,22 +35,22 @@ import {
 } from './layoutNode';
 import { rectangularNodePadding } from './layoutParams';
 
-export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<RectangularNodeData | ImageNodeData> {
+export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
-    return node.type === 'rectangularNode' || node.type === 'imageNode';
+    return node.type === 'freeFormNode';
   }
 
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData | ImageNodeData, 'rectangularNode' | 'imageNode'>,
+    node: Node<FreeFormNodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
+    const nodeElement = document.getElementById(`${node.id}-freeFormNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
     if (directChildren.length > 0) {
@@ -73,7 +72,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<Rectangular
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData | ImageNodeData, 'rectangularNode' | 'imageNode'>,
+    node: Node<FreeFormNodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -202,7 +201,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<Rectangular
 
   private handleLeafNode(
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData | ImageNodeData, 'rectangularNode' | 'imageNode'>,
+    node: Node<FreeFormNodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceWidth?: number

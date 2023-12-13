@@ -17,7 +17,7 @@ import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { ImageNodeData } from '../renderer/node/ImageNode.types';
+import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
@@ -31,7 +31,7 @@ const toImageNode = (
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<ImageNodeData> => {
+): Node<FreeFormNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -48,7 +48,7 @@ const toImageNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: ImageNodeData = {
+  const data: FreeFormNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
@@ -88,9 +88,9 @@ const toImageNode = (
     };
   }
 
-  const node: Node<ImageNodeData> = {
+  const node: Node<FreeFormNodeData> = {
     id,
-    type: 'imageNode',
+    type: 'freeFormNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,

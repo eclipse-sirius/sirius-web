@@ -22,7 +22,7 @@ import {
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
+import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
 import { convertLineStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
@@ -38,7 +38,7 @@ const toRectangularNode = (
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<RectangularNodeData> => {
+): Node<FreeFormNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -55,7 +55,7 @@ const toRectangularNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: RectangularNodeData = {
+  const data: FreeFormNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
@@ -70,6 +70,7 @@ const toRectangularNode = (
     },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
+    imageURL: null,
     faded: state === GQLViewModifier.Faded,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
@@ -77,6 +78,7 @@ const toRectangularNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     labelEditable,
+    positionDependentRotation: false,
     connectionHandles,
     isNew,
   };
@@ -115,9 +117,9 @@ const toRectangularNode = (
     }
   }
 
-  const node: Node<RectangularNodeData> = {
+  const node: Node<FreeFormNodeData> = {
     id,
-    type: 'rectangularNode',
+    type: 'freeFormNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
