@@ -60,6 +60,7 @@ public class FlowViewBuilder {
                 .color(colorProvider.getColor("transparent"))
                 .borderColor(colorProvider.getColor("transparent"))
                 .labelColor(colorProvider.getColor("Flow_Black"))
+                .borderSize(0)
                 .build();
     }
 

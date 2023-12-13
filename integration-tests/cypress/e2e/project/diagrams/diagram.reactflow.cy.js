@@ -38,8 +38,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('rf__wrapper').should('exist');
     cy.get('.react-flow__edgelabel-renderer').children().should('have.length', 7);
     cy.get('.react-flow__nodes').children().should('have.length', 18);
-    cy.get('.react-flow__node-rectangularNode').should('have.length', 2);
-    cy.get('.react-flow__node-imageNode').should('have.length', 10);
+    cy.get('.react-flow__node-freeFormNode').should('have.length', 12);
     cy.get('.react-flow__node-listNode').should('have.length', 2);
     cy.get('.react-flow__node-iconLabelNode').should('have.length', 4);
   });

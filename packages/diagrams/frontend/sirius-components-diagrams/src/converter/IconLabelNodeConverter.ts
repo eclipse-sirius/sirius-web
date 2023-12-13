@@ -33,7 +33,7 @@ const toIconLabelNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLIconLabelNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean
 ): Node<IconLabelNodeData> => {
   const {
@@ -144,6 +144,8 @@ export class IconLabelNodeConverter implements INodeConverter {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
+    if (nodeDescription) {
+      nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
+    }
   }
 }

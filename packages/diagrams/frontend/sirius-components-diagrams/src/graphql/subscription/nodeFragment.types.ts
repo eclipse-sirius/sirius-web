@@ -80,6 +80,10 @@ export interface GQLRectangularNodeStyle extends GQLNodeStyle {
 
 export interface GQLImageNodeStyle extends GQLNodeStyle {
   imageURL: string;
+  borderColor: string;
+  borderStyle: string;
+  borderSize: string;
+  borderRadius: number;
   positionDependentRotation: boolean;
 }
 

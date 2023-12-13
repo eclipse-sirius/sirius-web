@@ -54,7 +54,7 @@ export interface NodeData {
   outsideLabels: OutsideLabels;
   faded: boolean;
   pinned: boolean;
-  nodeDescription: GQLNodeDescription | undefined;
+  nodeDescription: GQLNodeDescription;
   defaultWidth: number | null;
   defaultHeight: number | null;
   isBorderNode: boolean;

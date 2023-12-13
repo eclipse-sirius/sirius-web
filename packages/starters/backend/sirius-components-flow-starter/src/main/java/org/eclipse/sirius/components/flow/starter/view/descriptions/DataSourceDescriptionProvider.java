@@ -56,7 +56,6 @@ public class DataSourceDescriptionProvider implements INodeDescriptionProvider {
 
     @Override
     public NodeDescription create() {
-
         return this.diagramBuilderHelper.newNodeDescription()
                 .name(NAME)
                 .domainType("flow::DataSource")

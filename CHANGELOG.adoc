@@ -104,6 +104,7 @@ In read-only mode, the palette can not be displayed, some of the panel action ar
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Simplify the contribution of views in the workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/3066[#3066] [core] The core object-related services now can also find/resolve representations.
 - [portal] Use MUI tooltips for Portal toolbar elements
+- https://github.com/eclipse-sirius/sirius-web/issues/2480[#2480] [diagram] Merge the rectangle node and the image node into FreeFormNode.
 
 == v2024.1.0
 
@@ -258,7 +259,7 @@ The size of nodes that do not have been resized manually tries to fit the node d
 - https://github.com/eclipse-sirius/sirius-web/issues/2644[#2644] [diagram] Highlight nodes on hover in React Flow diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2766[#2766] [tree] Tree representations (including the explorer) now support dragging any kind of element (not just semantic elements).
 It is the responsibility of the drop targets (e.g. a diagram) to validate the dropped element(s) type and ignore the one it does not support.
-- https://github.com/eclipse-sirius/sirius-web/issues/2772[#2772] Improve performance of the Palette
+- https://github.com/eclipse-sirius/sirius-web/issues/2772[#2772] [diagram] Improve the Palette performance.
 - https://github.com/eclipse-sirius/sirius-web/issues/2679[#2679] [diagram] When editing a label, place input element closer to the label's location (centered).
 - https://github.com/eclipse-sirius/sirius-web/issues/2804[#2804] [sirius-web] Add the ability to declare custom nodes while using the `sirius-web-application` frontend package.
 - https://github.com/eclipse-sirius/sirius-web/issues/2718[#2718] Replacing useNodes and useEdges by useReactFlow to improve performances.
