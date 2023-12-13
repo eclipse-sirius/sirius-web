@@ -66,6 +66,17 @@ const computeBorderRotation = (data: ImageNodeData): string | undefined => {
   return undefined;
 };
 
+const outsideBottomLabelAreaStyle = (): React.CSSProperties => {
+  return {
+    display: 'grid',
+    gridTemplateColumns: `1fr 1fr 1fr`,
+    gridTemplateRows: `min-content`,
+    gridTemplateAreas: `
+    'BOTTOM_BEGIN   BOTTOM_MIDDLE   BOTTOM_END'
+    `,
+  };
+};
+
 export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>) => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const theme = useTheme();
@@ -75,6 +86,16 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
   const rotation = computeBorderRotation(data);
 
   useRefreshConnectionHandles(id, data.connectionHandles);
+
+  const outsideBottomlabels: JSX.Element[] = [];
+  if (data.outsideLabels.BOTTOM_MIDDLE) {
+    const outsideLabel = data.outsideLabels.BOTTOM_MIDDLE;
+    outsideBottomlabels.push(
+      <div style={{ gridArea: 'BOTTOM_MIDDLE' }} key={outsideLabel.id}>
+        <Label diagramElementId={id} label={outsideLabel} faded={data.faded} transform="" />
+      </div>
+    );
+  }
   return (
     <>
       <NodeResizer
@@ -83,24 +104,27 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
         shouldResize={() => !data.isBorderNode}
         keepAspectRatio={data.nodeDescription?.keepAspectRatio}
       />
-      <img
-        src={httpOrigin + data.imageURL}
+      <div
         style={{
           ...imageNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
+          backgroundImage: `url(${httpOrigin + data.imageURL})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '100% 100%',
         }}
-        data-testid={`Image - ${data?.targetObjectLabel}`}
-      />
-      {data.insideLabel ? (
-        <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
-      ) : null}
-      {selected ? (
-        <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
-      ) : null}
-      {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-      <ConnectionTargetHandle nodeId={id} />
-      <ConnectionHandles connectionHandles={data.connectionHandles} />
+        data-testid={`Image - ${data?.targetObjectLabel}`}>
+        {data.insideLabel ? (
+          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+        ) : null}
+        {selected ? (
+          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+        ) : null}
+        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+        <ConnectionTargetHandle nodeId={id} />
+        <ConnectionHandles connectionHandles={data.connectionHandles} />
+      </div>
+      <div style={{ ...outsideBottomLabelAreaStyle() }}>{outsideBottomlabels}</div>
     </>
   );
 });

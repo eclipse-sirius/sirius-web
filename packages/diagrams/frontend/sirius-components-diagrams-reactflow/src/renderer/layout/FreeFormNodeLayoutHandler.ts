@@ -13,6 +13,7 @@
 
 import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
+import { ImageNodeData } from '../node/ImageNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
@@ -35,15 +36,15 @@ import {
 } from './layoutNode';
 import { rectangularNodePadding } from './layoutParams';
 
-export class RectangleNodeLayoutHandler implements INodeLayoutHandler<RectangularNodeData> {
+export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<RectangularNodeData | ImageNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
-    return node.type === 'rectangularNode';
+    return node.type === 'rectangularNode' || node.type === 'imageNode';
   }
 
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData, 'rectangularNode'>,
+    node: Node<RectangularNodeData | ImageNodeData, 'rectangularNode' | 'imageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -72,7 +73,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData, 'rectangularNode'>,
+    node: Node<RectangularNodeData | ImageNodeData, 'rectangularNode' | 'imageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -201,7 +202,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
   private handleLeafNode(
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData, 'rectangularNode'>,
+    node: Node<RectangularNodeData | ImageNodeData, 'rectangularNode' | 'imageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceWidth?: number

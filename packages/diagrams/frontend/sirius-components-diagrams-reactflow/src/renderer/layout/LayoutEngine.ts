@@ -14,18 +14,16 @@
 import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { FreeFormNodeLayoutHandler } from './FreeFormNodeLayoutHandler';
 import { IconLabelNodeLayoutHandler } from './IconLabelNodeLayoutHandler';
-import { ImageNodeLayoutHandler } from './ImageNodeLayoutHandler';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
-import { RectangleNodeLayoutHandler } from './RectangleNodeLayoutHandler';
 import { RawDiagram } from './layout.types';
 
 export class LayoutEngine implements ILayoutEngine {
   nodeLayoutHandlers: INodeLayoutHandler<NodeData>[] = [
-    new RectangleNodeLayoutHandler(),
+    new FreeFormNodeLayoutHandler(),
     new ListNodeLayoutHandler(),
-    new ImageNodeLayoutHandler(),
     new IconLabelNodeLayoutHandler(),
   ];
 

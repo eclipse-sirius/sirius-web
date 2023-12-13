@@ -19,7 +19,6 @@ import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ImageNodeData } from '../renderer/node/ImageNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
@@ -71,34 +70,22 @@ const toImageNode = (
   };
 
   if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      iconURL: labelStyle.iconURL,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
+    const {
+      id,
+      text,
+      style: labelStyle,
+      style: { iconURL },
+    } = insideLabel;
+    data.outsideLabels = {
+      BOTTOM_MIDDLE: {
+        id,
+        text,
+        iconURL,
+        style: {
+          ...convertLabelStyle(labelStyle),
+        },
       },
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      if (alignement.primaryAlignment === 'TOP') {
-        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-      }
-      if (alignement.secondaryAlignment === 'CENTER') {
-        data.style = { ...data.style, alignItems: 'stretch' };
-        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-      }
-    }
   }
 
   const node: Node<ImageNodeData> = {
