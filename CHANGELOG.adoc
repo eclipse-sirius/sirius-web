@@ -57,7 +57,7 @@ info: {
 
 === Dependency update
 
-- [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.10
+- [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.12
 
 
 === Bug fixes
