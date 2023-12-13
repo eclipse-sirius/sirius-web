@@ -40,7 +40,7 @@ const toListNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
 ): Node<ListNodeData> => {
@@ -208,7 +208,9 @@ export class ListNodeConverter implements INodeConverter {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    if (nodeDescription) {
+      nodes.push(toListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
       (nodeDescriptionId) =>

@@ -53,7 +53,6 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
 
     @Override
     public NodeDescription create() {
-
         return this.diagramBuilderHelper.newNodeDescription()
                 .name(NAME)
                 .domainType("flow::Fan")

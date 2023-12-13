@@ -13,7 +13,7 @@
 
 import { NodeData } from '../DiagramRenderer.types';
 
-export interface ImageNodeData extends NodeData {
-  imageURL: string;
+export interface FreeFormNodeData extends NodeData {
+  imageURL: string | null;
   positionDependentRotation: boolean;
 }

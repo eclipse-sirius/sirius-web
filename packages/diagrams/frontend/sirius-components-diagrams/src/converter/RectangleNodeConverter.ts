@@ -22,7 +22,7 @@ import {
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
+import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle } from './convertDiagram';
@@ -36,10 +36,10 @@ const toRectangularNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<RectangularNodeData> => {
+): Node<FreeFormNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -61,7 +61,7 @@ const toRectangularNode = (
   const isNew = gqlNodeLayoutData === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
-  const data: RectangularNodeData = {
+  const data: FreeFormNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
@@ -76,6 +76,7 @@ const toRectangularNode = (
     },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
+    imageURL: null,
     faded: state === GQLViewModifier.Faded,
     pinned,
     nodeDescription,
@@ -84,6 +85,7 @@ const toRectangularNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     labelEditable,
+    positionDependentRotation: false,
     connectionHandles,
     isNew,
     resizedByUser,
@@ -123,9 +125,9 @@ const toRectangularNode = (
     }
   }
 
-  const node: Node<RectangularNodeData> = {
+  const node: Node<FreeFormNodeData> = {
     id,
-    type: 'rectangularNode',
+    type: 'freeFormNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
@@ -171,7 +173,9 @@ export class RectangleNodeConverter implements INodeConverter {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toRectangularNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    if (nodeDescription) {
+      nodes.push(toRectangularNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
       (nodeDescriptionId) =>
