@@ -62,6 +62,11 @@ export const formDescriptionEditorEventSubscription = (contributions: WidgetCont
     flexDirection
     flexWrap
     flexGrow
+    justifyContent
+    alignItems
+    margin
+    padding
+    gap
     borderStyle {
       color
       lineStyle

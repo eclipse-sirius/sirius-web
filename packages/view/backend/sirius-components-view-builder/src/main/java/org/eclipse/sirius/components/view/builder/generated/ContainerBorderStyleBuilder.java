@@ -22,14 +22,12 @@ public class ContainerBorderStyleBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.form.ContainerBorderStyle.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.form.ContainerBorderStyle containerBorderStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createContainerBorderStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.ContainerBorderStyle.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.form.ContainerBorderStyle getContainerBorderStyle() {
@@ -38,7 +36,6 @@ public class ContainerBorderStyleBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.ContainerBorderStyle.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.form.ContainerBorderStyle build() {
@@ -72,7 +69,6 @@ public class ContainerBorderStyleBuilder {
         this.getContainerBorderStyle().setBorderSize(value);
         return this;
     }
-
     /**
      * Setter for BorderLineStyle.
      *

@@ -20,6 +20,8 @@ import java.util.function.Function;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.ContainerBorderStyle;
 import org.eclipse.sirius.components.forms.FlexDirection;
+import org.eclipse.sirius.components.forms.FlexboxAlignItems;
+import org.eclipse.sirius.components.forms.FlexboxJustifyContent;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -40,8 +42,22 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
 
     private Function<VariableManager, ContainerBorderStyle> borderStyleProvider;
 
+    private String margin;
+
+    private String padding;
+
+    private String gap;
+
+    private FlexboxJustifyContent justifyContent;
+
+    private FlexboxAlignItems alignItems;
+
     private FlexboxContainerDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newFlexboxContainerDescription(String id) {
+        return new Builder(id);
     }
 
     public Function<VariableManager, String> getIdProvider() {
@@ -64,8 +80,24 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
         return this.borderStyleProvider;
     }
 
-    public static Builder newFlexboxContainerDescription(String id) {
-        return new Builder(id);
+    public String getMargin() {
+        return this.margin;
+    }
+
+    public String getPadding() {
+        return this.padding;
+    }
+
+    public String getGap() {
+        return this.gap;
+    }
+
+    public FlexboxJustifyContent getJustifyContent() {
+        return this.justifyContent;
+    }
+
+    public FlexboxAlignItems getAlignItems() {
+        return this.alignItems;
     }
 
     @Override
@@ -82,7 +114,7 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String id;
+        private final String id;
 
         private Function<VariableManager, String> idProvider;
 
@@ -105,6 +137,16 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
         private Function<VariableManager, String> helpTextProvider;
 
         private Function<VariableManager, ContainerBorderStyle> borderStyleProvider = variableManager -> null;
+
+        private String margin;
+
+        private String padding;
+
+        private String gap;
+
+        private FlexboxJustifyContent justifyContent;
+
+        private FlexboxAlignItems alignItems;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -165,6 +207,31 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
             return this;
         }
 
+        public Builder margin(String margin) {
+            this.margin = Objects.requireNonNull(margin);
+            return this;
+        }
+
+        public Builder padding(String padding) {
+            this.padding = Objects.requireNonNull(padding);
+            return this;
+        }
+
+        public Builder gap(String gap) {
+            this.gap = Objects.requireNonNull(gap);
+            return this;
+        }
+
+        public Builder justifyContent(FlexboxJustifyContent flexboxJustifyContent) {
+            this.justifyContent = Objects.requireNonNull(flexboxJustifyContent);
+            return this;
+        }
+
+        public Builder alignItems(FlexboxAlignItems flexboxAlignItems) {
+            this.alignItems = Objects.requireNonNull(flexboxAlignItems);
+            return this;
+        }
+
         public FlexboxContainerDescription build() {
             FlexboxContainerDescription flexboxContainerDescription = new FlexboxContainerDescription();
             flexboxContainerDescription.id = Objects.requireNonNull(this.id);
@@ -179,6 +246,11 @@ public final class FlexboxContainerDescription extends AbstractWidgetDescription
             flexboxContainerDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             flexboxContainerDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             flexboxContainerDescription.borderStyleProvider = Objects.requireNonNull(this.borderStyleProvider);
+            flexboxContainerDescription.margin = this.margin; // Optional on purpose
+            flexboxContainerDescription.padding = this.padding; // Optional on purpose
+            flexboxContainerDescription.gap = this.gap; // Optional on purpose
+            flexboxContainerDescription.justifyContent = Objects.requireNonNull(this.justifyContent);
+            flexboxContainerDescription.alignItems = Objects.requireNonNull(this.alignItems);
             return flexboxContainerDescription;
         }
 

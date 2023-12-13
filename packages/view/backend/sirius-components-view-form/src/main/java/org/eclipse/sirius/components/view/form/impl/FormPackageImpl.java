@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.form.AlignItems;
 import org.eclipse.sirius.components.view.form.BarChartDescription;
 import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
@@ -51,6 +52,7 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.ImageDescription;
+import org.eclipse.sirius.components.view.form.JustifyContent;
 import org.eclipse.sirius.components.view.form.LabelDescription;
 import org.eclipse.sirius.components.view.form.LabelDescriptionStyle;
 import org.eclipse.sirius.components.view.form.LabelPlacement;
@@ -451,6 +453,20 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EEnum containerBorderLineStyleEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum justifyContentEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum alignItemsEEnum = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -1024,6 +1040,56 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EReference getFlexboxContainerDescription_ConditionalBorderStyles() {
         return (EReference) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFlexboxContainerDescription_FlexboxJustifyContent() {
+        return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFlexboxContainerDescription_FlexboxAlignItems() {
+        return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFlexboxContainerDescription_Margin() {
+        return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFlexboxContainerDescription_Padding() {
+        return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getFlexboxContainerDescription_Gap() {
+        return (EAttribute) this.flexboxContainerDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -2312,6 +2378,26 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EEnum getJustifyContent() {
+        return this.justifyContentEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EEnum getAlignItems() {
+        return this.alignItemsEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public FormFactory getFormFactory() {
         return (FormFactory) this.getEFactoryInstance();
     }
@@ -2394,6 +2480,11 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION);
         this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE);
         this.createEReference(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
+        this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_JUSTIFY_CONTENT);
+        this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_ALIGN_ITEMS);
+        this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__MARGIN);
+        this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__PADDING);
+        this.createEAttribute(this.flexboxContainerDescriptionEClass, FLEXBOX_CONTAINER_DESCRIPTION__GAP);
 
         this.imageDescriptionEClass = this.createEClass(IMAGE_DESCRIPTION);
         this.createEAttribute(this.imageDescriptionEClass, IMAGE_DESCRIPTION__URL_EXPRESSION);
@@ -2564,6 +2655,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.groupDisplayModeEEnum = this.createEEnum(GROUP_DISPLAY_MODE);
         this.labelPlacementEEnum = this.createEEnum(LABEL_PLACEMENT);
         this.containerBorderLineStyleEEnum = this.createEEnum(CONTAINER_BORDER_LINE_STYLE);
+        this.justifyContentEEnum = this.createEEnum(JUSTIFY_CONTENT);
+        this.alignItemsEEnum = this.createEEnum(ALIGN_ITEMS);
     }
 
     /**
@@ -2768,6 +2861,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getFlexboxContainerDescription_ConditionalBorderStyles(), this.getConditionalContainerBorderStyle(), null, "conditionalBorderStyles", null, 0, -1,
                 FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFlexboxContainerDescription_FlexboxJustifyContent(), this.getJustifyContent(), "flexboxJustifyContent", null, 0, 1, FlexboxContainerDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFlexboxContainerDescription_FlexboxAlignItems(), this.getAlignItems(), "flexboxAlignItems", null, 0, 1, FlexboxContainerDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFlexboxContainerDescription_Margin(), this.ecorePackage.getEString(), "margin", null, 0, 1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFlexboxContainerDescription_Padding(), this.ecorePackage.getEString(), "padding", null, 0, 1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getFlexboxContainerDescription_Gap(), this.ecorePackage.getEString(), "gap", null, 0, 1, FlexboxContainerDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.imageDescriptionEClass, ImageDescription.class, "ImageDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getImageDescription_UrlExpression(), theViewPackage.getInterpretedExpression(), "urlExpression", null, 0, 1, ImageDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -3048,6 +3151,31 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.SOLID);
         this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.DASHED);
         this.addEEnumLiteral(this.containerBorderLineStyleEEnum, ContainerBorderLineStyle.DOTTED);
+
+        this.initEEnum(this.justifyContentEEnum, JustifyContent.class, "JustifyContent");
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.STRETCH);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.START);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.CENTER);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.END);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.FLEX_START);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.FLEX_END);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.LEFT);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.RIGHT);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.NORMAL);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.SPACE_BETWEEN);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.SPACE_AROUND);
+        this.addEEnumLiteral(this.justifyContentEEnum, JustifyContent.SPACE_EVENLY);
+
+        this.initEEnum(this.alignItemsEEnum, AlignItems.class, "AlignItems");
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.STRETCH);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.NORMAL);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.FLEX_START);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.FLEX_END);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.CENTER);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.START);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.END);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.SELF_START);
+        this.addEEnumLiteral(this.alignItemsEEnum, AlignItems.SELF_END);
 
         // Create resource
         this.createResource(eNS_URI);

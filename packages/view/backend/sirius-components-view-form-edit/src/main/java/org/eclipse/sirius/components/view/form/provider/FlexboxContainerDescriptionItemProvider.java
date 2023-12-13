@@ -69,6 +69,11 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
 
             this.addFlexDirectionPropertyDescriptor(object);
             this.addIsEnabledExpressionPropertyDescriptor(object);
+            this.addFlexboxJustifyContentPropertyDescriptor(object);
+            this.addFlexboxAlignItemsPropertyDescriptor(object);
+            this.addMarginPropertyDescriptor(object);
+            this.addPaddingPropertyDescriptor(object);
+            this.addGapPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -96,6 +101,68 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
                 this.getString("_UI_FlexboxContainerDescription_IsEnabledExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_IsEnabledExpression_feature", "_UI_FlexboxContainerDescription_type"),
                 FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Flexbox Justify Content feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFlexboxJustifyContentPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FlexboxContainerDescription_flexboxJustifyContent_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_flexboxJustifyContent_feature", "_UI_FlexboxContainerDescription_type"),
+                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_JUSTIFY_CONTENT, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Flexbox Align Items feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addFlexboxAlignItemsPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FlexboxContainerDescription_flexboxAlignItems_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_flexboxAlignItems_feature", "_UI_FlexboxContainerDescription_type"),
+                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_ALIGN_ITEMS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Margin feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addMarginPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FlexboxContainerDescription_margin_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_margin_feature", "_UI_FlexboxContainerDescription_type"),
+                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__MARGIN, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Padding feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPaddingPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FlexboxContainerDescription_padding_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_padding_feature", "_UI_FlexboxContainerDescription_type"),
+                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__PADDING, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Gap feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addGapPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_FlexboxContainerDescription_gap_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_gap_feature", "_UI_FlexboxContainerDescription_type"),
+                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__GAP, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -178,6 +245,11 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         switch (notification.getFeatureID(FlexboxContainerDescription.class)) {
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_JUSTIFY_CONTENT:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEXBOX_ALIGN_ITEMS:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__MARGIN:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__PADDING:
+            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__GAP:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:

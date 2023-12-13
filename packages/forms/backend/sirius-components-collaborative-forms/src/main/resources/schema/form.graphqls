@@ -356,6 +356,11 @@ type FlexboxContainer implements Widget {
   flexGrow: Int!
   children: [Widget!]!
   borderStyle: ContainerBorderStyle
+  alignItems: String!
+  justifyContent: String!
+  margin: String
+  padding: String
+  gap: String
 }
 
 type TreeWidget implements Widget {

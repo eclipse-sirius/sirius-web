@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLFlexDirection, GQLFlexWrap } from '@eclipse-sirius/sirius-components-forms';
+import {
+  GQLFlexboxAlignItems,
+  GQLFlexboxJustifyContent,
+  GQLFlexDirection,
+  GQLFlexWrap,
+} from '@eclipse-sirius/sirius-components-forms';
 import { GQLContainerBorderStyle } from '@eclipse-sirius/sirius-components-forms/src';
 
 export interface FlexboxContainerWidgetState {
@@ -23,4 +28,9 @@ export interface FlexboxContainerWidgetStyleProps {
   flexDirection: GQLFlexDirection;
   flexWrap: GQLFlexWrap;
   borderStyle: GQLContainerBorderStyle | null;
+  justifyContent: GQLFlexboxJustifyContent;
+  alignItems: GQLFlexboxAlignItems;
+  margin: string | null;
+  padding: string | null;
+  gap: string | null;
 }

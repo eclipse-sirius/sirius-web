@@ -74,7 +74,9 @@ public class FormDescriptionEditorFlexboxContainerComponent implements IComponen
         var flexboxContainerElementPropsBuilder = FlexboxContainerElementProps.newFlexboxContainerElementProps(id)
                 .label(label)
                 .flexDirection(flexdirection)
-                .children(childrenWidgets);
+                .children(childrenWidgets)
+                .alignItems(flexboxContainerDescription.getAlignItems())
+                .justifyContent(flexboxContainerDescription.getJustifyContent());
         if (readOnly != null) {
             flexboxContainerElementPropsBuilder.readOnly(readOnly);
         }
@@ -85,6 +87,15 @@ public class FormDescriptionEditorFlexboxContainerComponent implements IComponen
 
         if (flexboxContainerDescription.getHelpTextProvider() != null) {
             flexboxContainerElementPropsBuilder.helpTextProvider(() -> flexboxContainerDescription.getHelpTextProvider().apply(variableManager));
+        }
+        if (flexboxContainerDescription.getGap() != null) {
+            flexboxContainerElementPropsBuilder.gap(flexboxContainerDescription.getGap());
+        }
+        if (flexboxContainerDescription.getMargin() != null) {
+            flexboxContainerElementPropsBuilder.margin(flexboxContainerDescription.getMargin());
+        }
+        if (flexboxContainerDescription.getPadding() != null) {
+            flexboxContainerElementPropsBuilder.padding(flexboxContainerDescription.getPadding());
         }
 
         Element flexboxContainerElement = new Element(FlexboxContainerElementProps.TYPE, flexboxContainerElementPropsBuilder.build());

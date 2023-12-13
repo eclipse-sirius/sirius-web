@@ -22,6 +22,31 @@
     <eLiterals name="Dashed" value="1"/>
     <eLiterals name="Dotted" value="2"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JustifyContent">
+    <eLiterals name="stretch"/>
+    <eLiterals name="start" value="1"/>
+    <eLiterals name="center" value="2"/>
+    <eLiterals name="end" value="3"/>
+    <eLiterals name="flexStart" value="4"/>
+    <eLiterals name="flexEnd" value="5"/>
+    <eLiterals name="left" value="6"/>
+    <eLiterals name="right" value="7"/>
+    <eLiterals name="normal" value="8"/>
+    <eLiterals name="spaceBetween" value="9"/>
+    <eLiterals name="spaceAround" value="10"/>
+    <eLiterals name="spaceEvenly" value="11"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AlignItems">
+    <eLiterals name="stretch"/>
+    <eLiterals name="normal" value="1"/>
+    <eLiterals name="flexStart" value="2"/>
+    <eLiterals name="flexEnd" value="3"/>
+    <eLiterals name="center" value="4"/>
+    <eLiterals name="start" value="5"/>
+    <eLiterals name="end" value="6"/>
+    <eLiterals name="selfStart" value="7"/>
+    <eLiterals name="selfEnd" value="8"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pages" upperBound="-1"
         eType="#//PageDescription" containment="true"/>
@@ -112,6 +137,11 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalBorderStyles"
         upperBound="-1" eType="#//ConditionalContainerBorderStyle" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexboxJustifyContent" eType="#//JustifyContent"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="flexboxAlignItems" eType="#//AlignItems"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="margin" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="padding" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gap" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ImageDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="urlExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>

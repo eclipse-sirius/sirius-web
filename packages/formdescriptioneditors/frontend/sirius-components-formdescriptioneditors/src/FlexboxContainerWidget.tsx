@@ -17,8 +17,8 @@ import {
   PropertySectionContext,
   PropertySectionContextValue,
 } from '@eclipse-sirius/sirius-components-forms';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlexboxContainerWidgetState, FlexboxContainerWidgetStyleProps } from './FlexboxContainerWidget.types';
@@ -46,17 +46,20 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
     color: theme.palette.primary.main,
   },
   containerAndLabel: {
-    margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
-    padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
     borderWidth: ({ borderStyle }) => borderStyle?.size || 1,
     borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'gray',
     borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
     borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
+    margin: ({ margin }) => margin || null,
+    padding: ({ padding }) => padding || null,
   },
   container: {
     display: 'flex',
     flexWrap: ({ flexWrap }) => flexWrap,
     flexDirection: ({ flexDirection }) => flexDirection,
+    gap: ({ gap }) => gap || null,
+    alignItems: ({ alignItems }) => alignItems,
+    justifyContent: ({ justifyContent }) => justifyContent,
     '& > *': {
       marginBottom: theme.spacing(0),
     },
@@ -98,6 +101,11 @@ export const FlexboxContainerWidget = ({
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
     borderStyle: widget.borderStyle,
+    justifyContent: widget.justifyContent,
+    alignItems: widget.alignItems,
+    margin: widget.margin,
+    padding: widget.padding,
+    gap: widget.gap,
   });
 
   const initialState: FlexboxContainerWidgetState = { message: null, selected: false };

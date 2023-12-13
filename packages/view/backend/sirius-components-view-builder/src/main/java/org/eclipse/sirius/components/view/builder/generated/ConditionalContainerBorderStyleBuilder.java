@@ -22,14 +22,12 @@ public class ConditionalContainerBorderStyleBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle conditionalContainerBorderStyle = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createConditionalContainerBorderStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle getConditionalContainerBorderStyle() {
@@ -38,7 +36,6 @@ public class ConditionalContainerBorderStyleBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle build() {
@@ -81,7 +78,6 @@ public class ConditionalContainerBorderStyleBuilder {
         this.getConditionalContainerBorderStyle().setBorderSize(value);
         return this;
     }
-
     /**
      * Setter for BorderLineStyle.
      *

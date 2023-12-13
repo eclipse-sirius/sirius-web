@@ -38,6 +38,16 @@ public final class FlexboxContainer extends AbstractWidget {
 
     private ContainerBorderStyle borderStyle;
 
+    private String margin;
+
+    private String padding;
+
+    private String gap;
+
+    private String justifyContent;
+
+    private String alignItems;
+
     private FlexboxContainer() {
         // Prevent instantiation
     }
@@ -64,6 +74,26 @@ public final class FlexboxContainer extends AbstractWidget {
 
     public ContainerBorderStyle getBorderStyle() {
         return this.borderStyle;
+    }
+
+    public String getMargin() {
+        return this.margin;
+    }
+
+    public String getPadding() {
+        return this.padding;
+    }
+
+    public String getGap() {
+        return this.gap;
+    }
+
+    public String getJustifyContent() {
+        return this.justifyContent;
+    }
+
+    public String getAlignItems() {
+        return this.alignItems;
     }
 
     @Override
@@ -101,6 +131,16 @@ public final class FlexboxContainer extends AbstractWidget {
         private boolean readOnly;
 
         private ContainerBorderStyle borderStyle;
+
+        private String margin;
+
+        private String padding;
+
+        private String gap;
+
+        private String justifyContent;
+
+        private String alignItems;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -156,6 +196,31 @@ public final class FlexboxContainer extends AbstractWidget {
             return this;
         }
 
+        public Builder margin(String margin) {
+            this.margin = Objects.requireNonNull(margin);
+            return this;
+        }
+
+        public Builder padding(String padding) {
+            this.padding = Objects.requireNonNull(padding);
+            return this;
+        }
+
+        public Builder gap(String gap) {
+            this.gap = Objects.requireNonNull(gap);
+            return this;
+        }
+
+        public Builder justifyContent(String justifyContent) {
+            this.justifyContent = Objects.requireNonNull(justifyContent);
+            return this;
+        }
+
+        public Builder alignItems(String alignItems) {
+            this.alignItems = Objects.requireNonNull(alignItems);
+            return this;
+        }
+
         public FlexboxContainer build() {
             FlexboxContainer flexboxContainer = new FlexboxContainer();
             flexboxContainer.id = Objects.requireNonNull(this.id);
@@ -169,6 +234,11 @@ public final class FlexboxContainer extends AbstractWidget {
             flexboxContainer.helpTextProvider = this.helpTextProvider; // Optional on purpose
             flexboxContainer.readOnly = this.readOnly;
             flexboxContainer.borderStyle = this.borderStyle; // Optional on purpose
+            flexboxContainer.margin = this.margin; // Optional on purpose
+            flexboxContainer.padding = this.padding; // Optional on purpose
+            flexboxContainer.gap = this.gap; // Optional on purpose
+            flexboxContainer.justifyContent = Objects.requireNonNull(this.justifyContent);
+            flexboxContainer.alignItems = Objects.requireNonNull(this.alignItems);
             return flexboxContainer;
         }
     }
