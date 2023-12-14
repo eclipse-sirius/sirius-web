@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.util.List;
 import java.util.Objects;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
@@ -43,16 +44,18 @@ public class EditingContextEventProcessorFactoryParameters {
     private final List<IInputPreProcessor> inputPreProcessors;
 
     private final List<IInputPostProcessor> inputPostProcessors;
+    private final MeterRegistry meterRegistry;
 
     public EditingContextEventProcessorFactoryParameters(IEditingContextPersistenceService editingContextPersistenceService, List<IEditingContextEventHandler> editingContextEventHandlers,
             IRepresentationEventProcessorComposedFactory representationEventProcessorComposedFactory, IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
-            List<IInputPreProcessor> inputPreProcessors, List<IInputPostProcessor> inputPostProcessors) {
+            List<IInputPreProcessor> inputPreProcessors, List<IInputPostProcessor> inputPostProcessors, MeterRegistry meterRegistry) {
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.editingContextEventHandlers = Objects.requireNonNull(editingContextEventHandlers);
         this.representationEventProcessorComposedFactory = Objects.requireNonNull(representationEventProcessorComposedFactory);
         this.executorServiceProvider = Objects.requireNonNull(executorServiceProvider);
         this.inputPreProcessors = Objects.requireNonNull(inputPreProcessors);
         this.inputPostProcessors = Objects.requireNonNull(inputPostProcessors);
+        this.meterRegistry = Objects.requireNonNull(meterRegistry);
     }
 
     public IEditingContextPersistenceService getEditingContextPersistenceService() {
@@ -69,6 +72,10 @@ public class EditingContextEventProcessorFactoryParameters {
 
     public IEditingContextEventProcessorExecutorServiceProvider getExecutorServiceProvider() {
         return this.executorServiceProvider;
+    }
+
+    public MeterRegistry getMeterRegistry() {
+        return this.meterRegistry;
     }
 
     public List<IInputPreProcessor> getInputPreProcessors() {

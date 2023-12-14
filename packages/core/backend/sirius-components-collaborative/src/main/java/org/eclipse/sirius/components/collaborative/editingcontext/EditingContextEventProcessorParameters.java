@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.util.List;
 import java.util.Objects;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.annotations.Builder;
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -42,7 +43,8 @@ public record EditingContextEventProcessorParameters(
         IDanglingRepresentationDeletionService danglingRepresentationDeletionService,
         IEditingContextEventProcessorExecutorServiceProvider executorServiceProvider,
         List<IInputPreProcessor> inputPreProcessors,
-        List<IInputPostProcessor> inputPostProcessors
+        List<IInputPostProcessor> inputPostProcessors,
+        MeterRegistry meterRegistry
 ) {
 
     public EditingContextEventProcessorParameters {
@@ -56,6 +58,7 @@ public record EditingContextEventProcessorParameters(
         Objects.requireNonNull(executorServiceProvider);
         Objects.requireNonNull(inputPreProcessors);
         Objects.requireNonNull(inputPostProcessors);
+        Objects.requireNonNull(meterRegistry);
     }
 
     public static EditingContextEventProcessorParametersBuilder newEditingContextEventProcessorParameters() {
@@ -90,6 +93,8 @@ public record EditingContextEventProcessorParameters(
         private List<IInputPreProcessor> inputPreProcessors;
         
         private List<IInputPostProcessor> inputPostProcessors;
+
+        private MeterRegistry meterRegistry;
 
         private EditingContextEventProcessorParametersBuilder() {
             // Prevent instantiation
@@ -145,6 +150,11 @@ public record EditingContextEventProcessorParameters(
             return this;
         }
 
+        public EditingContextEventProcessorParametersBuilder meterRegistry(MeterRegistry meterRegistry) {
+            this.meterRegistry = Objects.requireNonNull(meterRegistry);
+            return this;
+        }
+
         public EditingContextEventProcessorParameters build() {
             return new EditingContextEventProcessorParameters(
                     this.messageService,
@@ -156,7 +166,8 @@ public record EditingContextEventProcessorParameters(
                     this.danglingRepresentationDeletionService,
                     this.executorServiceProvider,
                     this.inputPreProcessors,
-                    this.inputPostProcessors
+                    this.inputPostProcessors,
+                    this.meterRegistry
             );
         }
     }
