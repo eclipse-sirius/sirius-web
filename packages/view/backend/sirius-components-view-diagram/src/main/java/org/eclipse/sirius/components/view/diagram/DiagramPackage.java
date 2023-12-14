@@ -642,13 +642,22 @@ public interface DiagramPackage extends EPackage {
     int LIST_LAYOUT_STRATEGY_DESCRIPTION = 5;
 
     /**
+     * The feature id for the '<em><b>Are Child Nodes Draggable Expression</b></em>' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>List Layout Strategy Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LIST_LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 0;
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>List Layout Strategy Description</em>' class. <!-- begin-user-doc --> <!--
@@ -3329,6 +3338,18 @@ public interface DiagramPackage extends EPackage {
     EClass getListLayoutStrategyDescription();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription#getAreChildNodesDraggableExpression
+     * <em>Are Child Nodes Draggable Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Are Child Nodes Draggable Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription#getAreChildNodesDraggableExpression()
+     * @see #getListLayoutStrategyDescription()
+     * @generated
+     */
+    EAttribute getListLayoutStrategyDescription_AreChildNodesDraggableExpression();
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription <em>Free Form Layout
      * Strategy Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4723,6 +4744,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EClass LIST_LAYOUT_STRATEGY_DESCRIPTION = eINSTANCE.getListLayoutStrategyDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Are Child Nodes Draggable Expression</b></em>' attribute feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION = eINSTANCE.getListLayoutStrategyDescription_AreChildNodesDraggableExpression();
 
         /**
          * The meta object literal for the

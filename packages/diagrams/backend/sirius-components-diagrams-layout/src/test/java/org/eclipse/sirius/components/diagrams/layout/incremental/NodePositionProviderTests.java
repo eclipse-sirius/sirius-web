@@ -291,7 +291,7 @@ public class NodePositionProviderTests {
         Size nodeListItemSize = Size.of(100, 20);
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new ListLayoutStrategy());
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE, ListLayoutStrategy.newListLayoutStrategy().build());
         NodeLayoutData nodeListItemLayoutData = this.createNodeLayoutData(nodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
         nodeListLayoutData.setChildrenNodes(List.of(nodeListItemLayoutData));
         nodeListLayoutData.setLabel(this.createNodeListLabelLayoutData());
@@ -312,7 +312,7 @@ public class NodePositionProviderTests {
         Position secondNodeListItemPosition = Position.at(0, firstNodeListItemPosition.getY() + nodeListItemSize.getHeight() + LayoutOptionValues.NODE_LIST_ELK_NODE_NODE_GAP);
 
         DiagramLayoutData diagramLayoutData = this.createDiagramLayoutData();
-        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE, new ListLayoutStrategy());
+        NodeLayoutData nodeListLayoutData = this.createNodeLayoutData(nodeListPosition, nodeListSize, diagramLayoutData, NodeType.NODE_RECTANGLE, ListLayoutStrategy.newListLayoutStrategy().build());
         NodeLayoutData firstNodeListItemLayoutData = this.createNodeLayoutData(firstNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
         NodeLayoutData secondNodeListItemLayoutData = this.createNodeLayoutData(secondNodeListItemPosition, nodeListItemSize, nodeListLayoutData, NodeType.NODE_ICON_LABEL, null);
         nodeListLayoutData.setChildrenNodes(List.of(firstNodeListItemLayoutData, secondNodeListItemLayoutData));

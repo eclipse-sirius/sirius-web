@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -255,7 +255,7 @@ public class ContainmentUpdaterTests {
         nodeLayoutData.setParent(parent);
         nodeLayoutData.setPosition(Position.at(10, 10));
         nodeLayoutData.setNodeType(NodeType.NODE_RECTANGLE);
-        nodeLayoutData.setChildrenLayoutStrategy(new ListLayoutStrategy());
+        nodeLayoutData.setChildrenLayoutStrategy(ListLayoutStrategy.newListLayoutStrategy().build());
 
         LabelLayoutData nodeListLabel = this.createLabelLayoutData(Size.of(labelWidth, LABEL_HEIGHT), Position.at(5, 5));
         nodeLayoutData.setLabel(nodeListLabel);

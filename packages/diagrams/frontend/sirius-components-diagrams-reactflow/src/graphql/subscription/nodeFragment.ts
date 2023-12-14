@@ -57,6 +57,7 @@ fragment nodeFragment on Node {
     __typename
     ... on ListLayoutStrategy {
       kind
+      areChildNodesDraggable
     }
     ... on FreeFormLayoutStrategy {
       kind

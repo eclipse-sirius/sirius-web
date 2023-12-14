@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,11 +40,10 @@ public class AbstractNodeMappingChildrenLayoutStrategyProvider implements Functi
     public ILayoutStrategy apply(VariableManager variableManager) {
         ILayoutStrategy childrenLayoutStrategy = null;
 
-        if (this.abstractNodeMapping instanceof ContainerMapping) {
-            ContainerMapping containerMapping = (ContainerMapping) this.abstractNodeMapping;
+        if (this.abstractNodeMapping instanceof ContainerMapping containerMapping) {
             ContainerMappingQuery containerMappingQuery = new ContainerMappingQuery(containerMapping);
             if (containerMappingQuery.isListContainer() || containerMappingQuery.isVerticalStackContainer()) {
-                childrenLayoutStrategy = new ListLayoutStrategy();
+                childrenLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().build();
             } else if (containerMappingQuery.isFreeFormContainer()) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }

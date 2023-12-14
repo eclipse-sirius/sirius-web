@@ -64,18 +64,18 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 public class IncrementalLayoutTests {
 
-    private TestLayoutObjectService objectService = new TestLayoutObjectService();
+    private final TestLayoutObjectService objectService = new TestLayoutObjectService();
 
-    private DefaultTestDiagramDescriptionProvider defaultTestDiagramDescriptionProvider = new DefaultTestDiagramDescriptionProvider(this.objectService);
+    private final DefaultTestDiagramDescriptionProvider defaultTestDiagramDescriptionProvider = new DefaultTestDiagramDescriptionProvider(this.objectService);
 
-    private TextBoundsService textBoundsService = new TextBoundsService();
+    private final TextBoundsService textBoundsService = new TextBoundsService();
 
-    private ELKPropertiesService elkPropertiesService = new ELKPropertiesService();
+    private final ELKPropertiesService elkPropertiesService = new ELKPropertiesService();
 
     @Test
     @Disabled
     public void testClassDiagramIncrementalLayout() {
-        ListLayoutStrategy columnListLayoutStrategy = new ListLayoutStrategy();
+        ListLayoutStrategy columnListLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().build();
 
         // @formatter:off
         Diagram diagram = TestLayoutDiagramBuilder.diagram("Class")
