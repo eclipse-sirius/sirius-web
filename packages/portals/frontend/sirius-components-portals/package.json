@@ -38,6 +38,7 @@
     "graphql": "16.8.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-grid-layout": "^1.4.4",
     "xstate": "4.32.1"
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "rollup-plugin-peer-deps-external": "2.2.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-grid-layout": "^1.4.4",
     "typescript": "5.1.6",
     "vite": "4.4.9",
     "vitest": "0.34.2"

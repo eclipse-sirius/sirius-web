@@ -46,6 +46,10 @@ public final class PortalView {
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getId(), this.getRepresentationId());
     }
 
+    public static Builder newPortalView(PortalView portalView) {
+        return new Builder(portalView.id).representationId(portalView.getRepresentationId());
+    }
+
     public static Builder newPortalView(String id) {
         return new Builder(id);
     }

@@ -20,6 +20,7 @@ type Portal implements Representation {
   targetObjectId: ID!
   metadata: RepresentationMetadata!
   views: [PortalView!]!
+  layoutData: [PortalViewLayoutData!]!
 }
 
 type PortalView {
@@ -27,9 +28,16 @@ type PortalView {
   representationMetadata: RepresentationMetadata!
 }
 
+type PortalViewLayoutData {
+  portalViewId: ID!
+  x: Int!
+  y: Int!
+  width: Int!
+  height: Int!
+}
+
 extend type Mutation {
   addPortalView(input: AddPortalViewInput!): AddPortalViewPayload!
-  removePortalView(input: RemovePortalViewInput!): RemovePortalViewPayload!
 }
 
 input AddPortalViewInput {
@@ -41,6 +49,10 @@ input AddPortalViewInput {
 
 union AddPortalViewPayload = SuccessPayload | ErrorPayload
 
+extend type Mutation {
+  removePortalView(input: RemovePortalViewInput!): RemovePortalViewPayload!
+}
+
 input RemovePortalViewInput {
   id: ID!
   editingContextId: ID!
@@ -49,3 +61,25 @@ input RemovePortalViewInput {
 }
 
 union RemovePortalViewPayload = SuccessPayload | ErrorPayload
+
+extend type Mutation {
+  layoutPortal(input: LayoutPortalInput!): LayoutPortalPayload!
+}
+
+input LayoutPortalInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  layoutData: [PortalViewLayoutDataInput!]!
+}
+
+input PortalViewLayoutDataInput {
+  portalViewId: ID!
+  x: Int!
+  y: Int!
+  width: Int!
+  height: Int!
+}
+
+
+union LayoutPortalPayload = SuccessPayload | ErrorPayload

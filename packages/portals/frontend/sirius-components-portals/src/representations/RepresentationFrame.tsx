@@ -29,6 +29,8 @@ const useFrameStyles = makeStyles((theme) => ({
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'min-content minmax(0, 1fr)',
     overflow: 'auto',
+    border: '1px solid',
+    borderColor: theme.palette.grey[500],
   },
   frameHeader: {
     backgroundColor: theme.palette.grey[300],
@@ -37,31 +39,46 @@ const useFrameStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  title: {
+    marginLeft: theme.spacing(1),
+    flexGrow: 1,
+  },
 }));
 
 export const RepresentationFrame = ({
   editingContextId,
   representation,
   readOnly,
+  portalMode,
   onDelete,
 }: RepresentationFrameProps) => {
   const { registry } = useContext<RepresentationContextValue>(RepresentationContext);
-
   const RepresentationComponent = registry.getComponent(representation);
-  const props: RepresentationComponentProps = {
-    editingContextId,
-    readOnly,
-    representationId: representation.id,
-  };
+
   if (RepresentationComponent) {
     const classes = useFrameStyles();
+    const props: RepresentationComponentProps = {
+      editingContextId,
+      readOnly: readOnly || portalMode === 'edit',
+      representationId: representation.id,
+    };
     return (
       <div data-testid={`representation-frame-${representation.id}`} className={classes.representationFrame}>
         <div className={classes.frameHeader}>
-          <Typography variant={'subtitle1'}>{representation.label}</Typography>
-          <IconButton aria-label="remove" onClick={onDelete}>
-            <DeleteIcon fontSize="small" />
-          </IconButton>
+          <Typography variant={'subtitle2'} className={classes.title + ' draggable'}>
+            {representation.label}
+          </Typography>
+          {portalMode === 'edit' ? (
+            <IconButton
+              aria-label="remove"
+              onClick={(e) => {
+                e.preventDefault();
+                onDelete();
+              }}
+              size="small">
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          ) : null}
         </div>
         <RepresentationComponent key={`${editingContextId}#${representation.id}`} {...props} />
       </div>

@@ -10,5 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.portals.dto;
 
-export type PortalRepresentationMode = 'direct' | 'edit';
+/**
+ * The input for setting the layout data for a particular view.
+ *
+ * @author pcdavid
+ */
+public record PortalViewLayoutDataInput(String portalViewId, int x, int y, int width, int height) {
+}

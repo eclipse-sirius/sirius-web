@@ -10,5 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.portals.dto;
 
-export type PortalRepresentationMode = 'direct' | 'edit';
+import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
+
+/**
+ * The input for the Portal mutation to update the views layout.
+ *
+ * @author pcdavid
+ */
+public record LayoutPortalInput(UUID id, String editingContextId, String representationId, List<PortalViewLayoutDataInput> layoutData) implements IPortalInput {
+}

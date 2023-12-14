@@ -11,4 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export type PortalRepresentationMode = 'direct' | 'edit';
+.react-grid-item.react-grid-placeholder {
+  background: var(--blue-lagoon);
+}

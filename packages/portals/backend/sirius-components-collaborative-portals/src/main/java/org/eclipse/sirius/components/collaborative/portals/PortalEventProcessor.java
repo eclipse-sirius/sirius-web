@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.portals.dto.RenamePortalInput;
+import org.eclipse.sirius.components.collaborative.portals.services.PortalServices;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -64,6 +65,8 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     private final AtomicReference<Portal> currentPortal;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
+
+    private final PortalServices portalServices = new PortalServices();
 
     public PortalEventProcessor(IEditingContext editingContext, IRepresentationPersistenceService representationPersistenceService, List<IPortalEventHandler> portalEventHandlers, ISubscriptionManager subscriptionManager, Portal portal) {
         this.editingContext = Objects.requireNonNull(editingContext);
@@ -116,16 +119,18 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     public void refresh(ChangeDescription changeDescription) {
         if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION) && changeDescription.getInput() instanceof DeleteRepresentationInput deleteRepresentationInput) {
             var deletedRepresentationId = deleteRepresentationInput.representationId();
-            var obsoleteView = this.currentPortal.get().getViews().stream().filter(portalView -> Objects.equals(deletedRepresentationId, portalView.getRepresentationId())).findFirst();
-            if (obsoleteView.isPresent()) {
-                var newViews = this.currentPortal.get().getViews().stream().filter(portalView -> !Objects.equals(portalView.getId(), obsoleteView.get().getId())).toList();
-                var newPortal = Portal.newPortal(this.currentPortal.get()).views(newViews).build();
+            if (this.portalServices.referencesRepresentation(this.currentPortal.get(), deletedRepresentationId)) {
+                var newPortal = this.portalServices.removeRepresentation(this.currentPortal.get(), deletedRepresentationId);
                 this.updatePortal(deleteRepresentationInput, newPortal);
             }
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
-            this.emitNewPortal(changeDescription.getInput());
+            // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
+            // The Portal's structure itself has not changed, but clients need to refresh to show the updated names.
+            String renamedRepresentationId = changeDescription.getSourceId();
+            if (this.portalServices.referencesRepresentation(this.currentPortal.get(), renamedRepresentationId)) {
+                this.emitNewPortal(changeDescription.getInput());
+            }
         }
-        // Nothing to do.
     }
 
     private void emitNewPortal(IInput input) {

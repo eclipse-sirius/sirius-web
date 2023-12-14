@@ -11,4 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export type PortalRepresentationMode = 'direct' | 'edit';
+export interface UseFullscreenValue {
+  fullscreen: boolean;
+  setFullscreen: (fullscreen: boolean) => void;
+}

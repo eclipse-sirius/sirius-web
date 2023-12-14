@@ -42,6 +42,8 @@ public final class Portal implements ISemanticRepresentation {
 
     private List<PortalView> views;
 
+    private List<PortalViewLayoutData> layoutData;
+
     private Portal() {
         // Prevent instantiation
     }
@@ -75,6 +77,10 @@ public final class Portal implements ISemanticRepresentation {
         return this.views;
     }
 
+    public List<PortalViewLayoutData> getLayoutData() {
+        return this.layoutData;
+    }
+
     public static Builder newPortal(String id) {
         return new Builder(id);
     }
@@ -84,7 +90,8 @@ public final class Portal implements ISemanticRepresentation {
                 .descriptionId(portal.getDescriptionId())
                 .label(portal.getLabel())
                 .targetObjectId(portal.getTargetObjectId())
-                .views(portal.getViews());
+                .views(portal.getViews())
+                .layoutData(portal.getLayoutData());
     }
 
     @Override
@@ -112,6 +119,8 @@ public final class Portal implements ISemanticRepresentation {
 
         private List<PortalView> views = List.of();
 
+        private List<PortalViewLayoutData> layoutData = List.of();
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -136,6 +145,11 @@ public final class Portal implements ISemanticRepresentation {
             return this;
         }
 
+        public Builder layoutData(List<PortalViewLayoutData> layoutData) {
+            this.layoutData = Objects.requireNonNull(layoutData);
+            return this;
+        }
+
         public Portal build() {
             Portal portal = new Portal();
             portal.id = Objects.requireNonNull(this.id);
@@ -144,6 +158,7 @@ public final class Portal implements ISemanticRepresentation {
             portal.label = Objects.requireNonNull(this.label);
             portal.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             portal.views = Objects.requireNonNull(this.views);
+            portal.layoutData = Objects.requireNonNull(this.layoutData);
             return portal;
         }
     }

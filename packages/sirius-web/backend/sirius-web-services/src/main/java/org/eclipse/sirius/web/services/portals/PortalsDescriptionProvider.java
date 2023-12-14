@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.portals;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -45,9 +44,8 @@ public class PortalsDescriptionProvider implements IRepresentationDescriptionReg
                 .label("Portal")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> variableManager.get("name", String.class).orElse("Portal"))
-                .targetObjectIdProvider(vars -> vars.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(""))
-                .canCreatePredicate(vars -> true)
-                .viewsProvider(vars -> List.of())
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(""))
+                .canCreatePredicate(variableManager -> true)
                 .build());
     }
 }

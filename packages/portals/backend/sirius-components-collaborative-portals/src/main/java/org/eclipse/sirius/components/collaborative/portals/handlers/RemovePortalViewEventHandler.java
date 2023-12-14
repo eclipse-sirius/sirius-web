@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.portals.handlers;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -22,9 +23,10 @@ import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
 import org.eclipse.sirius.components.collaborative.portals.dto.RemovePortalViewInput;
 import org.eclipse.sirius.components.collaborative.portals.services.ICollaborativePortalMessageService;
+import org.eclipse.sirius.components.collaborative.portals.services.PortalServices;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.portals.Portal;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -33,7 +35,7 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * The handled for the addPortalView mutation.
+ * The handler for the addPortalView mutation.
  *
  * @author pcdavid
  */
@@ -65,11 +67,10 @@ public class RemovePortalViewEventHandler implements IPortalEventHandler {
 
         try {
             if (context.getInput() instanceof RemovePortalViewInput removePortalViewInput) {
-                var newViews = context.getCurrentPortal().getViews().stream()
-                        .filter(portalView -> !Objects.equals(portalView.getId(), removePortalViewInput.portalViewId()))
-                        .toList();
-                var newPortal = Portal.newPortal(context.getCurrentPortal()).views(newViews).build();
+                var newPortal = new PortalServices().removeView(context.getCurrentPortal(), removePortalViewInput.portalViewId());
                 context.setNextPortal(newPortal);
+                payload = new SuccessPayload(removePortalViewInput.id(), List.of());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());
             }
         } finally {
             payloadSink.tryEmitValue(payload);

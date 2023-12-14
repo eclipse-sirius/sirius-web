@@ -11,4 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export type PortalRepresentationMode = 'direct' | 'edit';
+import { PortalRepresentationMode } from './PortalRepresentation.types';
+
+export interface PortalToolbarProps {
+  fullscreenNode: React.MutableRefObject<HTMLDivElement>;
+  portalMode: PortalRepresentationMode;
+  setPortalMode: (portalMode: PortalRepresentationMode) => void;
+}

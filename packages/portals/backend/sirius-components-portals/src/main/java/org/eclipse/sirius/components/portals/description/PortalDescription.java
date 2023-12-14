@@ -13,13 +13,11 @@
 package org.eclipse.sirius.components.portals.description;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -41,8 +39,6 @@ public final class PortalDescription implements IRepresentationDescription {
     private Function<VariableManager, String> targetObjectIdProvider;
 
     private Predicate<VariableManager> canCreatePredicate;
-
-    private Function<VariableManager, List<PortalView>> viewsProvider;
 
     private PortalDescription() {
         // Prevent instantiation
@@ -79,10 +75,6 @@ public final class PortalDescription implements IRepresentationDescription {
         return this.targetObjectIdProvider;
     }
 
-    public Function<VariableManager, List<PortalView>> getViewsProvider() {
-        return this.viewsProvider;
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, label: {2}'}'";
@@ -108,8 +100,6 @@ public final class PortalDescription implements IRepresentationDescription {
         private Function<VariableManager, String> labelProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
-
-        private Function<VariableManager, List<PortalView>> viewsProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -140,11 +130,6 @@ public final class PortalDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder viewsProvider(Function<VariableManager, List<PortalView>> viewsProvider) {
-            this.viewsProvider = Objects.requireNonNull(viewsProvider);
-            return this;
-        }
-
         public PortalDescription build() {
             PortalDescription portalDescripion = new PortalDescription();
             portalDescripion.id = Objects.requireNonNull(this.id);
@@ -152,7 +137,6 @@ public final class PortalDescription implements IRepresentationDescription {
             portalDescripion.idProvider = Objects.requireNonNull(this.idProvider);
             portalDescripion.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             portalDescripion.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            portalDescripion.viewsProvider = Objects.requireNonNull(this.viewsProvider);
             portalDescripion.labelProvider = Objects.requireNonNull(this.labelProvider);
             return portalDescripion;
         }

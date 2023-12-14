@@ -43,6 +43,7 @@ import { SliderPropertySection } from './widgets/SliderPropertySection';
 
 import './Sprotty.css';
 import './fonts.css';
+import './portals.css';
 import './reset.css';
 import './variables.css';
 
