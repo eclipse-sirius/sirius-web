@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.editingcontext;
 import java.util.List;
 import java.util.Objects;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
@@ -55,6 +56,8 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
 
     private final List<IInputPostProcessor> inputPostProcessors;
 
+    private final MeterRegistry meterRegistry;
+
     public EditingContextEventProcessorFactory(ICollaborativeMessageService messageService, ApplicationEventPublisher applicationEventPublisher,
             IDanglingRepresentationDeletionService representationDeletionService, EditingContextEventProcessorFactoryParameters parameters) {
         this.messageService = Objects.requireNonNull(messageService);
@@ -66,6 +69,7 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
         this.executorServiceProvider = parameters.getExecutorServiceProvider();
         this.inputPreProcessors = parameters.getInputPreProcessors();
         this.inputPostProcessors = parameters.getInputPostProcessors();
+        this.meterRegistry = parameters.getMeterRegistry();
     }
 
     @Override
@@ -81,6 +85,7 @@ public class EditingContextEventProcessorFactory implements IEditingContextEvent
                 .executorServiceProvider(this.executorServiceProvider)
                 .inputPreProcessors(this.inputPreProcessors)
                 .inputPostProcessors(this.inputPostProcessors)
+                .meterRegistry(this.meterRegistry)
                 .build();
         return new EditingContextEventProcessor(parameters);
     }
