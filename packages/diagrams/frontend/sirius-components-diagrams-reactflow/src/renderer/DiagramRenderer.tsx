@@ -95,8 +95,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     const { diagram, cause } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription);
 
+    const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
     if (cause === 'layout') {
-      const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
       convertedDiagram.nodes
         .filter((node) => selectedNodeIds.includes(node.id))
         .forEach((node) => (node.selected = true));
@@ -110,6 +110,10 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         edges,
       };
       layout(previousDiagram, convertedDiagram, diagramRefreshedEventPayload.referencePosition, (laidOutDiagram) => {
+        laidOutDiagram.nodes
+          .filter((node) => selectedNodeIds.includes(node.id))
+          .forEach((node) => (node.selected = true));
+
         setNodes(laidOutDiagram.nodes);
         setEdges(laidOutDiagram.edges);
         hideDiagramPalette();

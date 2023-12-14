@@ -93,6 +93,7 @@ Additional changes to this interface will propably occur in the near future in o
 - https://github.com/eclipse-sirius/sirius-web/issues/2857[#2857] [form] Fix default reference widget bugs.
 Now, for a multi-valued feature, the values are properly displayed and the delete is properly handled.
 - https://github.com/eclipse-sirius/sirius-web/issues/2888[#2888] [view] Ensure that the retrieval of the view models returns properly loaded models
+- https://github.com/eclipse-sirius/sirius-web/issues/2797[#2797] [diagram] Preserve diagram selection after change in the details view.
 
 === New Features
 - https://github.com/eclipse-sirius/sirius-web/issues/2413[#2413] Add a debug mode for React Flow diagrams
