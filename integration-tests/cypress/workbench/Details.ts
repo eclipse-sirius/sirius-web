@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,10 @@ export class Details {
 
   public getCheckBox(label: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
     return this.getDetailsView().findByTestId(label).find('input');
+  }
+
+  public getRadioOption(label: string, option: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
+    return this.getDetailsView().contains('div', label).siblings().find(`[data-testid="${option}"]`);
   }
 
   public openReferenceWidgetOptions(label: string): void {

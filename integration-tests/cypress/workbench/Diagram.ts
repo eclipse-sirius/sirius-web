@@ -27,6 +27,10 @@ export class Diagram {
     return this.getDiagram(diagramLabel).contains('.react-flow__node', nodeLabel);
   }
 
+  public getSelectedNodes(diagramLabel: string, nodeLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getDiagram(diagramLabel).get('div.react-flow__node.selected').contains('.react-flow__node', nodeLabel);
+  }
+
   public getPalette(): Cypress.Chainable<JQuery<HTMLElement>> {
     return cy.getByTestId('Palette');
   }
