@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { SelectionEntry, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
   EdgeChange,
   EdgeSelectionChange,
@@ -169,8 +169,31 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
     }
   };
 
+  const updateSelectionOnEscapeKeyDown = useCallback(
+    (event: React.KeyboardEvent<Element>, selectedNodeIds: string[], selectedEdgeIds: string[]): void => {
+      const { key } = event;
+      /*If a modifier key is hit alone, do nothing*/
+      const isTextField = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement;
+      if (((event.altKey || event.shiftKey) && event.getModifierState(key)) || isTextField) {
+        return;
+      }
+      event.preventDefault();
+      if (key === 'Escape') {
+        const reactFlowState = store.getState();
+        if (selectedNodeIds.length > 0) {
+          reactFlowState.addSelectedNodes(selectedNodeIds);
+        }
+        if (selectedEdgeIds.length > 0) {
+          reactFlowState.addSelectedEdges(selectedEdgeIds);
+        }
+      }
+    },
+    []
+  );
+
   return {
     updateSelectionOnNodesChange,
     updateSelectionOnEdgesChange,
+    updateSelectionOnEscapeKeyDown,
   };
 };

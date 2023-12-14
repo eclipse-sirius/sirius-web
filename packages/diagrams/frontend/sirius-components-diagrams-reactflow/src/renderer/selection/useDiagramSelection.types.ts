@@ -12,8 +12,14 @@
  *******************************************************************************/
 
 import { OnEdgesChange, OnNodesChange } from 'reactflow';
+import React from 'react';
 
 export interface UseDiagramSelectionValue {
   updateSelectionOnNodesChange: OnNodesChange;
   updateSelectionOnEdgesChange: OnEdgesChange;
+  updateSelectionOnEscapeKeyDown: (
+    event: React.KeyboardEvent<Element>,
+    selectedNodeIds: string[],
+    selectedEdgeIds: string[]
+  ) => void;
 }

@@ -121,7 +121,8 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     }
   }, [diagramRefreshedEventPayload, diagramDescription]);
 
-  const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection();
+  const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange, updateSelectionOnEscapeKeyDown } =
+    useDiagramSelection();
   const { transformBorderNodeChanges } = useBorderChange();
   const { applyHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
@@ -170,6 +171,11 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const onKeyDown = (event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
     onDelete(event);
+    updateSelectionOnEscapeKeyDown(
+      event,
+      nodes.filter((node) => node.selected).map((node) => node.id),
+      edges.filter((edge) => edge.selected).map((edge) => edge.id)
+    );
   };
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
