@@ -71,7 +71,7 @@ const isErrorPayload = (payload: GQLRenameElementPayload): payload is GQLErrorPa
 const isSuccessPayload = (payload: GQLRenameElementPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'EditLabelSuccessPayload';
 
-export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform }: DiagramDirectEditInputProps) => {
+export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: DiagramDirectEditInputProps) => {
   const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
   const [state, setState] = useState<DiagramDirectEditInputState>({
     newLabel: initialLabel,
@@ -200,7 +200,6 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose, transform
         onBlur={onBlur}
         autoFocus
         data-testid="name-edit"
-        style={{ transform }}
       />
     </>
   );

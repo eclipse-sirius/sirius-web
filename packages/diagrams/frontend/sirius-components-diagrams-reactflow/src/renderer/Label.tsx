@@ -59,7 +59,7 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
 
   const content: JSX.Element =
     label.id === currentlyEditedLabelId ? (
-      <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} transform={transform} />
+      <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
     ) : (
       <>
         <IconOverlay iconURL={label.iconURL} alt={label.text} />
