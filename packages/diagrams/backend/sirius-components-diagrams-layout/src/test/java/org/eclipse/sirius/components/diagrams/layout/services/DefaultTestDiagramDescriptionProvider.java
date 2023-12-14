@@ -71,7 +71,7 @@ public class DefaultTestDiagramDescriptionProvider {
 
     private static final String NODE_NAME_SEPARATOR = ":";
 
-    private final Function <VariableManager, Boolean> isHeaderProvider = variableManager -> {
+    private final Function<VariableManager, Boolean> isHeaderProvider = variableManager -> {
         String prefix = variableManager.get(VariableManager.SELF, Element.class)
                 .map(Element::getName)
                 .map(name -> name.split(NODE_NAME_SEPARATOR))
@@ -172,7 +172,7 @@ public class DefaultTestDiagramDescriptionProvider {
                         case NODE_IMG_PREFIX:
                             break;
                         case NODE_LIST_PREFIX:
-                            childrenLayoutStrategy = new ListLayoutStrategy();
+                            childrenLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().build();
                             break;
                         case NODE_LIST_ITEM_PREFIX:
                             break;

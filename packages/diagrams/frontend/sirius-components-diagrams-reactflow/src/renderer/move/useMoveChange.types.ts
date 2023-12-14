@@ -10,9 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
+import { NodeChange, Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 
-export interface ListNodeData extends NodeData {
-  areChildNodesDraggable: boolean;
+export interface UseMoveChangeValue {
+  transformUndraggableListNodeChanges: (changes: NodeChange[]) => NodeChange[];
+  applyMoveChange: (changes: NodeChange[], nodes: Node<NodeData>[]) => Node<NodeData>[];
 }

@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IChildCreationExtender;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -25,7 +26,11 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
+import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 
 /**
  * This is the item provider adapter for a
@@ -55,8 +60,22 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addAreChildNodesDraggableExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Are Child Nodes Draggable Expression feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addAreChildNodesDraggableExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ListLayoutStrategyDescription_areChildNodesDraggableExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ListLayoutStrategyDescription_areChildNodesDraggableExpression_feature", "_UI_ListLayoutStrategyDescription_type"),
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -86,7 +105,8 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
      */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_ListLayoutStrategyDescription_type");
+        String label = ((ListLayoutStrategyDescription) object).getAreChildNodesDraggableExpression();
+        return label == null || label.length() == 0 ? this.getString("_UI_ListLayoutStrategyDescription_type") : this.getString("_UI_ListLayoutStrategyDescription_type") + " " + label;
     }
 
     /**
@@ -99,6 +119,12 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
     @Override
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
+
+        switch (notification.getFeatureID(ListLayoutStrategyDescription.class)) {
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+        }
         super.notifyChanged(notification);
     }
 

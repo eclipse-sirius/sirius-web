@@ -32,6 +32,7 @@ import {
   GQLSuccessPayload,
   UseDropNodeValue,
 } from './useDropNode.types';
+import { ListNodeData } from '../node/ListNode.types';
 
 const dropNodeMutation = gql`
   mutation dropNode($input: DropNodeInput!) {
@@ -57,6 +58,8 @@ const isErrorPayload = (payload: GQLDropNodePayload): payload is GQLErrorPayload
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLDropNodePayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
+
+const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
 const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): number => {
   let nodeDepth = 0;
@@ -150,21 +153,31 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
 
+  const getDraggableNode = (node: Node<NodeData>): Node<NodeData> => {
+    const parentNode = getNodeById(node.parentNode);
+    if (parentNode && isListData(parentNode) && !parentNode.data.areChildNodesDraggable) {
+      return getDraggableNode(parentNode);
+    }
+    return node;
+  };
+
   const onNodeDragStart: NodeDragHandler = (_event, node) => {
+    const computedNode = getDraggableNode(node);
+
     const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
-      (entry) => entry.droppedNodeDescriptionId === (node as Node<NodeData>).data.descriptionId
+      (entry) => entry.droppedNodeDescriptionId === (computedNode as Node<NodeData>).data.descriptionId
     );
     const compatibleNodes = getNodes()
-      .filter((candidate) => !candidate.hidden && !isDescendantOf(node, candidate, getNodeById))
+      .filter((candidate) => !candidate.hidden && !isDescendantOf(computedNode, candidate, getNodeById))
       .filter((candidate) =>
         dropDataEntry?.droppableOnNodeTypes.includes((candidate as Node<NodeData>).data.descriptionId)
       )
       .map((candidate) => candidate.id);
 
     initializeDrop({
-      initialParentId: node.parentNode || null,
-      draggedNode: node,
-      targetNodeId: node.parentNode || null,
+      initialParentId: computedNode.parentNode || null,
+      draggedNode: computedNode,
+      targetNodeId: computedNode.parentNode || null,
       compatibleNodeIds: compatibleNodes,
       droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
     });

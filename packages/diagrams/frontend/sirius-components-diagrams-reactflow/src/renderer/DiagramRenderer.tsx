@@ -49,6 +49,7 @@ import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
 import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
+import { useMoveChange } from './move/useMoveChange';
 import { NodeContext } from './node/NodeContext';
 import { NodeContextValue } from './node/NodeContext.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -123,11 +124,13 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection();
   const { transformBorderNodeChanges } = useBorderChange();
+  const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { applyHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
-    const transformedNodeChanges = transformBorderNodeChanges(changes);
+    let transformedNodeChanges = transformBorderNodeChanges(changes);
+    transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
 
     if (transformedNodeChanges.some((change) => change.type === 'position')) {
       hideDiagramElementPalette();
@@ -135,6 +138,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
     let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
 
+    newNodes = applyMoveChange(transformedNodeChanges, newNodes);
     newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
     setNodes(newNodes);
     layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);

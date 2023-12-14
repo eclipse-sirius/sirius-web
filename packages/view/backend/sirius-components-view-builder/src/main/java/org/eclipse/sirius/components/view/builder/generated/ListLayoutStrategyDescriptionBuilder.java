@@ -42,6 +42,16 @@ public class ListLayoutStrategyDescriptionBuilder {
         return this.getListLayoutStrategyDescription();
     }
 
+    /**
+     * Setter for AreChildNodesDraggableExpression.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder areChildNodesDraggableExpression(java.lang.String value) {
+        this.getListLayoutStrategyDescription().setAreChildNodesDraggableExpression(value);
+        return this;
+    }
+
 
 }
 

@@ -110,7 +110,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LayoutStrategyDescription" abstract="true"
       interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ListLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ListLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="areChildNodesDraggableExpression"
+        lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FreeFormLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription"/>
   <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>

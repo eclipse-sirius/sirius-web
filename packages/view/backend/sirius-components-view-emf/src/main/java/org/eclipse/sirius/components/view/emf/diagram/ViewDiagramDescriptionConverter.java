@@ -231,8 +231,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             ILayoutStrategy childrenLayoutStrategy = null;
 
             LayoutStrategyDescription childrenLayoutStrategyFromViewModel = viewNodeDescription.getChildrenLayoutStrategy();
-            if (childrenLayoutStrategyFromViewModel instanceof ListLayoutStrategyDescription) {
-                childrenLayoutStrategy = new ListLayoutStrategy();
+            if (childrenLayoutStrategyFromViewModel instanceof ListLayoutStrategyDescription listLayoutStrategyDescription) {
+                Result result = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getAreChildNodesDraggableExpression());
+                childrenLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().areChildNodesDraggable(result.asBoolean().orElse(true)).build();
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }

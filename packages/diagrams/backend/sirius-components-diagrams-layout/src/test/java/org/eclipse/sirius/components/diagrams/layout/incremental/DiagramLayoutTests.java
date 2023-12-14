@@ -250,7 +250,7 @@ public class DiagramLayoutTests {
 
     @Test
     public void testCreateEdgeDoesNotAffectOtherEdges() {
-        ListLayoutStrategy columnListLayoutStrategy = new ListLayoutStrategy();
+        ListLayoutStrategy columnListLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().build();
 
         Diagram diagram = TestLayoutDiagramBuilder.diagram(DIAGRAM_ROOT_ID)
             .nodes()

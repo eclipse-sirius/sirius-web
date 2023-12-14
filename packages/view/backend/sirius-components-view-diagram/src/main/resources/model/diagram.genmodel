@@ -91,7 +91,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeDescription/conditionalStyles"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//LayoutStrategyDescription"/>
-    <genClasses ecoreClass="diagram.ecore#//ListLayoutStrategyDescription"/>
+    <genClasses ecoreClass="diagram.ecore#//ListLayoutStrategyDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ListLayoutStrategyDescription/areChildNodesDraggableExpression"/>
+    </genClasses>
     <genClasses ecoreClass="diagram.ecore#//FreeFormLayoutStrategyDescription"/>
     <genClasses image="false" ecoreClass="diagram.ecore#//Style">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference diagram.ecore#//Style/color"/>

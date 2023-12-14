@@ -19,6 +19,8 @@ import {
   GQLNodeStyle,
   GQLRectangularNodeStyle,
   GQLViewModifier,
+  ILayoutStrategy,
+  ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
@@ -29,6 +31,9 @@ import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
+
+const isListLayoutStrategy = (strategy: ILayoutStrategy | undefined): strategy is ListLayoutStrategy =>
+  strategy?.kind === 'List';
 
 const toListNode = (
   gqlDiagram: GQLDiagram,
@@ -81,6 +86,9 @@ const toListNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isNew,
+    areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
+      ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
+      : true,
   };
 
   if (insideLabel) {
