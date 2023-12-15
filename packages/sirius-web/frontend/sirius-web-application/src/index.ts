@@ -13,4 +13,5 @@
 
 export { SiriusWebApplication } from './application/SiriusWebApplication';
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
+export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
 export { Views } from './views/Views';
