@@ -13,12 +13,12 @@
 import { GQLMessage, GQLRadio, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface RadioStyleProps {
-  color: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
+  color: string | undefined;
+  fontSize: number | undefined;
+  italic: boolean | undefined;
+  bold: boolean | undefined;
+  underline: boolean | undefined;
+  strikeThrough: boolean | undefined;
 }
 
 export interface RadioPropertySectionProps {

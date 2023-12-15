@@ -13,13 +13,13 @@
 import { GQLMessage, GQLMultiSelect, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface MultiSelectStyleProps {
-  backgroundColor: string | null;
-  foregroundColor: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
+  backgroundColor: string | undefined;
+  foregroundColor: string | undefined;
+  fontSize: number | undefined;
+  italic: boolean | undefined;
+  bold: boolean | undefined;
+  underline: boolean | undefined;
+  strikeThrough: boolean | undefined;
 }
 
 export interface MultiSelectPropertySectionProps {

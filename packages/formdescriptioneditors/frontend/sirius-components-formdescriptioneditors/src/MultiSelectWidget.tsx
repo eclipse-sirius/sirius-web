@@ -24,11 +24,11 @@ import { MultiSelectWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
   style: {
-    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : null),
-    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    backgroundColor: ({ backgroundColor }) => (backgroundColor ? getCSSColor(backgroundColor, theme) : undefined),
+    color: ({ foregroundColor }) => (foregroundColor ? getCSSColor(foregroundColor, theme) : undefined),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
   selected: {
@@ -43,13 +43,13 @@ const useStyles = makeStyles<Theme, MultiSelectStyleProps>((theme) => ({
 
 export const MultiSelectWidget = ({ widget, selection }: MultiSelectWidgetProps) => {
   const props: MultiSelectStyleProps = {
-    backgroundColor: widget.style?.backgroundColor ?? null,
-    foregroundColor: widget.style?.foregroundColor ?? null,
-    fontSize: widget.style?.fontSize ?? null,
-    italic: widget.style?.italic ?? null,
-    bold: widget.style?.bold ?? null,
-    underline: widget.style?.underline ?? null,
-    strikeThrough: widget.style?.strikeThrough ?? null,
+    backgroundColor: widget.style?.backgroundColor ?? undefined,
+    foregroundColor: widget.style?.foregroundColor ?? undefined,
+    fontSize: widget.style?.fontSize ?? undefined,
+    italic: widget.style?.italic ?? undefined,
+    bold: widget.style?.bold ?? undefined,
+    underline: widget.style?.underline ?? undefined,
+    strikeThrough: widget.style?.strikeThrough ?? undefined,
   };
   const classes = useStyles(props);
 
@@ -58,12 +58,12 @@ export const MultiSelectWidget = ({ widget, selection }: MultiSelectWidgetProps)
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    let cleanup = undefined;
+    let cleanup: (() => void) | undefined = undefined;
 
     if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {
       const timeoutId = setTimeout(function () {
         // added a timeout to compensate for a problem with MaterialUI's SelectInput component on focus while the element is not yet rendered
-        ref.current.focus();
+        ref.current?.focus();
       }, 50);
       cleanup = () => clearTimeout(timeoutId);
       setSelected(true);

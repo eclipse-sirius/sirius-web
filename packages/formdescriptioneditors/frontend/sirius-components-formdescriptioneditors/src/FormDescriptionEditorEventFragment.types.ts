@@ -181,6 +181,7 @@ export interface GQLMoveToolbarActionMutationData {
 export interface GQLMoveToolbarActionPayload {
   __typename: string;
 }
+
 export interface GQLAddGroupInput {
   id: string;
   editingContextId: string;
@@ -284,7 +285,7 @@ export interface GQLDeletePageInput {
   id: string;
   editingContextId: string;
   representationId: string;
-  pageId: string;
+  pageId: string | undefined;
 }
 
 export interface GQLDeletePageMutationVariables {

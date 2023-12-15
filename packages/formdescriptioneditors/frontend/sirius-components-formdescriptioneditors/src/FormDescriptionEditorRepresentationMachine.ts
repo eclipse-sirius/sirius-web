@@ -47,10 +47,11 @@ export type SchemaValue = {
 
 export interface FormDescriptionEditorRepresentationContext {
   id: string;
-  formDescriptionEditor: GQLFormDescriptionEditor;
+  formDescriptionEditor: GQLFormDescriptionEditor | null;
   subscribers: Subscriber[];
   message: string | null;
 }
+
 export type ShowToastEvent = { type: 'SHOW_TOAST'; message: string };
 export type HideToastEvent = { type: 'HIDE_TOAST' };
 export type HandleSubscriptionResultEvent = {
@@ -71,9 +72,9 @@ export type FormDescriptionEditorRepresentationEvent =
   | HandleSubscriptionResultEvent;
 
 const isFormDescriptionEditorRefreshedEventPayload = (
-  payload: GQLFormDescriptionEditorEventPayload
+  payload: GQLFormDescriptionEditorEventPayload | undefined
 ): payload is GQLFormDescriptionEditorRefreshedEventPayload =>
-  payload.__typename === 'FormDescriptionEditorRefreshedEventPayload';
+  payload?.__typename === 'FormDescriptionEditorRefreshedEventPayload';
 const isSubscribersUpdatedEventPayload = (
   payload: GQLFormDescriptionEditorEventPayload
 ): payload is GQLSubscribersUpdatedEventPayload => payload.__typename === 'SubscribersUpdatedEventPayload';
@@ -160,12 +161,14 @@ export const formDescriptionEditorRepresentationMachine = Machine<
       handleSubscriptionResult: assign((_, event) => {
         const { result } = event as HandleSubscriptionResultEvent;
         const { data } = result;
-        if (isFormDescriptionEditorRefreshedEventPayload(data.formDescriptionEditorEvent)) {
-          const { formDescriptionEditor } = data.formDescriptionEditorEvent;
-          return { formDescriptionEditor };
-        } else if (isSubscribersUpdatedEventPayload(data.formDescriptionEditorEvent)) {
-          const { subscribers } = data.formDescriptionEditorEvent;
-          return { subscribers };
+        if (data) {
+          if (isFormDescriptionEditorRefreshedEventPayload(data.formDescriptionEditorEvent)) {
+            const { formDescriptionEditor } = data.formDescriptionEditorEvent;
+            return { formDescriptionEditor };
+          } else if (isSubscribersUpdatedEventPayload(data.formDescriptionEditorEvent)) {
+            const { subscribers } = data.formDescriptionEditorEvent;
+            return { subscribers };
+          }
         }
         return {};
       }),

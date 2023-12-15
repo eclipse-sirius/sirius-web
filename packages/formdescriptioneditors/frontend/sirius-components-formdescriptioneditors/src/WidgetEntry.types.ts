@@ -81,10 +81,6 @@ export type SelectWidgetProps = WidgetProps<GQLSelect>;
 export type TextareaWidgetProps = WidgetProps<GQLTextarea>;
 export type TextfieldWidgetProps = WidgetProps<GQLTextfield>;
 
-export interface WidgetEntryState {
-  message: string | null;
-}
-
 export interface WidgetEntryStyleProps {
   flexDirection: GQLFlexDirection;
   flexGrow: number;

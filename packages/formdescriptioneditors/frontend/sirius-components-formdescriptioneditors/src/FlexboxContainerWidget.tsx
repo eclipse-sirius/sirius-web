@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Toast, getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
   PropertySectionContext,
@@ -49,7 +49,7 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
     margin: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
     padding: ({ borderStyle }) => (borderStyle ? theme.spacing(0.5) : 0),
     borderWidth: ({ borderStyle }) => borderStyle?.size || 1,
-    borderColor: ({ borderStyle }) => getCSSColor(borderStyle?.color, theme) || 'gray',
+    borderColor: ({ borderStyle }) => (borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'gray'),
     borderStyle: ({ borderStyle }) => borderStyle?.lineStyle || 'solid',
     borderRadius: ({ borderStyle }) => borderStyle?.radius || 0,
   },
@@ -100,9 +100,11 @@ export const FlexboxContainerWidget = ({
     borderStyle: widget.borderStyle,
   });
 
-  const initialState: FlexboxContainerWidgetState = { message: null, selected: false };
+  const initialState: FlexboxContainerWidgetState = { selected: false };
   const [state, setState] = useState<FlexboxContainerWidgetState>(initialState);
-  const { message, selected } = state;
+  const { selected } = state;
+
+  const { addErrorMessage } = useMultiToast();
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -112,16 +114,12 @@ export const FlexboxContainerWidget = ({
   useEffect(() => {
     if (!addWidgetLoading) {
       if (addWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: addWidgetError.message };
-        });
+        addErrorMessage(addWidgetError.message);
       }
       if (addWidgetData) {
         const { addWidget } = addWidgetData;
         if (isErrorPayload(addWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: addWidget.message };
-          });
+          addErrorMessage(addWidget.message);
         }
       }
     }
@@ -150,16 +148,12 @@ export const FlexboxContainerWidget = ({
   useEffect(() => {
     if (!moveWidgetLoading) {
       if (moveWidgetError) {
-        setState((prevState) => {
-          return { ...prevState, message: moveWidgetError.message };
-        });
+        addErrorMessage(moveWidgetError.message);
       }
       if (moveWidgetData) {
         const { moveWidget } = moveWidgetData;
         if (isErrorPayload(moveWidget)) {
-          setState((prevState) => {
-            return { ...prevState, message: moveWidget.message };
-          });
+          addErrorMessage(moveWidget.message);
         }
       }
     }
@@ -167,20 +161,20 @@ export const FlexboxContainerWidget = ({
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.add(classes.dragOver);
+    event.currentTarget.classList.add(classes.dragOver ?? '');
   };
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
   };
   const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    event.currentTarget.classList.remove(classes.dragOver);
+    event.currentTarget.classList.remove(classes.dragOver ?? '');
 
     const id: string = event.dataTransfer.getData('draggedElementId');
     const type: string = event.dataTransfer.getData('draggedElementType');
@@ -265,15 +259,6 @@ export const FlexboxContainerWidget = ({
         onDrop={handleDrop}>
         <Typography variant="body1">{'Drag and drop a widget here'}</Typography>
       </div>
-      <Toast
-        message={message}
-        open={!!message}
-        onClose={() =>
-          setState((prevState) => {
-            return { ...prevState, message: null };
-          })
-        }
-      />
     </div>
   );
 };

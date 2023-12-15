@@ -28,10 +28,10 @@ import { ListWidgetProps } from './WidgetEntry.types';
 
 const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
   style: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
+    color: ({ color }) => (color ? getCSSColor(color, theme) : undefined),
+    fontSize: ({ fontSize }) => (fontSize ? fontSize : undefined),
+    fontStyle: ({ italic }) => (italic ? 'italic' : 'unset'),
+    fontWeight: ({ bold }) => (bold ? 'bold' : 'unset'),
     textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
   },
   icon: {
@@ -51,12 +51,12 @@ const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
 
 export const ListWidget = ({ widget, selection }: ListWidgetProps) => {
   const props: ListStyleProps = {
-    color: widget.style?.color ?? null,
-    fontSize: widget.style?.fontSize ?? null,
-    italic: widget.style?.italic ?? null,
-    bold: widget.style?.bold ?? null,
-    underline: widget.style?.underline ?? null,
-    strikeThrough: widget.style?.strikeThrough ?? null,
+    color: widget.style?.color ?? undefined,
+    fontSize: widget.style?.fontSize ?? undefined,
+    italic: widget.style?.italic ?? undefined,
+    bold: widget.style?.bold ?? undefined,
+    underline: widget.style?.underline ?? undefined,
+    strikeThrough: widget.style?.strikeThrough ?? undefined,
   };
   const classes = useStyles(props);
 

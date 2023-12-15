@@ -14,12 +14,12 @@ import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { GQLList, GQLMessage, GQLSubscriber } from '../form/FormEventFragments.types';
 
 export interface ListStyleProps {
-  color: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
+  color: string | undefined;
+  fontSize: number | undefined;
+  italic: boolean | undefined;
+  bold: boolean | undefined;
+  underline: boolean | undefined;
+  strikeThrough: boolean | undefined;
 }
 
 export interface ListPropertySectionProps {

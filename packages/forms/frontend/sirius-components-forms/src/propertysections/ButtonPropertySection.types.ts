@@ -21,13 +21,13 @@ export interface ButtonPropertySectionProps {
 }
 
 export interface ButtonStyleProps {
-  backgroundColor: string | null;
-  foregroundColor: string | null;
-  fontSize: number | null;
-  italic: boolean | null;
-  bold: boolean | null;
-  underline: boolean | null;
-  strikeThrough: boolean | null;
+  backgroundColor: string | undefined;
+  foregroundColor: string | undefined;
+  fontSize: number | undefined;
+  italic: boolean | undefined;
+  bold: boolean | undefined;
+  underline: boolean | undefined;
+  strikeThrough: boolean | undefined;
   iconOnly: boolean;
 }
 

@@ -24,6 +24,5 @@ export interface PageProps {
 }
 
 export interface PageState {
-  message: string | null;
   selected: boolean;
 }

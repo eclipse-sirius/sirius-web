@@ -64,7 +64,7 @@ export const ImageWidget = ({ widget, selection }: ImageWidgetProps) => {
   };
 
   useEffect(() => {
-    let newURL: string = null;
+    let newURL: string | null = null;
     let validURL = true;
     if (!widget.url) {
       validURL = false;
