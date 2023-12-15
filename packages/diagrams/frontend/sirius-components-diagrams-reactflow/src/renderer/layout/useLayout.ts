@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,19 +54,10 @@ export const useLayout = (): UseLayoutValue => {
     if (state.currentStep === 'INITIAL_STEP') {
       let processedReferencePosition: GQLReferencePosition | null = referencePosition;
       if (processedReferencePosition) {
-        const {
-          parentId,
-          position: { x, y },
-        } = processedReferencePosition;
         let parentNode = reactFlowInstance.getNode(processedReferencePosition.parentId ?? '');
         while (parentNode) {
-          processedReferencePosition = {
-            parentId,
-            position: {
-              x: x - parentNode.position.x,
-              y: y - parentNode.position.y,
-            },
-          };
+          processedReferencePosition.position.x -= parentNode.position.x;
+          processedReferencePosition.position.y -= parentNode.position.y;
           parentNode = reactFlowInstance.getNode(parentNode.parentNode ?? '');
         }
       }
