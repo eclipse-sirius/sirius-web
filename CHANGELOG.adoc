@@ -85,6 +85,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 - https://github.com/eclipse-sirius/sirius-web/issues/2580[#2580] [diagram] Cancel direct edit on 'Esc'.
 - https://github.com/eclipse-sirius/sirius-web/issues/2778[#2778] [diagram] Authorize empty string for direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2579[#2579] [diagram] Fix the invalid text cursor position when editing a label by typing text directly.
+- https://github.com/eclipse-sirius/sirius-web/issues/2826[#2826] [diagram] Fix invalid reference position used for nodes with a depth superior to 2.
 
 === New Features
 - https://github.com/eclipse-sirius/sirius-web/issues/2413[#2413] Add a debug mode for React Flow diagrams
