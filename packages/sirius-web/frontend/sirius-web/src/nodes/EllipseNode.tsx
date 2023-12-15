@@ -50,7 +50,7 @@ const ellipseNodeStyle = (
   };
 
   if (selected || hovered) {
-    ellipseNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+    ellipseNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return ellipseNodeStyle;
@@ -72,7 +72,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
   return (
     <>
       <NodeResizer
-        color={theme.palette.primary.main}
+        color={theme.palette.selected}
         isVisible={selected}
         shouldResize={() => !data.isBorderNode}
         keepAspectRatio={data.nodeDescription?.keepAspectRatio}
