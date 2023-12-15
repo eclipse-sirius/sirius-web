@@ -4,4 +4,7 @@
   <fileset name="all" enabled="true" check-config-name="Sirius" local="false">
     <file-match-pattern match-pattern="." include-pattern="true"/>
   </fileset>
+  <filter name="FilesFromPackage" enabled="true">
+    <filter-data value="src/main/java/org/eclipse/sirius/components/view/builder/generated"/>
+  </filter>
 </fileset-config>
