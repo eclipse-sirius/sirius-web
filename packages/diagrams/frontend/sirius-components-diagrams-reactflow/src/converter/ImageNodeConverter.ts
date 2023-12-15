@@ -15,13 +15,11 @@ import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.typ
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition, NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { ImageNodeData } from '../renderer/node/ImageNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLabelStyle } from './convertDiagram';
-import { AlignmentMap } from './convertDiagram.types';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertHandles } from './convertHandles';
+import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -29,16 +27,17 @@ const toImageNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLImageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<ImageNodeData> => {
+): Node<NodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
     insideLabel,
+    outsideLabels,
     id,
     state,
     style,
@@ -48,12 +47,13 @@ const toImageNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: ImageNodeData = {
+  const data: NodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     imageURL: style.imageURL,
     style: {},
     faded: state === GQLViewModifier.Faded,
@@ -61,7 +61,7 @@ const toImageNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     labelEditable,
     positionDependentRotation: style.positionDependentRotation,
     connectionHandles,
@@ -69,37 +69,27 @@ const toImageNode = (
   };
 
   if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.label = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      iconURL: labelStyle.iconURL,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
+    const {
+      id,
+      text,
+      style: labelStyle,
+      style: { iconURL },
+    } = insideLabel;
+    data.outsideLabels = {
+      BOTTOM_MIDDLE: {
+        id,
+        text,
+        iconURL,
+        style: {
+          ...convertLabelStyle(labelStyle),
+        },
       },
     };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      if (alignement.primaryAlignment === 'TOP') {
-        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-      }
-      if (alignement.secondaryAlignment === 'CENTER') {
-        data.style = { ...data.style, alignItems: 'stretch' };
-        data.label.style = { ...data.label.style, justifyContent: 'center' };
-      }
-    }
   }
 
-  const node: Node<ImageNodeData> = {
+  const node: Node<NodeData> = {
     id,
-    type: 'imageNode',
+    type: 'freeFormNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
@@ -128,7 +118,7 @@ const toImageNode = (
   return node;
 };
 
-export class ImageNodeConverterHandler implements INodeConverterHandler {
+export class ImageNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'ImageNodeStyle';
   }
@@ -144,7 +134,9 @@ export class ImageNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    if (nodeDescription) {
+      nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    }
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],

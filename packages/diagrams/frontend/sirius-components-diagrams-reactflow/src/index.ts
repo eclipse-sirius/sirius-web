@@ -13,16 +13,17 @@
 
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
-export type { IConvertEngine, INodeConverterHandler } from './converter/ConvertEngine.types';
-export { convertLabelStyle, convertLineStyle } from './converter/convertDiagram';
+export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
+export { convertLineStyle } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export { convertHandles } from './converter/convertHandles';
+export { convertLabelStyle, convertOutsideLabels } from './converter/convertLabel';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
 export type { GQLDiagram } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle, GraphQLNodeStyleFragment } from './graphql/subscription/nodeFragment.types';
-export { BorderNodePositon } from './renderer/DiagramRenderer.types';
+export { BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, NodeData } from './renderer/DiagramRenderer.types';
 export { Label } from './renderer/Label';
 export { useConnector } from './renderer/connector/useConnector';
@@ -39,6 +40,7 @@ export { computePreviousPosition, computePreviousSize } from './renderer/layout/
 export * from './renderer/layout/layoutBorderNodes';
 export * from './renderer/layout/layoutNode';
 export { useLayout } from './renderer/layout/useLayout';
+export { DefaultNode as NodeWrapper } from './renderer/node/DefaultNode';
 export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';

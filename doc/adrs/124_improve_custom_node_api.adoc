@@ -1,0 +1,39 @@
+= ADR-124 - Improve custom node API
+
+== Context
+
+It's now possible to contribute new custom node in sirius-web, to do that, you have to implement the entire node behavior.
+A lot of these behaviors are not specific to custom node, like handle feedback, for example.
+Despite this, a lot of code is duplicated between custom node and core one types.
+Even among the core node types a lot of code is duplicated.
+
+== Decision
+
+The objective is to create an API that allows custom nodes to be declared easily without having to manipulate all the internal details of the core nodes.
+For that, we will introduce a dedicated hook which will encapsulate all the features of the node API.
+This hook could be in a simple version as simple as this:
+
+[source,typescript]
+----
+const CustomNode = memo(({ ...props }) => {
+  return (
+    <NodeWrapper {...props}>
+      <div>My custom content</div>
+    </NodeWrapper>
+  )
+})
+----
+
+== Result
+
+We wanted to handle in the NodeWrapper everything the specifier can define in the View DSL.
+Because of the reactflow node structure, this cannot be done entirely (e.g. inside label must be put in the content of the node wrapper children which cannot be done).
+
+== Status
+
+Work in progress
+
+== Consequences
+
+The existing custom nodes will have to be rewritten to migrate to the new API.
+We will stop exporting every single details of the internal behavior of our node from `sirius-components-diagrams-reactflow` in the near future.

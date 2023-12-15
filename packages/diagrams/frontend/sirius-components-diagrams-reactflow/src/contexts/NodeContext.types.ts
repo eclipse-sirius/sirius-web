@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { NodeProps } from 'reactflow';
-import { INodeConverterHandler } from '../converter/ConvertEngine.types';
+import { INodeConverter } from '../converter/ConvertEngine.types';
 import { GraphQLNodeStyleFragment } from '../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../renderer/DiagramRenderer.types';
 import { INodeLayoutHandler } from '../renderer/layout/LayoutEngine.types';
@@ -26,6 +26,6 @@ export type NodeTypeContributionElement = React.ReactElement<NodeTypeContributio
 export interface NodeTypeContextValue {
   graphQLNodeStyleFragments: GraphQLNodeStyleFragment[];
   nodeLayoutHandlers: INodeLayoutHandler<NodeData>[];
-  nodeConverterHandlers: INodeConverterHandler[];
+  nodeConverters: INodeConverter[];
   nodeTypeContributions: NodeTypeContributionElement[];
 }

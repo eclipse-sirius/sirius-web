@@ -11,15 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { DefaultNode } from './DefaultNode';
 import { IconLabelNode } from './IconLabelNode';
-import { ImageNode } from './ImageNode';
-import { ListNode } from './ListNode';
 import { DiagramNodeTypes } from './NodeTypes.types';
-import { RectangularNode } from './RectangularNode';
 
 export const nodeTypes: DiagramNodeTypes = {
-  rectangularNode: RectangularNode,
-  imageNode: ImageNode,
-  listNode: ListNode,
+  freeFormNode: DefaultNode,
+  listNode: DefaultNode,
   iconLabelNode: IconLabelNode,
 };

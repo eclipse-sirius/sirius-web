@@ -52,6 +52,8 @@ public final class Node implements IDiagramElement {
 
     private InsideLabel insideLabel;
 
+    private List<OutsideLabel> outsideLabels;
+
     private INodeStyle style;
 
     private ILayoutStrategy childrenLayoutStrategy;
@@ -130,6 +132,10 @@ public final class Node implements IDiagramElement {
 
     public InsideLabel getInsideLabel() {
         return this.insideLabel;
+    }
+
+    public List<OutsideLabel> getOutsideLabels() {
+        return this.outsideLabels;
     }
 
     public INodeStyle getStyle() {
@@ -213,6 +219,8 @@ public final class Node implements IDiagramElement {
 
         private InsideLabel insideLabel;
 
+        private List<OutsideLabel> outsideLabels = List.of();
+
         private INodeStyle style;
 
         private ILayoutStrategy childrenLayoutStrategy;
@@ -251,6 +259,7 @@ public final class Node implements IDiagramElement {
             this.state = node.getState();
             this.collapsingState = node.getCollapsingState();
             this.insideLabel = node.getInsideLabel();
+            this.outsideLabels = node.getOutsideLabels();
             this.style = node.getStyle();
             this.childrenLayoutStrategy = node.getChildrenLayoutStrategy();
             this.position = node.getPosition();
@@ -311,6 +320,11 @@ public final class Node implements IDiagramElement {
 
         public Builder insideLabel(InsideLabel insideLabel) {
             this.insideLabel = Objects.requireNonNull(insideLabel);
+            return this;
+        }
+
+        public Builder outsideLabels(List<OutsideLabel> outsideLabels) {
+            this.outsideLabels = Objects.requireNonNull(outsideLabels);
             return this;
         }
 
@@ -382,6 +396,7 @@ public final class Node implements IDiagramElement {
             node.state = Objects.requireNonNull(this.state);
             node.collapsingState = Objects.requireNonNull(this.collapsingState);
             node.insideLabel = this.insideLabel;
+            node.outsideLabels = Objects.requireNonNull(this.outsideLabels);
             node.style = Objects.requireNonNull(this.style);
             node.childrenLayoutStrategy = this.childrenLayoutStrategy;
             node.position = Objects.requireNonNull(this.position);

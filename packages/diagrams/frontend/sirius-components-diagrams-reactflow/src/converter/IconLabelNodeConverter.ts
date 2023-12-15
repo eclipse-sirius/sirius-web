@@ -20,11 +20,11 @@ import {
   GQLNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLabelStyle } from './convertDiagram';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -32,7 +32,7 @@ const toIconLabelNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLIconLabelNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean
 ): Node<IconLabelNodeData> => {
   const {
@@ -42,6 +42,7 @@ const toIconLabelNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
     style,
     labelEditable,
@@ -59,9 +60,10 @@ const toIconLabelNode = (
       textAlign: 'left',
       backgroundColor: style.backgroundColor,
     },
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
@@ -69,18 +71,22 @@ const toIconLabelNode = (
     labelEditable: labelEditable,
     connectionHandles,
     isNew,
+    imageURL: null,
+    positionDependentRotation: false,
   };
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
 
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       style: {
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
+      isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
   }
 
@@ -115,7 +121,7 @@ const toIconLabelNode = (
   return node;
 };
 
-export class IconLabelNodeConverterHandler implements INodeConverterHandler {
+export class IconLabelNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'IconLabelNodeStyle';
   }
@@ -131,6 +137,8 @@ export class IconLabelNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
+    if (nodeDescription) {
+      nodes.push(toIconLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode));
+    }
   }
 }

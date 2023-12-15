@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.diagrams;
 
-import { NodeData } from '../DiagramRenderer.types';
-
-export interface ImageNodeData extends NodeData {
-  imageURL: string;
-  positionDependentRotation: boolean;
+/**
+ * The outside label location.
+ * @author gcoutable
+ */
+public enum OutsideLabelLocation {
+    BOTTOM_BEGIN,
+    BOTTOM_MIDDLE,
+    BOTTOM_END,
 }

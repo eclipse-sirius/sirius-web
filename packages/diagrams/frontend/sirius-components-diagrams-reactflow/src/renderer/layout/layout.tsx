@@ -22,11 +22,8 @@ import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSub
 import { NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
-import { ListNode } from '../node/ListNode';
-import { ListNodeData } from '../node/ListNode.types';
+import { DefaultNode } from '../node/DefaultNode';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { RectangularNode } from '../node/RectangularNode';
-import { RectangularNodeData } from '../node/RectangularNode.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
@@ -54,8 +51,8 @@ const emptyRectangularNodeProps = {
   type: 'rectangularNode',
 };
 
-const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
-const isRectangularNode = (node: Node<NodeData>): node is Node<RectangularNodeData> => node.type === 'rectangularNode';
+const isListNode = (node: Node<NodeData>): node is Node<NodeData> => node.type === 'listNode';
+const isRectangularNode = (node: Node<NodeData>): node is Node<NodeData> => node.type === 'rectangularNode';
 
 export const prepareLayoutArea = (
   diagram: RawDiagram,
@@ -81,14 +78,14 @@ export const prepareLayoutArea = (
    */
   const labelElements: JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
-    if (hiddenContainer && node.data.label) {
+    if (hiddenContainer && node.data.insideLabel) {
       const children: JSX.Element[] = [
         createElement(Label, {
           diagramElementId: node.id,
-          label: node.data.label,
+          label: node.data.insideLabel,
           faded: false,
           transform: '',
-          key: node.data.label.id,
+          key: node.data.insideLabel.id,
         }),
       ];
       const element: JSX.Element = createElement('div', {
@@ -97,6 +94,60 @@ export const prepareLayoutArea = (
         children,
       });
       labelElements.push(element);
+    }
+    if (hiddenContainer && Object.keys(node.data.outsideLabels).find((key) => key.startsWith('BOTTOM_'))) {
+      const outsideLabels = node.data.outsideLabels;
+      if (outsideLabels.BOTTOM_BEGIN) {
+        const children: JSX.Element[] = [
+          createElement(Label, {
+            diagramElementId: node.id,
+            label: outsideLabels.BOTTOM_BEGIN,
+            faded: false,
+            transform: '',
+            key: outsideLabels.BOTTOM_BEGIN.id,
+          }),
+        ];
+        const element: JSX.Element = createElement('div', {
+          id: `${node.id}-outside-label-BOTTOM_BEGIN-${index}`,
+          key: `${node.id}-outside-label-BOTTOM_BEGIN-${index}`,
+          children,
+        });
+        labelElements.push(element);
+      }
+      if (outsideLabels.BOTTOM_MIDDLE) {
+        const children: JSX.Element[] = [
+          createElement(Label, {
+            diagramElementId: node.id,
+            label: outsideLabels.BOTTOM_MIDDLE,
+            faded: false,
+            transform: '',
+            key: outsideLabels.BOTTOM_MIDDLE.id,
+          }),
+        ];
+        const element: JSX.Element = createElement('div', {
+          id: `${node.id}-outside-label-BOTTOM_MIDDLE-${index}`,
+          key: `${node.id}-outside-label-BOTTOM_MIDDLE-${index}`,
+          children,
+        });
+        labelElements.push(element);
+      }
+      if (outsideLabels.BOTTOM_END) {
+        const children: JSX.Element[] = [
+          createElement(Label, {
+            diagramElementId: node.id,
+            label: outsideLabels.BOTTOM_END,
+            faded: false,
+            transform: '',
+            key: outsideLabels.BOTTOM_END.id,
+          }),
+        ];
+        const element: JSX.Element = createElement('div', {
+          id: `${node.id}-outside-label-BOTTOM_END-${index}`,
+          key: `${node.id}-outside-label-BOTTOM_END-${index}`,
+          children,
+        });
+        labelElements.push(element);
+      }
     }
   });
 
@@ -119,7 +170,7 @@ export const prepareLayoutArea = (
     if (hiddenContainer && node) {
       const children: JSX.Element[] = [];
       if (isRectangularNode(node)) {
-        const element = createElement(RectangularNode, {
+        const element = createElement(DefaultNode, {
           ...emptyRectangularNodeProps,
           id: node.id,
           data: node.data,
@@ -128,7 +179,7 @@ export const prepareLayoutArea = (
         children.push(element);
       }
       if (isListNode(node)) {
-        const element = createElement(ListNode, {
+        const element = createElement(DefaultNode, {
           ...emptyListNodeProps,
           id: node.id,
           data: node.data,

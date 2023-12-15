@@ -11,21 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { CoordinateExtent, Node, XYPosition } from 'reactflow';
-import { BorderNodePositon, NodeData } from '../DiagramRenderer.types';
-import { borderNodeOffset } from './layoutParams';
+import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { borderNodeOffset } from './layoutParams';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
-  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePositon.EAST;
+  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.EAST;
 };
 export const isWestBorderNode = (borderNode: Node<NodeData>): boolean => {
-  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePositon.WEST;
+  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.WEST;
 };
 export const isNorthBorderNode = (borderNode: Node<NodeData>): boolean => {
-  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePositon.NORTH;
+  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.NORTH;
 };
 export const isSouthBorderNode = (borderNode: Node<NodeData>): boolean => {
-  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePositon.SOUTH;
+  return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.SOUTH;
 };
 
 export const getBorderNodeExtent = (
@@ -60,7 +60,7 @@ export const computeBorderNodePositions = (nodes: Node<NodeData, DiagramNodeType
       const parentNode = nodes.find((node) => node.id === borderNode.parentNode);
       if (parentNode) {
         const newPosition = findBorderNodePosition(borderNode.position, borderNode, parentNode);
-        borderNode.data.borderNodePosition = newPosition ?? BorderNodePositon.EAST;
+        borderNode.data.borderNodePosition = newPosition ?? BorderNodePosition.EAST;
       }
     });
 };
@@ -69,19 +69,19 @@ export const findBorderNodePosition = (
   borderNodePosition: XYPosition | undefined,
   borderNode: Node,
   parentNode: Node | undefined
-): BorderNodePositon | null => {
+): BorderNodePosition | null => {
   if (borderNodePosition && borderNode.width && borderNode.height && parentNode?.width && parentNode.height) {
     if (Math.trunc(borderNodePosition.x + borderNode.width) - borderNodeOffset === 0) {
-      return BorderNodePositon.WEST;
+      return BorderNodePosition.WEST;
     }
     if (Math.trunc(borderNodePosition.x) + borderNodeOffset === Math.trunc(parentNode.width)) {
-      return BorderNodePositon.EAST;
+      return BorderNodePosition.EAST;
     }
     if (Math.trunc(borderNodePosition.y + borderNode.height) - borderNodeOffset === 0) {
-      return BorderNodePositon.NORTH;
+      return BorderNodePosition.NORTH;
     }
     if (Math.trunc(borderNodePosition.y) + borderNodeOffset === Math.trunc(parentNode.height)) {
-      return BorderNodePositon.SOUTH;
+      return BorderNodePosition.SOUTH;
     }
   }
   return null;

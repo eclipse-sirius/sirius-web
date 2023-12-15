@@ -26,7 +26,7 @@ export interface IConvertEngine {
   ): void;
 }
 
-export interface INodeConverterHandler {
+export interface INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>): boolean;
 
   handle(

@@ -13,7 +13,6 @@
 
 import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
-import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousSize } from './bounds';
@@ -24,6 +23,7 @@ import {
   computeNodesBox,
   findNodeIndex,
   getEastBorderNodeFootprintHeight,
+  getHeaderFootprintHeight,
   getNodeOrMinHeight,
   getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
@@ -32,7 +32,7 @@ import {
   setBorderNodesPosition,
 } from './layoutNode';
 
-export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
+export class ListNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'listNode';
   }
@@ -40,7 +40,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, 'listNode'>,
+    node: Node<NodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -68,7 +68,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
   handleLeafNode(
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, 'listNode'>,
+    node: Node<NodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceWidth?: number
@@ -103,7 +103,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, 'listNode'>,
+    node: Node<NodeData, 'listNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -114,7 +114,8 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader: boolean = node.data.label?.isHeader ?? false;
+    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
+    const displayHeaderSeparator: boolean = node.data.insideLabel?.displayHeaderSeparator ?? false;
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -144,9 +145,10 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     }
 
     directNodesChildren.forEach((child, index) => {
+      const headerFootprintHeight = getHeaderFootprintHeight(labelElement, withHeader, displayHeaderSeparator);
       child.position = {
         x: borderWidth,
-        y: borderWidth + (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0),
+        y: borderWidth + headerFootprintHeight,
       };
       const previousSibling = directNodesChildren[index - 1];
       if (previousSibling) {
@@ -173,7 +175,6 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
 
     const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
-    // TODO: rework this.
     if (node.data.nodeDescription?.userResizable && previousNode) {
       if (minNodeheight > (previousNode.height ?? 0)) {
         node.height = minNodeheight;
@@ -183,7 +184,8 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     } else {
       node.height = minNodeheight;
     }
-    if (node.data.nodeDescription?.keepAspectRatio) {
+
+    if (node.data.nodeDescription.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
     // Update border nodes positions
@@ -193,5 +195,3 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     setBorderNodesPosition(borderNodes, node, previousDiagram);
   }
 }
-
-// TODO: Tester avec un compartiment free form entre attribut et operation.

@@ -12,21 +12,22 @@
  *******************************************************************************/
 
 import { Edge, Node } from 'reactflow';
+import { convertLabelStyle } from '../converter/convertLabel';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
-import { GQLLabel, GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
+import { GQLLabel } from '../graphql/subscription/labelFragment.types';
 import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
-import { Diagram, Label, NodeData } from '../renderer/DiagramRenderer.types';
+import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
+import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { IconLabelNodeConverterHandler } from './IconLabelNodeConverterHandler';
-import { ImageNodeConverterHandler } from './ImageNodeConverterHandler';
-import { ListNodeConverterHandler } from './ListNodeConverterHandler';
-import { RectangleNodeConverterHandler } from './RectangleNodeConverterHandler';
-import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { IconLabelNodeConverter } from './IconLabelNodeConverter';
+import { ImageNodeConverter } from './ImageNodeConverter';
+import { ListNodeConverter } from './ListNodeConverter';
+import { RectangleNodeConverter } from './RectangleNodeConverter';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -41,7 +42,7 @@ const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   return depth;
 };
 
-const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): Label => {
+const convertEdgeLabel = (gqlEdgeLabel: GQLLabel): EdgeLabel => {
   return {
     id: gqlEdgeLabel.id,
     text: gqlEdgeLabel.text,
@@ -67,47 +68,16 @@ export const convertLineStyle = (lineStyle: string): string => {
   return 'solid';
 };
 
-export const convertLabelStyle = (gqlLabelStyle: GQLLabelStyle): React.CSSProperties => {
-  const style: React.CSSProperties = {};
-
-  if (gqlLabelStyle.bold) {
-    style.fontWeight = 'bold';
-  }
-  if (gqlLabelStyle.italic) {
-    style.fontStyle = 'italic';
-  }
-  if (gqlLabelStyle.fontSize) {
-    style.fontSize = gqlLabelStyle.fontSize;
-  }
-  if (gqlLabelStyle.color) {
-    style.color = gqlLabelStyle.color;
-  }
-
-  let decoration: string = '';
-  if (gqlLabelStyle.strikeThrough) {
-    decoration = decoration + 'line-through';
-  }
-  if (gqlLabelStyle.underline) {
-    const separator: string = decoration.length > 0 ? ' ' : '';
-    decoration = decoration + separator + 'underline';
-  }
-  if (decoration.length > 0) {
-    style.textDecoration = decoration;
-  }
-
-  return style;
-};
-
-const defaultNodeConverterHandlers: INodeConverterHandler[] = [
-  new RectangleNodeConverterHandler(),
-  new ImageNodeConverterHandler(),
-  new IconLabelNodeConverterHandler(),
-  new ListNodeConverterHandler(),
+const defaultNodeConverters: INodeConverter[] = [
+  new RectangleNodeConverter(),
+  new ImageNodeConverter(),
+  new IconLabelNodeConverter(),
+  new ListNodeConverter(),
 ];
 
 export const convertDiagram = (
   gqlDiagram: GQLDiagram,
-  nodeConverterHandlerContributions: INodeConverterHandler[],
+  nodeConverterContributions: INodeConverter[],
   nodeDescriptions: GQLNodeDescription[]
 ): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
@@ -120,13 +90,13 @@ export const convertDiagram = (
       nodeDescriptions: GQLNodeDescription[]
     ) {
       gqlNodesToConvert.forEach((node) => {
-        const nodeConverterHandler: INodeConverterHandler | undefined = [
-          ...defaultNodeConverterHandlers,
-          ...nodeConverterHandlerContributions,
+        const nodeConverter: INodeConverter | undefined = [
+          ...defaultNodeConverters,
+          ...nodeConverterContributions,
         ].find((handler) => handler.canHandle(node));
-        if (nodeConverterHandler) {
+        if (nodeConverter) {
           const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(node.id);
-          nodeConverterHandler.handle(
+          nodeConverter.handle(
             this,
             gqlDiagram,
             node,

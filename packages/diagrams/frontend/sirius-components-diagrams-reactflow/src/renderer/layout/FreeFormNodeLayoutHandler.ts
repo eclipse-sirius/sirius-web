@@ -14,7 +14,6 @@
 import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { RectangularNodeData } from '../node/RectangularNode.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition, computePreviousSize } from './bounds';
 import { RawDiagram } from './layout.types';
@@ -25,7 +24,7 @@ import {
   findNodeIndex,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
-  getHeaderFootprint,
+  getHeaderFootprintHeight,
   getNodeOrMinHeight,
   getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
@@ -35,22 +34,22 @@ import {
 } from './layoutNode';
 import { rectangularNodePadding } from './layoutParams';
 
-export class RectangleNodeLayoutHandler implements INodeLayoutHandler<RectangularNodeData> {
+export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
-    return node.type === 'rectangularNode';
+    return node.type === 'freeFormNode';
   }
 
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData, 'rectangularNode'>,
+    node: Node<NodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
+    const nodeElement = document.getElementById(`${node.id}-freeFormNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
     if (directChildren.length > 0) {
@@ -72,7 +71,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData, 'rectangularNode'>,
+    node: Node<NodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -83,8 +82,8 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader: boolean = node.data.label?.isHeader ?? false;
-    const displayHeaderSeparator: boolean = node.data.label?.displayHeaderSeparator ?? false;
+    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
+    const displayHeaderSeparator: boolean = node.data.insideLabel?.displayHeaderSeparator ?? false;
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -97,21 +96,17 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
       if (!!createdNode) {
         // WARN: this prevent the created to overlep the TOP header. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement
-          ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
-          : 0;
+        const headerFootprintHeight = getHeaderFootprintHeight(labelElement, withHeader, displayHeaderSeparator);
         child.position = createdNode.position;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        if (child.position.y < borderWidth + headerFootprintHeight) {
+          child.position = { ...child.position, y: borderWidth + headerFootprintHeight };
         }
       } else if (previousPosition) {
         // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement
-          ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
-          : 0;
+        const headerFootprintHeight = getHeaderFootprintHeight(labelElement, withHeader, displayHeaderSeparator);
         child.position = previousPosition;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        if (child.position.y < borderWidth + headerFootprintHeight) {
+          child.position = { ...child.position, y: borderWidth + headerFootprintHeight };
         }
         if (child.position.x < borderWidth + rectangularNodePadding) {
           child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
@@ -188,7 +183,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       node.height = minNodeheight;
     }
 
-    if (node.data.nodeDescription?.keepAspectRatio) {
+    if (node.data.nodeDescription.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
 
@@ -201,7 +196,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
   private handleLeafNode(
     previousDiagram: RawDiagram | null,
-    node: Node<RectangularNodeData, 'rectangularNode'>,
+    node: Node<NodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceWidth?: number
@@ -239,7 +234,7 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       node.height = minNodeheight;
     }
 
-    if (node.data.nodeDescription?.keepAspectRatio) {
+    if (node.data.nodeDescription.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
   }

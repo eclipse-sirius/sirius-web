@@ -41,7 +41,7 @@ export const PapayaOperationActivityLabelDetailToolContribution = ({
       <>
         <Dialog open={true} onClose={onClose} fullWidth>
           <DialogContent>
-            <DialogContentText>{targetedNode.data.label.text}</DialogContentText>
+            <DialogContentText>{targetedNode.data.insideLabel.text}</DialogContentText>
           </DialogContent>
         </Dialog>
       </>

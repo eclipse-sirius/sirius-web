@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { edgeFragment } from './edgeFragment';
-import { insideLabelFragment, labelFragment } from './labelFragment';
+import { insideLabelFragment, labelFragment, outsideLabelFragment } from './labelFragment';
 import { nodeFragment } from './nodeFragment';
 import { GraphQLNodeStyleFragment } from './nodeFragment.types';
 
@@ -76,4 +76,5 @@ ${nodeFragment(contributions)}
 ${edgeFragment}
 ${labelFragment}
 ${insideLabelFragment}
+${outsideLabelFragment}
 `;

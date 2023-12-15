@@ -11,11 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Label } from './DiagramRenderer.types';
+import { EdgeLabel, InsideLabel, OutsideLabel } from './DiagramRenderer.types';
 
 export interface LabelProps {
   diagramElementId: string;
-  label: Label;
+  label: EdgeLabel | InsideLabel | OutsideLabel;
   faded: boolean;
   transform: string;
 }
