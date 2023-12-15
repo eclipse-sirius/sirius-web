@@ -41,6 +41,8 @@ export interface DiagramMetadata {
   targetObjectId: string;
 }
 
+export type InsideLabelLocation = 'TOP_CENTER';
+
 export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';
 
 export type OutsideLabels = Partial<Record<OutsideLabelLocation, OutsideLabel>>;
@@ -51,6 +53,7 @@ export interface NodeData {
   targetObjectLabel: string;
   descriptionId: string;
   insideLabel: InsideLabel | null;
+  insideLabelLocation: InsideLabelLocation | null;
   outsideLabels: OutsideLabels;
   faded: boolean;
   nodeDescription: GQLNodeDescription;

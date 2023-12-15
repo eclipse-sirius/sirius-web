@@ -61,6 +61,7 @@ const toIconLabelNode = (
       backgroundColor: style.backgroundColor,
     },
     insideLabel: null,
+    insideLabelLocation: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
@@ -88,6 +89,7 @@ const toIconLabelNode = (
       isHeader: insideLabel.isHeader,
       displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
+    data.insideLabelLocation = insideLabel.insideLabelLocation;
   }
 
   const node: Node<IconLabelNodeData> = {

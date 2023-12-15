@@ -25,6 +25,7 @@ import { ConnectionHandles } from '../handles/ConnectionHandles';
 import { ConnectionTargetHandle } from '../handles/ConnectionTargetHandle';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
+import { FlexDirection } from './DefaultNode.types';
 import { NodeContext } from './NodeContext';
 import { NodeContextValue } from './NodeContext.types';
 
@@ -35,9 +36,16 @@ const defaultNodeStyle = (
   hovered: boolean,
   faded: boolean,
   rotation: string | undefined,
-  imageURL: string | undefined
+  imageURL: string | undefined,
+  flexDirection: FlexDirection | undefined,
+  justifyContent: string | undefined,
+  alignItems: string | undefined
 ): React.CSSProperties => {
   const freeFormNodeStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection,
+    justifyContent,
+    alignItems,
     width: '100%',
     height: '100%',
     opacity: faded ? '0.4' : '',
@@ -134,6 +142,22 @@ export const DefaultNode = memo(({ id, data, selected }: NodeProps<NodeData>) =>
     );
   }
 
+  let direction: FlexDirection | undefined;
+  let nodeJustifyContent: string | undefined;
+  let labelJustifyContent: string | undefined;
+  let nodeAlignItems: string | undefined;
+  if (data.insideLabel && data.insideLabelLocation) {
+    if (data.insideLabelLocation.startsWith('TOP')) {
+      direction = 'column';
+      nodeJustifyContent = 'flex-start';
+    }
+
+    if (data.insideLabelLocation.endsWith('CENTER')) {
+      nodeAlignItems = 'stretch';
+      labelJustifyContent = 'center';
+    }
+  }
+
   return (
     <>
       {data.nodeDescription.userResizable && (
@@ -146,7 +170,18 @@ export const DefaultNode = memo(({ id, data, selected }: NodeProps<NodeData>) =>
       )}
       <div
         style={{
-          ...defaultNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation, imageURL),
+          ...defaultNodeStyle(
+            theme,
+            data.style,
+            selected,
+            hoveredNode?.id === id,
+            data.faded,
+            rotation,
+            imageURL,
+            direction,
+            nodeJustifyContent,
+            nodeAlignItems
+          ),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}
@@ -154,7 +189,9 @@ export const DefaultNode = memo(({ id, data, selected }: NodeProps<NodeData>) =>
         onDrop={handleOnDrop}
         data-testid={`Default - ${data.targetObjectLabel}`}>
         {data.insideLabel ? (
-          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+          <div style={{ justifyContent: labelJustifyContent }}>
+            <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+          </div>
         ) : null}
         {selected ? (
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />

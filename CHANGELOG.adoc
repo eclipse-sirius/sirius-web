@@ -71,6 +71,8 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 </SiriusWebApplication>
 ----
 - https://github.com/eclipse-sirius/sirius-web/issues/2628[#2628] [diagram] Improve the API available for custom nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/2831[#2831] [diagram] Add inside label location to the node data.
+Custom nodes based on the `ListNodeConverter` and `RectangleNodeConverter` should handle the inside label location directly in the reactflow node.
 
 === Dependency update
 
