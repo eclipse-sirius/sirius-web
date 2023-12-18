@@ -50,6 +50,13 @@ const imageNodeStyle = (
   return imageNodeStyle;
 };
 
+const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    width: theme.spacing(0.75),
+    height: theme.spacing(0.75),
+  };
+};
+
 const computeBorderRotation = (data: ImageNodeData): string | undefined => {
   if (data?.isBorderNode && data.positionDependentRotation) {
     switch (data.borderNodePosition) {
@@ -78,6 +85,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
   return (
     <>
       <NodeResizer
+        handleStyle={{ ...resizeHandleStyle(theme) }}
         color={theme.palette.selected}
         isVisible={selected && !data.isBorderNode}
         shouldResize={() => !data.isBorderNode}

@@ -48,6 +48,13 @@ const rectangularNodeStyle = (
   return rectangularNodeStyle;
 };
 
+const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    width: theme.spacing(0.75),
+    height: theme.spacing(0.75),
+  };
+};
+
 export const RectangularNode = memo(({ data, id, selected }: NodeProps<RectangularNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
@@ -64,6 +71,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
     <>
       {data.nodeDescription?.userResizable && (
         <NodeResizer
+          handleStyle={{ ...resizeHandleStyle(theme) }}
           color={theme.palette.selected}
           isVisible={selected}
           shouldResize={() => !data.isBorderNode}
