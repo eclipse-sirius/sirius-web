@@ -56,6 +56,13 @@ const ellipseNodeStyle = (
   return ellipseNodeStyle;
 };
 
+const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    width: theme.spacing(0.75),
+    height: theme.spacing(0.75),
+  };
+};
+
 export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
@@ -72,6 +79,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
   return (
     <>
       <NodeResizer
+        handleStyle={{ ...resizeHandleStyle(theme) }}
         color={theme.palette.selected}
         isVisible={selected}
         shouldResize={() => !data.isBorderNode}
