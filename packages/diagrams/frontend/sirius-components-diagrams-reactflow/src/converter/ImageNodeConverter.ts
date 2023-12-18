@@ -53,6 +53,7 @@ const toImageNode = (
     targetObjectKind,
     descriptionId,
     insideLabel: null,
+    insideLabelLocation: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     imageURL: style.imageURL,
     style: {},

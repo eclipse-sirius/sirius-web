@@ -17,6 +17,7 @@ import {
   ConnectionHandles,
   ConnectionTargetHandle,
   DiagramElementPalette,
+  FlexDirection,
   Label,
   NodeContext,
   NodeContextValue,
@@ -35,10 +36,16 @@ const ellipseNodeStyle = (
   style: React.CSSProperties,
   selected: boolean,
   hovered: boolean,
-  faded: boolean
+  faded: boolean,
+  flexDirection: FlexDirection | undefined,
+  justifyContent: string | undefined,
+  alignItems: string | undefined
 ): React.CSSProperties => {
   const ellipseNodeStyle: React.CSSProperties = {
     display: 'flex',
+    flexDirection,
+    justifyContent,
+    alignItems,
     padding: '8px',
     width: '100%',
     height: '100%',
@@ -69,6 +76,22 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
 
   useRefreshConnectionHandles(id, data.connectionHandles);
 
+  let direction: FlexDirection | undefined;
+  let nodeJustifyContent: string | undefined;
+  let labelJustifyContent: string | undefined;
+  let nodeAlignItems: string | undefined;
+  if (data.insideLabel && data.insideLabelLocation) {
+    if (data.insideLabelLocation.startsWith('TOP')) {
+      direction = 'column';
+      nodeJustifyContent = 'flex-start';
+    }
+
+    if (data.insideLabelLocation.endsWith('CENTER')) {
+      nodeAlignItems = 'stretch';
+      labelJustifyContent = 'center';
+    }
+  }
+
   return (
     <>
       <NodeResizer
@@ -79,7 +102,16 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
       />
       <div
         style={{
-          ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+          ...ellipseNodeStyle(
+            theme,
+            data.style,
+            selected,
+            hoveredNode?.id === id,
+            data.faded,
+            direction,
+            nodeJustifyContent,
+            nodeAlignItems
+          ),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}
@@ -87,7 +119,9 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
         onDrop={handleOnDrop}
         data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
         {data.insideLabel ? (
-          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+          <div style={{ justifyContent: labelJustifyContent }}>
+            <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+          </div>
         ) : null}
         {selected ? (
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />

@@ -11,18 +11,4 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface AlignmentMapType {
-  TOP_CENTER: Alignment;
-}
-
-export const AlignmentMap: AlignmentMapType = {
-  TOP_CENTER: { primaryAlignment: 'TOP', secondaryAlignment: 'CENTER', isPrimaryVerticalAlignment: true },
-};
-
-export type AlignmentValue = 'TOP' | 'BOTTOM' | 'LEFT' | 'RIGHT' | 'CENTER';
-
-export interface Alignment {
-  primaryAlignment: AlignmentValue;
-  secondaryAlignment: AlignmentValue;
-  isPrimaryVerticalAlignment: boolean;
-}
+export type FlexDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';

@@ -24,7 +24,6 @@ import { BorderNodePosition, NodeData } from '../renderer/DiagramRenderer.types'
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle } from './convertDiagram';
-import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
@@ -73,6 +72,7 @@ const toListNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
+    insideLabelLocation: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     imageURL: null,
     faded: state === GQLViewModifier.Faded,
@@ -105,20 +105,7 @@ const toListNode = (
         ...convertLabelStyle(labelStyle),
       },
     };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      if (alignement.primaryAlignment === 'TOP') {
-        if (data.insideLabel.displayHeaderSeparator) {
-          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-        }
-        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-      }
-      if (alignement.secondaryAlignment === 'CENTER') {
-        data.style = { ...data.style, alignItems: 'stretch' };
-        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-      }
-    }
+    data.insideLabelLocation = insideLabel.insideLabelLocation;
   }
 
   const node: Node<NodeData> = {

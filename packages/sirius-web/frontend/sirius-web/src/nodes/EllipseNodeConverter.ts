@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  AlignmentMap,
   BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
@@ -69,6 +68,7 @@ const toEllipseNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
+    insideLabelLocation: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
@@ -101,20 +101,7 @@ const toEllipseNode = (
       },
       iconURL: labelStyle.iconURL,
     };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      if (alignement.primaryAlignment === 'TOP') {
-        if (data.insideLabel.isHeader) {
-          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-        }
-        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-      }
-      if (alignement.secondaryAlignment === 'CENTER') {
-        data.style = { ...data.style, alignItems: 'stretch' };
-        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-      }
-    }
+    data.insideLabelLocation = insideLabel.insideLabelLocation;
   }
 
   const node: Node<EllipseNodeData> = {
