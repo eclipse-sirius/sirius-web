@@ -113,6 +113,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2765[#2765] [portal] Contribute the first version of the Portal representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/2737[#2737] [gantt] Support create, edit and delete task in gantt.
 - https://github.com/eclipse-sirius/sirius-web/issues/2793[#2793] [diagram] Add the possibility to pin / unpin nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/2844[#2844] [Deck] Handle the card selection and direct edit in the Deck representation.
 
 === Improvements
 

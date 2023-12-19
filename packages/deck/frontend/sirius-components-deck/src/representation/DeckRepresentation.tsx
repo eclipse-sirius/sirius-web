@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,18 @@
  *******************************************************************************/
 
 import { useSubscription } from '@apollo/client';
-import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationComponentProps,
+  UseSelectionValue,
+  useMultiToast,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { Deck } from '../Deck';
+import { CardMetadata } from '../Deck.types';
+import { convertToTrelloDeckData } from '../utils/deckGQLConverter';
 import {
   DeckRepresentationState,
   GQLDeckEventPayload,
@@ -25,7 +32,6 @@ import {
   GQLErrorPayload,
 } from './DeckRepresentation.types';
 import { deckEventSubscription } from './deckGQLQuery';
-
 const useDeckRepresentationStyles = makeStyles(() => ({
   complete: {
     display: 'flex',
@@ -41,11 +47,13 @@ const isErrorPayload = (payload: GQLDeckEventPayload): payload is GQLErrorPayloa
 
 export const DeckRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const classes = useDeckRepresentationStyles();
+  const { selection, setSelection }: UseSelectionValue = useSelection();
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [{ id, deck, complete }, setState] = useState<DeckRepresentationState>({
+  const [{ id, deck, complete, selectedCardIds }, setState] = useState<DeckRepresentationState>({
     id: crypto.randomUUID(),
     deck: null,
     complete: false,
+    selectedCardIds: [],
   });
 
   const { error } = useSubscription<GQLDeckEventSubscription>(deckEventSubscription, {
@@ -83,6 +91,36 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     }
   }, [error]);
 
+  useEffect(() => {
+    if (deck && selection.entries) {
+      const selectionIds: string[] = selection.entries.map((entry) => entry.id);
+      const tempSelectedCardIds: string[] = [];
+      deck.lanes
+        .flatMap((lane) => lane.cards)
+        .forEach((card) => {
+          if (selectionIds.includes(card.targetObjectId)) {
+            tempSelectedCardIds.push(card.id);
+          }
+        });
+      setState((prevState) => {
+        return { ...prevState, selectedCardIds: tempSelectedCardIds };
+      });
+    }
+  }, [selection]);
+
+  const handleCardClicked = (cardId: string, metadata: CardMetadata, _laneId: string) => {
+    let editedCardId: string | undefined = undefined;
+    if (selectedCardIds.includes(cardId)) {
+      editedCardId = cardId;
+    }
+    setState((prevState) => {
+      return { ...prevState, editedCardId };
+    });
+    setSelection({
+      entries: [metadata.selection],
+    });
+  };
+
   let content: JSX.Element | null = null;
   if (complete) {
     content = (
@@ -93,11 +131,8 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       </div>
     );
   } else if (deck) {
-    const lanes = deck.lanes ?? [];
-    const data = {
-      lanes,
-    };
-    content = <Deck data={data} />;
+    const data = convertToTrelloDeckData(deck, selectedCardIds);
+    content = <Deck data={data} onCardClick={handleCardClicked} />;
   }
   return <>{content}</>;
 };
