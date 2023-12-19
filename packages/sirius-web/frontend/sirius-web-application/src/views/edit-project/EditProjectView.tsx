@@ -68,6 +68,7 @@ import {
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 import { PapayaOperationActivityLabelDetailToolContribution } from './ToolContributions/PapayaOperationActivityLabelDetailToolContribution';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
+import { SynchronizedWithSelectionContribution } from './TreeToolBarContributions/SynchronizedWithSelectionContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 
 const getProjectQuery = gql`
@@ -190,6 +191,7 @@ export const EditProjectView = () => {
     const treeToolBarContributions: TreeToolBarContextValue = [
       <TreeToolBarContribution component={NewDocumentModalContribution} />,
       <TreeToolBarContribution component={UploadDocumentModalContribution} />,
+      <TreeToolBarContribution component={SynchronizedWithSelectionContribution} />,
     ];
     const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
       <DiagramPaletteToolContribution

@@ -11,9 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import { SwapHoriz as SwapHorizIcon } from '@material-ui/icons';
 import React from 'react';
 import { TreeToolBarProps } from './TreeToolBar.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
@@ -33,40 +31,20 @@ const useTreeToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TreeToolBar = ({
-  editingContextId,
-  onSynchronizedClick,
-  synchronized,
-  treeToolBarContributionComponents,
-  readOnly,
-}: TreeToolBarProps) => {
+export const TreeToolBar = ({ editingContextId, treeToolBarContributionComponents, readOnly }: TreeToolBarProps) => {
   const classes = useTreeToolbarStyles();
 
-  const preferenceButtonSynchroniseTitle = synchronized
-    ? 'Disable synchronisation with representation'
-    : 'Enable synchronisation with representation';
   return (
-    <>
-      <div className={classes.toolbar}>
-        {treeToolBarContributionComponents.map((component, index) => {
-          const props: TreeToolBarContributionComponentProps = {
-            editingContextId: editingContextId,
-            disabled: readOnly,
-            key: index.toString(),
-          };
-          const element = React.createElement(component, props);
-          return element;
-        })}
-        <IconButton
-          color="inherit"
-          size="small"
-          aria-label={preferenceButtonSynchroniseTitle}
-          title={preferenceButtonSynchroniseTitle}
-          onClick={onSynchronizedClick}
-          data-testid="tree-synchronise">
-          <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
-        </IconButton>
-      </div>
-    </>
+    <div className={classes.toolbar}>
+      {treeToolBarContributionComponents.map((component, index) => {
+        const props: TreeToolBarContributionComponentProps = {
+          editingContextId: editingContextId,
+          disabled: readOnly,
+          key: index.toString(),
+        };
+        const element = React.createElement(component, props);
+        return element;
+      })}
+    </div>
   );
 };

@@ -70,6 +70,22 @@ const nodeTypeRegistry: NodeTypeRegistry = {
   <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
 </SiriusWebApplication>
 ```
+- https://github.com/eclipse-sirius/sirius-web/issues/2418[#2418] [sirius-web] [tree] Extract synchronize with selection into a hook.
+The component `SynchronizedWithSelectionContribution` should be contributed to the `TreeToolBar` thanks to a `TreeToolBarContribution`.
+[source,jsx]
+----
+const treeToolBarContributions: TreeToolBarContextValue = [
+  <TreeToolBarContribution component={SynchronizedWithSelectionContribution} />,
+];
+
+return (
+  <TreeToolBarContext.Provider value={treeToolBarContributions}>
+    <Workbench>
+      {children}
+    </Workbench>
+  </TreeToolBarContext.Provider>
+);
+----
 
 
 === Dependency update

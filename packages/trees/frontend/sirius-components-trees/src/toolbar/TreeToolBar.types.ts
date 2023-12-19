@@ -13,8 +13,6 @@
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
 export interface TreeToolBarProps {
-  synchronized: boolean;
-  onSynchronizedClick: () => void;
   editingContextId: string;
   treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => JSX.Element)[];
   readOnly: boolean;

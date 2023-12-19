@@ -11,8 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface ExplorerViewState {
-  filterBar: boolean;
-  filterBarText: string | null;
-  filterBarTreeFiltering: boolean;
+export interface SynchronizedWithSelectionContextValue {
+  isSynchronized: boolean;
+  toggleSynchronizeWithSelection: () => void;
+}
+
+export interface SynchronizedWithSelectionContextProviderProps {
+  children: React.ReactNode;
+}
+
+export interface SynchronizeWithSelectionContextProviderState {
+  isSynchronized: boolean;
 }

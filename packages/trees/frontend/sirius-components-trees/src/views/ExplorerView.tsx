@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import {
+  SynchronizeWithSelectionContextProvider,
+  WorkbenchViewComponentProps,
+  useSynchronizedWithSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { TreeToolBar } from '../toolbar/TreeToolBar';
@@ -34,14 +38,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ExplorerView = (props: WorkbenchViewComponentProps) => {
+  return (
+    <SynchronizeWithSelectionContextProvider>
+      <ExplorerViewContent {...props} />
+    </SynchronizeWithSelectionContextProvider>
+  );
+};
+
+const ExplorerViewContent = (props: WorkbenchViewComponentProps) => {
   const styles = useStyles();
   const { converter } = useExplorerViewConfiguration();
   const initialState: ExplorerViewState = {
-    synchronizedWithSelection: true,
     filterBar: false,
     filterBarText: '',
     filterBarTreeFiltering: false,
   };
+  const { isSynchronized } = useSynchronizedWithSelection();
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
     (contribution) => contribution.props.component
@@ -95,23 +107,14 @@ export const ExplorerView = (props: WorkbenchViewComponentProps) => {
   }
   return (
     <div className={styles.treeView} ref={treeElement}>
-      <TreeToolBar
-        {...props}
-        onSynchronizedClick={() =>
-          setState((prevState) => {
-            return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
-          })
-        }
-        synchronized={state.synchronizedWithSelection}
-        treeToolBarContributionComponents={treeToolBarContributionComponents}
-      />
+      <TreeToolBar {...props} treeToolBarContributionComponents={treeToolBarContributionComponents} />
       <div className={styles.treeContent}>
         {filterBar}
         <TreeView
           {...props}
           treeId="explorer://"
           enableMultiSelection={true}
-          synchronizedWithSelection={state.synchronizedWithSelection}
+          synchronizedWithSelection={isSynchronized}
           textToHighlight={state.filterBarText}
           textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
           converter={converter}
