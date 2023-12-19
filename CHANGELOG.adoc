@@ -81,6 +81,7 @@ Additional changes to this interface will propably occur in the near future in o
 
 - [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.13
 - [releng] The frontend now depends on react-trello 2.2.11
+- https://github.com/eclipse-sirius/sirius-web/issues/2842[#2842] Move to @ObeoNetwork/react-trello
 
 
 === Bug fixes
