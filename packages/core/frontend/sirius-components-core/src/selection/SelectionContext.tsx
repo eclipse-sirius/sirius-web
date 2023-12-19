@@ -12,13 +12,11 @@
  *******************************************************************************/
 
 import React, { useCallback, useState } from 'react';
-import { Representation } from '../workbench/Workbench.types';
 import {
   Selection,
   SelectionContextProviderProps,
   SelectionContextProviderState,
   SelectionContextValue,
-  SelectionEntry,
 } from './SelectionContext.types';
 
 const defaultValue: SelectionContextValue = {
@@ -28,17 +26,13 @@ const defaultValue: SelectionContextValue = {
 
 export const SelectionContext = React.createContext<SelectionContextValue>(defaultValue);
 
-const isRepresentation = (selectionEntry: SelectionEntry): selectionEntry is Representation =>
-  selectionEntry.kind.startsWith('siriusComponents://representation');
-
 export const SelectionContextProvider = ({ initialSelection, children }: SelectionContextProviderProps) => {
   const [state, setState] = useState<SelectionContextProviderState>({
     selection: initialSelection ?? { entries: [] },
   });
 
   const setSelection = useCallback((selection: Selection) => {
-    const selectedRepresentation = selection.entries.filter(isRepresentation);
-    setState((prevState) => ({ ...prevState, selection, selectedRepresentation }));
+    setState((prevState) => ({ ...prevState, selection }));
   }, []);
 
   return (
