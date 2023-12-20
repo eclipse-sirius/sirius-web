@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
 
-describe('Graphical-dnd', () => {
+describe('Diagram - Graphical-dnd', () => {
   context('Given a studio template', () => {
     let studioProjectId: string = '';
     let domainName: string = '';

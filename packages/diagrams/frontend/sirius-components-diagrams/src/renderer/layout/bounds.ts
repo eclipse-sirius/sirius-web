@@ -13,6 +13,7 @@
 
 import { Dimensions, Node, XYPosition } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
+import { defaultHeight, defaultWidth } from './layoutParams';
 
 export const computePreviousPosition = (
   previousNode: Node<NodeData, string> | undefined,
@@ -52,25 +53,24 @@ export const computePreviousSize = (
   previousNode: Node<NodeData, string> | undefined,
   node: Node<NodeData, string>
 ): Dimensions => {
-  let previousDimensions: Dimensions = {
-    height: 0,
-    width: 0,
-  };
+  let previousDimensions: Dimensions;
+  const nodeDefaultHeight: number = node.data.defaultHeight ?? defaultHeight;
+  const nodeDefaultWidth: number = node.data.defaultWidth ?? defaultWidth;
 
   if (node.data.isNew) {
     previousDimensions = {
-      height: 0,
-      width: 0,
+      height: nodeDefaultHeight,
+      width: nodeDefaultWidth,
     };
   } else if (previousNode) {
     previousDimensions = {
-      width: previousNode.width ?? 0,
-      height: previousNode.height ?? 0,
+      height: previousNode.height ?? nodeDefaultHeight,
+      width: previousNode.width ?? nodeDefaultWidth,
     };
   } else {
     previousDimensions = {
-      width: node.width ?? 0,
-      height: node.height ?? 0,
+      height: node.height ?? nodeDefaultHeight,
+      width: node.width ?? nodeDefaultWidth,
     };
   }
 
