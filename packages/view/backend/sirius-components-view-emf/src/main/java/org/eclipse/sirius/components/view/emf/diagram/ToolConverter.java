@@ -173,7 +173,7 @@ public class ToolConverter {
         String toolId = this.idProvider.apply(nodeTool).toString();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(nodeTool.getName())
-                .iconURL(List.of()) /*Icon URL is not used here*/
+                .iconURL(List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON))
                 .handler(variableManager -> {
                     VariableManager child = variableManager.createChild();
                     child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
@@ -190,7 +190,7 @@ public class ToolConverter {
         String toolId = this.idProvider.apply(edgeTool).toString();
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(edgeTool.getName())
-                .iconURL(List.of()) /*Icon URL is not used here*/
+                .iconURL(List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON))
                 .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                         .sources(List.of(convertedNodes.get(nodeDescription)))
                         .targets(edgeTool.getTargetElementDescriptions().stream().map(convertedNodes::get).toList())
