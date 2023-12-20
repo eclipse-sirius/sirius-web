@@ -70,28 +70,28 @@ public class GetNodeDescriptionBorderNodeDescriptionsEventHandler implements IDi
     public void handle(Sinks.One<IPayload> payloadSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
         this.counter.increment();
 
-
         String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), EditLabelInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
 
         if (diagramInput instanceof GetNodeDescriptionBorderNodeDescriptionsInput input) {
-            var allDiagramDescriptions = this.representationDescriptionSearchService.findAll(editingContext)
-                    .values()
-                    .stream()
-                    .filter(DiagramDescription.class::isInstance)
-                    .map(DiagramDescription.class::cast)
-                    .toList();
-
             var nodeDescription = input.nodeDescription();
             var allBorderNodeDescriptions = new ArrayList<>(nodeDescription.getBorderNodeDescriptions());
-            INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(allDiagramDescriptions);
-            allBorderNodeDescriptions.addAll(nodeDescription.getReusedBorderNodeDescriptionIds()
-                    .stream()
-                    .map(nodeDescriptionRequestor::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .toList());
+            if (!nodeDescription.getReusedBorderNodeDescriptionIds().isEmpty()) {
+                var allDiagramDescriptions = this.representationDescriptionSearchService.findAll(editingContext)
+                        .values()
+                        .stream()
+                        .filter(DiagramDescription.class::isInstance)
+                        .map(DiagramDescription.class::cast)
+                        .toList();
+
+                INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(allDiagramDescriptions);
+                allBorderNodeDescriptions.addAll(nodeDescription.getReusedBorderNodeDescriptionIds()
+                        .stream()
+                        .map(nodeDescriptionRequestor::findById)
+                        .flatMap(Optional::stream)
+                        .toList());
+            }
 
             payload = new GetNodeDescriptionsPayload(diagramInput.id(), allBorderNodeDescriptions);
         }

@@ -117,6 +117,7 @@ It is the responsibility of the drop targets (e.g. a diagram) to validate the dr
 +
 .Old resize handles vs new ones
 image:doc/screenshots/biggerResizeHandles.png[Compartment with header without separator,70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/2849[#2849] [diagram] Reduce the time taken to open a diagram
 
 == v2023.12.0
 
