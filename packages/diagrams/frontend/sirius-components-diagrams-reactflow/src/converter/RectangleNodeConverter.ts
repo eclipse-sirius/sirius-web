@@ -49,6 +49,7 @@ const toRectangularNode = (
     insideLabel,
     outsideLabels,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
@@ -72,6 +73,7 @@ const toRectangularNode = (
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
+    pinned,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,

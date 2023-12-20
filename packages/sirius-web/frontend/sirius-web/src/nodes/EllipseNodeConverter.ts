@@ -50,6 +50,7 @@ const toEllipseNode = (
     insideLabel,
     outsideLabels,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
@@ -72,6 +73,7 @@ const toEllipseNode = (
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
+    pinned,
     isBorderNode: isBorderNode,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,

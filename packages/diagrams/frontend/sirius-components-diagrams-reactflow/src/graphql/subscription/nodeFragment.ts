@@ -21,6 +21,7 @@ fragment nodeFragment on Node {
   targetObjectLabel
   descriptionId
   state
+  pinned
   insideLabel {
     ...insideLabelFragment
   }

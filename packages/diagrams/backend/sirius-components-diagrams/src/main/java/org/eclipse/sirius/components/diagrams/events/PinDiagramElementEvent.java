@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams;
+package org.eclipse.sirius.components.diagrams.events;
+
+import java.util.Objects;
+import java.util.Set;
 
 /**
- * All possible modifiers to define the state of a diagram element.
+ * Event to pin or unpin a diagram element.
  *
- * @author tgiraudet
+ * @author frouene
  */
-public enum ViewModifier {
+public record PinDiagramElementEvent(Set<String> elementIds, boolean pinned) implements IDiagramEvent {
 
-    Hidden, Faded, Normal
-
+    public PinDiagramElementEvent {
+        Objects.requireNonNull(elementIds);
+    }
 }

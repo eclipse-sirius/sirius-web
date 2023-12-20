@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.diagrams;
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
+
+import java.util.Set;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
 /**
- * All possible modifiers to define the state of a diagram element.
+ * The class of the inputs for the "pin element" mutation.
  *
- * @author tgiraudet
+ * @author frouene
  */
-public enum ViewModifier {
-
-    Hidden, Faded, Normal
+public record PinDiagramElementInput(UUID id, String editingContextId, String representationId, Set<String> elementIds, boolean pinned) implements IDiagramInput {
 
 }

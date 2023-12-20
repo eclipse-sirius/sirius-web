@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,11 +26,13 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { memo, useState } from 'react';
 import { Panel, useReactFlow } from 'reactflow';
+import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 
@@ -55,9 +57,11 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
 
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
+  const { pinDiagramElements } = usePinDiagramElements();
 
   const onUnfadeAll = () => fadeDiagramElements([...getAllElementsIds()], false);
   const onUnhideAll = () => hideDiagramElements([...getAllElementsIds()], false);
+  const onUnpinAll = () => pinDiagramElements([...getAllElementsIds()], false);
 
   const { exportToImage } = useExportToImage();
 
@@ -144,6 +148,14 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
             onClick={onUnfadeAll}
             data-testid="reveal-faded-elements">
             <TonalityIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            aria-label="unpin all elements"
+            title="Unpin all elements"
+            onClick={onUnpinAll}
+            data-testid="unpin-all-elements">
+            <UnpinIcon />
           </IconButton>
         </Paper>
       </Panel>

@@ -22,10 +22,13 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { PinIcon } from '../../icons/PinIcon';
+import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Tool } from '../Tool';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
+import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPaletteToolContextValue } from './DiagramPalette.types';
 import { DiagramPaletteToolContext } from './DiagramPaletteToolContext';
 import { DiagramPaletteToolContributionComponentProps } from './DiagramPaletteToolContribution.types';
@@ -214,6 +217,7 @@ export const Palette = ({
   const [state, setState] = useState<PaletteState>({ expandedToolSectionId: null });
 
   const { fadeDiagramElements } = useFadeDiagramElements();
+  const { pinDiagramElements } = usePinDiagramElements();
   const { hideDiagramElements } = useHideDiagramElements();
   const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
@@ -238,6 +242,7 @@ export const Palette = ({
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
   const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
+  const node = getNodes().find((node) => node.id === diagramElementId);
 
   const toolCount =
     (palette
@@ -246,9 +251,34 @@ export const Palette = ({
           (toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0
         ).length
       : 0) +
-    (hideableDiagramElement ? 2 : 0) +
+    (hideableDiagramElement ? (node ? 3 : 2) : 0) +
     diagramPaletteToolComponents.length;
   const classes = usePaletteStyle({ toolCount });
+
+  let pinUnpinTool: JSX.Element | undefined;
+  if (node) {
+    pinUnpinTool = node.data.pinned ? (
+      <IconButton
+        className={classes.toolIcon}
+        size="small"
+        aria-label="Unpin element"
+        title="Unpin element"
+        onClick={() => pinDiagramElements([diagramElementId], !node.data.pinned)}
+        data-testid="Unpin-element">
+        <UnpinIcon fontSize="small" />
+      </IconButton>
+    ) : (
+      <IconButton
+        className={classes.toolIcon}
+        size="small"
+        aria-label="Pin element"
+        title="Pin element"
+        onClick={() => pinDiagramElements([diagramElementId], true)}
+        data-testid="Pin-element">
+        <PinIcon fontSize="small" />
+      </IconButton>
+    );
+  }
 
   let x: number = 0;
   let y: number = 0;
@@ -447,6 +477,7 @@ export const Palette = ({
               data-testid="Fade-elements">
               <TonalityIcon fontSize="small" />
             </IconButton>
+            {pinUnpinTool}
           </>
         ) : null}
       </div>

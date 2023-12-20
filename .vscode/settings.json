@@ -8,5 +8,8 @@
   "[javascript]": {
     "editor.formatOnSave": true
   },
+  "[plaintext]": {
+    "editor.formatOnSave": false
+  },
   "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

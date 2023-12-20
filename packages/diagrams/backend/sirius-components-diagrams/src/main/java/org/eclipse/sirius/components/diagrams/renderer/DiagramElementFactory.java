@@ -122,6 +122,7 @@ public class DiagramElementFactory implements IElementFactory {
                 .childNodes(childNodes)
                 .customizedProperties(props.getCustomizableProperties())
                 .state(props.getState())
+                .pinned(props.isPinned())
                 .modifiers(props.getModifiers())
                 .collapsingState(props.getCollapsingState())
                 .outsideLabels(outsideLabels)
