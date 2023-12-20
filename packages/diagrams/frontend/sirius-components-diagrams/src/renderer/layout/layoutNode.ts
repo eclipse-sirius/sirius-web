@@ -67,12 +67,12 @@ export const findNodeIndex = (nodes: Node<NodeData>[], nodeId: string): number =
   return nodes.findIndex((node) => node.id === nodeId);
 };
 
-export const getNodeOrMinWidth = (nodeWidth: number | undefined, node: Node<NodeData>): number => {
-  return Math.max(nodeWidth ?? -Infinity, node.data.defaultWidth ?? defaultWidth);
+export const getDefaultOrMinWidth = (minWidth: number | undefined, node: Node<NodeData>): number => {
+  return Math.max(minWidth ?? -Infinity, node.data.defaultWidth ?? defaultWidth);
 };
 
-export const getNodeOrMinHeight = (nodeHeight: number | undefined, node: Node<NodeData>): number => {
-  return Math.max(nodeHeight ?? -Infinity, node.data.defaultHeight ?? defaultHeight);
+export const getDefaultOrMinHeight = (minHeight: number | undefined, node: Node<NodeData>): number => {
+  return Math.max(minHeight ?? -Infinity, node.data.defaultHeight ?? defaultHeight);
 };
 
 export const getChildNodePosition = (

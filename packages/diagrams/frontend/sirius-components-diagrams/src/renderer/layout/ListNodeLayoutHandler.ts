@@ -23,9 +23,9 @@ import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
   findNodeIndex,
+  getDefaultOrMinHeight,
+  getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
-  getNodeOrMinHeight,
-  getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -75,28 +75,28 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   ) {
     const labelElement = document.getElementById(`${node.id}-label-${findNodeIndex(visibleNodes, node.id)}`);
 
-    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
-    const labelHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
-    const minNodeWith = forceWidth ?? getNodeOrMinWidth(labelWidth, node);
-    const minNodeheight = getNodeOrMinHeight(labelHeight, node);
+    const nodeMinComputeWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2;
+    const nodeMinComputeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
+    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
     if (node.data.resizedByUser) {
-      if (minNodeWith > previousDimensions.width) {
-        node.width = minNodeWith;
+      if (nodeMinComputeWidth > previousDimensions.width) {
+        node.width = nodeMinComputeWidth;
       } else {
         node.width = previousDimensions.width;
       }
-      if (minNodeheight > previousDimensions.height) {
-        node.height = minNodeheight;
+      if (nodeMinComputeHeight > previousDimensions.height) {
+        node.height = nodeMinComputeHeight;
       } else {
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = minNodeWith;
-      node.height = minNodeheight;
+      node.width = nodeWith;
+      node.height = nodeHeight;
     }
   }
 
@@ -170,9 +170,9 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       westBorderNodeFootprintHeight
     );
 
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
+    node.width = forceWidth ?? getDefaultOrMinWidth(nodeWidth, node);
 
-    const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
+    const minNodeheight = getDefaultOrMinHeight(nodeHeight, node);
     if (node.data.resizedByUser && previousNode) {
       if (minNodeheight > (previousNode.height ?? 0)) {
         node.height = minNodeheight;
@@ -192,5 +192,3 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     setBorderNodesPosition(borderNodes, node, previousDiagram);
   }
 }
-
-// TODO: Tester avec un compartiment free form entre attribut et operation.

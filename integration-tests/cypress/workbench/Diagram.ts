@@ -35,6 +35,30 @@ export class Diagram {
     return cy.getByTestId('Palette');
   }
 
+  public getDiagramScale(diagramLabel: string): Cypress.Chainable<number> {
+    return this.getDiagram(diagramLabel)
+      .find('.react-flow__viewport')
+      .invoke('attr', 'style')
+      .then((styleValue) => {
+        let scale = 1;
+        if (styleValue) {
+          const match = /scale\(([^)]+)\)/.exec(styleValue);
+          if (match && match[1]) {
+            scale = parseFloat(match[1]);
+          }
+        }
+        return scale;
+      });
+  }
+
+  public getNodeCssValue(diagramLabel: string, nodeLabel: string, cssValue: string): Cypress.Chainable<number> {
+    return this.getNodes(diagramLabel, nodeLabel)
+      .invoke('css', cssValue)
+      .then((widthValue) => {
+        return parseInt(String(widthValue));
+      });
+  }
+
   public dragAndDropNode(sourceNodeTestId: string, targetNodeTestId: string): void {
     cy.window().then((win) => {
       cy.getByTestId('rf__wrapper')
