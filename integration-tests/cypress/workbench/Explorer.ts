@@ -64,6 +64,7 @@ export class Explorer {
       .should('exist')
       .click();
     cy.getByTestId('create-object').click();
+    cy.getByTestId('new-object-modal').should('not.exist');
   }
 
   public select(treeItemLabel: string): void {

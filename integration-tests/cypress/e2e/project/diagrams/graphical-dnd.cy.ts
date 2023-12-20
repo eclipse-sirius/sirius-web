@@ -16,7 +16,7 @@ import { Explorer } from '../../../workbench/Explorer';
 import { Details } from '../../../workbench/Details';
 import { Diagram } from '../../../workbench/Diagram';
 
-describe('Graphical-dnd', () => {
+describe('Diagram - Graphical-dnd', () => {
   context('Given a studio template', () => {
     let studioProjectId: string = '';
     let domainName: string = '';

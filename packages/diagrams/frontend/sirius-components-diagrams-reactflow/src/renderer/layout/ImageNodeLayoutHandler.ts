@@ -22,9 +22,9 @@ import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
+  getDefaultOrMinHeight,
+  getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
-  getNodeOrMinHeight,
-  getNodeOrMinWidth,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -63,16 +63,6 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
-    const previousDimensions = computePreviousSize(previousNode, node);
-    if (previousDimensions) {
-      node.width = getNodeOrMinWidth(previousDimensions.width, node);
-      node.height = getNodeOrMinHeight(previousDimensions.height, node);
-    } else {
-      node.width = getNodeOrMinWidth(undefined, node);
-      node.height = getNodeOrMinHeight(undefined, node);
-    }
-
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
 
@@ -81,26 +71,37 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const nodeWidth = Math.max(
-      directChildrenAwareNodeWidth,
-      node.width,
-      northBorderNodeFootprintWidth,
-      southBorderNodeFootprintWidth
-    );
+    const nodeMinComputeWidth =
+      Math.max(directChildrenAwareNodeWidth, northBorderNodeFootprintWidth, southBorderNodeFootprintWidth) +
+      borderLeftAndRight;
 
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
     const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const nodeHeight = Math.max(
-      directChildrenAwareNodeHeight,
-      node.height,
-      eastBorderNodeFootprintHeight,
-      westBorderNodeFootprintHeight
-    );
+    const nodeMinComputeHeight =
+      Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
+      borderTopAndBottom;
 
-    node.width = getNodeOrMinWidth(nodeWidth + borderLeftAndRight, node);
-    node.height = getNodeOrMinHeight(nodeHeight + borderTopAndBottom, node);
+    const nodeWith = getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
+    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
+    const previousDimensions = computePreviousSize(previousNode, node);
+    if (node.data.nodeDescription?.userResizable) {
+      if (nodeMinComputeWidth > previousDimensions.width) {
+        node.width = nodeMinComputeWidth;
+      } else {
+        node.width = previousDimensions.width;
+      }
+      if (nodeMinComputeHeight > previousDimensions.height) {
+        node.height = nodeMinComputeHeight;
+      } else {
+        node.height = previousDimensions.height;
+      }
+    } else {
+      node.width = nodeWith;
+      node.height = nodeHeight;
+    }
 
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
@@ -118,8 +119,8 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     node: Node<ImageNodeData, 'imageNode'>,
     forceWidth?: number
   ) {
-    const minNodeWith = forceWidth ?? getNodeOrMinWidth(undefined, node);
-    const minNodeHeight = getNodeOrMinHeight(undefined, node);
+    const minNodeWith = forceWidth ?? getDefaultOrMinWidth(undefined, node);
+    const minNodeHeight = getDefaultOrMinHeight(undefined, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previous) => previous.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
