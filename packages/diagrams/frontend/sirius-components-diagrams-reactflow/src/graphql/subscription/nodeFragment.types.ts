@@ -20,6 +20,7 @@ export interface GQLNode<T extends GQLNodeStyle> {
   targetObjectLabel: string;
   descriptionId: string;
   state: GQLViewModifier;
+  pinned: boolean;
   insideLabel: GQLInsideLabel | undefined;
   outsideLabels: GQLOutsideLabel[];
   style: T;

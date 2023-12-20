@@ -45,6 +45,7 @@ const toIconLabelNode = (
     insideLabel,
     outsideLabels,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
@@ -66,6 +67,7 @@ const toIconLabelNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
+    pinned,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,

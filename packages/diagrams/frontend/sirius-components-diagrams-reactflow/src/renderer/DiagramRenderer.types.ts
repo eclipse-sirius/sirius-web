@@ -53,6 +53,7 @@ export interface NodeData {
   insideLabel: InsideLabel | null;
   outsideLabels: OutsideLabels;
   faded: boolean;
+  pinned: boolean;
   nodeDescription: GQLNodeDescription | undefined;
   defaultWidth: number | null;
   defaultHeight: number | null;

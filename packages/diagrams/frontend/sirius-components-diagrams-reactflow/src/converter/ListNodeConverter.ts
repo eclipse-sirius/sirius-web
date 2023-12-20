@@ -53,6 +53,7 @@ const toListNode = (
     outsideLabels,
     id,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
@@ -83,6 +84,7 @@ const toListNode = (
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
+    pinned,
     labelEditable,
     nodeDescription,
     connectionHandles,

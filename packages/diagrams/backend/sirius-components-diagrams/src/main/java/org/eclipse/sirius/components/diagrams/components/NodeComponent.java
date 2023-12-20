@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.diagrams.events.PinDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.ResizeEvent;
 import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -159,6 +160,7 @@ public class NodeComponent implements IComponent {
 
         Set<ViewModifier> modifiers = this.computeModifiers(optionalDiagramEvent, optionalPreviousNode, nodeId);
         ViewModifier state = this.computeState(modifiers);
+        boolean isPinned = this.isPinned(optionalDiagramEvent, nodeId, optionalPreviousNode);
         CollapsingState collapsingState = this.computeCollapsingState(nodeId, optionalPreviousNode, optionalDiagramEvent);
 
         nodeVariableManager.put(NodeComponent.COLLAPSING_STATE, collapsingState);
@@ -172,32 +174,17 @@ public class NodeComponent implements IComponent {
 
         ILayoutStrategy layoutStrategy = nodeDescription.getChildrenLayoutStrategyProvider().apply(nodeVariableManager);
 
-        var borderNodes = this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor);
-
 
         var parentState = state;
         if (collapsingState == CollapsingState.COLLAPSED) {
             parentState = ViewModifier.Hidden;
         }
-        List<Element> childNodes = this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor);
 
         List<Element> nodeChildren = new ArrayList<>();
-        InsideLabelDescription labelDescription = nodeDescription.getInsideLabelDescription();
-        if (labelDescription != null) {
-            nodeVariableManager.put(InsideLabelDescription.OWNER_ID, nodeId);
 
-            // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
-            // the diagrams-layout.
-            LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
-
-            Optional<InsideLabel> optionalPreviousInsideLabel = optionalPreviousNode.map(Node::getInsideLabel);
-            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousInsideLabel, dummyLabelType.getValue());
-            Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
-            nodeChildren.add(insideLabelElement);
-        }
-
-        nodeChildren.addAll(borderNodes);
-        nodeChildren.addAll(childNodes);
+        nodeChildren.addAll(this.getInsideLabel(nodeVariableManager, optionalPreviousNode, nodeDescription, nodeId, containmentKind, type, style));
+        nodeChildren.addAll(this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor));
+        nodeChildren.addAll(this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor));
 
         Position position = optionalPreviousNode.map(Node::getPosition)
                 .orElse(Position.UNDEFINED);
@@ -238,6 +225,7 @@ public class NodeComponent implements IComponent {
                 .customizableProperties(customizableProperties)
                 .modifiers(modifiers)
                 .state(state)
+                .pinned(isPinned)
                 .collapsingState(collapsingState)
                 .defaultWidth(defaultWidth)
                 .defaultHeight(defaultHeight)
@@ -287,10 +275,13 @@ public class NodeComponent implements IComponent {
      * If a diagram event is specified and this one requests a modification of the modifier set, applied the event on
      * the default set.
      *
-     * @param optionalDiagramEvent The optional diagram event modifying the default modifier set of the node
-     * @param optionalPreviousNode The previous node from which get the old modifier set. If empty, the old modifier set is set to an
-     *                             empty Set
-     * @param id                   The ID of the current node
+     * @param optionalDiagramEvent
+     *         The optional diagram event modifying the default modifier set of the node
+     * @param optionalPreviousNode
+     *         The previous node from which get the old modifier set. If empty, the old modifier set is set to an
+     *         empty Set
+     * @param id
+     *         The ID of the current node
      */
     private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Node> optionalPreviousNode, String id) {
         Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousNode.map(Node::getModifiers).orElse(Set.of()));
@@ -312,6 +303,15 @@ public class NodeComponent implements IComponent {
             }
         }
         return modifiers;
+    }
+
+    private boolean isPinned(Optional<IDiagramEvent> optionalDiagramEvent, String nodeId, Optional<Node> optionalPreviousNode) {
+        return optionalDiagramEvent
+                .filter(PinDiagramElementEvent.class::isInstance)
+                .map(PinDiagramElementEvent.class::cast)
+                .filter(pinDiagramElementEvent -> pinDiagramElementEvent.elementIds().contains(nodeId))
+                .map(PinDiagramElementEvent::pinned)
+                .orElse(optionalPreviousNode.map(Node::isPinned).orElse(false));
     }
 
     private ViewModifier computeState(Set<ViewModifier> modifiers) {
@@ -338,9 +338,12 @@ public class NodeComponent implements IComponent {
      * from the description</li>
      * </ul>
      *
-     * @param optionalPreviousNode The previous node if this node existed during a previous rendering
-     * @param nodeDescription      The description of the node
-     * @param nodeVariableManager  The variable manager of the node
+     * @param optionalPreviousNode
+     *         The previous node if this node existed during a previous rendering
+     * @param nodeDescription
+     *         The description of the node
+     * @param nodeVariableManager
+     *         The variable manager of the node
      * @return The size of the node
      */
     private Size getSize(Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, VariableManager nodeVariableManager) {
@@ -365,6 +368,25 @@ public class NodeComponent implements IComponent {
             return Optional.of(resizeEvent.newSize());
         }
         return size;
+    }
+
+    private List<Element> getInsideLabel(VariableManager nodeVariableManager, Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, String nodeId,
+            NodeContainmentKind containmentKind, String type, INodeStyle style) {
+        List<Element> nodeChildren = new ArrayList<>();
+        InsideLabelDescription labelDescription = nodeDescription.getInsideLabelDescription();
+        if (labelDescription != null) {
+            nodeVariableManager.put(InsideLabelDescription.OWNER_ID, nodeId);
+
+            // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
+            // the diagrams-layout.
+            LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
+
+            Optional<InsideLabel> optionalPreviousInsideLabel = optionalPreviousNode.map(Node::getInsideLabel);
+            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousInsideLabel, dummyLabelType.getValue());
+            Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
+            nodeChildren.add(insideLabelElement);
+        }
+        return nodeChildren;
     }
 
     private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, ViewModifier state,

@@ -70,6 +70,7 @@ type Node {
   userResizable: Boolean!
   position: Position!
   state: ViewModifier!
+  pinned: Boolean!
   style: INodeStyle!
   childrenLayoutStrategy: ILayoutStrategy
   borderNodes: [Node!]!
@@ -325,31 +326,18 @@ extend type Mutation {
   arrangeAll(input: ArrangeAllInput!): ArrangeAllPayload!
   deleteFromDiagram(input: DeleteFromDiagramInput!): DeleteFromDiagramPayload!
   editLabel(input: EditLabelInput!): EditLabelPayload!
-  invokeSingleClickOnDiagramElementTool(
-    input: InvokeSingleClickOnDiagramElementToolInput!
-  ): InvokeSingleClickOnDiagramElementToolPayload!
-  invokeSingleClickOnTwoDiagramElementsTool(
-    input: InvokeSingleClickOnTwoDiagramElementsToolInput!
-  ): InvokeSingleClickOnTwoDiagramElementsToolPayload!
+  invokeSingleClickOnDiagramElementTool(input: InvokeSingleClickOnDiagramElementToolInput!): InvokeSingleClickOnDiagramElementToolPayload!
+  invokeSingleClickOnTwoDiagramElementsTool(input: InvokeSingleClickOnTwoDiagramElementsToolInput!): InvokeSingleClickOnTwoDiagramElementsToolPayload!
   updateNodeBounds(input: UpdateNodeBoundsInput!): UpdateNodeBoundsPayload!
-  updateNodePosition(
-    input: UpdateNodePositionInput!
-  ): UpdateNodePositionPayload!
+  updateNodePosition(input: UpdateNodePositionInput!): UpdateNodePositionPayload!
   dropOnDiagram(input: DropOnDiagramInput!): DropOnDiagramPayload!
   dropNode(input: DropNodeInput!): DropNodePayload!
-  updateEdgeRoutingPoints(
-    input: UpdateEdgeRoutingPointsInput!
-  ): UpdateEdgeRoutingPointsPayload!
+  updateEdgeRoutingPoints(input: UpdateEdgeRoutingPointsInput!): UpdateEdgeRoutingPointsPayload!
   reconnectEdge(input: ReconnectEdgeInput!): ReconnectEdgePayload!
-  hideDiagramElement(
-    input: HideDiagramElementInput!
-  ): HideDiagramElementPayload!
-  fadeDiagramElement(
-    input: FadeDiagramElementInput!
-  ): FadeDiagramElementPayload!
-  updateCollapsingState(
-    input: UpdateCollapsingStateInput!
-  ): UpdateCollapsingStatePayload!
+  hideDiagramElement(input: HideDiagramElementInput!): HideDiagramElementPayload!
+  fadeDiagramElement(input: FadeDiagramElementInput!): FadeDiagramElementPayload!
+  updateCollapsingState(input: UpdateCollapsingStateInput!): UpdateCollapsingStatePayload!
+  pinDiagramElement(input: PinDiagramElementInput!): PinDiagramElementPayload!
   layoutDiagram(input: LayoutDiagramInput!): LayoutDiagramPayload!
 }
 
@@ -560,6 +548,17 @@ input FadeDiagramElementInput {
 }
 
 union FadeDiagramElementPayload = ErrorPayload | SuccessPayload
+
+input PinDiagramElementInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  elementIds: [ID!]!
+  pinned: Boolean!
+}
+
+
+union PinDiagramElementPayload = ErrorPayload | SuccessPayload
 
 input UpdateCollapsingStateInput {
   id: ID!

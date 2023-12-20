@@ -76,6 +76,8 @@ public final class Node implements IDiagramElement {
 
     private boolean labelEditable;
 
+    private boolean pinned;
+
     private Node() {
         // Prevent instantiation
     }
@@ -182,6 +184,10 @@ public final class Node implements IDiagramElement {
         return this.labelEditable;
     }
 
+    public boolean isPinned() {
+        return this.pinned;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}, state: {6}, label: {7}, styleType: {8}, borderNodeCount: {9}, childNodeCount: {10}'}'";
@@ -243,6 +249,8 @@ public final class Node implements IDiagramElement {
 
         private boolean labelEditable;
 
+        private boolean pinned;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -271,6 +279,7 @@ public final class Node implements IDiagramElement {
             this.defaultWidth = node.getDefaultWidth();
             this.defaultHeight = node.getDefaultHeight();
             this.labelEditable = node.isLabelEditable();
+            this.pinned = node.isPinned();
         }
 
         public Builder type(String type) {
@@ -383,6 +392,11 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
+        public Builder pinned(boolean pinned) {
+            this.pinned = pinned;
+            return this;
+        }
+
         public Node build() {
             Node node = new Node();
             node.id = Objects.requireNonNull(this.id);
@@ -408,6 +422,7 @@ public final class Node implements IDiagramElement {
             node.defaultWidth = this.defaultWidth; // Optional on purpose
             node.defaultHeight = this.defaultHeight; // Optional on purpose
             node.labelEditable = this.labelEditable;
+            node.pinned = this.pinned;
             return node;
         }
     }

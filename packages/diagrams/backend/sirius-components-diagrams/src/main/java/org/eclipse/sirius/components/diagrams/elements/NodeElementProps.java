@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,6 +77,8 @@ public final class NodeElementProps implements IProps {
     private List<Element> children;
 
     private boolean labelEditable;
+
+    private boolean pinned;
 
     private NodeElementProps() {
         // Prevent instantiation
@@ -167,6 +169,10 @@ public final class NodeElementProps implements IProps {
         return this.labelEditable;
     }
 
+    public boolean isPinned() {
+        return this.pinned;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, targetObjectId: {2}, targetObjectKind: {3}, targetObjectLabel: {4}, descriptionId: {5}'}'";
@@ -220,6 +226,8 @@ public final class NodeElementProps implements IProps {
         private List<Element> children;
 
         private boolean labelEditable;
+
+        private boolean pinned;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -320,6 +328,11 @@ public final class NodeElementProps implements IProps {
             return this;
         }
 
+        public Builder pinned(boolean pinned) {
+            this.pinned = pinned;
+            return this;
+        }
+
         public NodeElementProps build() {
             NodeElementProps nodeElementProps = new NodeElementProps();
             nodeElementProps.id = Objects.requireNonNull(this.id);
@@ -342,6 +355,7 @@ public final class NodeElementProps implements IProps {
             nodeElementProps.customizableProperties = Objects.requireNonNull(this.customizableProperties);
             nodeElementProps.defaultWidth = this.defaultWidth; // Optional on purpose
             nodeElementProps.defaultHeight = this.defaultHeight; // Optional on purpose
+            nodeElementProps.pinned = this.pinned;
             return nodeElementProps;
         }
     }

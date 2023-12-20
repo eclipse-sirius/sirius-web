@@ -43,6 +43,7 @@ const toImageNode = (
     outsideLabels,
     id,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
@@ -60,6 +61,7 @@ const toImageNode = (
     imageURL: style.imageURL,
     style: {},
     faded: state === GQLViewModifier.Faded,
+    pinned,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,

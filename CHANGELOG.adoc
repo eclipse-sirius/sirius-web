@@ -7,6 +7,7 @@
 - Add support for Portal representation
 - Add support for Gantt representation
 - Add support for Deck representation
+- Add support to pin unpin nodes
 
 
 === Architectural decision records
@@ -110,6 +111,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2819[#2819] [deck] Contribute the first version of the Deck representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/2765[#2765] [portal] Contribute the first version of the Portal representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/2737[#2737] [gantt] Support create, edit and delete task in gantt.
+- https://github.com/eclipse-sirius/sirius-web/issues/2793[#2793] [diagram] Add the possibility to pin / unpin nodes.
 
 === Improvements
 
