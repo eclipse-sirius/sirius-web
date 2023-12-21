@@ -55,6 +55,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
+import net.minidev.json.JSONArray;
 import reactor.test.StepVerifier;
 
 /**
@@ -245,6 +246,7 @@ public class ViewFormIntegrationTests extends AbstractIntegrationTests {
                     edges {
                       node {
                         id
+                        label
                       }
                     }
                   }
@@ -263,7 +265,8 @@ public class ViewFormIntegrationTests extends AbstractIntegrationTests {
         String representationDescriptionId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(getRepresentationDescriptionsExecutionResult.toSpecification());
-            representationDescriptionId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[1].node.id");
+            var matches = (JSONArray) JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[?(@.node.label=='Overview Form')].node.id");
+            representationDescriptionId = (String) matches.get(0);
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
         }

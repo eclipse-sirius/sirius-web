@@ -56,6 +56,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
+import net.minidev.json.JSONArray;
 import reactor.test.StepVerifier;
 
 /**
@@ -264,6 +265,7 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
                         edges {
                           node {
                             id
+                            label
                           }
                         }
                       }
@@ -282,7 +284,8 @@ public class ViewDiagramIntegrationTests extends AbstractIntegrationTests {
         String representationDescriptionId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(getRepresentationDescriptionsExecutionResult.toSpecification());
-            representationDescriptionId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[0].node.id");
+            var matches = (JSONArray) JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[?(@.node.label=='Diagram')].node.id");
+            representationDescriptionId = (String) matches.get(0);
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
         }

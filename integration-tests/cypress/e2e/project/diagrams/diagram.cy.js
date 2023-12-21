@@ -31,6 +31,8 @@ describe('/projects/:projectId/edit - Diagram', () => {
 
     cy.getByTestId('name').clear();
     cy.getByTestId('name').type('Topography1__SPROTTY');
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('Topography').click();
     cy.getByTestId('create-representation').click();
 
     cy.getByTestId('Robot-more').click();

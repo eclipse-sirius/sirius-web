@@ -35,6 +35,8 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.getByTestId('New Form Description').click();
     cy.getByTestId('New Form Description-more').should('be.enabled').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('FormDescriptionEditor').click();
     cy.getByTestId('create-representation').click();
   });
 

@@ -59,6 +59,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
+import net.minidev.json.JSONArray;
 import reactor.test.StepVerifier;
 
 /**
@@ -283,6 +284,7 @@ public class FormDescriptionEditorPageIntegrationTests extends AbstractIntegrati
                          edges {
                            node {
                              id
+                             label
                            }
                          }
                        }
@@ -301,7 +303,8 @@ public class FormDescriptionEditorPageIntegrationTests extends AbstractIntegrati
         String representationDescriptionId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(getRepresentationDescriptionsExecutionResult.toSpecification());
-            representationDescriptionId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[0].node.id");
+            var matches = (JSONArray) JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[?(@.node.label=='FormDescriptionEditor')].node.id");
+            representationDescriptionId = (String) matches.get(0);
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
         }
