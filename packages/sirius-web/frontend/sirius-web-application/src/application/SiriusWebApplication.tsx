@@ -11,7 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ApolloProvider } from '@apollo/client';
-import { RepresentationPathContext, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import {
+  MonitoringContextProvider,
+  RepresentationPathContext,
+  ServerContext,
+} from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
@@ -76,17 +80,19 @@ export const SiriusWebApplication = ({ httpOrigin, wsOrigin, theme, children }: 
           <CssBaseline />
           <ServerContext.Provider value={{ httpOrigin }}>
             <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-              <ToastProvider>
-                <RepresentationContextProvider>
-                  <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                    <ViewsContext.Provider value={value}>
-                      <div style={style}>
-                        <Router />
-                      </div>
-                    </ViewsContext.Provider>
-                  </NodeTypeContext.Provider>
-                </RepresentationContextProvider>
-              </ToastProvider>
+              <MonitoringContextProvider>
+                <ToastProvider>
+                  <RepresentationContextProvider>
+                    <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                      <ViewsContext.Provider value={value}>
+                        <div style={style}>
+                          <Router />
+                        </div>
+                      </ViewsContext.Provider>
+                    </NodeTypeContext.Provider>
+                  </RepresentationContextProvider>
+                </ToastProvider>
+              </MonitoringContextProvider>
             </RepresentationPathContext.Provider>
           </ServerContext.Provider>
         </ThemeProvider>

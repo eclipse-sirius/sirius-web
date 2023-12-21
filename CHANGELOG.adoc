@@ -563,6 +563,7 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2044[#2044] [view] Add custom icons to edges and nodes label in view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/2396[#2396] [vs-code] Add VS Code Integration for React Flow diagrams.
 - https://github.com/eclipse-sirius/sirius-web/issues/2616[#2616] [diagram] Keep a connection line visible when creating a new edge.
+- https://github.com/eclipse-sirius/sirius-web/issues/2859[#2859] [core] Provide a monitoring api for the frontend
 
 === Improvements
 
