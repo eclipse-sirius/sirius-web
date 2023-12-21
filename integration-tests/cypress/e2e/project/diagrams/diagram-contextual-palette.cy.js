@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -102,6 +102,10 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('ViewNewModel').dblclick();
     cy.getByTestId('View').dblclick();
     cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.get('[data-testid$=" Diagram Description-more"]').click();
+    cy.getByTestId('treeitem-contextmenu').findByTestId('rename-tree-item').click();
+    cy.getByTestId('name-edit').type('Diagram Description{enter}');
+
     cy.createChildObject('DiagramPalette', 'Diagram Tool Section');
     cy.getByTestId('Tool Section').click();
     cy.getByTestId('Name').type('{selectAll}section1');
@@ -144,6 +148,8 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
     cy.getByTestId('name').type('__REACT_FLOW');
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('Diagram Description').click();
     cy.getByTestId('create-representation').click();
 
     cy.getByTestId('rf__wrapper')

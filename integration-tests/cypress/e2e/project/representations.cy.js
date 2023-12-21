@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,6 +80,8 @@ describe('/projects/:projectId/edit - Representations', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
     cy.getByTestId('name').type('Topography1__SPROTTY');
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('Topography').click();
     cy.getByTestId('create-representation').click();
     cy.getByTestId('representation-tab-Topography1__SPROTTY').should('exist');
 
@@ -91,6 +93,8 @@ describe('/projects/:projectId/edit - Representations', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
     cy.getByTestId('name').type('Topography2__SPROTTY');
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('Topography').click();
     cy.getByTestId('create-representation').click();
     cy.getByTestId('representation-tab-Topography2__SPROTTY').should('exist');
 
