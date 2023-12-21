@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo and others.
+ * Copyright (c) 2023, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { Handle, Position, useStore } from 'reactflow';
+import React, { memo } from 'react';
+import { Handle, Position } from 'reactflow';
+import { useConnector } from '../connector/useConnector';
 import { ConnectionTargetHandleProps } from './ConnectionTargetHandle.types';
 
 const targetHandleNodeStyle: React.CSSProperties = {
@@ -28,21 +29,57 @@ const targetHandleNodeStyle: React.CSSProperties = {
   cursor: 'crosshair',
 };
 
-export const ConnectionTargetHandle = ({ nodeId }: ConnectionTargetHandleProps) => {
-  const connectionNodeId = useStore((state) => state.connectionNodeId);
-  const isConnecting = !!connectionNodeId;
-  if (isConnecting) {
-    return (
+const targetTempHandleStyle: React.CSSProperties = {
+  opacity: 0,
+};
+
+export const ConnectionTargetHandle = memo(({ nodeId }: ConnectionTargetHandleProps) => {
+  const { isConnectionInProgress } = useConnector();
+
+  return (
+    <>
       <Handle
-        id={`handle--${nodeId}--target`}
+        id={`handle--${nodeId}--temp--top`}
         type="target"
         position={Position.Top}
-        style={targetHandleNodeStyle}
-        isConnectableEnd={true}
+        style={targetTempHandleStyle}
+        isConnectableEnd={false}
         isConnectableStart={false}
       />
-    );
-  } else {
-    return null;
-  }
-};
+      <Handle
+        id={`handle--${nodeId}--temp--bottom`}
+        type="target"
+        position={Position.Bottom}
+        style={targetTempHandleStyle}
+        isConnectableEnd={false}
+        isConnectableStart={false}
+      />
+      <Handle
+        id={`handle--${nodeId}--temp--left`}
+        type="target"
+        position={Position.Left}
+        style={targetTempHandleStyle}
+        isConnectableEnd={false}
+        isConnectableStart={false}
+      />
+      <Handle
+        id={`handle--${nodeId}--temp--right`}
+        type="target"
+        position={Position.Right}
+        style={targetTempHandleStyle}
+        isConnectableEnd={false}
+        isConnectableStart={false}
+      />
+      {isConnectionInProgress ? (
+        <Handle
+          id={`handle--${nodeId}--target`}
+          type="target"
+          position={Position.Top}
+          style={targetHandleNodeStyle}
+          isConnectableEnd={true}
+          isConnectableStart={false}
+        />
+      ) : null}
+    </>
+  );
+});

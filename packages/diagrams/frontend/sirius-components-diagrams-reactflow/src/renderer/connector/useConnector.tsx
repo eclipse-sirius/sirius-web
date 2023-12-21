@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,17 @@ import { useTheme } from '@material-ui/core/styles';
 import { useContext } from 'react';
 import {
   Connection,
+  Edge,
   OnConnect,
   OnConnectEnd,
   OnConnectStart,
   OnConnectStartParams,
+  useReactFlow,
+  useStore,
   useUpdateNodeInternals,
 } from 'reactflow';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { getEdgeParameters } from '../edge/EdgeLayout';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
 import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
@@ -44,6 +49,8 @@ export const useConnector = (): UseConnectorValue => {
   const { hideDiagramElementPalette } = useDiagramElementPalette();
   const updateNodeInternals = useUpdateNodeInternals();
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const connectionNodeId = useStore((state) => state.connectionNodeId);
+  const isConnectionInProgress = !!connectionNodeId || !!connection;
 
   const newConnectionStyleProvider: NodeStyleProvider = {
     getNodeStyle: (id: string, descriptionId: string): React.CSSProperties => {
@@ -112,14 +119,48 @@ export const useConnector = (): UseConnectorValue => {
     setIsNewConnection(false);
   };
 
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
+
+  const addTempConnectionLine = () => {
+    const sourceNode = reactFlowInstance.getNode(connection?.source ?? '');
+    const targetNode = reactFlowInstance.getNode(connection?.target ?? '');
+    if (sourceNode && targetNode && !!connection) {
+      const { targetPosition, sourcePosition } = getEdgeParameters(
+        sourceNode,
+        targetNode,
+        reactFlowInstance.getNodes()
+      );
+
+      const edge: Edge<EdgeData> = {
+        id: 'temp',
+        source: connection.source ?? '',
+        target: connection.target ?? '',
+        sourceHandle: `creationhandle--${connection.source}--${sourcePosition}`,
+        targetHandle: `handle--${connection.target}--temp--${targetPosition}`,
+        type: 'smoothstep',
+        animated: true,
+        updatable: false,
+        zIndex: 2002,
+      };
+      reactFlowInstance.setEdges((oldEdges: Edge<EdgeData>[]) => [...oldEdges, edge]);
+    }
+  };
+
+  const removeTempConnectionLine = () => {
+    reactFlowInstance.setEdges(() => reactFlowInstance.getEdges().filter((item) => !item.id.includes('temp')));
+  };
+
   return {
     onConnect,
     onConnectStart,
     onConnectEnd,
     onConnectorContextualMenuClose,
     onConnectionStartElementClick,
+    addTempConnectionLine,
+    removeTempConnectionLine,
     newConnectionStyleProvider,
     connection,
     position,
+    isConnectionInProgress,
   };
 };
