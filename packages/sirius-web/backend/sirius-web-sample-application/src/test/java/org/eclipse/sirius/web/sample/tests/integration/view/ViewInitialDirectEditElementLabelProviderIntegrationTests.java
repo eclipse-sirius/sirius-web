@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
+import net.minidev.json.JSONArray;
 import reactor.test.StepVerifier;
 
 /**
@@ -299,6 +300,7 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
                         edges {
                           node {
                             id
+                            label
                           }
                         }
                       }
@@ -317,7 +319,8 @@ public class ViewInitialDirectEditElementLabelProviderIntegrationTests extends A
         String representationDescriptionId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(getRepresentationDescriptionsExecutionResult.toSpecification());
-            representationDescriptionId = JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[0].node.id");
+            var matches = (JSONArray) JsonPath.read(jsonResult, "$.data.viewer.editingContext.representationDescriptions.edges[?(@.node.label=='Diagram')].node.id");
+            representationDescriptionId = (String) matches.get(0);
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
         }
