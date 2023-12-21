@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import { useContext, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
@@ -93,10 +93,10 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
+const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const { connection, position, onConnectorContextualMenuClose } = useConnector();
-
+  const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
+    useConnector();
   const { addMessages, addErrorMessage } = useMultiToast();
 
   const connectionSource: HTMLElement | null = connection
@@ -185,6 +185,16 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   }
 
   useEffect(() => {
+    if (connectorTools.length > 1) {
+      addTempConnectionLine();
+    }
+  }, [connection, connectorTools.length]);
+
+  useEffect(() => {
+    return () => removeTempConnectionLine();
+  }, []);
+
+  useEffect(() => {
     if (!invokeSingleClickOnTwoDiagramElementToolCalled && connectorTools.length === 1 && connectorTools[0]) {
       invokeTool(connectorTools[0]);
     }
@@ -193,6 +203,7 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
   if (!data || connectorTools.length <= 1) {
     return null;
   }
+
   return (
     <Menu
       open={!!connection}
@@ -210,4 +221,9 @@ export const ConnectorContextualMenu = ({}: ConnectorContextualMenuProps) => {
       ))}
     </Menu>
   );
-};
+});
+
+export const ConnectorContextualMenu = memo(({}: ConnectorContextualMenuProps) => {
+  const { isConnectionInProgress } = useConnector();
+  return isConnectionInProgress ? <ConnectorContextualMenuComponent /> : null;
+});

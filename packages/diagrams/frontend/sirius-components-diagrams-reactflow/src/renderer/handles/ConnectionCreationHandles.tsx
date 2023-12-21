@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo and others.
+ * Copyright (c) 2023, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import { Handle, Position } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -65,9 +65,9 @@ const connectionCreationHandleStyle = (
   return style;
 };
 
-export const ConnectionCreationHandles = ({ nodeId }: ConnectionCreationHandlesProps) => {
+export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHandlesProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const { onConnectionStartElementClick } = useConnector();
+  const { onConnectionStartElementClick, isConnectionInProgress } = useConnector();
   const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const [state, setState] = useState<ConnectionCreationHandlesState>({
@@ -105,6 +105,15 @@ export const ConnectionCreationHandles = ({ nodeId }: ConnectionCreationHandlesP
     }));
   };
 
+  useEffect(() => {
+    if (!isConnectionInProgress) {
+      setState((prevState) => ({
+        ...prevState,
+        isMouseDown: null,
+      }));
+    }
+  }, [isConnectionInProgress]);
+
   const theme = useTheme();
   return (
     <>
@@ -120,6 +129,7 @@ export const ConnectionCreationHandles = ({ nodeId }: ConnectionCreationHandlesP
                 onMouseEnter={() => handleOnMouseEnter(position)}
                 onMouseLeave={handleOnMouseLeave}
                 isConnectableStart={true}
+                isConnectableEnd={false}
                 key={position}
               />
             );
@@ -127,4 +137,4 @@ export const ConnectionCreationHandles = ({ nodeId }: ConnectionCreationHandlesP
         : null}
     </>
   );
-};
+});
