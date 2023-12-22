@@ -23,11 +23,12 @@ import { RawDiagram } from '../renderer/layout/layout.types';
 import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { IconLabelNodeConverterHandler } from './IconLabelNodeConverterHandler';
-import { ImageNodeConverterHandler } from './ImageNodeConverterHandler';
-import { ListNodeConverterHandler } from './ListNodeConverterHandler';
-import { RectangleNodeConverterHandler } from './RectangleNodeConverterHandler';
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { IconLabelNodeConverter } from './IconLabelNodeConverter';
+import { ImageNodeConverter } from './ImageNodeConverter';
+import { ListNodeConverter } from './ListNodeConverter';
+import { RectangleNodeConverter } from './RectangleNodeConverter';
 
 const nodeDepth = (nodeId2node: Map<string, Node>, nodeId: string): number => {
   const node = nodeId2node.get(nodeId);
@@ -68,17 +69,17 @@ export const convertLineStyle = (lineStyle: string): string => {
   return 'solid';
 };
 
-const defaultNodeConverterHandlers: INodeConverterHandler[] = [
-  new RectangleNodeConverterHandler(),
-  new ImageNodeConverterHandler(),
-  new IconLabelNodeConverterHandler(),
-  new ListNodeConverterHandler(),
+const defaultNodeConverters: INodeConverter[] = [
+  new RectangleNodeConverter(),
+  new ImageNodeConverter(),
+  new IconLabelNodeConverter(),
+  new ListNodeConverter(),
 ];
 
 export const convertDiagram = (
   gqlDiagram: GQLDiagram,
-  nodeConverterHandlerContributions: INodeConverterHandler[],
-  nodeDescriptions: GQLNodeDescription[]
+  nodeConverterContributions: INodeConverter[],
+  diagramDescription: GQLDiagramDescription
 ): Diagram => {
   const nodes: Node<NodeData, DiagramNodeType>[] = [];
   const convertEngine: IConvertEngine = {
@@ -87,16 +88,18 @@ export const convertDiagram = (
       gqlNodesToConvert: GQLNode<GQLNodeStyle>[],
       parentNode: GQLNode<GQLNodeStyle> | null,
       nodes: Node[],
+      diagramDescription: GQLDiagramDescription,
       nodeDescriptions: GQLNodeDescription[]
     ) {
       gqlNodesToConvert.forEach((node) => {
-        const nodeConverterHandler: INodeConverterHandler | undefined = [
-          ...defaultNodeConverterHandlers,
-          ...nodeConverterHandlerContributions,
+        const nodeConverter: INodeConverter | undefined = [
+          ...defaultNodeConverters,
+          ...nodeConverterContributions,
         ].find((handler) => handler.canHandle(node));
-        if (nodeConverterHandler) {
+
+        if (nodeConverter) {
           const isBorderNode: boolean = !!parentNode?.borderNodes?.map((borderNode) => borderNode.id).includes(node.id);
-          nodeConverterHandler.handle(
+          nodeConverter.handle(
             this,
             gqlDiagram,
             node,
@@ -104,6 +107,7 @@ export const convertDiagram = (
             parentNode,
             isBorderNode,
             nodes,
+            diagramDescription,
             nodeDescriptions
           );
         }
@@ -111,7 +115,14 @@ export const convertDiagram = (
     },
   };
 
-  convertEngine.convertNodes(gqlDiagram, gqlDiagram.nodes, null, nodes, nodeDescriptions);
+  convertEngine.convertNodes(
+    gqlDiagram,
+    gqlDiagram.nodes,
+    null,
+    nodes,
+    diagramDescription,
+    diagramDescription.nodeDescriptions
+  );
 
   const nodeId2node = new Map<string, Node>();
   nodes.forEach((node) => nodeId2node.set(node.id, node));

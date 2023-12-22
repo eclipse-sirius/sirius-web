@@ -23,7 +23,8 @@ import {
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
@@ -119,7 +120,7 @@ const toIconLabelNode = (
   return node;
 };
 
-export class IconLabelNodeConverterHandler implements INodeConverterHandler {
+export class IconLabelNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'IconLabelNodeStyle';
   }
@@ -132,6 +133,7 @@ export class IconLabelNodeConverterHandler implements INodeConverterHandler {
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    _diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);

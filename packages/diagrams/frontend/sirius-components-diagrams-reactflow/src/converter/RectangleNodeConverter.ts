@@ -19,38 +19,35 @@ import {
   GQLNodeStyle,
   GQLRectangularNodeStyle,
   GQLViewModifier,
-  ILayoutStrategy,
-  ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { ListNodeData } from '../renderer/node/ListNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
+import { convertLineStyle } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
-const isListLayoutStrategy = (strategy: ILayoutStrategy | undefined): strategy is ListLayoutStrategy =>
-  strategy?.kind === 'List';
-
-const toListNode = (
+const toRectangularNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<ListNodeData> => {
+): Node<RectangularNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
+    id,
     insideLabel,
     outsideLabels,
-    id,
     state,
     style,
     labelEditable,
@@ -59,38 +56,30 @@ const toListNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: ListNodeData = {
+  const data: RectangularNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
     style: {
+      display: 'flex',
       backgroundColor: style.color,
-      borderTopColor: style.borderColor,
-      borderBottomColor: style.borderColor,
-      borderLeftColor: style.borderColor,
-      borderRightColor: style.borderColor,
+      borderColor: style.borderColor,
       borderRadius: style.borderRadius,
-      borderTopWidth: style.borderSize,
-      borderBottomWidth: style.borderSize,
-      borderLeftWidth: style.borderSize,
-      borderRightWidth: style.borderSize,
-      borderStyle: style.borderStyle,
+      borderWidth: style.borderSize,
+      borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
-    isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
-    labelEditable,
     nodeDescription,
-    connectionHandles,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
+    isBorderNode: isBorderNode,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
+    labelEditable,
+    connectionHandles,
     isNew,
-    areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
-      ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
-      : true,
   };
 
   if (insideLabel) {
@@ -98,7 +87,6 @@ const toListNode = (
     data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
-      iconURL: labelStyle.iconURL,
       isHeader: insideLabel.isHeader,
       displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
@@ -110,6 +98,7 @@ const toListNode = (
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
+      iconURL: labelStyle.iconURL,
     };
 
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
@@ -127,9 +116,9 @@ const toListNode = (
     }
   }
 
-  const node: Node<ListNodeData> = {
+  const node: Node<RectangularNodeData> = {
     id,
-    type: 'listNode',
+    type: 'rectangularNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
@@ -158,32 +147,9 @@ const toListNode = (
   return node;
 };
 
-const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
-  const childrenNodes = nodes.filter(
-    (child) =>
-      gqlChildrenNodes.map((gqlChild) => gqlChild.id).find((gqlChildId) => gqlChildId === child.id) !== undefined
-  );
-  childrenNodes.forEach((child, index) => {
-    // Hide children node borders to prevent a 'bold' aspect.
-    child.data.style = {
-      ...child.data.style,
-      borderTopColor: 'transparent',
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
-    };
-
-    if (index === childrenNodes.length - 1) {
-      child.data.style = {
-        ...child.data.style,
-        borderBottomColor: 'transparent',
-      };
-    }
-  });
-};
-
-export class ListNodeConverterHandler implements INodeConverterHandler {
+export class RectangleNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind === 'List';
+    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind !== 'List';
   }
 
   handle(
@@ -194,24 +160,36 @@ export class ListNodeConverterHandler implements INodeConverterHandler {
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    nodes.push(toRectangularNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+
+    const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+    const childNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.childNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.borderNodeDescriptions ?? []
+      diagramDescription,
+      borderNodeDescriptions
     );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.childNodeDescriptions ?? []
+      diagramDescription,
+      childNodeDescriptions
     );
-    adaptChildrenBorderNodes(nodes, gqlNode.childNodes ?? []);
   }
 }

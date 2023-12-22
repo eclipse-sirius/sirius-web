@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,17 +87,13 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
 
-  const { nodeConverterHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
+  const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { fitToScreen } = useInitialFitToScreen();
   const { setSelection } = useSelection();
 
   useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
-    const convertedDiagram: Diagram = convertDiagram(
-      diagram,
-      nodeConverterHandlers,
-      diagramDescription.nodeDescriptions
-    );
+    const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription);
 
     if (cause === 'layout') {
       const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
