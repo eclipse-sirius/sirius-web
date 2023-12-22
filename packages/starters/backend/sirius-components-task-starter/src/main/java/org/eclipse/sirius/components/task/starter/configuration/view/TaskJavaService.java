@@ -31,8 +31,7 @@ import org.eclipse.sirius.components.task.TaskTag;
  */
 public class TaskJavaService {
 
-    public TaskJavaService() {
-    }
+    private static final String NEW_TASK = "New Task";
 
     public TaskDetail getTaskDetail(Task task) {
 
@@ -68,7 +67,7 @@ public class TaskJavaService {
 
     public void createTask(EObject context) {
         Task task = TaskFactory.eINSTANCE.createTask();
-        task.setName("New Task");
+        task.setName(NEW_TASK);
         if (context instanceof AbstractTask abstractTask) {
             // The new task follows the context task and has the same duration than the context task.
             if (abstractTask.getEndTime() != null && abstractTask.getStartTime() != null) {
@@ -92,14 +91,42 @@ public class TaskJavaService {
     }
 
     public List<Task> getTasksWithTag(TaskTag tag) {
-        return Optional.ofNullable(tag.eContainer())//
-                .filter(Project.class::isInstance)//
-                .map(Project.class::cast)//
-                .stream()//
-                .map(Project::getOwnedTasks)//
-                .flatMap(List::stream)//
-                .filter(task -> task.getTags().contains(tag))//
+        return Optional.ofNullable(tag.eContainer())
+                .filter(Project.class::isInstance)
+                .map(Project.class::cast)
+                .stream()
+                .map(Project::getOwnedTasks)
+                .flatMap(List::stream)
+                .filter(task -> task.getTags().contains(tag))
                 .toList();
 
+    }
+
+    public void createCard(EObject context) {
+        Task task = TaskFactory.eINSTANCE.createTask();
+        task.setName(NEW_TASK);
+        task.setDescription("new description");
+        task.setName(NEW_TASK);
+        if (context instanceof TaskTag tag) {
+            task.getTags().add(tag);
+
+            EObject parent = context.eContainer();
+            if (parent instanceof Project project) {
+                project.getOwnedTasks().add(task);
+            }
+        }
+
+    }
+
+
+    public void editCard(EObject eObject, String title, String description, String label) {
+        if (eObject instanceof AbstractTask task) {
+            if (title != null) {
+                task.setName(title);
+            }
+            if (description != null) {
+                task.setDescription(description);
+            }
+        }
     }
 }

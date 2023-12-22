@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@eclipse-sirius/sirius-components-tsconfig/strict-react-library.json",
+  "extends": "@eclipse-sirius/sirius-components-tsconfig/react-library.json",
   "compilerOptions": {
     "emitDeclarationOnly": true,
     "outDir": "./dist"

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,12 +60,12 @@ public class DeckElementFactory implements IElementFactory {
                 .filter(Card.class::isInstance)//
                 .map(Card.class::cast)//
                 .toList();
-        return new Lane(props.id(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), cards);
+        return new Lane(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), cards);
     }
 
     private Card instantiateCard(CardElementProps props, List<Object> children) {
 
-        return new Card(props.id(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.description());
+        return new Card(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.description());
     }
 
 }

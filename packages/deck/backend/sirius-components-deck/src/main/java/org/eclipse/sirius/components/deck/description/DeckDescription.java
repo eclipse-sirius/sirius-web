@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,11 @@ public record DeckDescription(String id, String label, Function<VariableManager,
         Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<LaneDescription> laneDescriptions) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
+    public static final String NEW_TITLE = "newTitle";
+    public static final String NEW_DESCRIPTION = "newDescription";
+    public static final String NEW_LABEL = "newLabel";
+    public static final String TITLE = "title";
+    public static final String DESCRIPTION = "description";
 
     public DeckDescription {
         Objects.requireNonNull(id);

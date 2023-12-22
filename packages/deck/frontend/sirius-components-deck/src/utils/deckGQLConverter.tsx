@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Card, DeckData } from '../Deck.types';
-import { GQLDeck } from '../representation/DeckRepresentation.types';
+import { GQLDeck } from '../representation/deckSubscription.types';
 
 export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]): DeckData => {
   const data: DeckData = {
@@ -43,6 +43,7 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]
     });
     data.lanes.push({
       ...lane,
+      editable: true,
       cards,
     });
   }

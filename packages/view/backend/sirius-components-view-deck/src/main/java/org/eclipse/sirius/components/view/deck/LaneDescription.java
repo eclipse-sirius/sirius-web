@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,5 +119,51 @@ public interface LaneDescription extends EObject {
      * @generated
      */
     EList<CardDescription> getOwnedCardDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Edit Tool</em>' containment reference.
+     * @see #setEditTool(EditLaneTool)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getLaneDescription_EditTool()
+     * @model containment="true"
+     * @generated
+     */
+    EditLaneTool getEditTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getEditTool <em>Edit
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Edit Tool</em>' containment reference.
+     * @see #getEditTool()
+     * @generated
+     */
+    void setEditTool(EditLaneTool value);
+
+    /**
+     * Returns the value of the '<em><b>Create Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Create Tool</em>' containment reference.
+     * @see #setCreateTool(CreateCardTool)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getLaneDescription_CreateTool()
+     * @model containment="true"
+     * @generated
+     */
+    CreateCardTool getCreateTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getCreateTool <em>Create
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Create Tool</em>' containment reference.
+     * @see #getCreateTool()
+     * @generated
+     */
+    void setCreateTool(CreateCardTool value);
 
 } // LaneDescription

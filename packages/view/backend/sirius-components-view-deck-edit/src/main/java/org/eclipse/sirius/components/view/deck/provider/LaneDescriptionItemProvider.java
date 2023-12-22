@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.view.deck.LaneDescription;
  * @generated
  */
 public class LaneDescriptionItemProvider extends ItemProviderAdapter
-        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -118,6 +118,8 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DeckPackage.Literals.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS);
+            this.childrenFeatures.add(DeckPackage.Literals.LANE_DESCRIPTION__EDIT_TOOL);
+            this.childrenFeatures.add(DeckPackage.Literals.LANE_DESCRIPTION__CREATE_TOOL);
         }
         return this.childrenFeatures;
     }
@@ -142,7 +144,7 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LaneDescription"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LaneDescription.svg"));
     }
 
     /**
@@ -184,6 +186,8 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
+            case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
+            case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -201,6 +205,10 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS, DeckFactory.eINSTANCE.createCardDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__EDIT_TOOL, DeckFactory.eINSTANCE.createEditLaneTool()));
+
+        newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__CREATE_TOOL, DeckFactory.eINSTANCE.createCreateCardTool()));
     }
 
     /**

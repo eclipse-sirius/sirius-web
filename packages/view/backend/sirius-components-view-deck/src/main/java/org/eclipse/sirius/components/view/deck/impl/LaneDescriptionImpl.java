@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,9 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
+import org.eclipse.sirius.components.view.deck.EditLaneTool;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
 
 /**
@@ -117,6 +119,26 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @ordered
      */
     protected EList<CardDescription> ownedCardDescriptions;
+
+    /**
+     * The cached value of the '{@link #getEditTool() <em>Edit Tool</em>}' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getEditTool()
+     * @generated
+     * @ordered
+     */
+    protected EditLaneTool editTool;
+
+    /**
+     * The cached value of the '{@link #getCreateTool() <em>Create Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getCreateTool()
+     * @generated
+     * @ordered
+     */
+    protected CreateCardTool createTool;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -226,10 +248,110 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
+    public EditLaneTool getEditTool() {
+        return this.editTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetEditTool(EditLaneTool newEditTool, NotificationChain msgs) {
+        EditLaneTool oldEditTool = this.editTool;
+        this.editTool = newEditTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__EDIT_TOOL, oldEditTool, newEditTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setEditTool(EditLaneTool newEditTool) {
+        if (newEditTool != this.editTool) {
+            NotificationChain msgs = null;
+            if (this.editTool != null)
+                msgs = ((InternalEObject) this.editTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DeckPackage.LANE_DESCRIPTION__EDIT_TOOL, null, msgs);
+            if (newEditTool != null)
+                msgs = ((InternalEObject) newEditTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DeckPackage.LANE_DESCRIPTION__EDIT_TOOL, null, msgs);
+            msgs = this.basicSetEditTool(newEditTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__EDIT_TOOL, newEditTool, newEditTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CreateCardTool getCreateTool() {
+        return this.createTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetCreateTool(CreateCardTool newCreateTool, NotificationChain msgs) {
+        CreateCardTool oldCreateTool = this.createTool;
+        this.createTool = newCreateTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__CREATE_TOOL, oldCreateTool, newCreateTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCreateTool(CreateCardTool newCreateTool) {
+        if (newCreateTool != this.createTool) {
+            NotificationChain msgs = null;
+            if (this.createTool != null)
+                msgs = ((InternalEObject) this.createTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DeckPackage.LANE_DESCRIPTION__CREATE_TOOL, null, msgs);
+            if (newCreateTool != null)
+                msgs = ((InternalEObject) newCreateTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DeckPackage.LANE_DESCRIPTION__CREATE_TOOL, null, msgs);
+            msgs = this.basicSetCreateTool(newCreateTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__CREATE_TOOL, newCreateTool, newCreateTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getOwnedCardDescriptions()).basicRemove(otherEnd, msgs);
+            case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
+                return this.basicSetEditTool(null, msgs);
+            case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
+                return this.basicSetCreateTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -250,6 +372,10 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getLabelExpression();
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 return this.getOwnedCardDescriptions();
+            case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
+                return this.getEditTool();
+            case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
+                return this.getCreateTool();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -276,6 +402,12 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 this.getOwnedCardDescriptions().clear();
                 this.getOwnedCardDescriptions().addAll((Collection<? extends CardDescription>) newValue);
                 return;
+            case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
+                this.setEditTool((EditLaneTool) newValue);
+                return;
+            case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
+                this.setCreateTool((CreateCardTool) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -300,6 +432,12 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 this.getOwnedCardDescriptions().clear();
                 return;
+            case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
+                this.setEditTool((EditLaneTool) null);
+                return;
+            case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
+                this.setCreateTool((CreateCardTool) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -320,6 +458,10 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
                 return this.ownedCardDescriptions != null && !this.ownedCardDescriptions.isEmpty();
+            case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
+                return this.editTool != null;
+            case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
+                return this.createTool != null;
         }
         return super.eIsSet(featureID);
     }

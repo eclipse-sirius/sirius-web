@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -166,6 +166,98 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CreateCardTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CreateCardToolItemProvider createCardToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.CreateCardTool}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCreateCardToolAdapter() {
+        if (this.createCardToolItemProvider == null) {
+            this.createCardToolItemProvider = new CreateCardToolItemProvider(this);
+        }
+
+        return this.createCardToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.EditCardTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EditCardToolItemProvider editCardToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.EditCardTool}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEditCardToolAdapter() {
+        if (this.editCardToolItemProvider == null) {
+            this.editCardToolItemProvider = new EditCardToolItemProvider(this);
+        }
+
+        return this.editCardToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.DeleteCardTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DeleteCardToolItemProvider deleteCardToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.DeleteCardTool}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDeleteCardToolAdapter() {
+        if (this.deleteCardToolItemProvider == null) {
+            this.deleteCardToolItemProvider = new DeleteCardToolItemProvider(this);
+        }
+
+        return this.deleteCardToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.EditLaneTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EditLaneToolItemProvider editLaneToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.EditLaneTool}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEditLaneToolAdapter() {
+        if (this.editLaneToolItemProvider == null) {
+            this.editLaneToolItemProvider = new EditLaneToolItemProvider(this);
+        }
+
+        return this.editLaneToolItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -300,6 +392,14 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
             this.laneDescriptionItemProvider.dispose();
         if (this.cardDescriptionItemProvider != null)
             this.cardDescriptionItemProvider.dispose();
+        if (this.createCardToolItemProvider != null)
+            this.createCardToolItemProvider.dispose();
+        if (this.editCardToolItemProvider != null)
+            this.editCardToolItemProvider.dispose();
+        if (this.deleteCardToolItemProvider != null)
+            this.deleteCardToolItemProvider.dispose();
+        if (this.editLaneToolItemProvider != null)
+            this.editLaneToolItemProvider.dispose();
     }
 
     /**

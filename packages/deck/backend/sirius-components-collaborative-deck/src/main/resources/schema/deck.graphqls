@@ -41,3 +41,39 @@ type Card {
   label: String!
   description: String!
 }
+
+extend type Mutation {
+  createDeckCard(input: CreateDeckCardInput!): CreateDeckCardPayload
+  deleteDeckCard(input: DeleteDeckCardInput!): DeleteDeckCardPayload
+  editDeckCard(input: EditDeckCardInput!): EditDeckCardPayload
+}
+
+input CreateDeckCardInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  currentLaneId: ID!
+  title: String
+  label: String
+  description: String
+}
+union CreateDeckCardPayload = SuccessPayload | ErrorPayload
+
+input DeleteDeckCardInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  cardId: ID!
+}
+union DeleteDeckCardPayload = SuccessPayload | ErrorPayload
+
+input EditDeckCardInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  cardId: ID!
+  newTitle: String!
+  newLabel: String!
+  newDescription: String!
+}
+union EditDeckCardPayload = SuccessPayload | ErrorPayload

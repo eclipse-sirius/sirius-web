@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core/src/graphql/GQLTypes.types';
+import { GQLDeck } from './deckSubscription.types';
 
 export interface DeckRepresentationState {
   id: string;
@@ -18,65 +18,7 @@ export interface DeckRepresentationState {
   complete: boolean;
   selectedCardIds: string[];
 }
-export interface GQLDeckEventSubscription {
-  deckEvent: GQLDeckEventPayload;
-}
-
-export interface GQLDeckEventPayload {
-  __typename: string;
-}
-
-export interface GQLSubscribersUpdatedEventPayload extends GQLDeckEventPayload {
-  id: string;
-  subscribers: GQLSubscriber[];
-}
-
-export interface GQLSubscriber {
-  username: string;
-}
-
-export interface GQLDeckRefreshedEventPayload extends GQLDeckEventPayload {
-  id: string;
-  deck: GQLDeck;
-}
 
 export interface Subscriber {
   username: string;
-}
-
-export interface GQLErrorPayload extends GQLDeckEventPayload {
-  messages: GQLMessage[];
-}
-
-export interface GQLRepresentationMetadata {
-  id: string;
-  label: string;
-  kind: string;
-}
-
-export interface GQLDeck {
-  id: string;
-  metadata: GQLRepresentationMetadata;
-  targetObjectId: string;
-  lanes: GQLLane[];
-}
-
-export interface GQLLane {
-  id: string;
-  targetObjectId: string;
-  targetObjectKind: string;
-  targetObjectLabel: string;
-  title: string;
-  label: string;
-  cards: GQLCard[];
-}
-
-export interface GQLCard {
-  id: string;
-  targetObjectId: string;
-  targetObjectKind: string;
-  targetObjectLabel: string;
-  title: string;
-  label: string;
-  description: string;
 }

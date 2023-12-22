@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,10 @@ import java.util.Objects;
  *
  * @author fbarbin
  */
-public record Lane(String id, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, List<Card> cards) {
+public record Lane(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, List<Card> cards) {
     public Lane {
         Objects.requireNonNull(id);
+        Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(targetObjectId);
         Objects.requireNonNull(targetObjectKind);
         Objects.requireNonNull(targetObjectLabel);

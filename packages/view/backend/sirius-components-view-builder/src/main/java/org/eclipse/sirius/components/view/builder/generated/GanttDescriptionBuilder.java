@@ -108,7 +108,6 @@ public class GanttDescriptionBuilder {
         this.getGanttDescription().setCreateTool(value);
         return this;
     }
-
     /**
      * Setter for EditTool.
      *
@@ -118,7 +117,6 @@ public class GanttDescriptionBuilder {
         this.getGanttDescription().setEditTool(value);
         return this;
     }
-
     /**
      * Setter for DeleteTool.
      *

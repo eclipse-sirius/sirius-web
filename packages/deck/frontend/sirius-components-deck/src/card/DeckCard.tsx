@@ -84,7 +84,7 @@ export const DeckCard = ({
       className={className}
       onKeyDown={handleKeyDown}>
       <DeckCardHeader>
-        <DeckCardTitle draggable={cardDraggable}>
+        <DeckCardTitle draggable={cardDraggable} style={cardTitleFontStyle}>
           {editable ? (
             <DeckCardInput
               ref={titleInputRef}
@@ -97,7 +97,7 @@ export const DeckCard = ({
             title
           )}
         </DeckCardTitle>
-        <DeckCardRightContent>
+        <DeckCardRightContent style={cardLabelFontStyle}>
           {editable ? (
             <DeckCardInput
               value={label}
@@ -111,13 +111,14 @@ export const DeckCard = ({
         </DeckCardRightContent>
         {editable && <DeckDeleteButton onClick={handleOnDelete} />}
       </DeckCardHeader>
-      <Detail>
+      <Detail style={cardDetailFontStyle}>
         {editable ? (
           <DeckCardInput
             value={description}
             placeholder={t('placeholder.description')}
             onSave={(value) => updateCard({ title, label, description: value, id })}
             style={cardDetailFontStyle}
+            multiline
           />
         ) : (
           description

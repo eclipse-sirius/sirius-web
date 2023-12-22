@@ -10,8 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import IconButton from '@material-ui/core/IconButton';
+import { styled } from '@material-ui/core/styles';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
-import styled from '@material-ui/styles/styled';
+import { DeckCardTitleProps } from './DeckCardStyledComponents.types';
 
 export const cardTitleFontStyle: CSSProperties = {
   fontWeight: 'bold',
@@ -28,79 +31,62 @@ export const cardDetailFontStyle: CSSProperties = {
   fontSize: '12px',
 };
 
-export const DeckDraggableCardWrapper = styled('article')({
+export const DeckDraggableCardWrapper = styled('article')(({ theme }) => ({
   borderRadius: ' 3px',
-  borderBottom: '1px solid rgb(204, 204, 204)',
-  backgroundColor: 'rgb(255, 255, 255)',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  backgroundColor: 'white',
   position: 'relative',
   padding: '10px',
   cursor: 'pointer',
   maxWidth: '250px',
   marginBottom: '7px',
   minWidth: '230px',
-});
+}));
 
-export const DeckCardHeader = styled('article')({
+export const DeckCardHeader = styled('article')(({ theme }) => ({
   marginBottom: '10px',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'flex-start',
-  borderBottom: ' 1px solid #eee',
-  paddingBottom: ' 6px',
-  color: ' #000',
-});
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  paddingBottom: '6px',
+  color: theme.palette.text.primary,
+}));
 
 export const DeckCardTitle = styled('span')({
-  cursor: (props) => (props.draggable ? 'grab' : `auto`),
+  cursor: (props: DeckCardTitleProps) => (props.draggable ? 'grab' : `auto`),
   width: '70%',
-  ...cardTitleFontStyle,
 });
 
 export const DeckCardRightContent = styled('span')({
   width: ' 38%',
   paddingRight: '10px',
-  ...cardLabelFontStyle,
 });
 
-export const DeleteWrapper = styled('span')({
-  textAlign: 'center',
+export const CardDeleteIconButton = styled(IconButton)({
   position: 'absolute',
-  top: '-1px',
+  top: '2px',
   right: '2px',
-  cursor: 'pointer',
-});
-
-export const DelButton = styled('button')({
-  transition: 'all 0.5s ease',
-  display: 'inline-block',
-  border: 'none',
-  fontSize: '8px',
-  height: '15px',
-  lineHeight: '1px',
-  margin: '0 0 8px',
   padding: '0',
-  textAlign: 'center',
-  width: '15px',
-  background: 'inherit',
-  cursor: 'pointer',
-  opacity: '1',
+  ' & .MuiSvgIcon-fontSizeSmall': {
+    fontSize: '12px',
+  },
 });
 
-export const Detail = styled('div')({
-  color: '#4d4d4d',
+export const Detail = styled('div')(({ theme }) => ({
+  color: theme.palette.text.primary,
   whiteSpace: 'pre-wrap',
-  ...cardDetailFontStyle,
-});
+}));
 
-export const Footer = styled('div')({
-  borderTop: '1px solid #eee',
+export const Footer = styled('div')(({ theme }) => ({
+  borderTop: `1px solid ${theme.palette.divider}`,
   paddingTop: '6px',
   textAlign: 'right',
   display: 'flex',
   justifyContent: 'flex-end',
   flexDirection: 'row',
   flexWrap: 'wrap',
-});
+}));
 
 export const TagSpan = styled('span')({
   padding: ' 2px 3px',

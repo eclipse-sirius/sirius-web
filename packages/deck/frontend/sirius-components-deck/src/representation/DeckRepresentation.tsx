@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useSubscription } from '@apollo/client';
+import { ApolloError, useMutation, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   UseSelectionValue,
@@ -20,18 +20,32 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Deck } from '../Deck';
-import { CardMetadata } from '../Deck.types';
+import { Card, CardMetadata } from '../Deck.types';
 import { convertToTrelloDeckData } from '../utils/deckGQLConverter';
+import { DeckRepresentationState } from './DeckRepresentation.types';
+import { deckEventSubscription } from './deckSubscription';
 import {
-  DeckRepresentationState,
   GQLDeckEventPayload,
   GQLDeckEventSubscription,
   GQLDeckRefreshedEventPayload,
   GQLErrorPayload,
-} from './DeckRepresentation.types';
-import { deckEventSubscription } from './deckGQLQuery';
+} from './deckSubscription.types';
+
+import {
+  GQLCreateCardData,
+  GQLCreateCardVariables,
+  GQLCreateDeckCardInput,
+  GQLDeleteCardData,
+  GQLDeleteCardVariables,
+  GQLDeleteDeckCardInput,
+  GQLEditCardData,
+  GQLEditCardVariables,
+  GQLEditDeckCardInput,
+} from './deckMutation.types';
+
+import { createCardMutation, deleteCardMutation, editCardMutation } from './deckMutation';
 const useDeckRepresentationStyles = makeStyles(() => ({
   complete: {
     display: 'flex',
@@ -44,6 +58,7 @@ const isDeckRefreshedEventPayload = (payload: GQLDeckEventPayload): payload is G
   payload.__typename === 'DeckRefreshedEventPayload';
 const isErrorPayload = (payload: GQLDeckEventPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
+const isStandardErrorPayload = (field): field is GQLErrorPayload => field.__typename === 'ErrorPayload';
 
 export const DeckRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const classes = useDeckRepresentationStyles();
@@ -85,6 +100,21 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     },
   });
 
+  //---------------------------------
+  // Mutations
+  const [deleteDeckCard, { loading: deleteDeckCardLoading, data: deleteDeckCardData, error: deleteDeckCardError }] =
+    useMutation<GQLDeleteCardData, GQLDeleteCardVariables>(deleteCardMutation);
+
+  const [editDeckCard, { loading: editCardLoading, data: editCardData, error: editCardError }] = useMutation<
+    GQLEditCardData,
+    GQLEditCardVariables
+  >(editCardMutation);
+
+  const [createCard, { loading: createCardLoading, data: createCardData, error: createCardError }] = useMutation<
+    GQLCreateCardData,
+    GQLCreateCardVariables
+  >(createCardMutation);
+
   useEffect(() => {
     if (error) {
       addErrorMessage(error.message);
@@ -107,15 +137,76 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       });
     }
   }, [selection]);
+  const handleError = useCallback(
+    (loading: boolean, data, error: ApolloError) => {
+      if (!loading) {
+        if (error) {
+          addErrorMessage(error.message);
+        }
+        if (data) {
+          const keys = Object.keys(data);
+          if (keys.length > 0) {
+            const firstKey = keys[0];
+            const firstField = data[firstKey];
+            if (isStandardErrorPayload(firstField)) {
+              const { messages } = firstField;
+              addMessages(messages);
+            }
+          }
+        }
+      }
+    },
+    [addErrorMessage, addMessages]
+  );
 
-  const handleCardClicked = (cardId: string, metadata: CardMetadata, _laneId: string) => {
-    let editedCardId: string | undefined = undefined;
-    if (selectedCardIds.includes(cardId)) {
-      editedCardId = cardId;
-    }
-    setState((prevState) => {
-      return { ...prevState, editedCardId };
-    });
+  useEffect(() => {
+    handleError(deleteDeckCardLoading, deleteDeckCardData, deleteDeckCardError);
+  }, [deleteDeckCardLoading, deleteDeckCardData, deleteDeckCardError, handleError]);
+  useEffect(() => {
+    handleError(editCardLoading, editCardData, editCardError);
+  }, [editCardLoading, editCardData, editCardError, handleError]);
+  useEffect(() => {
+    handleError(createCardLoading, createCardData, createCardError);
+  }, [createCardLoading, createCardData, createCardError, handleError]);
+
+  const handleEditCard = (_laneId: string, card: Card) => {
+    const input: GQLEditDeckCardInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      cardId: card.id,
+      newTitle: card.title,
+      newLabel: card.label,
+      newDescription: card.description,
+    };
+
+    // // to avoid blink because useMutation implies a re-render as the task value is the old one
+    // updateTask(gantt, task.id, newDetail);
+    editDeckCard({ variables: { input } });
+  };
+  const handleDeleteCard = (cardId: string, _laneId: string) => {
+    const input: GQLDeleteDeckCardInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      cardId,
+    };
+    deleteDeckCard({ variables: { input } });
+  };
+  const handleCreateCard = (card: Card, laneId: string) => {
+    const input: GQLCreateDeckCardInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      currentLaneId: laneId,
+      title: card.title,
+      label: card.label,
+      description: card.description,
+    };
+    createCard({ variables: { input } });
+  };
+
+  const handleCardClicked = (_cardId: string, metadata: CardMetadata, _laneId: string) => {
     setSelection({
       entries: [metadata.selection],
     });
@@ -132,7 +223,15 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     );
   } else if (deck) {
     const data = convertToTrelloDeckData(deck, selectedCardIds);
-    content = <Deck data={data} onCardClick={handleCardClicked} />;
+    content = (
+      <Deck
+        data={data}
+        onCardClick={handleCardClicked}
+        onCardDelete={handleDeleteCard}
+        onCardAdd={handleCreateCard}
+        onCardUpdate={handleEditCard}
+      />
+    );
   }
   return <>{content}</>;
 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,38 @@ public interface DeckFactory extends EFactory {
      * @generated
      */
     CardDescription createCardDescription();
+
+    /**
+     * Returns a new object of class '<em>Create Card Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Create Card Tool</em>'.
+     * @generated
+     */
+    CreateCardTool createCreateCardTool();
+
+    /**
+     * Returns a new object of class '<em>Edit Card Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Edit Card Tool</em>'.
+     * @generated
+     */
+    EditCardTool createEditCardTool();
+
+    /**
+     * Returns a new object of class '<em>Delete Card Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Delete Card Tool</em>'.
+     * @generated
+     */
+    DeleteCardTool createDeleteCardTool();
+
+    /**
+     * Returns a new object of class '<em>Edit Lane Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Edit Lane Tool</em>'.
+     * @generated
+     */
+    EditLaneTool createEditLaneTool();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -11,12 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { DelButton, DeleteWrapper } from './DeckCardStyledComponents';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { CardDeleteIconButton } from './DeckCardStyledComponents';
 
 export const DeckDeleteButton = (props) => {
   return (
-    <DeleteWrapper {...props}>
-      <DelButton>&#10006;</DelButton>
-    </DeleteWrapper>
+    <CardDeleteIconButton tabIndex={-1} aria-label="deleteCard" {...props}>
+      <DeleteIcon fontSize={'small'} />
+    </CardDeleteIconButton>
   );
 };
