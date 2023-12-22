@@ -32,8 +32,7 @@ public class TaskProjectTemplatesProvider implements IProjectTemplateProvider {
     public List<ProjectTemplate> getProjectTemplates() {
         var flowTemplate = ProjectTemplate.newProjectTemplate(TASK_EXAMPLE_TEMPLATE_ID)
                 .label("Task")
-                .imageURL("/images/"
-                        + "task-Template.png")
+                .imageURL("/images/Task-Template.png")
                 .natures(List.of())
                 .build();
         return List.of(flowTemplate);
