@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventProcessor;
 import org.eclipse.sirius.components.collaborative.deck.service.DeckCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -40,11 +42,14 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
+    private final List<IDeckEventHandler> deckEventHandlers;
+
     public DeckEventProcessorFactory(IRepresentationSearchService representationSearchService, DeckCreationService deckCreationService,
-            ISubscriptionManagerFactory subscriptionManagerFactory) {
+            ISubscriptionManagerFactory subscriptionManagerFactory, List<IDeckEventHandler> deckEventHandlers) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.deckCreationService = Objects.requireNonNull(deckCreationService);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
+        this.deckEventHandlers = Objects.requireNonNull(deckEventHandlers);
     }
 
     @Override
@@ -61,7 +66,7 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
                 Deck deck = optionalDeck.get();
 
                 IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, deck,
-                        this.subscriptionManagerFactory.create(), this.deckCreationService);
+                        this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers);
 
                 return Optional.of(deckEventProcessor)
                         .map(representationEventProcessorClass::cast);

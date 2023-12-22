@@ -16,6 +16,9 @@ import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
 export interface DeckProps {
   data: DeckData;
   onCardClick: (cardId: string, metadata: CardMetadata, laneId: string) => void;
+  onCardUpdate: (laneId: string, card: Card) => void;
+  onCardAdd: (card: Card, laneId: string) => void;
+  onCardDelete: (cardId: string, laneId: string) => void;
 }
 export interface OnCardClickProps {
   cardId: String;
@@ -31,6 +34,7 @@ export interface Lane {
   title: string;
   label: string;
   cards: Card[];
+  editable: boolean;
 }
 export interface Card {
   id: string;

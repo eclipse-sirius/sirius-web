@@ -16,4 +16,5 @@ export interface DeckCardInputProps {
   placeholder: string;
   onSave: (value: string) => void;
   style: React.CSSProperties;
+  multiline?: boolean;
 }

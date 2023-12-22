@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,13 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
+import org.eclipse.sirius.components.view.deck.DeckTool;
+import org.eclipse.sirius.components.view.deck.DeleteCardTool;
+import org.eclipse.sirius.components.view.deck.EditCardTool;
+import org.eclipse.sirius.components.view.deck.EditLaneTool;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
 
 /**
@@ -89,6 +94,31 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseDeckTool(DeckTool object) {
+            return DeckAdapterFactory.this.createDeckToolAdapter();
+        }
+
+        @Override
+        public Adapter caseCreateCardTool(CreateCardTool object) {
+            return DeckAdapterFactory.this.createCreateCardToolAdapter();
+        }
+
+        @Override
+        public Adapter caseEditCardTool(EditCardTool object) {
+            return DeckAdapterFactory.this.createEditCardToolAdapter();
+        }
+
+        @Override
+        public Adapter caseDeleteCardTool(DeleteCardTool object) {
+            return DeckAdapterFactory.this.createDeleteCardToolAdapter();
+        }
+
+        @Override
+        public Adapter caseEditLaneTool(EditLaneTool object) {
+            return DeckAdapterFactory.this.createEditLaneToolAdapter();
+        }
+
+        @Override
         public Adapter caseRepresentationDescription(RepresentationDescription object) {
             return DeckAdapterFactory.this.createRepresentationDescriptionAdapter();
         }
@@ -151,6 +181,75 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createCardDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.deck.DeckTool
+     * <em>Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.DeckTool
+     * @generated
+     */
+    public Adapter createDeckToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.deck.CreateCardTool
+     * <em>Create Card Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.CreateCardTool
+     * @generated
+     */
+    public Adapter createCreateCardToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.deck.EditCardTool
+     * <em>Edit Card Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.EditCardTool
+     * @generated
+     */
+    public Adapter createEditCardToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.deck.DeleteCardTool
+     * <em>Delete Card Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.DeleteCardTool
+     * @generated
+     */
+    public Adapter createDeleteCardToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.deck.EditLaneTool
+     * <em>Edit Lane Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.EditLaneTool
+     * @generated
+     */
+    public Adapter createEditLaneToolAdapter() {
         return null;
     }
 

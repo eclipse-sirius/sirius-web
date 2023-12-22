@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventProcessor;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.RenameDeckInput;
 import org.eclipse.sirius.components.collaborative.deck.service.DeckCreationService;
+import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -53,12 +59,16 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     private final DeckEventFlux deckEventFlux;
 
-    public DeckEventProcessor(IEditingContext editingContext, Deck deckDiagram, ISubscriptionManager subscriptionManager, DeckCreationService deckCreationService) {
+    private final List<IDeckEventHandler> deckEventHandlers;
+
+    public DeckEventProcessor(IEditingContext editingContext, Deck deckDiagram, ISubscriptionManager subscriptionManager, DeckCreationService deckCreationService,
+            List<IDeckEventHandler> deckEventHandlers) {
         this.logger.trace("Creating the deck event processor {}", deckDiagram.getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.deckCreationService = Objects.requireNonNull(deckCreationService);
+        this.deckEventHandlers = Objects.requireNonNull(deckEventHandlers);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database.
@@ -81,7 +91,21 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
-        // TODO
+        IRepresentationInput effectiveInput = representationInput;
+        if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
+            effectiveInput = new RenameDeckInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
+                    renameRepresentationInput.newLabel());
+        }
+        if (effectiveInput instanceof IDeckInput deckInput) {
+            Optional<IDeckEventHandler> optionalDeckEventHandler = this.deckEventHandlers.stream().filter(handler -> handler.canHandle(deckInput)).findFirst();
+
+            if (optionalDeckEventHandler.isPresent()) {
+                IDeckEventHandler deckEventHandler = optionalDeckEventHandler.get();
+                deckEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentDeck.get(), deckInput);
+            } else {
+                this.logger.warn("No handler found for event: {}", deckInput);
+            }
+        }
     }
 
     @Override

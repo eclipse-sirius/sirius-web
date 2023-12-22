@@ -11,24 +11,34 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { styled } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
+import { styled } from '@material-ui/core/styles';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { DeckCardInputProps } from './DeckCardInput.types';
 
 /**
  * Inspired from react-trello InlineInput component.
  */
-export const DeckCardInput = forwardRef(({ value, placeholder, onSave, style }: DeckCardInputProps, ref) => {
-  const StyledTextField = styled(TextField)({
+export const DeckCardInput = forwardRef(({ value, placeholder, onSave, style, multiline }: DeckCardInputProps, ref) => {
+  const StyledTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiInputBase-multiline': {
+      padding: '0px 0px 0px 0px',
+    },
     '& input': {
       padding: '0px 0px 0px 0px',
     },
     '& input:focus': {
       backgroundColor: 'white',
-      boxShadow: 'inset 0 0 0 2px #0079bf',
+      boxShadow: `inset 0 0 0 1px ${theme.palette.secondary.light}`,
     },
-  });
+    '& textarea': {
+      padding: '0px 0px 0px 0px',
+    },
+    '& textarea:focus': {
+      backgroundColor: 'white',
+      boxShadow: `inset 0 0 0 1px ${theme.palette.secondary.light}`,
+    },
+  }));
   const onFocus = (e) => e.target.select();
   const textInput = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
   // This is the way to select all text if mouse clicked
@@ -91,6 +101,8 @@ export const DeckCardInput = forwardRef(({ value, placeholder, onSave, style }: 
       autoCorrect="off"
       autoCapitalize="off"
       spellCheck="false"
+      multiline={multiline}
+      fullWidth
       inputProps={{
         style: {
           ...style,
@@ -99,6 +111,7 @@ export const DeckCardInput = forwardRef(({ value, placeholder, onSave, style }: 
       InputProps={{
         disableUnderline: true,
       }}
+      size="small"
     />
   );
 });

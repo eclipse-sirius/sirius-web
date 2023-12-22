@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,6 +81,25 @@ public class LaneDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for EditTool.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder editTool(org.eclipse.sirius.components.view.deck.EditLaneTool value) {
+        this.getLaneDescription().setEditTool(value);
+        return this;
+    }
+
+    /**
+     * Setter for CreateTool.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder createTool(org.eclipse.sirius.components.view.deck.CreateCardTool value) {
+        this.getLaneDescription().setCreateTool(value);
+        return this;
+    }
 
 }
 

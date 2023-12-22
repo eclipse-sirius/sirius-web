@@ -15,14 +15,22 @@ import { DeckProps } from './Deck.types';
 import { DeckCard } from './card/DeckCard';
 import { Toolbar } from './toolbar/Toolbar';
 
-export const Deck = ({ data, onCardClick }: DeckProps) => {
+export const Deck = ({ data, onCardClick, onCardDelete, onCardAdd, onCardUpdate }: DeckProps) => {
   const components = {
     Card: DeckCard,
   };
   return (
     <div>
       <Toolbar></Toolbar>
-      <Board data={data} draggable={true} onCardClick={onCardClick} components={components} />
+      <Board
+        data={data}
+        draggable={true}
+        onCardClick={onCardClick}
+        components={components}
+        onCardDelete={onCardDelete}
+        onCardAdd={onCardAdd}
+        onCardUpdate={onCardUpdate}
+      />
     </div>
   );
 };

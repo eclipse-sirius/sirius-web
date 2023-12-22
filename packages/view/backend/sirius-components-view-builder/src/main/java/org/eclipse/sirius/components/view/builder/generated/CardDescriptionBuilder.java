@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,6 +76,24 @@ public class CardDescriptionBuilder {
      */
     public CardDescriptionBuilder descriptionExpression(java.lang.String value) {
         this.getCardDescription().setDescriptionExpression(value);
+        return this;
+    }
+    /**
+     * Setter for EditTool.
+     *
+     * @generated
+     */
+    public CardDescriptionBuilder editTool(org.eclipse.sirius.components.view.deck.EditCardTool value) {
+        this.getCardDescription().setEditTool(value);
+        return this;
+    }
+    /**
+     * Setter for DeleteTool.
+     *
+     * @generated
+     */
+    public CardDescriptionBuilder deleteTool(org.eclipse.sirius.components.view.deck.DeleteCardTool value) {
+        this.getCardDescription().setDeleteTool(value);
         return this;
     }
 

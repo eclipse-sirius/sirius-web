@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,13 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
+import org.eclipse.sirius.components.view.deck.DeleteCardTool;
+import org.eclipse.sirius.components.view.deck.EditCardTool;
+import org.eclipse.sirius.components.view.deck.EditLaneTool;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
 
 /**
@@ -69,6 +73,14 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
                 return this.createLaneDescription();
             case DeckPackage.CARD_DESCRIPTION:
                 return this.createCardDescription();
+            case DeckPackage.CREATE_CARD_TOOL:
+                return this.createCreateCardTool();
+            case DeckPackage.EDIT_CARD_TOOL:
+                return this.createEditCardTool();
+            case DeckPackage.DELETE_CARD_TOOL:
+                return this.createDeleteCardTool();
+            case DeckPackage.EDIT_LANE_TOOL:
+                return this.createEditLaneTool();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -105,6 +117,50 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
     public CardDescription createCardDescription() {
         CardDescriptionImpl cardDescription = new CardDescriptionImpl();
         return cardDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CreateCardTool createCreateCardTool() {
+        CreateCardToolImpl createCardTool = new CreateCardToolImpl();
+        return createCardTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EditCardTool createEditCardTool() {
+        EditCardToolImpl editCardTool = new EditCardToolImpl();
+        return editCardTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeleteCardTool createDeleteCardTool() {
+        DeleteCardToolImpl deleteCardTool = new DeleteCardToolImpl();
+        return deleteCardTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EditLaneTool createEditLaneTool() {
+        EditLaneToolImpl editLaneTool = new EditLaneToolImpl();
+        return editLaneTool;
     }
 
     /**

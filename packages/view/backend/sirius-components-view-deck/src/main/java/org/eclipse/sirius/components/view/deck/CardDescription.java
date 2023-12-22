@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -127,5 +127,51 @@ public interface CardDescription extends EObject {
      * @generated
      */
     void setDescriptionExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Edit Tool</em>' containment reference.
+     * @see #setEditTool(EditCardTool)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getCardDescription_EditTool()
+     * @model containment="true"
+     * @generated
+     */
+    EditCardTool getEditTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.CardDescription#getEditTool <em>Edit
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Edit Tool</em>' containment reference.
+     * @see #getEditTool()
+     * @generated
+     */
+    void setEditTool(EditCardTool value);
+
+    /**
+     * Returns the value of the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Delete Tool</em>' containment reference.
+     * @see #setDeleteTool(DeleteCardTool)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getCardDescription_DeleteTool()
+     * @model containment="true"
+     * @generated
+     */
+    DeleteCardTool getDeleteTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.CardDescription#getDeleteTool <em>Delete
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Delete Tool</em>' containment reference.
+     * @see #getDeleteTool()
+     * @generated
+     */
+    void setDeleteTool(DeleteCardTool value);
 
 } // CardDescription

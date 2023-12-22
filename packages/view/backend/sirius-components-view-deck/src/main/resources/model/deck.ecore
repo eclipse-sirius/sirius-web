@@ -17,6 +17,10 @@
         defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedCardDescriptions"
         upperBound="-1" eType="#//CardDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="editTool" eType="#//EditLaneTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createTool" eType="#//CreateCardTool"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CardDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
@@ -29,5 +33,20 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="descriptionExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="editTool" eType="#//EditCardTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteCardTool"
+        containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeckTool" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateCardTool" eSuperTypes="#//DeckTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EditCardTool" eSuperTypes="#//DeckTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteCardTool" eSuperTypes="#//DeckTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EditLaneTool" eSuperTypes="#//DeckTool"/>
 </ecore:EPackage>
