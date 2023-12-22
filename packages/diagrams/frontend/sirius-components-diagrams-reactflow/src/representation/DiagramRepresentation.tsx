@@ -19,7 +19,6 @@ import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
-import { nodeDescriptionFragment } from '../graphql/query/nodeDescriptionFragment';
 import { diagramEventSubscription } from '../graphql/subscription/diagramEventSubscription';
 import {
   GQLDiagramEventPayload,
@@ -47,7 +46,6 @@ import {
 const subscription = (contributions: GraphQLNodeStyleFragment[]) => gql(diagramEventSubscription(contributions));
 
 export const getDiagramDescription = gql`
-  ${nodeDescriptionFragment}
   query getDiagramDescription($editingContextId: ID!, $representationId: ID!) {
     viewer {
       editingContext(editingContextId: $editingContextId) {
@@ -56,8 +54,13 @@ export const getDiagramDescription = gql`
             ... on DiagramDescription {
               id
               nodeDescriptions {
-                ...nodeDescriptionFragment
+                id
+                userResizable
+                keepAspectRatio
+                childNodeDescriptionIds
+                borderNodeDescriptionIds
               }
+              childNodeDescriptionIds
               dropNodeCompatibility {
                 droppedNodeDescriptionId
                 droppableOnDiagram

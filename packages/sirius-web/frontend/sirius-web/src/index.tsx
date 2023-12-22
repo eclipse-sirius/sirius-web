@@ -35,7 +35,7 @@ import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { EllipseNode } from './nodes/EllipseNode';
-import { EllipseNodeConverterHandler } from './nodes/EllipseNodeConverterHandler';
+import { EllipseNodeConverter } from './nodes/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/EllipseNodeLayoutHandler';
 import { GQLSlider } from './widgets/SliderFragment.types';
 import { SliderPreview } from './widgets/SliderPreview';
@@ -124,7 +124,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
     },
   ],
   nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
-  nodeConverterHandlers: [new EllipseNodeConverterHandler()],
+  nodeConverters: [new EllipseNodeConverter()],
   nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
 };
 

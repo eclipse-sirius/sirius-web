@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,13 +15,12 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
-import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 
 /**
- * Input for "get child node descriptions" query.
+ * The input for the diagram description node descriptions event handler.
  *
- * @author frouene
+ * @author arichard
  */
-public record GetNodeDescriptionChildNodeDescriptionsInput(UUID id, String editingContextId, String representationId, NodeDescription nodeDescription) implements IDiagramInput {
+public record GetNodeDescriptionsInput(UUID id, String editingContextId, String representationId) implements IDiagramInput {
 
 }

@@ -277,6 +277,7 @@ type DiagramDescription implements RepresentationDescription {
   label: String!
   autoLayout: Boolean!
   nodeDescriptions: [NodeDescription!]!
+  childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementId: ID!): Palette!
   connectorTools(
@@ -302,8 +303,8 @@ interface DiagramElementDescription {
 type NodeDescription implements DiagramElementDescription {
   id: ID!
   synchronizationPolicy: SynchronizationPolicy!
-  borderNodeDescriptions: [NodeDescription!]!
-  childNodeDescriptions: [NodeDescription!]!
+  childNodeDescriptionIds: [ID!]!
+  borderNodeDescriptionIds: [ID!]!
   userResizable: Boolean!
   keepAspectRatio: Boolean!
 }

@@ -14,39 +14,34 @@ import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
-import {
-  GQLNode,
-  GQLNodeStyle,
-  GQLRectangularNodeStyle,
-  GQLViewModifier,
-} from '../graphql/subscription/nodeFragment.types';
+import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
-import { convertLineStyle } from './convertDiagram';
+import { ImageNodeData } from '../renderer/node/ImageNode.types';
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
-const toRectangularNode = (
+const toImageNode = (
   gqlDiagram: GQLDiagram,
-  gqlNode: GQLNode<GQLRectangularNodeStyle>,
+  gqlNode: GQLNode<GQLImageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<RectangularNodeData> => {
+): Node<ImageNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    id,
     insideLabel,
     outsideLabels,
+    id,
     state,
     style,
     labelEditable,
@@ -55,28 +50,23 @@ const toRectangularNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: RectangularNodeData = {
+  const data: ImageNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
-    style: {
-      display: 'flex',
-      backgroundColor: style.color,
-      borderColor: style.borderColor,
-      borderRadius: style.borderRadius,
-      borderWidth: style.borderSize,
-      borderStyle: convertLineStyle(style.borderStyle),
-    },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
+    imageURL: style.imageURL,
+    style: {},
     faded: state === GQLViewModifier.Faded,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     labelEditable,
+    positionDependentRotation: style.positionDependentRotation,
     connectionHandles,
     isNew,
   };
@@ -86,8 +76,7 @@ const toRectangularNode = (
     data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
+      iconURL: labelStyle.iconURL,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -97,15 +86,13 @@ const toRectangularNode = (
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
-      iconURL: labelStyle.iconURL,
+      isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
 
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
-        if (data.insideLabel.displayHeaderSeparator) {
-          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-        }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
       }
       if (alignement.secondaryAlignment === 'CENTER') {
@@ -115,9 +102,9 @@ const toRectangularNode = (
     }
   }
 
-  const node: Node<RectangularNodeData> = {
+  const node: Node<ImageNodeData> = {
     id,
-    type: 'rectangularNode',
+    type: 'imageNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
@@ -146,36 +133,49 @@ const toRectangularNode = (
   return node;
 };
 
-export class RectangleNodeConverterHandler implements INodeConverterHandler {
+export class ImageNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind !== 'List';
+    return gqlNode.style.__typename === 'ImageNodeStyle';
   }
 
   handle(
     convertEngine: IConvertEngine,
     gqlDiagram: GQLDiagram,
-    gqlNode: GQLNode<GQLRectangularNodeStyle>,
+    gqlNode: GQLNode<GQLImageNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toRectangularNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+
+    const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+    const childNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.childNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.borderNodeDescriptions ?? []
+      diagramDescription,
+      borderNodeDescriptions
     );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.childNodeDescriptions ?? []
+      diagramDescription,
+      childNodeDescriptions
     );
   }
 }

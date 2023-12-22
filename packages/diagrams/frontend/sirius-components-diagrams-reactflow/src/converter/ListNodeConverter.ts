@@ -14,25 +14,36 @@ import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
-import { GQLImageNodeStyle, GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
+import {
+  GQLNode,
+  GQLNodeStyle,
+  GQLRectangularNodeStyle,
+  GQLViewModifier,
+  ILayoutStrategy,
+  ListLayoutStrategy,
+} from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
-import { ImageNodeData } from '../renderer/node/ImageNode.types';
-import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
+import { ListNodeData } from '../renderer/node/ListNode.types';
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
+import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
-const toImageNode = (
+const isListLayoutStrategy = (strategy: ILayoutStrategy | undefined): strategy is ListLayoutStrategy =>
+  strategy?.kind === 'List';
+
+const toListNode = (
   gqlDiagram: GQLDiagram,
-  gqlNode: GQLNode<GQLImageNodeStyle>,
+  gqlNode: GQLNode<GQLRectangularNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<ImageNodeData> => {
+): Node<ListNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -49,25 +60,38 @@ const toImageNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: ImageNodeData = {
+  const data: ListNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
     descriptionId,
+    style: {
+      backgroundColor: style.color,
+      borderTopColor: style.borderColor,
+      borderBottomColor: style.borderColor,
+      borderLeftColor: style.borderColor,
+      borderRightColor: style.borderColor,
+      borderRadius: style.borderRadius,
+      borderTopWidth: style.borderSize,
+      borderBottomWidth: style.borderSize,
+      borderLeftWidth: style.borderSize,
+      borderRightWidth: style.borderSize,
+      borderStyle: style.borderStyle,
+    },
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
-    imageURL: style.imageURL,
-    style: {},
-    faded: state === GQLViewModifier.Faded,
-    nodeDescription,
-    defaultWidth: gqlNode.defaultWidth,
-    defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
     borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
+    faded: state === GQLViewModifier.Faded,
     labelEditable,
-    positionDependentRotation: style.positionDependentRotation,
+    nodeDescription,
     connectionHandles,
+    defaultWidth: gqlNode.defaultWidth,
+    defaultHeight: gqlNode.defaultHeight,
     isNew,
+    areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
+      ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
+      : true,
   };
 
   if (insideLabel) {
@@ -76,6 +100,8 @@ const toImageNode = (
       id: insideLabel.id,
       text: insideLabel.text,
       iconURL: labelStyle.iconURL,
+      isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -85,13 +111,14 @@ const toImageNode = (
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
     };
 
     const alignement = AlignmentMap[insideLabel.insideLabelLocation];
     if (alignement.isPrimaryVerticalAlignment) {
       if (alignement.primaryAlignment === 'TOP') {
+        if (data.insideLabel.displayHeaderSeparator) {
+          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
+        }
         data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
       }
       if (alignement.secondaryAlignment === 'CENTER') {
@@ -101,9 +128,9 @@ const toImageNode = (
     }
   }
 
-  const node: Node<ImageNodeData> = {
+  const node: Node<ListNodeData> = {
     id,
-    type: 'imageNode',
+    type: 'listNode',
     data,
     position: defaultPosition,
     hidden: state === GQLViewModifier.Hidden,
@@ -132,36 +159,73 @@ const toImageNode = (
   return node;
 };
 
-export class ImageNodeConverterHandler implements INodeConverterHandler {
+const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
+  const childrenNodes = nodes.filter(
+    (child) =>
+      gqlChildrenNodes.map((gqlChild) => gqlChild.id).find((gqlChildId) => gqlChildId === child.id) !== undefined
+  );
+  childrenNodes.forEach((child, index) => {
+    // Hide children node borders to prevent a 'bold' aspect.
+    child.data.style = {
+      ...child.data.style,
+      borderTopColor: 'transparent',
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+    };
+
+    if (index === childrenNodes.length - 1) {
+      child.data.style = {
+        ...child.data.style,
+        borderBottomColor: 'transparent',
+      };
+    }
+  });
+};
+
+export class ListNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'ImageNodeStyle';
+    return gqlNode.style.__typename === 'RectangularNodeStyle' && gqlNode.childrenLayoutStrategy?.kind === 'List';
   }
 
   handle(
     convertEngine: IConvertEngine,
     gqlDiagram: GQLDiagram,
-    gqlNode: GQLNode<GQLImageNodeStyle>,
+    gqlNode: GQLNode<GQLRectangularNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toImageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    nodes.push(toListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+
+    const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+    const childNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.childNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.borderNodeDescriptions ?? []
+      diagramDescription,
+      borderNodeDescriptions
     );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.childNodeDescriptions ?? []
+      diagramDescription,
+      childNodeDescriptions
     );
+    adaptChildrenBorderNodes(nodes, gqlNode.childNodes ?? []);
   }
 }

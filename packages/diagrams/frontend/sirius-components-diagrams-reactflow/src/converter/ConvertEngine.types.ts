@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.typ
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLNode, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
+import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 
 export interface IConvertEngine {
   convertNodes(
@@ -22,11 +23,12 @@ export interface IConvertEngine {
     gqlNodesToConvert: GQLNode<GQLNodeStyle>[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ): void;
 }
 
-export interface INodeConverterHandler {
+export interface INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>): boolean;
 
   handle(
@@ -37,6 +39,7 @@ export interface INodeConverterHandler {
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ): void;
 }

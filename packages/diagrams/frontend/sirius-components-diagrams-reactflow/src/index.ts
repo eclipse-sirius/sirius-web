@@ -13,7 +13,7 @@
 
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
-export type { IConvertEngine, INodeConverterHandler } from './converter/ConvertEngine.types';
+export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
 export { convertLineStyle } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export { convertHandles } from './converter/convertHandles';
@@ -50,3 +50,4 @@ export { DiagramPaletteToolContext } from './renderer/palette/DiagramPaletteTool
 export { DiagramPaletteToolContribution } from './renderer/palette/DiagramPaletteToolContribution';
 export type { DiagramPaletteToolContributionComponentProps } from './renderer/palette/DiagramPaletteToolContribution.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
+export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';

@@ -15,13 +15,14 @@ import {
   BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
+  GQLDiagramDescription,
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
-  INodeConverterHandler,
+  INodeConverter,
   convertHandles,
   convertLabelStyle,
   convertLineStyle,
@@ -146,7 +147,7 @@ const toEllipseNode = (
   return node;
 };
 
-export class EllipseNodeConverterHandler implements INodeConverterHandler {
+export class EllipseNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'EllipseNodeStyle';
   }
@@ -159,23 +160,36 @@ export class EllipseNodeConverterHandler implements INodeConverterHandler {
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+
+    const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+    const childNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.childNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.borderNodeDescriptions ?? []
+      diagramDescription,
+      borderNodeDescriptions
     );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.childNodeDescriptions ?? []
+      diagramDescription,
+      childNodeDescriptions
     );
   }
 }

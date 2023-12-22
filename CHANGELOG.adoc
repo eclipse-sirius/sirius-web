@@ -71,7 +71,11 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 </SiriusWebApplication>
 ```
 - https://github.com/eclipse-sirius/sirius-web/issues/2790[#2790] [diagram] All handles used to resize a node have been updated to be wider, you can update your custom nodes in the same way it's done in the EllipseNode example.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2872[#2872] [diagram] The GraphQL type `DiagramDescription` has a new field `childNodeDescriptionIds`, returning a list of Ids.
+The GraphQL type `NodeDescription` has a new field `childNodeDescriptionIds`, returning a list of Ids and replacing the field `childNodeDescriptions` which has been deleted.
+The GraphQL type `NodeDescription` has a new field `borderNodeDescriptionIds`, returning a list of Ids and replacing the field `borderNodeDescriptions` which has been deleted.
+- https://github.com/eclipse-sirius/sirius-web/issues/2872[#2872] [diagram] Change the signature of the node converters in order to leverage the diagram description to resolve the reuse descriptions.
+Additional changes to this interface will propably occur in the near future in order to support more complex use cases.
 
 === Dependency update
 
@@ -132,6 +136,7 @@ image:doc/screenshots/biggerResizeHandles.png[Compartment with header without se
 This is a preliminary work to add some proper support for outside labels in the near future.
 - https://github.com/eclipse-sirius/sirius-web/issues/2869[#2869] [diagram] Add `diagramContext` variable to accessible variables when computing semantic candidates expression.
 - https://github.com/eclipse-sirius/sirius-web/issues/2774[#2774] [gantt] Rework the gantt representation front-end to follow best practises.
+- https://github.com/eclipse-sirius/sirius-web/issues/2872[#2872] [diagram] Reduce the time needed to retrieve a diagram description, thus leading to reduce the duration of diagrams opening.
 
 == v2023.12.0
 
