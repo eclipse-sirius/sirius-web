@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { ShareGanttModalProps } from './ShareGanntModal.types';
 
-export const ShareGanttModal = ({ url, onClose }: ShareGanttModalProps) => {
-  let message = 'Shareable link';
+export const ShareGanttModal = ({ onClose }: ShareGanttModalProps) => {
+  let title = 'Shareable link';
   if (navigator.clipboard && document.hasFocus()) {
-    navigator.clipboard.writeText(url);
-    message += ' (copied into the clipboard)';
+    navigator.clipboard.writeText(window.location.href);
+    title += ' (copied into the clipboard)';
   }
 
   const refCallback = (node: HTMLElement) => {
@@ -28,16 +28,18 @@ export const ShareGanttModal = ({ url, onClose }: ShareGanttModalProps) => {
       var range = document.createRange();
       range.selectNodeContents(node);
       var selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
+      if (selection) {
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
     }
   };
 
   return (
     <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" fullWidth>
-      <DialogTitle id="dialog-title">{message}</DialogTitle>
+      <DialogTitle id="dialog-title">{title}</DialogTitle>
       <DialogContent ref={refCallback}>
-        <DialogContentText>{url}</DialogContentText>
+        <DialogContentText>{window.location.href}</DialogContentText>
       </DialogContent>
     </Dialog>
   );

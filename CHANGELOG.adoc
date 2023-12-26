@@ -124,6 +124,7 @@ It is the responsibility of the drop targets (e.g. a diagram) to validate the dr
 image:doc/screenshots/biggerResizeHandles.png[Compartment with header without separator,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/2849[#2849] [diagram] Reduce the time taken to open a diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/2609[#2609] [diagram] Move handles after node move to reduce edges crossing.
+- https://github.com/eclipse-sirius/sirius-web/issues/2776[#2776] [gantt] Enhance the action to share Gantt representation URL to by computing the URL inside ShareGanttModal.
 
 == v2023.12.0
 

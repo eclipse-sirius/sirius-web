@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ export const Toolbar = ({ onZoomLevel, zoomLevel, onColumnDisplayed, onFitToScre
 
   let modalElement: React.ReactElement | null = null;
   if (modal === 'ShareGanttModal') {
-    modalElement = <ShareGanttModal url={window.location.href} onClose={closeModal} />;
+    modalElement = <ShareGanttModal onClose={closeModal} />;
   }
 
   const onZoomIn = () => {
