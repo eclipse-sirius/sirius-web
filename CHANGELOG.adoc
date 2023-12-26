@@ -86,6 +86,8 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 - https://github.com/eclipse-sirius/sirius-web/issues/2778[#2778] [diagram] Authorize empty string for direct edit.
 - https://github.com/eclipse-sirius/sirius-web/issues/2579[#2579] [diagram] Fix the invalid text cursor position when editing a label by typing text directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/2826[#2826] [diagram] Fix invalid reference position used for nodes with a depth superior to 2.
+- https://github.com/eclipse-sirius/sirius-web/issues/2857[#2857] [form] Fix default reference widget bugs.
+Now, for a multi-valued feature, the values are properly displayed and the delete is properly handled.
 
 === New Features
 - https://github.com/eclipse-sirius/sirius-web/issues/2413[#2413] Add a debug mode for React Flow diagrams

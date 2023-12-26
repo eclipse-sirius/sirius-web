@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -210,7 +210,9 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
         EStructuralFeature.Setting setting = this.resolveSetting(variableManager, feature);
         if (setting != null) {
             var rawValue = setting.get(true);
-            if (rawValue != null) {
+            if (setting.getEStructuralFeature().isMany()) {
+                value = (List<?>) rawValue;
+            } else if (rawValue != null) {
                 value = List.of(rawValue);
             } else {
                 value = List.of();
@@ -289,7 +291,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
         if (referenceOwner != null && feature instanceof EReference reference) {
             if (reference.isMany()) {
-                ((List<?>) reference.eGet(reference)).remove(item.get());
+                ((List<?>) referenceOwner.eGet(reference)).remove(item.get());
             } else {
                 referenceOwner.eUnset(reference);
             }
