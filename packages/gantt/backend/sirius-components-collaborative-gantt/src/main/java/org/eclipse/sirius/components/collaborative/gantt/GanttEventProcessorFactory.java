@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,11 +65,10 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
             if (optionalGantt.isPresent()) {
                 Gantt gantt = optionalGantt.get();
 
-                IRepresentationEventProcessor ganttEventProcessor = new GanttEventProcessor(editingContext, gantt,
-                        this.subscriptionManagerFactory.create(), this.ganttCreationService, this.ganttEventHandlers);
+                IRepresentationEventProcessor ganttEventProcessor = new GanttEventProcessor(editingContext, gantt, this.subscriptionManagerFactory.create(), this.ganttCreationService,
+                        this.ganttEventHandlers);
 
-                return Optional.of(ganttEventProcessor)
-                        .map(representationEventProcessorClass::cast);
+                return Optional.of(ganttEventProcessor).map(representationEventProcessorClass::cast);
             }
         }
         return Optional.empty();

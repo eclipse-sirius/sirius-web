@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.gantt.description;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -29,9 +30,20 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @PublicApi
 public record GanttDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
-        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions) implements IRepresentationDescription {
+        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions, Consumer<VariableManager> createTaskProvider,
+        Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
+
+    public static final String NEW_NAME = "newName";
+
+    public static final String NEW_DESCRIPTION = "newDescription";
+
+    public static final String NEW_START_TIME = "newStartTime";
+
+    public static final String NEW_END_TIME = "newEndTime";
+
+    public static final String NEW_PROGRESS = "newProgress";
 
     public GanttDescription {
         Objects.requireNonNull(id);
@@ -88,6 +100,12 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         private Predicate<VariableManager> canCreatePredicate;
 
+        private Consumer<VariableManager> deleteTaskProvider;
+
+        private Consumer<VariableManager> editTaskProvider;
+
+        private Consumer<VariableManager> createTaskProvider;
+
         private List<TaskDescription> taskDescriptions;
 
         private Builder(String id) {
@@ -114,6 +132,21 @@ public record GanttDescription(String id, String label, Function<VariableManager
             return this;
         }
 
+        public Builder deleteTaskProvider(Consumer<VariableManager> deleteTaskProvider) {
+            this.deleteTaskProvider = deleteTaskProvider;
+            return this;
+        }
+
+        public Builder editTaskProvider(Consumer<VariableManager> editTaskProvider) {
+            this.editTaskProvider = editTaskProvider;
+            return this;
+        }
+
+        public Builder createTaskProvider(Consumer<VariableManager> createTaskProvider) {
+            this.createTaskProvider = createTaskProvider;
+            return this;
+        }
+
         public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
             this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
             return this;
@@ -126,7 +159,7 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         public GanttDescription build() {
             GanttDescription ganttDescription = new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
-                    this.taskDescriptions);
+                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider);
             return ganttDescription;
         }
     }

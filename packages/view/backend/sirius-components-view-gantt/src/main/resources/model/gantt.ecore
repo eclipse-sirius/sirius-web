@@ -6,13 +6,34 @@
         upperBound="-1" eType="#//TaskDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createTool" eType="#//CreateTaskTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="editTool" eType="#//EditTaskTool"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTaskTool"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TaskDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
         lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="taskDetailExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self.name"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="descriptionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self.description"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startTimeExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self.startTime"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endTimeExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self.endTime"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="progressExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self.progress"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="computeStartEndDynamicallyExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self.computeStartEndDynamically"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dependenciesExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:self.dependencies"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" lowerBound="1" eType="#//TaskStyleDescription"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -37,5 +58,16 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" lowerBound="1" eType="#//TaskStyleDescription"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="TaskDetail" instanceClassName="org.eclipse.sirius.components.gantt.TaskDetail"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TaskTool" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
+        defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateTaskTool" eSuperTypes="#//TaskTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EditTaskTool" eSuperTypes="#//TaskTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteTaskTool" eSuperTypes="#//TaskTool"/>
 </ecore:EPackage>

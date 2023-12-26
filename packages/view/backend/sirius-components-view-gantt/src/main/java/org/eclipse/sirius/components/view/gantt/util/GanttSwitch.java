@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,14 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
+import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
 import org.eclipse.sirius.components.view.gantt.TaskStyleDescription;
+import org.eclipse.sirius.components.view.gantt.TaskTool;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -109,6 +113,40 @@ public class GanttSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case GanttPackage.TASK_TOOL: {
+                TaskTool taskTool = (TaskTool) theEObject;
+                T result = this.caseTaskTool(taskTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case GanttPackage.CREATE_TASK_TOOL: {
+                CreateTaskTool createTaskTool = (CreateTaskTool) theEObject;
+                T result = this.caseCreateTaskTool(createTaskTool);
+                if (result == null)
+                    result = this.caseTaskTool(createTaskTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case GanttPackage.EDIT_TASK_TOOL: {
+                EditTaskTool editTaskTool = (EditTaskTool) theEObject;
+                T result = this.caseEditTaskTool(editTaskTool);
+                if (result == null)
+                    result = this.caseTaskTool(editTaskTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case GanttPackage.DELETE_TASK_TOOL: {
+                DeleteTaskTool deleteTaskTool = (DeleteTaskTool) theEObject;
+                T result = this.caseDeleteTaskTool(deleteTaskTool);
+                if (result == null)
+                    result = this.caseTaskTool(deleteTaskTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -170,6 +208,65 @@ public class GanttSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseConditionalTaskStyle(ConditionalTaskStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Task Tool</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Task Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTaskTool(TaskTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Create Task Tool</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Create Task Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCreateTaskTool(CreateTaskTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Edit Task Tool</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Edit Task Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEditTaskTool(EditTaskTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Delete Task Tool</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Delete Task Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeleteTaskTool(DeleteTaskTool object) {
         return null;
     }
 

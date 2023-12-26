@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.InstantScalarType;
 import org.eclipse.sirius.components.graphql.api.UploadScalarType;
 import org.eclipse.sirius.web.graphql.datafetchers.GraphQLDataFetcherExceptionHandler;
 import org.slf4j.Logger;
@@ -107,13 +108,12 @@ public class GraphQLConfiguration {
                 typeRegistry.merge(childTypeDefinitionRegistry);
             }
 
-            // @formatter:off
             var runtimeWiring = RuntimeWiring.newRuntimeWiring()
                     .codeRegistry(graphQLCodeRegistry)
                     .wiringFactory(graphQLWiringFactory)
                     .scalar(UploadScalarType.INSTANCE)
+                    .scalar(InstantScalarType.INSTANCE)
                     .build();
-            // @formatter:on
 
             GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
             return graphQLSchema;

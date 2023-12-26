@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,10 +20,14 @@ import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
+import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
 import org.eclipse.sirius.components.view.gantt.TaskStyleDescription;
+import org.eclipse.sirius.components.view.gantt.TaskTool;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -94,6 +98,26 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalTaskStyle(ConditionalTaskStyle object) {
             return GanttAdapterFactory.this.createConditionalTaskStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseTaskTool(TaskTool object) {
+            return GanttAdapterFactory.this.createTaskToolAdapter();
+        }
+
+        @Override
+        public Adapter caseCreateTaskTool(CreateTaskTool object) {
+            return GanttAdapterFactory.this.createCreateTaskToolAdapter();
+        }
+
+        @Override
+        public Adapter caseEditTaskTool(EditTaskTool object) {
+            return GanttAdapterFactory.this.createEditTaskToolAdapter();
+        }
+
+        @Override
+        public Adapter caseDeleteTaskTool(DeleteTaskTool object) {
+            return GanttAdapterFactory.this.createDeleteTaskToolAdapter();
         }
 
         @Override
@@ -183,6 +207,61 @@ public class GanttAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalTaskStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.gantt.TaskTool <em>Task
+     * Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.gantt.TaskTool
+     * @generated
+     */
+    public Adapter createTaskToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.gantt.CreateTaskTool
+     * <em>Create Task Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.gantt.CreateTaskTool
+     * @generated
+     */
+    public Adapter createCreateTaskToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.gantt.EditTaskTool
+     * <em>Edit Task Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.gantt.EditTaskTool
+     * @generated
+     */
+    public Adapter createEditTaskToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.gantt.DeleteTaskTool
+     * <em>Delete Task Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.gantt.DeleteTaskTool
+     * @generated
+     */
+    public Adapter createDeleteTaskToolAdapter() {
         return null;
     }
 

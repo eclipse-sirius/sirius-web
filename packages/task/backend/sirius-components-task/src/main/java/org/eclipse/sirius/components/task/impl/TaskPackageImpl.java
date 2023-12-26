@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,11 @@ package org.eclipse.sirius.components.task.impl;
 
 import static org.eclipse.sirius.components.task.TaskPackage.RESOURCE;
 
+import java.time.Instant;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
@@ -107,6 +110,13 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
      * @generated
      */
     private EClass taskTagEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EDataType instantEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -325,7 +335,7 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
      * @generated
      */
     @Override
-    public EAttribute getAbstractTask_StartDate() {
+    public EAttribute getAbstractTask_StartTime() {
         return (EAttribute) this.abstractTaskEClass.getEStructuralFeatures().get(2);
     }
 
@@ -335,7 +345,7 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
      * @generated
      */
     @Override
-    public EAttribute getAbstractTask_EndDate() {
+    public EAttribute getAbstractTask_EndTime() {
         return (EAttribute) this.abstractTaskEClass.getEStructuralFeatures().get(3);
     }
 
@@ -355,7 +365,7 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
      * @generated
      */
     @Override
-    public EAttribute getAbstractTask_ComputeDateDynamically() {
+    public EAttribute getAbstractTask_ComputeStartEndDynamically() {
         return (EAttribute) this.abstractTaskEClass.getEStructuralFeatures().get(5);
     }
 
@@ -535,6 +545,16 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
      * @generated
      */
     @Override
+    public EDataType getInstant() {
+        return this.instantEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public TaskFactory getTaskFactory() {
         return (TaskFactory) this.getEFactoryInstance();
     }
@@ -577,10 +597,10 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
         this.abstractTaskEClass = this.createEClass(ABSTRACT_TASK);
         this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__NAME);
         this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__DESCRIPTION);
-        this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__START_DATE);
-        this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__END_DATE);
+        this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__START_TIME);
+        this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__END_TIME);
         this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__PROGRESS);
-        this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY);
+        this.createEAttribute(this.abstractTaskEClass, ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY);
         this.createEReference(this.abstractTaskEClass, ABSTRACT_TASK__TAGS);
         this.createEReference(this.abstractTaskEClass, ABSTRACT_TASK__DEPENDENCIES);
         this.createEReference(this.abstractTaskEClass, ABSTRACT_TASK__ASSIGNED_PERSONS);
@@ -603,6 +623,9 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
         this.taskTagEClass = this.createEClass(TASK_TAG);
         this.createEAttribute(this.taskTagEClass, TASK_TAG__PREFIX);
         this.createEAttribute(this.taskTagEClass, TASK_TAG__SUFFIX);
+
+        // Create data types
+        this.instantEDataType = this.createEDataType(INSTANT);
     }
 
     /**
@@ -670,14 +693,14 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getAbstractTask_Description(), this.ecorePackage.getEString(), "description", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getAbstractTask_StartDate(), this.ecorePackage.getEInt(), "startDate", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getAbstractTask_EndDate(), this.ecorePackage.getEInt(), "endDate", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+        this.initEAttribute(this.getAbstractTask_StartTime(), this.getInstant(), "startTime", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getAbstractTask_EndTime(), this.getInstant(), "endTime", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getAbstractTask_Progress(), this.ecorePackage.getEInt(), "progress", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getAbstractTask_ComputeDateDynamically(), this.ecorePackage.getEBoolean(), "computeDateDynamically", null, 0, 1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getAbstractTask_ComputeStartEndDynamically(), this.ecorePackage.getEBoolean(), "computeStartEndDynamically", null, 0, 1, AbstractTask.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getAbstractTask_Tags(), this.getTaskTag(), null, "tags", null, 0, -1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getAbstractTask_Dependencies(), this.getTask(), null, "dependencies", null, 0, -1, AbstractTask.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
@@ -712,6 +735,9 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage {
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTaskTag_Suffix(), this.ecorePackage.getEString(), "suffix", null, 0, 1, TaskTag.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        // Initialize data types
+        this.initEDataType(this.instantEDataType, Instant.class, "Instant", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

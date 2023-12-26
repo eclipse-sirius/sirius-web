@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.task;
+
+import java.time.Instant;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -24,10 +26,10 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getDescription <em>Description</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getStartDate <em>Start Date</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getEndDate <em>End Date</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getStartTime <em>Start Time</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getEndTime <em>End Time</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getProgress <em>Progress</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.AbstractTask#isComputeDateDynamically <em>Compute Date
+ * <li>{@link org.eclipse.sirius.components.task.AbstractTask#isComputeStartEndDynamically <em>Compute Start End
  * Dynamically</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getTags <em>Tags</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.AbstractTask#getDependencies <em>Dependencies</em>}</li>
@@ -86,48 +88,48 @@ public interface AbstractTask extends EObject {
     void setDescription(String value);
 
     /**
-     * Returns the value of the '<em><b>Start Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Start Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Start Date</em>' attribute.
-     * @see #setStartDate(int)
-     * @see org.eclipse.sirius.components.task.TaskPackage#getAbstractTask_StartDate()
-     * @model
+     * @return the value of the '<em>Start Time</em>' attribute.
+     * @see #setStartTime(Instant)
+     * @see org.eclipse.sirius.components.task.TaskPackage#getAbstractTask_StartTime()
+     * @model dataType="org.eclipse.sirius.components.task.Instant"
      * @generated
      */
-    int getStartDate();
+    Instant getStartTime();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.task.AbstractTask#getStartDate <em>Start Date</em>}'
+     * Sets the value of the '{@link org.eclipse.sirius.components.task.AbstractTask#getStartTime <em>Start Time</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Start Date</em>' attribute.
-     * @see #getStartDate()
+     *            the new value of the '<em>Start Time</em>' attribute.
+     * @see #getStartTime()
      * @generated
      */
-    void setStartDate(int value);
+    void setStartTime(Instant value);
 
     /**
-     * Returns the value of the '<em><b>End Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>End Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>End Date</em>' attribute.
-     * @see #setEndDate(int)
-     * @see org.eclipse.sirius.components.task.TaskPackage#getAbstractTask_EndDate()
-     * @model
+     * @return the value of the '<em>End Time</em>' attribute.
+     * @see #setEndTime(Instant)
+     * @see org.eclipse.sirius.components.task.TaskPackage#getAbstractTask_EndTime()
+     * @model dataType="org.eclipse.sirius.components.task.Instant"
      * @generated
      */
-    int getEndDate();
+    Instant getEndTime();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.task.AbstractTask#getEndDate <em>End Date</em>}'
+     * Sets the value of the '{@link org.eclipse.sirius.components.task.AbstractTask#getEndTime <em>End Time</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>End Date</em>' attribute.
-     * @see #getEndDate()
+     *            the new value of the '<em>End Time</em>' attribute.
+     * @see #getEndTime()
      * @generated
      */
-    void setEndDate(int value);
+    void setEndTime(Instant value);
 
     /**
      * Returns the value of the '<em><b>Progress</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -152,27 +154,27 @@ public interface AbstractTask extends EObject {
     void setProgress(int value);
 
     /**
-     * Returns the value of the '<em><b>Compute Date Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * Returns the value of the '<em><b>Compute Start End Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @return the value of the '<em>Compute Date Dynamically</em>' attribute.
-     * @see #setComputeDateDynamically(boolean)
-     * @see org.eclipse.sirius.components.task.TaskPackage#getAbstractTask_ComputeDateDynamically()
+     * @return the value of the '<em>Compute Start End Dynamically</em>' attribute.
+     * @see #setComputeStartEndDynamically(boolean)
+     * @see org.eclipse.sirius.components.task.TaskPackage#getAbstractTask_ComputeStartEndDynamically()
      * @model
      * @generated
      */
-    boolean isComputeDateDynamically();
+    boolean isComputeStartEndDynamically();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.task.AbstractTask#isComputeDateDynamically
-     * <em>Compute Date Dynamically</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.task.AbstractTask#isComputeStartEndDynamically
+     * <em>Compute Start End Dynamically</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Compute Date Dynamically</em>' attribute.
-     * @see #isComputeDateDynamically()
+     *            the new value of the '<em>Compute Start End Dynamically</em>' attribute.
+     * @see #isComputeStartEndDynamically()
      * @generated
      */
-    void setComputeDateDynamically(boolean value);
+    void setComputeStartEndDynamically(boolean value);
 
     /**
      * Returns the value of the '<em><b>Tags</b></em>' reference list. The list contents are of type

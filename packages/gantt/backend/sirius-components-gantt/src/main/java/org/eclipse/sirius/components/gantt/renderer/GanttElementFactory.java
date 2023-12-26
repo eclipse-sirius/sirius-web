@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.gantt.renderer;
 
+import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
+import org.eclipse.sirius.components.gantt.TaskDetail;
 import org.eclipse.sirius.components.gantt.renderer.elements.GanttElementProps;
 import org.eclipse.sirius.components.gantt.renderer.elements.TaskElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
@@ -54,7 +57,41 @@ public class GanttElementFactory implements IElementFactory {
                 .map(Task.class::cast)
                 .toList();
 
-        return new Task(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.detail(), subTasks);
+        TaskDetail detail = props.detail();
+        if (detail.computeStartEndDynamically()) {
+
+            Instant startTime = subTasks.stream()
+                    .filter(task -> task.detail().startTime() != null)
+                    .min(Comparator.comparing(task -> task.detail().startTime()))
+                    .map(task -> task.detail().startTime())
+                    .orElse(props.detail().startTime());
+
+            Instant endTime = subTasks.stream()
+                    .filter(task -> task.detail().endTime() != null)
+                    .max(Comparator.comparing(task -> task.detail().endTime()))
+                    .map(task-> task.detail().endTime())
+                    .orElse(props.detail().endTime());
+
+            // compute the ratio
+            var numerator =  subTasks.stream()
+                .filter(task -> task.detail().startTime() != null && task.detail().endTime() != null)
+                .mapToLong(task -> task.detail().progress() * (task.detail().endTime().getEpochSecond() - task.detail().startTime().getEpochSecond()))
+                .sum();
+
+            var denominator =  subTasks.stream()
+                .filter(task -> task.detail().startTime() != null && task.detail().endTime() != null)
+                .mapToLong(task -> task.detail().endTime().getEpochSecond() - task.detail().startTime().getEpochSecond())
+                .sum();
+
+            int newProgress = 0;
+            if (denominator > 0) {
+                newProgress = (int) (numerator / denominator);
+            }
+
+            detail = new TaskDetail(detail.name(), detail.description(), startTime, endTime, newProgress, detail.computeStartEndDynamically());
+        }
+
+        return new Task(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), detail, props.dependencyObjectIds(), subTasks);
     }
 
 }

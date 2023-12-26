@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,20 +91,20 @@ public class CreateGanttEventHandler implements IEditingContextEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof CreateRepresentationInput createRepresentationInput) {
-            Optional<GanttDescription> optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
+            Optional<GanttDescription> optionalGanttDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(GanttDescription.class::isInstance)
                     .map(GanttDescription.class::cast);
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
 
-            if (optionalDiagramDescription.isPresent() && optionalObject.isPresent()) {
-                GanttDescription ganttDescription = optionalDiagramDescription.get();
+            if (optionalGanttDescription.isPresent() && optionalObject.isPresent()) {
+                GanttDescription ganttDescription = optionalGanttDescription.get();
                 Object object = optionalObject.get();
 
-                Gantt ganttDiagram = this.ganttCreationService.create(createRepresentationInput.representationName(), object, ganttDescription, editingContext);
+                Gantt gantt = this.ganttCreationService.create(createRepresentationInput.representationName(), object, ganttDescription, editingContext);
 
-                this.representationPersistenceService.save(editingContext, ganttDiagram);
+                this.representationPersistenceService.save(editingContext, gantt);
 
-                payload = new CreateRepresentationSuccessPayload(input.id(), ganttDiagram);
+                payload = new CreateRepresentationSuccessPayload(input.id(), gantt);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_CREATION, editingContext.getId(), input);
             }
         }

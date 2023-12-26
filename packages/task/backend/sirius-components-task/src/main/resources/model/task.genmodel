@@ -13,6 +13,7 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="Task" basePackage="org.eclipse.sirius.components" disposableProviderFactory="true"
       extensibleProviderFactory="true" childCreationExtenders="true" ecorePackage="task.ecore#/">
+    <genDataTypes ecoreDataType="task.ecore#//Instant"/>
     <genClasses image="false" ecoreClass="task.ecore#//Resource">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//Resource/name"/>
     </genClasses>
@@ -32,10 +33,10 @@
     <genClasses image="false" ecoreClass="task.ecore#//AbstractTask">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/description"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/startDate"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/endDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/startTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/endTime"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/progress"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/computeDateDynamically"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute task.ecore#//AbstractTask/computeStartEndDynamically"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/tags"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/dependencies"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EReference task.ecore#//AbstractTask/assignedPersons"/>

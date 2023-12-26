@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,6 +101,10 @@ public class BuilderGenerator {
         URI deckURI = URI.createFileURI(args[1] + "/../sirius-components-view-deck/src/main/resources/model/deck.genmodel");
         Resource deckResource = resourceSet.getResource(deckURI, true);
         allViewContent.addAll(deckResource.getContents());
+
+        URI ganttURI = URI.createFileURI(args[1] + "/../sirius-components-view-gantt/src/main/resources/model/gantt.genmodel");
+        Resource ganttResource = resourceSet.getResource(ganttURI, true);
+        allViewContent.addAll(ganttResource.getContents());
 
         var gen = new BuilderGenerator(args[0], args[2], args[3]);
 

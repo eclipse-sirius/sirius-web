@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.task;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -250,20 +251,20 @@ public interface TaskPackage extends EPackage {
     int ABSTRACT_TASK__DESCRIPTION = 1;
 
     /**
-     * The feature id for the '<em><b>Start Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Start Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ABSTRACT_TASK__START_DATE = 2;
+    int ABSTRACT_TASK__START_TIME = 2;
 
     /**
-     * The feature id for the '<em><b>End Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>End Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ABSTRACT_TASK__END_DATE = 3;
+    int ABSTRACT_TASK__END_TIME = 3;
 
     /**
      * The feature id for the '<em><b>Progress</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -274,13 +275,13 @@ public interface TaskPackage extends EPackage {
     int ABSTRACT_TASK__PROGRESS = 4;
 
     /**
-     * The feature id for the '<em><b>Compute Date Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Compute Start End Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY = 5;
+    int ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY = 5;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -362,20 +363,20 @@ public interface TaskPackage extends EPackage {
     int TASK__DESCRIPTION = ABSTRACT_TASK__DESCRIPTION;
 
     /**
-     * The feature id for the '<em><b>Start Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Start Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK__START_DATE = ABSTRACT_TASK__START_DATE;
+    int TASK__START_TIME = ABSTRACT_TASK__START_TIME;
 
     /**
-     * The feature id for the '<em><b>End Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>End Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK__END_DATE = ABSTRACT_TASK__END_DATE;
+    int TASK__END_TIME = ABSTRACT_TASK__END_TIME;
 
     /**
      * The feature id for the '<em><b>Progress</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -386,13 +387,13 @@ public interface TaskPackage extends EPackage {
     int TASK__PROGRESS = ABSTRACT_TASK__PROGRESS;
 
     /**
-     * The feature id for the '<em><b>Compute Date Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Compute Start End Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK__COMPUTE_DATE_DYNAMICALLY = ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY;
+    int TASK__COMPUTE_START_END_DYNAMICALLY = ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -473,20 +474,20 @@ public interface TaskPackage extends EPackage {
     int OBJECTIVE__DESCRIPTION = ABSTRACT_TASK__DESCRIPTION;
 
     /**
-     * The feature id for the '<em><b>Start Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Start Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int OBJECTIVE__START_DATE = ABSTRACT_TASK__START_DATE;
+    int OBJECTIVE__START_TIME = ABSTRACT_TASK__START_TIME;
 
     /**
-     * The feature id for the '<em><b>End Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>End Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int OBJECTIVE__END_DATE = ABSTRACT_TASK__END_DATE;
+    int OBJECTIVE__END_TIME = ABSTRACT_TASK__END_TIME;
 
     /**
      * The feature id for the '<em><b>Progress</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -497,13 +498,13 @@ public interface TaskPackage extends EPackage {
     int OBJECTIVE__PROGRESS = ABSTRACT_TASK__PROGRESS;
 
     /**
-     * The feature id for the '<em><b>Compute Date Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Compute Start End Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int OBJECTIVE__COMPUTE_DATE_DYNAMICALLY = ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY;
+    int OBJECTIVE__COMPUTE_START_END_DYNAMICALLY = ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -594,20 +595,20 @@ public interface TaskPackage extends EPackage {
     int KEY_RESULT__DESCRIPTION = ABSTRACT_TASK__DESCRIPTION;
 
     /**
-     * The feature id for the '<em><b>Start Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Start Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int KEY_RESULT__START_DATE = ABSTRACT_TASK__START_DATE;
+    int KEY_RESULT__START_TIME = ABSTRACT_TASK__START_TIME;
 
     /**
-     * The feature id for the '<em><b>End Date</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>End Time</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int KEY_RESULT__END_DATE = ABSTRACT_TASK__END_DATE;
+    int KEY_RESULT__END_TIME = ABSTRACT_TASK__END_TIME;
 
     /**
      * The feature id for the '<em><b>Progress</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -618,13 +619,13 @@ public interface TaskPackage extends EPackage {
     int KEY_RESULT__PROGRESS = ABSTRACT_TASK__PROGRESS;
 
     /**
-     * The feature id for the '<em><b>Compute Date Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Compute Start End Dynamically</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int KEY_RESULT__COMPUTE_DATE_DYNAMICALLY = ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY;
+    int KEY_RESULT__COMPUTE_START_END_DYNAMICALLY = ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY;
 
     /**
      * The feature id for the '<em><b>Tags</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -765,6 +766,15 @@ public interface TaskPackage extends EPackage {
      * @ordered
      */
     int TASK_TAG_FEATURE_COUNT = 2;
+
+    /**
+     * The meta object id for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see java.time.Instant
+     * @see org.eclipse.sirius.components.task.impl.TaskPackageImpl#getInstant()
+     * @generated
+     */
+    int INSTANT = 10;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.task.Resource <em>Resource</em>}'. <!--
@@ -930,26 +940,26 @@ public interface TaskPackage extends EPackage {
     EAttribute getAbstractTask_Description();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.task.AbstractTask#getStartDate
-     * <em>Start Date</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.task.AbstractTask#getStartTime
+     * <em>Start Time</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Start Date</em>'.
-     * @see org.eclipse.sirius.components.task.AbstractTask#getStartDate()
+     * @return the meta object for the attribute '<em>Start Time</em>'.
+     * @see org.eclipse.sirius.components.task.AbstractTask#getStartTime()
      * @see #getAbstractTask()
      * @generated
      */
-    EAttribute getAbstractTask_StartDate();
+    EAttribute getAbstractTask_StartTime();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.task.AbstractTask#getEndDate
-     * <em>End Date</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.task.AbstractTask#getEndTime
+     * <em>End Time</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>End Date</em>'.
-     * @see org.eclipse.sirius.components.task.AbstractTask#getEndDate()
+     * @return the meta object for the attribute '<em>End Time</em>'.
+     * @see org.eclipse.sirius.components.task.AbstractTask#getEndTime()
      * @see #getAbstractTask()
      * @generated
      */
-    EAttribute getAbstractTask_EndDate();
+    EAttribute getAbstractTask_EndTime();
 
     /**
      * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.task.AbstractTask#getProgress
@@ -964,15 +974,15 @@ public interface TaskPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.task.AbstractTask#isComputeDateDynamically <em>Compute Date
+     * '{@link org.eclipse.sirius.components.task.AbstractTask#isComputeStartEndDynamically <em>Compute Start End
      * Dynamically</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Compute Date Dynamically</em>'.
-     * @see org.eclipse.sirius.components.task.AbstractTask#isComputeDateDynamically()
+     * @return the meta object for the attribute '<em>Compute Start End Dynamically</em>'.
+     * @see org.eclipse.sirius.components.task.AbstractTask#isComputeStartEndDynamically()
      * @see #getAbstractTask()
      * @generated
      */
-    EAttribute getAbstractTask_ComputeDateDynamically();
+    EAttribute getAbstractTask_ComputeStartEndDynamically();
 
     /**
      * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.task.AbstractTask#getTags
@@ -1165,6 +1175,17 @@ public interface TaskPackage extends EPackage {
     EAttribute getTaskTag_Suffix();
 
     /**
+     * Returns the meta object for data type '{@link java.time.Instant <em>Instant</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for data type '<em>Instant</em>'.
+     * @see java.time.Instant
+     * @model instanceClass="java.time.Instant"
+     * @generated
+     */
+    EDataType getInstant();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -1316,20 +1337,20 @@ public interface TaskPackage extends EPackage {
         EAttribute ABSTRACT_TASK__DESCRIPTION = eINSTANCE.getAbstractTask_Description();
 
         /**
-         * The meta object literal for the '<em><b>Start Date</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Start Time</b></em>' attribute feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute ABSTRACT_TASK__START_DATE = eINSTANCE.getAbstractTask_StartDate();
+        EAttribute ABSTRACT_TASK__START_TIME = eINSTANCE.getAbstractTask_StartTime();
 
         /**
-         * The meta object literal for the '<em><b>End Date</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>End Time</b></em>' attribute feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute ABSTRACT_TASK__END_DATE = eINSTANCE.getAbstractTask_EndDate();
+        EAttribute ABSTRACT_TASK__END_TIME = eINSTANCE.getAbstractTask_EndTime();
 
         /**
          * The meta object literal for the '<em><b>Progress</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -1340,12 +1361,12 @@ public interface TaskPackage extends EPackage {
         EAttribute ABSTRACT_TASK__PROGRESS = eINSTANCE.getAbstractTask_Progress();
 
         /**
-         * The meta object literal for the '<em><b>Compute Date Dynamically</b></em>' attribute feature. <!--
+         * The meta object literal for the '<em><b>Compute Start End Dynamically</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY = eINSTANCE.getAbstractTask_ComputeDateDynamically();
+        EAttribute ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY = eINSTANCE.getAbstractTask_ComputeStartEndDynamically();
 
         /**
          * The meta object literal for the '<em><b>Tags</b></em>' reference list feature. <!-- begin-user-doc --> <!--
@@ -1492,6 +1513,15 @@ public interface TaskPackage extends EPackage {
          * @generated
          */
         EAttribute TASK_TAG__SUFFIX = eINSTANCE.getTaskTag_Suffix();
+
+        /**
+         * The meta object literal for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see java.time.Instant
+         * @see org.eclipse.sirius.components.task.impl.TaskPackageImpl#getInstant()
+         * @generated
+         */
+        EDataType INSTANT = eINSTANCE.getInstant();
 
     }
 

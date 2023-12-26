@@ -8,7 +8,10 @@ input GanttEventInput {
   ganttId: ID!
 }
 
-union GanttEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | GanttRefreshedEventPayload
+union GanttEventPayload =
+    ErrorPayload
+  | SubscribersUpdatedEventPayload
+  | GanttRefreshedEventPayload
 
 type GanttRefreshedEventPayload {
   id: ID!
@@ -31,15 +34,18 @@ type Task {
   detail: TaskDetail!
   style: TaskStyle
   subTasks: [Task!]
-  dependencies: [Task!]
+  dependencyTaskIds: [String!]
 }
+
+scalar Instant
 
 type TaskDetail {
   name: String!
   description: String!
-  startDate: Int!
-  endDate: Int!
+  startTime: Instant
+  endTime: Instant
   progress: Int!
+  computeStartEndDynamically: Boolean!
 }
 
 type TaskStyle {
@@ -54,5 +60,43 @@ enum TaskType {
   MILESTONE
 }
 
+extend type Mutation {
+  createGanttTask(input: CreateGanttTaskInput!): CreateGanttTaskPayload
+  deleteGanttTask(input: DeleteGanttTaskInput!): DeleteGanttTaskPayload
+  editGanttTask(input: EditGanttTaskInput!): EditGanttTaskPayload
+}
 
+input CreateGanttTaskInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  currentTaskId: ID
+}
+union CreateGanttTaskPayload = SuccessPayload | ErrorPayload
 
+input DeleteGanttTaskInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  taskId: ID!
+}
+union DeleteGanttTaskPayload = SuccessPayload | ErrorPayload
+
+input EditGanttTaskDetailInput {
+  name: String
+  description: String
+  type: TaskType
+  startTime: String
+  endTime: String
+  progress: Int
+  assignee: String
+}
+
+input EditGanttTaskInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  taskId: ID!
+  newDetail: EditGanttTaskDetailInput!
+}
+union EditGanttTaskPayload = SuccessPayload | ErrorPayload

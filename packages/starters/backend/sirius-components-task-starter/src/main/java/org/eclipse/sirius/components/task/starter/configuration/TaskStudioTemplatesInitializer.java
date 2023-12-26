@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.task.starter.configuration;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,7 +38,6 @@ import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -80,7 +80,8 @@ public class TaskStudioTemplatesInitializer implements IProjectTemplateInitializ
     }
 
     private String createTaskModel() {
-        return this.stereotypeBuilder.getStereotypeBody(new ClassPathResource("model/task_example.task"));
+        String stereotypeBody = this.stereotypeBuilder.getStereotypeBody(List.of(new TaskExampleBuilder().getContent()));
+        return stereotypeBody;
     }
 
     private Optional<RepresentationMetadata> initializeTaskProject(IEditingContext editingContext, String documentName, String documentContent,

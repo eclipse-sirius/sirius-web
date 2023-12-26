@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import java.util.Objects;
  *
  * @author lfasani
  */
-public record Task(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, TaskDetail detail, List<Task> subTasks) {
+public record Task(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, TaskDetail detail, List<String> dependencyTaskIds, List<Task> subTasks) {
 
     public Task {
         Objects.requireNonNull(id);
@@ -29,6 +29,7 @@ public record Task(String id, String descriptionId, String targetObjectId, Strin
         Objects.requireNonNull(targetObjectLabel);
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(detail);
+        Objects.requireNonNull(dependencyTaskIds);
         Objects.requireNonNull(subTasks);
     }
 
@@ -50,6 +51,8 @@ public record Task(String id, String descriptionId, String targetObjectId, Strin
         private String descriptionId;
 
         private TaskDetail taskDetail;
+
+        private List<String> dependencyTaskIds;
 
         private List<Task> subTasks;
 
@@ -90,13 +93,18 @@ public record Task(String id, String descriptionId, String targetObjectId, Strin
             return this;
         }
 
+        public Builder dependencyTaskIds(List<String> dependencyTaskIds) {
+            this.dependencyTaskIds = Objects.requireNonNull(dependencyTaskIds);
+            return this;
+        }
+
         public Builder subTasks(List<Task> subTasks) {
             this.subTasks = Objects.requireNonNull(subTasks);
             return this;
         }
 
         public Task build() {
-            Task task = new Task(this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.taskDetail, this.subTasks);
+            Task task = new Task(this.id, this.targetObjectId, this.targetObjectKind, this.targetObjectLabel, this.descriptionId, this.taskDetail, this.dependencyTaskIds, this.subTasks);
             return task;
         }
     }

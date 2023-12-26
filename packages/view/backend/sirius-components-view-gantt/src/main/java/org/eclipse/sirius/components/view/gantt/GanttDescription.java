@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,9 @@ import org.eclipse.sirius.components.view.UserColor;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getBackgroundColor <em>Background
  * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTool <em>Create Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getEditTool <em>Edit Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTool <em>Delete Tool</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription()
@@ -68,5 +71,74 @@ public interface GanttDescription extends RepresentationDescription {
      * @generated
      */
     void setBackgroundColor(UserColor value);
+
+    /**
+     * Returns the value of the '<em><b>Create Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Create Tool</em>' containment reference.
+     * @see #setCreateTool(CreateTaskTool)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_CreateTool()
+     * @model containment="true"
+     * @generated
+     */
+    CreateTaskTool getCreateTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTool <em>Create
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Create Tool</em>' containment reference.
+     * @see #getCreateTool()
+     * @generated
+     */
+    void setCreateTool(CreateTaskTool value);
+
+    /**
+     * Returns the value of the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Edit Tool</em>' containment reference.
+     * @see #setEditTool(EditTaskTool)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_EditTool()
+     * @model containment="true"
+     * @generated
+     */
+    EditTaskTool getEditTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getEditTool <em>Edit
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Edit Tool</em>' containment reference.
+     * @see #getEditTool()
+     * @generated
+     */
+    void setEditTool(EditTaskTool value);
+
+    /**
+     * Returns the value of the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Delete Tool</em>' containment reference.
+     * @see #setDeleteTool(DeleteTaskTool)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_DeleteTool()
+     * @model containment="true"
+     * @generated
+     */
+    DeleteTaskTool getDeleteTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTool <em>Delete
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Delete Tool</em>' containment reference.
+     * @see #getDeleteTool()
+     * @generated
+     */
+    void setDeleteTool(DeleteTaskTool value);
 
 } // GanttDescription

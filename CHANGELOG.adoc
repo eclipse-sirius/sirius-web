@@ -75,7 +75,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 
 === Dependency update
 
-- [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.12
+- [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.13
 - [releng] The frontend now depends on react-trello 2.2.11
 
 
@@ -98,6 +98,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2736[#2736] [gantt] Add a starter project for beans related to task meta-model.
 - https://github.com/eclipse-sirius/sirius-web/issues/2819[#2819] [deck] Contribute the first version of the Deck representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/2765[#2765] [portal] Contribute the first version of the Portal representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/2737[#2737] [gantt] Support create, edit and delete task in gantt.
 
 === Improvements
 
@@ -130,6 +131,7 @@ image:doc/screenshots/biggerResizeHandles.png[Compartment with header without se
 - https://github.com/eclipse-sirius/sirius-web/issues/2484[#2484] [diagram] Split the label concept into three concepts: edge label, inside label and outside label.
 This is a preliminary work to add some proper support for outside labels in the near future.
 - https://github.com/eclipse-sirius/sirius-web/issues/2869[#2869] [diagram] Add `diagramContext` variable to accessible variables when computing semantic candidates expression.
+- https://github.com/eclipse-sirius/sirius-web/issues/2774[#2774] [gantt] Rework the gantt representation front-end to follow best practises.
 
 == v2023.12.0
 

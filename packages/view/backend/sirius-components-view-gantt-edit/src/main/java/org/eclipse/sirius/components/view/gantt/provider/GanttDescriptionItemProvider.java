@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,6 +70,9 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__BACKGROUND_COLOR);
+            this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__CREATE_TOOL);
+            this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__EDIT_TOOL);
+            this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__DELETE_TOOL);
         }
         return this.childrenFeatures;
     }
@@ -90,11 +93,11 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
     /**
      * This returns GanttDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/GanttDescription"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/GanttDescription.svg"));
     }
 
     /**
@@ -132,6 +135,9 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
         switch (notification.getFeatureID(GanttDescription.class)) {
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
             case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
+            case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -151,6 +157,12 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS, GanttFactory.eINSTANCE.createTaskDescription()));
 
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__BACKGROUND_COLOR, ViewFactory.eINSTANCE.createFixedColor()));
+
+        newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__CREATE_TOOL, GanttFactory.eINSTANCE.createCreateTaskTool()));
+
+        newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__EDIT_TOOL, GanttFactory.eINSTANCE.createEditTaskTool()));
+
+        newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__DELETE_TOOL, GanttFactory.eINSTANCE.createDeleteTaskTool()));
     }
 
 }

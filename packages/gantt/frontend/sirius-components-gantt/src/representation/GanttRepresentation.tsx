@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,31 +10,35 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSubscription } from '@apollo/client';
-import { RepresentationComponentProps, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { Task } from '@ObeoNetwork/gantt-task-react';
+import { ApolloError, useMutation, useSubscription } from '@apollo/client';
+import { RepresentationComponentProps, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
-import { Gantt } from '../Gantt';
-import { getTaskFromGQLTask } from '../helper/helper';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  GQLCreateGanttTaskInput,
+  GQLCreateTaskData,
+  GQLCreateTaskVariables,
+  GQLDeleteGanttTaskInput,
+  GQLDeleteTaskData,
+  GQLDeleteTaskVariables,
+  GQLEditGanttTaskInput,
+  GQLEditTaskData,
+  GQLEditTaskVariables,
+} from '../../graphql/mutation/GanttMutation.types';
+import { createTaskMutation, deleteTaskMutation, editTaskMutation } from '../../graphql/mutation/ganttMutation';
 import {
   GQLErrorPayload,
   GQLGanttEventPayload,
   GQLGanttEventSubscription,
   GQLGanttRefreshedEventPayload,
-} from './GanttRepresentation.types';
-import {
-  CompleteEvent,
-  GanttRefreshedEvent,
-  GanttRepresentationContext,
-  GanttRepresentationEvent,
-  SchemaValue,
-  SwitchRepresentationEvent,
-  ganttRepresentationMachine,
-} from './GanttRepresentationMachine';
-import { ganttEventSubscription } from './operations';
-
+  GQLTaskDetail,
+} from '../../graphql/subscription/GanttSubscription.types';
+import { ganttEventSubscription } from '../../graphql/subscription/ganttSubscription';
+import { getTaskFromGQLTask, updateTask } from '../helper/helper';
+import { Gantt } from './Gantt';
+import { GanttRepresentationState } from './GanttRepresentation.types';
 const useGanttRepresentationStyles = makeStyles((theme) => ({
   page: {
     paddingLeft: theme.spacing(1),
@@ -73,25 +77,13 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
 
   const { addErrorMessage, addMessages } = useMultiToast();
 
-  const [{ value, context }, dispatch] = useMachine<GanttRepresentationContext, GanttRepresentationEvent>(
-    ganttRepresentationMachine,
-    {
-      context: {
-        displayedGanttId: representationId,
-      },
-    }
-  );
-  const { ganttRepresentation } = value as SchemaValue;
-  const { id, displayedGanttId, gantt } = context;
-  /**
-   * Displays an other gantt if the selection indicates that we should display another gantt.
-   */
-  useEffect(() => {
-    if (displayedGanttId !== representationId) {
-      const switchGanttEvent: SwitchRepresentationEvent = { type: 'SWITCH_REPRESENTATION', representationId };
-      dispatch(switchGanttEvent);
-    }
-  }, [representationId, displayedGanttId, dispatch]);
+  const { setSelection } = useSelection();
+
+  const [{ id, gantt, complete }, setState] = useState<GanttRepresentationState>({
+    id: crypto.randomUUID(),
+    gantt: null,
+    complete: false,
+  });
 
   const { error } = useSubscription<GQLGanttEventSubscription>(ganttEventSubscription, {
     variables: {
@@ -102,23 +94,22 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
       },
     },
     fetchPolicy: 'no-cache',
-    onSubscriptionData: ({ subscriptionData }) => {
+    onData: ({ data: subscriptionData }) => {
       if (subscriptionData?.data) {
         const { ganttEvent } = subscriptionData.data;
         if (isGanttRefreshedEventPayload(ganttEvent)) {
-          const ganttRefreshedEvent: GanttRefreshedEvent = {
-            type: 'HANDLE_GANTT_REFRESHED',
-            gantt: ganttEvent.gantt,
-          };
-          dispatch(ganttRefreshedEvent);
+          setState((previousState) => {
+            return { ...previousState, gantt: ganttEvent.gantt };
+          });
         } else if (isErrorPayload(ganttEvent)) {
           addMessages(ganttEvent.messages);
         }
       }
     },
-    onSubscriptionComplete: () => {
-      const completeEvent: CompleteEvent = { type: 'HANDLE_COMPLETE' };
-      dispatch(completeEvent);
+    onComplete: () => {
+      setState((previousState) => {
+        return { ...previousState, complete: true, gantt: null };
+      });
     },
   });
 
@@ -126,25 +117,97 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
     if (error) {
       addErrorMessage(error.message);
     }
-  }, [error, dispatch]);
+  }, [error]);
 
-  const onTaskChange = () => {};
-  const onTaskDelete = () => {};
+  //---------------------------------
+  // Mutations
+  const [deleteGanttTask, { loading: deleteGanttTaskLoading, data: deleteGanttTaskData, error: deleteGanttTaskError }] =
+    useMutation<GQLDeleteTaskData, GQLDeleteTaskVariables>(deleteTaskMutation);
+  const [editGanttTask, { loading: editTaskLoading, data: editTaskData, error: editTaskError }] = useMutation<
+    GQLEditTaskData,
+    GQLEditTaskVariables
+  >(editTaskMutation);
+  const [createTask, { loading: createTaskLoading, data: createTaskData, error: createTaskError }] = useMutation<
+    GQLCreateTaskData,
+    GQLCreateTaskVariables
+  >(createTaskMutation);
+
+  const isStandardErrorPayload = (field): field is GQLErrorPayload => field.__typename === 'ErrorPayload';
+  const handleError = useCallback(
+    (loading: boolean, data, error: ApolloError) => {
+      if (!loading) {
+        if (error) {
+          addErrorMessage(error.message);
+        }
+        if (data) {
+          const keys = Object.keys(data);
+          if (keys.length > 0) {
+            const firstKey = keys[0];
+            const firstField = data[firstKey];
+            if (isStandardErrorPayload(firstField)) {
+              const { messages } = firstField;
+              addMessages(messages);
+            }
+          }
+        }
+      }
+    },
+    [addErrorMessage, addMessages]
+  );
+
+  useEffect(() => {
+    handleError(deleteGanttTaskLoading, deleteGanttTaskData, deleteGanttTaskError);
+  }, [deleteGanttTaskLoading, deleteGanttTaskData, deleteGanttTaskError, handleError]);
+  useEffect(() => {
+    handleError(editTaskLoading, editTaskData, editTaskError);
+  }, [editTaskLoading, editTaskData, editTaskError, handleError]);
+  useEffect(() => {
+    handleError(createTaskLoading, createTaskData, createTaskError);
+  }, [createTaskLoading, createTaskData, createTaskError, handleError]);
+
+  const handleEditTask = (task: Task) => {
+    const newDetail: GQLTaskDetail = {
+      name: task.name,
+      description: '',
+      startTime: task.start.toISOString(),
+      endTime: task.end.toISOString(),
+      progress: task.progress,
+      computeStartEndDynamically: task.isDisabled,
+    };
+    const input: GQLEditGanttTaskInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      taskId: task.id,
+      newDetail,
+    };
+
+    // to avoid blink because useMutation implies a re-render as the task value is the old one
+    updateTask(gantt, task.id, newDetail);
+    editGanttTask({ variables: { input } });
+  };
+  const handleDeleteTask = (task: Task) => {
+    const input: GQLDeleteGanttTaskInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      taskId: task.id,
+    };
+    deleteGanttTask({ variables: { input } });
+  };
+  const handleCreateTask = (task: Task) => {
+    const input: GQLCreateGanttTaskInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      currentTaskId: task.id,
+    };
+    createTask({ variables: { input } });
+  };
   const onExpandCollapse = () => {};
 
   let content: JSX.Element | null = null;
-  if (ganttRepresentation === 'ready') {
-    const tasks = getTaskFromGQLTask(gantt.tasks, '');
-    content = (
-      <Gantt
-        tasks={tasks}
-        onSelect={onselect}
-        onTaskChange={onTaskChange}
-        onTaskDelete={onTaskDelete}
-        onExpandCollapse={onExpandCollapse}
-      />
-    );
-  } else if (ganttRepresentation === 'complete') {
+  if (complete) {
     content = (
       <div className={classes.complete}>
         <Typography variant="h5" align="center">
@@ -152,7 +215,19 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         </Typography>
       </div>
     );
+  } else if (gantt) {
+    const tasks = getTaskFromGQLTask(gantt.tasks, '');
+    content = (
+      <Gantt
+        tasks={tasks}
+        setSelection={setSelection}
+        onCreateTask={handleCreateTask}
+        onSelect={onselect}
+        onEditTask={handleEditTask}
+        onDeleteTask={handleDeleteTask}
+        onExpandCollapse={onExpandCollapse}
+      />
+    );
   }
-
   return <>{content}</>;
 };
