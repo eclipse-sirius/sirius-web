@@ -114,6 +114,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2943[#2943] [view] Fix an issue where the default colors were not applied to sub-nodes and border nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/2957[#2957] [diagram] Fix an issue where childs of custom node lose their position.
 - https://github.com/eclipse-sirius/sirius-web/issues/2934[#2934] [portal] Fix the initial position of representations added into portals
+- https://github.com/eclipse-sirius/sirius-web/issues/2857[#2857] [form] Fix default reference widget bugs. Now, for a multi-valued feature, the values are properly displayed and the delete is properly handled.
 
 === New Features
 
