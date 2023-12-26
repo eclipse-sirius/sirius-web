@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,10 +66,10 @@ public class AbstractTaskItemProvider extends ItemProviderAdapter implements IEd
 
             this.addNamePropertyDescriptor(object);
             this.addDescriptionPropertyDescriptor(object);
-            this.addStartDatePropertyDescriptor(object);
-            this.addEndDatePropertyDescriptor(object);
+            this.addStartTimePropertyDescriptor(object);
+            this.addEndTimePropertyDescriptor(object);
             this.addProgressPropertyDescriptor(object);
-            this.addComputeDateDynamicallyPropertyDescriptor(object);
+            this.addComputeStartEndDynamicallyPropertyDescriptor(object);
             this.addTagsPropertyDescriptor(object);
             this.addDependenciesPropertyDescriptor(object);
             this.addAssignedPersonsPropertyDescriptor(object);
@@ -111,35 +111,35 @@ public class AbstractTaskItemProvider extends ItemProviderAdapter implements IEd
     }
 
     /**
-     * This adds a property descriptor for the Start Date feature. <!--
+     * This adds a property descriptor for the Start Time feature. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addStartDatePropertyDescriptor(Object object) {
+    protected void addStartTimePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
                 ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_AbstractTask_startDate_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_AbstractTask_startDate_feature",
+                this.getString("_UI_AbstractTask_startTime_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_AbstractTask_startTime_feature",
                         "_UI_AbstractTask_type"),
-                TaskPackage.Literals.ABSTRACT_TASK__START_DATE, true, false, false,
-                ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+                TaskPackage.Literals.ABSTRACT_TASK__START_TIME, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the End Date feature. <!-- begin-user-doc
+     * This adds a property descriptor for the End Time feature. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addEndDatePropertyDescriptor(Object object) {
+    protected void addEndTimePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
                 ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_AbstractTask_endDate_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_AbstractTask_endDate_feature",
+                this.getString("_UI_AbstractTask_endTime_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_AbstractTask_endTime_feature",
                         "_UI_AbstractTask_type"),
-                TaskPackage.Literals.ABSTRACT_TASK__END_DATE, true, false, false,
-                ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+                TaskPackage.Literals.ABSTRACT_TASK__END_TIME, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -159,18 +159,18 @@ public class AbstractTaskItemProvider extends ItemProviderAdapter implements IEd
     }
 
     /**
-     * This adds a property descriptor for the Compute Date Dynamically feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Compute Start End Dynamically
+     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addComputeDateDynamicallyPropertyDescriptor(Object object) {
+    protected void addComputeStartEndDynamicallyPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
                 ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_AbstractTask_computeDateDynamically_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_AbstractTask_computeDateDynamically_feature",
-                        "_UI_AbstractTask_type"),
-                TaskPackage.Literals.ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY, true, false, false,
+                this.getString("_UI_AbstractTask_computeStartEndDynamically_feature"),
+                this.getString("_UI_PropertyDescriptor_description",
+                        "_UI_AbstractTask_computeStartEndDynamically_feature", "_UI_AbstractTask_type"),
+                TaskPackage.Literals.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY, true, false, false,
                 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
@@ -303,10 +303,10 @@ public class AbstractTaskItemProvider extends ItemProviderAdapter implements IEd
         switch (notification.getFeatureID(AbstractTask.class)) {
         case TaskPackage.ABSTRACT_TASK__NAME:
         case TaskPackage.ABSTRACT_TASK__DESCRIPTION:
-        case TaskPackage.ABSTRACT_TASK__START_DATE:
-        case TaskPackage.ABSTRACT_TASK__END_DATE:
+        case TaskPackage.ABSTRACT_TASK__START_TIME:
+        case TaskPackage.ABSTRACT_TASK__END_TIME:
         case TaskPackage.ABSTRACT_TASK__PROGRESS:
-        case TaskPackage.ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY:
+        case TaskPackage.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY:
         case TaskPackage.ABSTRACT_TASK__TAGS:
         case TaskPackage.ABSTRACT_TASK__DEPENDENCIES:
         case TaskPackage.ABSTRACT_TASK__ASSIGNED_PERSONS:

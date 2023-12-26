@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,11 @@ import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Used to retrieve a gantt diagram from its payload.
+ * Used to retrieve a gantt from its payload.
  *
  * @author lfasani
  */
-@QueryDataFetcher(type = "DiagramRefreshedEventPayload", field = "gantt")
+@QueryDataFetcher(type = "GanttRefreshedEventPayload", field = "gantt")
 public class GanttDiagramRefreshedEventPayloadDiagramDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<Gantt>> {
     @Override
     public DataFetcherResult<Gantt> get(DataFetchingEnvironment environment) throws Exception {

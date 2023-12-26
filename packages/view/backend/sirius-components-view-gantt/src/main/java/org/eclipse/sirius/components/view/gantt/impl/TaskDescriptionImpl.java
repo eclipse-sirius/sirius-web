@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,24 +71,144 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getTaskDetailExpression() <em>Task Detail Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #getNameExpression() <em>Name Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
-     * @see #getTaskDetailExpression()
+     * @see #getNameExpression()
      * @generated
      * @ordered
      */
-    protected static final String TASK_DETAIL_EXPRESSION_EDEFAULT = "aql:self";
+    protected static final String NAME_EXPRESSION_EDEFAULT = "aql:self.name";
 
     /**
-     * The cached value of the '{@link #getTaskDetailExpression() <em>Task Detail Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getNameExpression() <em>Name Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
-     * @see #getTaskDetailExpression()
+     * @see #getNameExpression()
      * @generated
      * @ordered
      */
-    protected String taskDetailExpression = TASK_DETAIL_EXPRESSION_EDEFAULT;
+    protected String nameExpression = NAME_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDescriptionExpression() <em>Description Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDescriptionExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EXPRESSION_EDEFAULT = "aql:self.description";
+
+    /**
+     * The cached value of the '{@link #getDescriptionExpression() <em>Description Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDescriptionExpression()
+     * @generated
+     * @ordered
+     */
+    protected String descriptionExpression = DESCRIPTION_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getStartTimeExpression() <em>Start Time Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getStartTimeExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String START_TIME_EXPRESSION_EDEFAULT = "aql:self.startTime";
+
+    /**
+     * The cached value of the '{@link #getStartTimeExpression() <em>Start Time Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getStartTimeExpression()
+     * @generated
+     * @ordered
+     */
+    protected String startTimeExpression = START_TIME_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getEndTimeExpression() <em>End Time Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEndTimeExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String END_TIME_EXPRESSION_EDEFAULT = "aql:self.endTime";
+
+    /**
+     * The cached value of the '{@link #getEndTimeExpression() <em>End Time Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEndTimeExpression()
+     * @generated
+     * @ordered
+     */
+    protected String endTimeExpression = END_TIME_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getProgressExpression() <em>Progress Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getProgressExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String PROGRESS_EXPRESSION_EDEFAULT = "aql:self.progress";
+
+    /**
+     * The cached value of the '{@link #getProgressExpression() <em>Progress Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getProgressExpression()
+     * @generated
+     * @ordered
+     */
+    protected String progressExpression = PROGRESS_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getComputeStartEndDynamicallyExpression() <em>Compute Start End Dynamically
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getComputeStartEndDynamicallyExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT = "aql:self.computeStartEndDynamically";
+
+    /**
+     * The cached value of the '{@link #getComputeStartEndDynamicallyExpression() <em>Compute Start End Dynamically
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getComputeStartEndDynamicallyExpression()
+     * @generated
+     * @ordered
+     */
+    protected String computeStartEndDynamicallyExpression = COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDependenciesExpression() <em>Dependencies Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDependenciesExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String DEPENDENCIES_EXPRESSION_EDEFAULT = "aql:self.dependencies";
+
+    /**
+     * The cached value of the '{@link #getDependenciesExpression() <em>Dependencies Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDependenciesExpression()
+     * @generated
+     * @ordered
+     */
+    protected String dependenciesExpression = DEPENDENCIES_EXPRESSION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -179,8 +299,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
-    public String getTaskDetailExpression() {
-        return this.taskDetailExpression;
+    public String getNameExpression() {
+        return this.nameExpression;
     }
 
     /**
@@ -189,11 +309,150 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
-    public void setTaskDetailExpression(String newTaskDetailExpression) {
-        String oldTaskDetailExpression = this.taskDetailExpression;
-        this.taskDetailExpression = newTaskDetailExpression;
+    public void setNameExpression(String newNameExpression) {
+        String oldNameExpression = this.nameExpression;
+        this.nameExpression = newNameExpression;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__TASK_DETAIL_EXPRESSION, oldTaskDetailExpression, this.taskDetailExpression));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION, oldNameExpression, this.nameExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getDescriptionExpression() {
+        return this.descriptionExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescriptionExpression(String newDescriptionExpression) {
+        String oldDescriptionExpression = this.descriptionExpression;
+        this.descriptionExpression = newDescriptionExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION, oldDescriptionExpression, this.descriptionExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getStartTimeExpression() {
+        return this.startTimeExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStartTimeExpression(String newStartTimeExpression) {
+        String oldStartTimeExpression = this.startTimeExpression;
+        this.startTimeExpression = newStartTimeExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__START_TIME_EXPRESSION, oldStartTimeExpression, this.startTimeExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getEndTimeExpression() {
+        return this.endTimeExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setEndTimeExpression(String newEndTimeExpression) {
+        String oldEndTimeExpression = this.endTimeExpression;
+        this.endTimeExpression = newEndTimeExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__END_TIME_EXPRESSION, oldEndTimeExpression, this.endTimeExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getProgressExpression() {
+        return this.progressExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setProgressExpression(String newProgressExpression) {
+        String oldProgressExpression = this.progressExpression;
+        this.progressExpression = newProgressExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__PROGRESS_EXPRESSION, oldProgressExpression, this.progressExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getComputeStartEndDynamicallyExpression() {
+        return this.computeStartEndDynamicallyExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setComputeStartEndDynamicallyExpression(String newComputeStartEndDynamicallyExpression) {
+        String oldComputeStartEndDynamicallyExpression = this.computeStartEndDynamicallyExpression;
+        this.computeStartEndDynamicallyExpression = newComputeStartEndDynamicallyExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION, oldComputeStartEndDynamicallyExpression,
+                    this.computeStartEndDynamicallyExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getDependenciesExpression() {
+        return this.dependenciesExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDependenciesExpression(String newDependenciesExpression) {
+        String oldDependenciesExpression = this.dependenciesExpression;
+        this.dependenciesExpression = newDependenciesExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION, oldDependenciesExpression, this.dependenciesExpression));
     }
 
     /**
@@ -311,8 +570,20 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
         switch (featureID) {
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return this.getSemanticCandidatesExpression();
-            case GanttPackage.TASK_DESCRIPTION__TASK_DETAIL_EXPRESSION:
-                return this.getTaskDetailExpression();
+            case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
+                return this.getNameExpression();
+            case GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION:
+                return this.getDescriptionExpression();
+            case GanttPackage.TASK_DESCRIPTION__START_TIME_EXPRESSION:
+                return this.getStartTimeExpression();
+            case GanttPackage.TASK_DESCRIPTION__END_TIME_EXPRESSION:
+                return this.getEndTimeExpression();
+            case GanttPackage.TASK_DESCRIPTION__PROGRESS_EXPRESSION:
+                return this.getProgressExpression();
+            case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
+                return this.getComputeStartEndDynamicallyExpression();
+            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
+                return this.getDependenciesExpression();
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 return this.getStyle();
             case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
@@ -337,8 +608,26 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression((String) newValue);
                 return;
-            case GanttPackage.TASK_DESCRIPTION__TASK_DETAIL_EXPRESSION:
-                this.setTaskDetailExpression((String) newValue);
+            case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
+                this.setNameExpression((String) newValue);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION:
+                this.setDescriptionExpression((String) newValue);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__START_TIME_EXPRESSION:
+                this.setStartTimeExpression((String) newValue);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__END_TIME_EXPRESSION:
+                this.setEndTimeExpression((String) newValue);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__PROGRESS_EXPRESSION:
+                this.setProgressExpression((String) newValue);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
+                this.setComputeStartEndDynamicallyExpression((String) newValue);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
+                this.setDependenciesExpression((String) newValue);
                 return;
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 this.setStyle((TaskStyleDescription) newValue);
@@ -370,8 +659,26 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
                 return;
-            case GanttPackage.TASK_DESCRIPTION__TASK_DETAIL_EXPRESSION:
-                this.setTaskDetailExpression(TASK_DETAIL_EXPRESSION_EDEFAULT);
+            case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
+                this.setNameExpression(NAME_EXPRESSION_EDEFAULT);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION:
+                this.setDescriptionExpression(DESCRIPTION_EXPRESSION_EDEFAULT);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__START_TIME_EXPRESSION:
+                this.setStartTimeExpression(START_TIME_EXPRESSION_EDEFAULT);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__END_TIME_EXPRESSION:
+                this.setEndTimeExpression(END_TIME_EXPRESSION_EDEFAULT);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__PROGRESS_EXPRESSION:
+                this.setProgressExpression(PROGRESS_EXPRESSION_EDEFAULT);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
+                this.setComputeStartEndDynamicallyExpression(COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT);
+                return;
+            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
+                this.setDependenciesExpression(DEPENDENCIES_EXPRESSION_EDEFAULT);
                 return;
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 this.setStyle((TaskStyleDescription) null);
@@ -399,8 +706,21 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
         switch (featureID) {
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
-            case GanttPackage.TASK_DESCRIPTION__TASK_DETAIL_EXPRESSION:
-                return TASK_DETAIL_EXPRESSION_EDEFAULT == null ? this.taskDetailExpression != null : !TASK_DETAIL_EXPRESSION_EDEFAULT.equals(this.taskDetailExpression);
+            case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
+                return NAME_EXPRESSION_EDEFAULT == null ? this.nameExpression != null : !NAME_EXPRESSION_EDEFAULT.equals(this.nameExpression);
+            case GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION:
+                return DESCRIPTION_EXPRESSION_EDEFAULT == null ? this.descriptionExpression != null : !DESCRIPTION_EXPRESSION_EDEFAULT.equals(this.descriptionExpression);
+            case GanttPackage.TASK_DESCRIPTION__START_TIME_EXPRESSION:
+                return START_TIME_EXPRESSION_EDEFAULT == null ? this.startTimeExpression != null : !START_TIME_EXPRESSION_EDEFAULT.equals(this.startTimeExpression);
+            case GanttPackage.TASK_DESCRIPTION__END_TIME_EXPRESSION:
+                return END_TIME_EXPRESSION_EDEFAULT == null ? this.endTimeExpression != null : !END_TIME_EXPRESSION_EDEFAULT.equals(this.endTimeExpression);
+            case GanttPackage.TASK_DESCRIPTION__PROGRESS_EXPRESSION:
+                return PROGRESS_EXPRESSION_EDEFAULT == null ? this.progressExpression != null : !PROGRESS_EXPRESSION_EDEFAULT.equals(this.progressExpression);
+            case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
+                return COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT == null ? this.computeStartEndDynamicallyExpression != null
+                : !COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT.equals(this.computeStartEndDynamicallyExpression);
+            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
+                return DEPENDENCIES_EXPRESSION_EDEFAULT == null ? this.dependenciesExpression != null : !DEPENDENCIES_EXPRESSION_EDEFAULT.equals(this.dependenciesExpression);
             case GanttPackage.TASK_DESCRIPTION__STYLE:
                 return this.style != null;
             case GanttPackage.TASK_DESCRIPTION__CONDITIONAL_STYLES:
@@ -426,8 +746,20 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (semanticCandidatesExpression: ");
         result.append(this.semanticCandidatesExpression);
-        result.append(", taskDetailExpression: ");
-        result.append(this.taskDetailExpression);
+        result.append(", nameExpression: ");
+        result.append(this.nameExpression);
+        result.append(", descriptionExpression: ");
+        result.append(this.descriptionExpression);
+        result.append(", startTimeExpression: ");
+        result.append(this.startTimeExpression);
+        result.append(", endTimeExpression: ");
+        result.append(this.endTimeExpression);
+        result.append(", progressExpression: ");
+        result.append(this.progressExpression);
+        result.append(", computeStartEndDynamicallyExpression: ");
+        result.append(this.computeStartEndDynamicallyExpression);
+        result.append(", dependenciesExpression: ");
+        result.append(this.dependenciesExpression);
         result.append(')');
         return result.toString();
     }

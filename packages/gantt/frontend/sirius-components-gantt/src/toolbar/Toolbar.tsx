@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,9 @@ import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ShareGanttModal } from '../share-gantt/ShareGanttModal';
+import { ToolbarProps } from './Toolbar.types';
 
 const useToolbarStyles = makeStyles((theme) => ({
   toolbar: {
@@ -46,7 +47,14 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Toolbar = ({ onZoomLevel, zoomLevel, onColumnDisplayed, onFitToScreen, columns, onChangeColumns }) => {
+export const Toolbar = ({
+  zoomLevel,
+  columns,
+  tasks,
+  onChangeZoomLevel,
+  onChangeDisplayColumns,
+  onChangeColumns,
+}: ToolbarProps) => {
   const [modal, setModal] = useState<string>('');
 
   const classes = useToolbarStyles();
@@ -59,9 +67,48 @@ export const Toolbar = ({ onZoomLevel, zoomLevel, onColumnDisplayed, onFitToScre
     setModal('');
   };
 
+  const onFitToScreen = () => {
+    const minTime = Math.min.apply(
+      null,
+      tasks.filter((task) => Boolean(task.start)).map((task) => task.start.getTime())
+    );
+    const maxTime = Math.max.apply(
+      null,
+      tasks.filter((task) => Boolean(task.end)).map((task) => task.end.getTime())
+    );
+
+    const fullTime: number = (maxTime - minTime) / 1000 / 3600;
+    let zoomLevel: ViewMode = ViewMode.Day;
+    if (!isFinite(fullTime)) {
+      zoomLevel = ViewMode.Day;
+    } else if (fullTime < 10) {
+      zoomLevel = ViewMode.Hour;
+    } else if (fullTime < 48) {
+      zoomLevel = ViewMode.QuarterDay;
+    } else if (fullTime < 24 * 4) {
+      zoomLevel = ViewMode.HalfDay;
+    } else if (fullTime < 24 * 10) {
+      zoomLevel = ViewMode.Day;
+    } else if (fullTime < 24 * 25) {
+      zoomLevel = ViewMode.Week;
+    } else {
+      zoomLevel = ViewMode.Month;
+    }
+
+    onChangeZoomLevel(zoomLevel);
+  };
+
+  useEffect(() => {
+    onFitToScreen();
+  }, []);
+
+  const handleDisplayColumns = () => {
+    onChangeDisplayColumns();
+  };
+
   const updateZoomLevel = (event) => {
     const newZoomLevel = event.target.value;
-    onZoomLevel(newZoomLevel);
+    onChangeZoomLevel(newZoomLevel);
   };
 
   let modalElement: React.ReactElement | null = null;
@@ -73,18 +120,21 @@ export const Toolbar = ({ onZoomLevel, zoomLevel, onColumnDisplayed, onFitToScre
     if (zoomLevel !== ViewMode.Hour) {
       const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
       const newZoomLevel = Object.values(ViewMode).at(currentIndex - 1);
-      onZoomLevel(newZoomLevel);
+      onChangeZoomLevel(newZoomLevel);
     }
   };
   const onZoomOut = () => {
     if (zoomLevel !== ViewMode.Month) {
       const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
       const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
-      onZoomLevel(newZoomLevel);
+      onChangeZoomLevel(newZoomLevel);
     }
   };
+
   const handleChangeColumns = (event) => {
-    onChangeColumns(event.target.value);
+    const columnTypes: TaskListColumnEnum[] = event.target.value;
+
+    onChangeColumns(columnTypes);
   };
 
   const allColumns = [
@@ -145,7 +195,7 @@ export const Toolbar = ({ onZoomLevel, zoomLevel, onColumnDisplayed, onFitToScre
           color="inherit"
           aria-label="display task list columns"
           title="Display columns"
-          onClick={onColumnDisplayed}
+          onClick={handleDisplayColumns}
           data-testid="display-task-list-columns">
           <ViewColumn fontSize="small" />
         </IconButton>

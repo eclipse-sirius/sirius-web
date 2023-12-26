@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2023 Obeo.
+ Copyright (c) 2023, 2024 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -73,6 +73,11 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
+			<version>2023.12.4</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-gantt</artifactId>
 			<version>2023.12.4</version>
 		</dependency>
 		<dependency>

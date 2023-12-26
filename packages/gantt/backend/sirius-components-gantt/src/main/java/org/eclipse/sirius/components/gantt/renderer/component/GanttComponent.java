@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.gantt.renderer.component;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
@@ -54,16 +53,24 @@ public class GanttComponent implements IComponent {
 
         List<Task> previousTasks = optionalPreviousGantt.map(Gantt::tasks).orElse(List.of());
 
-        Map<String, TaskDescription> id2TaskDescription = ganttDescription.taskDescriptions().stream()
-                .collect(Collectors.toMap(TaskDescription::id, Function.identity()));
+        Map<String, TaskDescription> id2TaskDescription = new LinkedHashMap<>();
+        this.computeId2TaskDescriptions(ganttDescription.taskDescriptions(), id2TaskDescription);
+
         List<Element> children = ganttDescription.taskDescriptions().stream()
                 .map(taskDescription -> {
-                    TaskComponentProps taskComponentProps = new TaskComponentProps(variableManager, taskDescription, previousTasks, ganttId, id2TaskDescription);
-                    return new Element(TaskComponent.class, taskComponentProps);
+                    TaskDescriptionComponentProps taskComponentProps = new TaskDescriptionComponentProps(variableManager, taskDescription, previousTasks, ganttId, id2TaskDescription);
+                    return new Element(TaskDescriptionComponent.class, taskComponentProps);
                 }).toList();
 
         GanttElementProps ganttElementProps = new GanttElementProps(ganttId, ganttDescription.getId(), targetObjectId, label, children);
         return new Element(GanttElementProps.TYPE, ganttElementProps);
     }
 
+    private void computeId2TaskDescriptions(List<TaskDescription> taskDescriptions, Map<String, TaskDescription> id2TaskDescription) {
+        taskDescriptions.forEach(taskDescription -> {
+            id2TaskDescription.put(taskDescription.id(), taskDescription);
+
+            this.computeId2TaskDescriptions(taskDescription.subTaskDescriptions(), id2TaskDescription);
+        });
+    }
 }

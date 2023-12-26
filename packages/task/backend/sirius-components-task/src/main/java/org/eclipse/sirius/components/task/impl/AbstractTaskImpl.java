@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.impl;
 
+import java.time.Instant;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -39,11 +40,11 @@ import org.eclipse.sirius.components.task.Team;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getDescription <em>Description</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getStartDate <em>Start Date</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getEndDate <em>End Date</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getStartTime <em>Start Time</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getEndTime <em>End Time</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getProgress <em>Progress</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#isComputeDateDynamically <em>Compute Date
- * Dynamically</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#isComputeStartEndDynamically <em>Compute Start
+ * End Dynamically</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getTags <em>Tags</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getDependencies <em>Dependencies</em>}</li>
  * <li>{@link org.eclipse.sirius.components.task.impl.AbstractTaskImpl#getAssignedPersons <em>Assigned
@@ -96,44 +97,44 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
     protected String description = DESCRIPTION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getStartDate() <em>Start Date</em>}' attribute. <!-- begin-user-doc --> <!--
+     * The default value of the '{@link #getStartTime() <em>Start Time</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getStartDate()
+     * @see #getStartTime()
      * @generated
      * @ordered
      */
-    protected static final int START_DATE_EDEFAULT = 0;
+    protected static final Instant START_TIME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getStartDate() <em>Start Date</em>}' attribute. <!-- begin-user-doc --> <!--
+     * The cached value of the '{@link #getStartTime() <em>Start Time</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getStartDate()
+     * @see #getStartTime()
      * @generated
      * @ordered
      */
-    protected int startDate = START_DATE_EDEFAULT;
+    protected Instant startTime = START_TIME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getEndDate() <em>End Date</em>}' attribute. <!-- begin-user-doc --> <!--
+     * The default value of the '{@link #getEndTime() <em>End Time</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getEndDate()
+     * @see #getEndTime()
      * @generated
      * @ordered
      */
-    protected static final int END_DATE_EDEFAULT = 0;
+    protected static final Instant END_TIME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getEndDate() <em>End Date</em>}' attribute. <!-- begin-user-doc --> <!--
+     * The cached value of the '{@link #getEndTime() <em>End Time</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getEndDate()
+     * @see #getEndTime()
      * @generated
      * @ordered
      */
-    protected int endDate = END_DATE_EDEFAULT;
+    protected Instant endTime = END_TIME_EDEFAULT;
 
     /**
      * The default value of the '{@link #getProgress() <em>Progress</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -156,24 +157,24 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
     protected int progress = PROGRESS_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isComputeDateDynamically() <em>Compute Date Dynamically</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The default value of the '{@link #isComputeStartEndDynamically() <em>Compute Start End Dynamically</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #isComputeDateDynamically()
+     * @see #isComputeStartEndDynamically()
      * @generated
      * @ordered
      */
-    protected static final boolean COMPUTE_DATE_DYNAMICALLY_EDEFAULT = false;
+    protected static final boolean COMPUTE_START_END_DYNAMICALLY_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isComputeDateDynamically() <em>Compute Date Dynamically</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #isComputeStartEndDynamically() <em>Compute Start End Dynamically</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #isComputeDateDynamically()
+     * @see #isComputeStartEndDynamically()
      * @generated
      * @ordered
      */
-    protected boolean computeDateDynamically = COMPUTE_DATE_DYNAMICALLY_EDEFAULT;
+    protected boolean computeStartEndDynamically = COMPUTE_START_END_DYNAMICALLY_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getTags() <em>Tags</em>}' reference list. <!-- begin-user-doc --> <!--
@@ -296,8 +297,8 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
      * @generated
      */
     @Override
-    public int getStartDate() {
-        return this.startDate;
+    public Instant getStartTime() {
+        return this.startTime;
     }
 
     /**
@@ -306,11 +307,11 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
      * @generated
      */
     @Override
-    public void setStartDate(int newStartDate) {
-        int oldStartDate = this.startDate;
-        this.startDate = newStartDate;
+    public void setStartTime(Instant newStartTime) {
+        Instant oldStartTime = this.startTime;
+        this.startTime = newStartTime;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.ABSTRACT_TASK__START_DATE, oldStartDate, this.startDate));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.ABSTRACT_TASK__START_TIME, oldStartTime, this.startTime));
     }
 
     /**
@@ -319,8 +320,8 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
      * @generated
      */
     @Override
-    public int getEndDate() {
-        return this.endDate;
+    public Instant getEndTime() {
+        return this.endTime;
     }
 
     /**
@@ -329,11 +330,11 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
      * @generated
      */
     @Override
-    public void setEndDate(int newEndDate) {
-        int oldEndDate = this.endDate;
-        this.endDate = newEndDate;
+    public void setEndTime(Instant newEndTime) {
+        Instant oldEndTime = this.endTime;
+        this.endTime = newEndTime;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.ABSTRACT_TASK__END_DATE, oldEndDate, this.endDate));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.ABSTRACT_TASK__END_TIME, oldEndTime, this.endTime));
     }
 
     /**
@@ -365,8 +366,8 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
      * @generated
      */
     @Override
-    public boolean isComputeDateDynamically() {
-        return this.computeDateDynamically;
+    public boolean isComputeStartEndDynamically() {
+        return this.computeStartEndDynamically;
     }
 
     /**
@@ -375,11 +376,11 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
      * @generated
      */
     @Override
-    public void setComputeDateDynamically(boolean newComputeDateDynamically) {
-        boolean oldComputeDateDynamically = this.computeDateDynamically;
-        this.computeDateDynamically = newComputeDateDynamically;
+    public void setComputeStartEndDynamically(boolean newComputeStartEndDynamically) {
+        boolean oldComputeStartEndDynamically = this.computeStartEndDynamically;
+        this.computeStartEndDynamically = newComputeStartEndDynamically;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY, oldComputeDateDynamically, this.computeDateDynamically));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY, oldComputeStartEndDynamically, this.computeStartEndDynamically));
     }
 
     /**
@@ -474,14 +475,14 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
                 return this.getName();
             case TaskPackage.ABSTRACT_TASK__DESCRIPTION:
                 return this.getDescription();
-            case TaskPackage.ABSTRACT_TASK__START_DATE:
-                return this.getStartDate();
-            case TaskPackage.ABSTRACT_TASK__END_DATE:
-                return this.getEndDate();
+            case TaskPackage.ABSTRACT_TASK__START_TIME:
+                return this.getStartTime();
+            case TaskPackage.ABSTRACT_TASK__END_TIME:
+                return this.getEndTime();
             case TaskPackage.ABSTRACT_TASK__PROGRESS:
                 return this.getProgress();
-            case TaskPackage.ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY:
-                return this.isComputeDateDynamically();
+            case TaskPackage.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY:
+                return this.isComputeStartEndDynamically();
             case TaskPackage.ABSTRACT_TASK__TAGS:
                 return this.getTags();
             case TaskPackage.ABSTRACT_TASK__DEPENDENCIES:
@@ -512,17 +513,17 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
             case TaskPackage.ABSTRACT_TASK__DESCRIPTION:
                 this.setDescription((String) newValue);
                 return;
-            case TaskPackage.ABSTRACT_TASK__START_DATE:
-                this.setStartDate((Integer) newValue);
+            case TaskPackage.ABSTRACT_TASK__START_TIME:
+                this.setStartTime((Instant) newValue);
                 return;
-            case TaskPackage.ABSTRACT_TASK__END_DATE:
-                this.setEndDate((Integer) newValue);
+            case TaskPackage.ABSTRACT_TASK__END_TIME:
+                this.setEndTime((Instant) newValue);
                 return;
             case TaskPackage.ABSTRACT_TASK__PROGRESS:
                 this.setProgress((Integer) newValue);
                 return;
-            case TaskPackage.ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY:
-                this.setComputeDateDynamically((Boolean) newValue);
+            case TaskPackage.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY:
+                this.setComputeStartEndDynamically((Boolean) newValue);
                 return;
             case TaskPackage.ABSTRACT_TASK__TAGS:
                 this.getTags().clear();
@@ -564,17 +565,17 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
             case TaskPackage.ABSTRACT_TASK__DESCRIPTION:
                 this.setDescription(DESCRIPTION_EDEFAULT);
                 return;
-            case TaskPackage.ABSTRACT_TASK__START_DATE:
-                this.setStartDate(START_DATE_EDEFAULT);
+            case TaskPackage.ABSTRACT_TASK__START_TIME:
+                this.setStartTime(START_TIME_EDEFAULT);
                 return;
-            case TaskPackage.ABSTRACT_TASK__END_DATE:
-                this.setEndDate(END_DATE_EDEFAULT);
+            case TaskPackage.ABSTRACT_TASK__END_TIME:
+                this.setEndTime(END_TIME_EDEFAULT);
                 return;
             case TaskPackage.ABSTRACT_TASK__PROGRESS:
                 this.setProgress(PROGRESS_EDEFAULT);
                 return;
-            case TaskPackage.ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY:
-                this.setComputeDateDynamically(COMPUTE_DATE_DYNAMICALLY_EDEFAULT);
+            case TaskPackage.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY:
+                this.setComputeStartEndDynamically(COMPUTE_START_END_DYNAMICALLY_EDEFAULT);
                 return;
             case TaskPackage.ABSTRACT_TASK__TAGS:
                 this.getTags().clear();
@@ -609,14 +610,14 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case TaskPackage.ABSTRACT_TASK__DESCRIPTION:
                 return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
-            case TaskPackage.ABSTRACT_TASK__START_DATE:
-                return this.startDate != START_DATE_EDEFAULT;
-            case TaskPackage.ABSTRACT_TASK__END_DATE:
-                return this.endDate != END_DATE_EDEFAULT;
+            case TaskPackage.ABSTRACT_TASK__START_TIME:
+                return START_TIME_EDEFAULT == null ? this.startTime != null : !START_TIME_EDEFAULT.equals(this.startTime);
+            case TaskPackage.ABSTRACT_TASK__END_TIME:
+                return END_TIME_EDEFAULT == null ? this.endTime != null : !END_TIME_EDEFAULT.equals(this.endTime);
             case TaskPackage.ABSTRACT_TASK__PROGRESS:
                 return this.progress != PROGRESS_EDEFAULT;
-            case TaskPackage.ABSTRACT_TASK__COMPUTE_DATE_DYNAMICALLY:
-                return this.computeDateDynamically != COMPUTE_DATE_DYNAMICALLY_EDEFAULT;
+            case TaskPackage.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY:
+                return this.computeStartEndDynamically != COMPUTE_START_END_DYNAMICALLY_EDEFAULT;
             case TaskPackage.ABSTRACT_TASK__TAGS:
                 return this.tags != null && !this.tags.isEmpty();
             case TaskPackage.ABSTRACT_TASK__DEPENDENCIES:
@@ -647,14 +648,14 @@ public abstract class AbstractTaskImpl extends MinimalEObjectImpl.Container impl
         result.append(this.name);
         result.append(", description: ");
         result.append(this.description);
-        result.append(", startDate: ");
-        result.append(this.startDate);
-        result.append(", endDate: ");
-        result.append(this.endDate);
+        result.append(", startTime: ");
+        result.append(this.startTime);
+        result.append(", endTime: ");
+        result.append(this.endTime);
         result.append(", progress: ");
         result.append(this.progress);
-        result.append(", computeDateDynamically: ");
-        result.append(this.computeDateDynamically);
+        result.append(", computeStartEndDynamically: ");
+        result.append(this.computeStartEndDynamically);
         result.append(')');
         return result.toString();
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,13 @@
 package org.eclipse.sirius.components.task.starter.configuration.view;
 
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
+import org.eclipse.sirius.components.view.builder.generated.DeleteElementBuilder;
+import org.eclipse.sirius.components.view.builder.generated.GanttBuilders;
+import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
-import org.eclipse.sirius.components.view.gantt.GanttFactory;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
 
 
@@ -33,26 +38,82 @@ public class ViewGanttDescriptionBuilder {
 
     public void addRepresentationDescription(View view) {
         GanttDescription ganttDescription =  this.createGanttDescription();
-        TaskDescription tasksDescription = this.createTasksDescription(ganttDescription);
-        ganttDescription.getTaskElementDescriptions().add(tasksDescription);
+
 
         view.getDescriptions().add(ganttDescription);
     }
 
     private GanttDescription createGanttDescription() {
-        GanttDescription createGanttDescription = GanttFactory.eINSTANCE.createGanttDescription();
+        TaskDescription tasksDescription = this.createTaskDescriptionInProject();
 
-        createGanttDescription.setName(GANTT_REP_DESC_NAME);
-        createGanttDescription.setDomainType("task::Task");
-        createGanttDescription.setTitleExpression("New Gantt");
-        return createGanttDescription;
+        CreateTaskTool createTaskTool = this.createCreateTaskTool();
+        EditTaskTool editTaskTool = this.createEditTaskTool();
+        DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
+
+        GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
+                .name(GANTT_REP_DESC_NAME)
+                .domainType("task::Project")
+                .titleExpression("New Gantt")
+                .taskElementDescriptions(tasksDescription)
+                .createTool(createTaskTool)
+                .editTool(editTaskTool)
+                .deleteTool(deleteTaskTool)
+                .build();
+
+        return ganttDescription;
     }
 
-    private TaskDescription createTasksDescription(GanttDescription ganttGanttDescription) {
+    private DeleteTaskTool createDeleteTaskTool() {
+        return new GanttBuilders().newDeleteTaskTool()
+                .body(new DeleteElementBuilder()
+                        .build())
+                .build();
+    }
 
-        TaskDescription taskDescription = GanttFactory.eINSTANCE.createTaskDescription();
-        taskDescription.setSemanticCandidatesExpression("aql:self.subTasks");
-        taskDescription.setTaskDetailExpression("aql:self.getTaskDetail()");
+    private EditTaskTool createEditTaskTool() {
+        return new GanttBuilders().newEditTaskTool()
+                .body(new ChangeContextBuilder()
+                        .expression("aql:self.editTask(newName, newDescription, newStartTime, newEndTime, newProgress)")
+                        .build())
+                .build();
+    }
+
+    private CreateTaskTool createCreateTaskTool() {
+        return new GanttBuilders().newCreateTaskTool()
+                .body(new ChangeContextBuilder()
+                        .expression("aql:self.createTask()")
+                        .build())
+                .build();
+    }
+
+    private TaskDescription createTaskDescriptionInProject() {
+        TaskDescription taskDescriptionInTask = this.createTaskDescriptionInTask();
+
+        return new GanttBuilders().newTaskDescription()
+                .semanticCandidatesExpression("aql:self.ownedTasks")
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
+                .startTimeExpression("aql:self.startTime")
+                .endTimeExpression("aql:self.endTime")
+                .progressExpression("aql:self.progress")
+                .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
+                .dependenciesExpression("aql:self.dependencies")
+                .subTaskElementDescriptions(taskDescriptionInTask)
+                .build();
+    }
+
+    private TaskDescription createTaskDescriptionInTask() {
+        TaskDescription taskDescription = new GanttBuilders().newTaskDescription()
+                .semanticCandidatesExpression("aql:self.subTasks")
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
+                .startTimeExpression("aql:self.startTime")
+                .endTimeExpression("aql:self.endTime")
+                .progressExpression("aql:self.progress")
+                .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
+                .dependenciesExpression("aql:self.dependencies")
+                .build();
+
         taskDescription.getReusedTaskElementDescriptions().add(taskDescription);
 
         return taskDescription;

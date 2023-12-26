@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.task.provider;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
@@ -103,11 +104,11 @@ public class TaskTagItemProvider extends ItemProviderAdapter implements IEditing
     /**
      * This returns TaskTag.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TaskTag"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TaskTag.svg"));
     }
 
     /**
@@ -124,13 +125,14 @@ public class TaskTagItemProvider extends ItemProviderAdapter implements IEditing
      * This returns the label text for the adapted class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getText(Object object) {
-        String label = ((TaskTag) object).getPrefix();
-        return label == null || label.length() == 0 ? this.getString("_UI_TaskTag_type")
-                : this.getString("_UI_TaskTag_type") + " " + label;
+        String prefix = Optional.ofNullable(((TaskTag) object).getPrefix()).orElse("");
+        String suffix = Optional.ofNullable(((TaskTag) object).getSuffix()).orElse("");
+        
+        return prefix.concat("::").concat(suffix);
     }
 
     /**

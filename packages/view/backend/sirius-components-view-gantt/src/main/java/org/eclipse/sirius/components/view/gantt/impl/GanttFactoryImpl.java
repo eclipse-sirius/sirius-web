@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,14 @@
 package org.eclipse.sirius.components.view.gantt.impl;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.sirius.components.gantt.TaskDetail;
 import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
+import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttFactory;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
@@ -71,38 +72,14 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
                 return this.createTaskDescription();
             case GanttPackage.CONDITIONAL_TASK_STYLE:
                 return this.createConditionalTaskStyle();
+            case GanttPackage.CREATE_TASK_TOOL:
+                return this.createCreateTaskTool();
+            case GanttPackage.EDIT_TASK_TOOL:
+                return this.createEditTaskTool();
+            case GanttPackage.DELETE_TASK_TOOL:
+                return this.createDeleteTaskTool();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Object createFromString(EDataType eDataType, String initialValue) {
-        switch (eDataType.getClassifierID()) {
-            case GanttPackage.TASK_DETAIL:
-                return this.createTaskDetailFromString(eDataType, initialValue);
-            default:
-                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-        }
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String convertToString(EDataType eDataType, Object instanceValue) {
-        switch (eDataType.getClassifierID()) {
-            case GanttPackage.TASK_DETAIL:
-                return this.convertTaskDetailToString(eDataType, instanceValue);
-            default:
-                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
@@ -144,8 +121,10 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
      *
      * @generated
      */
-    public TaskDetail createTaskDetailFromString(EDataType eDataType, String initialValue) {
-        return (TaskDetail) super.createFromString(eDataType, initialValue);
+    @Override
+    public CreateTaskTool createCreateTaskTool() {
+        CreateTaskToolImpl createTaskTool = new CreateTaskToolImpl();
+        return createTaskTool;
     }
 
     /**
@@ -153,8 +132,21 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
      *
      * @generated
      */
-    public String convertTaskDetailToString(EDataType eDataType, Object instanceValue) {
-        return super.convertToString(eDataType, instanceValue);
+    @Override
+    public EditTaskTool createEditTaskTool() {
+        EditTaskToolImpl editTaskTool = new EditTaskToolImpl();
+        return editTaskTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeleteTaskTool createDeleteTaskTool() {
+        DeleteTaskToolImpl deleteTaskTool = new DeleteTaskToolImpl();
+        return deleteTaskTool;
     }
 
     /**

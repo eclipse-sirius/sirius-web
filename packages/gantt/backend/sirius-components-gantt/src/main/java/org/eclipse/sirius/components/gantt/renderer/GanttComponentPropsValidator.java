@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@ package org.eclipse.sirius.components.gantt.renderer;
 
 import org.eclipse.sirius.components.gantt.renderer.component.GanttComponent;
 import org.eclipse.sirius.components.gantt.renderer.component.GanttComponentProps;
-import org.eclipse.sirius.components.gantt.renderer.component.TaskComponent;
-import org.eclipse.sirius.components.gantt.renderer.component.TaskComponentProps;
+import org.eclipse.sirius.components.gantt.renderer.component.TaskDescriptionComponent;
+import org.eclipse.sirius.components.gantt.renderer.component.TaskDescriptionComponentProps;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -32,8 +32,8 @@ public class GanttComponentPropsValidator implements IComponentPropsValidator {
 
         if (GanttComponent.class.equals(componentType)) {
             checkValidProps = props instanceof GanttComponentProps;
-        } else if (TaskComponent.class.equals(componentType)) {
-            checkValidProps = props instanceof TaskComponentProps;
+        } else if (TaskDescriptionComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof TaskDescriptionComponentProps;
         }
 
         return checkValidProps;

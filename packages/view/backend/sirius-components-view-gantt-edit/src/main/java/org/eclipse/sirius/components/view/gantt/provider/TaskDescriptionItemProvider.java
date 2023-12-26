@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.view.gantt.TaskDescription;
  * @generated
  */
 public class TaskDescriptionItemProvider extends ItemProviderAdapter
-        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -62,7 +62,13 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
             super.getPropertyDescriptors(object);
 
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
-            this.addTaskDetailExpressionPropertyDescriptor(object);
+            this.addNameExpressionPropertyDescriptor(object);
+            this.addDescriptionExpressionPropertyDescriptor(object);
+            this.addStartTimeExpressionPropertyDescriptor(object);
+            this.addEndTimeExpressionPropertyDescriptor(object);
+            this.addProgressExpressionPropertyDescriptor(object);
+            this.addComputeStartEndDynamicallyExpressionPropertyDescriptor(object);
+            this.addDependenciesExpressionPropertyDescriptor(object);
             this.addReusedTaskElementDescriptionsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -82,16 +88,93 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This adds a property descriptor for the Task Detail Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * This adds a property descriptor for the Name Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNameExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_nameExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_nameExpression_feature", "_UI_TaskDescription_type"), GanttPackage.Literals.TASK_DESCRIPTION__NAME_EXPRESSION,
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Description Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      */
-    protected void addTaskDetailExpressionPropertyDescriptor(Object object) {
+    protected void addDescriptionExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TaskDescription_taskDetailExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_taskDetailExpression_feature", "_UI_TaskDescription_type"),
-                GanttPackage.Literals.TASK_DESCRIPTION__TASK_DETAIL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_TaskDescription_descriptionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_descriptionExpression_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Start Time Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addStartTimeExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_startTimeExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_startTimeExpression_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__START_TIME_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the End Time Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addEndTimeExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_endTimeExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_endTimeExpression_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__END_TIME_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Progress Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addProgressExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_progressExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_progressExpression_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__PROGRESS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Compute Start End Dynamically Expression feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addComputeStartEndDynamicallyExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_computeStartEndDynamicallyExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_computeStartEndDynamicallyExpression_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Dependencies Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDependenciesExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_dependenciesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_dependenciesExpression_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -142,11 +225,11 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
     /**
      * This returns TaskDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TaskDescription"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TaskDescription.svg"));
     }
 
     /**
@@ -166,7 +249,7 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        String label = ((TaskDescription) object).getSemanticCandidatesExpression();
+        String label = ((TaskDescription) object).getNameExpression();
         return label == null || label.length() == 0 ? this.getString("_UI_TaskDescription_type") : this.getString("_UI_TaskDescription_type") + " " + label;
     }
 
@@ -183,7 +266,13 @@ public class TaskDescriptionItemProvider extends ItemProviderAdapter
 
         switch (notification.getFeatureID(TaskDescription.class)) {
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            case GanttPackage.TASK_DESCRIPTION__TASK_DETAIL_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__START_TIME_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__END_TIME_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__PROGRESS_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
+            case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case GanttPackage.TASK_DESCRIPTION__STYLE:

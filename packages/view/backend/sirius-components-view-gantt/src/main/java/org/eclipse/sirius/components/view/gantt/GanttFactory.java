@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,30 @@ public interface GanttFactory extends EFactory {
      * @generated
      */
     ConditionalTaskStyle createConditionalTaskStyle();
+
+    /**
+     * Returns a new object of class '<em>Create Task Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Create Task Tool</em>'.
+     * @generated
+     */
+    CreateTaskTool createCreateTaskTool();
+
+    /**
+     * Returns a new object of class '<em>Edit Task Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Edit Task Tool</em>'.
+     * @generated
+     */
+    EditTaskTool createEditTaskTool();
+
+    /**
+     * Returns a new object of class '<em>Delete Task Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Delete Task Tool</em>'.
+     * @generated
+     */
+    DeleteTaskTool createDeleteTaskTool();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

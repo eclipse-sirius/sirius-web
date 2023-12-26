@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
@@ -38,6 +41,11 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * Element Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getBackgroundColor <em>Background
  * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getCreateTool <em>Create
+ * Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getEditTool <em>Edit Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDeleteTool <em>Delete
+ * Tool</em>}</li>
  * </ul>
  *
  * @generated
@@ -62,6 +70,36 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @ordered
      */
     protected UserColor backgroundColor;
+
+    /**
+     * The cached value of the '{@link #getCreateTool() <em>Create Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getCreateTool()
+     * @generated
+     * @ordered
+     */
+    protected CreateTaskTool createTool;
+
+    /**
+     * The cached value of the '{@link #getEditTool() <em>Edit Tool</em>}' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getEditTool()
+     * @generated
+     * @ordered
+     */
+    protected EditTaskTool editTool;
+
+    /**
+     * The cached value of the '{@link #getDeleteTool() <em>Delete Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDeleteTool()
+     * @generated
+     * @ordered
+     */
+    protected DeleteTaskTool deleteTool;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -149,12 +187,162 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public CreateTaskTool getCreateTool() {
+        return this.createTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetCreateTool(CreateTaskTool newCreateTool, NotificationChain msgs) {
+        CreateTaskTool oldCreateTool = this.createTool;
+        this.createTool = newCreateTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL, oldCreateTool, newCreateTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCreateTool(CreateTaskTool newCreateTool) {
+        if (newCreateTool != this.createTool) {
+            NotificationChain msgs = null;
+            if (this.createTool != null)
+                msgs = ((InternalEObject) this.createTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL, null, msgs);
+            if (newCreateTool != null)
+                msgs = ((InternalEObject) newCreateTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL, null, msgs);
+            msgs = this.basicSetCreateTool(newCreateTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL, newCreateTool, newCreateTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EditTaskTool getEditTool() {
+        return this.editTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetEditTool(EditTaskTool newEditTool, NotificationChain msgs) {
+        EditTaskTool oldEditTool = this.editTool;
+        this.editTool = newEditTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL, oldEditTool, newEditTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setEditTool(EditTaskTool newEditTool) {
+        if (newEditTool != this.editTool) {
+            NotificationChain msgs = null;
+            if (this.editTool != null)
+                msgs = ((InternalEObject) this.editTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL, null, msgs);
+            if (newEditTool != null)
+                msgs = ((InternalEObject) newEditTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL, null, msgs);
+            msgs = this.basicSetEditTool(newEditTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL, newEditTool, newEditTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeleteTaskTool getDeleteTool() {
+        return this.deleteTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetDeleteTool(DeleteTaskTool newDeleteTool, NotificationChain msgs) {
+        DeleteTaskTool oldDeleteTool = this.deleteTool;
+        this.deleteTool = newDeleteTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL, oldDeleteTool, newDeleteTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDeleteTool(DeleteTaskTool newDeleteTool) {
+        if (newDeleteTool != this.deleteTool) {
+            NotificationChain msgs = null;
+            if (this.deleteTool != null)
+                msgs = ((InternalEObject) this.deleteTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL, null, msgs);
+            if (newDeleteTool != null)
+                msgs = ((InternalEObject) newDeleteTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL, null, msgs);
+            msgs = this.basicSetDeleteTool(newDeleteTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL, newDeleteTool, newDeleteTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getTaskElementDescriptions()).basicRemove(otherEnd, msgs);
             case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
                 return this.basicSetBackgroundColor(null, msgs);
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
+                return this.basicSetCreateTool(null, msgs);
+            case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
+                return this.basicSetEditTool(null, msgs);
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
+                return this.basicSetDeleteTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -171,6 +359,12 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.getTaskElementDescriptions();
             case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
                 return this.getBackgroundColor();
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
+                return this.getCreateTool();
+            case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
+                return this.getEditTool();
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
+                return this.getDeleteTool();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -191,6 +385,15 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
                 this.setBackgroundColor((UserColor) newValue);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
+                this.setCreateTool((CreateTaskTool) newValue);
+                return;
+            case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
+                this.setEditTool((EditTaskTool) newValue);
+                return;
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
+                this.setDeleteTool((DeleteTaskTool) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -209,6 +412,15 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
                 this.setBackgroundColor((UserColor) null);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
+                this.setCreateTool((CreateTaskTool) null);
+                return;
+            case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
+                this.setEditTool((EditTaskTool) null);
+                return;
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
+                this.setDeleteTool((DeleteTaskTool) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -225,6 +437,12 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.taskElementDescriptions != null && !this.taskElementDescriptions.isEmpty();
             case GanttPackage.GANTT_DESCRIPTION__BACKGROUND_COLOR:
                 return this.backgroundColor != null;
+            case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
+                return this.createTool != null;
+            case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
+                return this.editTool != null;
+            case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
+                return this.deleteTool != null;
         }
         return super.eIsSet(featureID);
     }

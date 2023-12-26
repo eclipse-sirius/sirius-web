@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,6 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
-import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttFactory;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
 import org.eclipse.sirius.components.view.gantt.util.GanttAdapterFactory;
@@ -166,6 +165,75 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
         }
 
         return this.conditionalTaskStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.gantt.CreateTaskTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CreateTaskToolItemProvider createTaskToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.CreateTaskTool}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCreateTaskToolAdapter() {
+        if (this.createTaskToolItemProvider == null) {
+            this.createTaskToolItemProvider = new CreateTaskToolItemProvider(this);
+        }
+
+        return this.createTaskToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.gantt.EditTaskTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected EditTaskToolItemProvider editTaskToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.EditTaskTool}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createEditTaskToolAdapter() {
+        if (this.editTaskToolItemProvider == null) {
+            this.editTaskToolItemProvider = new EditTaskToolItemProvider(this);
+        }
+
+        return this.editTaskToolItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.gantt.DeleteTaskTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DeleteTaskToolItemProvider deleteTaskToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.DeleteTaskTool}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDeleteTaskToolAdapter() {
+        if (this.deleteTaskToolItemProvider == null) {
+            this.deleteTaskToolItemProvider = new DeleteTaskToolItemProvider(this);
+        }
+
+        return this.deleteTaskToolItemProvider;
     }
 
     /**
@@ -303,6 +371,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
             this.taskDescriptionItemProvider.dispose();
         if (this.conditionalTaskStyleItemProvider != null)
             this.conditionalTaskStyleItemProvider.dispose();
+        if (this.createTaskToolItemProvider != null)
+            this.createTaskToolItemProvider.dispose();
+        if (this.editTaskToolItemProvider != null)
+            this.editTaskToolItemProvider.dispose();
+        if (this.deleteTaskToolItemProvider != null)
+            this.deleteTaskToolItemProvider.dispose();
     }
 
     /**
@@ -350,9 +424,7 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
              */
             @Override
             public Object caseView(View object) {
-                GanttDescription newGanttDescription = GanttFactory.eINSTANCE.createGanttDescription();
-                newGanttDescription.setName("New Gantt Description");
-                this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newGanttDescription));
+                this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, GanttFactory.eINSTANCE.createGanttDescription()));
 
                 return null;
             }

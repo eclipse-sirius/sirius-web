@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.impl;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
@@ -86,6 +90,36 @@ public class TaskFactoryImpl extends EFactoryImpl implements TaskFactory {
                 return this.createTaskTag();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object createFromString(EDataType eDataType, String initialValue) {
+        switch (eDataType.getClassifierID()) {
+            case TaskPackage.INSTANT:
+                return this.createInstantFromString(eDataType, initialValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String convertToString(EDataType eDataType, Object instanceValue) {
+        switch (eDataType.getClassifierID()) {
+            case TaskPackage.INSTANT:
+                return this.convertInstantToString(eDataType, instanceValue);
+            default:
+                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
@@ -175,6 +209,30 @@ public class TaskFactoryImpl extends EFactoryImpl implements TaskFactory {
     public TaskTag createTaskTag() {
         TaskTagImpl taskTag = new TaskTagImpl();
         return taskTag;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    public Instant createInstantFromString(EDataType eDataType, String initialValue) {
+        if (initialValue != null) {
+            return Instant.parse(initialValue);
+        }
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    public String convertInstantToString(EDataType eDataType, Object instanceValue) {
+        if (instanceValue instanceof Instant instant) {
+            return DateTimeFormatter.ISO_INSTANT.format(instant);
+        }
+        return null;
     }
 
     /**

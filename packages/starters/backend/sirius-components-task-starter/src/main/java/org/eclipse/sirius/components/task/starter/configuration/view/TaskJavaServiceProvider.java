@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,11 +31,15 @@ public class TaskJavaServiceProvider implements IJavaServiceProvider {
 
     @Override
     public List<Class<?>> getServiceClasses(View view) {
-        boolean isTaskRelatedView = view.getDescriptions().stream().filter(repDescription -> {
-            return repDescription instanceof GanttDescription || repDescription instanceof DeckDescription;
-        }).map(RepresentationDescription.class::cast).anyMatch(representationDescription -> {
-            return representationDescription.getDomainType().equals("task::Task") || representationDescription.getDomainType().equals("task::Project");
-        });
+        boolean isTaskRelatedView = view.getDescriptions().stream()
+                .filter(repDescription -> {
+                    return repDescription instanceof GanttDescription || repDescription instanceof DeckDescription;
+                })
+                .map(RepresentationDescription.class::cast)
+                .anyMatch(representationDescription -> {
+                    return representationDescription.getDomainType().contains("task::");
+                });
+
         if (isTaskRelatedView) {
             return List.of(TaskJavaService.class);
         }

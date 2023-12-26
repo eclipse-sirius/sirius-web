@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.gantt;
 
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -19,13 +20,10 @@ import java.util.Objects;
  *
  * @author lfasani
  */
-public record TaskDetail(String name, String description, long startDate, long endDate, int progress) {
+public record TaskDetail(String name, String description, Instant startTime, Instant endTime, int progress, boolean computeStartEndDynamically) {
 
     public TaskDetail {
         Objects.requireNonNull(name);
         Objects.requireNonNull(description);
-        Objects.requireNonNull(startDate);
-        Objects.requireNonNull(endDate);
-        Objects.requireNonNull(progress);
     }
 }
