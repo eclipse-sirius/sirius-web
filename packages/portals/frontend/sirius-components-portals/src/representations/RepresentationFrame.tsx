@@ -15,7 +15,10 @@ import {
   RepresentationComponentProps,
   RepresentationContext,
   RepresentationContextValue,
+  useSelection,
 } from '@eclipse-sirius/sirius-components-core';
+import { Link } from '@material-ui/core';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,12 +51,14 @@ const useFrameStyles = makeStyles((theme) => ({
 export const RepresentationFrame = ({
   editingContextId,
   representation,
+  breadcrumbs,
   readOnly,
   portalMode,
   onDelete,
 }: RepresentationFrameProps) => {
   const { registry } = useContext<RepresentationContextValue>(RepresentationContext);
   const RepresentationComponent = registry.getComponent(representation);
+  const { setSelection } = useSelection();
 
   if (RepresentationComponent) {
     const classes = useFrameStyles();
@@ -65,9 +70,18 @@ export const RepresentationFrame = ({
     return (
       <div data-testid={`representation-frame-${representation.id}`} className={classes.representationFrame}>
         <div className={classes.frameHeader}>
-          <Typography variant={'subtitle2'} className={classes.title + ' draggable'}>
-            {representation.label}
-          </Typography>
+          <Breadcrumbs>
+            {breadcrumbs.map((selectionEntry) => (
+              <Link
+                onClick={() => {
+                  setSelection({ entries: [selectionEntry] });
+                }}>
+                <Typography variant={'subtitle2'} className={classes.title + ' draggable'}>
+                  {selectionEntry.label}
+                </Typography>
+              </Link>
+            ))}
+          </Breadcrumbs>
           {portalMode === 'edit' ? (
             <IconButton
               aria-label="remove"

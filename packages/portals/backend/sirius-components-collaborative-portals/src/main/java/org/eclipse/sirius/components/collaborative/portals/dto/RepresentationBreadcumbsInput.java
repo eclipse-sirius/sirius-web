@@ -10,14 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Representation, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { PortalRepresentationMode } from './PortalRepresentation.types';
+package org.eclipse.sirius.components.collaborative.portals.dto;
 
-export type RepresentationFrameProps = {
-  editingContextId: string;
-  representation: Representation;
-  breadcrumbs: [SelectionEntry];
-  readOnly: boolean;
-  onDelete: () => void;
-  portalMode: PortalRepresentationMode;
-};
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
+
+/**
+ * The input for the handler used to find the breadcrumbs leading to a representation displayed inside a portal.
+ *
+ * @author pcdavid
+ */
+public record RepresentationBreadcumbsInput(UUID id, String editingContextId, String representationId, String viewRepresentationId) implements IPortalInput {
+
+}

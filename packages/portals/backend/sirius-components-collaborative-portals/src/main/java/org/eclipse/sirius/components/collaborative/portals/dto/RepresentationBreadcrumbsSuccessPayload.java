@@ -10,14 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Representation, SelectionEntry } from '@eclipse-sirius/sirius-components-core';
-import { PortalRepresentationMode } from './PortalRepresentation.types';
+package org.eclipse.sirius.components.collaborative.portals.dto;
 
-export type RepresentationFrameProps = {
-  editingContextId: string;
-  representation: Representation;
-  breadcrumbs: [SelectionEntry];
-  readOnly: boolean;
-  onDelete: () => void;
-  portalMode: PortalRepresentationMode;
-};
+import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
+
+/**
+ * The payload to return on successful computation of the breadcrumb for a representation.
+ *
+ * @author pcdavid
+ */
+public record RepresentationBreadcrumbsSuccessPayload(UUID id, List<WorkbenchSelectionEntry> path) implements IPayload {
+}

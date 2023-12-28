@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+
 export interface UsePortalValue {
   portal: GQLPortal | null;
   complete: boolean;
@@ -68,6 +70,7 @@ export interface GQLRepresentationMetadata {
   id: string;
   label: string;
   kind: string;
+  breadcrumbs: [SelectionEntry];
 }
 
 export interface GQLPortalViewLayoutData {

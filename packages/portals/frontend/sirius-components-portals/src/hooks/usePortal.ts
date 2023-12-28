@@ -36,6 +36,11 @@ const portalEventSubscription = gql`
               id
               kind
               label
+              breadcrumbs {
+                id
+                kind
+                label
+              }
             }
           }
           layoutData {
