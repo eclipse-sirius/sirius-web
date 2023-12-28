@@ -41,6 +41,7 @@ import { GQLSlider } from './widgets/SliderFragment.types';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
 
+import './ReactFlow.css';
 import './Sprotty.css';
 import './fonts.css';
 import './reset.css';
