@@ -394,6 +394,7 @@ Applications derived from Sirius Web may have to ensure that references to defau
 - https://github.com/eclipse-sirius/sirius-web/issues/2191[#2191] [view] The Color property on ImageNodeStyle has been removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/2388[#2388] [tree] `treeItem` is no longer composed of a single string for the imageURL, but of a list of strings to take into account composite images.
 The `IObjectService.getImagePath` API changed and now must return a list containing all the image paths.
+- https://github.com/eclipse-sirius/sirius-web/issues/2789[#2789] [diagram] Added the file ReactFlow.css to sirius-web package.
 
 === Dependency update
 
@@ -479,6 +480,7 @@ To illustrate this new feature, we contribute a new tool on the _Papaya Diagram_
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new default color palettes along with the creation of a view (theme colors, mui colors...).
 These color palettes are accessible in studio projects but are not visible in the Explorer view.
 - https://github.com/eclipse-sirius/sirius-web/issues/2371[#2371] [view] Add new validation rules about colors for View diagrams & forms.
+- https://github.com/eclipse-sirius/sirius-web/issues/2789[#2789] [diagram] Increase the size of the edgeupdater to make reconnecting an edge easier.
 
 == v2023.8.0
 
