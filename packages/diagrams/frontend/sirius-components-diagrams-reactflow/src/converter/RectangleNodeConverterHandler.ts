@@ -20,7 +20,7 @@ import {
   GQLRectangularNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { RectangularNodeData } from '../renderer/node/RectangularNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
@@ -75,7 +75,7 @@ const toRectangularNode = (
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     labelEditable,
     connectionHandles,
     isNew,

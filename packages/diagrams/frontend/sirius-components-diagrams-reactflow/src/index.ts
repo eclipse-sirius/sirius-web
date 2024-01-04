@@ -23,7 +23,7 @@ export type { GQLDiagram } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle, GraphQLNodeStyleFragment } from './graphql/subscription/nodeFragment.types';
-export { BorderNodePositon as BorderNodePosition } from './renderer/DiagramRenderer.types';
+export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, NodeData } from './renderer/DiagramRenderer.types';
 export { Label } from './renderer/Label';
 export { useConnector } from './renderer/connector/useConnector';

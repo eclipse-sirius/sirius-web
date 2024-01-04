@@ -20,7 +20,7 @@ import {
   GQLNodeStyle,
   GQLViewModifier,
 } from '../graphql/subscription/nodeFragment.types';
-import { BorderNodePositon } from '../renderer/DiagramRenderer.types';
+import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { IConvertEngine, INodeConverterHandler } from './ConvertEngine.types';
@@ -63,7 +63,7 @@ const toIconLabelNode = (
     insideLabel: null,
     outsideLabels: convertOutsideLabels(outsideLabels),
     isBorderNode: isBorderNode,
-    borderNodePosition: isBorderNode ? BorderNodePositon.WEST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.WEST : null,
     faded: state === GQLViewModifier.Faded,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
