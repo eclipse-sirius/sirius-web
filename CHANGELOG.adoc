@@ -114,7 +114,7 @@ It is the responsibility of the drop targets (e.g. a diagram) to validate the dr
 - https://github.com/eclipse-sirius/sirius-web/issues/2772[#2772] Improve performance of the Palette
 - https://github.com/eclipse-sirius/sirius-web/issues/2679[#2679] [diagram] When editing a label, place input element closer to the label's location (centered).
 - https://github.com/eclipse-sirius/sirius-web/issues/2804[#2804] [sirius-web] Add the ability to declare custom nodes while using the `sirius-web-application` frontend package.
-- https://github.com/eclipse-sirius/sirius-web/issues/2718[#2718] Replacing useNodes and useEdges by useReactFlow to imporove performances.
+- https://github.com/eclipse-sirius/sirius-web/issues/2718[#2718] Replacing useNodes and useEdges by useReactFlow to improve performances.
 - https://github.com/eclipse-sirius/sirius-web/issues/2787[#2787] [view] Add the ability to customize the icons of the node tools and edge tools in the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/2784[#2784] [performance] Expand monitoring capabilities.
 - https://github.com/eclipse-sirius/sirius-web/issues/2760[#2760] Begin and end label placement of and edge takes into account handle position.
@@ -127,6 +127,7 @@ image:doc/screenshots/biggerResizeHandles.png[Compartment with header without se
 - https://github.com/eclipse-sirius/sirius-web/issues/2609[#2609] [diagram] Move handles after node move to reduce edges crossing.
 - https://github.com/eclipse-sirius/sirius-web/issues/2484[#2484] [diagram] Split the label concept into three concepts: edge label, inside label and outside label.
 This is a preliminary work to add some proper support for outside labels in the near future.
+- https://github.com/eclipse-sirius/sirius-web/issues/2869[#2869] [diagram] Add `diagramContext` variable to accessible variables when computing semantic candidates expression.
 
 == v2023.12.0
 
