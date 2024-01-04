@@ -57,14 +57,14 @@ export interface NodeData {
   defaultWidth: number | null;
   defaultHeight: number | null;
   isBorderNode: boolean;
-  borderNodePosition: BorderNodePositon | null;
+  borderNodePosition: BorderNodePosition | null;
   labelEditable: boolean;
   style: React.CSSProperties;
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
 }
 
-export enum BorderNodePositon {
+export enum BorderNodePosition {
   NORTH,
   EAST,
   SOUTH,
