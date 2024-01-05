@@ -2,7 +2,7 @@ extend type Subscription {
   formEvent(input: FormEventInput!): FormEventPayload!
   propertiesEvent(input: PropertiesEventInput!): PropertiesEventPayload!
   relatedElementsEvent(input: PropertiesEventInput!): PropertiesEventPayload!
-  representationsEvent(input: RepresentationsEventInput!): RepresentationsEventPayload!
+  representationsEvent(input: PropertiesEventInput!): PropertiesEventPayload!
 }
 
 input FormEventInput {
@@ -17,17 +17,9 @@ input PropertiesEventInput {
   objectIds: [ID!]!
 }
 
-input RepresentationsEventInput {
-  id: ID!
-  editingContextId: ID!
-  objectId: ID!
-}
-
 union FormEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
 
 union PropertiesEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
-
-union RepresentationsEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
 
 type WidgetSubscriptionsUpdatedEventPayload {
   id: ID!

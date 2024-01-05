@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.forms.api;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -26,13 +27,13 @@ public class RepresentationsConfiguration implements IRepresentationConfiguratio
 
     private static final String REPRESENTATIONS_PREFIX = "representations:";
 
-    private final String objectId;
+    private final String formId;
 
-    private String formId;
+    private final List<String> objectIds;
 
-    public RepresentationsConfiguration(String objectId) {
-        this.objectId = Objects.requireNonNull(objectId);
-        this.formId = UUID.nameUUIDFromBytes((REPRESENTATIONS_PREFIX + objectId).getBytes()).toString();
+    public RepresentationsConfiguration(List<String> objectIds) {
+        this.objectIds = Objects.requireNonNull(objectIds);
+        this.formId = UUID.nameUUIDFromBytes((REPRESENTATIONS_PREFIX + objectIds).getBytes()).toString();
     }
 
     @Override
@@ -40,8 +41,7 @@ public class RepresentationsConfiguration implements IRepresentationConfiguratio
         return this.formId;
     }
 
-    public String getObjectId() {
-        return this.objectId;
+    public List<String> getObjectIds() {
+        return this.objectIds;
     }
-
 }

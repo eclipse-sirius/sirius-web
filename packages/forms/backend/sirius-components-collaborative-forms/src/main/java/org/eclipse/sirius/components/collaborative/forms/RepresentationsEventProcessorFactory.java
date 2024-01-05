@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.collaborative.forms.configuration.FormEvent
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.FormDescription;
+import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,6 +48,8 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     private final IObjectService objectService;
 
+    private final List<IWidgetDescriptor> widgetDescriptors;
+
     private final List<IFormEventHandler> formEventHandlers;
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
@@ -58,9 +61,10 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
     private final IFormPostProcessor formPostProcessor;
 
     public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, ISubscriptionManagerFactory subscriptionManagerFactory,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, FormEventProcessorFactoryConfiguration formConfiguration) {
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration) {
         this.representationsDescriptionProvider = Objects.requireNonNull(representationsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
+        this.widgetDescriptors = Objects.requireNonNull(widgetDescriptors);
         this.formEventHandlers = Objects.requireNonNull(formConfiguration.getFormEventHandlers());
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.widgetSubscriptionManagerFactory = Objects.requireNonNull(formConfiguration.getWidgetSubscriptionManagerFactory());
@@ -78,18 +82,20 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
             IEditingContext editingContext) {
         if (IFormEventProcessor.class.isAssignableFrom(representationEventProcessorClass) && configuration instanceof RepresentationsConfiguration representationsConfiguration) {
 
-            FormDescription formDescription = this.representationsDescriptionProvider.getRepresentationsDescription();
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, representationsConfiguration.getObjectId());
-            if (optionalObject.isPresent()) {
-                Object object = optionalObject.get();
+            var objects = representationsConfiguration.getObjectIds().stream()
+                    .map(objectId -> this.objectService.getObject(editingContext, objectId))
+                    .flatMap(Optional::stream)
+                    .toList();
+            if (!objects.isEmpty()) {
+                FormDescription formDescription = this.representationsDescriptionProvider.getRepresentationsDescription();
                 FormCreationParameters formCreationParameters = FormCreationParameters.newFormCreationParameters(representationsConfiguration.getId())
                         .editingContext(editingContext)
                         .formDescription(formDescription)
-                        .object(object)
-                        .selection(List.of())
+                        .object(objects.get(0))
+                        .selection(objects)
                         .build();
 
-                FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, List.of(),
+                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, this.widgetDescriptors,
                         this.formEventHandlers), this.subscriptionManagerFactory.create(),
                         this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry, this.formPostProcessor);
 
@@ -98,7 +104,6 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                         .map(representationEventProcessorClass::cast);
             }
         }
-
         return Optional.empty();
     }
 
