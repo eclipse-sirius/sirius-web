@@ -1,0 +1,37 @@
+= ADR-124 - Add support for libraries
+
+== Context
+
+Users want to store and have access to read only data (a.k.a libraries).
+
+== Decision
+
+=== Backend
+
+Introducing a new `IEditingContextProcessor` allowing to execute operations on editing context before and after its loading in `EditingContextSearchService`.
+
+```
+public interface IEditingContextProcessor {
+    void preProcess(IEditingContext editingContext);
+    void postProcess(IEditingContext editingContext);
+}
+```
+
+This will allow specifiers to load as many resources as they want in the resource set of an editing context while loading it.
+
+If these resources does not have the scheme `sirius://`, they will not be considered as documents in Sirius Web.
+
+Libraries as defined in the context above should be handled by `IEditingContextProcessor`.
+
+Specifiers will be allowed to declare as many `IEditingContextProcessor` as they want.
+
+For the version number of a library, its the responsibility of the specifier to handle it from an `IEditingContextProcessor`.
+
+=== Frontend
+
+Nothing to do in a first version.
+In a second version, users should be able to view the libraries in the Explorer.
+
+== Status
+
+Work in progress

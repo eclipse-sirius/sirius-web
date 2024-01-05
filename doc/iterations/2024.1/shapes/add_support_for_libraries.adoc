@@ -1,0 +1,47 @@
+= Add the support for libraries
+
+== Context
+
+Users want to store and have access to read only data (a.k.a libraries).
+
+== Key Result
+
+Users should be able to click on a template/project and have in their projects a set of documents with objects referencing objects from libraries. As a result, without even a single interaction, users should be able to have a valid resource set.
+
+The libraries are immutable.
+
+== Solution
+
+1. When declaring templates, specifiers should be able to specify a list of libraries that will be accessible in the projects created from the templates.
+
+2. The `Blank project` is not a template. So with the proposed solution, it will not be possible to use libraries in a `Blank project`.
+To handle this specific case of the `Blank project`, it should be possible to add libraries to every project.
+This will be done programmatically, by the specifier.
+
+3. The objects from libraries and the libraries should be visible somewhere from a project (e.g. Explorer view, ...).
+
+4. Once a project created, users/specifiers should be able to modify the list of libraries associated (i.e. load/unload) to a project.
+
+5. Libraries have version number.
+At the end, it should be possible to update the version of a library for a project.
+
+=== Breadboarding
+
+Same UI as before.
+
+=== Cutting backs
+
+In a first iteration, the objects from libraries and the libraries will not be visible.
+In a first iteration, it won't be be possible to update the version of a library for a project.
+
+== Rabbit holes
+
+A template may add a lot of libraries, and thus a lot a model elements.
+These model elements will be accessible in the reference widgets from the Detail view.
+In some case the list of elements accessible in the reference widgets will be huge.
+Specifiers may have to programmatically filter the candidates of reference widgets.
+Note that this is also the case without the introduction of libraries, but libraries may emphasize the case.
+
+== No-gos
+
+N.A.
