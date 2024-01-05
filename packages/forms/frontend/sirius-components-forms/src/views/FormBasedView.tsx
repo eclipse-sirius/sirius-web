@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,13 @@ const useFormBasedViewStyles = makeStyles((theme) => ({
 /**
  * Used to define workbench views based on a form.
  */
-export const FormBasedView = ({ editingContextId, readOnly, subscriptionName, converter }: FormBasedViewProps) => {
+export const FormBasedView = ({
+  editingContextId,
+  readOnly,
+  subscriptionName,
+  converter,
+  postProcessor,
+}: FormBasedViewProps) => {
   const classes = useFormBasedViewStyles();
   const [{ value, context }, dispatch] = useMachine<FormBasedViewContext, FormBasedViewEvent>(formBasedViewMachine);
   const { toast, formBasedView } = value as SchemaValue;
@@ -151,14 +157,18 @@ export const FormBasedView = ({ editingContextId, readOnly, subscriptionName, co
     );
   }
   if ((formBasedView === 'idle' && form) || formBasedView === 'ready') {
-    content = (
-      <Form
-        editingContextId={editingContextId}
-        form={formConverter.convert(form)}
-        widgetSubscriptions={widgetSubscriptions}
-        readOnly={readOnly}
-      />
-    );
+    if (postProcessor) {
+      content = postProcessor({ editingContextId, readOnly }, formConverter.convert(form), widgetSubscriptions);
+    } else {
+      content = (
+        <Form
+          editingContextId={editingContextId}
+          form={formConverter.convert(form)}
+          widgetSubscriptions={widgetSubscriptions}
+          readOnly={readOnly}
+        />
+      );
+    }
   }
   return (
     <>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.forms.graphql.datafetchers.subscription;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,7 +21,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.RepresentationsConfiguration;
-import org.eclipse.sirius.components.collaborative.forms.dto.RepresentationsEventInput;
+import org.eclipse.sirius.components.collaborative.forms.dto.PropertiesEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
@@ -56,8 +57,8 @@ public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcher
     @Override
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, RepresentationsEventInput.class);
-        var representationsConfiguration = new RepresentationsConfiguration(input.objectId());
+        var input = this.objectMapper.convertValue(argument, PropertiesEventInput.class);
+        var representationsConfiguration = new RepresentationsConfiguration(input.objectIds());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());

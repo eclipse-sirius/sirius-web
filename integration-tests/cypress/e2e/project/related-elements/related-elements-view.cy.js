@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,8 @@ describe('/projects/:projectId/edit - Related ELements View', () => {
     cy.getByTestId('Robot').dblclick();
     cy.getByTestId('viewselector-Related Elements').click();
     cy.getByTestId('view-Related Elements').within(() => {
-      cy.getByTestId('form').should('exist');
+      cy.getByTestId('form').should('not.exist');
+      cy.getByTestId('group-Related Elements').should('exist');
     });
   });
 });
