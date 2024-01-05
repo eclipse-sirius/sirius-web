@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -112,7 +114,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private final Disposable changeDescriptionDisposable;
 
     private final List<IInputPreProcessor> inputPreProcessors;
-    
+
     private final List<IInputPostProcessor> inputPostProcessors;
 
     private final MeterRegistry meterRegistry;
@@ -239,8 +241,11 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         Future<?> future = this.executorService.submit(() -> this.doHandle(payloadSink, input));
         try {
             // Block until the event has been processed
-            future.get();
-        } catch (InterruptedException | ExecutionException exception) {
+            future.get(5, TimeUnit.SECONDS);
+        } catch (InterruptedException interruptedException) {
+            this.logger.warn(interruptedException.getMessage(), interruptedException);
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException | TimeoutException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
         handleTimer.stop(this.meterRegistry.timer(Monitoring.TIMER_PROCESSING_INPUT, "input", input.getClass().getSimpleName(),
@@ -384,7 +389,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         if (optionalRepresentationEventProcessor.isPresent()) {
             var representationId = optionalRepresentationEventProcessor.get().getRepresentation().getId();
-            var timer = meterRegistry.timer(Monitoring.TIMER_CREATE_REPRESENATION_EVENT_PROCESSOR,
+            var timer = this.meterRegistry.timer(Monitoring.TIMER_CREATE_REPRESENATION_EVENT_PROCESSOR,
                     "editingContext", this.editingContext.getId(),
                     "input", input.getClass().getSimpleName(),
                     REPRESENTATION_ID, representationId);

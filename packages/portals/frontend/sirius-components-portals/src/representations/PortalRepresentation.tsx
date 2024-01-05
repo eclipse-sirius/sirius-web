@@ -142,6 +142,7 @@ export const PortalRepresentation = ({
                   editingContextId={editingContextId}
                   readOnly={readOnly}
                   representation={view.representationMetadata}
+                  breadcrumbs={view.representationMetadata.breadcrumbs}
                   portalMode={mode}
                   onDelete={() => handleDeleteView(view)}
                 />

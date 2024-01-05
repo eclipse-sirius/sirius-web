@@ -28,6 +28,10 @@ type PortalView {
   representationMetadata: RepresentationMetadata!
 }
 
+extend type RepresentationMetadata {
+  breadcrumbs: [WorkbenchSelectionEntry!]!
+}
+
 type PortalViewLayoutData {
   portalViewId: ID!
   x: Int!
