@@ -29,6 +29,7 @@ fragment diagramFragment on Diagram {
       id
       position { x y }
       size { width height }
+      resizedByUser
     }
   }
   nodes {

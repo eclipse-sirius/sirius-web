@@ -84,13 +84,15 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
   useRefreshConnectionHandles(id, data.connectionHandles);
   return (
     <>
-      <NodeResizer
-        handleStyle={{ ...resizeHandleStyle(theme) }}
-        color={theme.palette.selected}
-        isVisible={selected && !data.isBorderNode}
-        shouldResize={() => !data.isBorderNode}
-        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-      />
+      {data.nodeDescription?.userResizable && (
+        <NodeResizer
+          handleStyle={{ ...resizeHandleStyle(theme) }}
+          color={theme.palette.selected}
+          isVisible={selected && !data.isBorderNode}
+          shouldResize={() => !data.isBorderNode}
+          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        />
+      )}
       <img
         src={httpOrigin + data.imageURL}
         style={{

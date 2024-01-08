@@ -63,6 +63,7 @@ export interface NodeData {
   style: React.CSSProperties;
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
+  resizedByUser: boolean;
 }
 
 export enum BorderNodePosition {

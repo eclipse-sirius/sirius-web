@@ -83,7 +83,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
-    if (node.data.nodeDescription?.userResizable) {
+    if (node.data.resizedByUser) {
       if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
       } else {
@@ -127,7 +127,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     if (!forceWidth) {
       let previousChildrenContentBoxWidthToConsider: number = 0;
-      if (node.data.nodeDescription?.userResizable) {
+      if (node.data.resizedByUser) {
         previousChildrenContentBoxWidthToConsider = (previousNode?.width ?? 0) - borderWidth * 2;
       }
       const widerWidth = Math.max(
@@ -173,8 +173,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
 
     const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
-    // TODO: rework this.
-    if (node.data.nodeDescription?.userResizable && previousNode) {
+    if (node.data.resizedByUser && previousNode) {
       if (minNodeheight > (previousNode.height ?? 0)) {
         node.height = minNodeheight;
       } else {

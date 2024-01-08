@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -124,7 +124,7 @@ export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData>
     const previousNode = (previousDiagram?.nodes ?? []).find((previous) => previous.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
-    if (node.data.nodeDescription?.userResizable) {
+    if (node.data.resizedByUser) {
       if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
       } else {

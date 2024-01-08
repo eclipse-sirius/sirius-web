@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,6 +86,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
         width,
         position: { x, y },
       } = node;
+      const { resizedByUser } = node.data;
       if (height && width) {
         nodeLayoutData.push({
           id,
@@ -97,6 +98,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             height,
             width,
           },
+          resizedByUser,
         });
       }
     });

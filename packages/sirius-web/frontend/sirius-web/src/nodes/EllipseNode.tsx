@@ -78,13 +78,15 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
 
   return (
     <>
-      <NodeResizer
-        handleStyle={{ ...resizeHandleStyle(theme) }}
-        color={theme.palette.selected}
-        isVisible={selected}
-        shouldResize={() => !data.isBorderNode}
-        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-      />
+      {data.nodeDescription?.userResizable && (
+        <NodeResizer
+          handleStyle={{ ...resizeHandleStyle(theme) }}
+          color={theme.palette.selected}
+          isVisible={selected}
+          shouldResize={() => !data.isBorderNode}
+          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        />
+      )}
       <div
         style={{
           ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
