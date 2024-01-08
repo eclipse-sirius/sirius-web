@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
 import { useDiagramPalette } from '../useDiagramPalette';
 import { ToolSectionProps } from './ToolSection.types';
 
-const useToolSectionStyles = makeStyles(() => ({
+const useToolSectionStyles = makeStyles((theme) => ({
   toolSection: {
     display: 'flex',
     flexDirection: 'row',
@@ -31,6 +31,8 @@ const useToolSectionStyles = makeStyles(() => ({
   },
   toolList: {
     padding: '4px',
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: '2px',
     width: 'max-content',
   },
   arrow: {
@@ -59,14 +61,19 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
     [onToolClick, setLastToolInvoked, toolSection.id]
   );
 
+  const anchorRef = useRef<SVGSVGElement | null>(null);
   let caretContent: JSX.Element | undefined;
   if (tools.length > 1) {
     caretContent = (
       <ExpandMoreIcon
         className={classes.arrow}
         style={{ fontSize: 20 }}
-        onClick={() => onExpand(toolSectionExpandId === toolSection.id ? null : toolSection.id)}
+        onClick={(event) => {
+          event.stopPropagation();
+          onExpand(toolSectionExpandId === toolSection.id ? null : toolSection.id);
+        }}
         data-testid="expand"
+        ref={anchorRef}
       />
     );
   }
@@ -81,17 +88,22 @@ export const ToolSection = ({ toolSection, onToolClick, toolSectionExpandId, onE
 
   const defaultTool: GQLTool | undefined = checkLastToolInvoked() || tools[0];
 
-  const anchorRef = useRef<HTMLDivElement | null>(null);
   return (
     <>
       {defaultTool && (
-        <div className={classes.toolSection} ref={anchorRef}>
+        <div className={classes.toolSection}>
           <Tool tool={defaultTool} onClick={() => onToolClick(defaultTool)} thumbnail />
           {caretContent}
         </div>
       )}
-      <Popper open={toolSectionExpandId === toolSection.id} anchorEl={anchorRef.current} transition disablePortal>
-        <Paper className={classes.toolList}>
+      <Popper
+        open={toolSectionExpandId === toolSection.id}
+        anchorEl={anchorRef.current}
+        placement="bottom-start"
+        transition
+        disablePortal
+        style={{ zIndex: 9999 }}>
+        <Paper className={classes.toolList} elevation={2}>
           <ClickAwayListener onClickAway={() => onExpand(null)}>
             <div>
               {tools.map((tool) => (

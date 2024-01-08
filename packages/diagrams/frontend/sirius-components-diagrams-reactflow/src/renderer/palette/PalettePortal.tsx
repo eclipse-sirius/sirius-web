@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ReactNode } from 'react';
+
 import { createPortal } from 'react-dom';
 import { ReactFlowState, useStore } from 'reactflow';
+import { PalettePortalProps } from './PalettePortal.types';
 
 const selector = (state: ReactFlowState) => state.domNode?.querySelector('.react-flow__renderer');
 
-export const DiagramElementPalettePortal = ({ children }: { children: ReactNode }) => {
+export const PalettePortal = ({ children }: PalettePortalProps) => {
   const wrapperRef = useStore(selector);
 
   if (!wrapperRef) {

@@ -251,7 +251,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         <Background style={{ backgroundColor }} color={backgroundColor} />
       )}
       <DiagramPanel snapToGrid={snapToGrid} onSnapToGrid={onSnapToGrid} />
-      <DiagramPalette targetObjectId={diagramRefreshedEventPayload.diagram.id} />
+      <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
       <ConnectorContextualMenu />
     </ReactFlow>
