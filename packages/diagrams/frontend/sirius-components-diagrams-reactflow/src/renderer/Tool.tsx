@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import { ToolProps } from './Tool.types';
 
 const useToolStyle = makeStyles(() => ({
@@ -37,7 +37,8 @@ export const Tool = ({ tool, onClick, thumbnail }: ToolProps) => {
     labelContent = <Typography>{label}</Typography>;
   }
 
-  const onToolClick: React.MouseEventHandler<HTMLDivElement> = () => {
+  const onToolClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    event.stopPropagation();
     onClick(tool);
   };
 

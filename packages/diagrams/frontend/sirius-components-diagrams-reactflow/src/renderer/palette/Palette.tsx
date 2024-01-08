@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,13 @@
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useReactFlow } from 'reactflow';
+import { useReactFlow, useViewport } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
@@ -61,16 +61,19 @@ import { ToolSection } from './tool-section/ToolSection';
 
 const usePaletteStyle = makeStyles((theme) => ({
   palette: {
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: '2px',
+    zIndex: 2,
+    position: 'fixed',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  paletteContent: {
     display: 'grid',
+    gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
     gridTemplateRows: '28px',
     gridAutoRows: '28px',
     placeItems: 'center',
-  },
-  toolEntries: {
-    gridTemplateColumns: ({ toolCount }: ContextualPaletteStyleProps) => `repeat(${Math.min(toolCount, 10)}, 36px)`,
-  },
-  loading: {
-    gridTemplateColumns: '36px',
   },
   toolIcon: {
     color: theme.palette.text.primary,
@@ -201,7 +204,13 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramElementPalette }: PaletteProps) => {
+export const Palette = ({
+  x: paletteX,
+  y: paletteY,
+  diagramElementId,
+  onDirectEditClick,
+  hideableDiagramElement,
+}: PaletteProps) => {
   const [state, setState] = useState<PaletteState>({ expandedToolSectionId: null });
 
   const { fadeDiagramElements } = useFadeDiagramElements();
@@ -237,9 +246,17 @@ export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramEl
           (toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0
         ).length
       : 0) +
-    (isDiagramElementPalette ? 2 : 0) +
+    (hideableDiagramElement ? 2 : 0) +
     diagramPaletteToolComponents.length;
   const classes = usePaletteStyle({ toolCount });
+
+  let x: number = 0;
+  let y: number = 0;
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
+  if (viewportZoom !== 0 && paletteX && paletteY) {
+    x = (paletteX - viewportX) / viewportZoom;
+    y = (paletteY - viewportY) / viewportZoom;
+  }
 
   useEffect(() => {
     if (paletteError) {
@@ -380,58 +397,59 @@ export const Palette = ({ x, y, diagramElementId, onDirectEditClick, isDiagramEl
   };
 
   if (!palette) {
-    return (
-      <div className={`${classes.palette} ${classes.loading}`}>
-        <CircularProgress size={26} />
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div className={`${classes.palette} ${classes.toolEntries}`} data-testid={'Palette'}>
-      {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-        <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
-      ))}
-      {palette?.toolSections.map((toolSection) => (
-        <ToolSection
-          toolSection={toolSection}
-          onToolClick={handleToolClick}
-          key={toolSection.id}
-          onExpand={handleToolSectionExpand}
-          toolSectionExpandId={state.expandedToolSectionId}
-        />
-      ))}
-      {diagramPaletteToolComponents.map((component, index) => {
-        const props: DiagramPaletteToolContributionComponentProps = {
-          x,
-          y,
-          diagramElementId,
-          key: index.toString(),
-        };
-        return React.createElement(component, props);
-      })}
-      {isDiagramElementPalette ? (
-        <>
-          <IconButton
-            className={classes.toolIcon}
-            size="small"
-            aria-label="hide elements"
-            title="Hide elements"
-            onClick={invokeHideDiagramElementTool}
-            data-testid="Hide-elements">
-            <VisibilityOffIcon fontSize="small" />
-          </IconButton>
-          <IconButton
-            className={classes.toolIcon}
-            size="small"
-            aria-label="Fade elements"
-            title="Fade elements"
-            onClick={invokeFadeDiagramElementTool}
-            data-testid="Fade-elements">
-            <TonalityIcon fontSize="small" />
-          </IconButton>
-        </>
-      ) : null}
-    </div>
+    <Paper
+      className={classes.palette}
+      style={{ position: 'absolute', left: paletteX, top: paletteY }}
+      data-testid="Palette">
+      <div className={classes.paletteContent}>
+        {palette?.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
+          <Tool tool={tool} onClick={handleToolClick} thumbnail key={tool.id} />
+        ))}
+        {palette?.toolSections.map((toolSection) => (
+          <ToolSection
+            toolSection={toolSection}
+            onToolClick={handleToolClick}
+            key={toolSection.id}
+            onExpand={handleToolSectionExpand}
+            toolSectionExpandId={state.expandedToolSectionId}
+          />
+        ))}
+        {diagramPaletteToolComponents.map((component, index) => {
+          const props: DiagramPaletteToolContributionComponentProps = {
+            x,
+            y,
+            diagramElementId,
+            key: index.toString(),
+          };
+          return React.createElement(component, props);
+        })}
+        {hideableDiagramElement ? (
+          <>
+            <IconButton
+              className={classes.toolIcon}
+              size="small"
+              aria-label="hide elements"
+              title="Hide elements"
+              onClick={invokeHideDiagramElementTool}
+              data-testid="Hide-elements">
+              <VisibilityOffIcon fontSize="small" />
+            </IconButton>
+            <IconButton
+              className={classes.toolIcon}
+              size="small"
+              aria-label="Fade elements"
+              title="Fade elements"
+              onClick={invokeFadeDiagramElementTool}
+              data-testid="Fade-elements">
+              <TonalityIcon fontSize="small" />
+            </IconButton>
+          </>
+        ) : null}
+      </div>
+    </Paper>
   );
 };
