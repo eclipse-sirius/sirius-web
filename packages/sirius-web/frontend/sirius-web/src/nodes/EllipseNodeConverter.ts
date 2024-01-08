@@ -19,6 +19,7 @@ import {
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
+  GQLNodeLayoutData,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
@@ -56,7 +57,11 @@ const toEllipseNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
-  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
+  const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
+    (nodeLayoutData) => nodeLayoutData.id === id
+  );
+  const isNew = gqlNodeLayoutData === undefined;
+  const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
   const data: EllipseNodeData = {
     targetObjectId,
@@ -82,6 +87,7 @@ const toEllipseNode = (
     connectionHandles,
     labelEditable,
     isNew,
+    resizedByUser,
   };
 
   if (insideLabel) {

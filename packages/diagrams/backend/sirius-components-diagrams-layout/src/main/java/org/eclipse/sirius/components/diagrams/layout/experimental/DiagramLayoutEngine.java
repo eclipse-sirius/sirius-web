@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,7 +67,7 @@ public class DiagramLayoutEngine implements IDiagramLayoutEngine {
         }
 
         Map<String, NodeLayoutData> newNodeLayoutData = new HashMap<>();
-        diagramBoxModel.nodeBoxModels().forEach((nodeId, nodeBoxModel) -> newNodeLayoutData.put(nodeId, new NodeLayoutData(nodeId, nodeBoxModel.bounds().topLeft(), nodeBoxModel.bounds().size())));
+        diagramBoxModel.nodeBoxModels().forEach((nodeId, nodeBoxModel) -> newNodeLayoutData.put(nodeId, new NodeLayoutData(nodeId, nodeBoxModel.bounds().topLeft(), nodeBoxModel.bounds().size(), false)));
 
         return new DiagramLayoutData(newNodeLayoutData, Map.of(), Map.of());
     }

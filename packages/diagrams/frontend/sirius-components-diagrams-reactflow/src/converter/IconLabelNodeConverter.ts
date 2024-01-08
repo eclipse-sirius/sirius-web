@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Node, XYPosition } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
-import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
+import { GQLDiagram, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import {
   GQLIconLabelNodeStyle,
@@ -51,7 +51,11 @@ const toIconLabelNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = [];
-  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
+  const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
+    (nodeLayoutData) => nodeLayoutData.id === id
+  );
+  const isNew = gqlNodeLayoutData === undefined;
+  const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
   const data: IconLabelNodeData = {
     targetObjectId,
@@ -74,6 +78,7 @@ const toIconLabelNode = (
     labelEditable: labelEditable,
     connectionHandles,
     isNew,
+    resizedByUser,
   };
 
   if (insideLabel) {

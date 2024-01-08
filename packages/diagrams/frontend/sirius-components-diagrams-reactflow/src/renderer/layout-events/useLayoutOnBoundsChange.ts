@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, NodeChange, useReactFlow } from 'reactflow';
+import { Node, NodeChange, NodeDimensionChange, NodePositionChange, useReactFlow } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDropNode } from '../dropNode/useDropNode';
 import { RawDiagram } from '../layout/layout.types';
@@ -26,7 +26,7 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
   const { hasDroppedNodeParentChanged } = useDropNode();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
-  const isMoveFinished = (change: NodeChange): boolean => {
+  const isMoveFinished = (change: NodeChange): change is NodePositionChange => {
     return (
       change.type === 'position' &&
       typeof change.dragging === 'boolean' &&
@@ -34,23 +34,43 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
       !hasDroppedNodeParentChanged()
     );
   };
-  const isResizeFinished = (change: NodeChange): boolean =>
+  const isResizeFinished = (change: NodeChange): change is NodeDimensionChange =>
     change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
 
   const isBoundsChangeFinished = (changes: NodeChange[]): NodeChange | undefined => {
     return changes.find((change) => isMoveFinished(change) || isResizeFinished(change));
   };
 
+  const updateNodeResizeByUserState = (
+    changes: NodeChange[],
+    nodes: Node<NodeData, DiagramNodeType>[]
+  ): Node<NodeData, DiagramNodeType>[] => {
+    return nodes.map((node) => {
+      if (changes.filter(isResizeFinished).find((dimensionChange) => dimensionChange.id === node.id)) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            resizedByUser: true,
+          },
+        };
+      }
+      return node;
+    });
+  };
+
   const layoutOnBoundsChange = (changes: NodeChange[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
     const change = isBoundsChangeFinished(changes);
     if (change) {
+      const updatedNodes = updateNodeResizeByUserState(changes, nodes);
+
       const diagramToLayout: RawDiagram = {
-        nodes,
+        nodes: updatedNodes,
         edges: getEdges(),
       };
 
       layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
-        nodes.map((node) => {
+        updatedNodes.map((node) => {
           const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
           if (existingNode) {
             return {
@@ -67,10 +87,10 @@ export const useLayoutOnBoundsChange = (refreshEventPayloadId: string): UseLayou
           }
           return node;
         });
-        setNodes(nodes);
+        setNodes(updatedNodes);
         setEdges(laidOutDiagram.edges);
         const finalDiagram: RawDiagram = {
-          nodes: nodes,
+          nodes: updatedNodes,
           edges: laidOutDiagram.edges,
         };
 
