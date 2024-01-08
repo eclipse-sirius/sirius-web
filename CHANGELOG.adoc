@@ -195,6 +195,7 @@ In other scenarios, the default creation position border remains the eastern one
 - https://github.com/eclipse-sirius/sirius-web/issues/3246[#3246] [view] Make the `ViewRepresentationDescriptionSearchService` independent from specific representations
 - https://github.com/eclipse-sirius/sirius-web/issues/3220[#3220] [deck] Add documentation
 - https://github.com/eclipse-sirius/sirius-web/issues/3178[#3178] [portal] Add documentation for portals
+- https://github.com/eclipse-sirius/sirius-web/issues/2890[#2890] [portal] Display the contents of a Portal in the Representations view
 
 == v2024.1.0
 

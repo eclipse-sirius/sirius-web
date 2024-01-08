@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.portals.PortalChangeKind;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
@@ -34,7 +35,7 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * The handler for the addPortalView mutation.
+ * The handler for the removePortalView mutation.
  *
  * @author pcdavid
  */
@@ -69,7 +70,8 @@ public class RemovePortalViewEventHandler implements IPortalEventHandler {
                 var newPortal = context.getServices().removeView(context.getCurrentPortal(), removePortalViewInput.portalViewId());
                 context.setNextPortal(newPortal);
                 payload = new SuccessPayload(removePortalViewInput.id(), List.of());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());
+                changeDescription = new ChangeDescription(PortalChangeKind.PORTAL_VIEW_REMOVAL.name(), newPortal.getId(), context.getInput());
+                changeDescription.getParameters().put(IPortalEventHandler.NEXT_PORTAL_PARAMETER, newPortal);
             }
         } finally {
             payloadSink.tryEmitValue(payload);

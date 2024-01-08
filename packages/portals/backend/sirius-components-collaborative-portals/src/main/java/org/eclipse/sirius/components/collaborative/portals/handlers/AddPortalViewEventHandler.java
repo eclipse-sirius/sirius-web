@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.portals.PortalChangeKind;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
@@ -81,7 +82,9 @@ public class AddPortalViewEventHandler implements IPortalEventHandler {
                     if (optionalNewPortal.isPresent()) {
                         context.setNextPortal(optionalNewPortal.get());
                         payload = new SuccessPayload(addPortalViewInput.id(), List.of());
-                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());
+
+                        changeDescription = new ChangeDescription(PortalChangeKind.PORTAL_VIEW_ADDITION.name(), optionalNewPortal.get().getId(), context.getInput());
+                        changeDescription.getParameters().put(IPortalEventHandler.NEXT_PORTAL_PARAMETER, optionalNewPortal.get());
                     } else {
                         payload = new ErrorPayload(addPortalViewInput.id(), this.messageService.forbiddenLoop());
                     }

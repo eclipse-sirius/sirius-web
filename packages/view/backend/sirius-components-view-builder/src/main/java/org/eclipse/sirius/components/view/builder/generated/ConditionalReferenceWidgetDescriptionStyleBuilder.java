@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.builder.generated;
 
-import org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
-
 /**
  * Builder for ConditionalReferenceWidgetDescriptionStyleBuilder.
  *

@@ -106,5 +106,4 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
         }
         return Optional.empty();
     }
-
 }

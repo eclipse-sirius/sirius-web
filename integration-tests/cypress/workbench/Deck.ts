@@ -14,7 +14,7 @@
 import { Project } from '../pages/Project';
 import { Projects } from '../pages/Projects';
 import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
-import { ElementStyleProps } from './Deck types';
+import { ElementStyleProps } from './Deck.types';
 import { Details } from './Details';
 import { Explorer } from './Explorer';
 
