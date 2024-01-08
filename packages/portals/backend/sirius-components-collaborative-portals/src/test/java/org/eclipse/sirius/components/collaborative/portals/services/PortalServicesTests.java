@@ -101,6 +101,28 @@ public class PortalServicesTests {
     }
 
     @Test
+    public void testRemovePortalView() {
+        Portal portal = this.createSamplePortal(3);
+        assertThat(portal.getViews()).hasSize(3);
+        Portal newPortal = this.services.removeView(portal, "view-0");
+        assertThat(newPortal.getViews()).hasSize(2);
+        assertThat(newPortal.getLayoutData()).hasSize(2);
+    }
+
+    @Test
+    public void testChangeLayoutPortal() {
+        String viewId = "view-0";
+        Portal portal = this.createSamplePortal(1);
+        Portal newPortal = this.services.layout(portal, List.of(PortalViewLayoutData.newPortalViewLayoutData(viewId).x(2).y(2).width(4).height(4).build()));
+        var optionalLayout = newPortal.getLayoutData().stream().filter(layoutdata -> layoutdata.getPortalViewId().equals(viewId)).findFirst();
+        assertThat(optionalLayout).isPresent();
+        assertThat(optionalLayout.get()).extracting(PortalViewLayoutData::getX).isEqualTo(2);
+        assertThat(optionalLayout.get()).extracting(PortalViewLayoutData::getY).isEqualTo(2);
+        assertThat(optionalLayout.get()).extracting(PortalViewLayoutData::getWidth).isEqualTo(4);
+        assertThat(optionalLayout.get()).extracting(PortalViewLayoutData::getHeight).isEqualTo(4);
+    }
+
+    @Test
     public void testPreventDirectLoop() {
         Portal portal = Portal.newPortal(PORTAL_ID).descriptionId(PORTAL_DESCRIPTION_ID).label(PORTAL_ID).targetObjectId(TARGET_OBJECT_ID).build();
         IRepresentationSearchService mockSearchService = new IRepresentationSearchService() {

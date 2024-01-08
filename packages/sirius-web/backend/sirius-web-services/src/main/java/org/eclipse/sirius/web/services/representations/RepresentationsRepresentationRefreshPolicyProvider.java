@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.representations;
 
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyProvider;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
+import org.eclipse.sirius.components.collaborative.portals.PortalChangeKind;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RepresentationsRepresentationRefreshPolicyProvider implements IRepresentationRefreshPolicyProvider {
+
+    private static final Set<String> IMPACTING_CHANGES = Set.of(
+            ChangeKind.REPRESENTATION_CREATION,
+            ChangeKind.REPRESENTATION_DELETION,
+            ChangeKind.REPRESENTATION_RENAMING,
+            ChangeKind.REPRESENTATION_TO_DELETE,
+            PortalChangeKind.PORTAL_VIEW_ADDITION.name(),
+            PortalChangeKind.PORTAL_VIEW_REMOVAL.name());
 
     public RepresentationsRepresentationRefreshPolicyProvider(IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         representationRefreshPolicyRegistry.add(this);
@@ -40,26 +50,8 @@ public class RepresentationsRepresentationRefreshPolicyProvider implements IRepr
 
     @Override
     public IRepresentationRefreshPolicy getRepresentationRefreshPolicy(IRepresentationDescription representationDescription) {
-        return (changeDescription) -> {
-            boolean shouldRefresh = false;
-
-            switch (changeDescription.getKind()) {
-                case ChangeKind.REPRESENTATION_CREATION:
-                    shouldRefresh = true;
-                    break;
-                case ChangeKind.REPRESENTATION_DELETION:
-                    shouldRefresh = true;
-                    break;
-                case ChangeKind.REPRESENTATION_RENAMING:
-                    shouldRefresh = true;
-                    break;
-                case ChangeKind.REPRESENTATION_TO_DELETE:
-                    shouldRefresh = true;
-                    break;
-                default:
-                    shouldRefresh = false;
-            }
-            return shouldRefresh;
+        return changeDescription -> {
+            return IMPACTING_CHANGES.contains(changeDescription.getKind());
         };
     }
 

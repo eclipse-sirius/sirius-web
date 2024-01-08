@@ -24,6 +24,8 @@ import reactor.core.publisher.Sinks.One;
  * @author pcdavid
  */
 public interface IPortalEventHandler {
+    String NEXT_PORTAL_PARAMETER = "nextPortal";
+
     boolean canHandle(IPortalInput portalInput);
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, PortalContext context);

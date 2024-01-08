@@ -16,6 +16,7 @@ import { Flow } from '../../../usecases/Flow';
 import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
 import { Portal } from '../../../workbench/Portal';
+import { Representations } from '../../../workbench/Representations';
 
 const projectName = 'Cypress - portal';
 
@@ -113,6 +114,10 @@ describe('/projects/:projectId/edit - Portal', () => {
               .should('be.enabled');
             frame.get('.react-resizable-handle').should('be.visible');
           });
+
+          const representations = new Representations();
+          representations.showRepresentationsView();
+          representations.hasTreeItems([secondPortal]);
         });
 
         it('Portal loops can not be created', () => {
@@ -178,6 +183,10 @@ describe('/projects/:projectId/edit - Portal', () => {
             toolbar.get('[aria-label="edit portal configuration').should('be.visible').should('be.enabled');
             toolbar.get('[aria-label="edit representations').should('be.visible').should('be.disabled');
           });
+
+          const representations = new Representations();
+          representations.showRepresentationsView();
+          representations.hasTreeItems([diagramTitle]);
         });
 
         it('A portal which already contains a representation opens in direct mode', () => {
@@ -224,6 +233,10 @@ describe('/projects/:projectId/edit - Portal', () => {
           explorer.getTreeItemByLabel('Portal').click();
 
           portal.getFrame('New ' + diagramTitle).should('be.visible');
+
+          const representations = new Representations();
+          representations.showRepresentationsView();
+          representations.hasTreeItems(['New ' + diagramTitle]);
         });
 
         it('Deleting a diagram embedded in a portal removes its frame', () => {

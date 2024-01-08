@@ -76,6 +76,7 @@ public class RenamePortalEventHandler implements IPortalEventHandler {
 
                 payload = new RenameRepresentationSuccessPayload(portalInput.id(), renamedPortal);
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_RENAMING, renameRepresentationInput.representationId(), portalInput);
+                changeDescription.getParameters().put(IPortalEventHandler.NEXT_PORTAL_PARAMETER, renamedPortal);
             }
         } finally {
             payloadSink.tryEmitValue(payload);

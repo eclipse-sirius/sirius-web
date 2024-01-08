@@ -133,6 +133,8 @@ public class PortalEventProcessor implements IPortalEventProcessor {
             if (portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
                 this.emitNewPortal(changeDescription.getInput());
             }
+        } else if (changeDescription.getSourceId().equals(this.currentPortal.getId()) && changeDescription.getParameters().get(IPortalEventHandler.NEXT_PORTAL_PARAMETER) instanceof Portal nextPortal) {
+            this.updatePortal(changeDescription.getInput(), nextPortal);
         }
     }
 
