@@ -131,21 +131,25 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
 
   const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
-    let transformedNodeChanges = transformBorderNodeChanges(changes);
-    transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
+    if (changes.length === 1 && changes[0]?.type === 'dimensions' && typeof changes[0].resizing !== 'boolean') {
+      setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
+    } else {
+      let transformedNodeChanges = transformBorderNodeChanges(changes);
+      transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
 
-    if (transformedNodeChanges.some((change) => change.type === 'position')) {
-      hideDiagramElementPalette();
+      if (transformedNodeChanges.some((change) => change.type === 'position')) {
+        hideDiagramElementPalette();
+      }
+
+      let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
+
+      newNodes = applyMoveChange(transformedNodeChanges, newNodes);
+      newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+      setNodes(newNodes);
+      layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+
+      updateSelectionOnNodesChange(changes);
     }
-
-    let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
-
-    newNodes = applyMoveChange(transformedNodeChanges, newNodes);
-    newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-    setNodes(newNodes);
-    layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-
-    updateSelectionOnNodesChange(changes);
   };
 
   const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
