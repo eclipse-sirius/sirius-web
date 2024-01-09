@@ -27,8 +27,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -84,7 +84,7 @@ public class ViewLoader implements IViewLoader {
 
     private void loadStudioColorPalettes(ResourceSet resourceSet) {
         ClassPathResource classPathResource = new ClassPathResource("studioColorPalettes.json");
-        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
+        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
         Resource resource = new JSONResourceFactory().createResource(uri);
         try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
             resourceSet.getResources().add(resource);

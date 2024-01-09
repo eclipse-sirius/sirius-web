@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.Domain;
 import org.eclipse.sirius.components.core.api.IDomainSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.springframework.stereotype.Service;
@@ -36,9 +36,9 @@ public class DomainSearchService implements IDomainSearchService {
     @Override
     public List<Domain> findAllByEditingContext(IEditingContext editingContext) {
         return Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet)
                 .map(ResourceSet::getPackageRegistry)
                 .map(EPackage.Registry::values)
@@ -54,9 +54,9 @@ public class DomainSearchService implements IDomainSearchService {
     @Override
     public List<Domain> findRootDomainsByEditingContext(IEditingContext editingContext) {
         return Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet)
                 .map(ResourceSet::getPackageRegistry)
                 .map(EPackage.Registry::values)

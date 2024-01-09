@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.emf.form.FormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
@@ -70,7 +70,7 @@ public class FormIdProviderTests {
     }
 
     private FormDescription createFormInsideResource() {
-        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///test-resource");
+        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///test-resource");
 
         XMIResource resource = new XMIResourceImpl(uri);
         FormDescription description = FormFactory.eINSTANCE.createFormDescription();

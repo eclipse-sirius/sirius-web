@@ -141,6 +141,9 @@ This is a preliminary work to add some proper support for outside labels in the 
 - https://github.com/eclipse-sirius/sirius-web/issues/2869[#2869] [diagram] Add `diagramContext` variable to accessible variables when computing semantic candidates expression.
 - https://github.com/eclipse-sirius/sirius-web/issues/2774[#2774] [gantt] Rework the gantt representation front-end to follow best practises.
 - https://github.com/eclipse-sirius/sirius-web/issues/2872[#2872] [diagram] Reduce the time needed to retrieve a diagram description, thus leading to reduce the duration of diagrams opening.
+- https://github.com/eclipse-sirius/sirius-web/issues/2889[#2889] [emf] Add the `IEMFEditingContext` interface in order to let any editing context be an EMF aware one.
+After this change, we will be able to delete the `EditingContext` class from `sirius-components-emf` and add new interfaces to describe the various capabilities of an editing context.
+Among those capabilities, we should find the list of view models to consider during the lifecycle of the editing context.
 
 == v2023.12.0
 

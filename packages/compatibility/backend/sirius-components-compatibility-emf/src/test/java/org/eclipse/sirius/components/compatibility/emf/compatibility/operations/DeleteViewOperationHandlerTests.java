@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo and others.
+ * Copyright (c) 2021, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
@@ -47,7 +46,7 @@ import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -138,7 +137,18 @@ public class DeleteViewOperationHandlerTests {
         this.operationTestContext.getVariables().put(IDiagramContext.DIAGRAM_CONTEXT, diagramContext);
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        var editingContext = new IEMFEditingContext() {
+            @Override
+            public String getId() {
+                return UUID.randomUUID().toString();
+            }
+
+            @Override
+            public AdapterFactoryEditingDomain getDomain() {
+                return editingDomain;
+            }
+        };
+
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
         this.operationTestContext.getVariables().put(CONTAINER_VIEW, diagram);
         this.operationTestContext.getVariables().put(VariableManager.SELF, diagram.getNodes().get(0));

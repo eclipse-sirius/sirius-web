@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.compatibility.emf.EPackageService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchService;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -95,9 +95,9 @@ public class CreateInstanceOperationHandler implements IModelOperationHandler {
                     .map(EObject.class::cast);
 
             Optional<EditingDomain> optionalEditingDomain = Optional.of(variables.get(IEditingContext.EDITING_CONTEXT))
-                    .filter(EditingContext.class::isInstance)
-                    .map(EditingContext.class::cast)
-                    .map(EditingContext::getDomain);
+                    .filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast)
+                    .map(IEMFEditingContext::getDomain);
             // @formatter:on
 
             Matcher matcher = SEPARATOR.matcher(typeName);

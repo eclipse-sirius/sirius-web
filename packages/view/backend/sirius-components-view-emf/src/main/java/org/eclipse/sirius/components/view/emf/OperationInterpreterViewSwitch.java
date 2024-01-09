@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -116,7 +116,7 @@ public class OperationInterpreterViewSwitch extends ViewSwitch<Optional<Variable
     @Override
     public Optional<VariableManager> caseCreateInstance(CreateInstance creatInstanceOperation) {
         var optionalSelf = this.variableManager.get(VariableManager.SELF, EObject.class);
-        var editingDomain = this.variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class).map(EditingContext::getDomain);
+        var editingDomain = this.variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class).map(IEMFEditingContext::getDomain);
         if (optionalSelf.isPresent() && editingDomain.isPresent()) {
             var optionalNewInstance = this.createSemanticInstance(editingDomain.get(), creatInstanceOperation.getTypeName());
             if (optionalNewInstance.isPresent()) {
