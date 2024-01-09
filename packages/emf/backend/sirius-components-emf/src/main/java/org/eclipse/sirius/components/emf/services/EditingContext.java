@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 /**
@@ -24,13 +24,7 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
  *
  * @author sbegaudeau
  */
-public class EditingContext implements IEditingContext {
-
-    /**
-     * This scheme should be used to create an URI of a resource that corresponds to a document added in the
-     * EditingContext ResourceSet.
-     */
-    public static final String RESOURCE_SCHEME = "sirius";
+public class EditingContext implements IEMFEditingContext {
 
     private final String id;
 
@@ -49,6 +43,7 @@ public class EditingContext implements IEditingContext {
         return this.id;
     }
 
+    @Override
     public AdapterFactoryEditingDomain getDomain() {
         return this.editingDomain;
     }

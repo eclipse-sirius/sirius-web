@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 
@@ -69,6 +70,6 @@ public class JSONResourceFactory extends ResourceFactoryImpl {
      */
     public URI createResourceURI(String resourceId) {
         // There are three slashes because the URI authority is empty
-        return URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + resourceId);
+        return URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + resourceId);
     }
 }

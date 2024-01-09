@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,7 @@ import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.representations.Message;
@@ -96,9 +97,9 @@ public class DefaultEditService implements IDefaultEditService {
 
     private Optional<EPackage.Registry> getPackageRegistry(IEditingContext editingContext) {
         return Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet)
                 .map(ResourceSet::getPackageRegistry);
     }
@@ -161,9 +162,9 @@ public class DefaultEditService implements IDefaultEditService {
     @Override
     public Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId) {
         var optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
 
         Optional<EObject> optionalEObject = Optional.of(object)
                 .filter(EObject.class::isInstance)
@@ -271,9 +272,9 @@ public class DefaultEditService implements IDefaultEditService {
         var optionalEClass = this.getMatchingEClass(editingContext, domainId, rootObjectCreationDescriptionId);
 
         var optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
 
         if (optionalEClass.isPresent() && optionalEditingDomain.isPresent()) {
             EClass eClass = optionalEClass.get();
@@ -298,9 +299,9 @@ public class DefaultEditService implements IDefaultEditService {
 
     private Optional<EClass> getMatchingEClass(IEditingContext editingContext, String domainId, String rootObjectCreationDescriptionId) {
         return Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet)
                 .map(ResourceSet::getPackageRegistry)
                 .map(packageRegistry -> packageRegistry.getEPackage(domainId))

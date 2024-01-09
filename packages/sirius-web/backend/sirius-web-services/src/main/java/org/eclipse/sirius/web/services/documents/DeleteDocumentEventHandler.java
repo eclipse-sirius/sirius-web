@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
@@ -83,9 +83,9 @@ public class DeleteDocumentEventHandler implements IEditingContextEventHandler {
 
         // @formatter:off
         var optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
         // @formatter:on
 
         if (input instanceof DeleteDocumentInput) {

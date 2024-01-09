@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.services.api.document.RewriteProxiesInput;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.springframework.stereotype.Service;
@@ -60,9 +60,9 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof RewriteProxiesInput && editingContext instanceof EditingContext) {
+        if (input instanceof RewriteProxiesInput && editingContext instanceof IEMFEditingContext) {
             RewriteProxiesInput rewriteInput = (RewriteProxiesInput) input;
-            AdapterFactoryEditingDomain adapterFactoryEditingDomain = ((EditingContext) editingContext).getDomain();
+            AdapterFactoryEditingDomain adapterFactoryEditingDomain = ((IEMFEditingContext) editingContext).getDomain();
             int totalRewrittenCount = 0;
             for (Resource resource : adapterFactoryEditingDomain.getResourceSet().getResources()) {
                 totalRewrittenCount += this.rewriteProxyURIs(resource, rewriteInput.oldDocumentIdToNewDocumentId());
@@ -87,7 +87,7 @@ public class RewriteProxiesEventHandler implements IEditingContextEventHandler {
                     String oldDocumentId = proxyURI.path().substring(1);
                     String newDocumentId = oldDocumentIdToNewDocumentId.get(oldDocumentId);
                     if (newDocumentId != null) {
-                        String prefix = EditingContext.RESOURCE_SCHEME + ":///";
+                        String prefix = IEMFEditingContext.RESOURCE_SCHEME + ":///";
                         URI newProxyURI = URI.createURI(proxyURI.toString().replace(prefix + oldDocumentId, prefix + newDocumentId));
                         internalEObject.eSetProxyURI(newProxyURI);
                         rewrittenCount.incrementAndGet();

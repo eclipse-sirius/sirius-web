@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.domain.DomainPackage;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
@@ -77,7 +77,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         FormDescription viewFormDescription = this.getAttributeDetails();
 
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
-        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(DomainPropertiesConfigurer.class.getCanonicalName().getBytes()));
+        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(DomainPropertiesConfigurer.class.getCanonicalName().getBytes()));
         Resource resource = new XMIResourceImpl(uri);
         View view = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createView();
         resource.getContents().add(view);

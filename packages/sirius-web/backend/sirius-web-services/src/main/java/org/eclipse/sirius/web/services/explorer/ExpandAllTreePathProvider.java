@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.trees.dto.TreePath;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.explorer.api.IExplorerNavigationService;
@@ -68,9 +68,9 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
             maxDepth = this.addAllContents(editingContext, treeItemId, maxDepth, treeItemIdsToExpand);
         } else {
             // The object may be a document
-            var optionalEditingDomain = Optional.of(editingContext).filter(EditingContext.class::isInstance)
-                    .map(EditingContext.class::cast)
-                    .map(EditingContext::getDomain);
+            var optionalEditingDomain = Optional.of(editingContext).filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast)
+                    .map(IEMFEditingContext::getDomain);
 
             if (optionalEditingDomain.isPresent()) {
                 var optionalResource = optionalEditingDomain.get().getResourceSet().getResources().stream()

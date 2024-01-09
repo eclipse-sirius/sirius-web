@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandidateSearchProvider;
 
 /**
@@ -39,15 +39,15 @@ public class ReferenceWidgetDefaultCandidateSearchProvider implements IReference
     @Override
     public List<? extends Object> getRootElementsForReference(Object targetElement, String descriptionId, IEditingContext editingContext) {
         var optionalResourceSet = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
 
         if (optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
             return resourceSet.getResources().stream()
-                    .filter(res -> res.getURI() != null && EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme()))
+                    .filter(res -> res.getURI() != null && IEMFEditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme()))
                     .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
                     .toList();
         }

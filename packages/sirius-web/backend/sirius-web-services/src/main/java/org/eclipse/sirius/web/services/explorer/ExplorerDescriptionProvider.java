@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -213,14 +213,14 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
     private List<Resource> getElements(VariableManager variableManager) {
         var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
         var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
 
         if (optionalResourceSet.isPresent()) {
             return optionalResourceSet.get().getResources().stream()
-                    .filter(res -> res.getURI() != null && EditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme())
+                    .filter(res -> res.getURI() != null && IEMFEditingContext.RESOURCE_SCHEME.equals(res.getURI().scheme())
                             && !ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.equals(res.getURI().toString()))
                     .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
                     .toList();

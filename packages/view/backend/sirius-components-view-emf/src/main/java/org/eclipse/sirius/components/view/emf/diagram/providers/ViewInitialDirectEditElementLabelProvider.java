@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
@@ -189,8 +189,8 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     }
 
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext) {
-            Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
+        if (editingContext instanceof IEMFEditingContext) {
+            Registry packageRegistry = ((IEMFEditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
             return packageRegistry.values().stream()
                     .filter(EPackage.class::isInstance)
                     .map(EPackage.class::cast)

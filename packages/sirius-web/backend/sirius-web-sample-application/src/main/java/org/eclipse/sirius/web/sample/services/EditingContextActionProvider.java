@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextActionProv
 import org.eclipse.sirius.components.collaborative.dto.EditingContextAction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.domain.DomainPackage;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +67,7 @@ public class EditingContextActionProvider implements IEditingContextActionProvid
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
         var actions = new ArrayList<EditingContextAction>();
-        if (editingContext instanceof EditingContext emfEditingContext) {
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             var nsURIs = emfEditingContext.getDomain().getResourceSet().getPackageRegistry().values()
                     .stream()
                     .filter(EPackage.class::isInstance)

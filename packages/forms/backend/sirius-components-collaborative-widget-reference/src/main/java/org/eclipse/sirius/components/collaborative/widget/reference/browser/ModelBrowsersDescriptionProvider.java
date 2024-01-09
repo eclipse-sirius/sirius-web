@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -131,7 +131,7 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         if (self instanceof Resource) {
             isSelectable = true;
         } else if (self instanceof EObject selfEObject && referenceKind != null) {
-            var optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class).map(EditingContext::getDomain);
+            var optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class).map(IEMFEditingContext::getDomain);
             if (optionalEditingDomain.isPresent()) {
                 Collection<?> newChildDescriptors = optionalEditingDomain.get().getNewChildDescriptors(selfEObject, null);
 
@@ -154,7 +154,7 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
     private Optional<EObject> resolveOwnerEObject(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String ownerId = parameters.get("ownerId").get(0);
@@ -167,7 +167,7 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
     private Optional<EClass> resolveReferenceEClass(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
@@ -184,7 +184,7 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
     private Optional<EClass> resolveTargetType(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
@@ -287,7 +287,7 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
 
     private List<? extends Object> getSearchScopeElements(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String descriptionId = parameters.get("descriptionId").get(0);
@@ -304,14 +304,14 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
     }
 
     private List<? extends Object> getCreationScopeElements(VariableManager variableManager) {
-        var optionalResourceSet = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class)
-                .map(EditingContext::getDomain)
+        var optionalResourceSet = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
 
         if (optionalResourceSet.isPresent()) {
             var resourceSet = optionalResourceSet.get();
             return resourceSet.getResources().stream()
-                    .filter(resource -> resource.getURI() != null && EditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
+                    .filter(resource -> resource.getURI() != null && IEMFEditingContext.RESOURCE_SCHEME.equals(resource.getURI().scheme()))
                     .sorted(Comparator.nullsLast(Comparator.comparing(this::getResourceLabel, String.CASE_INSENSITIVE_ORDER)))
                     .toList();
         }

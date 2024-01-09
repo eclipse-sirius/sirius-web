@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -88,7 +88,7 @@ public class ReferenceViewRepresentationDescriptionRegistryConfigurer implements
         resourceSet.setPackageRegistry(ePackageRegistry);
 
         try (var inputStream = classPathResource.getInputStream()) {
-            URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
+            URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
             Resource resource = new XMIResourceImpl(uri);
             resourceSet.getResources().add(resource);
             resource.load(inputStream, new EMFResourceUtils().getXMILoadOptions());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.sirius.components.core.api.IDefaultObjectService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -199,9 +200,9 @@ public class DefaultObjectService implements IDefaultObjectService {
     @Override
     public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
         return Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet)
                 .flatMap(resourceSet -> {
                     Optional<EObject> optionalEObject = Optional.empty();

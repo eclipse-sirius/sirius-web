@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 
 /**
  * An utility class providing various query services.
@@ -37,16 +37,13 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 public final class EditingContextServices {
 
     public Collection<EObject> allContents(IEditingContext editingContext) {
-        // @formatter:off
         return this.getResourceset(editingContext)
                 .stream()
                .flatMap(this::collectAllContent)
                .toList();
-        // @formatter:on
     }
 
     public Collection<EObject> contents(IEditingContext editingContext) {
-        //@formatter:off
         return this.getResourceset(editingContext)
                 .stream()
                 .map(ResourceSet::getResources)
@@ -54,11 +51,9 @@ public final class EditingContextServices {
                 .map(Resource::getContents)
                 .flatMap(EList::stream)
                 .toList();
-        //@formatter:on
     }
 
     public EObject getObjectById(IEditingContext editingContext, String id) {
-        //@formatter:off
         return this.getResourceset(editingContext)
                 .stream()
                 .map(ResourceSet::getResources)
@@ -67,25 +62,20 @@ public final class EditingContextServices {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
-        //@formatter:on
     }
 
     private Optional<ResourceSet> getResourceset(IEditingContext editingContext) {
-        //@formatter:off
-        return  Optional.of(editingContext)
-               .filter(EditingContext.class::isInstance)
-               .map(EditingContext.class::cast)
-               .map(EditingContext::getDomain)
-               .map(EditingDomain::getResourceSet);
-        //@formatter:on
+        return Optional.of(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
+                .map(EditingDomain::getResourceSet);
     }
 
     private Stream<EObject> collectAllContent(ResourceSet resourceSet) {
         Spliterator<Notifier> spliterator = Spliterators.spliteratorUnknownSize(resourceSet.getAllContents(), Spliterator.ORDERED);
-        //@formatter:off
         return StreamSupport.stream(spliterator, false)
                 .filter(EObject.class::isInstance)
                 .map(EObject.class::cast);
-        //@formatter:on
     }
 }

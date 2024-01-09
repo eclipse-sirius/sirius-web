@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,8 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
 import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutEngine;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -144,7 +144,7 @@ public class DynamicDiagramsTests {
         // Wrap into a View and put it inside a proper Resource(Set), as expected by ViewConverter
         View view = ViewFactory.eINSTANCE.createView();
         view.getDescriptions().add(diagramDescription);
-        Resource res = new JSONResourceFactory().createResource(URI.createURI(EditingContext.RESOURCE_SCHEME + ":///fixture"));
+        Resource res = new JSONResourceFactory().createResource(URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///fixture"));
         res.getContents().add(view);
         new ResourceSetImpl().getResources().add(res);
 

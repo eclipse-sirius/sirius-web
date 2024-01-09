@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -26,8 +25,8 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.task.starter.helper.StereotypeBuilder;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
@@ -87,9 +86,10 @@ public class TaskStudioTemplatesInitializer implements IProjectTemplateInitializ
     private Optional<RepresentationMetadata> initializeTaskProject(IEditingContext editingContext, String documentName, String documentContent,
             Function<Resource, Optional<RepresentationMetadata>> createRepresentation) {
         Optional<RepresentationMetadata> result = Optional.empty();
-        Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext).filter(EditingContext.class::isInstance).map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
-        Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
+        var optionalEditingDomain = Optional.of(editingContext).filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
+        var editingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && editingContextUUID.isPresent()) {
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
             ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();

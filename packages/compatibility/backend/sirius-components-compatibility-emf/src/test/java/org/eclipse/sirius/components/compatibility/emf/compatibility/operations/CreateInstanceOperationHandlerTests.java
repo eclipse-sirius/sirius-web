@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.ENamedElement;
@@ -27,7 +26,7 @@ import org.eclipse.sirius.components.compatibility.emf.compatibility.services.Ed
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.ChildModelOperationHandler;
 import org.eclipse.sirius.components.compatibility.emf.modeloperations.CreateInstanceOperationHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.viewpoint.description.tool.ChangeContext;
@@ -59,7 +58,17 @@ public class CreateInstanceOperationHandlerTests {
         this.operationTestContext = new OperationTestContext();
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        var editingContext = new IEMFEditingContext() {
+            @Override
+            public String getId() {
+                return UUID.randomUUID().toString();
+            }
+
+            @Override
+            public AdapterFactoryEditingDomain getDomain() {
+                return editingDomain;
+            }
+        };
         this.operationTestContext.getVariables().put(IEditingContext.EDITING_CONTEXT, editingContext);
 
         this.createInstanceOperation = ToolFactory.eINSTANCE.createCreateInstance();

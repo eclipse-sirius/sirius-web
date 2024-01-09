@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EObjectIDManager;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
@@ -78,8 +78,8 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
     public void persist(IEditingContext editingContext) {
         long start = System.currentTimeMillis();
 
-        if (editingContext instanceof EditingContext) {
-            List<DocumentEntity> documentEntities = this.persistResources((EditingContext) editingContext);
+        if (editingContext instanceof IEMFEditingContext) {
+            List<DocumentEntity> documentEntities = this.persistResources((IEMFEditingContext) editingContext);
             List<Document> documents = documentEntities.stream().map(new DocumentMapper()::toDTO).toList();
             new IDParser().parse(editingContext.getId())
                 .map(editingContextId -> new DocumentsModifiedEvent(editingContextId, documents))
@@ -90,14 +90,14 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
     }
 
-    private List<DocumentEntity> persistResources(EditingContext editingContext) {
+    private List<DocumentEntity> persistResources(IEMFEditingContext editingContext) {
         List<DocumentEntity> result = new ArrayList<>();
 
         List<Resource> resources = editingContext.getDomain().getResourceSet().getResources().stream()
             .filter(res -> {
                 URI uri = res.getURI();
                 if (uri != null && !ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.equals(uri.toString())) {
-                    return EditingContext.RESOURCE_SCHEME.equals(uri.scheme());
+                    return IEMFEditingContext.RESOURCE_SCHEME.equals(uri.scheme());
                 }
                 return false;
             })

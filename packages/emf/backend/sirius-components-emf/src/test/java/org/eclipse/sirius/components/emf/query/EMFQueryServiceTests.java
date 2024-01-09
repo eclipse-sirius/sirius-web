@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,10 +38,10 @@ import org.eclipse.sirius.components.collaborative.dto.QueryBasedObjectSuccessPa
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.EditingDomainFactory;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -90,7 +90,7 @@ public class EMFQueryServiceTests {
 
     @Test
     public void testEMFQueryServiceGetObjectById() {
-        EditingContext editingContext = this.createEditingContext();
+        var editingContext = this.createEditingContext();
 
         IEditingContextEPackageService editingContextEPackageService = new IEditingContextEPackageService() {
             @Override
@@ -125,11 +125,23 @@ public class EMFQueryServiceTests {
         assertTrue(payload instanceof ErrorPayload);
     }
 
-    private EditingContext createEditingContext() {
+    private IEMFEditingContext createEditingContext() {
         Resource resource = this.createResourceWith4Elements();
         Resource resource2 = this.createResourceWith4Elements();
+
+        var editingContextId = UUID.randomUUID().toString();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create(resource, resource2);
-        return new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        return new IEMFEditingContext() {
+            @Override
+            public String getId() {
+                return editingContextId;
+            }
+
+            @Override
+            public AdapterFactoryEditingDomain getDomain() {
+                return editingDomain;
+            }
+        };
     }
 
     private Resource createResourceWith4Elements() {

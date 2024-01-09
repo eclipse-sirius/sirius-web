@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,8 +36,8 @@ import org.eclipse.sirius.components.domain.DomainFactory;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.domain.Relation;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.CreateInstance;
@@ -123,9 +123,9 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         Optional<RepresentationMetadata> result = Optional.empty();
         // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
         // @formatter:on
         Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && editingContextUUID.isPresent()) {
