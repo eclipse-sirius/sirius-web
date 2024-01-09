@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.configuration;
+package org.eclipse.sirius.components.flow.starter.configuration;
 
 import fr.obeo.dsl.designer.sample.flow.CompositeProcessor;
 import fr.obeo.dsl.designer.sample.flow.DataFlow;
@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.flow.starter.helper.StereotypeBuilder;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -58,6 +59,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  */
 @Configuration
 public class FlowProjectTemplatesInitializer implements IProjectTemplateInitializer {
+
     private static final String DOCUMENT_TITLE = "FlowNewModel";
 
     private final Logger logger = LoggerFactory.getLogger(FlowProjectTemplatesInitializer.class);
@@ -75,7 +77,7 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
     private final StereotypeBuilder stereotypeBuilder;
 
     public FlowProjectTemplatesInitializer(IProjectRepository projectRepository, IDocumentRepository documentRepository, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-                                           IDiagramCreationService diagramCreationService, IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry) {
+            IDiagramCreationService diagramCreationService, IRepresentationPersistenceService representationPersistenceService, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
@@ -99,12 +101,10 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
 
     private Optional<RepresentationMetadata> initializeFlowProject(IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
-        // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
                 .map(IEMFEditingContext::getDomain);
-        // @formatter:on
         Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && editingContextUUID.isPresent()) {
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
@@ -183,13 +183,11 @@ public class FlowProjectTemplatesInitializer implements IProjectTemplateInitiali
     }
 
     private Optional<DiagramDescription> findDiagramDescription(IEditingContext editingContext, String label) {
-        // @formatter:off
         return this.representationDescriptionSearchService.findAll(editingContext).values().stream()
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
-                .filter(diagramDescrpition -> Objects.equals(label, diagramDescrpition.getLabel()))
+                .filter(diagramDescription -> Objects.equals(label, diagramDescription.getLabel()))
                 .findFirst();
-        // @formatter:on
     }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.configuration;
-
-import fr.obeo.dsl.designer.sample.flow.FlowFactory;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +28,6 @@ import org.eclipse.sirius.web.sample.papaya.domain.PapayaDomainProvider;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -45,18 +42,6 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
     public static final UUID EMPTY_ID = UUID.nameUUIDFromBytes("empty".getBytes());
 
     public static final String EMPTY_LABEL = "Others...";
-
-    public static final UUID EMPTY_FLOW_ID = UUID.nameUUIDFromBytes("empty_flow".getBytes());
-
-    public static final String EMPTY_FLOW_LABEL = "Flow";
-
-    public static final UUID ROBOT_FLOW_ID = UUID.nameUUIDFromBytes("robot_flow".getBytes());
-
-    public static final String ROBOT_FLOW_LABEL = "Robot Flow";
-
-    public static final UUID BIG_GUY_FLOW_ID = UUID.nameUUIDFromBytes("big_guy_flow".getBytes());
-
-    public static final String BIG_GUY_FLOW_LABEL = "Big Guy Flow (17k elements)";
 
     public static final UUID EMPTY_VIEW_ID = UUID.nameUUIDFromBytes("empty_view".getBytes());
 
@@ -90,15 +75,12 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     @Override
     public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
-        registry.add(new StereotypeDescription(EMPTY_FLOW_ID, EMPTY_FLOW_LABEL, this::getEmptyFlowContent));
         if (this.studiosEnabled) {
             registry.add(new StereotypeDescription(EMPTY_DOMAIN_ID, EMPTY_DOMAIN_LABEL, this::getEmptyDomainContent));
             registry.add(new StereotypeDescription(EMPTY_VIEW_ID, EMPTY_VIEW_LABEL, this::getEmptyViewContent));
             registry.add(new StereotypeDescription(PAPAYA_DOMAIN_ID, PAPAYA_DOMAIN_LABEL, this::getPapayaDomainContent));
             registry.add(new StereotypeDescription(PAPAYA_VIEW_ID, PAPAYA_VIEW_LABEL, this::getPapayaViewContent));
         }
-        registry.add(new StereotypeDescription(ROBOT_FLOW_ID, ROBOT_FLOW_LABEL, this::getRobotFlowContent));
-        registry.add(new StereotypeDescription(BIG_GUY_FLOW_ID, BIG_GUY_FLOW_LABEL, this::getBigGuyFlowContent));
         registry.add(new StereotypeDescription(EMPTY_ID, EMPTY_LABEL, "New", this::getEmptyContent));
     }
 
@@ -130,15 +112,4 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
         return this.stereotypeBuilder.getStereotypeBody(List.of());
     }
 
-    private String getEmptyFlowContent() {
-        return this.stereotypeBuilder.getStereotypeBody(List.of(FlowFactory.eINSTANCE.createSystem()));
-    }
-
-    private String getRobotFlowContent() {
-        return this.stereotypeBuilder.getStereotypeBody(new ClassPathResource("robot.flow"));
-    }
-
-    private String getBigGuyFlowContent() {
-        return this.stereotypeBuilder.getStereotypeBody(new ClassPathResource("Big_Guy.flow"));
-    }
 }

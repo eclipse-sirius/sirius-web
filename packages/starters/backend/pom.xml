@@ -34,5 +34,6 @@
 	<modules>
 		<module>sirius-components-starter</module>
 		<module>sirius-components-task-starter</module>
+		<module>sirius-components-flow-starter</module>
 	</modules>
 </project>

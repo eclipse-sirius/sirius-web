@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.configuration;
+package org.eclipse.sirius.components.flow.starter.configuration;
 
 import java.util.List;
 
@@ -30,13 +30,11 @@ public class FlowProjectTemplatesProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        // @formatter:off
         var flowTemplate = ProjectTemplate.newProjectTemplate(FLOW_TEMPLATE_ID)
                 .label("Flow")
                 .imageURL("/images/Flow-Template.png")
                 .natures(List.of())
                 .build();
-        // @formatter:on
         return List.of(flowTemplate);
     }
 
