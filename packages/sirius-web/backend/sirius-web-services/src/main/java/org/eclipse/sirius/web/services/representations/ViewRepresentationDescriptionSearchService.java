@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.representations;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -24,14 +22,9 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
-import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
@@ -46,12 +39,8 @@ import org.eclipse.sirius.components.view.emf.task.IGanttIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
-import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
-import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -63,12 +52,7 @@ import org.springframework.stereotype.Service;
 @Service
 @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
 public class ViewRepresentationDescriptionSearchService implements IViewRepresentationDescriptionSearchService {
-
-    private final Logger logger = LoggerFactory.getLogger(ViewRepresentationDescriptionSearchService.class);
-
-    private final IDocumentRepository documentRepository;
-
-    private final EPackage.Registry ePackageRegistry;
+    private final IViewLoader viewLoader;
 
     private final IInMemoryViewRegistry inMemoryViewRegistry;
 
@@ -86,8 +70,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     public ViewRepresentationDescriptionSearchService(ViewRepresentationDescriptionSearchServiceParameters parameters, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.urlParser = Objects.requireNonNull(parameters.getUrlParser());
-        this.documentRepository = Objects.requireNonNull(parameters.getDocumentRepository());
-        this.ePackageRegistry = Objects.requireNonNull(parameters.getEPackageRegistry());
+        this.viewLoader = Objects.requireNonNull(parameters.getViewLoader());
         this.diagramIdProvider = Objects.requireNonNull(parameters.getDiagramIdProvider());
         this.formIdProvider = Objects.requireNonNull(parameters.getFormIdProvider());
         this.objectService = Objects.requireNonNull(parameters.getObjectService());
@@ -173,34 +156,13 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private List<View> getViewsFromSourceId(String sourceId) {
         List<View> views = this.inMemoryViewRegistry.findViewById(sourceId).stream().toList();
-        if (views.isEmpty()) {
-            Optional<DocumentEntity> documentEntity = this.documentRepository.findById(UUID.fromString(sourceId));
-            if (documentEntity.isPresent()) {
-                Resource resource = this.loadDocumentAsEMF(documentEntity.get());
-                views = this.getViewDefinitions(resource).toList();
-            }
+        if (!views.isEmpty()) {
+            return views;
         }
 
-        return views;
-    }
-
-    private Resource loadDocumentAsEMF(DocumentEntity documentEntity) {
-        ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.setPackageRegistry(this.ePackageRegistry);
-
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
-        resourceSet.getResources().add(resource);
-
-        try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
-            resource.load(inputStream, null);
-        } catch (IOException | IllegalArgumentException exception) {
-            this.logger.warn(exception.getMessage(), exception);
-        }
-        return resource;
-    }
-
-    private Stream<View> getViewDefinitions(Resource resource) {
-        return resource.getContents().stream().filter(View.class::isInstance).map(View.class::cast);
+        return this.viewLoader.load().stream()
+                .filter(view -> view.eResource().getURI().segment(0).equals(sourceId))
+                .toList();
     }
 
     private String getRepresentationDescriptionId(RepresentationDescription description) {
