@@ -29,7 +29,7 @@ public class GanttImageProvider implements IRepresentationImageProvider {
     @Override
     public Optional<String> getImageURL(String kind) {
         if (Gantt.KIND.equals(kind)) {
-            return Optional.of("/images/gantt.svg");
+            return Optional.of("/images/Gantt.svg");
         }
         return Optional.empty();
     }
