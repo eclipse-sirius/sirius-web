@@ -114,7 +114,6 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -143,16 +142,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       layoutEngine.layoutNodes(previousDiagram, visibleNodes, directNodesChildren, newlyAddedNode, widerWidth);
     }
 
-    directNodesChildren.forEach((child, index) => {
-      child.position = {
-        x: borderWidth,
-        y: borderWidth + (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0),
-      };
-      const previousSibling = directNodesChildren[index - 1];
-      if (previousSibling) {
-        child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) };
-      }
-    });
+    this.computeChildrenPosition(directNodesChildren, labelElement, node, borderWidth);
 
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
 
@@ -191,6 +181,24 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
   }
-}
 
-// TODO: Tester avec un compartiment free form entre attribut et operation.
+  computeChildrenPosition(
+    directNodesChildren: Node<NodeData, string>[],
+    labelElement: HTMLElement | null,
+    node: Node<ListNodeData, 'listNode'>,
+    borderWidth: number
+  ) {
+    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
+
+    directNodesChildren.forEach((child, index) => {
+      child.position = {
+        x: borderWidth,
+        y: borderWidth + (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0),
+      };
+      const previousSibling = directNodesChildren[index - 1];
+      if (previousSibling) {
+        child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) };
+      }
+    });
+  }
+}

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from 'reactflow';
+import { Dimensions, Node, Rect } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
@@ -83,11 +83,69 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
-    const displayHeaderSeparator: boolean = node.data.insideLabel?.displayHeaderSeparator ?? false;
-
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
+
+    this.computeChildrenPosition(
+      directNodesChildren,
+      visibleNodes,
+      previousDiagram,
+      newlyAddedNode,
+      labelElement,
+      node,
+      borderWidth
+    );
+
+    // Update node to layout size
+    // WARN: We suppose label are always on top of children (that wrong)
+    const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
+    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousDimensions = computePreviousSize(previousNode, node);
+
+    node.width =
+      forceWidth ??
+      this.computeParentNodeWidth(
+        childrenContentBox,
+        visibleNodes,
+        borderNodes,
+        previousDiagram,
+        labelElement,
+        borderWidth,
+        node,
+        previousDimensions
+      );
+    node.height = this.computeParentNodeHeight(
+      childrenContentBox,
+      visibleNodes,
+      borderNodes,
+      previousDiagram,
+      borderWidth,
+      node,
+      previousDimensions
+    );
+
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
+
+    // Update border nodes positions
+    borderNodes.forEach((borderNode) => {
+      borderNode.extent = getBorderNodeExtent(node, borderNode);
+    });
+    setBorderNodesPosition(borderNodes, node, previousDiagram);
+  }
+
+  private computeChildrenPosition(
+    directNodesChildren: Node<NodeData, string>[],
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    previousDiagram: RawDiagram | null,
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    labelElement: HTMLElement | null,
+    node: Node<RectangularNodeData, 'rectangularNode'>,
+    borderWidth: number
+  ) {
+    const withHeader: boolean = node.data.insideLabel?.isHeader ?? false;
+    const displayHeaderSeparator: boolean = node.data.insideLabel?.displayHeaderSeparator ?? false;
 
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
@@ -139,17 +197,27 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
         }
       }
     });
+  }
 
-    // Update node to layout size
-    // WARN: We suppose label are always on top of children (that wrong)
-    const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
+  private computeParentNodeWidth(
+    childrenContentBox: Rect,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    borderNodes: Node<NodeData, string>[],
+    previousDiagram: RawDiagram | null,
+    labelElement: HTMLElement | null,
+    borderWidth: number,
+    node: Node<RectangularNodeData, 'rectangularNode'>,
+    previousDimensions: Dimensions
+  ): number {
+    let parentNodeWidth: number = 0;
+
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const labelOnlyWidth =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
 
-    const nodeMinComputeWidth =
+    const nodeMinComputedWidth =
       Math.max(
         directChildrenAwareNodeWidth,
         labelOnlyWidth,
@@ -158,45 +226,44 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
       ) +
       borderWidth * 2;
 
+    if (node.data.resizedByUser) {
+      parentNodeWidth =
+        nodeMinComputedWidth > previousDimensions.width ? nodeMinComputedWidth : previousDimensions.width;
+    } else {
+      parentNodeWidth = getDefaultOrMinWidth(nodeMinComputedWidth, node);
+    }
+
+    return parentNodeWidth;
+  }
+
+  private computeParentNodeHeight(
+    childrenContentBox: Rect,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    borderNodes: Node<NodeData, string>[],
+    previousDiagram: RawDiagram | null,
+    borderWidth: number,
+    node: Node<RectangularNodeData, 'rectangularNode'>,
+    previousDimensions: Dimensions
+  ): number {
+    let parentNodeHeight: number = 0;
+
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
     const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
 
-    const nodeMinComputeHeight =
+    const nodeMinComputedHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
 
-    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node); // WARN: not sure yet for the forceWidth to be here.
-    const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
-
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
-    const previousDimensions = computePreviousSize(previousNode, node);
     if (node.data.resizedByUser) {
-      if (nodeMinComputeWidth > previousDimensions.width) {
-        node.width = nodeMinComputeWidth;
-      } else {
-        node.width = previousDimensions.width;
-      }
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height;
-      }
+      parentNodeHeight =
+        nodeMinComputedHeight > previousDimensions.height ? nodeMinComputedHeight : previousDimensions.height;
     } else {
-      node.width = nodeWith;
-      node.height = nodeHeight;
+      parentNodeHeight = getDefaultOrMinHeight(nodeMinComputedHeight, node);
     }
 
-    if (node.data.nodeDescription?.keepAspectRatio) {
-      applyRatioOnNewNodeSizeValue(node);
-    }
-
-    // Update border nodes positions
-    borderNodes.forEach((borderNode) => {
-      borderNode.extent = getBorderNodeExtent(node, borderNode);
-    });
-    setBorderNodesPosition(borderNodes, node, previousDiagram);
+    return parentNodeHeight;
   }
 
   private handleLeafNode(
@@ -209,38 +276,58 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    const nodeMinComputeWidth =
-      rectangularNodePadding +
-      (labelElement?.getBoundingClientRect().width ?? 0) +
-      rectangularNodePadding +
-      borderWidth * 2;
-    const nodeMinComputeHeight =
-      rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
-
-    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
-
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
-    if (node.data.resizedByUser) {
-      if (nodeMinComputeWidth > previousDimensions.width) {
-        node.width = nodeMinComputeWidth;
-      } else {
-        node.width = previousDimensions.width;
-      }
-      if (nodeMinComputeHeight > previousDimensions.height) {
-        node.height = nodeMinComputeHeight;
-      } else {
-        node.height = previousDimensions.height;
-      }
-    } else {
-      node.width = nodeWith;
-      node.height = nodeHeight;
-    }
+    node.width = forceWidth ?? this.computeLeafNodeWidth(labelElement, borderWidth, node, previousDimensions);
+    node.height = this.computeLeafNodeHeight(labelElement, borderWidth, node, previousDimensions);
 
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }
+  }
+
+  computeLeafNodeWidth(
+    labelElement: HTMLElement | null,
+    borderWidth: number,
+    node: Node<RectangularNodeData, 'rectangularNode'>,
+    previousDimensions: Dimensions
+  ): number {
+    let leafNodeWidth: number = 0;
+    const nodeMinComputedWidth =
+      rectangularNodePadding +
+      (labelElement?.getBoundingClientRect().width ?? 0) +
+      rectangularNodePadding +
+      borderWidth * 2;
+
+    if (node.data.resizedByUser) {
+      leafNodeWidth = nodeMinComputedWidth > previousDimensions.width ? nodeMinComputedWidth : previousDimensions.width;
+    } else {
+      leafNodeWidth = getDefaultOrMinWidth(nodeMinComputedWidth, node);
+    }
+    return leafNodeWidth;
+  }
+
+  computeLeafNodeHeight(
+    labelElement: HTMLElement | null,
+    borderWidth: number,
+    node: Node<RectangularNodeData, 'rectangularNode'>,
+    previousDimensions: Dimensions
+  ): number {
+    let leafNodeHeight: number = 0;
+
+    const nodeMinComputedHeight =
+      rectangularNodePadding +
+      (labelElement?.getBoundingClientRect().height ?? 0) +
+      rectangularNodePadding +
+      borderWidth * 2;
+
+    if (node.data.resizedByUser) {
+      leafNodeHeight =
+        nodeMinComputedHeight > previousDimensions.height ? nodeMinComputedHeight : previousDimensions.height;
+    } else {
+      leafNodeHeight = getDefaultOrMinHeight(nodeMinComputedHeight, node);
+    }
+    return leafNodeHeight;
   }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,24 +53,27 @@ export const computePreviousSize = (
   previousNode: Node<NodeData, string> | undefined,
   node: Node<NodeData, string>
 ): Dimensions => {
-  let previousDimensions: Dimensions;
-  const nodeDefaultHeight: number = node.data.defaultHeight ?? defaultHeight;
+  let previousDimensions: Dimensions = {
+    height: 0,
+    width: 0,
+  };
   const nodeDefaultWidth: number = node.data.defaultWidth ?? defaultWidth;
+  const nodeDefaultHeight: number = node.data.defaultHeight ?? defaultHeight;
 
   if (node.data.isNew) {
     previousDimensions = {
-      height: nodeDefaultHeight,
       width: nodeDefaultWidth,
+      height: nodeDefaultHeight,
     };
   } else if (previousNode) {
     previousDimensions = {
-      height: previousNode.height ?? nodeDefaultHeight,
       width: previousNode.width ?? nodeDefaultWidth,
+      height: previousNode.height ?? nodeDefaultHeight,
     };
   } else {
     previousDimensions = {
-      height: node.height ?? nodeDefaultHeight,
       width: node.width ?? nodeDefaultWidth,
+      height: node.height ?? nodeDefaultHeight,
     };
   }
 
