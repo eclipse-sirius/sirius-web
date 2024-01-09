@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-deck</artifactId>
-    <version>2023.12.5</version>
+    <version>2023.12.6</version>
 	<name>sirius-components-view-deck</name>
 	<description>Sirius Components Deck View Definition DSL</description>
 	<properties>
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-            <version>2023.12.5</version>
+            <version>2023.12.6</version>
 		</dependency>
 	</dependencies>
 
