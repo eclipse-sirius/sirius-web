@@ -95,7 +95,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
     public String getInitialDirectEditElementLabel(Object diagramElement, String labelId, Diagram diagram, IEditingContext editingContext) {
         String initialDirectEditElementLabel = "";
         String diagramDescriptionId = diagram.getDescriptionId();
-        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescriptionId)
+        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescriptionId)
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
 

@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -31,6 +32,7 @@ import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
@@ -40,7 +42,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
-import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +54,6 @@ import org.springframework.stereotype.Service;
 @Service
 @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
 public class ViewRepresentationDescriptionSearchService implements IViewRepresentationDescriptionSearchService {
-    private final IViewLoader viewLoader;
-
     private final IInMemoryViewRegistry inMemoryViewRegistry;
 
     private final IDiagramIdProvider diagramIdProvider;
@@ -70,7 +70,6 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     public ViewRepresentationDescriptionSearchService(ViewRepresentationDescriptionSearchServiceParameters parameters, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.urlParser = Objects.requireNonNull(parameters.getUrlParser());
-        this.viewLoader = Objects.requireNonNull(parameters.getViewLoader());
         this.diagramIdProvider = Objects.requireNonNull(parameters.getDiagramIdProvider());
         this.formIdProvider = Objects.requireNonNull(parameters.getFormIdProvider());
         this.objectService = Objects.requireNonNull(parameters.getObjectService());
@@ -80,10 +79,10 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     }
 
     @Override
-    public Optional<RepresentationDescription> findById(String representationDescriptionId) {
+    public Optional<RepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
         Optional<String> sourceId = this.getSourceId(representationDescriptionId);
         if (sourceId.isPresent()) {
-            List<View> views = this.getViewsFromSourceId(sourceId.get());
+            List<View> views = this.getViewsFromSourceId(editingContext, sourceId.get());
             if (!views.isEmpty()) {
                 var searchedView = views.stream()
                         .flatMap(view -> view.getDescriptions().stream())
@@ -98,11 +97,11 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     }
 
     @Override
-    public Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId) {
+    public Optional<NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String nodeDescriptionId) {
         Optional<String> sourceId = this.getSourceId(nodeDescriptionId);
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescriptionId);
         if (sourceId.isPresent() && sourceElementId.isPresent()) {
-            List<View> views = this.getViewsFromSourceId(sourceId.get());
+            List<View> views = this.getViewsFromSourceId(editingContext, sourceId.get());
             if (!views.isEmpty()) {
                 return views.stream()
                         .flatMap(view -> view.getDescriptions().stream())
@@ -117,11 +116,11 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     }
 
     @Override
-    public Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId) {
+    public Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId) {
         Optional<String> sourceId = this.getSourceId(edgeDescriptionId);
         Optional<String> sourceElementId = this.getSourceElementId(edgeDescriptionId);
         if (sourceId.isPresent() && sourceElementId.isPresent()) {
-            List<View> views = this.getViewsFromSourceId(sourceId.get());
+            List<View> views = this.getViewsFromSourceId(editingContext, sourceId.get());
             if (!views.isEmpty()) {
                 return views.stream()
                         .flatMap(view -> view.getDescriptions().stream())
@@ -136,11 +135,11 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     }
 
     @Override
-    public Optional<FormElementDescription> findViewFormElementDescriptionById(String formDescriptionId) {
+    public Optional<FormElementDescription> findViewFormElementDescriptionById(IEditingContext editingContext, String formDescriptionId) {
         Optional<String> sourceId = this.getSourceId(formDescriptionId);
         Optional<String> sourceElementId = this.getSourceElementId(formDescriptionId);
         if (sourceId.isPresent() && sourceElementId.isPresent()) {
-            List<View> views = this.getViewsFromSourceId(sourceId.get());
+            List<View> views = this.getViewsFromSourceId(editingContext, sourceId.get());
             if (!views.isEmpty()) {
                 return views.stream()
                         .flatMap(view -> view.getDescriptions().stream())
@@ -154,13 +153,19 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
         return Optional.empty();
     }
 
-    private List<View> getViewsFromSourceId(String sourceId) {
-        List<View> views = this.inMemoryViewRegistry.findViewById(sourceId).stream().toList();
-        if (!views.isEmpty()) {
-            return views;
+    private List<View> getViewsFromSourceId(IEditingContext editingContext, String sourceId) {
+        List<View> inMemoryViews = this.inMemoryViewRegistry.findViewById(sourceId).stream().toList();
+        if (!inMemoryViews.isEmpty()) {
+            return inMemoryViews;
         }
 
-        return this.viewLoader.load().stream()
+        var views = Optional.of(editingContext)
+                .filter(EditingContext.class::isInstance)
+                .map(EditingContext.class::cast)
+                .map(EditingContext::getViews)
+                .orElse(List.of());
+
+        return views.stream()
                 .filter(view -> view.eResource().getURI().segment(0).equals(sourceId))
                 .toList();
     }
@@ -218,12 +223,12 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private Optional<String> getSourceElementId(String descriptionId) {
         var parameters = this.urlParser.getParameterValues(descriptionId);
-        return Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ELEMENT_ID)).orElse(List.of()).stream().findFirst();
+        return Optional.ofNullable(parameters.get(IRepresentationDescriptionIdProvider.SOURCE_ELEMENT_ID)).orElse(List.of()).stream().findFirst();
     }
 
     private Optional<String> getSourceId(String descriptionId) {
         var parameters = this.urlParser.getParameterValues(descriptionId);
-        return Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ID)).orElse(List.of()).stream().findFirst();
+        return Optional.ofNullable(parameters.get(IRepresentationDescriptionIdProvider.SOURCE_ID)).orElse(List.of()).stream().findFirst();
     }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class DropNodeCompatibiliyProvider implements IDropNodeCompatibilityProvi
 
     @Override
     public List<DropNodeCompatibilityEntry> getDropNodeCompatibility(Diagram diagram, IEditingContext editingContext) {
-        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagram.getDescriptionId())
+        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
 

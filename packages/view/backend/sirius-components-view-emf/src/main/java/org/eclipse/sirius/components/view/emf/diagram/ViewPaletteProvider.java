@@ -126,7 +126,7 @@ public class ViewPaletteProvider implements IPaletteProvider {
         Palette palette = null;
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetElement);
-        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescription.getId())
+        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescription.getId())
                 .filter(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::cast);
         if (optionalDiagramDescription.isPresent()) {
@@ -136,10 +136,10 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 palette = this.getDiagramPalette(diagramDescription, viewDiagramDescription, variableManager, interpreter);
             } else if (diagramElement instanceof Node && diagramElementDescription instanceof NodeDescription nodeDescription) {
                 variableManager.put(Node.SELECTED_NODE, diagramElement);
-                palette = this.getNodePalette(diagramDescription, nodeDescription, this.createExtraToolSections(diagramElementDescription, diagramElement), variableManager, interpreter);
+                palette = this.getNodePalette(editingContext, diagramDescription, nodeDescription, this.createExtraToolSections(diagramElementDescription, diagramElement), variableManager, interpreter);
             } else if (diagramElement instanceof Edge && diagramElementDescription instanceof EdgeDescription edgeDescription) {
                 variableManager.put(Edge.SELECTED_EDGE, diagramElement);
-                palette = this.getEdgePalette(edgeDescription, this.createExtraToolSections(diagramElementDescription, diagramElement), variableManager, interpreter);
+                palette = this.getEdgePalette(editingContext, edgeDescription, this.createExtraToolSections(diagramElementDescription, diagramElement), variableManager, interpreter);
             }
         }
         return palette;
@@ -200,13 +200,13 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    protected Palette getNodePalette(DiagramDescription diagramDescription, NodeDescription nodeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
+    protected Palette getNodePalette(IEditingContext editingContext, DiagramDescription diagramDescription, NodeDescription nodeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescription.getId());
         Palette nodePalette = null;
         var toolFinder = new ToolFinder();
         if (sourceElementId.isPresent()) {
             String nodePaletteId = "siriusComponents://nodePalette?nodeId=" + sourceElementId.get();
-            var optionalNodeDescription = this.viewRepresentationDescriptionSearchService.findViewNodeDescriptionById(nodeDescription.getId());
+            var optionalNodeDescription = this.viewRepresentationDescriptionSearchService.findViewNodeDescriptionById(editingContext, nodeDescription.getId());
             if (optionalNodeDescription.isPresent()) {
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
                 var tools = new ArrayList<ITool>();
@@ -270,14 +270,14 @@ public class ViewPaletteProvider implements IPaletteProvider {
                 .build();
     }
 
-    protected Palette getEdgePalette(EdgeDescription edgeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
+    protected Palette getEdgePalette(IEditingContext editingContext, EdgeDescription edgeDescription, List<ToolSection> extraToolSections, VariableManager variableManager, AQLInterpreter interpreter) {
         Palette edgePalette = null;
         var toolFinder = new ToolFinder();
         Optional<String> optionalSourceElementId = this.getSourceElementId(edgeDescription.getId());
         if (optionalSourceElementId.isPresent()) {
             var sourceElementId = optionalSourceElementId.get();
 
-            var optionalEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescription.getId());
+            var optionalEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
                 org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
                 String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;

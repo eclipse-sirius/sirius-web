@@ -23,4 +23,16 @@ import org.eclipse.sirius.components.view.View;
  */
 public interface IViewLoader {
     List<View> load();
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author sbegaudeau
+     */
+    class NoOp implements IViewLoader {
+        @Override
+        public List<View> load() {
+            return List.of();
+        }
+    }
 }

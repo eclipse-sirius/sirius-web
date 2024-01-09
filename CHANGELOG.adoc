@@ -76,6 +76,9 @@ The GraphQL type `NodeDescription` has a new field `childNodeDescriptionIds`, re
 The GraphQL type `NodeDescription` has a new field `borderNodeDescriptionIds`, returning a list of Ids and replacing the field `borderNodeDescriptions` which has been deleted.
 - https://github.com/eclipse-sirius/sirius-web/issues/2872[#2872] [diagram] Change the signature of the node converters in order to leverage the diagram description to resolve the reuse descriptions.
 Additional changes to this interface will propably occur in the near future in order to support more complex use cases.
+- https://github.com/eclipse-sirius/sirius-web/issues/2889[#2889] [emf] Remove the default implementation of the editing context from the `sirius-components-emf` module.
+The default implementation of the editing context for Sirius Web, which had Sirius Web specific code already, will be owned by `sirius-web-services`.
+This default implementation will now also contain all the view models properly loaded which should be considered during the lifecycle of the editing context.
 
 === Dependency update
 
@@ -144,6 +147,9 @@ This is a preliminary work to add some proper support for outside labels in the 
 - https://github.com/eclipse-sirius/sirius-web/issues/2889[#2889] [emf] Add the `IEMFEditingContext` interface in order to let any editing context be an EMF aware one.
 After this change, we will be able to delete the `EditingContext` class from `sirius-components-emf` and add new interfaces to describe the various capabilities of an editing context.
 Among those capabilities, we should find the list of view models to consider during the lifecycle of the editing context.
+- https://github.com/eclipse-sirius/sirius-web/issues/2889[#2889] [view] Load view models only once during the lifecycle of the editing context.
+This change makes the editing context the single source of truth for the state of the view models.
+
 
 == v2023.12.0
 

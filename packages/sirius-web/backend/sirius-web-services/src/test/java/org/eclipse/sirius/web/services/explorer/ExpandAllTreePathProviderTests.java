@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathSu
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
@@ -97,7 +97,7 @@ class ExpandAllTreePathProviderTests {
         Resource resource = this.createResourceWith4Elements();
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
         editingDomain.getResourceSet().getResources().add(resource);
-        return new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        return new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
     }
 
     private Resource createResourceWith4Elements() {

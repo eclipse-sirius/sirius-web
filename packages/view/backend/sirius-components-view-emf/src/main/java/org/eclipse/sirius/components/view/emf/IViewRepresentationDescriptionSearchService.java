@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.view.emf;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -26,13 +27,13 @@ import org.eclipse.sirius.components.view.form.FormElementDescription;
  */
 public interface IViewRepresentationDescriptionSearchService {
 
-    Optional<RepresentationDescription> findById(String representationDescriptionId);
+    Optional<RepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId);
 
-    Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId);
+    Optional<NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String nodeDescriptionId);
 
-    Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId);
+    Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId);
 
-    Optional<FormElementDescription> findViewFormElementDescriptionById(String formDescriptionId);
+    Optional<FormElementDescription> findViewFormElementDescriptionById(IEditingContext editingContext, String formDescriptionId);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -42,22 +43,22 @@ public interface IViewRepresentationDescriptionSearchService {
     class NoOp implements IViewRepresentationDescriptionSearchService {
 
         @Override
-        public Optional<RepresentationDescription> findById(String representationDescriptionId) {
+        public Optional<RepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
             return Optional.empty();
         }
 
         @Override
-        public Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId) {
+        public Optional<NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String nodeDescriptionId) {
             return Optional.empty();
         }
 
         @Override
-        public Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId) {
+        public Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId) {
             return Optional.empty();
         }
 
         @Override
-        public Optional<FormElementDescription> findViewFormElementDescriptionById(String formDescriptionId) {
+        public Optional<FormElementDescription> findViewFormElementDescriptionById(IEditingContext editingContext, String formDescriptionId) {
             return Optional.empty();
         }
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,26 +21,29 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
-import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
+import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,24 +72,27 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final List<IRepresentationDescriptionRegistryConfigurer> configurers;
 
-    private final IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService;
+    private final IViewLoader viewLoader;
+
+    private final IViewConverter viewConverter;
 
     private final Timer timer;
 
     public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
-            List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService, MeterRegistry meterRegistry) {
+            List<IRepresentationDescriptionRegistryConfigurer> configurers, IViewLoader viewLoader, IViewConverter viewConverter, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
         this.configurers = Objects.requireNonNull(configurers);
-        this.dynamicRepresentationDescriptionService = Objects.requireNonNull(dynamicRepresentationDescriptionService);
+        this.viewLoader = Objects.requireNonNull(viewLoader);
+        this.viewConverter = Objects.requireNonNull(viewConverter);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
     @Override
     public boolean existsById(String editingContextId) {
-        return new IDParser().parse(editingContextId).map(editingContextUUID -> this.projectRepository.existsById(editingContextUUID)).orElse(false);
+        return new IDParser().parse(editingContextId).map(this.projectRepository::existsById).orElse(false);
     }
 
     @Override
@@ -126,17 +132,36 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
         this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId);
 
-        Map<String, IRepresentationDescription> representationDescriptions = new LinkedHashMap<>();
-        var registry = new RepresentationDescriptionRegistry();
-        this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
-        registry.getRepresentationDescriptions().forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
-        this.dynamicRepresentationDescriptionService.findDynamicRepresentationDescriptions(editingContextId, editingDomain)
-                .forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
+        var views = this.viewLoader.load();
+        Map<String, IRepresentationDescription> representationDescriptions = this.getRepresentationDescriptions(editingDomain, views);
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
-        return Optional.of(new EditingContext(editingContextId, editingDomain, representationDescriptions));
+        return Optional.of(new EditingContext(editingContextId, editingDomain, representationDescriptions, views));
+    }
+
+    private Map<String, IRepresentationDescription> getRepresentationDescriptions(EditingDomain editingDomain, List<View> views) {
+        Map<String, IRepresentationDescription> representationDescriptions = new LinkedHashMap<>();
+        var registry = new RepresentationDescriptionRegistry();
+        this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
+        registry.getRepresentationDescriptions().forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
+
+        List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingDomain);
+        this.viewConverter.convert(views, accessibleEPackages).stream()
+                .filter(Objects::nonNull)
+                .forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
+
+        return representationDescriptions;
+    }
+
+    private List<EPackage> getAccessibleEPackages(EditingDomain editingDomain) {
+        var packageRegistry = editingDomain.getResourceSet().getPackageRegistry();
+
+        return packageRegistry.values().stream()
+                .filter(EPackage.class::isInstance)
+                .map(EPackage.class::cast)
+                .toList();
     }
 
 }
