@@ -37,6 +37,7 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -52,11 +53,14 @@ public class ViewLoader implements IViewLoader {
 
     private final EPackage.Registry ePackageRegistry;
 
+    private final boolean isStudioDefinitionEnabled;
+
     private final Logger logger = LoggerFactory.getLogger(ViewLoader.class);
 
-    public ViewLoader(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry) {
+    public ViewLoader(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean isStudioDefinitionEnabled) {
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.ePackageRegistry = Objects.requireNonNull(ePackageRegistry);
+        this.isStudioDefinitionEnabled = isStudioDefinitionEnabled;
     }
 
 
@@ -64,13 +68,15 @@ public class ViewLoader implements IViewLoader {
     public List<View> load() {
         List<View> views = new ArrayList<>();
 
-        var resourceSet = this.createResourceSet();
-        this.loadStudioColorPalettes(resourceSet);
+        if (this.isStudioDefinitionEnabled) {
+            var resourceSet = this.createResourceSet();
+            this.loadStudioColorPalettes(resourceSet);
 
-        this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
-            Resource resource = this.loadDocument(documentEntity, resourceSet);
-            views.addAll(this.getViewDefinitions(resource).toList());
-        });
+            this.documentRepository.findAllByType(ViewPackage.eNAME, ViewPackage.eNS_URI).forEach(documentEntity -> {
+                Resource resource = this.loadDocument(documentEntity, resourceSet);
+                views.addAll(this.getViewDefinitions(resource).toList());
+            });
+        }
 
         return views;
     }

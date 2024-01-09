@@ -91,13 +91,13 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
             DiagramDescription diagramDescription) {
         IStatus status = new Failure("");
 
-        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(diagramDescription.getId())
+        var optionalDiagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescription.getId())
                 .filter(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.view.diagram.DiagramDescription.class::cast);
         if (optionalDiagramDescription.isPresent()) {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
 
-            var optionalViewEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescription.getId());
+            var optionalViewEdgeDescription = this.viewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalViewEdgeDescription.isPresent()) {
                 var viewEdgeDescription = optionalViewEdgeDescription.get();
 

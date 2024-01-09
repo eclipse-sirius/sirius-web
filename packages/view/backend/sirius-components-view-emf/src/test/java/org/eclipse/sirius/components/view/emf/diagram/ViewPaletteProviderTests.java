@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
@@ -128,7 +129,7 @@ public class ViewPaletteProviderTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var result = viewPaletteProvider.getNodePalette(this.createDiagramDescription(), this.createNodeDescription(), List.of(), variableManager, interpreter);
+        var result = viewPaletteProvider.getNodePalette(new IEditingContext.NoOp(), this.createDiagramDescription(), this.createNodeDescription(), List.of(), variableManager, interpreter);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://nodePalette?nodeId=sourceElementId");
@@ -161,7 +162,7 @@ public class ViewPaletteProviderTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var result = viewPaletteProvider.getEdgePalette(edgeDescription, List.of(), variableManager, interpreter);
+        var result = viewPaletteProvider.getEdgePalette(new IEditingContext.NoOp(), edgeDescription, List.of(), variableManager, interpreter);
 
         assertThat(result).isNotNull();
         assertThat(result.id()).isEqualTo("siriusComponents://edgePalette?edgeId=sourceElementId");
@@ -178,20 +179,19 @@ public class ViewPaletteProviderTests {
         IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService = new IViewRepresentationDescriptionSearchService.NoOp() {
 
             @Override
-            public Optional<RepresentationDescription> findById(String representationDescriptionId) {
+            public Optional<RepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
                 org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription = getDiagramDescription();
                 return Optional.of(diagramDescription);
             }
 
             @Override
-            public Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId) {
-
+            public Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String nodeDescriptionId) {
                 org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription = getNodeDescription();
                 return Optional.of(nodeDescription);
             }
 
             @Override
-            public Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId) {
+            public Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId) {
                 EdgeDescription edgeDescription = getEdgeDescription();
                 return Optional.of(edgeDescription);
             }

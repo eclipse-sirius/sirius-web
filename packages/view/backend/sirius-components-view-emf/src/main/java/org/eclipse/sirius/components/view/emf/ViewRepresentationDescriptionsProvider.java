@@ -56,7 +56,7 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
     @Override
     public List<RepresentationDescriptionMetadata> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
         List<RepresentationDescriptionMetadata> result = new ArrayList<>();
-        var viewRepresentationDescription = this.viewRepresentationDescriptionSearchService.findById(representationDescription.getId());
+        var viewRepresentationDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, representationDescription.getId());
         if (viewRepresentationDescription.isPresent()) {
             String defaultName = viewRepresentationDescription.map(view -> this.getDefaultName(view, editingContext, object)).orElse(representationDescription.getLabel());
             result.add(new RepresentationDescriptionMetadata(representationDescription.getId(), representationDescription.getLabel(), defaultName));

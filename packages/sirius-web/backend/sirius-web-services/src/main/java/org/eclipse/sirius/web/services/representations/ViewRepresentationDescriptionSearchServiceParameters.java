@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.task.IDeckIdProvider;
 import org.eclipse.sirius.components.view.emf.task.IGanttIdProvider;
-import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,8 +30,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public final class ViewRepresentationDescriptionSearchServiceParameters {
-
-    private final IViewLoader viewLoader;
 
     private final IDiagramIdProvider diagramIdProvider;
 
@@ -46,20 +43,15 @@ public final class ViewRepresentationDescriptionSearchServiceParameters {
 
     private final IObjectService objectService;
 
-    public ViewRepresentationDescriptionSearchServiceParameters(IViewLoader viewLoader, EPackage.Registry ePackageRegistry, IURLParser urlParser, IObjectService objectService,
+    public ViewRepresentationDescriptionSearchServiceParameters(EPackage.Registry ePackageRegistry, IURLParser urlParser, IObjectService objectService,
             ViewRepresentationIdParameters representationIdParameters) {
         Objects.requireNonNull(representationIdParameters);
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.viewLoader = Objects.requireNonNull(viewLoader);
         this.diagramIdProvider = Objects.requireNonNull(representationIdParameters.getDiagramIdProvider());
         this.formIdProvider = Objects.requireNonNull(representationIdParameters.getFormIdProvider());
         this.ganttIdProvider = Objects.requireNonNull(representationIdParameters.getGanttIdProvider());
         this.deckIdProvider = Objects.requireNonNull(representationIdParameters.getDeckIdProvider());
         this.objectService = Objects.requireNonNull(objectService);
-    }
-
-    public IViewLoader getViewLoader() {
-        return this.viewLoader;
     }
 
     public IDiagramIdProvider getDiagramIdProvider() {

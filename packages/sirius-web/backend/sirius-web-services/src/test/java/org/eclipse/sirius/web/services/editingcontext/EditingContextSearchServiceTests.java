@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,15 +28,15 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
-import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
+import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.junit.jupiter.api.Test;
@@ -100,7 +100,7 @@ public class EditingContextSearchServiceTests {
         IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
                 composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
+                new IViewLoader.NoOp(), new IViewConverter.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -148,7 +148,7 @@ public class EditingContextSearchServiceTests {
         IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
                 composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
+                new IViewLoader.NoOp(), new IViewConverter.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);

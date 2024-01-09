@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.services.ComposedObjectService;
 import org.eclipse.sirius.components.emf.services.DefaultObjectService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
@@ -100,7 +100,7 @@ public class DynamicWidgetsTests {
 
         editingDomain.setAdapterFactory(this.composedAdapterFactory);
         editingDomain.getResourceSet().getPackageRegistry().put(FlowPackage.eNS_URI, FlowPackage.eINSTANCE);
-        this.editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        this.editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
 
         this.system = FlowFactory.eINSTANCE.createSystem();
         this.system.setName("Robot");

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.emf.services;
+package org.eclipse.sirius.web.services.editingcontext;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.view.View;
 
 /**
  * Implementation of the editing context.
@@ -32,10 +34,13 @@ public class EditingContext implements IEMFEditingContext {
 
     private final Map<String, IRepresentationDescription> representationDescriptions;
 
-    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions) {
+    private final List<View> views;
+
+    public EditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions, List<View> views) {
         this.id = Objects.requireNonNull(id);
         this.editingDomain = Objects.requireNonNull(editingDomain);
         this.representationDescriptions = Objects.requireNonNull(representationDescriptions);
+        this.views = Objects.requireNonNull(views);
     }
 
     @Override
@@ -50,6 +55,10 @@ public class EditingContext implements IEMFEditingContext {
 
     public Map<String, IRepresentationDescription> getRepresentationDescriptions() {
         return this.representationDescriptions;
+    }
+
+    public List<View> getViews() {
+        return this.views;
     }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
@@ -72,13 +69,10 @@ public class EditingContextPersistenceServiceTests {
         };
         IProjectRepository projectRepository = new NoOpProjectRepository();
 
-        IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository,
-                                                                                                                  projectRepository,
-                                                                                                                  new NoOpApplicationEventPublisher(),
-                                                                                                                  new SimpleMeterRegistry());
+        var editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, projectRepository, new NoOpApplicationEventPublisher(), new SimpleMeterRegistry());
         assertThat(entities).hasSize(0);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
 
         editingContextPersistenceService.persist(editingContext);
         assertThat(entities).hasSize(1);
@@ -123,14 +117,11 @@ public class EditingContextPersistenceServiceTests {
             }
         };
 
-        IEditingContextPersistenceService editingContextPersistenceService = new EditingContextPersistenceService(documentRepository,
-                                                                                                                  projectRepository,
-                                                                                                                  new NoOpApplicationEventPublisher(),
-                                                                                                                  new SimpleMeterRegistry());
+        var editingContextPersistenceService = new EditingContextPersistenceService(documentRepository, projectRepository, new NoOpApplicationEventPublisher(), new SimpleMeterRegistry());
 
         assertThat(entities).hasSize(0);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
+        var editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
 
         editingContextPersistenceService.persist(editingContext);
         assertThat(entities).hasSize(1);
