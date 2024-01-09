@@ -1,0 +1,5 @@
+= sirius-components-flow-starter
+
+== Goal
+
+This project provides an autoconfiguration for Flow related MM.

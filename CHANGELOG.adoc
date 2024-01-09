@@ -80,6 +80,7 @@ Additional changes to this interface will propably occur in the near future in o
 - https://github.com/eclipse-sirius/sirius-web/issues/2889[#2889] [emf] Remove the default implementation of the editing context from the `sirius-components-emf` module.
 The default implementation of the editing context for Sirius Web, which had Sirius Web specific code already, will be owned by `sirius-web-services`.
 This default implementation will now also contain all the view models properly loaded which should be considered during the lifecycle of the editing context.
+- https://github.com/eclipse-sirius/sirius-web/issues/2796[#2796] [sirius-web] All Flow related configurations have been moved to `sirius-components-flow-starter` module.
 
 === Dependency update
 
@@ -153,6 +154,7 @@ Among those capabilities, we should find the list of view models to consider dur
 This change makes the editing context the single source of truth for the state of the view models.
 - https://github.com/eclipse-sirius/sirius-web/issues/2904[#2904] [sirius-web] Order candidates in Representations sections in the Onboard Area.
 - https://github.com/eclipse-sirius/sirius-web/issues/2903[#2903] [sirius-web] Order New Representation modal candidates.
+- https://github.com/eclipse-sirius/sirius-web/issues/2796[#2796] [sirius-web] Flow diagram description has been converted to the view DSL.
 
 == v2023.12.0
 

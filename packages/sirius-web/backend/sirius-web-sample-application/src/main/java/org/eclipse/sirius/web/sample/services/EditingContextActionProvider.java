@@ -34,12 +34,6 @@ public class EditingContextActionProvider implements IEditingContextActionProvid
 
     public static final String EMPTY_ACTION_ID = "empty";
 
-    public static final String EMPTY_FLOW_ID = "empty_flow";
-
-    public static final String ROBOT_FLOW_ID = "robot_flow";
-
-    public static final String BIG_GUY_FLOW_ID = "big_guy_flow";
-
     public static final String EMPTY_DOMAIN_ID = "empty_domain";
 
     public static final String PAPAYA_DOMAIN_ID = "papaya_domain";
@@ -49,12 +43,6 @@ public class EditingContextActionProvider implements IEditingContextActionProvid
     public static final String PAPAYA_VIEW_ID = "papaya_view";
 
     private static final EditingContextAction EMPTY_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_ACTION_ID, "Others...");
-
-    private static final EditingContextAction EMPTY_FLOW_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_FLOW_ID, "Flow");
-
-    private static final EditingContextAction ROBOT_FLOW_EDITING_CONTEXT_ACTION = new EditingContextAction(ROBOT_FLOW_ID, "Robot Flow");
-
-    private static final EditingContextAction BIG_GUY_FLOW_EDITING_CONTEXT_ACTION = new EditingContextAction(BIG_GUY_FLOW_ID, "Big Guy Flow (17k elements)");
 
     private static final EditingContextAction EMPTY_DOMAIN_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_DOMAIN_ID, "Domain");
 
@@ -78,9 +66,6 @@ public class EditingContextActionProvider implements IEditingContextActionProvid
             var containsDomain = nsURIs.contains(DomainPackage.eNS_URI);
             var containsView = nsURIs.contains(ViewPackage.eNS_URI);
 
-            actions.add(EMPTY_FLOW_EDITING_CONTEXT_ACTION);
-            actions.add(ROBOT_FLOW_EDITING_CONTEXT_ACTION);
-            actions.add(BIG_GUY_FLOW_EDITING_CONTEXT_ACTION);
             if (containsDomain) {
                 actions.add(EMPTY_DOMAIN_EDITING_CONTEXT_ACTION);
             }

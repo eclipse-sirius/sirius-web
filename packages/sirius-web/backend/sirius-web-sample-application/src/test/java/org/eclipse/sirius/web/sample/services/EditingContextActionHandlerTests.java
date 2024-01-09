@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,14 +25,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class EditingContextActionHandlerTests {
 
     @ParameterizedTest
-    @ValueSource(strings = {"empty", "empty_flow", "robot_flow", "big_guy_flow", "empty_domain", "papaya_domain", "empty_view", "papaya_view"})
+    @ValueSource(strings = { "empty", "empty_domain", "papaya_domain", "empty_view", "papaya_view" })
     void testCanHandle(String actionId) {
         EditingContextActionHandler handler = new EditingContextActionHandler();
         assertThat(handler.canHandle(null, actionId)).isTrue();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"", "wrong_action", "other", "EMPTY"})
+    @ValueSource(strings = { "", "wrong_action", "other", "EMPTY", "empty_flow", "robot_flow", "big_guy_flow" })
     void testCanNotHandle(String actionId) {
         EditingContextActionHandler handler = new EditingContextActionHandler();
         assertThat(handler.canHandle(null, actionId)).isFalse();

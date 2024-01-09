@@ -1,0 +1,63 @@
+<svg id="Layer_1_antenna" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92.7 69.3">
+  <title>icon</title>
+  <g>
+    <path d="M46.4,56.8a9.2,9.2,0,0,0-6.8,3,1.4,1.4,0,0,0,0,2.1l5.6,5.7a1.7,1.7,0,0,0,2.1,0l5.5-5.7a1.4,1.4,0,0,0,0-2.1A9,9,0,0,0,46.4,56.8Z" style="stroke: #002b3c;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.99460327625275px"/>
+    <path d="M26,46.4l6,6.8a21.9,21.9,0,0,1,28.8,0l6-6.8a30.9,30.9,0,0,0-40.7,0Z" style="stroke: #002b3c;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2px"/>
+    <path d="M13.7,32.2l6,6.7a40.9,40.9,0,0,1,53.7,0l6-6.7a49.9,49.9,0,0,0-65.6,0Z" style="stroke: #002b3c;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.99460327625275px"/>
+    <path d="M46.4,1.3a67.5,67.5,0,0,0-45,16.8l6,6.7a59.4,59.4,0,0,1,78.1,0l5.9-6.7A67.9,67.9,0,0,0,46.4,1.3Z" style="stroke: #002b3c;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2px"/>
+  </g>  
+  
+  <style>
+    /* <![CDATA[ */
+    #Layer_1_antenna g path {      
+      animation-iteration-count: infinite;
+      animation-duration: 4s;
+      animation-timing-function: linear;
+    }
+
+    #Layer_1_antenna g path:nth-of-type(1) {      
+      animation-name: color-antenna-1;
+    }
+    @keyframes color-antenna-1 {
+      0% { fill: #fff; }
+      20% { fill: #48c1c2; }
+      80% { fill: #48c1c2; }
+      100% { fill: #fff; }
+    }
+
+    #Layer_1_antenna g path:nth-of-type(2) {      
+      animation-name: color-antenna-2;
+    }
+    @keyframes color-antenna-2 {
+      0% { fill: #fff; }
+      20% { fill: #fff; }
+      40% { fill: #48c1c2; }
+      80% { fill: #48c1c2; }
+      100% { fill: #fff; }
+    }
+    
+    #Layer_1_antenna g path:nth-of-type(3) {      
+      animation-name: color-antenna-3;
+    }
+    @keyframes color-antenna-3 {
+      0% { fill: #fff; }
+      40% { fill: #fff; }
+      60% { fill: #48c1c2; }
+      80% { fill: #48c1c2; }
+      100% { fill: #fff; }
+    }
+    
+    #Layer_1_antenna g path:nth-of-type(4) {      
+      animation-name: color-antenna-4;
+    }
+    @keyframes color-antenna-4 {
+      0% { fill: #fff; }
+      60% { fill: #fff; }
+      80% { fill: #48c1c2; }
+      100% { fill: #fff; }
+    }
+}
+    /* ]]> */
+  </style>
+
+</svg>

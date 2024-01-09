@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.sample.configuration;
+package org.eclipse.sirius.components.flow.starter.configuration;
 
 import fr.obeo.dsl.designer.sample.flow.Named;
 import fr.obeo.dsl.designer.sample.flow.util.FlowSwitch;
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author arichard
  */
 public class FlowEditableSwitch extends FlowSwitch<Boolean> {
+
     @Override
     public Boolean caseNamed(Named object) {
         return true;

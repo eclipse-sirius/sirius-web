@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -10,7 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-describe('/projects/:projectId/edit - Diagram', () => {
+// Flow diagram description does not have selection tools after the view DSL conversion
+// These tests can be reactivated when selection support is added to React-Flow
+describe.skip('/projects/:projectId/edit - Diagram', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
     cy.createProject('Cypress Project').then((res) => {
