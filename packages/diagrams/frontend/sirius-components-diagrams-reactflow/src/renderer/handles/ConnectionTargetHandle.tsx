@@ -14,6 +14,7 @@ import React, { memo } from 'react';
 import { Handle, Position } from 'reactflow';
 import { useConnector } from '../connector/useConnector';
 import { ConnectionTargetHandleProps } from './ConnectionTargetHandle.types';
+import { useRefreshTargetHandles } from './useRefreshTargetHandles';
 
 const targetHandleNodeStyle: React.CSSProperties = {
   position: 'absolute',
@@ -33,52 +34,60 @@ const targetTempHandleStyle: React.CSSProperties = {
   opacity: 0,
 };
 
-export const ConnectionTargetHandle = memo(({ nodeId }: ConnectionTargetHandleProps) => {
-  const { isConnectionInProgress } = useConnector();
+export const ConnectionTargetHandle = memo(({ nodeId, nodeDescription }: ConnectionTargetHandleProps) => {
+  const { isConnectionInProgress, candidates } = useConnector();
+  const shouldRender =
+    isConnectionInProgress &&
+    !!nodeDescription?.id &&
+    candidates.map((candidate) => candidate.id).includes(nodeDescription.id);
+
+  useRefreshTargetHandles(nodeId, shouldRender);
 
   return (
     <>
-      <Handle
-        id={`handle--${nodeId}--temp--top`}
-        type="target"
-        position={Position.Top}
-        style={targetTempHandleStyle}
-        isConnectableEnd={false}
-        isConnectableStart={false}
-      />
-      <Handle
-        id={`handle--${nodeId}--temp--bottom`}
-        type="target"
-        position={Position.Bottom}
-        style={targetTempHandleStyle}
-        isConnectableEnd={false}
-        isConnectableStart={false}
-      />
-      <Handle
-        id={`handle--${nodeId}--temp--left`}
-        type="target"
-        position={Position.Left}
-        style={targetTempHandleStyle}
-        isConnectableEnd={false}
-        isConnectableStart={false}
-      />
-      <Handle
-        id={`handle--${nodeId}--temp--right`}
-        type="target"
-        position={Position.Right}
-        style={targetTempHandleStyle}
-        isConnectableEnd={false}
-        isConnectableStart={false}
-      />
-      {isConnectionInProgress ? (
-        <Handle
-          id={`handle--${nodeId}--target`}
-          type="target"
-          position={Position.Top}
-          style={targetHandleNodeStyle}
-          isConnectableEnd={true}
-          isConnectableStart={false}
-        />
+      {shouldRender ? (
+        <>
+          <Handle
+            id={`handle--${nodeId}--temp--top`}
+            type="target"
+            position={Position.Top}
+            style={targetTempHandleStyle}
+            isConnectableEnd={false}
+            isConnectableStart={false}
+          />
+          <Handle
+            id={`handle--${nodeId}--temp--bottom`}
+            type="target"
+            position={Position.Bottom}
+            style={targetTempHandleStyle}
+            isConnectableEnd={false}
+            isConnectableStart={false}
+          />
+          <Handle
+            id={`handle--${nodeId}--temp--left`}
+            type="target"
+            position={Position.Left}
+            style={targetTempHandleStyle}
+            isConnectableEnd={false}
+            isConnectableStart={false}
+          />
+          <Handle
+            id={`handle--${nodeId}--temp--right`}
+            type="target"
+            position={Position.Right}
+            style={targetTempHandleStyle}
+            isConnectableEnd={false}
+            isConnectableStart={false}
+          />
+          <Handle
+            id={`handle--${nodeId}--target`}
+            type="target"
+            position={Position.Top}
+            style={targetHandleNodeStyle}
+            isConnectableEnd={true}
+            isConnectableStart={false}
+          />
+        </>
       ) : null}
     </>
   );

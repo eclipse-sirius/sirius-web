@@ -85,7 +85,7 @@ This default implementation will now also contain all the view models properly l
 - https://github.com/eclipse-sirius/sirius-web/issues/2883[#2883] [diagram] Add the attribute `resizedByUser` to reactflow nodes and graphql nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/2926[#2926] [sirius-web] A new `IEditingContextProcessor` has been introduced.
 It allows to execute operations before/after the load of an `IEditingContext` in `EditingContextSearchService`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2901[#2901] [diagram] Added `nodeDescription` prop to `ConnectionTargetHandle` component.
 
 === Dependency update
 
@@ -115,6 +115,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2957[#2957] [diagram] Fix an issue where childs of custom node lose their position.
 - https://github.com/eclipse-sirius/sirius-web/issues/2934[#2934] [portal] Fix the initial position of representations added into portals
 - https://github.com/eclipse-sirius/sirius-web/issues/2907[#2907] [diagram] Fix an issue on some browsers where a tool could not be executed if the tooltip was visible
+- https://github.com/eclipse-sirius/sirius-web/issues/2901[#2901] [diagram] Fix an issue where the connectionLine could be stuck on invalid nodes.
 
 === New Features
 

@@ -25,6 +25,7 @@ export interface UseConnectorValue {
   connection: Connection | null;
   position: XYPosition | null;
   isConnectionInProgress: boolean;
+  candidates: GQLNodeDescription[];
 }
 
 export interface NodeStyleProvider {

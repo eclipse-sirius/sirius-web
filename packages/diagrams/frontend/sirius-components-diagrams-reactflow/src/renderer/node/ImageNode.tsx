@@ -115,7 +115,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
         <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
       ) : null}
       {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-      <ConnectionTargetHandle nodeId={id} />
+      <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
       <ConnectionHandles connectionHandles={data.connectionHandles} />
     </>
   );
