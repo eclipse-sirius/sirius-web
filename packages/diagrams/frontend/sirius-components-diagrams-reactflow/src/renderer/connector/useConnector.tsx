@@ -162,5 +162,6 @@ export const useConnector = (): UseConnectorValue => {
     connection,
     position,
     isConnectionInProgress,
+    candidates,
   };
 };
