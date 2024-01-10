@@ -152,6 +152,7 @@ Among those capabilities, we should find the list of view models to consider dur
 - https://github.com/eclipse-sirius/sirius-web/issues/2889[#2889] [view] Load view models only once during the lifecycle of the editing context.
 This change makes the editing context the single source of truth for the state of the view models.
 - https://github.com/eclipse-sirius/sirius-web/issues/2904[#2904] [sirius-web] Order candidates in Representations sections in the Onboard Area.
+- https://github.com/eclipse-sirius/sirius-web/issues/2903[#2903] [sirius-web] Order New Representation modal candidates.
 
 == v2023.12.0
 
