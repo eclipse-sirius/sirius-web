@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -219,8 +219,13 @@ export const newRepresentationModalMachine = Machine<
           representationDescriptions.push(edge.node)
         );
         const selectedRepresentationDescriptionId =
-          representationDescriptions.length > 0 ? representationDescriptions[0].id : '';
-        const name = representationDescriptions.length > 0 ? representationDescriptions[0].defaultName : '';
+          representationDescriptions.length > 0
+            ? representationDescriptions.sort((a, b) => a.label.localeCompare(b.label))[0].id
+            : '';
+        const name =
+          representationDescriptions.length > 0
+            ? representationDescriptions.sort((a, b) => a.label.localeCompare(b.label))[0].defaultName
+            : '';
         return {
           representationDescriptions,
           selectedRepresentationDescriptionId,
