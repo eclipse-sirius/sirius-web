@@ -13,6 +13,7 @@
 
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
@@ -35,6 +36,7 @@ import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
+import { useArrangeAll } from '../layout/useArrangeAll';
 
 export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
@@ -48,6 +50,7 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
   const getSelectedNodes = () => getNodes().filter((node) => node.selected);
 
   const { fullscreen, onFullscreen } = useFullscreen();
+  const { arrangeAll } = useArrangeAll();
 
   const handleFitToScreen = () => reactFlow.fitView({ duration: 200, nodes: getSelectedNodes() });
   const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
@@ -133,6 +136,9 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
               <GridOnIcon />
             </IconButton>
           )}
+          <IconButton size="small" onClick={() => arrangeAll()}>
+            <AccountTreeIcon />
+          </IconButton>
           <IconButton
             size="small"
             aria-label="reveal hidden elements"

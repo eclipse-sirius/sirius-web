@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ export interface UseLayoutValue {
     referencePosition: GQLReferencePosition | null,
     callback: (laidoutDiagram: RawDiagram) => void
   ) => void;
-  arrangeAll: (afterLayoutCallback: (laidoutDiagram: RawDiagram) => void) => void;
 }
 
 export type Step = 'INITIAL_STEP' | 'BEFORE_LAYOUT' | 'LAYOUT' | 'AFTER_LAYOUT';
