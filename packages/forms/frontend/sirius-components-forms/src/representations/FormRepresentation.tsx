@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,13 +31,13 @@ import { ToolbarAction } from '../toolbaraction/ToolbarAction';
 import {
   FormRepresentationContext,
   FormRepresentationEvent,
+  formRepresentationMachine,
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
   SwitchFormEvent,
-  formRepresentationMachine,
 } from './FormRepresentationMachine';
 
 const formEventSubscription = (contributions: Array<WidgetContribution>) =>
@@ -204,13 +204,13 @@ export const FormRepresentation = ({ editingContextId, representationId, readOnl
   }
 
   return (
-    <>
+    <div data-representation-kind="form">
       {content}
       <Toast
         message={message}
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
-    </>
+    </div>
   );
 };

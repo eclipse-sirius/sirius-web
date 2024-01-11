@@ -28,8 +28,12 @@ export class Details {
     return this.getDetailsView().contains('div', label).siblings().find(`[data-testid="${option}"]`);
   }
 
+  public getReferenceWidget(label: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getDetailsView().findByTestId(label);
+  }
+
   public openReferenceWidgetOptions(label: string): void {
-    this.getDetailsView().findByTestId(label).find('button[title="Open"]').click();
+    this.getReferenceWidget(label).find('button[title="Open"]').click();
   }
 
   public selectReferenceWidgetOption(option: string): void {

@@ -1,7 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
- * are made available under the erms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -13,6 +13,7 @@
 
 import { isCreateProjectSuccessPayload } from '../support/server/createProjectCommand';
 import { CreatedProjectData } from './Flow.types';
+import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
 
 export class Flow {
   public createRobotProject(name: string): Cypress.Chainable<CreatedProjectData> {
@@ -27,6 +28,19 @@ export class Flow {
         return cy.wrap(data);
       } else {
         throw new Error(`The project "${name}" has not been created`);
+      }
+    });
+  }
+
+  public createFlowProject(): Cypress.Chainable<CreatedProjectData> {
+    return cy.createProjectFromTemplate('flow-template').then((res) => {
+      const payload = res.body.data.createProjectFromTemplate;
+      if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+        const projectId = payload.project.id;
+        const data: CreatedProjectData = { projectId };
+        return cy.wrap(data);
+      } else {
+        throw new Error(`The project flow has not been created`);
       }
     });
   }
