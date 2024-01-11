@@ -91,8 +91,16 @@ export const FormBasedView = ({
   /**
    * Displays another form if the selection indicates that we should display another properties view.
    */
+  const currentSelectionKey: string = currentSelection?.entries
+    .map((entry) => entry.id)
+    .sort()
+    .join(':');
+  const newSelectionKey: string = selection?.entries
+    .map((entry) => entry.id)
+    .sort()
+    .join(':');
   useEffect(() => {
-    if (selection.entries.length > 0 && selection !== currentSelection) {
+    if (selection.entries.length > 0 && currentSelectionKey !== newSelectionKey) {
       const switchSelectionEvent: SwitchSelectionEvent = {
         type: 'SWITCH_SELECTION',
         selection: selection,
@@ -105,7 +113,7 @@ export const FormBasedView = ({
       };
       dispatch(switchSelectionEvent);
     }
-  }, [currentSelection, selection, dispatch]);
+  }, [currentSelectionKey, newSelectionKey, dispatch]);
 
   const input: GQLPropertiesEventInput = {
     id,
