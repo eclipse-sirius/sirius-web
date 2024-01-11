@@ -11,13 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from 'reactflow';
+import { Node, NodeChange, NodeDimensionChange } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RawDiagram } from './layout.types';
 
 export interface ILayoutEngine {
   registerNodeLayoutHandlerContribution(nodeLayoutHandlerContribution: INodeLayoutHandler<NodeData>);
+
+  partialNodeLayout(
+    previousDiagram: RawDiagram | null,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    nodesToLayout: Node<NodeData, DiagramNodeType>[],
+    nodeDimensionChange: NodeDimensionChange,
+    forceDimension?: { width?: number; height?: number }
+  ): NodeChange[];
 
   layoutNodes(
     previousDiagram: RawDiagram | null,
@@ -40,4 +48,15 @@ export interface INodeLayoutHandler<T extends NodeData> {
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   );
+
+  handle2(
+    layoutEngine: ILayoutEngine,
+    previousDiagram: RawDiagram | null,
+    node: Node<T>,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    directChildren: Node<NodeData, DiagramNodeType>[],
+    newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
+    nodeDimensionChange: NodeDimensionChange,
+    forceDimension?: { width?: number; height?: number }
+  ): NodeChange[];
 }

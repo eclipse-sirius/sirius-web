@@ -37,6 +37,8 @@ const iconlabelStyle = (
     iconLabelNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
+  iconLabelNodeStyle.border = '1px solid red';
+
   return iconLabelNodeStyle;
 };
 

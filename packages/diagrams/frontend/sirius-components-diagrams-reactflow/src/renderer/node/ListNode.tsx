@@ -72,6 +72,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
   };
 
   useRefreshConnectionHandles(id, data.connectionHandles);
+
   return (
     <>
       {data.nodeDescription?.userResizable && (

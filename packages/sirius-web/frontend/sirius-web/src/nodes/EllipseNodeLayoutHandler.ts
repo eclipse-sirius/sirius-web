@@ -32,11 +32,27 @@ import {
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
-import { Node } from 'reactflow';
+import { RawDiagram } from '@eclipse-sirius/sirius-components-diagrams-reactflow/dist/renderer/layout/layout.types';
+import { Node, NodeChange, NodeDimensionChange } from 'reactflow';
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'ellipseNode';
+  }
+
+  public handle2(
+    _layoutEngine: ILayoutEngine,
+    _previousDiagram: RawDiagram | null,
+    _node: Node<NodeData>,
+    _visibleNodes: Node<NodeData, string>[],
+    _directChildren: Node<NodeData, string>[],
+    _newlyAddedNode: Node<NodeData, string> | undefined,
+    _nodeDimensionChange: NodeDimensionChange,
+    _forceDimension?: { width?: number | undefined; height?: number | undefined } | undefined
+  ): NodeChange[] {
+    const nodeChange: NodeChange[] = [];
+
+    return nodeChange;
   }
 
   handle(

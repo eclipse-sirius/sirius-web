@@ -11,9 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useCallback } from 'react';
-import { Node, NodeChange, useReactFlow, XYPosition } from 'reactflow';
+import { Edge, Node, NodeChange, NodeDimensionChange, useReactFlow, XYPosition } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { RawDiagram } from '../layout/layout.types';
 import { findBorderNodePosition } from '../layout/layoutBorderNodes';
+import { LayoutEngine } from '../layout/LayoutEngine';
+import { ILayoutEngine } from '../layout/LayoutEngine.types';
 import { borderNodeOffset } from '../layout/layoutParams';
 import { UseBorderChangeValue } from './useBorderChange.types';
 
@@ -29,11 +32,63 @@ const isNewPositionInsideIsParent = (newNodePosition: XYPosition, movedNode: Nod
   return false;
 };
 
+const isResize = (change: NodeChange): change is NodeDimensionChange =>
+  change.type === 'dimensions' && typeof change.resizing === 'boolean' && change.resizing;
+
+const computeRecursiveNodeChanges = (
+  accumulatedNodeChanges: NodeChange[],
+  change: NodeChange,
+  nodes: Node<NodeData, string>[],
+  edges: Edge<EdgeData>[]
+): void => {
+  if (isResize(change)) {
+    const resizedNode = nodes.find((node) => node.id === change.id);
+    if (resizedNode && resizedNode.type === 'listNode') {
+      resizedNode.data.resizedByUser = true;
+      const allVisibleNodes = nodes.filter((node) => !node.hidden);
+      const diagramToLayout: RawDiagram = {
+        nodes,
+        edges,
+      };
+
+      const layoutEngine: ILayoutEngine = new LayoutEngine();
+      const nodeChanges = layoutEngine.partialNodeLayout(
+        diagramToLayout,
+        allVisibleNodes,
+        [resizedNode],
+        change,
+        change.dimensions
+      );
+
+      // console.log(nodeChanges);
+
+      // const childrenNodeChanges: NodeChange[] = [];
+      // const childNodes = nodes.filter((node) => node.parentNode === resizedNode.id);
+      // childNodes.forEach((child) => {
+      //   const childNodeChange: NodeDimensionChange = {
+      //     ...change,
+      //     id: child.id,
+      //     dimensions: {
+      //       width: change.dimensions?.width ? change.dimensions?.width - 2 : child.width ?? 0,
+      //       height: child.height ?? 0,
+      //     },
+      //   };
+      //   childrenNodeChanges.push(childNodeChange);
+      //   computeRecursiveNodeChanges(accumulatedNodeChanges, childNodeChange, nodes, edges);
+      // });
+      accumulatedNodeChanges.push(...nodeChanges);
+    }
+  }
+};
+
 export const useBorderChange = (): UseBorderChangeValue => {
-  const { getNodes } = useReactFlow<NodeData, EdgeData>();
+  const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
 
   const transformBorderNodeChanges = useCallback((changes: NodeChange[]): NodeChange[] => {
-    return changes.map((change) => {
+    const newChanges: NodeChange[] = [];
+
+    changes.reduce<NodeChange[]>((previous: NodeChange[], change: NodeChange) => {
+      computeRecursiveNodeChanges(previous, change, getNodes() as Node<NodeData, string>[], getEdges());
       if (change.type === 'position' && change.positionAbsolute) {
         const movedNode = getNodes().find((node) => change.id === node.id);
         if (movedNode?.data.isBorderNode) {
@@ -47,8 +102,15 @@ export const useBorderChange = (): UseBorderChangeValue => {
           }
         }
       }
+      previous.push(change);
+      return previous;
+    }, newChanges);
+
+    changes.map((change) => {
       return change;
     });
+
+    return newChanges;
   }, []);
 
   return { transformBorderNodeChanges };

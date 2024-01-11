@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Dimensions, Node, Rect } from 'reactflow';
+import { Dimensions, Node, NodeChange, NodeDimensionChange, Rect } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { RectangularNodeData } from '../node/RectangularNode.types';
@@ -38,6 +38,21 @@ import { rectangularNodePadding } from './layoutParams';
 export class RectangleNodeLayoutHandler implements INodeLayoutHandler<RectangularNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'rectangularNode';
+  }
+
+  public handle2(
+    _layoutEngine: ILayoutEngine,
+    _previousDiagram: RawDiagram | null,
+    _node: Node<RectangularNodeData, 'rectangularNode'>,
+    _visibleNodes: Node<NodeData, string>[],
+    _directChildren: Node<NodeData, string>[],
+    _newlyAddedNode: Node<NodeData, string> | undefined,
+    _nodeDimensionChange: NodeDimensionChange,
+    _forceDimension?: { width?: number | undefined; height?: number | undefined } | undefined
+  ): NodeChange[] {
+    const nodeChange: NodeChange[] = [];
+
+    return nodeChange;
   }
 
   public handle(
@@ -80,6 +95,11 @@ export class RectangleNodeLayoutHandler implements INodeLayoutHandler<Rectangula
     forceWidth?: number
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
+
+    const directGrandChildren = visibleNodes.filter((visibleNode) => visibleNode.parentNode === node.id);
+    if (directGrandChildren.length === 4) {
+      debugger;
+    }
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);

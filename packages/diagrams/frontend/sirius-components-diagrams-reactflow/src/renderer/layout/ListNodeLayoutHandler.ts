@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from 'reactflow';
+import { Node, NodeChange, NodeDimensionChange } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
@@ -35,6 +35,98 @@ import {
 export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'listNode';
+  }
+
+  public handle2(
+    layoutEngine: ILayoutEngine,
+    previousDiagram: RawDiagram | null,
+    _node: Node<ListNodeData, 'listNode'>,
+    visibleNodes: Node<NodeData, string>[],
+    directChildren: Node<NodeData, string>[],
+    newlyAddedNode: Node<NodeData, string> | undefined,
+    nodeDimensionChange: NodeDimensionChange,
+    forceDimension?: { width?: number; height?: number } | undefined
+  ): NodeChange[] {
+    const nodeChanges: NodeChange[] = [];
+
+    if (directChildren.length > 0) {
+      // Compute the minimum size of children
+      layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
+
+      // Reduce the height of the forced dimension by the label height to split remaining space between children
+      let contentForcedDimension: { width?: number; height?: number } = {};
+      if (forceDimension) {
+        if (forceDimension.height) {
+          contentForcedDimension.height = forceDimension.height - 37 - 2; // remove the label height is 37 and twice the border size
+        }
+        if (forceDimension.width) {
+          contentForcedDimension.width = forceDimension.width - 2; // Remove the border size twice
+        }
+      }
+
+      directChildren.forEach((child, index) => {
+        const directGrandChildren = visibleNodes.filter((visibleNode) => visibleNode.parentNode === child.id);
+        if (directGrandChildren.length === 4) {
+          // console.log(child.width);
+        }
+
+        let widthTaken: number = contentForcedDimension.width ?? 0;
+        if ((child.width ?? 0) > (contentForcedDimension.width ?? 0)) {
+          widthTaken = child.width ?? 0;
+        }
+        let heightTaken: number;
+        if (index < directChildren.length - 1) {
+          heightTaken = child.height ?? 0;
+          if (contentForcedDimension.height) {
+            contentForcedDimension.height = contentForcedDimension.height - heightTaken;
+          }
+        } else {
+          // The last child have the remaining space if it is greater than the minimal size
+          heightTaken = contentForcedDimension.height ?? 0;
+          if ((child.height ?? 0) > (contentForcedDimension.height ?? 0)) {
+            heightTaken = child.height ?? 0;
+          }
+        }
+
+        if (widthTaken !== child.width || heightTaken !== child.height) {
+          const childDimensionChange: NodeDimensionChange = {
+            ...nodeDimensionChange,
+            id: child.id,
+            dimensions: {
+              width: widthTaken,
+              height: heightTaken,
+            },
+          };
+          const grandChildrenDimensionChanges: NodeChange[] = layoutEngine.partialNodeLayout(
+            previousDiagram,
+            visibleNodes,
+            [child],
+            childDimensionChange,
+            childDimensionChange.dimensions
+          );
+          Trouver comment s'arrêter à la taille minimal (a faire potentiellement dans le parend de ListNodeLayoutHandler ? ou au global quand on a récupérer tout les node dimension change)
+          - Regarder ce qui est retourner dans les nodeChanges aux différents niveaux et voir ce qu'il est possible de faire pour stopper le resize si trop petit
+          
+          Pour fixer le problème du compartiment qui reprend la taille min à la fin du resize
+          - Regarder dans le `useLayoutOnBoundsChange` et voir se qu'il s'y passe.
+          // if (directChildren.length === 2) {
+          console.log(childDimensionChange.dimensions?.width);
+          console.log('---');
+
+          grandChildrenDimensionChanges.forEach((grandChildrenDimensionChange: any) => {
+            console.log(grandChildrenDimensionChange.dimensions?.width);
+          });
+          console.log('-------------------');
+          // }
+
+          nodeChanges.push(childDimensionChange);
+          nodeChanges.push(...grandChildrenDimensionChanges);
+        }
+      });
+    } else {
+    }
+
+    return nodeChanges;
   }
 
   public handle(

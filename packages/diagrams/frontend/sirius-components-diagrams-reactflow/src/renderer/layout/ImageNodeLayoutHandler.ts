@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Dimensions, Node, Rect } from 'reactflow';
+import { Dimensions, Node, NodeChange, NodeDimensionChange, Rect } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { ImageNodeData } from '../node/ImageNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
@@ -38,6 +38,21 @@ import { rectangularNodePadding } from './layoutParams';
 export class ImageNodeLayoutHandler implements INodeLayoutHandler<ImageNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'imageNode';
+  }
+
+  public handle2(
+    _layoutEngine: ILayoutEngine,
+    _previousDiagram: RawDiagram | null,
+    _node: Node<ImageNodeData, 'imageNode'>,
+    _visibleNodes: Node<NodeData, string>[],
+    _directChildren: Node<NodeData, string>[],
+    _newlyAddedNode: Node<NodeData, string> | undefined,
+    _nodeDimensionChange: NodeDimensionChange,
+    _forceDimension?: { width?: number | undefined; height?: number | undefined } | undefined
+  ): NodeChange[] {
+    const nodeChange: NodeChange[] = [];
+
+    return nodeChange;
   }
 
   public handle(

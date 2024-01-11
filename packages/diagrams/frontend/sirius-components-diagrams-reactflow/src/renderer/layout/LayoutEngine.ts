@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from 'reactflow';
+import { Node, NodeChange, NodeDimensionChange } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { IconLabelNodeLayoutHandler } from './IconLabelNodeLayoutHandler';
@@ -28,6 +28,44 @@ export class LayoutEngine implements ILayoutEngine {
     new ImageNodeLayoutHandler(),
     new IconLabelNodeLayoutHandler(),
   ];
+
+  partialNodeLayout(
+    previousDiagram: RawDiagram | null,
+    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    nodesToLayout: Node<NodeData, DiagramNodeType>[],
+    nodeDimensionChange: NodeDimensionChange,
+    forceDimension?: { width?: number; height?: number }
+  ): NodeChange[] {
+    const newChanges: NodeChange[] = [];
+    nodesToLayout.forEach((node) => {
+      const nodeLayoutHandler: INodeLayoutHandler<NodeData> | undefined = this.nodeLayoutHandlers.find((handler) =>
+        handler.canHandle(node)
+      );
+      const directChildren = visibleNodes
+        .filter((visibleNode) => visibleNode.parentNode === node.id)
+        .map((child) => ({
+          ...child,
+          data: {
+            ...child.data,
+          },
+        })); // Create a deep copy of each children
+      if (nodeLayoutHandler) {
+        const childrenNodeChange = nodeLayoutHandler?.handle2(
+          this,
+          previousDiagram,
+          node,
+          visibleNodes,
+          directChildren,
+          undefined,
+          nodeDimensionChange,
+          forceDimension
+        );
+        newChanges.push(...childrenNodeChange);
+      }
+    });
+
+    return newChanges;
+  }
 
   public layoutNodes(
     previousDiagram: RawDiagram | null,
