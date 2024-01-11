@@ -33,6 +33,7 @@ describe('Diagram - Pin unpin nodes', () => {
     afterEach(() => cy.deleteProject(projectId));
     it('Then it is possible to pin unpin node', () => {
       const diagram = new Diagram();
+      diagram.fitToScreen();
       diagram.getNodes('diagram', 'Wifi').click();
       diagram.getPalette().should('exist');
       cy.getByTestId('Pin-element').should('exist');
@@ -47,6 +48,7 @@ describe('Diagram - Pin unpin nodes', () => {
 
     it('Then it is possible to unpin all nodes', () => {
       const diagram = new Diagram();
+      diagram.fitToScreen();
       diagram.getNodes('diagram', 'Wifi').click();
       diagram.getPalette().should('exist');
       cy.getByTestId('Pin-element').should('exist');

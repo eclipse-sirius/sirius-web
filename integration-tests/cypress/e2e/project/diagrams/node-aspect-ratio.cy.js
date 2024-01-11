@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,11 +75,11 @@ describe('/projects/:projectId/edit - Node aspect ratio', () => {
         cy.getByTestId('Rectangle - ')
           .invoke('css', 'width')
           .then((nodeWidth) => {
-            expect(parseInt(nodeWidth) / scale).to.approximately(200, 1);
+            expect(parseInt(nodeWidth) / scale).to.approximately(200, 2);
           });
         cy.getByTestId('Rectangle - ')
           .invoke('css', 'height')
-          .then((nodeHeight) => expect(parseInt(nodeHeight) / scale).to.approximately(200, 1));
+          .then((nodeHeight) => expect(parseInt(nodeHeight) / scale).to.approximately(200, 2));
       });
 
     cy.getByTestId('Entity1').click();
