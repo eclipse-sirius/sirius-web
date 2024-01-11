@@ -106,20 +106,20 @@ public class GetNodeDescriptionsEventHandler implements IDiagramEventHandler {
 
     private void addChildrenNodeDescriptions(NodeDescription nodeDescription, ArrayList<NodeDescription> allNodeDescriptions, INodeDescriptionRequestor nodeDescriptionRequestor) {
         List<NodeDescription> childNodeDescriptions = nodeDescription.getChildNodeDescriptions();
-        allNodeDescriptions.addAll(childNodeDescriptions);
-        List<NodeDescription> borderNodeDescriptions = nodeDescription.getBorderNodeDescriptions();
-        allNodeDescriptions.addAll(borderNodeDescriptions);
-
         childNodeDescriptions.forEach(childNodeDescription -> {
             if (!allNodeDescriptions.contains(childNodeDescription)) {
                 this.addChildrenNodeDescriptions(childNodeDescription, allNodeDescriptions, nodeDescriptionRequestor);
             }
         });
+        allNodeDescriptions.addAll(childNodeDescriptions);
+
+        List<NodeDescription> borderNodeDescriptions = nodeDescription.getBorderNodeDescriptions();
         borderNodeDescriptions.forEach(borderNodeDescription -> {
             if (!allNodeDescriptions.contains(borderNodeDescription)) {
                 this.addChildrenNodeDescriptions(borderNodeDescription, allNodeDescriptions, nodeDescriptionRequestor);
             }
         });
+        allNodeDescriptions.addAll(borderNodeDescriptions);
 
         nodeDescription.getReusedChildNodeDescriptionIds()
                 .stream()
