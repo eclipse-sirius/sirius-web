@@ -15,6 +15,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -258,25 +259,27 @@ export const Palette = ({
   let pinUnpinTool: JSX.Element | undefined;
   if (node) {
     pinUnpinTool = node.data.pinned ? (
-      <IconButton
-        className={classes.toolIcon}
-        size="small"
-        aria-label="Unpin element"
-        title="Unpin element"
-        onClick={() => pinDiagramElements([diagramElementId], !node.data.pinned)}
-        data-testid="Unpin-element">
-        <UnpinIcon fontSize="small" />
-      </IconButton>
+      <Tooltip title="Unpin element">
+        <IconButton
+          className={classes.toolIcon}
+          size="small"
+          aria-label="Unpin element"
+          onClick={() => pinDiagramElements([diagramElementId], !node.data.pinned)}
+          data-testid="Unpin-element">
+          <UnpinIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
     ) : (
-      <IconButton
-        className={classes.toolIcon}
-        size="small"
-        aria-label="Pin element"
-        title="Pin element"
-        onClick={() => pinDiagramElements([diagramElementId], true)}
-        data-testid="Pin-element">
-        <PinIcon fontSize="small" />
-      </IconButton>
+      <Tooltip title="Pin element">
+        <IconButton
+          className={classes.toolIcon}
+          size="small"
+          aria-label="Pin element"
+          onClick={() => pinDiagramElements([diagramElementId], true)}
+          data-testid="Pin-element">
+          <PinIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
     );
   }
 
@@ -459,24 +462,26 @@ export const Palette = ({
         })}
         {hideableDiagramElement ? (
           <>
-            <IconButton
-              className={classes.toolIcon}
-              size="small"
-              aria-label="hide elements"
-              title="Hide elements"
-              onClick={invokeHideDiagramElementTool}
-              data-testid="Hide-elements">
-              <VisibilityOffIcon fontSize="small" />
-            </IconButton>
-            <IconButton
-              className={classes.toolIcon}
-              size="small"
-              aria-label="Fade elements"
-              title="Fade elements"
-              onClick={invokeFadeDiagramElementTool}
-              data-testid="Fade-elements">
-              <TonalityIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="Hide elements">
+              <IconButton
+                className={classes.toolIcon}
+                size="small"
+                aria-label="hide elements"
+                onClick={invokeHideDiagramElementTool}
+                data-testid="Hide-elements">
+                <VisibilityOffIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Fade elements">
+              <IconButton
+                className={classes.toolIcon}
+                size="small"
+                aria-label="Fade elements"
+                onClick={invokeFadeDiagramElementTool}
+                data-testid="Fade-elements">
+                <TonalityIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
             {pinUnpinTool}
           </>
         ) : null}
