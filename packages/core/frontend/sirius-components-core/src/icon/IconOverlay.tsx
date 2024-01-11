@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import { useContext } from 'react';
 import { ServerContext } from '../contexts/ServerContext';
 import { ServerContextValue } from '../contexts/ServerContext.types';
@@ -47,16 +48,17 @@ export const IconOverlay = ({
       {iconURL?.length > 0 && (
         <div className={classes.iconContainer} style={{ ...customIconStyle }}>
           {iconURL.map((url: string, index) => (
-            <img
-              height={iconHeight}
-              width={iconWidth}
-              key={index}
-              alt={alt}
-              title={title}
-              src={httpOrigin + url}
-              className={classes.icon}
-              style={{ zIndex: index }}
-            />
+            <Tooltip title={title || ''}>
+              <img
+                height={iconHeight}
+                width={iconWidth}
+                key={index}
+                alt={alt}
+                src={httpOrigin + url}
+                className={classes.icon}
+                style={{ zIndex: index }}
+              />
+            </Tooltip>
           ))}
         </div>
       )}
