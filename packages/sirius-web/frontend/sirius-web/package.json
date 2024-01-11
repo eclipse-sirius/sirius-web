@@ -36,6 +36,7 @@
     "@types/react-router-dom": "5.3.3",
     "@xstate/react": "1.6.3",
     "d3": "7.0.0",
+    "elkjs": "0.8.2",
     "fontsource-roboto": "4.0.0",
     "graphql": "16.8.0",
     "html-to-image": "1.11.11",

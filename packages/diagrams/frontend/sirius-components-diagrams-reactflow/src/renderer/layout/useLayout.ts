@@ -13,12 +13,11 @@
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import { useContext, useEffect, useState } from 'react';
-import { Node, useReactFlow } from 'reactflow';
+import { useReactFlow } from 'reactflow';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { cleanLayoutArea, layout, prepareLayoutArea } from './layout';
 import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
@@ -100,16 +99,7 @@ export const useLayout = (): UseLayoutValue => {
     }
   }, [state.currentStep, state.hiddenContainer, state.referencePosition]);
 
-  const arrangeAll = (afterLayoutCallback: (laidoutDiagram: RawDiagram) => void): void => {
-    const nodes = [...reactFlowInstance.getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const diagramToLayout: RawDiagram = { edges: [...reactFlowInstance.getEdges()], nodes };
-    const previousDiagram: RawDiagram = { edges: [...reactFlowInstance.getEdges()], nodes: [] };
-
-    layoutDiagram(previousDiagram, diagramToLayout, null, afterLayoutCallback);
-  };
-
   return {
     layout: layoutDiagram,
-    arrangeAll,
   };
 };
