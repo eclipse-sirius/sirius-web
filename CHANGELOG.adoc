@@ -105,6 +105,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2797[#2797] [diagram] Preserve diagram selection after change in the details view.
 - https://github.com/eclipse-sirius/sirius-web/issues/2755[#2755] [diagram] Ensure that the unfolded tool section is always visible above the rest of the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/2786[#2786] [diagram] Fix an issue where resizing was clunky.
+- https://github.com/eclipse-sirius/sirius-web/issues/2912[#2912] [diagram] Send all requested node descriptions to the frontend when requested.
 
 === New Features
 
