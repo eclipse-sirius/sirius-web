@@ -89,6 +89,7 @@ This default implementation will now also contain all the view models properly l
 - [releng] The frontend now depends on @ObeoNetwork/gantt-task-react v0.3.13
 - [releng] The frontend now depends on react-trello 2.2.11
 - https://github.com/eclipse-sirius/sirius-web/issues/2842[#2842] Move to @ObeoNetwork/react-trello
+- [releng] Switch to EMFJson 2.3.6-SNAPSHOT
 
 
 === Bug fixes
