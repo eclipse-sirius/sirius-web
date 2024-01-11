@@ -168,6 +168,7 @@ This change makes the editing context the single source of truth for the state o
 - https://github.com/eclipse-sirius/sirius-web/issues/2904[#2904] [sirius-web] Order candidates in Representations sections in the Onboard Area.
 - https://github.com/eclipse-sirius/sirius-web/issues/2903[#2903] [sirius-web] Order New Representation modal candidates.
 - https://github.com/eclipse-sirius/sirius-web/issues/2796[#2796] [sirius-web] Flow diagram description has been converted to the view DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/2910[#2910] [portal] Make the initial drop area larger and more visible on empty portals
 
 == v2023.12.0
 

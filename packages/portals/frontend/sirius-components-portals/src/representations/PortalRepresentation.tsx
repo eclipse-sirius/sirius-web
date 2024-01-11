@@ -18,8 +18,10 @@ import {
   useMultiToast,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import AddIcon from '@material-ui/icons/Add';
+import { useCallback, useRef, useState } from 'react';
 import GridLayout, { Layout, LayoutItem, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -37,6 +39,16 @@ const usePortalRepresentationStyles = makeStyles((theme) => ({
     gridTemplateColumns: '1fr',
     gridTemplateRows: 'min-content 1fr',
     backgroundColor: theme.palette.background.default,
+  },
+  dropArea: {
+    backgroundColor: theme.palette.grey[200],
+    borderWidth: '1px',
+    borderStyle: 'dashed',
+    borderColor: theme.palette.grey[400],
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));
 
@@ -118,67 +130,54 @@ export const PortalRepresentation = ({
     [setSelection]
   );
 
-  let content: JSX.Element | null = null;
-
-  const children: JSX.Element[] | null = useMemo(() => {
-    if (portal) {
-      return portal.views
-        .filter((view) => view?.representationMetadata?.id !== representationId)
-        .map((view) => {
-          const layout = portal.layoutData?.find((viewLayoutData) => viewLayoutData.portalViewId === view.id);
-          if (layout && view.representationMetadata) {
-            return (
-              <div
-                key={view.id}
-                data-grid={{
-                  x: layout.x,
-                  y: layout.y,
-                  w: layout.width,
-                  h: layout.height,
-                  static: mode === 'direct',
-                }}
-                style={{ display: 'grid' }}>
-                <RepresentationFrame
-                  editingContextId={editingContextId}
-                  readOnly={readOnly}
-                  representation={view.representationMetadata}
-                  portalMode={mode}
-                  onDelete={() => handleDeleteView(view)}
-                />
-              </div>
-            );
-          } else {
-            return <div key={view.id} />;
-          }
-        });
-    } else {
-      return null;
-    }
-  }, [portal, mode]);
-
-  if (children) {
-    content = (
-      <SelectionContext.Provider value={{ selection, setSelection: nonPropagatingSetSelection }}>
-        <ResponsiveGridLayout
-          className="layout"
-          rowHeight={theme.spacing(3)}
-          width={1200}
-          autoSize={true}
-          margin={[theme.spacing(1), theme.spacing(1)]}
-          draggableHandle=".draggable"
-          isDroppable={mode === 'edit'}
-          droppingItem={{ i: 'drop-item', w: 4, h: 3 }}
-          onDrop={(_layout: Layout, _item: LayoutItem, event: Event) => {
-            // TODO: consider the initial layout implied by the drop position
-            handleDrop(event);
-          }}
-          onLayoutChange={handleLayoutChange}>
-          {children}
-        </ResponsiveGridLayout>
-      </SelectionContext.Provider>
-    );
-  } else {
-    content = <div />;
+  let items: JSX.Element[] = [
+    <div
+      key="drop-area"
+      className={classes.dropArea}
+      data-grid={{
+        x: 0,
+        y: 0,
+        w: 10,
+        h: 10,
+        static: true,
+      }}>
+      {' '}
+      <AddIcon fontSize="large" />
+      <Typography variant="subtitle2" align="center">
+        Add representations by dropping them from the explorer
+      </Typography>
+    </div>,
+  ];
+  if (portal && portal.views.length > 0) {
+    items = portal.views
+      .filter((view) => view?.representationMetadata?.id !== representationId)
+      .map((view) => {
+        const layout = portal.layoutData?.find((viewLayoutData) => viewLayoutData.portalViewId === view.id);
+        if (layout && view.representationMetadata) {
+          return (
+            <div
+              key={view.id}
+              data-grid={{
+                x: layout.x,
+                y: layout.y,
+                w: layout.width,
+                h: layout.height,
+                static: mode === 'direct',
+              }}
+              style={{ display: 'grid' }}>
+              <RepresentationFrame
+                editingContextId={editingContextId}
+                readOnly={readOnly}
+                representation={view.representationMetadata}
+                portalMode={mode}
+                onDelete={() => handleDeleteView(view)}
+              />
+            </div>
+          );
+        } else {
+          return <div key={view.id} />;
+        }
+      });
   }
 
   if (message) {
@@ -191,12 +190,27 @@ export const PortalRepresentation = ({
     return <div></div>;
   }
 
+  const cellSize: number = theme.spacing(3);
   return (
     <div className={classes.portalRepresentationArea} ref={domNode}>
-      <div>
-        <PortalToolbar fullscreenNode={domNode} portalMode={mode} setPortalMode={(newMode) => setMode(newMode)} />
-      </div>
-      {content}
+      <PortalToolbar fullscreenNode={domNode} portalMode={mode} setPortalMode={(newMode) => setMode(newMode)} />
+      <SelectionContext.Provider value={{ selection, setSelection: nonPropagatingSetSelection }}>
+        <ResponsiveGridLayout
+          className="layout"
+          rowHeight={cellSize}
+          autoSize={true}
+          margin={[theme.spacing(1), theme.spacing(1)]}
+          draggableHandle=".draggable"
+          isDroppable={mode === 'edit'}
+          allowOverlap={!(portal && portal.views.length > 0)}
+          droppingItem={{ i: 'drop-item', w: 4, h: 3 }}
+          onDrop={(_layout: Layout, _item: LayoutItem, event: Event) => {
+            handleDrop(event);
+          }}
+          onLayoutChange={handleLayoutChange}>
+          {items}
+        </ResponsiveGridLayout>
+      </SelectionContext.Provider>
     </div>
   );
 };
