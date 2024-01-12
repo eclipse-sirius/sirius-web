@@ -45,6 +45,7 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]
       ...lane,
       editable: true,
       cards,
+      'data-testid': `lane-${lane.title}`,
     });
   }
   return data;

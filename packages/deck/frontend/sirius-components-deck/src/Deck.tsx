@@ -11,11 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import Board from '@ObeoNetwork/react-trello';
+import { Theme, useTheme } from '@material-ui/core/styles';
 import { DeckProps } from './Deck.types';
 import { DeckCard } from './card/DeckCard';
 import { Toolbar } from './toolbar/Toolbar';
 
 export const Deck = ({ data, onCardClick, onCardDelete, onCardAdd, onCardUpdate }: DeckProps) => {
+  const theme: Theme = useTheme();
+  const boardStyle = {
+    backgroundColor: theme.palette.background.default,
+  };
   const components = {
     Card: DeckCard,
   };
@@ -30,6 +35,8 @@ export const Deck = ({ data, onCardClick, onCardDelete, onCardAdd, onCardUpdate 
         onCardDelete={onCardDelete}
         onCardAdd={onCardAdd}
         onCardUpdate={onCardUpdate}
+        data-testid={`deck-representation`}
+        style={boardStyle}
       />
     </div>
   );

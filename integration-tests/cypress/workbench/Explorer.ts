@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,6 +91,7 @@ export class Explorer {
     cy.getByTestId('name-edit');
     cy.getByTestId('name-edit').get('input').should('have.value', treeItemLabel);
     cy.getByTestId('name-edit').type(`${newName}{enter}`);
+    this.getTreeItemByLabel(newName).should('exist');
   }
 
   public delete(treeItemLabel: string): void {

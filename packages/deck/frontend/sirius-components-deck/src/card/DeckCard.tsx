@@ -82,7 +82,8 @@ export const DeckCard = ({
       onClick={onClick}
       style={cardStyle}
       className={className}
-      onKeyDown={handleKeyDown}>
+      onKeyDown={handleKeyDown}
+      data-testid={`card-${title}`}>
       <DeckCardHeader>
         <DeckCardTitle draggable={cardDraggable} style={cardTitleFontStyle}>
           {editable ? (
@@ -92,6 +93,7 @@ export const DeckCard = ({
               placeholder={t('placeholder.title')}
               onSave={(value) => updateCard({ title: value, label, description, id })}
               style={cardTitleFontStyle}
+              data-testid={'card-input-title'}
             />
           ) : (
             title
@@ -104,6 +106,7 @@ export const DeckCard = ({
               placeholder={t('placeholder.label')}
               onSave={(value) => updateCard({ title, label: value, description, id })}
               style={cardLabelFontStyle}
+              data-testid={'card-input-label'}
             />
           ) : (
             label
@@ -119,6 +122,7 @@ export const DeckCard = ({
             onSave={(value) => updateCard({ title, label, description: value, id })}
             style={cardDetailFontStyle}
             multiline
+            data-testid={'card-input-details'}
           />
         ) : (
           description

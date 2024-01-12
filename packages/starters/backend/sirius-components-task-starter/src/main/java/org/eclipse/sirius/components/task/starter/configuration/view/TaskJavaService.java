@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.configuration.view;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -100,6 +101,21 @@ public class TaskJavaService {
                 .filter(task -> task.getTags().contains(tag))
                 .toList();
 
+    }
+
+    public String computeTaskDurationDays(Task task) {
+        String value = "";
+        Instant startTime = task.getStartTime();
+        Instant endTime = task.getEndTime();
+        if (startTime != null && endTime != null) {
+            Duration timeElapsed = Duration.between(startTime, endTime);
+            long dd = timeElapsed.toDaysPart();
+            Duration minusDays = timeElapsed.minusDays(dd);
+            long hh = minusDays.toHoursPart();
+            long mm = minusDays.minusHours(hh).toMinutesPart();
+            value = String.format("%02dd%02dh%02dm", dd, hh, mm);
+        }
+        return value;
     }
 
     public void createCard(EObject context) {
