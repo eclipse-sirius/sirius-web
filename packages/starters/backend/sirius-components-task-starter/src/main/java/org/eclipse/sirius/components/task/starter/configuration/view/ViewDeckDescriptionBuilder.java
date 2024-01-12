@@ -60,7 +60,7 @@ public class ViewDeckDescriptionBuilder {
         return this.deckBuilders.newCardDescription()
                 .semanticCandidatesExpression("aql:self.getTasksWithTag()")
                 .titleExpression("aql:self.name")
-                .labelExpression("'30 min'")
+                .labelExpression("aql:self.computeTaskDurationDays()")
                 .descriptionExpression("aql:self.description")
                 .editTool(editCardTool)
                 .deleteTool(deleteCardTool)

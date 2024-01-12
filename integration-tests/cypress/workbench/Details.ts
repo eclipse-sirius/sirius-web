@@ -36,6 +36,10 @@ export class Details {
     this.getReferenceWidget(label).find('button[title="Open"]').click();
   }
 
+  public deleteReferenceWidgetOption(referenceWidgetLabel: string, optionLabel: string): void {
+    this.getReferenceWidget(referenceWidgetLabel).findByTestId(`reference-value-${optionLabel}`).find('svg').click();
+  }
+
   public selectReferenceWidgetOption(option: string): void {
     cy.getByTestId(`option-${option}`).should('exist').click();
   }

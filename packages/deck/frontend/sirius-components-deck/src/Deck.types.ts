@@ -35,6 +35,7 @@ export interface Lane {
   label: string;
   cards: Card[];
   editable: boolean;
+  'data-testid': string;
 }
 export interface Card {
   id: string;
