@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ export const IconOverlay = ({
   return (
     <>
       {iconURL?.length > 0 && (
-        <div className={classes.iconContainer}>
+        <div className={classes.iconContainer} style={{ ...customIconStyle }}>
           {iconURL.map((url: string, index) => (
             <img
               height={iconHeight}
@@ -55,7 +55,7 @@ export const IconOverlay = ({
               title={title}
               src={httpOrigin + url}
               className={classes.icon}
-              style={{ ...customIconStyle, zIndex: index }}
+              style={{ zIndex: index }}
             />
           ))}
         </div>

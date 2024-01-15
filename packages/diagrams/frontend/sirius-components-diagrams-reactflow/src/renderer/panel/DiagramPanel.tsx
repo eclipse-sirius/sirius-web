@@ -38,7 +38,7 @@ import { DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
 import { useExportToImage } from './useExportToImage';
 import { useArrangeAll } from '../layout/useArrangeAll';
 
-export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProps) => {
+export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloadId }: DiagramPanelProps) => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
   });
@@ -50,7 +50,7 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
   const getSelectedNodes = () => getNodes().filter((node) => node.selected);
 
   const { fullscreen, onFullscreen } = useFullscreen();
-  const { arrangeAll } = useArrangeAll();
+  const { arrangeAll } = useArrangeAll(refreshEventPayloadId);
 
   const handleFitToScreen = () => reactFlow.fitView({ duration: 200, nodes: getSelectedNodes() });
   const handleZoomIn = () => reactFlow.zoomIn({ duration: 200 });
@@ -136,7 +136,12 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid }: DiagramPanelProp
               <GridOnIcon />
             </IconButton>
           )}
-          <IconButton size="small" onClick={() => arrangeAll()}>
+          <IconButton
+            size="small"
+            aria-label="arrange all elements"
+            title="Arrange all elements"
+            onClick={() => arrangeAll()}
+            data-testid={'arrange-all'}>
             <AccountTreeIcon />
           </IconButton>
           <IconButton

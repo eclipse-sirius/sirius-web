@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,8 +22,7 @@ const labelStyle = (
   theme: Theme,
   style: React.CSSProperties,
   faded: Boolean,
-  transform: string,
-  hasIcon: boolean
+  transform: string
 ): React.CSSProperties => {
   const labelStyle: React.CSSProperties = {
     transform,
@@ -37,10 +36,6 @@ const labelStyle = (
     ...style,
     color: style.color ? getCSSColor(String(style.color), theme) : undefined,
   };
-
-  if (hasIcon) {
-    labelStyle.gap = '8px';
-  }
 
   return labelStyle;
 };
@@ -61,16 +56,16 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
     label.id === currentlyEditedLabelId ? (
       <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
     ) : (
-      <>
-        <IconOverlay iconURL={label.iconURL} alt={label.text} />
+      <div data-id={`${label.id}-content`} style={{ display: 'flex', alignItems: 'center' }}>
+        <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={{ marginRight: theme.spacing(1) }} />
         {label.text}
-      </>
+      </div>
     );
   return (
     <div
       data-id={label.id}
       data-testid={`Label - ${label.text}`}
-      style={labelStyle(theme, label.style, faded, transform, !!label.iconURL)}
+      style={labelStyle(theme, label.style, faded, transform)}
       className="nopan">
       {content}
     </div>
