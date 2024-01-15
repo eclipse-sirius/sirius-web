@@ -77,6 +77,7 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Improve the creation of the Apollo GraphQL client.
 - https://github.com/eclipse-sirius/sirius-web/issues/3056[#3056] [trees] Expand the clickable/draggable zone for tree items
 - [forms] Avoid creating a new subscription when re-selecting the same element
+- [tree] Avoid sending treePath query if the selection does not actually change
 
 
 == v2024.1.0
