@@ -18,25 +18,26 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
-import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.eclipse.sirius.web.services.projects.api.EditingContextMetadata;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.junit.jupiter.api.Test;
@@ -100,7 +101,7 @@ public class EditingContextSearchServiceTests {
         IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
                 composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IViewLoader.NoOp(), new IViewConverter.NoOp(), new SimpleMeterRegistry());
+                List.of(new IEditingContextProcessor.NoOp()), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -148,7 +149,7 @@ public class EditingContextSearchServiceTests {
         IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
                 composedAdapterFactory, ePackageRegistry, Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IViewLoader.NoOp(), new IViewConverter.NoOp(), new SimpleMeterRegistry());
+                List.of(new IEditingContextProcessor.NoOp()), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -160,6 +161,75 @@ public class EditingContextSearchServiceTests {
 
         Resource secondResource = editingDomain.getResourceSet().getResource(new JSONResourceFactory().createResourceURI(secondDocumentEntity.getId().toString()), true);
         this.assertProperResourceLoading(secondResource, secondDocumentEntity);
+    }
+
+    @Test
+    public void testEditingContextWithLibraries() {
+        UUID projectId = UUID.randomUUID();
+
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.setId(projectId);
+        projectEntity.setName("");
+
+        DocumentEntity firstDocumentEntity = new DocumentEntity();
+        firstDocumentEntity.setId(UUID.randomUUID());
+        firstDocumentEntity.setName("First Document");
+        firstDocumentEntity.setProject(projectEntity);
+        firstDocumentEntity.setContent(CONTENT);
+
+        DocumentEntity secondDocumentEntity = new DocumentEntity();
+        secondDocumentEntity.setId(UUID.randomUUID());
+        secondDocumentEntity.setName("Second Document");
+        secondDocumentEntity.setProject(projectEntity);
+        secondDocumentEntity.setContent(CONTENT);
+
+        IProjectRepository projectRepository = new NoOpProjectRepository();
+        IDocumentRepository documentRepository = new NoOpDocumentRepository() {
+            @Override
+            public List<DocumentEntity> findAllByProjectId(UUID projectId) {
+                return List.of(firstDocumentEntity, secondDocumentEntity);
+            }
+        };
+
+        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
+        EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
+        ePackageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+
+        IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
+
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
+
+        IEditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider,
+                composedAdapterFactory, ePackageRegistry, Optional.empty());
+
+        IEditingContextProcessor editingContextProcessor = new IEditingContextProcessor() {
+
+            @Override
+            public void preProcess(IEditingContext editingContext) {
+                if (editingContext instanceof EditingContext siriusWebEditingContext) {
+                    Resource resource = new XMIResourceImpl(URI.createURI("libraryPre.json"));
+                    siriusWebEditingContext.getDomain().getResourceSet().getResources().add(resource);
+                }
+            }
+
+            @Override
+            public void postProcess(IEditingContext editingContext) {
+                if (editingContext instanceof EditingContext siriusWebEditingContext) {
+                    Resource resource = new XMIResourceImpl(URI.createURI("libraryPost.json"));
+                    siriusWebEditingContext.getDomain().getResourceSet().getResources().add(resource);
+                }
+            }
+        };
+
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
+                List.of(editingContextProcessor), new SimpleMeterRegistry());
+        IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
+
+        assertThat(editingContext).isInstanceOf(EditingContext.class);
+        EditingDomain editingDomain = ((EditingContext) editingContext).getDomain();
+
+        assertThat(editingDomain.getResourceSet().getResources()).hasSize(4);
     }
 
     private void assertProperResourceLoading(Resource resource, DocumentEntity documentEntity) {
