@@ -21,7 +21,7 @@ import {
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import GridLayout, { Layout, LayoutItem, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -83,7 +83,10 @@ export const PortalRepresentation = ({
     editingContextId,
     representationId
   );
-  const [mode, setMode] = useState<PortalRepresentationMode>('edit');
+  const [mode, setMode] = useState<PortalRepresentationMode>(readOnly ? 'read-only' : 'edit');
+  useEffect(() => {
+    setMode(readOnly ? 'read-only' : 'edit');
+  }, [readOnly]);
 
   const portalIncludesRepresentation = (representationId: string) => {
     return portal?.views.find((view) => view?.representationMetadata?.id === representationId);
@@ -91,6 +94,9 @@ export const PortalRepresentation = ({
 
   const handleDrop = (event: Event, item: LayoutItem) => {
     event.preventDefault();
+    if (mode === 'read-only') {
+      return;
+    }
     const droppedRepresentationId: string | null = getFirstDroppedElementId(event);
     if (droppedRepresentationId === null) {
       addErrorMessage('Invalid drop.');
@@ -171,10 +177,13 @@ export const PortalRepresentation = ({
               style={{ display: 'grid' }}>
               <RepresentationFrame
                 editingContextId={editingContextId}
-                readOnly={readOnly}
                 representation={view.representationMetadata}
                 portalMode={mode}
-                onDelete={() => handleDeleteView(view)}
+                onDelete={() => {
+                  if (mode !== 'read-only') {
+                    handleDeleteView(view);
+                  }
+                }}
               />
             </div>
           );
@@ -195,6 +204,7 @@ export const PortalRepresentation = ({
   }
 
   const cellSize: number = theme.spacing(3);
+  const portalHasViews: boolean = portal && portal.views.length > 0;
   return (
     <div className={classes.portalRepresentationArea} ref={domNode}>
       <PortalToolbar fullscreenNode={domNode} portalMode={mode} setPortalMode={(newMode) => setMode(newMode)} />
@@ -204,13 +214,17 @@ export const PortalRepresentation = ({
           rowHeight={cellSize}
           autoSize={true}
           margin={[theme.spacing(1), theme.spacing(1)]}
-          compactType={null}
+          compactType={portalHasViews ? 'vertical' : null}
           draggableHandle=".draggable"
+          isDraggable={mode === 'edit'}
+          isResizable={mode === 'edit'}
           isDroppable={mode === 'edit'}
-          allowOverlap={!(portal && portal.views.length > 0)}
+          allowOverlap={!portalHasViews}
           droppingItem={{ i: 'drop-item', w: 4, h: 6 }}
           onDrop={(_layout: Layout, item: LayoutItem, event: Event) => {
-            handleDrop(event, item);
+            if (mode !== 'read-only') {
+              handleDrop(event, item);
+            }
           }}
           onLayoutChange={handleLayoutChange}>
           {items}

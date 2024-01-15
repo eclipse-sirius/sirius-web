@@ -16,7 +16,6 @@ import { PortalRepresentationMode } from './PortalRepresentation.types';
 export type RepresentationFrameProps = {
   editingContextId: string;
   representation: Representation;
-  readOnly: boolean;
   onDelete: () => void;
   portalMode: PortalRepresentationMode;
 };

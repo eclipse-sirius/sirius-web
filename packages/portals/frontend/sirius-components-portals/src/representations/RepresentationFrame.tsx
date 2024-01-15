@@ -48,7 +48,6 @@ const useFrameStyles = makeStyles((theme) => ({
 export const RepresentationFrame = ({
   editingContextId,
   representation,
-  readOnly,
   portalMode,
   onDelete,
 }: RepresentationFrameProps) => {
@@ -59,9 +58,10 @@ export const RepresentationFrame = ({
     const classes = useFrameStyles();
     const props: RepresentationComponentProps = {
       editingContextId,
-      readOnly: readOnly || portalMode === 'edit',
       representationId: representation.id,
+      readOnly: portalMode === 'edit' || portalMode === 'read-only',
     };
+
     return (
       <div data-testid={`representation-frame-${representation.id}`} className={classes.representationFrame}>
         <div className={classes.frameHeader}>

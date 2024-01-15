@@ -48,7 +48,7 @@ export const PortalToolbar = ({ fullscreenNode, portalMode, setPortalMode }: Por
         size="small"
         aria-label="edit portal configuration"
         title="Edit portal configuration"
-        disabled={portalMode === 'edit'}
+        disabled={portalMode === 'edit' || portalMode === 'read-only'}
         onClick={() => setPortalMode('edit')}
         data-testid="portal-edit-portal-mode">
         <EditIcon />
@@ -57,7 +57,7 @@ export const PortalToolbar = ({ fullscreenNode, portalMode, setPortalMode }: Por
         size="small"
         aria-label="edit representations"
         title="Edit representations"
-        disabled={portalMode === 'direct'}
+        disabled={portalMode === 'direct' || portalMode === 'read-only'}
         onClick={() => setPortalMode('direct')}
         data-testid="portal-edit-representations-mode">
         <PanToolIcon />
