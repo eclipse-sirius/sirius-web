@@ -14,6 +14,7 @@
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import React, { useContext, useEffect, useRef } from 'react';
 import {
+  applyNodeChanges,
   Background,
   BackgroundVariant,
   ConnectionLineType,
@@ -25,7 +26,6 @@ import {
   OnEdgesChange,
   OnNodesChange,
   ReactFlow,
-  applyNodeChanges,
   useEdgesState,
   useNodesState,
 } from 'reactflow';
@@ -254,7 +254,11 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       ) : (
         <Background style={{ backgroundColor }} color={backgroundColor} />
       )}
-      <DiagramPanel snapToGrid={snapToGrid} onSnapToGrid={onSnapToGrid} />
+      <DiagramPanel
+        snapToGrid={snapToGrid}
+        onSnapToGrid={onSnapToGrid}
+        refreshEventPayloadId={diagramRefreshedEventPayload.id}
+      />
       <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
       <ConnectorContextualMenu />

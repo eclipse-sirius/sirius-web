@@ -11,13 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { UseArrangeAllValue } from './useArrangeAll.types';
-import { Edge, Node, useReactFlow } from 'reactflow';
+import { Edge, Node, useReactFlow, useViewport } from 'reactflow';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ListNodeData } from '../node/ListNode.types';
-import ELK, { ElkNode } from 'elkjs/lib/elk.bundled';
+import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import { headerVerticalOffset } from './layoutParams';
+import { RawDiagram } from './layout.types';
+import { useLayout } from './useLayout';
+import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
@@ -47,13 +50,34 @@ const elkOptions = {
   'elk.layered.spacing.edgeNodeBetweenLayers': '40',
 };
 
-export const useArrangeAll = (): UseArrangeAllValue => {
-  const { getNodes, getEdges, setNodes } = useReactFlow<NodeData, EdgeData>();
+const computeContainerLabel = (parentNode, viewportZoom): ElkLabel[] => {
+  const labels: ElkLabel[] = [];
+  if (parentNode && parentNode.data.insideLabel) {
+    const label = document.querySelector<HTMLDivElement>(`[data-id="${parentNode.data.insideLabel.id}-content"]`);
+    if (label) {
+      const elkLabel: ElkLabel = {
+        width: label.getBoundingClientRect().width / viewportZoom,
+        height: label.getBoundingClientRect().height / viewportZoom,
+        text: parentNode.data.insideLabel.text,
+      };
+      labels.push(elkLabel);
+    }
+  }
+  return labels;
+};
+
+export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue => {
+  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
+  const viewport = useViewport();
+  const { layout } = useLayout();
+  const { synchronizeLayoutData } = useSynchronizeLayoutData();
+
   const elk = new ELK();
 
   const getELKLayout = async (
     nodes,
     edges,
+    labels: ElkLabel[],
     options: LayoutOptions = {},
     parentNodeId: string,
     withHeader: boolean
@@ -62,6 +86,7 @@ export const useArrangeAll = (): UseArrangeAllValue => {
       id: parentNodeId,
       layoutOptions: options,
       children: nodes.map((node) => ({
+        labels,
         ...node,
       })),
       edges,
@@ -115,22 +140,27 @@ export const useArrangeAll = (): UseArrangeAllValue => {
           edge.source = parentNodeId;
         }
       });
-      await getELKLayout(subGroupNodes, subGroupEdges, elkOptions, parentNodeId, withHeader).then(
-        ({ nodes: layoutedSubNodes, layoutReturn }) => {
-          const parentNode = allNodes.find((node) => node.id === parentNodeId);
-          if (parentNode) {
-            parentNode.width = layoutReturn.width;
-            parentNode.height = layoutReturn.height + (withHeader ? headerVerticalOffset : 0);
-            parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
-            parentNodeWithNewSize.push(parentNode);
-          }
-          layoutedAllNodes = [
-            ...layoutedAllNodes,
-            ...layoutedSubNodes,
-            ...nodes.filter((node) => node.data.isBorderNode),
-          ];
+      await getELKLayout(
+        subGroupNodes,
+        subGroupEdges,
+        computeContainerLabel(parentNode, viewport.zoom),
+        elkOptions,
+        parentNodeId,
+        withHeader
+      ).then(({ nodes: layoutedSubNodes, layoutReturn }) => {
+        const parentNode = allNodes.find((node) => node.id === parentNodeId);
+        if (parentNode) {
+          parentNode.width = layoutReturn.width;
+          parentNode.height = layoutReturn.height + (withHeader ? headerVerticalOffset : 0);
+          parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
+          parentNodeWithNewSize.push(parentNode);
         }
-      );
+        layoutedAllNodes = [
+          ...layoutedAllNodes,
+          ...layoutedSubNodes,
+          ...nodes.filter((node) => node.data.isBorderNode),
+        ];
+      });
     }
     return layoutedAllNodes;
   };
@@ -139,8 +169,39 @@ export const useArrangeAll = (): UseArrangeAllValue => {
     const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
     const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
     applyElkOnSubNodes(subNodes, nodes).then((nodes: Node<NodeData, string>[]) => {
-      const reversedOrder: Node<NodeData, string>[] = nodes.reverse();
-      setNodes(reversedOrder);
+      const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
+
+      const diagramToLayout: RawDiagram = {
+        nodes: laidOutNodesWithElk,
+        edges: getEdges(),
+      };
+
+      layout(diagramToLayout, diagramToLayout, null, (laidOutDiagram) => {
+        laidOutNodesWithElk.map((node) => {
+          const existingNode = laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === node.id);
+          if (existingNode) {
+            return {
+              ...node,
+              position: existingNode.position,
+              width: existingNode.width,
+              height: existingNode.height,
+              style: {
+                ...node.style,
+                width: `${existingNode.width}px`,
+                height: `${existingNode.height}px`,
+              },
+            };
+          }
+          return node;
+        });
+        setNodes(laidOutNodesWithElk);
+        setEdges(laidOutDiagram.edges);
+        const finalDiagram: RawDiagram = {
+          nodes: laidOutNodesWithElk,
+          edges: laidOutDiagram.edges,
+        };
+        synchronizeLayoutData(refreshEventPayloadId, finalDiagram);
+      });
     });
   };
 
