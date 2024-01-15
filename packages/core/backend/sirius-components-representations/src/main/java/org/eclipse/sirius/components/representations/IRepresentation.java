@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,4 +27,31 @@ public interface IRepresentation {
     String getLabel();
 
     String getKind();
+
+    /**
+     * Implementation which does nothing, used for mocks in unit tests.
+     *
+     * @author gcoutable
+     */
+    class NoOp implements IRepresentation {
+        @Override
+        public String getId() {
+            return "";
+        }
+
+        @Override
+        public String getDescriptionId() {
+            return "";
+        }
+
+        @Override
+        public String getLabel() {
+            return "";
+        }
+
+        @Override
+        public String getKind() {
+            return "";
+        }
+    }
 }
