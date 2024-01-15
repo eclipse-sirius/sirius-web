@@ -11,4 +11,4 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export type PortalRepresentationMode = 'direct' | 'edit';
+export type PortalRepresentationMode = 'direct' | 'edit' | 'read-only';
