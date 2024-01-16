@@ -75,7 +75,7 @@ public class FlowService {
     }
 
     public int computeDataSourceHeight(DataSource self) {
-        if (self.getName().equals("Camera") || self.getName().equals("Radar") || self.getName().equals("Sensor")) {
+        if (self.getName() != null && (self.getName().equals("Camera") || self.getName().equals("Radar") || self.getName().equals("Sensor"))) {
             return self.getVolume() * 15;
         }
         return self.getVolume() * 11;

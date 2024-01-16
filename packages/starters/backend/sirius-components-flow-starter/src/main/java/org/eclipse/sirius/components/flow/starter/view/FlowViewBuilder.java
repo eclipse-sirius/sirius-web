@@ -33,6 +33,8 @@ public class FlowViewBuilder {
     public static final String RADAR_SVG_ID = "a6e0845d-971f-33c7-ae25-6ac4f47056dc";
     public static final String SENSOR_SVG_ID = "6c07834a-5ff6-3819-8326-0614d3dcd674";
     public static final String FAN_SVG_ID = "9019f843-5511-3318-8f89-0e50994c98e8";
+    public static final String POWER_OUTPUT_SVG_ID = "bca5ab3c-b13c-38b4-910d-3ec4b8e81321";
+    public static final String POWER_INPUT_SVG_ID = "f9219f29-df22-31a6-9473-5955f5962287";
     public static final String ENGINE_HIGH_SVG_ID = "0449ce13-3eed-3426-a9f7-d1f68c8a2b8f";
     public static final String ENGINE_LOW_SVG_ID = "b0617610-43e0-3636-b7eb-c77aec046f5f";
     public static final String ENGINE_OVER_SVG_ID = "a960705f-dab1-3dbb-b1e4-ce8d71b51317";
