@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useTheme } from '@material-ui/core/styles';
 import { useCallback, useContext, useEffect } from 'react';
-import { Node, NodeDragHandler, Viewport, XYPosition, useReactFlow, useStoreApi, useViewport } from 'reactflow';
+import { Node, NodeDragHandler, useReactFlow, useStoreApi, useViewport, Viewport, XYPosition } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
@@ -95,17 +95,26 @@ const useDropNodeMutation = () => {
     }
   }, [dropNodeData, dropNodeError]);
 
-  const invokeMutation = (droppedElementId: string, targetElementId: string | null, dropPosition: XYPosition): void => {
+  const invokeMutation = (
+    droppedNode: Node,
+    targetElementId: string | null,
+    dropPosition: XYPosition,
+    onDragCancelled: (node: Node) => void
+  ): void => {
     const input: GQLDropNodeInput = {
       id: crypto.randomUUID(),
       editingContextId,
       representationId: diagramId,
-      droppedElementId,
+      droppedElementId: droppedNode.id,
       targetElementId,
       x: dropPosition.x,
       y: dropPosition.y,
     };
-    dropMutation({ variables: { input } });
+    dropMutation({ variables: { input } }).then((result) => {
+      if (result.data?.dropNode && isErrorPayload(result.data?.dropNode)) {
+        onDragCancelled(droppedNode);
+      }
+    });
   };
 
   return invokeMutation;
@@ -206,7 +215,7 @@ export const useDropNode = (): UseDropNodeValue => {
             (newParentId !== null && compatibleNodeIds.includes(newParentId));
           if (oldParentId !== newParentId) {
             if (validNewParent) {
-              onDropNode(draggedNode.id, newParentId, dropPosition);
+              onDropNode(draggedNode, newParentId, dropPosition, onDragCancelled);
             } else {
               onDragCancelled(draggedNode);
             }
