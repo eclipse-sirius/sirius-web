@@ -72,6 +72,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 </SiriusWebApplication>
 ```
 - https://github.com/eclipse-sirius/sirius-web/issues/2790[#2790] [diagram] All handles used to resize a node have been updated to be wider, you can update your custom nodes in the same way it's done in the EllipseNode example.
+- https://github.com/eclipse-sirius/sirius-web/issues/2932[#2932] The line used to resize a node have been updated to be wider, you can update your custom nodes in the same way it's done in the EllipseNode example.
 - https://github.com/eclipse-sirius/sirius-web/issues/2872[#2872] [diagram] The GraphQL type `DiagramDescription` has a new field `childNodeDescriptionIds`, returning a list of Ids.
 The GraphQL type `NodeDescription` has a new field `childNodeDescriptionIds`, returning a list of Ids and replacing the field `childNodeDescriptions` which has been deleted.
 The GraphQL type `NodeDescription` has a new field `borderNodeDescriptionIds`, returning a list of Ids and replacing the field `borderNodeDescriptions` which has been deleted.
@@ -172,6 +173,9 @@ This change makes the editing context the single source of truth for the state o
 - https://github.com/eclipse-sirius/sirius-web/issues/2903[#2903] [sirius-web] Order New Representation modal candidates.
 - https://github.com/eclipse-sirius/sirius-web/issues/2796[#2796] [sirius-web] Flow diagram description has been converted to the view DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/2910[#2910] [portal] Make the initial drop area larger and more visible on empty portals
+- https://github.com/eclipse-sirius/sirius-web/issues/2932[#2932] The line and the handle used to resize a node is now bigger. The handle is now circular.
+.Old resize handles vs new ones
+image:doc/screenshots/biggerResizeHandles2.png[Compartment with header without separator,70%]
 
 == v2023.12.0
 
