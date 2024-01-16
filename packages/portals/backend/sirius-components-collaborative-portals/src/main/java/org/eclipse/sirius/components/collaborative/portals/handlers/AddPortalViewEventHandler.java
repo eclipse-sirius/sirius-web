@@ -78,7 +78,7 @@ public class AddPortalViewEventHandler implements IPortalEventHandler {
                 } else if (portalServices.referencesRepresentation(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId())) {
                     payload = new ErrorPayload(portalInput.id(), "The representation is already included in the portal");
                 } else {
-                    var newPortal = portalServices.addView(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId());
+                    var newPortal = portalServices.addView(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId(), addPortalViewInput.x(), addPortalViewInput.y(), addPortalViewInput.width(), addPortalViewInput.height());
                     context.setNextPortal(newPortal);
                     payload = new SuccessPayload(addPortalViewInput.id(), List.of());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());

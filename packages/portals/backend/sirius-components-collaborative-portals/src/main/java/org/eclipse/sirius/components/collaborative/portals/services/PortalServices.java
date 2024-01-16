@@ -30,12 +30,6 @@ import org.eclipse.sirius.components.portals.PortalViewLayoutData;
  * @author pcdavid
  */
 public class PortalServices {
-
-    /**
-     * The id of the temporary item added to the layout before the actual view is added.
-     */
-    private static final String DROP_ITEM = "drop-item";
-
     public boolean referencesRepresentation(Portal portal, String representationId) {
         return portal.getViews().stream().anyMatch(portalView -> Objects.equals(portalView.getRepresentationId(), representationId));
     }
@@ -66,21 +60,12 @@ public class PortalServices {
         return Portal.newPortal(portal).views(newViews).layoutData(newLayouts).build();
     }
 
-    public Portal addView(Portal portal, String viewRepresentationId) {
-        PortalViewLayoutData initialLayout = portal.getLayoutData().stream()
-                .filter(layoutData -> layoutData.getPortalViewId().equals(DROP_ITEM))
-                .findFirst()
-                .orElseGet(() -> {
-                    String id = this.getPortalViewId(portal, viewRepresentationId);
-                    return PortalViewLayoutData.newPortalViewLayoutData(id).x(0).y(0).width(3).height(3).build();
-                });
-        return this.addView(portal, viewRepresentationId, initialLayout.getX(), initialLayout.getY(), initialLayout.getWidth(), initialLayout.getHeight());
-    }
-
     public Portal addView(Portal portal, String viewRepresentationId, int x, int y, int width, int height) {
         var newPortalViewId = this.getPortalViewId(portal, viewRepresentationId);
 
-        var newViews = new ArrayList<>(portal.getViews());
+        var newViews = portal.getViews().stream()
+                .filter(portalView -> !Objects.equals(portalView.getId(), newPortalViewId))
+                .collect(Collectors.toCollection(ArrayList::new));
         newViews.add(PortalView.newPortalView(newPortalViewId).representationId(viewRepresentationId).build());
 
         var newLayoutData = new ArrayList<>(portal.getLayoutData());
@@ -113,11 +98,8 @@ public class PortalServices {
                 .collect(Collectors.toMap(PortalViewLayoutData::getPortalViewId, Function.identity()));
         List<PortalViewLayoutData> newLayoutData = portal.getLayoutData().stream()
                 .map(portalViewLayoutData -> updatedLayouts.getOrDefault(portalViewLayoutData.getPortalViewId(), portalViewLayoutData))
-                .filter(portalViewLayoutData -> valueViewIds.contains(portalViewLayoutData.getPortalViewId()) || portalViewLayoutData.getPortalViewId().equals(DROP_ITEM))
+                .filter(portalViewLayoutData -> valueViewIds.contains(portalViewLayoutData.getPortalViewId()))
                 .collect(Collectors.toCollection(ArrayList::new));
-        if (updatedLayouts.containsKey(DROP_ITEM)) {
-            newLayoutData.add(updatedLayouts.get(DROP_ITEM));
-        }
         return Portal.newPortal(portal).layoutData(newLayoutData).build();
     }
 

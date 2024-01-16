@@ -79,14 +79,17 @@ export const PortalRepresentation = ({
   const { addErrorMessage } = useMultiToast();
   const { selection, setSelection } = useSelection();
   const { portal, complete, message } = usePortal(editingContextId, representationId);
-  const { addPortalView, removePortalView, layoutPortal } = usePortalMutations(editingContextId, representationId);
+  const { addPortalView, removePortalView, layoutPortal, layoutInProgress } = usePortalMutations(
+    editingContextId,
+    representationId
+  );
   const [mode, setMode] = useState<PortalRepresentationMode>('edit');
 
   const portalIncludesRepresentation = (representationId: string) => {
     return portal?.views.find((view) => view?.representationMetadata?.id === representationId);
   };
 
-  const handleDrop = (event: Event) => {
+  const handleDrop = (event: Event, item: LayoutItem) => {
     event.preventDefault();
     const droppedRepresentationId: string | null = getFirstDroppedElementId(event);
     if (droppedRepresentationId === null) {
@@ -94,7 +97,7 @@ export const PortalRepresentation = ({
     } else if (portalIncludesRepresentation(droppedRepresentationId)) {
       addErrorMessage('The representation is already present in this portal.');
     } else {
-      addPortalView(droppedRepresentationId);
+      addPortalView(droppedRepresentationId, item.x, item.y, item.w, item.h);
     }
   };
 
@@ -103,14 +106,16 @@ export const PortalRepresentation = ({
   };
 
   const handleLayoutChange = (layout: Layout) => {
-    const newLayoutData: GQLLayoutPortalLayoutData[] = layout.map((layoutItem) => ({
-      portalViewId: layoutItem.i,
-      x: layoutItem.x,
-      y: layoutItem.y,
-      width: layoutItem.w,
-      height: layoutItem.h,
-    }));
-    layoutPortal(newLayoutData);
+    if (!layoutInProgress) {
+      const newLayoutData: GQLLayoutPortalLayoutData[] = layout.map((layoutItem) => ({
+        portalViewId: layoutItem.i,
+        x: layoutItem.x,
+        y: layoutItem.y,
+        width: layoutItem.w,
+        height: layoutItem.h,
+      }));
+      layoutPortal(newLayoutData);
+    }
   };
 
   /*
@@ -138,10 +143,9 @@ export const PortalRepresentation = ({
         x: 0,
         y: 0,
         w: 10,
-        h: 10,
+        h: 20,
         static: true,
       }}>
-      {' '}
       <AddIcon fontSize="large" />
       <Typography variant="subtitle2" align="center">
         Add representations by dropping them from the explorer
@@ -200,12 +204,13 @@ export const PortalRepresentation = ({
           rowHeight={cellSize}
           autoSize={true}
           margin={[theme.spacing(1), theme.spacing(1)]}
+          compactType={null}
           draggableHandle=".draggable"
           isDroppable={mode === 'edit'}
           allowOverlap={!(portal && portal.views.length > 0)}
-          droppingItem={{ i: 'drop-item', w: 4, h: 3 }}
-          onDrop={(_layout: Layout, _item: LayoutItem, event: Event) => {
-            handleDrop(event);
+          droppingItem={{ i: 'drop-item', w: 4, h: 6 }}
+          onDrop={(_layout: Layout, item: LayoutItem, event: Event) => {
+            handleDrop(event, item);
           }}
           onLayoutChange={handleLayoutChange}>
           {items}

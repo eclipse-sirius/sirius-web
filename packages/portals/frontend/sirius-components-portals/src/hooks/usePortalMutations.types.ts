@@ -12,9 +12,10 @@
  *******************************************************************************/
 
 export interface UsePortalMutationsValue {
-  addPortalView: (viewRepresentationId: string) => void;
+  addPortalView: (viewRepresentationId: string, x: number, y: number, width: number, height: number) => void;
   removePortalView: (portalViewId: string) => void;
   layoutPortal: (layoutData: GQLLayoutPortalLayoutData[]) => void;
+  layoutInProgress: boolean;
 }
 
 // mutation addPortalView
@@ -27,6 +28,10 @@ export interface GQLAddPortalViewInput {
   editingContextId: string;
   representationId: string;
   viewRepresentationId: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export interface GQLAddPortalViewMutationData {
