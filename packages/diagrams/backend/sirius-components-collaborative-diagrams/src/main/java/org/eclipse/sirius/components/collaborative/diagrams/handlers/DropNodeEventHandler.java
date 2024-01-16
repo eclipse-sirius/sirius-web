@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.handlers;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -40,8 +39,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.IStatus;
-import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -112,10 +110,10 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
                 boolean handled = this.invokeDropNodeTool(editingContext, diagramContext, diagram, optionalDroppedNode.get(), optionalDropTarget);
                 if (handled) {
                     payload = new SuccessPayload(diagramInput.id(), this.feedbackMessageService.getFeedbackMessages());
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
                 } else {
-                    payload = new SuccessPayload(diagramInput.id(), List.of(new Message("No drop handler found", MessageLevel.INFO)));
+                    payload = new ErrorPayload(diagramInput.id(), this.feedbackMessageService.getFeedbackMessages());
                 }
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
             }
         }
 
@@ -139,8 +137,7 @@ public class DropNodeEventHandler implements IDiagramEventHandler {
             variableManager.put(DROPPED_NODE, droppedNode);
             variableManager.put(TARGET_ELEMENT, targetElement);
             variableManager.put(TARGET_NODE, optionalDropTargetNode.orElse(null));
-            handler.apply(variableManager);
-            return true;
+            return handler.apply(variableManager) instanceof Success;
         } else {
             return false;
         }
