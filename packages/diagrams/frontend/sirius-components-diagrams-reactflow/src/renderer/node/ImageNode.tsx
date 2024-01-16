@@ -50,10 +50,15 @@ const imageNodeStyle = (
   return imageNodeStyle;
 };
 
+const resizeLineStyle = (theme: Theme): React.CSSProperties => {
+  return { borderWidth: theme.spacing(0.15) };
+};
+
 const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   return {
-    width: theme.spacing(0.75),
-    height: theme.spacing(0.75),
+    width: theme.spacing(1),
+    height: theme.spacing(1),
+    borderRadius: '100%',
   };
 };
 
@@ -87,6 +92,7 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
       {data.nodeDescription?.userResizable && (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
+          lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
           isVisible={selected && !data.isBorderNode}
           shouldResize={() => !data.isBorderNode}

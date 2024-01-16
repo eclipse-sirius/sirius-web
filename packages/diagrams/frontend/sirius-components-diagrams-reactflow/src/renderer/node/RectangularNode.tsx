@@ -48,10 +48,15 @@ const rectangularNodeStyle = (
   return rectangularNodeStyle;
 };
 
+const resizeLineStyle = (theme: Theme): React.CSSProperties => {
+  return { borderWidth: theme.spacing(0.15) };
+};
+
 const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   return {
-    width: theme.spacing(0.75),
-    height: theme.spacing(0.75),
+    width: theme.spacing(1),
+    height: theme.spacing(1),
+    borderRadius: '100%',
   };
 };
 
@@ -72,6 +77,7 @@ export const RectangularNode = memo(({ data, id, selected }: NodeProps<Rectangul
       {data.nodeDescription?.userResizable && (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
+          lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
           isVisible={selected}
           shouldResize={() => !data.isBorderNode}
