@@ -45,6 +45,10 @@ input AddPortalViewInput {
   editingContextId: ID!
   representationId: ID!
   viewRepresentationId: ID!
+  x: Int!
+  y: Int!
+  width: Int!
+  height: Int!
 }
 
 union AddPortalViewPayload = SuccessPayload | ErrorPayload

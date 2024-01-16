@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { MutationResult, gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { GQLErrorPayload } from './usePortal.types';
 import {
   GQLAddPortalViewMutationData,
@@ -95,12 +95,16 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
     GQLAddPortalViewMutationVariables
   >(addPortalViewMutation);
 
-  const addPortalView = (viewRepresentationId: string) => {
+  const addPortalView = (viewRepresentationId: string, x: number, y: number, width: number, height: number) => {
     const input = {
       id: crypto.randomUUID(),
       editingContextId,
       representationId: portalId,
       viewRepresentationId,
+      x,
+      y,
+      width,
+      height,
     };
     rawAddPortalView({ variables: { input } });
   };
@@ -124,6 +128,8 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
 
   useErrorReporting(rawRemovePortalViewResult, (data) => data?.removePortalView);
 
+  const [layoutsInProgress, setLayoutsInProgress] = useState<number>(0);
+
   const [rawLayoutPortal, rawLayoutPortalResult] = useMutation<
     GQLLayoutPortalViewMutationData,
     GQLLayoutPortalViewMutationVariables
@@ -136,8 +142,15 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
       representationId: portalId,
       layoutData,
     };
+    setLayoutsInProgress((prevState) => prevState + 1);
     rawLayoutPortal({ variables: { input } });
   };
+
+  useEffect(() => {
+    if (!rawLayoutPortalResult.loading) {
+      setLayoutsInProgress((prevState) => prevState - 1);
+    }
+  }, [rawLayoutPortalResult.loading]);
 
   useErrorReporting(rawLayoutPortalResult, (data) => data?.layoutPortalView);
 
@@ -145,5 +158,6 @@ export const usePortalMutations = (editingContextId: string, portalId: string): 
     addPortalView,
     removePortalView,
     layoutPortal,
+    layoutInProgress: layoutsInProgress > 0,
   };
 };

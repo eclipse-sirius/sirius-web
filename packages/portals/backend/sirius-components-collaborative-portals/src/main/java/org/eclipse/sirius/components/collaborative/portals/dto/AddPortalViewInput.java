@@ -21,5 +21,5 @@ import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
  *
  * @author pcdavid
  */
-public record AddPortalViewInput(UUID id, String editingContextId, String representationId, String viewRepresentationId) implements IPortalInput {
+public record AddPortalViewInput(UUID id, String editingContextId, String representationId, String viewRepresentationId, int x, int y, int width, int height) implements IPortalInput {
 }
