@@ -73,6 +73,7 @@ public class ProcessorDescriptionProvider implements INodeDescriptionProvider {
                 .labelExpression("aql:self.name")
                 .defaultHeightExpression("aql:self.capacity*15")
                 .defaultWidthExpression("aql:self.capacity*15")
+                .userResizable(false)
                 .keepAspectRatio(true)
                 .style(this.flowViewBuilder.createImageNodeStyleDescription(CPU_UNUSED_SVG_ID, this.colorProvider))
                 .synchronizationPolicy(this.synchronizationPolicy)

@@ -78,8 +78,9 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
                         .style(this.getRectangularNodeStyleDescription("Flow_Orange", "Flow_Orange"))
                         .build())
                 .synchronizationPolicy(this.synchronizationPolicy)
-                .reusedChildNodeDescriptions();
-        
+                .borderNodesDescriptions(new PowerOutputDescriptionProvider(this.colorProvider).create(),
+                        new PowerInputDescriptionProvider(this.colorProvider).create());
+
         if (this.autoLayout) {
             nodeDescription.childrenDescriptions(this.createDescriptionNode());
         }
@@ -89,19 +90,15 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optionalSystemNodeDescription = cache.getNodeDescription(NAME);
-        var optionalProcessorNodeDescription = cache.getNodeDescription(ProcessorDescriptionProvider.NAME);
-        var optionalFanNodeDescription = cache.getNodeDescription(FanDescriptionProvider.NAME);
-        var optionalDataSourceNodeDescription = cache.getNodeDescription(DataSourceDescriptionProvider.NAME);
-
-        if (optionalSystemNodeDescription.isPresent() && optionalProcessorNodeDescription.isPresent()
-                && optionalFanNodeDescription.isPresent() && optionalDataSourceNodeDescription.isPresent()) {
-            diagramDescription.getNodeDescriptions().add(optionalSystemNodeDescription.get());
-            optionalSystemNodeDescription.get().getReusedChildNodeDescriptions().add(optionalProcessorNodeDescription.get());
-            optionalSystemNodeDescription.get().getReusedChildNodeDescriptions().add(optionalFanNodeDescription.get());
-            optionalSystemNodeDescription.get().getReusedChildNodeDescriptions().add(optionalDataSourceNodeDescription.get());
-            optionalSystemNodeDescription.get().setPalette(this.createNodePalette(cache));
-        }
+        cache.getNodeDescription(NAME).ifPresent(nodeDescription -> {
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
+            cache.getNodeDescription(ProcessorDescriptionProvider.NAME).ifPresent(reusedChildNode -> nodeDescription.getReusedChildNodeDescriptions().add(reusedChildNode));
+            cache.getNodeDescription(FanDescriptionProvider.NAME)
+                    .ifPresent(reusedChildNode -> nodeDescription.getReusedChildNodeDescriptions().add(reusedChildNode));
+            cache.getNodeDescription(DataSourceDescriptionProvider.NAME)
+                    .ifPresent(reusedChildNode -> nodeDescription.getReusedChildNodeDescriptions().add(reusedChildNode));
+            nodeDescription.setPalette(this.createNodePalette(cache));
+        });
     }
 
     private RectangularNodeStyleDescription getRectangularNodeStyleDescription(String borderColor, String labelColor) {

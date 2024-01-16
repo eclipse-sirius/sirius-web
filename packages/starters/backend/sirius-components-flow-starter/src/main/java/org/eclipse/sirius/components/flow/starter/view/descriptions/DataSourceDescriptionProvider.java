@@ -65,6 +65,7 @@ public class DataSourceDescriptionProvider implements INodeDescriptionProvider {
                 .labelExpression("aql:self.name")
                 .defaultHeightExpression("aql:self.volume*15")
                 .defaultWidthExpression("aql:self.computeDataSourceHeight()")
+                .userResizable(false)
                 .keepAspectRatio(true)
                 .style(this.flowViewBuilder.createImageNodeStyleDescription(SENSOR_SVG_ID, this.colorProvider))
                 .synchronizationPolicy(this.synchronizationPolicy)

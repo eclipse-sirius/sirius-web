@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.view.descriptions;
 
-import static org.eclipse.sirius.components.flow.starter.view.FlowViewBuilder.FAN_SVG_ID;
+import static org.eclipse.sirius.components.flow.starter.view.FlowViewBuilder.POWER_OUTPUT_SVG_ID;
 
 import java.util.Objects;
 
@@ -28,14 +28,13 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 
 /**
- * Used to create the fan node description.
+ * Used to create the powerOutput node description.
  *
  * @author frouene
  */
-@SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class FanDescriptionProvider implements INodeDescriptionProvider {
+public class PowerOutputDescriptionProvider implements INodeDescriptionProvider {
 
-    public static final String NAME = "Fan Node";
+    public static final String NAME = "PowerOutput Node";
 
     private final IColorProvider colorProvider;
 
@@ -43,11 +42,8 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
 
     private final FlowViewBuilder flowViewBuilder = new FlowViewBuilder();
 
-    private final SynchronizationPolicy synchronizationPolicy;
-
-    public FanDescriptionProvider(IColorProvider colorProvider, SynchronizationPolicy synchronizationPolicy) {
+    public PowerOutputDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
-        this.synchronizationPolicy = Objects.requireNonNull(synchronizationPolicy);
     }
 
 
@@ -56,16 +52,15 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
 
         return this.diagramBuilderHelper.newNodeDescription()
                 .name(NAME)
-                .domainType("flow::Fan")
-                .semanticCandidatesExpression("feature:elements")
+                .domainType("flow::PowerOutput")
+                .semanticCandidatesExpression("feature:powerOutputs")
                 .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
-                .labelExpression("feature:speed")
-                .defaultHeightExpression("aql:self.speed/2")
-                .defaultWidthExpression("aql:self.speed/2")
+                .defaultHeightExpression("50")
+                .defaultWidthExpression("50")
                 .userResizable(false)
                 .keepAspectRatio(true)
-                .style(this.flowViewBuilder.createImageNodeStyleDescription(FAN_SVG_ID, this.colorProvider))
-                .synchronizationPolicy(this.synchronizationPolicy)
+                .style(this.flowViewBuilder.createImageNodeStyleDescription(POWER_OUTPUT_SVG_ID, this.colorProvider))
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .palette(this.createNodePalette())
                 .build();
     }
@@ -79,7 +74,6 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
-                .labelEditTool(this.flowViewBuilder.createLabelEditTool())
                 .build();
     }
 
