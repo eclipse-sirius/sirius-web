@@ -10,8 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
-import { splitText } from '@eclipse-sirius/sirius-components-trees';
+import { IconOverlay, splitText } from '@eclipse-sirius/sirius-components-core';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -19,8 +18,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { Theme } from '@mui/material/styles';
-import { makeStyles } from 'tss-react/mui';
 import React, { useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import {
   FilterableSortableListProps,
   FilterableSortableListState,

@@ -132,10 +132,10 @@ public class ExplorerNonSemanticElementControllerTests extends AbstractIntegrati
             assertThat(domainDocument.getChildren().get(0)).isNotNull();
             List<TreeItem> domainElements = domainDocument.getChildren().get(0).getChildren();
             assertThat(domainElements).hasSize(3);
-            assertThat(domainElements.get(0).getLabel()).isEqualTo("Root");
+            assertThat(domainElements.get(0).getLabel().toString()).isEqualTo("Root");
             assertThat(domainElements.get(0).getChildren()).isNotEmpty();
             assertThat(domainElements.get(0).getChildren()).hasSize(3);
-            assertThat(domainElements.get(0).getChildren().get(0).getLabel()).isEqualTo("superTypes");
+            assertThat(domainElements.get(0).getChildren().get(0).getLabel().toString()).isEqualTo("superTypes");
         });
 
         StepVerifier.create(expandedTreeFlux)
