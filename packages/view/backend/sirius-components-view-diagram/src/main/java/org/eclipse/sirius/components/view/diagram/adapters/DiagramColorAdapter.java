@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,26 +43,17 @@ public class DiagramColorAdapter extends EContentAdapter {
         if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof DiagramDescription && notification.getNewValue() instanceof NodeDescription nodeDescription
                 && DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS == notification.getFeatureID(DiagramDescription.class)) {
             NodeStyleDescription style = nodeDescription.getStyle();
-            if (style != null && style.getColor() == null) {
-                style.setColor(this.colorPaletteService.getColorFromPalette(nodeDescription, "white"));
-            }
-            if (style != null && style.getBorderColor() == null) {
-                style.setBorderColor(this.colorPaletteService.getColorFromPalette(nodeDescription, "black"));
-            }
-            if (style != null && style.getLabelColor() == null) {
-                style.setLabelColor(this.colorPaletteService.getColorFromPalette(nodeDescription, "black"));
-            }
+            this.setNodeColors(style, nodeDescription);
+        } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof NodeDescription && notification.getNewValue() instanceof NodeDescription nodeDescription
+                && (notification.getFeatureID(NodeDescription.class) == DiagramPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS || notification.getFeatureID(NodeDescription.class) == DiagramPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS)) {
+            NodeStyleDescription style = nodeDescription.getStyle();
+            this.setNodeColors(style, nodeDescription);
+        } else if (Notification.SET == notification.getEventType() && notification.getNotifier() instanceof NodeDescription nodeDescription && notification.getNewValue() instanceof NodeStyleDescription style
+                && DiagramPackage.NODE_DESCRIPTION__STYLE == notification.getFeatureID(NodeStyleDescription.class)) {
+            this.setNodeColors(style, nodeDescription);
         } else if (Notification.SET == notification.getEventType() && notification.getNotifier() instanceof ConditionalNodeStyle condition && notification.getNewValue() instanceof NodeStyleDescription style
                 && DiagramPackage.CONDITIONAL_NODE_STYLE__STYLE == notification.getFeatureID(ConditionalNodeStyle.class)) {
-            if (style.getColor() == null) {
-                style.setColor(this.colorPaletteService.getColorFromPalette(condition, "white"));
-            }
-            if (style.getBorderColor() == null) {
-                style.setBorderColor(this.colorPaletteService.getColorFromPalette(condition, "black"));
-            }
-            if (style.getLabelColor() == null) {
-                style.setLabelColor(this.colorPaletteService.getColorFromPalette(condition, "black"));
-            }
+            this.setNodeColors(style, condition);
         } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof DiagramDescription && notification.getNewValue() instanceof EdgeDescription edgeDescription
                 && DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS == notification.getFeatureID(DiagramDescription.class)) {
             EdgeStyle style = edgeDescription.getStyle();
@@ -74,6 +65,18 @@ public class DiagramColorAdapter extends EContentAdapter {
             if (style.getColor() == null) {
                 style.setColor(this.colorPaletteService.getColorFromPalette(condition, "black"));
             }
+        }
+    }
+
+    private void setNodeColors(NodeStyleDescription style, Object object) {
+        if (style != null && style.getColor() == null) {
+            style.setColor(this.colorPaletteService.getColorFromPalette(object, "white"));
+        }
+        if (style != null && style.getBorderColor() == null) {
+            style.setBorderColor(this.colorPaletteService.getColorFromPalette(object, "black"));
+        }
+        if (style != null && style.getLabelColor() == null) {
+            style.setLabelColor(this.colorPaletteService.getColorFromPalette(object, "black"));
         }
     }
 }

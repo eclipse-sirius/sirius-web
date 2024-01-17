@@ -108,6 +108,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2786[#2786] [diagram] Fix an issue where resizing was clunky.
 - https://github.com/eclipse-sirius/sirius-web/issues/2912[#2912] [diagram] Send all requested node descriptions to the frontend when requested.
 - https://github.com/eclipse-sirius/sirius-web/issues/2678[#2678] [diagram] Fix an issue where tools from the diagram palette where not executed.
+- https://github.com/eclipse-sirius/sirius-web/issues/2943[#2943] [view] Fix an issue where the default colors were not applied to sub-nodes and border nodes.
 
 === New Features
 

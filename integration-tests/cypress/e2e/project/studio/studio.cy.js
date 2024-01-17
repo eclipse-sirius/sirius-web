@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -183,6 +183,73 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('Node').dblclick();
+    cy.getByTestId('RectangularNodeStyleDescription').click();
+    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
+    cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
+    cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
+  });
+
+  it('Check new sub-node description has default colors', () => {
+    cy.getByTestId('ViewNewModel-toggle').click();
+    cy.getByTestId('View-toggle').click();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.get('[data-testid$=" Diagram Description-more"]').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Node-toggle').click();
+    cy.getByTestId('Node-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Sub-node"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Sub-node-toggle').click();
+    cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
+    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
+    cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
+    cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
+  });
+
+  it('Check new border-node description has default colors', () => {
+    cy.getByTestId('ViewNewModel-toggle').click();
+    cy.getByTestId('View-toggle').click();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.get('[data-testid$=" Diagram Description-more"]').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Node Description"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Node-toggle').click();
+    cy.getByTestId('Node-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Border node"]').should('exist').click();
+    cy.getByTestId('create-object').click();
+    cy.getByTestId('Border node-toggle').click();
+    cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
+    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
+    cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
+    cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
+  });
+
+  it('Check new style description on existing node has default colors', () => {
+    cy.getByTestId('ViewNewModel-toggle').click();
+    cy.getByTestId('View-toggle').click();
+    cy.get('[data-testid$=" Diagram Description"]').dblclick();
+    cy.getByTestId('Entity1 Node-toggle').click();
+    cy.getByTestId('RectangularNodeStyleDescription-more').click();
+    cy.getByTestId('delete').click();
+    cy.getByTestId('Entity1 Node-more').click();
+    cy.getByTestId('new-object').click();
+    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').click();
+    cy.getByTestId('childCreationDescription').get('[data-value="Style Rectangular"]').should('exist').click();
+    cy.getByTestId('create-object').click();
     cy.getByTestId('RectangularNodeStyleDescription').click();
     cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
     cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
