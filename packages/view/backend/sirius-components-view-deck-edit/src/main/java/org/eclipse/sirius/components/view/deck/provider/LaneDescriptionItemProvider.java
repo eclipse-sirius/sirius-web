@@ -120,6 +120,7 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
             this.childrenFeatures.add(DeckPackage.Literals.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS);
             this.childrenFeatures.add(DeckPackage.Literals.LANE_DESCRIPTION__EDIT_TOOL);
             this.childrenFeatures.add(DeckPackage.Literals.LANE_DESCRIPTION__CREATE_TOOL);
+            this.childrenFeatures.add(DeckPackage.Literals.LANE_DESCRIPTION__CARD_DROP_TOOL);
         }
         return this.childrenFeatures;
     }
@@ -138,9 +139,9 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
     }
 
     /**
-     * This returns LaneDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns LaneDescription.svg. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
@@ -188,6 +189,7 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
             case DeckPackage.LANE_DESCRIPTION__EDIT_TOOL:
             case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
+            case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -209,6 +211,8 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__EDIT_TOOL, DeckFactory.eINSTANCE.createEditLaneTool()));
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__CREATE_TOOL, DeckFactory.eINSTANCE.createCreateCardTool()));
+
+        newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__CARD_DROP_TOOL, DeckFactory.eINSTANCE.createCardDropTool()));
     }
 
     /**

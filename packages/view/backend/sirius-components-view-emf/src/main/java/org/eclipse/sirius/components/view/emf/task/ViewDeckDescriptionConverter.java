@@ -108,10 +108,12 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
         });
         Consumer<VariableManager> createCardProvider = Optional.ofNullable(viewLaneDescription.getCreateTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
         });
+        Consumer<VariableManager> dropCardProvider = Optional.ofNullable(viewLaneDescription.getCardDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
+        });
 
         List<CardDescription> cardDescriptions = viewLaneDescription.getOwnedCardDescriptions().stream().map(cardDescription -> this.convert(cardDescription, interpreter)).toList();
         return new LaneDescription(id, this.semanticTargetKindProvider, this.semanticTargetLabelProvider, this.semanticTargetIdProvider, semanticElementsProvider, titleProvider, labelProvider,
-                cardDescriptions, editLaneProvider, createCardProvider);
+                cardDescriptions, editLaneProvider, createCardProvider, dropCardProvider);
     }
 
     private CardDescription convert(org.eclipse.sirius.components.view.deck.CardDescription viewCardDescription, AQLInterpreter interpreter) {

@@ -23,6 +23,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckCardService;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.CreateDeckCardInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeleteDeckCardInput;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckCardInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckCardInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -74,9 +75,7 @@ public class DeckCardService implements IDeckCardService {
             VariableManager variableManager = new VariableManager();
             Optional<Object> optionalTargetObject;
             if (currentLaneId != null) {
-                optionalTargetObject = optionalParentLane
-                        .map(card -> this.objectService.getObject(editingContext, card.targetObjectId()))
-                        .map(Optional::get);
+                optionalTargetObject = optionalParentLane.map(card -> this.objectService.getObject(editingContext, card.targetObjectId())).map(Optional::get);
                 if (optionalTargetObject.isEmpty()) {
                     this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("The current lane of id ''{0}'' is not found", currentLaneId), MessageLevel.ERROR));
                 }
@@ -142,6 +141,38 @@ public class DeckCardService implements IDeckCardService {
         return payload;
     }
 
+    @Override
+    public IPayload dropCard(DropDeckCardInput dropDeckCardInput, IEditingContext editingContext, Deck deck) {
+        IPayload payload = new ErrorPayload(dropDeckCardInput.id(), "Move card failed");
+
+        Optional<Card> optionalCard = this.findCard(card -> Objects.equals(card.id(), dropDeckCardInput.cardId()), deck);
+        Optional<Lane> optionalOldLane = this.findLane(lane -> Objects.equals(lane.id(), dropDeckCardInput.oldLaneId()), deck);
+        Optional<Lane> optionalNewLane = this.findLane(lane -> Objects.equals(lane.id(), dropDeckCardInput.newLaneId()), deck);
+        Optional<LaneDescription> optionalLaneDescription = optionalNewLane.flatMap(lane -> this.findLaneDescription(lane.descriptionId(), deck, editingContext));
+
+        if (optionalCard.isPresent() && optionalLaneDescription.isPresent()) {
+            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, optionalCard.get().targetObjectId());
+            if (optionalTargetObject.isPresent()) {
+                VariableManager variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, optionalTargetObject.get());
+                variableManager.put(LaneDescription.OLD_LANE, optionalOldLane.orElse(null));
+                variableManager.put(LaneDescription.OLD_LANE_TARGET, optionalOldLane.flatMap(lane -> {
+                    return this.objectService.getObject(editingContext, lane.targetObjectId());
+                }).orElse(null));
+                variableManager.put(LaneDescription.NEW_LANE, optionalNewLane.orElse(null));
+                variableManager.put(LaneDescription.NEW_LANE_TARGET, optionalNewLane.flatMap(lane -> {
+                    return this.objectService.getObject(editingContext, lane.targetObjectId());
+                }).orElse(null));
+                variableManager.put(LaneDescription.INDEX, dropDeckCardInput.addedIndex());
+                optionalLaneDescription.get().dropCardProvider().accept(variableManager);
+
+                payload = this.getPayload(dropDeckCardInput.id());
+            }
+        }
+
+        return payload;
+    }
+
     private IPayload getPayload(UUID payloadId) {
         IPayload payload = null;
         List<Message> feedbackMessages = this.feedbackMessageService.getFeedbackMessages();
@@ -153,6 +184,7 @@ public class DeckCardService implements IDeckCardService {
         }
         return payload;
     }
+
     private Optional<Lane> findLane(Predicate<Lane> condition, Deck deck) {
         return deck.lanes().stream()
                 .filter(condition)
@@ -173,8 +205,7 @@ public class DeckCardService implements IDeckCardService {
     }
 
     private Optional<LaneDescription> findLaneDescription(String descriptionId, Deck deck, IEditingContext editingContext) {
-        return this.findDeckDescription(deck.descriptionId(), editingContext)
-                .stream()
+        return this.findDeckDescription(deck.descriptionId(), editingContext).stream()
                 .map(DeckDescription::laneDescriptions)
                 .flatMap(Collection::stream)
                 .filter(laneDesc -> laneDesc.id().equals(descriptionId))
@@ -182,15 +213,13 @@ public class DeckCardService implements IDeckCardService {
     }
 
     private Optional<CardDescription> findCardDescription(String descriptionId, Deck deck, IEditingContext editingContext) {
-        List<LaneDescription> laneDescriptions = this.findDeckDescription(deck.descriptionId(), editingContext)
-                .map(DeckDescription::laneDescriptions)
-                .orElse(List.of());
+        List<LaneDescription> laneDescriptions = this.findDeckDescription(deck.descriptionId(), editingContext).map(DeckDescription::laneDescriptions).orElse(List.of());
 
         return laneDescriptions.stream()
-               .map(LaneDescription::cardDescriptions)
-               .flatMap(Collection::stream)
-               .filter(cardDesc -> cardDesc.id().equals(descriptionId))
-               .findFirst();
+                .map(LaneDescription::cardDescriptions)
+                .flatMap(Collection::stream)
+                .filter(cardDesc -> cardDesc.id().equals(descriptionId))
+                .findFirst();
     }
 
 }

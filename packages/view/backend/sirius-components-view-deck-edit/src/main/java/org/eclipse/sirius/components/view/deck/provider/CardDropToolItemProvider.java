@@ -18,21 +18,21 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.sirius.components.view.deck.DeleteCardTool;
+import org.eclipse.sirius.components.view.deck.CardDropTool;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.deck.DeleteCardTool} object. <!--
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.deck.CardDropTool} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class DeleteCardToolItemProvider extends DeckToolItemProvider {
+public class CardDropToolItemProvider extends DeckToolItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public DeleteCardToolItemProvider(AdapterFactory adapterFactory) {
+    public CardDropToolItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -51,13 +51,13 @@ public class DeleteCardToolItemProvider extends DeckToolItemProvider {
     }
 
     /**
-     * This returns DeleteCardTool.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns CardDropTool.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DeleteCardTool.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CardDropTool.svg"));
     }
 
     /**
@@ -77,8 +77,8 @@ public class DeleteCardToolItemProvider extends DeckToolItemProvider {
      */
     @Override
     public String getText(Object object) {
-        String label = ((DeleteCardTool) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_DeleteCardTool_type") : this.getString("_UI_DeleteCardTool_type") + " " + label;
+        String label = ((CardDropTool) object).getName();
+        return label == null || label.length() == 0 ? this.getString("_UI_CardDropTool_type") : this.getString("_UI_CardDropTool_type") + " " + label;
     }
 
     /**

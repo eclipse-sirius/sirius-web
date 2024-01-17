@@ -98,7 +98,6 @@ public final class DeckEditPlugin extends EMFPlugin {
         return result;
     }
 
-
     /**
      * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

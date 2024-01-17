@@ -166,4 +166,27 @@ public interface LaneDescription extends EObject {
      */
     void setCreateTool(CreateCardTool value);
 
+    /**
+     * Returns the value of the '<em><b>Card Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Card Drop Tool</em>' containment reference.
+     * @see #setCardDropTool(CardDropTool)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getLaneDescription_CardDropTool()
+     * @model containment="true"
+     * @generated
+     */
+    CardDropTool getCardDropTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getCardDropTool <em>Card
+     * Drop Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Card Drop Tool</em>' containment reference.
+     * @see #getCardDropTool()
+     * @generated
+     */
+    void setCardDropTool(CardDropTool value);
+
 } // LaneDescription

@@ -21,6 +21,7 @@ export interface DeckProps {
   onCardUpdate: (laneId: string, card: Card) => void;
   onCardAdd: (card: Card, laneId: string) => void;
   onCardDelete: (cardId: string, laneId: string) => void;
+  onCardMoveAcrossLanes: (oldLaneId: string, newLaneId: string, cardId: string, addedIndex: number) => void;
 }
 export interface OnCardClickProps {
   cardId: String;

@@ -101,5 +101,15 @@ public class LaneDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for CardDropTool.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder cardDropTool(org.eclipse.sirius.components.view.deck.CardDropTool value) {
+        this.getLaneDescription().setCardDropTool(value);
+        return this;
+    }
+
 }
 

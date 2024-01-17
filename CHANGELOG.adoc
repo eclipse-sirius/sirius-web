@@ -34,6 +34,7 @@ The reference widget graphql schema and the frontend have been updated according
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.
 Its body operations are now bind on set/add instead of click.
+- https://github.com/eclipse-sirius/sirius-web/issues/2942[#2942] [deck] Add the Card Drag and Drop capability in the Deck representation.
 
 === Improvements
 

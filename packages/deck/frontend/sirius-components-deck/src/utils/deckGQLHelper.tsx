@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Card, DeckData } from '../Deck.types';
-import { GQLDeck } from '../representation/deckSubscription.types';
+import { GQLCard, GQLDeck, GQLLane } from '../representation/deckSubscription.types';
 
 export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]): DeckData => {
   const data: DeckData = {
@@ -50,4 +50,37 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]
     });
   }
   return data;
+};
+
+export const moveCardInDeckLanes = (
+  deck: GQLDeck,
+  oldLaneId: string,
+  newLaneId: string,
+  cardId: string,
+  addedIndex: number
+): GQLDeck => {
+  const deckToReturn = {
+    ...deck,
+  };
+  const newLane: GQLLane | undefined = deckToReturn.lanes.find((lane) => lane.id === newLaneId);
+  let oldLane: GQLLane | undefined;
+  if (oldLaneId !== newLaneId) {
+    oldLane = deckToReturn.lanes.find((lane) => lane.id === oldLaneId);
+  } else {
+    oldLane = newLane;
+  }
+
+  const cardToMove: GQLCard | undefined = oldLane?.cards.find((card) => card.id === cardId);
+  if (oldLane && cardToMove) {
+    const index = oldLane.cards.indexOf(cardToMove);
+    if (index != undefined && index > -1) {
+      //We remove the card from the previous location (could be a different lane or the same)
+      oldLane.cards.splice(index, 1);
+    }
+  }
+  if (newLane && cardToMove) {
+    // We add it at the new location
+    newLane.cards.splice(addedIndex, 0, cardToMove);
+  }
+  return deckToReturn;
 };

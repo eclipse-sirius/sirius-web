@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.EditLaneTool;
@@ -139,6 +140,16 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @ordered
      */
     protected CreateCardTool createTool;
+
+    /**
+     * The cached value of the '{@link #getCardDropTool() <em>Card Drop Tool</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getCardDropTool()
+     * @generated
+     * @ordered
+     */
+    protected CardDropTool cardDropTool;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -344,6 +355,54 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
+    public CardDropTool getCardDropTool() {
+        return this.cardDropTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetCardDropTool(CardDropTool newCardDropTool, NotificationChain msgs) {
+        CardDropTool oldCardDropTool = this.cardDropTool;
+        this.cardDropTool = newCardDropTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL, oldCardDropTool, newCardDropTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCardDropTool(CardDropTool newCardDropTool) {
+        if (newCardDropTool != this.cardDropTool) {
+            NotificationChain msgs = null;
+            if (this.cardDropTool != null)
+                msgs = ((InternalEObject) this.cardDropTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL, null, msgs);
+            if (newCardDropTool != null)
+                msgs = ((InternalEObject) newCardDropTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL, null, msgs);
+            msgs = this.basicSetCardDropTool(newCardDropTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL, newCardDropTool, newCardDropTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
@@ -352,6 +411,8 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.basicSetEditTool(null, msgs);
             case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
                 return this.basicSetCreateTool(null, msgs);
+            case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
+                return this.basicSetCardDropTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -376,6 +437,8 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getEditTool();
             case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
                 return this.getCreateTool();
+            case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
+                return this.getCardDropTool();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -408,6 +471,9 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
             case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
                 this.setCreateTool((CreateCardTool) newValue);
                 return;
+            case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
+                this.setCardDropTool((CardDropTool) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -438,6 +504,9 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
             case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
                 this.setCreateTool((CreateCardTool) null);
                 return;
+            case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
+                this.setCardDropTool((CardDropTool) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -462,6 +531,8 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.editTool != null;
             case DeckPackage.LANE_DESCRIPTION__CREATE_TOOL:
                 return this.createTool != null;
+            case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
+                return this.cardDropTool != null;
         }
         return super.eIsSet(featureID);
     }

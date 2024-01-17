@@ -90,7 +90,7 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
     /**
      * This returns DeckDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {

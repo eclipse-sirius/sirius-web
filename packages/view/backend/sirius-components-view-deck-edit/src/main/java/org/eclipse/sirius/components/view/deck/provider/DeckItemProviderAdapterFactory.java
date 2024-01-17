@@ -258,6 +258,29 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CardDropTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CardDropToolItemProvider cardDropToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.CardDropTool}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCardDropToolAdapter() {
+        if (this.cardDropToolItemProvider == null) {
+            this.cardDropToolItemProvider = new CardDropToolItemProvider(this);
+        }
+
+        return this.cardDropToolItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -400,6 +423,8 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
             this.deleteCardToolItemProvider.dispose();
         if (this.editLaneToolItemProvider != null)
             this.editLaneToolItemProvider.dispose();
+        if (this.cardDropToolItemProvider != null)
+            this.cardDropToolItemProvider.dispose();
     }
 
     /**
