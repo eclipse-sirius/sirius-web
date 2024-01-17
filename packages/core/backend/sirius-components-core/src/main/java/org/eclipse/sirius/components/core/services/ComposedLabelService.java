@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,6 +49,17 @@ public class ComposedLabelService implements ILabelService {
             return optionalDelegate.get().getLabel(object);
         }
         return this.defaultLabelService.getLabel(object);
+    }
+
+    @Override
+    public StyledString getStyledLabel(Object object) {
+        var optionalDelegate = this.labelServiceDelegate.stream()
+                .filter(delegate -> delegate.canHandle(object))
+                .findFirst();
+        if (optionalDelegate.isPresent()) {
+            return optionalDelegate.get().getStyledLabel(object);
+        }
+        return this.defaultLabelService.getStyledLabel(object);
     }
 
     @Override

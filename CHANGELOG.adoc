@@ -51,6 +51,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
 * The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
 - https://github.com/eclipse-sirius/sirius-web/issues/3437[#3437] [core] Migrate frontend to MUI 5, if you contributed React componenent that use MUI, you should upgrade them to use MUI 5.
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core, tree] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
 
 === Dependency update
 
@@ -79,6 +80,9 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/3821[#3821] [sirius-web] Allow to filter resources in `RewriteProxiesEventHandler`.
 Introduce new `IRewriteProxiesResourceFilter` interface, to register resource filter for `RewriteProxiesEventHandler`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3570[#3570] [diagram] Add max width expression in the View DSL for labels
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService` that can be used to display styled string in the explorer for example.
++
+image:doc/screenshots/treeItemLabelStyled.jpg[StyledString, 70%]
 
 === Improvements
 

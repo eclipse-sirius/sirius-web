@@ -82,27 +82,27 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     private final TreeItemMatcher rootDocumentIsNamedEcore = new TreeItemMatcher(
             tree -> tree.getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("Ecore")
+            treeItem -> treeItem.getLabel().toString().equals("Ecore")
     );
 
     private final TreeItemMatcher rootDocumentIsNamedEcoreRenamed = new TreeItemMatcher(
             tree -> tree.getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("EcoreRenamed")
+            treeItem -> treeItem.getLabel().toString().equals("EcoreRenamed")
     );
 
     private final TreeItemMatcher ePackageIsNamedSample = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("Sample")
+            treeItem -> treeItem.getLabel().toString().equals("Sample")
     );
 
     private final TreeItemMatcher ePackageIsNamedSampleRenamed = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("SampleRenamed")
+            treeItem -> treeItem.getLabel().toString().equals("SampleRenamed")
     );
 
     private final TreeItemMatcher representationIsAPortal = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("Portal")
+            treeItem -> treeItem.getLabel().toString().equals("Portal")
     );
 
     private final TreeItemMatcher ePackageHasNoRepresentation = new TreeItemMatcher(
@@ -117,7 +117,14 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     private final TreeItemMatcher portalIsRenamed = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("PortalRenamed")
+            treeItem -> treeItem.getLabel().toString().equals("PortalRenamed")
+    );
+
+    private final TreeItemMatcher ePackageTreeItemIsStyled = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0),
+            treeItem -> treeItem.getLabel().styledStringFragments().size() == 1 &&
+                    treeItem.getLabel().styledStringFragments().get(0).styledStringFragmentStyle().isStruckOut() &&
+                    treeItem.getLabel().styledStringFragments().get(0).styledStringFragmentStyle().getBackgroundColor().equals("red")
     );
 
     @Autowired
@@ -179,7 +186,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
         var flux = this.treeEventSubscriptionRunner.run(input);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.representationIsAPortal));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, ePackageTreeItemIsStyled, this.representationIsAPortal));
         var hasNoMoreRepresentation = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageHasNoRepresentation));
         var hasNoMoreObject = this.getTreeRefreshedEventPayloadMatcher(List.of(this.documentHasNoObject));
 
@@ -216,7 +223,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var treeEventInput = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
         var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, ePackageTreeItemIsStyled));
 
         var treeId = new TreeConfiguration(treeEventInput.editingContextId(), treeEventInput.treeId(), treeEventInput.expanded(), treeEventInput.activeFilterIds()).getId();
 
@@ -243,12 +250,11 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                     .filter(PortalRefreshedEventPayload.class::isInstance)
                     .isPresent();
         };
-
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeEventInput = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
         var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.representationIsAPortal));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, ePackageTreeItemIsStyled, this.representationIsAPortal));
         var hasObjectNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageIsNamedSampleRenamed));
         var hasDocumentNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcoreRenamed));
 

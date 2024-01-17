@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescr
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -259,19 +260,23 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         return kind;
     }
 
-    private String getLabel(VariableManager variableManager) {
+    private StyledString getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         String label = "";
         if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
         } else if (self instanceof EObject) {
-            label = this.objectService.getLabel(self);
-            if (label.isBlank()) {
+            StyledString styledString = this.objectService.getStyledLabel(self);
+            if (!styledString.toString().isBlank()) {
+                return styledString;
+            }
+            else {
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
         }
-        return label;
+
+        return StyledString.of(label);
     }
 
     private String getResourceLabel(Resource resource) {

@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.core.api;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.core.api.labels.StyledString;
+
 /**
  * Interface of that allow us to regroup several services.
  *
@@ -23,6 +25,8 @@ import java.util.Optional;
 public interface IObjectService {
 
     String getLabel(Object object);
+
+    StyledString getStyledLabel(Object object);
 
     String getFullLabel(Object object);
 
@@ -50,6 +54,10 @@ public interface IObjectService {
         @Override
         public String getLabel(Object object) {
             return "";
+        }
+        @Override
+        public StyledString getStyledLabel(Object object) {
+            return StyledString.of("");
         }
 
         @Override

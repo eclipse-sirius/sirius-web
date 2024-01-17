@@ -12,20 +12,21 @@
  *******************************************************************************/
 import {
   DRAG_SOURCES_TYPE,
+  GQLStyledString,
   IconOverlay,
   Selection,
   SelectionEntry,
+  StyledLabel,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import CropDinIcon from '@mui/icons-material/CropDin';
 import React, { useEffect, useRef, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { TreeItemProps, TreeItemState } from './TreeItem.types';
+import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
-import { isFilterCandidate, splitText } from './filterTreeItem';
-import { TreeItemAction } from './TreeItemAction';
+import { isFilterCandidate } from './filterTreeItem';
 
 const useTreeItemStyle = makeStyles()((theme) => ({
   treeItem: {
@@ -93,6 +94,10 @@ const useTreeItemStyle = makeStyles()((theme) => ({
     backgroundColor: theme.palette.navigation.leftBackground,
   },
 }));
+
+const getString = (styledString: GQLStyledString): string => {
+  return styledString.styledStringFragments.map((fragments) => fragments.text).join();
+};
 
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
@@ -225,40 +230,13 @@ export const TreeItem = ({
         onClose={onCloseEditingMode}></TreeItemDirectEditInput>
     );
   } else {
-    let itemLabel: JSX.Element;
-    const splitLabelWithTextToHighlight: string[] = splitText(item.label, textToHighlight);
-    if (
-      textToHighlight === null ||
-      textToHighlight === '' ||
-      (splitLabelWithTextToHighlight.length === 1 &&
-        splitLabelWithTextToHighlight[0].toLocaleLowerCase() !== item.label.toLocaleLowerCase())
-    ) {
-      itemLabel = <>{item.label}</>;
-    } else {
-      const languages: string[] = Array.from(navigator.languages);
-      itemLabel = (
-        <>
-          {splitLabelWithTextToHighlight.map((value, index) => {
-            const shouldHighlight = value.localeCompare(textToHighlight, languages, { sensitivity: 'base' }) === 0;
-            return (
-              <span
-                key={value + index}
-                data-testid={`${item.label}-${value}-${index}`}
-                className={shouldHighlight ? classes.highlight : ''}>
-                {value}
-              </span>
-            );
-          })}
-        </>
-      );
-    }
-    text = (
-      <Typography
-        variant="body2"
-        className={`${classes.label} ${selected ? classes.selectedLabel : ''} ${marked ? classes.marked : ''}`}>
-        {itemLabel}
-      </Typography>
-    );
+    const styledLabelProps = {
+      styledString: item.label,
+      selected: false,
+      textToHighlight: textToHighlight,
+      marked: marked,
+    };
+    text = <StyledLabel {...styledLabelProps}></StyledLabel>;
   }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
@@ -276,7 +254,7 @@ export const TreeItem = ({
           setSelection(newSelection);
         } else {
           const { id, label, kind } = item;
-          const newEntry = { id, label, kind };
+          const newEntry = { id, label: getString(label), kind };
           const newSelection: Selection = { entries: [...selection.entries, newEntry] };
           setSelection(newSelection);
         }
@@ -340,6 +318,7 @@ export const TreeItem = ({
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
   } else {
+    const label = getString(item.label);
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
@@ -351,13 +330,13 @@ export const TreeItem = ({
           onDragOver={dragOver}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}>
-          <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${item.label}-toggle`} />
+          <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
             data-treeitemid={item.id}
-            data-treeitemlabel={item.label}
+            data-treeitemlabel={label}
             data-treeitemkind={item.kind}
             data-haschildren={item.hasChildren.toString()}
             data-depth={depth}
@@ -368,7 +347,7 @@ export const TreeItem = ({
                 className={`${classes.imageAndLabel} ${item.selectable ? classes.imageAndLabelSelectable : ''}`}
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
                 title={tooltipText}
-                data-testid={item.label}>
+                data-testid={label}>
                 {image}
                 {text}
               </div>
