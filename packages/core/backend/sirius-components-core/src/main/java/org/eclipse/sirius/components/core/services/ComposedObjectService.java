@@ -107,14 +107,14 @@ public class ComposedObjectService implements IObjectService {
     }
 
     @Override
-    public List<Object> getContents(IEditingContext editingContext, String objectId) {
+    public List<Object> getContents(Object object) {
         var optionalDelegate = this.objectServiceDelegates.stream()
-                .filter(delegate -> delegate.canHandle(editingContext))
+                .filter(delegate -> delegate.canHandle(object))
                 .findFirst();
         if (optionalDelegate.isPresent()) {
-            return optionalDelegate.get().getContents(editingContext, objectId);
+            return optionalDelegate.get().getContents(object);
         }
-        return this.defaultObjectService.getContents(editingContext, objectId);
+        return this.defaultObjectService.getContents(object);
     }
 
     @Override

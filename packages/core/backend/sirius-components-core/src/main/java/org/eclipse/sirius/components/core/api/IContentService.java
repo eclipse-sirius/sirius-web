@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.api;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
- * Interface of the service finding domain objects.
+ * Interface of the service used to navigate the content of the domain objects.
  *
  * @author sbegaudeau
  */
-public interface IObjectService {
+public interface IContentService {
+    List<Object> getContents(Object object);
 
-    Optional<Object> getObject(IEditingContext editingContext, String objectId);
-
-    interface Delegate extends IObjectService {
-        boolean canHandle(IEditingContext editingContext);
+    interface Delegate {
+        boolean canHandle(Object object);
     }
 
     /**
@@ -32,10 +31,11 @@ public interface IObjectService {
      *
      * @author sbegaudeau
      */
-    class NoOp implements IObjectService {
+    class NoOp implements IContentService {
+
         @Override
-        public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-            return Optional.empty();
+        public List<Object> getContents(Object object) {
+            return List.of();
         }
     }
 }

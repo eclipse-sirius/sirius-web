@@ -233,14 +233,9 @@ public class DefaultObjectService implements IDefaultObjectService {
     }
 
     @Override
-    public List<Object> getContents(IEditingContext editingContext, String objectId) {
+    public List<Object> getContents(Object object) {
         List<Object> contents = new ArrayList<>();
-        Optional<EObject> optionalEObject = this.getObject(editingContext, objectId)
-                .filter(EObject.class::isInstance)
-                .map(EObject.class::cast);
-
-        if (optionalEObject.isPresent()) {
-            EObject eObject = optionalEObject.get();
+        if (object instanceof EObject eObject) {
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IEditingDomainItemProvider.class);
             if (adapter instanceof IEditingDomainItemProvider contentProvider) {
                 contents.addAll(contentProvider.getChildren(eObject));
