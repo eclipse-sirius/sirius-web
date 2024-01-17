@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.core.api;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.core.api.labels.StyledString;
+
 /**
  * Interface of the default service interacting with label objects.
  *
@@ -23,6 +25,8 @@ import java.util.Optional;
 public interface IDefaultLabelService {
 
     String getLabel(Object object);
+
+    StyledString getStyledLabel(Object object);
 
     String getFullLabel(Object object);
 
@@ -42,6 +46,11 @@ public interface IDefaultLabelService {
         @Override
         public String getLabel(Object object) {
             return "";
+        }
+
+        @Override
+        public StyledString getStyledLabel(Object object) {
+            return new StyledString(List.of());
         }
 
         @Override

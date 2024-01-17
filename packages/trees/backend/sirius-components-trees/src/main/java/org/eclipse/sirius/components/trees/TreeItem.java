@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 
 /**
  * An item of the tree.
@@ -33,7 +34,7 @@ public final class TreeItem {
 
     private String kind;
 
-    private String label;
+    private StyledString label;
 
     private List<String> iconURL;
 
@@ -65,7 +66,7 @@ public final class TreeItem {
         return this.kind;
     }
 
-    public String getLabel() {
+    public StyledString getLabel() {
         return this.label;
     }
 
@@ -117,7 +118,7 @@ public final class TreeItem {
 
         private String kind;
 
-        private String label;
+        private StyledString label;
 
         private List<String> iconURL;
 
@@ -142,7 +143,7 @@ public final class TreeItem {
             return this;
         }
 
-        public Builder label(String label) {
+        public Builder label(StyledString label) {
             this.label = Objects.requireNonNull(label);
             return this;
         }

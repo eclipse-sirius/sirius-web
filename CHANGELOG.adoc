@@ -32,6 +32,7 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 
  * The `NodeTool#selectionDescription` attribute of type `SelectionDescription` has been renamed into `dialogDescription` and is now of type `DialogDescription`.
  * The `SelectionDescription` type has been renamed into `SelectionDialogDescription` and inherit from `DialogDescription`.
+* The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
  * The `InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by a `variables: [ToolVariable!]!` to make it possible to provide any kind of variable to the backend context.
 
 ```
@@ -46,8 +47,8 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
   toolId: ID!
 }
 ```
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core, tree] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
 
-* The `String` attribute `org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput#selectedObjectId` has been replaced by the attribute `variables` of type `List<ToolVariable>`
 
 === Dependency update
 
@@ -62,6 +63,9 @@ As a result, the following maven modules have been deleted: `sirius-web-sample-a
 - https://github.com/eclipse-sirius/sirius-web/issues/2759[#2759] [diagram] Reactivate the Selection Dialog
 
 === New Features
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [core, tree] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService` that can be used to display styled string in the explorer.
++
+image:doc/screenshots/treeItemLabelStyled.jpg[StyledString, 70%]
 
 
 === Improvements
