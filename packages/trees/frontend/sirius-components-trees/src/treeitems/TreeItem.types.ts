@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLStyledString } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '../views/TreeView.types';
 
 export interface TreeItemProps {
@@ -30,7 +31,7 @@ export interface TreeItemState {
   showContextMenu: boolean;
   menuAnchor: Element | null;
   editingMode: boolean;
-  label: string;
+  label: GQLStyledString;
   prevSelectionId: string | null;
   editingKey: string | null;
   isHovered: boolean;

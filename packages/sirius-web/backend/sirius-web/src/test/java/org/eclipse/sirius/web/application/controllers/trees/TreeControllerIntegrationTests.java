@@ -49,6 +49,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
@@ -64,6 +65,7 @@ import reactor.test.StepVerifier;
  */
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @Transactional
+@ContextConfiguration(classes = ECoreSampleLabelService.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -76,27 +78,34 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
 
     private final TreeItemMatcher rootDocumentIsNamedEcore = new TreeItemMatcher(
             tree -> tree.getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("Ecore")
+            treeItem -> treeItem.getLabel().toString().equals("Ecore")
     );
 
     private final TreeItemMatcher rootDocumentIsNamedEcoreRenamed = new TreeItemMatcher(
             tree -> tree.getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("EcoreRenamed")
+            treeItem -> treeItem.getLabel().toString().equals("EcoreRenamed")
     );
 
     private final TreeItemMatcher ePackageIsNamedSample = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("Sample")
+            treeItem -> treeItem.getLabel().toString().equals("Sample")
+    );
+ 
+    private final TreeItemMatcher ePackageIsNamedSampleStyled = new TreeItemMatcher(
+            tree -> tree.getChildren().get(0).getChildren().get(0),
+            treeItem -> treeItem.getLabel().styledStringFragments().size() == 1 &&
+                    treeItem.getLabel().styledStringFragments().get(0).styledStringFragmentStyle().isStrikedout() &&
+                    treeItem.getLabel().styledStringFragments().get(0).styledStringFragmentStyle().getBackgroundColor().equals("red")
     );
 
     private final TreeItemMatcher ePackageIsNamedSampleRenamed = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("SampleRenamed")
+            treeItem -> treeItem.getLabel().toString().equals("SampleRenamed")
     );
 
     private final TreeItemMatcher representationIsAPortal = new TreeItemMatcher(
             tree -> tree.getChildren().get(0).getChildren().get(0).getChildren().get(0),
-            treeItem -> treeItem.getLabel().equals("Portal")
+            treeItem -> treeItem.getLabel().toString().equals("Portal")
     );
 
     private final TreeItemMatcher ePackageHasNoRepresentation = new TreeItemMatcher(
@@ -162,7 +171,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.PREFIX, expandedIds, List.of());
         var flux = this.treeEventSubscriptionRunner.run(input);
 
-        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.representationIsAPortal));
+        var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.representationIsAPortal, this.ePackageIsNamedSampleStyled));
         var hasNoMoreRepresentation = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageHasNoRepresentation));
         var hasNoMoreObject = this.getTreeRefreshedEventPayloadMatcher(List.of(this.documentHasNoObject));
 

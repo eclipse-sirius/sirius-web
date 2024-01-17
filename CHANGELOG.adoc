@@ -68,6 +68,7 @@ Accordingly, `IObjectSearchService` and `IIdentityService` now handle actual `IE
 - https://github.com/eclipse-sirius/sirius-web/issues/3391[#3391] [diagram] Some changes have been made in the View DSL for diagram:
 * super types `style` has been removed from `NodeStyleDescription`
 * attribute `background` has been added to `RectangularNodeStyleDescription` and `IconLabelNodeStyleDescription`
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [emf] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService`, you must implement this method if you have custom implementation of these interface. 
 
 === Dependency update
 
@@ -129,6 +130,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/3389[#3389] [form] Add support for DateTime widget
 - https://github.com/eclipse-sirius/sirius-web/issues/3307[#3307] [representation] Add support for the migration of representation
 - https://github.com/eclipse-sirius/sirius-web/issues/3503[#3503] [trees] Add tree item renaming support to the new architecture
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [emf] Added `getStyledLabel` in `IDefaultLabelService` and `IObjectService` that can be used to display styled string in the explorer.
 
 
 === Improvements

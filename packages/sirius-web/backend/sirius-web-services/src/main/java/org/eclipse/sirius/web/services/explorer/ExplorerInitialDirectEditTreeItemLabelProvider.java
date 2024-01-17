@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,8 +43,9 @@ public class ExplorerInitialDirectEditTreeItemLabelProvider implements IInitialD
                 .map(treeItems -> this.searchById(treeItems, input.treeItemId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(treeItem -> treeItem.getLabel())
+                .map(TreeItem::getLabel)
                 .findFirst()
+                .map(StyledString::toString)
                 .orElse("");
 
         return new InitialDirectEditElementLabelSuccessPayload(input.id(), initialLabel);

@@ -32,6 +32,8 @@ export { useComponents } from './extension/useComponents';
 export { useData } from './extension/useData';
 export * from './graphql/GQLTypes.types';
 export * from './icon/IconOverlay';
+export * from './label/StyledLabel';
+export * from './label/StyledLabel.type';
 export * from './materialui';
 export * from './modals/confirmation/ConfirmationDialogContext';
 export * from './modals/confirmation/ConfirmationDialogContext.types';
