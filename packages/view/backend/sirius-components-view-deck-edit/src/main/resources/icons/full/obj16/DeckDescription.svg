@@ -36,8 +36,8 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1016"
+     inkscape:window-width="2560"
+     inkscape:window-height="1403"
      id="namedview6"
      showgrid="false"
      inkscape:zoom="32.958333"
@@ -46,7 +46,8 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg4" />
+     inkscape:current-layer="svg4"
+     inkscape:document-rotation="0" />
   <path
      d="m 682.45575,-121.08091 c -76.01233,0 -104.57859,-4.73757 -120.24526,-20.40424 -15.66666,-15.66667 -24.19519,-36.2875 -24.29172,-58.28729 l -2.46523,-561.86314 c 0,0 -5.3099,-40.11975 28.43046,-64.09483 23.7927,-16.90651 48.2105,-15.3505 118.57175,-15.3505 h 160 c 22,0 40.83334,7.83333 56.5,23.5 15.66667,15.66667 23.5,34.5 23.5,56.5 v 560 c 0,22 -7.83333,40.83333 -23.5,56.5 -15.66666,15.66667 -34.5,23.5 -56.5,23.5 z m -68.04519,-640 2.93931,561.9153 225.10588,-1.9153 v -560 z m 228.04519,0 H 614.41056 Z"
      id="path2"
@@ -56,24 +57,24 @@
      id="path2-3"
      sodipodi:nodetypes="ssssssssssssscccccccc" />
   <rect
-     style="fill:#000000;stroke:#000000;stroke-width:0.572753"
-     id="rect426-4"
-     width="199.61482"
-     height="62.592449"
-     x="129.5755"
-     y="-717.57477" />
-  <rect
-     style="fill:#000000;stroke:#000000;stroke-width:0.572753"
+     style="fill:#000000;stroke:#000000;stroke-width:0.795009"
      id="rect426-4-6"
-     width="199.61482"
-     height="62.592449"
-     x="627.37024"
-     y="-716.83984" />
+     width="199.39256"
+     height="120.72987"
+     x="629.89917"
+     y="-715.21643" />
   <rect
-     style="fill:#000000;stroke:#000000;stroke-width:0.572753"
+     style="fill:#000000;stroke:#000000;stroke-width:0.800641"
      id="rect426-4-7"
-     width="199.61482"
-     height="62.592449"
-     x="630.15784"
-     y="-623.32214" />
+     width="199.38693"
+     height="122.4499"
+     x="630.39032"
+     y="-558.41516" />
+  <rect
+     style="fill:#000000;stroke:#000000;stroke-width:0.800641"
+     id="rect426-4-7-3"
+     width="199.38693"
+     height="122.4499"
+     x="130.75851"
+     y="-710.05554" />
 </svg>

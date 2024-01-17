@@ -23,7 +23,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { Deck } from '../Deck';
 import { Card, CardMetadata } from '../Deck.types';
-import { convertToTrelloDeckData } from '../utils/deckGQLConverter';
+import { convertToTrelloDeckData, moveCardInDeckLanes } from '../utils/deckGQLHelper';
 import { DeckRepresentationState } from './DeckRepresentation.types';
 import { deckEventSubscription } from './deckSubscription';
 import {
@@ -42,6 +42,9 @@ import {
   GQLDeleteCardVariables,
   GQLDeleteDeckCardInput,
   GQLDeleteDeckCardPayload,
+  GQLDropDeckCardData,
+  GQLDropDeckCardInput,
+  GQLDropDeckCardVariables,
   GQLEditCardData,
   GQLEditCardVariables,
   GQLEditDeckCardInput,
@@ -49,7 +52,7 @@ import {
   GQLSuccessPayload,
 } from './deckMutation.types';
 
-import { createCardMutation, deleteCardMutation, editCardMutation } from './deckMutation';
+import { createCardMutation, deleteCardMutation, dropDeckCardMutation, editCardMutation } from './deckMutation';
 const useDeckRepresentationStyles = makeStyles(() => ({
   complete: {
     display: 'flex',
@@ -122,6 +125,9 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     GQLCreateCardVariables
   >(createCardMutation);
 
+  const [dropDeckCard, { loading: dropDeckCardLoading, data: dropDeckCardData, error: dropDeckCardError }] =
+    useMutation<GQLDropDeckCardData, GQLDropDeckCardVariables>(dropDeckCardMutation);
+
   useEffect(() => {
     if (error) {
       addErrorMessage(error.message);
@@ -146,7 +152,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   }, [selection]);
   const handleError = (
     loading: boolean,
-    data: GQLEditCardData | GQLDeleteCardData | GQLCreateCardData | null | undefined,
+    data: GQLEditCardData | GQLDeleteCardData | GQLCreateCardData | GQLDropDeckCardData | null | undefined,
     error: ApolloError | undefined
   ) => {
     if (!loading) {
@@ -178,6 +184,9 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   useEffect(() => {
     handleError(createCardLoading, createCardData, createCardError);
   }, [createCardLoading, createCardData, createCardError]);
+  useEffect(() => {
+    handleError(dropDeckCardLoading, dropDeckCardData, dropDeckCardError);
+  }, [dropDeckCardLoading, dropDeckCardData, dropDeckCardError]);
 
   const handleEditCard = (_laneId: string, card: Card) => {
     const input: GQLEditDeckCardInput = {
@@ -222,6 +231,22 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     });
   };
 
+  const handleDropDeckCard = (oldLaneId: string, newLaneId: string, cardId: string, addedIndex: number) => {
+    if (deck) {
+      const input: GQLDropDeckCardInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId,
+        oldLaneId,
+        newLaneId,
+        cardId,
+        addedIndex,
+      };
+      moveCardInDeckLanes(deck, oldLaneId, newLaneId, cardId, addedIndex);
+      dropDeckCard({ variables: { input } });
+    }
+  };
+
   let content: JSX.Element | null = null;
   if (complete) {
     content = (
@@ -242,6 +267,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         onCardDelete={handleDeleteCard}
         onCardAdd={handleCreateCard}
         onCardUpdate={handleEditCard}
+        onCardMoveAcrossLanes={handleDropDeckCard}
       />
     );
   }

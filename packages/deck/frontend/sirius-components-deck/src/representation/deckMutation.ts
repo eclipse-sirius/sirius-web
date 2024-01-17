@@ -71,3 +71,23 @@ export const createCardMutation = gql`
     }
   }
 `;
+
+export const dropDeckCardMutation = gql`
+  mutation dropDeckCard($input: DropDeckCardInput!) {
+    dropDeckCard(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

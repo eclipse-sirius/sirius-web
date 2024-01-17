@@ -153,7 +153,7 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
     /**
      * This returns CardDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {

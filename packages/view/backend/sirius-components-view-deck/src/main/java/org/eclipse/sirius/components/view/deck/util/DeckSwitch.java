@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
@@ -143,6 +144,15 @@ public class DeckSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case DeckPackage.CARD_DROP_TOOL: {
+                CardDropTool cardDropTool = (CardDropTool) theEObject;
+                T result = this.caseCardDropTool(cardDropTool);
+                if (result == null)
+                    result = this.caseDeckTool(cardDropTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -263,6 +273,21 @@ public class DeckSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseEditLaneTool(EditLaneTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Card Drop Tool</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Card Drop Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCardDropTool(CardDropTool object) {
         return null;
     }
 

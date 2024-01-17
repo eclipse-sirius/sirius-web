@@ -21,6 +21,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createTool" eType="#//CreateCardTool"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cardDropTool" eType="#//CardDropTool"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CardDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
@@ -49,4 +51,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="EditCardTool" eSuperTypes="#//DeckTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteCardTool" eSuperTypes="#//DeckTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="EditLaneTool" eSuperTypes="#//DeckTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CardDropTool" eSuperTypes="#//DeckTool"/>
 </ecore:EPackage>

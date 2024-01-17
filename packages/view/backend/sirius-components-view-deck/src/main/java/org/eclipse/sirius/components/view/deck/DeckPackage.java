@@ -206,13 +206,22 @@ public interface DeckPackage extends EPackage {
     int LANE_DESCRIPTION__CREATE_TOOL = 5;
 
     /**
+     * The feature id for the '<em><b>Card Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DESCRIPTION__CARD_DROP_TOOL = 6;
+
+    /**
      * The number of structural features of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION_FEATURE_COUNT = 6;
+    int LANE_DESCRIPTION_FEATURE_COUNT = 7;
 
     /**
      * The number of operations of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -568,6 +577,59 @@ public interface DeckPackage extends EPackage {
     int EDIT_LANE_TOOL_OPERATION_COUNT = DECK_TOOL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.CardDropToolImpl <em>Card Drop
+     * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.deck.impl.CardDropToolImpl
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getCardDropTool()
+     * @generated
+     */
+    int CARD_DROP_TOOL = 8;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DROP_TOOL__NAME = DECK_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DROP_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DROP_TOOL__BODY = DECK_TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Card Drop Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DROP_TOOL_FEATURE_COUNT = DECK_TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Card Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DROP_TOOL_OPERATION_COUNT = DECK_TOOL_OPERATION_COUNT + 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.DeckDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -682,6 +744,18 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EReference getLaneDescription_CreateTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getCardDropTool <em>Card Drop Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Card Drop Tool</em>'.
+     * @see org.eclipse.sirius.components.view.deck.LaneDescription#getCardDropTool()
+     * @see #getLaneDescription()
+     * @generated
+     */
+    EReference getLaneDescription_CardDropTool();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.CardDescription <em>Card
@@ -851,6 +925,16 @@ public interface DeckPackage extends EPackage {
     EClass getEditLaneTool();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.CardDropTool <em>Card Drop
+     * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Card Drop Tool</em>'.
+     * @see org.eclipse.sirius.components.view.deck.CardDropTool
+     * @generated
+     */
+    EClass getCardDropTool();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -955,6 +1039,14 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EReference LANE_DESCRIPTION__CREATE_TOOL = eINSTANCE.getLaneDescription_CreateTool();
+
+        /**
+         * The meta object literal for the '<em><b>Card Drop Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LANE_DESCRIPTION__CARD_DROP_TOOL = eINSTANCE.getLaneDescription_CardDropTool();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.deck.impl.CardDescriptionImpl
@@ -1087,6 +1179,16 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EClass EDIT_LANE_TOOL = eINSTANCE.getEditLaneTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.deck.impl.CardDropToolImpl
+         * <em>Card Drop Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.deck.impl.CardDropToolImpl
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getCardDropTool()
+         * @generated
+         */
+        EClass CARD_DROP_TOOL = eINSTANCE.getCardDropTool();
 
     }
 

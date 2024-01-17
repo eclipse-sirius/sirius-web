@@ -83,7 +83,8 @@ export const DeckCard = ({
       style={cardStyle}
       className={className}
       onKeyDown={handleKeyDown}
-      data-testid={`card-${title}`}>
+      data-testid={`card-${title}`}
+      onDragStart={(e) => e.preventDefault()}>
       <DeckCardHeader>
         <DeckCardTitle draggable={cardDraggable} style={cardTitleFontStyle}>
           {editable ? (

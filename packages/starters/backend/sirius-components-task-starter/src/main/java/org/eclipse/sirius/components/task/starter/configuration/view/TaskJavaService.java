@@ -131,7 +131,6 @@ public class TaskJavaService {
                 project.getOwnedTasks().add(task);
             }
         }
-
     }
 
 
@@ -144,5 +143,53 @@ public class TaskJavaService {
                 task.setDescription(description);
             }
         }
+    }
+
+    public Task moveCardAtIndex(Task task, int index, TaskTag targetTag) {
+        // We retrieve all tasks with the same tag (in the same lane).
+        List<Task> targetLaneTaskList = this.getTasksWithTag(targetTag);
+        if (!targetLaneTaskList.isEmpty()) {
+            EObject eContainer = task.eContainer();
+            if (eContainer instanceof Project project) {
+                int newIndex = this.computeIndexOfTaskToReplace(task, index, targetLaneTaskList, project);
+                // We move the current task before the taskToReplace in the project ownTasks list.
+                int oldIndex = project.getOwnedTasks().indexOf(task);
+                // If the moved task was located before the new location, the index after having remove the task is decremented.
+                if (oldIndex < newIndex) {
+                    newIndex--;
+                }
+                project.getOwnedTasks().remove(task);
+                project.getOwnedTasks().add(newIndex, task);
+            }
+        }
+        return task;
+    }
+
+    /**
+     * When a card is moved, we change the underlying task ordering.
+     *
+     * @param task
+     *            the task to move.
+     * @param index
+     *            the new index in the lane task list.
+     * @param targetLaneTaskList
+     *            the current lane task list.
+     * @param project
+     *            the project owning the tasks.
+     * @return the index on which the task should be moved in the project task list to match the new index in the lane.
+     */
+    private int computeIndexOfTaskToReplace(Task task, int index, List<Task> targetLaneTaskList, Project project) {
+        int newIndex;
+        List<Task> unmovedLaneTasks = targetLaneTaskList.stream().filter(currentTask -> currentTask != task).toList();
+        if (index < unmovedLaneTasks.size()) {
+            // We retrieve the Task that will be located after the moved one.
+            Task taskToMoveAround = unmovedLaneTasks.get(index);
+            newIndex = project.getOwnedTasks().indexOf(taskToMoveAround);
+        } else {
+            // We need to locate the task after the last one in the lane
+            Task lastTask = unmovedLaneTasks.get(unmovedLaneTasks.size() - 1);
+            newIndex = project.getOwnedTasks().indexOf(lastTask) + 1;
+        }
+        return newIndex;
     }
 }

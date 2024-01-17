@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
@@ -90,6 +91,13 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     private EClass editLaneToolEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass cardDropToolEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -261,6 +269,16 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
+    public EReference getLaneDescription_CardDropTool() {
+        return (EReference) this.laneDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getCardDescription() {
         return this.cardDescriptionEClass;
     }
@@ -411,6 +429,16 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
+    public EClass getCardDropTool() {
+        return this.cardDropToolEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DeckFactory getDeckFactory() {
         return (DeckFactory) this.getEFactoryInstance();
     }
@@ -445,6 +473,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS);
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__EDIT_TOOL);
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__CREATE_TOOL);
+        this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__CARD_DROP_TOOL);
 
         this.cardDescriptionEClass = this.createEClass(CARD_DESCRIPTION);
         this.createEAttribute(this.cardDescriptionEClass, CARD_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
@@ -466,6 +495,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.deleteCardToolEClass = this.createEClass(DELETE_CARD_TOOL);
 
         this.editLaneToolEClass = this.createEClass(EDIT_LANE_TOOL);
+
+        this.cardDropToolEClass = this.createEClass(CARD_DROP_TOOL);
     }
 
     /**
@@ -504,6 +535,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.editCardToolEClass.getESuperTypes().add(this.getDeckTool());
         this.deleteCardToolEClass.getESuperTypes().add(this.getDeckTool());
         this.editLaneToolEClass.getESuperTypes().add(this.getDeckTool());
+        this.cardDropToolEClass.getESuperTypes().add(this.getDeckTool());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.deckDescriptionEClass, DeckDescription.class, "DeckDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -524,6 +556,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.initEReference(this.getLaneDescription_EditTool(), this.getEditLaneTool(), null, "editTool", null, 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getLaneDescription_CreateTool(), this.getCreateCardTool(), null, "createTool", null, 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getLaneDescription_CardDropTool(), this.getCardDropTool(), null, "cardDropTool", null, 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.cardDescriptionEClass, CardDescription.class, "CardDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -555,6 +589,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.initEClass(this.deleteCardToolEClass, DeleteCardTool.class, "DeleteCardTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.editLaneToolEClass, EditLaneTool.class, "EditLaneTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.cardDropToolEClass, CardDropTool.class, "CardDropTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

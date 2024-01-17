@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
@@ -81,6 +82,8 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
                 return this.createDeleteCardTool();
             case DeckPackage.EDIT_LANE_TOOL:
                 return this.createEditLaneTool();
+            case DeckPackage.CARD_DROP_TOOL:
+                return this.createCardDropTool();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -161,6 +164,17 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
     public EditLaneTool createEditLaneTool() {
         EditLaneToolImpl editLaneTool = new EditLaneToolImpl();
         return editLaneTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CardDropTool createCardDropTool() {
+        CardDropToolImpl cardDropTool = new CardDropToolImpl();
+        return cardDropTool;
     }
 
     /**

@@ -18,6 +18,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.deck.CardDescription;
+import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
@@ -116,6 +117,11 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseEditLaneTool(EditLaneTool object) {
             return DeckAdapterFactory.this.createEditLaneToolAdapter();
+        }
+
+        @Override
+        public Adapter caseCardDropTool(CardDropTool object) {
+            return DeckAdapterFactory.this.createCardDropToolAdapter();
         }
 
         @Override
@@ -250,6 +256,20 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEditLaneToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.deck.CardDropTool
+     * <em>Card Drop Tool</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.CardDropTool
+     * @generated
+     */
+    public Adapter createCardDropToolAdapter() {
         return null;
     }
 

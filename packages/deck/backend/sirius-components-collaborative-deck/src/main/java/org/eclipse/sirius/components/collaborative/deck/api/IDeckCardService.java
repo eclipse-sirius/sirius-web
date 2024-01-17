@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.collaborative.deck.api;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.CreateDeckCardInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeleteDeckCardInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckCardInput;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckCardInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.deck.Deck;
@@ -41,6 +42,11 @@ public interface IDeckCardService {
      */
     IPayload editCard(EditDeckCardInput editDeckCardInput, IEditingContext editingContext, Deck deck);
 
+    /**
+     * Move an existing card.
+     */
+    IPayload dropCard(DropDeckCardInput dropDeckCardInput, IEditingContext editingContext, Deck deck);
+
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -61,6 +67,11 @@ public interface IDeckCardService {
 
         @Override
         public IPayload deleteCard(DeleteDeckCardInput deleteDeckCardInput, IEditingContext editingContext, Deck deck) {
+            return null;
+        }
+
+        @Override
+        public IPayload dropCard(DropDeckCardInput dropDeckCardInput, IEditingContext editingContext, Deck deck) {
             return null;
         }
     }
