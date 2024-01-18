@@ -14,7 +14,7 @@
 
 - [ADR-122] Use the page object model in integration tests
 - [ADR-123] Improve frontend selection support
-
+- [ADR-124] Provide a common ShareRepresentationModal
 
 === Breaking changes
 
@@ -136,6 +136,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 The size of nodes that do not have been resized manually tries to fit the node default size.
 - https://github.com/eclipse-sirius/sirius-web/issues/2792[#2792] [diagram] Add a first version for arrange all support.
 - https://github.com/eclipse-sirius/sirius-web/issues/2926[#2926] [sirius-web] Add a first version of the support for {pre|post}processing of the editing context.
+- https://github.com/eclipse-sirius/sirius-web/issues/2848[#2848] [core] The new `ShareRepresentationModal` can be used to share the URL of any kind of representation.
 
 === Improvements
 

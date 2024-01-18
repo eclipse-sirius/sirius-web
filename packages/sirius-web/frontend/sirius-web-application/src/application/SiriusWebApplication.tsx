@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ApolloProvider } from '@apollo/client';
-import { ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { RepresentationPathContext, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
@@ -64,23 +64,30 @@ export const SiriusWebApplication = ({ httpOrigin, wsOrigin, theme, children }: 
     }
   });
 
+  const getRepresentationPath = (editingContextId: string, representationId: string) => {
+    // Note that this should match the corresponding route configuration
+    return `/projects/${editingContextId}/edit/${representationId}`;
+  };
+
   return (
     <ApolloProvider client={apolloClient}>
       <BrowserRouter>
         <ThemeProvider theme={siriusWebTheme}>
           <CssBaseline />
           <ServerContext.Provider value={{ httpOrigin }}>
-            <ToastProvider>
-              <RepresentationContextProvider>
-                <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                  <ViewsContext.Provider value={value}>
-                    <div style={style}>
-                      <Router />
-                    </div>
-                  </ViewsContext.Provider>
-                </NodeTypeContext.Provider>
-              </RepresentationContextProvider>
-            </ToastProvider>
+            <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
+              <ToastProvider>
+                <RepresentationContextProvider>
+                  <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                    <ViewsContext.Provider value={value}>
+                      <div style={style}>
+                        <Router />
+                      </div>
+                    </ViewsContext.Provider>
+                  </NodeTypeContext.Provider>
+                </RepresentationContextProvider>
+              </ToastProvider>
+            </RepresentationPathContext.Provider>
           </ServerContext.Provider>
         </ThemeProvider>
       </BrowserRouter>

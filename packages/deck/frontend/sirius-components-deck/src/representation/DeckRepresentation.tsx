@@ -227,6 +227,8 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     const data = convertToTrelloDeckData(deck, selectedCardIds);
     content = (
       <Deck
+        editingContextId={editingContextId}
+        representationId={representationId}
         data={data}
         onCardClick={handleCardClicked}
         onCardDelete={handleDeleteCard}

@@ -26,6 +26,8 @@ import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState } from './Gantt.types';
 
 export const Gantt = ({
+  editingContextId,
+  representationId,
   tasks,
   setSelection,
   onCreateTask,
@@ -111,12 +113,15 @@ export const Gantt = ({
   return (
     <div>
       <Toolbar
+        editingContextId={editingContextId}
+        representationId={representationId}
         zoomLevel={zoomLevel}
         columns={columns}
         tasks={tasks}
         onChangeZoomLevel={onChangeZoomLevel}
         onChangeDisplayColumns={onChangeDisplayColumns}
-        onChangeColumns={onChangeColumns}></Toolbar>
+        onChangeColumns={onChangeColumns}
+      />
       <GanttDiagram
         tasks={tasks}
         enableGridDrag={true}

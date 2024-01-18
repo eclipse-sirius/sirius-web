@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PortalRepresentationMode } from './PortalRepresentation.types';
+import React from 'react';
+import { RepresentationPathContextValue } from './RepresentationPathContext.types';
 
-export interface PortalToolbarProps {
-  editingContextId: string;
-  representationId: string;
-  fullscreenNode: React.RefObject<HTMLDivElement>;
-  portalMode: PortalRepresentationMode;
-  setPortalMode: (portalMode: PortalRepresentationMode) => void;
-}
+const value: RepresentationPathContextValue = {
+  getRepresentationPath: () => '',
+};
 
-export interface PortalToolbarState {
-  modal: 'share' | null;
-}
+export const RepresentationPathContext = React.createContext<RepresentationPathContextValue>(value);

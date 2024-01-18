@@ -219,6 +219,8 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
     const tasks = getTaskFromGQLTask(gantt.tasks, '');
     content = (
       <Gantt
+        editingContextId={editingContextId}
+        representationId={representationId}
         tasks={tasks}
         setSelection={setSelection}
         onCreateTask={handleCreateTask}

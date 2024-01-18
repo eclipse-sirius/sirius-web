@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo and others.
+ * Copyright (c) 2022, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export * from './color/getCSSColor';
+export * from './contexts/RepresentationPathContext';
+export * from './contexts/RepresentationPathContext.types';
 export * from './contexts/ServerContext';
 export * from './contexts/ServerContext.types';
 export * from './contexts/ToastContext';
@@ -18,6 +20,8 @@ export * from './contexts/ToastContext.types';
 export * from './dataTransferTypes';
 export * from './icon/IconOverlay';
 export * from './materialui';
+export * from './modals/share-representation/ShareRepresentationModal';
+export * from './modals/share-representation/ShareRepresentationModal.types';
 export * from './selection/SelectionContext';
 export * from './selection/SelectionContext.types';
 export * from './selection/useSelection';
