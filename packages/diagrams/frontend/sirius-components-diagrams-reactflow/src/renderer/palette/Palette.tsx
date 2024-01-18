@@ -429,7 +429,8 @@ export const Palette = ({
     hideDiagramElements([diagramElementId], true);
   };
 
-  if (!palette) {
+  const shouldRender = palette && (node || (!node && toolCount > 0));
+  if (!shouldRender) {
     return null;
   }
 
