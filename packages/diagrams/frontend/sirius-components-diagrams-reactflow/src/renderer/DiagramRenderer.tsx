@@ -42,6 +42,7 @@ import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useDrop } from './drop/useDrop';
 import { useDropNode } from './dropNode/useDropNode';
+import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
@@ -199,6 +200,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onConnect={onConnect}
       onConnectStart={onConnectStart}
       onConnectEnd={onConnectEnd}
+      connectionLineComponent={ConnectionLine}
       onEdgesChange={handleEdgesChange}
       onEdgeUpdate={reconnectEdge}
       onPaneClick={handlePaneClick}
