@@ -19,7 +19,7 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
+import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import { useContext } from 'react';
 import { RepresentationFrameProps } from './RepresentationFrame.types';
 
@@ -76,7 +76,7 @@ export const RepresentationFrame = ({
                 onDelete();
               }}
               size="small">
-              <DeleteIcon fontSize="small" />
+              <CloseOutlinedIcon fontSize="small" />
             </IconButton>
           ) : null}
         </div>

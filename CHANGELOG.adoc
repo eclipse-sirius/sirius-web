@@ -177,6 +177,7 @@ This change makes the editing context the single source of truth for the state o
 - https://github.com/eclipse-sirius/sirius-web/issues/2932[#2932] The line and the handle used to resize a node is now bigger. The handle is now circular.
 .Old resize handles vs new ones
 image:doc/screenshots/biggerResizeHandles2.png[Compartment with header without separator,70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/2948[#2948] [portal] Use a "close" icon instead of "delete" icon for the button that removes a representation from a portal (but does not delete the representation).
 
 == v2023.12.0
 
