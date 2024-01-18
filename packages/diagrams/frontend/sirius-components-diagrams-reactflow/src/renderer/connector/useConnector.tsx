@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@material-ui/core/styles';
 import { useContext } from 'react';
 import {
   Connection,
@@ -32,6 +32,13 @@ import { useDiagramElementPalette } from '../palette/useDiagramElementPalette';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
 import { NodeStyleProvider, UseConnectorValue } from './useConnector.types';
+
+const tempConnectionLineStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    stroke: theme.palette.selected,
+    strokeWidth: theme.spacing(0.2),
+  };
+};
 
 export const useConnector = (): UseConnectorValue => {
   const {
@@ -140,6 +147,7 @@ export const useConnector = (): UseConnectorValue => {
         type: 'smoothstep',
         animated: true,
         updatable: false,
+        style: tempConnectionLineStyle(theme),
         zIndex: 2002,
       };
       reactFlowInstance.setEdges((oldEdges: Edge<EdgeData>[]) => [...oldEdges, edge]);
