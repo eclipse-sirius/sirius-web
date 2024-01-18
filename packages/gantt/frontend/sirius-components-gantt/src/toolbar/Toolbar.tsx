@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { TaskListColumnEnum, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
@@ -24,8 +25,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import React, { useEffect, useState } from 'react';
-import { ShareGanttModal } from '../share-gantt/ShareGanttModal';
-import { ToolbarProps } from './Toolbar.types';
+import { ToolbarProps, ToolbarState } from './Toolbar.types';
 
 const useToolbarStyles = makeStyles((theme) => ({
   toolbar: {
@@ -48,6 +48,8 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 export const Toolbar = ({
+  editingContextId,
+  representationId,
   zoomLevel,
   columns,
   tasks,
@@ -55,17 +57,12 @@ export const Toolbar = ({
   onChangeDisplayColumns,
   onChangeColumns,
 }: ToolbarProps) => {
-  const [modal, setModal] = useState<string>('');
+  const [state, setState] = useState<ToolbarState>({ modal: null });
 
   const classes = useToolbarStyles();
 
-  const onShare = () => {
-    setModal('ShareGanttModal');
-  };
-
-  const closeModal = () => {
-    setModal('');
-  };
+  const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
+  const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));
 
   const onFitToScreen = () => {
     const minTime = Math.min.apply(
@@ -112,8 +109,14 @@ export const Toolbar = ({
   };
 
   let modalElement: React.ReactElement | null = null;
-  if (modal === 'ShareGanttModal') {
-    modalElement = <ShareGanttModal url={window.location.href} onClose={closeModal} />;
+  if (state.modal === 'share') {
+    modalElement = (
+      <ShareRepresentationModal
+        editingContextId={editingContextId}
+        representationId={representationId}
+        onClose={closeModal}
+      />
+    );
   }
 
   const onZoomIn = () => {

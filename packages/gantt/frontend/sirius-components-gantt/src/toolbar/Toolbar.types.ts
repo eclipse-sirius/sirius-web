@@ -13,10 +13,16 @@
 import { Task, TaskListColumnEnum, ViewMode } from '@ObeoNetwork/gantt-task-react/dist/types/public-types';
 
 export interface ToolbarProps {
+  editingContextId: string;
+  representationId: string;
   zoomLevel: ViewMode;
   columns: TaskListColumnEnum[];
   tasks: Task[];
   onChangeZoomLevel: (_: ViewMode) => any;
   onChangeDisplayColumns: () => any;
   onChangeColumns: (_: TaskListColumnEnum[]) => any;
+}
+
+export interface ToolbarState {
+  modal: 'share' | null;
 }

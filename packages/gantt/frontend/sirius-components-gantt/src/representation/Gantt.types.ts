@@ -20,6 +20,8 @@ export interface GanttState {
 }
 
 export interface GanttProps {
+  editingContextId: string;
+  representationId: string;
   tasks: Task[];
   setSelection: (selection: Selection) => void;
   onCreateTask: (Task: Task) => void;

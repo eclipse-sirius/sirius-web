@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -26,11 +27,12 @@ import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import { memo, useState } from 'react';
+import { memo, useContext, useState } from 'react';
 import { Panel, useReactFlow } from 'reactflow';
 import { UnpinIcon } from '../../icons/UnpinIcon';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { ShareDiagramDialog } from '../ShareDiagramDialog';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
@@ -68,6 +70,7 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloa
   const onUnpinAll = () => pinDiagramElements([...getAllElementsIds()], false);
 
   const { exportToImage } = useExportToImage();
+  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
   return (
     <>
@@ -166,7 +169,13 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloa
           </Tooltip>
         </Paper>
       </Panel>
-      {state.dialogOpen === 'Share' ? <ShareDiagramDialog onClose={handleCloseDialog} /> : null}
+      {state.dialogOpen === 'Share' ? (
+        <ShareRepresentationModal
+          editingContextId={editingContextId}
+          representationId={diagramId}
+          onClose={handleCloseDialog}
+        />
+      ) : null}
     </>
   );
 });

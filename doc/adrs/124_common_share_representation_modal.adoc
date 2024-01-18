@@ -1,0 +1,59 @@
+= ADR-124 - Provide a common ShareRepresentationModal
+
+== Context
+
+Most representation kinds have (or should/will have) a "share" button in their toolbar, which opens a modal dialog with the direct URL of the representation and copies it into the system clipboard.
+
+* Diagrams have `ShareDiagramDialog`.
+* Gantt have `ShareGanttModal` which is almost identical.
+* Portals and Deck representation will need one.
+* Forms should also probably have one, but they currently do not have a toolbar where to place it.
+
+There is nothing specific to the nature of the representation shared in this modal, so it would be better to have a single common implementation.
+
+In addition, the use of `window.location.href` (either hard-coded or passed as a prop) will soon become incorrect.
+For representations embedded inside a portal, sharing the representation should not share the current URL, which is the portal's URL.
+
+== Decision
+
+We will provide a common implementation of `ShareRepresentationModal` in `sirius-components-core`.
+It will be based on the existing implementation from `ShareDiagramDialog` but with a different API:
+
+```js
+export interface ShareRepresentationModalProps {
+  editingContextId: string;
+  representationId: string;
+  onClose: () => void;
+}
+```
+
+To obtain the URL pointing to the representation from `editingContextId` and `editingContextId` it will use a function provided by the new `RepresentationPathContext`:
+
+```js
+const { getRepresentationPath } = useContext<RepresentationPathContextValue>(RepresentationPathContext);
+const path: string = window.location.origin + getRepresentationPath(editingContextId, representationId);
+```
+
+This new context provider will need to be setup at the application level, in a way that is consistent with that application's routing.
+For `SiriusWebApplication` this will be:
+```js
+const getRepresentationPath = (editingContextId: string, representationId: string) => {
+  // Note that this should match the corresponding route configuration
+  return `/projects/${editingContextId}/edit/${representationId}`;
+};
+```
+
+React Router provides a [`generatePath`](https://reactrouter.com/en/main/utils/generate-path) function which could be used here to make sure the routing rule & representation path are consistent and derived from the same pattern.
+It was discusses, but decided that it's overkill for the moment as we currently have a single use case for this.
+
+* `ShareDiagramDialog` and `ShareGanttModal` will be removed and replaced by the new `ShareRepresentationModal`.
+* Deck will be improved to support the "Share" feature.
+
+== Consequences
+
+* We will have a single, consistent implementation of the share modal.
+* It will work for representations embedded inside a portal (where the current browser URL is *not* what we want to share).
+
+== Status
+
+Accepted

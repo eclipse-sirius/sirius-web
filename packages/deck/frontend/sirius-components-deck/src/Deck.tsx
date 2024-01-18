@@ -16,7 +16,15 @@ import { DeckProps } from './Deck.types';
 import { DeckCard } from './card/DeckCard';
 import { Toolbar } from './toolbar/Toolbar';
 
-export const Deck = ({ data, onCardClick, onCardDelete, onCardAdd, onCardUpdate }: DeckProps) => {
+export const Deck = ({
+  editingContextId,
+  representationId,
+  data,
+  onCardClick,
+  onCardDelete,
+  onCardAdd,
+  onCardUpdate,
+}: DeckProps) => {
   const theme: Theme = useTheme();
   const boardStyle = {
     backgroundColor: theme.palette.background.default,
@@ -26,7 +34,7 @@ export const Deck = ({ data, onCardClick, onCardDelete, onCardAdd, onCardUpdate 
   };
   return (
     <div>
-      <Toolbar></Toolbar>
+      <Toolbar editingContextId={editingContextId} representationId={representationId} />
       <Board
         data={data}
         draggable={true}

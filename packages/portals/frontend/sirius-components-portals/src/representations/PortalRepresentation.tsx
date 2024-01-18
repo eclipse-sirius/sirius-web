@@ -207,7 +207,13 @@ export const PortalRepresentation = ({
   const portalHasViews: boolean = portal && portal.views.length > 0;
   return (
     <div className={classes.portalRepresentationArea} ref={domNode}>
-      <PortalToolbar fullscreenNode={domNode} portalMode={mode} setPortalMode={(newMode) => setMode(newMode)} />
+      <PortalToolbar
+        editingContextId={editingContextId}
+        representationId={representationId}
+        fullscreenNode={domNode}
+        portalMode={mode}
+        setPortalMode={(newMode) => setMode(newMode)}
+      />
       <SelectionContext.Provider value={{ selection, setSelection: nonPropagatingSetSelection }}>
         <ResponsiveGridLayout
           className="layout"

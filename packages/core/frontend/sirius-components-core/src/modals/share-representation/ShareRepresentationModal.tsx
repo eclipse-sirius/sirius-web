@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,16 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ShareDiagramDialogProps } from './ShareDiagramDialog.types';
+import { useContext } from 'react';
+import { RepresentationPathContext } from '../../contexts/RepresentationPathContext';
+import { RepresentationPathContextValue } from '../../contexts/RepresentationPathContext.types';
+import { ShareRepresentationModalProps } from './ShareRepresentationModal.types';
 
-export const ShareDiagramDialog = ({ onClose }: ShareDiagramDialogProps) => {
+export const ShareRepresentationModal = ({
+  editingContextId,
+  representationId,
+  onClose,
+}: ShareRepresentationModalProps) => {
   const refCallback = (node: HTMLElement) => {
     if (node !== null) {
       var range = document.createRange();
@@ -30,9 +37,12 @@ export const ShareDiagramDialog = ({ onClose }: ShareDiagramDialogProps) => {
     }
   };
 
+  const { getRepresentationPath } = useContext<RepresentationPathContextValue>(RepresentationPathContext);
+  const path: string = window.location.origin + getRepresentationPath(editingContextId, representationId);
+
   let title = 'Shareable link';
   if (navigator.clipboard && document.hasFocus()) {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(path);
     title += ' (copied into the clipboard)';
   }
 
@@ -40,7 +50,7 @@ export const ShareDiagramDialog = ({ onClose }: ShareDiagramDialogProps) => {
     <Dialog open onClose={onClose} aria-labelledby="dialog-title" fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent ref={refCallback}>
-        <DialogContentText>{window.location.href}</DialogContentText>
+        <DialogContentText>{path}</DialogContentText>
       </DialogContent>
     </Dialog>
   );
