@@ -38,6 +38,7 @@ Its body operations are now bind on set/add instead of click.
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2775[#2775] [gantt] Handle TypeScript strict mode for Gantt module
+- https://github.com/eclipse-sirius/sirius-web/issues/2975[#2975] [diagram] Fix issues with ReactFlow pane events that were slowing down the application.
 
 == v2024.1.0
 

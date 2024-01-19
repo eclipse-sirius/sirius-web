@@ -12,9 +12,8 @@
  *******************************************************************************/
 
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import {
-  applyNodeChanges,
   Background,
   BackgroundVariant,
   ConnectionLineType,
@@ -24,8 +23,10 @@ import {
   NodeChange,
   NodePositionChange,
   OnEdgesChange,
+  OnMove,
   OnNodesChange,
   ReactFlow,
+  applyNodeChanges,
   useEdgesState,
   useNodesState,
 } from 'reactflow';
@@ -77,8 +78,12 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
-  const { onDiagramBackgroundClick, hideDiagramPalette } = useDiagramPalette();
-  const { onDiagramElementClick, hideDiagramElementPalette } = useDiagramElementPalette();
+  const { onDiagramBackgroundClick, hideDiagramPalette, isOpened: isDiagramPaletteOpened } = useDiagramPalette();
+  const {
+    onDiagramElementClick,
+    hideDiagramElementPalette,
+    isOpened: isDiagramElementPaletteOpened,
+  } = useDiagramElementPalette();
 
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
@@ -158,36 +163,44 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
     updateSelectionOnEdgesChange(changes);
   };
 
-  const handlePaneClick = (event: React.MouseEvent<Element, MouseEvent>) => {
-    const {
-      diagram: {
-        id,
-        metadata: { kind, label },
-      },
-    } = diagramRefreshedEventPayload;
-    const selection: Selection = {
-      entries: [
-        {
+  const handlePaneClick = useCallback(
+    (event: React.MouseEvent<Element, MouseEvent>) => {
+      const {
+        diagram: {
           id,
-          kind,
-          label,
+          metadata: { kind, label },
         },
-      ],
-    };
-    setSelection(selection);
-    onDiagramBackgroundClick(event);
-  };
+      } = diagramRefreshedEventPayload;
+      const selection: Selection = {
+        entries: [
+          {
+            id,
+            kind,
+            label,
+          },
+        ],
+      };
+      setSelection(selection);
+      onDiagramBackgroundClick(event);
+    },
+    [setSelection]
+  );
 
-  const onKeyDown = (event: React.KeyboardEvent<Element>) => {
+  const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
     onDelete(event);
-  };
+  }, []);
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
   const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle } = useDropNode();
   const { backgroundColor, smallGridColor, largeGridColor } = diagramBackgroundStyle;
   const { setHoveredNode } = useContext<NodeContextValue>(NodeContext);
+
+  const handleMove: OnMove = useCallback(() => {
+    hideDiagramPalette();
+    hideDiagramElementPalette();
+  }, [isDiagramElementPaletteOpened, isDiagramPaletteOpened]);
 
   return (
     <ReactFlow
@@ -206,10 +219,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onPaneClick={handlePaneClick}
       onEdgeClick={onDiagramElementClick}
       onNodeClick={onDiagramElementClick}
-      onMove={() => {
-        hideDiagramPalette();
-        hideDiagramElementPalette();
-      }}
+      onMove={handleMove}
       nodeDragThreshold={1}
       onDrop={onDrop}
       onDragOver={onDragOver}
