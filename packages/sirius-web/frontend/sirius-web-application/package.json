@@ -78,6 +78,6 @@
     "rollup-plugin-peer-deps-external": "2.2.4",
     "xstate": "4.32.1",
     "typescript": "5.1.6",
-    "vite": "4.4.9"
+    "vite": "4.5.2"
   }
 }
