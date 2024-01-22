@@ -147,6 +147,7 @@
     "reactflow": "11.10.1",
     "reflect-metadata": "0.1.13",
     "sprotty": "0.12.0",
+    "snabbdom": "3.5.1",
     "xstate": "4.32.1"
   }
 }
