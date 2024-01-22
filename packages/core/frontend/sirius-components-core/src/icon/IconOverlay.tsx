@@ -48,7 +48,7 @@ export const IconOverlay = ({
       {iconURL?.length > 0 && (
         <div className={classes.iconContainer} style={{ ...customIconStyle }}>
           {iconURL.map((url: string, index) => (
-            <Tooltip title={title || ''}>
+            <Tooltip title={title || ''} key={'tooltip_' + index}>
               <img
                 height={iconHeight}
                 width={iconWidth}
