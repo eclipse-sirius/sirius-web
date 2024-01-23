@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.tests.assertions;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.forms.Form;
 
@@ -24,5 +26,11 @@ public class FormAssert extends AbstractAssert<FormAssert, Form> {
 
     public FormAssert(Form form) {
         super(form, FormAssert.class);
+    }
+
+    public FormAssert hasLabel(String label) {
+        assertThat(this.actual.getLabel()).isEqualTo(label);
+
+        return this;
     }
 }

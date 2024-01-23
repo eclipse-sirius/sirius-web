@@ -34,7 +34,9 @@ The removal of those deprecated modules will occur during the iteration 2024.9.0
 +
 For further information, please refer to ADR _130_add_support_for_outside_inside_node_labels.adoc_
 - https://github.com/eclipse-sirius/sirius-web/issues/3237[#3237] [diagram] Update the name of the `diagramEvent` variable to `diagramEvents` to reflect that events are now stored in a list.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2567[#2567] [form] The `Slider` widget is now a standard widget
+- https://github.com/eclipse-sirius/sirius-web/issues/2567[#2567] [form] The TypeScript API used to contribute custom widgets has changed a little to fix some types which could not work in a strict TypeScript environment.
+The use of generics has thus been greatly reduced since they could not create a set of coherent TypeScript type signatures.
 
 === Dependency update
 
@@ -62,7 +64,8 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 
 === Improvements
 
-- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] Improve the new architecture to reach feature partity with the old one
+- https://github.com/eclipse-sirius/sirius-web/issues/3279[#3279] [sirius-web] Improve the new architecture to reach feature partity with the old one
+- https://github.com/eclipse-sirius/sirius-web/issues/2567[#2567] [form] Fix the inconsistency in the typing of the custom widget API
 
 
 == v2024.3.0
@@ -101,7 +104,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 
 === Breaking changes
 
-- https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.
+- https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [form] The reference widget has been updated.
 On backend side, `clickHandler` has been removed from `ReferenceValue`.
 `itemClickHandlerProvider` has been removed from `ReferenceWidgetDescription`.
 EventHandler & DataFetcher on widget reference item click action have also been deleted.
@@ -184,7 +187,7 @@ The implemented fix does not allow to evaluate an AQL expression, but only to re
 
 === New Features
 
-- https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.
+- https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [form] Reference widget has been updated.
 Its body operations are now bind on set/add instead of click.
 - https://github.com/eclipse-sirius/sirius-web/issues/2942[#2942] [deck] Add the Card Drag and Drop capability in the Deck representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/3024[#3024] [sirius-web] Add a new Papaya example diagram `Deployment Diagram` that will allow us to test border nodes
@@ -620,7 +623,7 @@ The user can use 'shift+enter' to insert a line break.
 - https://github.com/eclipse-sirius/sirius-web/issues/2522[#2522] [diagram] Add the support for rotatable border node.
 - https://github.com/eclipse-sirius/sirius-web/issues/2255[#2255] [diagram] Add the possibility to specify a ratio on node to guarantee its appearance.
 - https://github.com/eclipse-sirius/sirius-web/issues/2568[#2568] [trees] Allow developers to modify the content of the explorer view
-- https://github.com/eclipse-sirius/sirius-web/issues/2570[#2570] [forms] Allow developers to modify the content of the details view
+- https://github.com/eclipse-sirius/sirius-web/issues/2570[#2570] [form] Allow developers to modify the content of the details view
 - https://github.com/eclipse-sirius/sirius-web/issues/2618[#2618] [core] Add an API to provide pre-process and post-process around input handling.
 
 === Improvements
@@ -704,7 +707,7 @@ All of its remaining content was only relevant inside of Sirius Web and it has t
 - [releng] Stop minifying the code of Sirius Components packages.
 As a result the development of applications consuming Sirius Components packages will be easier and it will be the responsibility of the application to minify everything (which they should already be doing).
 - https://github.com/eclipse-sirius/sirius-web/issues/2296[#2296] [diagram] `sirius-components-diagrams-reactflow` now depends on `html-to-image` node package.
-- https://github.com/eclipse-sirius/sirius-web/issues/2236[#2236] [forms] The introduction of _ForDescription_ and _IfDescription_ elements to the Forms DSL introduced breaking changes in the metamodel.
+- https://github.com/eclipse-sirius/sirius-web/issues/2236[#2236] [form] The introduction of _ForDescription_ and _IfDescription_ elements to the Forms DSL introduced breaking changes in the metamodel.
 Existing FormDescription documents will need to be modified to load correctly, and any custom widget's metamodel will need to be regenerated using the new `form.ecore` version as reference.
 See [ADR-107] _Add support for dynamic and conditional widgets in Forms_ for the details of the changes.
 Also, all widget descriptions now have a `Function<VariableManager, String> targetObjectIdProvider`, needed to compute the widget instance's id.
@@ -772,7 +775,7 @@ An error message is now displayed if the _Shape_ is not set.
 - https://github.com/eclipse-sirius/sirius-web/issues/2117[#2117] [form] Add a modal to select new values for multi-valued references
 - https://github.com/eclipse-sirius/sirius-web/issues/2118[#2118] [form] Add a modal to create new objects on a widget reference
 - https://github.com/eclipse-sirius/sirius-web/issues/2253[#2253] [diagram] Add the possibility of organizing palette tools into sections
-- https://github.com/eclipse-sirius/sirius-web/issues/2236[#2236] [forms] It is now possible to use `For` and `If` constructs inside the definition of Form (currently only inside _Groups_ and _Flexbox containers_).
+- https://github.com/eclipse-sirius/sirius-web/issues/2236[#2236] [form] It is now possible to use `For` and `If` constructs inside the definition of Form (currently only inside _Groups_ and _Flexbox containers_).
 Both constructs are commonly combined together, with e.g. _For_ iterating on the different features of the current semantic element and several _If_ inside the loop to decide which concrete widget(s) to instantiate depending on the feature's type.
 They can however also be used independently (e.g. a single _If_ outside of a _For_ to make the presence of a widget conditional) and combined in arbitrary ways (e.g. nested loops or conditionals).
 Note that this first version has a known limitation: _FormDescriptions_ which use _For_ or _If_ elements can not be reliably edited using the _Form Description Editor_.
@@ -918,7 +921,7 @@ image:doc/images/Widget_Help_Tooltip.png[Example of a help tooltip on a widget]
 +
 - https://github.com/eclipse-sirius/sirius-components/issues/2048[#2048] [diagram] Add a basic support for the resize.
 It is possible to reduce the size of a node less than the space needed to display all children.
-- https://github.com/eclipse-sirius/sirius-components/issues/2064[#2064] [forms] Make the `IWidgetDescriptor` API more flexible.
+- https://github.com/eclipse-sirius/sirius-components/issues/2064[#2064] [form] Make the `IWidgetDescriptor` API more flexible.
 - https://github.com/eclipse-sirius/sirius-components/issues/1618[#1618] [view] Split the view metamodel into dedicated subpackages.
 - https://github.com/eclipse-sirius/sirius-components/issues/2083[#2083] [diagram] Add support for edge markers
 - https://github.com/eclipse-sirius/sirius-components/issues/2086[#2086] [diagram] Add a panel with the default diagram actions
@@ -935,13 +938,13 @@ image:doc/images/Diagram_closed_arrow_with_vertical_bar.png[closed arrow with ve
 image:doc/images/Diagram_closed_arrow_with_dots.png[closed arrow with dots]
 +
 
-- https://github.com/eclipse-sirius/sirius-components/issues/2098[#2098] [forms] Enable vertical scrolling on the Reference widget's when showing more than a few values.
+- https://github.com/eclipse-sirius/sirius-components/issues/2098[#2098] [form] Enable vertical scrolling on the Reference widget's when showing more than a few values.
 - https://github.com/eclipse-sirius/sirius-components/issues/2135[#2135] [tree] Allow `TreeItemContextMenuContribution`s to only apply to specific trees (based on the tree id).
 The existing context menu contributions now only apply to the _Explorer_ view.
 - https://github.com/eclipse-sirius/sirius-components/issues/2128[#2128] [releng] Update generated classes copyright to apply the same format as other classes.
 - https://github.com/eclipse-sirius/sirius-components/issues/2091[#2091] [diagram] Add support for the direct edit in the diagram with nodes.
 - https://github.com/eclipse-sirius/sirius-components/issues/2142[#2142] [diagram] Add support for Edge labels (begin, center, end) in sirius-components-diagrams-reactflow.
-- https://github.com/eclipse-sirius/sirius-components/issues/2097[#2097] [forms] Add click handler support on the reference value of a reference widget.
+- https://github.com/eclipse-sirius/sirius-components/issues/2097[#2097] [form] Add click handler support on the reference value of a reference widget.
 - https://github.com/eclipse-sirius/sirius-components/issues/2123[#2123] [tree] Add support for non-selectable tree items
 - https://github.com/eclipse-sirius/sirius-components/issues/2126[#2126] [tree] Add support for multiple Explorer-like tree definitions.
 These should be registered globally like other representations using a `IRepresentationDescriptionRegistryConfigurer`.
@@ -1122,8 +1125,8 @@ Removing dependencies from sirius-components-compatibility-emf in the canHandle 
 - https://github.com/eclipse-sirius/sirius-components/issues/1710[#1710] [diagram] Ensure that the edit box of an empty edge label is not located at the wrong position
 - https://github.com/eclipse-sirius/sirius-components/issues/1716[#1716] [workbench] Fixed the "Related Elements" view when activated on dynamic instances
 - https://github.com/eclipse-sirius/sirius-components/issues/1591[#1591] [emf] Creating root elements in a model will now use the EPackages loaded in the package registry of the editing domain
-- https://github.com/eclipse-sirius/sirius-components/issues/1746[#1746] [forms] Rich-text editor toolbar on forms representations are not grayed when read-only
-- https://github.com/eclipse-sirius/sirius-components/issues/1744[#1744] [forms] Checkboxes on forms representations are not grayed when read-only
+- https://github.com/eclipse-sirius/sirius-components/issues/1746[#1746] [form] Rich-text editor toolbar on forms representations are not grayed when read-only
+- https://github.com/eclipse-sirius/sirius-components/issues/1744[#1744] [form] Checkboxes on forms representations are not grayed when read-only
 - https://github.com/eclipse-sirius/sirius-components/issues/1639[#1639] [core] Support schemaLocation and extendedMetaData for JSON resource
 - https://github.com/eclipse-sirius/sirius-components/issues/1760[#1760] [project] Remove an invalid attribute from our pom.xml
 - https://github.com/eclipse-sirius/sirius-components/issues/1675[#1675] [explorer] Align tree items without children with their siblings
@@ -1131,7 +1134,7 @@ Removing dependencies from sirius-components-compatibility-emf in the canHandle 
 - https://github.com/eclipse-sirius/sirius-components/issues/1604[#1604] [diagram] Fix fade does not work on border nodes
 - https://github.com/eclipse-sirius/sirius-components/issues/1773[#1773] [workbench] Fix editors area tab title may hide close button
 - https://github.com/eclipse-sirius/sirius-components/issues/1541[#1541] [workbench] Editors area can overflow on Details view
-- https://github.com/eclipse-sirius/sirius-components/issues/1708[#1708] [forms] Fix the impossibility to move a toolbar action from a group to another with no toolbar actions in FormDescriptionEditors.
+- https://github.com/eclipse-sirius/sirius-components/issues/1708[#1708] [form] Fix the impossibility to move a toolbar action from a group to another with no toolbar actions in FormDescriptionEditors.
 - https://github.com/eclipse-sirius/sirius-components/issues/1748[#1748] [chart] Underline and strike-through style options are not taken into account for BarCharts.
 - https://github.com/eclipse-sirius/sirius-components/issues/1688[#1688] [form] The title of the Details view will not be wrapped on multiple lines anymore
 - https://github.com/eclipse-sirius/sirius-components/issues/1602[#1602] [diagram] The connector tool does not work with descriptions from the View DSL
@@ -1327,10 +1330,10 @@ By default, new nodes, edges and tools are explicitly configured to invoke the d
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1453[#1453] [diagram] Add new arrow styles Circle, FillCircle and CrossedCircle
-- https://github.com/eclipse-sirius/sirius-components/issues/1364[#1364] [forms] Add support for a basic image widget
+- https://github.com/eclipse-sirius/sirius-components/issues/1364[#1364] [form] Add support for a basic image widget
 - https://github.com/eclipse-sirius/sirius-components/issues/1386[#1386] [project] Users can now upload their own images from a project's new settings page (available in the project menu). These images can be displayed in forms using the new image widget, or in View-based diagrams using and ImageNodeStyleDescription and selecting the image in the list of available shapes.
 - https://github.com/eclipse-sirius/sirius-components/issues/1457[#1457] [diagram] Make possible to provide an expression on the label edit tool in View DSL to initialize the direct edit label text field. We kept the current behavior for the compatibility layer but, _in fine_ it will be possible to leverage the direct edit tool _Input Label Expression_ to initialize the direct edit label text field.
-- https://github.com/eclipse-sirius/sirius-components/issues/1346[#1346] [forms] Add support for a Rich Text edition widget. The widget behaves in a similar way to the existing Textfield and Textarea widgets, except that the text value should be valid Markdown, and can be edited in a WYSIWYG way by the end user.
+- https://github.com/eclipse-sirius/sirius-components/issues/1346[#1346] [form] Add support for a Rich Text edition widget. The widget behaves in a similar way to the existing Textfield and Textarea widgets, except that the text value should be valid Markdown, and can be edited in a WYSIWYG way by the end user.
 - https://github.com/eclipse-sirius/sirius-components/issues/1428[#1428] [layout] Add support for List layout compartment. We rely on the layout strategy engine handler switch and the layout engine handler switch to dispatch to the correct behavior depending on how children should be laid out and the type of the node. This kind of architecture has already been implemented for model operation for the View DSL. Nothing has changed if nodes have to be laid out freely.
 - https://github.com/eclipse-sirius/sirius-components/issues/1439[#1439] [form] Add support for toolbar actions in Form/FormDescriptionEditor
 - https://github.com/eclipse-sirius/sirius-components/issues/1437[#1437] [form] Add support for styles preview in FormDescriptionEditor
@@ -1338,7 +1341,7 @@ By default, new nodes, edges and tools are explicitly configured to invoke the d
 - https://github.com/eclipse-sirius/sirius-components/issues/1510[#1510] [form] Add support for multi-groups in Form/FormDescriptionEditor
 - https://github.com/eclipse-sirius/sirius-components/issues/1504[#1504] [releng] Add Cypress-based integration tests
 - https://github.com/eclipse-sirius/sirius-components/issues/1446[#1446] [diagram] Add support for hidden and faded edges
-- https://github.com/eclipse-sirius/sirius-components/issues/1426[#1426] [forms] Add support for optional text completion on textfield widgets. This is enabled in the View DSL properties for domain types and AQL expressions
+- https://github.com/eclipse-sirius/sirius-components/issues/1426[#1426] [form] Add support for optional text completion on textfield widgets. This is enabled in the View DSL properties for domain types and AQL expressions
 - https://github.com/eclipse-sirius/sirius-components/issues/1507[#1507] [diagram] Missing variables during execution of a source reconnection tool from the View description (otherEnd,semanticOtherEnd,edgeView and editingContext)
 - https://github.com/eclipse-sirius/sirius-components/issues/1521[#1521] [view] Canonical creation tools from contextual toolbar have no icons
 - https://github.com/eclipse-sirius/sirius-components/issues/1467[#1467] [layout] Elk is now able to compute a list layout. It is an internal change, and thus, nothing should change for the end user
@@ -1378,7 +1381,7 @@ By default, new nodes, edges and tools are explicitly configured to invoke the d
 - https://github.com/eclipse-sirius/sirius-components/issues/1385[#1385] [releng] Migrate the backend and frontend code of Sirius Web to Sirius Component. The purpose of this migration is to facilitate the maintenance of these two projects (one pull request instead of two different).
 - https://github.com/eclipse-sirius/sirius-components/issues/997[#997] [diagram] Edge routing points are not reset when one of the edge end is moving
 - https://github.com/eclipse-sirius/sirius-components/issues/1387[#1387] [releng] Migrate VSCode Extension to Sirius Components.
-- https://github.com/eclipse-sirius/sirius-components/issues/1423[#1423] [forms] In-browser spell-checking is now disabled on textfields.
+- https://github.com/eclipse-sirius/sirius-components/issues/1423[#1423] [form] In-browser spell-checking is now disabled on textfields.
 
 === New Features
 
@@ -1401,7 +1404,7 @@ By default, new nodes, edges and tools are explicitly configured to invoke the d
 - https://github.com/eclipse-sirius/sirius-components/issues/1237[#1237] [releng] Remove the two hardcoded dependencies to Spring MVC from Sirius Components. As such, reusing most components from Sirius Components without Spring MVC will be easier. The only projects with a dependency to Spring MVC are located in the `web` package
 - https://github.com/eclipse-sirius/sirius-components/issues/1312[#1312] [graphql] Provide the datafetchers used by the representations. Starting with the validation representation, we will provide datafetchers directly in Sirius Components to simplify the integration of Sirius Components in various applications. The project `sirius-components-graphql-utils` has been merged into `sirius-components-graphql-api` since they had similar dependencies.
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [charts] The components related to charts have been extracted to `@eclipse-sirius/sirius-components-charts`
-- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [forms] The components related to forms have been extracted to `@eclipse-sirius/sirius-components-forms`. The views and representations have adopted the suffix `View` and `Representation` respectively. As an example, the component `FormWebSocketContainer` is now named `FormRepresentation`
+- https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [form] The components related to forms have been extracted to `@eclipse-sirius/sirius-components-forms`. The views and representations have adopted the suffix `View` and `Representation` respectively. As an example, the component `FormWebSocketContainer` is now named `FormRepresentation`
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [formdescriptioneditors] The components related to formdescriptioneditors have been extracted to `@eclipse-sirius/sirius-components-formdescriptioneditors`. The representation has been renamed `FormDescriptionEditorRepresentation`.
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [core] Since the core parts of Sirius Components cannot possibly known the components of the representations installed in a project, the context `RepresentationContext` will not provide a default value anymore. In a similar fashion, the `ServerContext` from `@eclipse-sirius/sirius-components-core` will now be required in order to let Sirius Components retrieve the URL of the backend.
 - https://github.com/eclipse-sirius/sirius-components/issues/1231[#1231] [trees] The trees related components and the explorer have been extracted to `@eclipse-sirius/sirius-components-trees`. The `ExplorerWebSocketContainer` has also been renamed `ExplorerView` to match the naming convention of the other views. The components migrated have also been fully converted to XState and MaterialUI
@@ -1500,8 +1503,8 @@ To integrate the "Details" view inside a workbench, one must now use the new `De
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-components/issues/1242[#1242] [view] Provide icons for View DSL Widgets and FormDescription
-- https://github.com/eclipse-sirius/sirius-components/issues/1214[#1214] [forms] The mandatory label attribute which was available in all concrete widget types is now explicitly part of the common supertype.
-- https://github.com/eclipse-sirius/sirius-components/issues/1215[#1215] [forms] Widgets can now optionally specify an `iconURL`. It is not used in the default UI for the details view or forms representations for now, but icons (if present) are visible in the toggle buttons bar for groups using the new `displayMode = TOGGLEABLE_AREAS`.
+- https://github.com/eclipse-sirius/sirius-components/issues/1214[#1214] [form] The mandatory label attribute which was available in all concrete widget types is now explicitly part of the common supertype.
+- https://github.com/eclipse-sirius/sirius-components/issues/1215[#1215] [form] Widgets can now optionally specify an `iconURL`. It is not used in the default UI for the details view or forms representations for now, but icons (if present) are visible in the toggle buttons bar for groups using the new `displayMode = TOGGLEABLE_AREAS`.
 - https://github.com/eclipse-sirius/sirius-components/issues/1141[#1141] [workbench] It is now possible to add a "Related View" contribution to the workbench.
 It behaves like the "Details" view in that it reacts to the selection by displaying a Form, but is designed to display contextual information about the selected element (i.e. which elements it points to and which elements point to it for example).
 The actual definition of the application (e.g. Sirius Web), which must provide a single bean implementing the new `IRelatedElementsDescriptionProvider` interface.
@@ -1550,7 +1553,7 @@ See ADR-54 for the details.
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Spring Boot 2.6.6
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to GraphQL Java 18.0
 - https://github.com/eclipse-sirius/sirius-components/issues/1118[#1118] [core] Switch to Sirius Desktop 7.0.0
-- https://github.com/eclipse-sirius/sirius-components/issues/1140[#1140] [forms] The frontend now depends on `@material-ui/lab` version 4.0.0-alpha.61
+- https://github.com/eclipse-sirius/sirius-components/issues/1140[#1140] [form] The frontend now depends on `@material-ui/lab` version 4.0.0-alpha.61
 
 === Bug fixes
 

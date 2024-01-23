@@ -54,6 +54,8 @@ import org.eclipse.sirius.components.forms.components.RichTextComponent;
 import org.eclipse.sirius.components.forms.components.RichTextComponentProps;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponentProps;
+import org.eclipse.sirius.components.forms.components.SliderComponent;
+import org.eclipse.sirius.components.forms.components.SliderComponentProps;
 import org.eclipse.sirius.components.forms.components.SplitButtonComponent;
 import org.eclipse.sirius.components.forms.components.SplitButtonComponentProps;
 import org.eclipse.sirius.components.forms.components.TextareaComponent;
@@ -140,6 +142,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof RichTextComponentProps;
         } else if (ToolbarActionComponent.class.equals(componentType)) {
             checkValidProps = props instanceof ToolbarActionComponentProps;
+        } else if (SliderComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof SliderComponentProps;
         } else {
             checkValidProps = this.widgetDescriptors.stream()
                     .map(widgetDescriptor -> widgetDescriptor.validateComponentProps(componentType, props))

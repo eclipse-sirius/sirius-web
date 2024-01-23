@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.form.PieChartDescription;
 import org.eclipse.sirius.components.view.form.RadioDescription;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
+import org.eclipse.sirius.components.view.form.SliderDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 
@@ -250,6 +251,9 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         SelectDescription selectDescription = FormFactory.eINSTANCE.createSelectDescription();
         selectDescription.setStyle(FormFactory.eINSTANCE.createSelectDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, selectDescription));
+
+        SliderDescription sliderDescription = FormFactory.eINSTANCE.createSliderDescription();
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, sliderDescription));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createSplitButtonDescription()));
 

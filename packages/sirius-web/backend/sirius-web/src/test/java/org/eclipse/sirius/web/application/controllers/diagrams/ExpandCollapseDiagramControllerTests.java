@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.PapayaSampleIdentifiers;
 import org.eclipse.sirius.web.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.services.diagrams.ExpandCollapseDiagramDescriptionProvider;
@@ -78,9 +78,9 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
     private Flux<DiagramRefreshedEventPayload> givenSubscriptionToExpandedCollapseDiagram() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                TestIdentifiers.PAPAYA_PROJECT.toString(),
+                PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(),
                 this.expandCollapseDiagramDescriptionProvider.getRepresentationDescriptionId(),
-                TestIdentifiers.PAPAYA_ROOT_OBJECT.toString(),
+                PapayaSampleIdentifiers.ROOT_OBJECT.toString(),
                 "ExpandCollapseDiagram"
         );
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
@@ -141,11 +141,11 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable expandNodes = () -> {
             String expandToolId = this.expandCollapseDiagramDescriptionProvider.getExpandNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, null);
-            var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), collapsedNodeId.get(), expandToolId, 0, 0, null);
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
-            String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Predicate<DiagramRefreshedEventPayload> updatedDiagramContentMatcher = payload -> Optional.of(payload)
@@ -191,7 +191,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
 
         Runnable collapseNodes = () -> {
             String collapseToolId = this.expandCollapseDiagramDescriptionProvider.getCollapseNodeToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), TestIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, null);
+            var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaSampleIdentifiers.PAPAYA_PROJECT.toString(), diagramId.get(), expandedNodeId.get(), collapseToolId, 0, 0, null);
             var invokeSingleClickOnDiagramElementToolResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
             String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");

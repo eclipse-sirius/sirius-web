@@ -10,23 +10,29 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { getCSSColor, IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import { getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
+import { IconOverlay, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  GQLWidget,
+  PreviewWidgetComponent,
+  PreviewWidgetProps,
+  getTextDecorationLineValue,
+} from '@eclipse-sirius/sirius-components-forms';
 import { GQLReferenceWidget } from '@eclipse-sirius/sirius-components-widget-reference';
+import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useEffect, useRef, useState } from 'react';
 import { GQLReferenceWidgetStyle } from './ReferenceWidgetFragment.types';
-import Chip from '@material-ui/core/Chip';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import AddIcon from '@material-ui/icons/Add';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+
+const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   referenceValueStyle: {
@@ -50,16 +56,19 @@ const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   },
 }));
 
-type ReferenceWidgetProps = WidgetProps<GQLReferenceWidget>;
-
-export const ReferencePreview = ({ widget }: ReferenceWidgetProps) => {
+export const ReferencePreview: PreviewWidgetComponent = ({ widget }: PreviewWidgetProps) => {
+  let style: GQLReferenceWidgetStyle | null = null;
+  if (isReferenceWidget(widget)) {
+    const referenceWidget: GQLReferenceWidget = widget;
+    style = referenceWidget.style;
+  }
   const props: GQLReferenceWidgetStyle = {
-    color: widget.style?.color ?? null,
-    fontSize: widget.style?.fontSize ?? null,
-    italic: widget.style?.italic ?? null,
-    bold: widget.style?.bold ?? null,
-    underline: widget.style?.underline ?? null,
-    strikeThrough: widget.style?.strikeThrough ?? null,
+    color: style?.color ?? null,
+    fontSize: style?.fontSize ?? null,
+    italic: style?.italic ?? null,
+    bold: style?.bold ?? null,
+    underline: style?.underline ?? null,
+    strikeThrough: style?.strikeThrough ?? null,
   };
   const classes = useStyles(props);
 
@@ -76,8 +85,11 @@ export const ReferencePreview = ({ widget }: ReferenceWidgetProps) => {
     }
   }, [selection, widget]);
 
-  const options = [{ label: 'Referenced Value', iconURL: '/api/images/icons/full/obj16/Entity.svg' }];
+  if (!isReferenceWidget(widget)) {
+    return null;
+  }
 
+  const options = [{ label: 'Referenced Value', iconURL: '/api/images/icons/full/obj16/Entity.svg' }];
   return (
     <div className={classes.propertySection}>
       <div className={classes.propertySectionLabel}>

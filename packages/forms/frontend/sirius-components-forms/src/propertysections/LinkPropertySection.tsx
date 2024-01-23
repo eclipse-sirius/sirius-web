@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,11 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import Link from '@material-ui/core/Link';
 import { makeStyles, Theme } from '@material-ui/core/styles';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLLink } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 import { HelpTooltip } from './HelpTooltip';
-import { LinkPropertySectionProps, LinkStyleProps } from './LinkPropertySection.types';
+import { LinkStyleProps } from './LinkPropertySection.types';
 
 const useStyle = makeStyles<Theme, LinkStyleProps>((theme) => ({
   style: {
@@ -35,7 +37,11 @@ const useStyle = makeStyles<Theme, LinkStyleProps>((theme) => ({
 /**
  * Defines the content of a Link property section.
  */
-export const LinkPropertySection = ({ editingContextId, formId, widget }: LinkPropertySectionProps) => {
+export const LinkPropertySection: PropertySectionComponent<GQLLink> = ({
+  editingContextId,
+  formId,
+  widget,
+}: PropertySectionComponentProps<GQLLink>) => {
   const props: LinkStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,

@@ -190,6 +190,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/IsEnabledExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//TreeDescription/body"/>
     </genClasses>
+    <genClasses ecoreClass="form.ecore#//SliderDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//SliderDescription/minValueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//SliderDescription/maxValueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//SliderDescription/currentValueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//SliderDescription/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//SliderDescription/isEnabledExpression"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="form.ecore#//WidgetDescriptionStyle"/>
     <genClasses ecoreClass="form.ecore#//BarChartDescriptionStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//BarChartDescriptionStyle/barsColor"/>

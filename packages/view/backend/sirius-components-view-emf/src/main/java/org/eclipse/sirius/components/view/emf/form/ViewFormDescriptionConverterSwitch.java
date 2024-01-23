@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.forms.description.SliderDescription;
 import org.eclipse.sirius.components.interpreter.BooleanValueProvider;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -854,9 +855,50 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Object candidate = variableManager.getVariables().get(VariableManager.SELF);
         return this.objectService.getKind(candidate);
     }
+
     @Override
     public Optional<AbstractControlDescription> caseWidgetDescription(WidgetDescription widgetDescription) {
         return this.customWidgetConverters.doSwitch(widgetDescription).map(AbstractControlDescription.class::cast);
+    }
+
+    @Override
+    public Optional<AbstractControlDescription> caseSliderDescription(org.eclipse.sirius.components.view.form.SliderDescription viewSliderDescription) {
+        String descriptionId = this.getDescriptionId(viewSliderDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(viewSliderDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewSliderDescription.getIsEnabledExpression());
+        Function<VariableManager, Integer> minValueProvider = this.getIntValueProvider(viewSliderDescription.getMinValueExpression());
+        Function<VariableManager, Integer> maxValueProvider = this.getIntValueProvider(viewSliderDescription.getMaxValueExpression());
+        Function<VariableManager, Integer> currentValueProvider = this.getIntValueProvider(viewSliderDescription.getCurrentValueExpression());
+        Function<VariableManager, IStatus> newValueHandler = this.getOperationsHandler(viewSliderDescription.getBody());
+
+        var builder = SliderDescription.newSliderDescription(descriptionId)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
+                .minValueProvider(minValueProvider)
+                .maxValueProvider(maxValueProvider)
+                .currentValueProvider(currentValueProvider)
+                .newValueHandler(newValueHandler)
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "");
+        if (viewSliderDescription.getHelpExpression() != null && !viewSliderDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(viewSliderDescription.getHelpExpression()));
+        }
+        return Optional.of(builder.build());
+    }
+
+    private Function<VariableManager, Integer> getIntValueProvider(String intValueExpression) {
+        String safeValueExpression = Optional.ofNullable(intValueExpression).orElse("");
+        return variableManager -> {
+            if (!safeValueExpression.isBlank()) {
+                Result result = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression);
+                return result.asInt().orElse(0);
+            }
+            return 0;
+        };
     }
 
     private IStatus handleItemDeletion(VariableManager variableManager) {

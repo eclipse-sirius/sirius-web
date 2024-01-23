@@ -15,6 +15,7 @@ export type Kind =
   | 'TextArea'
   | 'Checkbox'
   | 'Radio'
+  | 'Slider'
   | 'Select'
   | 'MultiSelect'
   | 'Button'

@@ -17,6 +17,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import ImageIcon from '@material-ui/icons/Image';
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
+import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import LinkIcon from '@material-ui/icons/Link';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
@@ -81,6 +82,10 @@ export const coreWidgets: WidgetDescriptor[] = [
   {
     name: 'Select',
     icon: <ArrowDropDownCircleIcon />,
+  },
+  {
+    name: 'Slider',
+    icon: <LinearScaleOutlinedIcon />,
   },
   {
     name: 'Tree',

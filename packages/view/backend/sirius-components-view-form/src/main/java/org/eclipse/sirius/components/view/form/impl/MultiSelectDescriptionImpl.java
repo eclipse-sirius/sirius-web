@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -319,7 +319,8 @@ public class MultiSelectDescriptionImpl extends WidgetDescriptionImpl implements
     @Override
     public EList<ConditionalMultiSelectDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalMultiSelectDescriptionStyle.class, this, FormPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalMultiSelectDescriptionStyle.class, this,
+                    FormPackage.MULTI_SELECT_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

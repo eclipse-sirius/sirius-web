@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLImage } from '../form/FormEventFragments.types';
-
-export interface ImagePropertySectionProps {
-  editingContextId: string;
-  formId: string;
-  widget: GQLImage;
-}
 
 export interface ImageStyleProps {
   maxWidth: string | null;

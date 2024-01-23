@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,9 @@ import Button from '@material-ui/core/Button';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import { useContext, useEffect } from 'react';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLButton } from '../form/FormEventFragments.types';
 import {
-  ButtonPropertySectionProps,
   ButtonStyleProps,
   GQLErrorPayload,
   GQLPushButtonInput,
@@ -101,13 +102,13 @@ const isSuccessPayload = (payload: GQLPushButtonPayload | GQLUpdateWidgetFocusPa
  * Defines the content of a Button property section.
  * The content is submitted when pushing the button.
  */
-export const ButtonPropertySection = ({
+export const ButtonPropertySection: PropertySectionComponent<GQLButton> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
   readOnly,
-}: ButtonPropertySectionProps) => {
+}: PropertySectionComponentProps<GQLButton>) => {
   const props: ButtonStyleProps = {
     backgroundColor: widget.style?.backgroundColor ?? null,
     foregroundColor: widget.style?.foregroundColor ?? null,
