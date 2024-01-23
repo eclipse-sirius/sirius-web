@@ -11,18 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface GQLDeleteCardVariables {
   input: GQLDeleteDeckCardInput;
 }
+
 export interface GQLDeleteDeckCardInput {
   id: string;
   editingContextId: string;
   representationId: string;
   cardId: string;
 }
+
 export interface GQLDeleteCardData {
   deleteDeckCard: GQLDeleteDeckCardPayload;
 }
+
 export interface GQLDeleteDeckCardPayload {
   __typename: string;
 }
@@ -30,6 +35,7 @@ export interface GQLDeleteDeckCardPayload {
 export interface GQLEditCardVariables {
   input: GQLEditDeckCardInput;
 }
+
 export interface GQLEditDeckCardInput {
   id: string;
   editingContextId: string;
@@ -39,9 +45,11 @@ export interface GQLEditDeckCardInput {
   newDescription: string;
   newLabel: string;
 }
+
 export interface GQLEditCardData {
   editDeckCard: GQLEditDeckCardPayload;
 }
+
 export interface GQLEditDeckCardPayload {
   __typename: string;
 }
@@ -49,6 +57,7 @@ export interface GQLEditDeckCardPayload {
 export interface GQLCreateCardVariables {
   input: GQLCreateDeckCardInput;
 }
+
 export interface GQLCreateDeckCardInput {
   id: string;
   editingContextId: string;
@@ -58,9 +67,15 @@ export interface GQLCreateDeckCardInput {
   label: string;
   description: string;
 }
+
 export interface GQLCreateCardData {
   createCard: GQLCreateDeckCardPayload;
 }
+
 export interface GQLCreateDeckCardPayload {
   __typename: string;
+}
+
+export interface GQLSuccessPayload extends GQLCreateDeckCardPayload, GQLDeleteDeckCardPayload, GQLEditDeckCardPayload {
+  messages: GQLMessage[];
 }

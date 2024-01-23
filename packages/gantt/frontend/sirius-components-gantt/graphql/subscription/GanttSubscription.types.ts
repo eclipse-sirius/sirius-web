@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Task } from '@ObeoNetwork/gantt-task-react';
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core/src/graphql/GQLTypes.types';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface GQLGanttEventSubscription {
   ganttEvent: GQLGanttEventPayload;
@@ -84,6 +84,7 @@ export interface GQLTaskDetail {
   progress: number;
   computeStartEndDynamically: boolean;
 }
+
 export interface GQLTaskStyle {
   labelColor: string;
   backgroundColor: string;

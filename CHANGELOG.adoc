@@ -16,6 +16,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2984[#2984] [deck] Handle successPayload messages in Deck representation.
 
 === New Features
 
