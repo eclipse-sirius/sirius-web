@@ -21,6 +21,7 @@ import {
   EdgeChange,
   Node,
   NodeChange,
+  NodeDragHandler,
   NodePositionChange,
   OnEdgesChange,
   OnMove,
@@ -48,13 +49,12 @@ import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
+import { useNodeHover } from './hover/useNodeHover';
 import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange';
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
 import { useSynchronizeLayoutData } from './layout/useSynchronizeLayoutData';
 import { useMoveChange } from './move/useMoveChange';
-import { NodeContext } from './node/NodeContext';
-import { NodeContextValue } from './node/NodeContext.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
@@ -88,7 +88,9 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { onConnect, onConnectStart, onConnectEnd } = useConnector();
   const { reconnectEdge } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
-  const { getNodeTypes } = useNodeType();
+  const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle, targetNodeId, draggedNode } =
+    useDropNode();
+  const { nodeTypes } = useNodeType();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeData>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<MultiLabelEdgeData>([]);
@@ -136,27 +138,33 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { applyHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
 
-  const handleNodesChange: OnNodesChange = (changes: NodeChange[]) => {
-    if (changes.length === 1 && changes[0]?.type === 'dimensions' && typeof changes[0].resizing !== 'boolean') {
-      setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
-    } else {
-      let transformedNodeChanges = transformBorderNodeChanges(changes);
-      transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
+  const handleNodesChange: OnNodesChange = useCallback(
+    (changes: NodeChange[]) => {
+      if (changes.length === 1 && changes[0]?.type === 'dimensions' && typeof changes[0].resizing !== 'boolean') {
+        setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
+      } else {
+        setNodes((oldNodes) => {
+          let transformedNodeChanges = transformBorderNodeChanges(changes);
+          transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
 
-      if (transformedNodeChanges.some((change) => change.type === 'position')) {
-        hideDiagramElementPalette();
+          if (transformedNodeChanges.some((change) => change.type === 'position')) {
+            hideDiagramElementPalette();
+          }
+
+          let newNodes = applyNodeChanges(transformedNodeChanges, oldNodes);
+
+          newNodes = applyMoveChange(transformedNodeChanges, newNodes);
+          newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+          setNodes(newNodes);
+          layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
+
+          updateSelectionOnNodesChange(changes);
+          return newNodes;
+        });
       }
-
-      let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
-
-      newNodes = applyMoveChange(transformedNodeChanges, newNodes);
-      newNodes = applyHandleChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-      setNodes(newNodes);
-      layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
-
-      updateSelectionOnNodesChange(changes);
-    }
-  };
+    },
+    [setNodes, targetNodeId, draggedNode?.id]
+  );
 
   const handleEdgesChange: OnEdgesChange = (changes: EdgeChange[]) => {
     onEdgesChange(changes);
@@ -193,19 +201,29 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const { snapToGrid, onSnapToGrid } = useSnapToGrid();
 
-  const { onNodeDragStart, onNodeDrag, onNodeDragStop, diagramBackgroundStyle } = useDropNode();
   const { backgroundColor, smallGridColor, largeGridColor } = diagramBackgroundStyle;
-  const { setHoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const handleMove: OnMove = useCallback(() => {
     hideDiagramPalette();
     hideDiagramElementPalette();
   }, [isDiagramElementPaletteOpened, isDiagramPaletteOpened]);
 
+  const handleNodeDragStop: NodeDragHandler = onNodeDragStop((node: Node) => {
+    const resetPosition: NodePositionChange = {
+      id: node.id,
+      type: 'position',
+      position: node.position,
+      positionAbsolute: node.positionAbsolute,
+    };
+    onNodesChange([resetPosition]);
+  });
+
+  const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
+
   return (
     <ReactFlow
       nodes={nodes}
-      nodeTypes={getNodeTypes()}
+      nodeTypes={nodeTypes}
       onNodesChange={handleNodesChange}
       edges={edges}
       edgeTypes={edgeTypes}
@@ -225,19 +243,9 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onDragOver={onDragOver}
       onNodeDrag={onNodeDrag}
       onNodeDragStart={onNodeDragStart}
-      onNodeDragStop={onNodeDragStop((node: Node) => {
-        const resetPosition: NodePositionChange = {
-          id: node.id,
-          type: 'position',
-          position: node.position,
-          positionAbsolute: node.positionAbsolute,
-        };
-        onNodesChange([resetPosition]);
-      })}
-      onNodeMouseEnter={(_event: React.MouseEvent<Element, MouseEvent>, node: Node<NodeData>) => {
-        setHoveredNode(node);
-      }}
-      onNodeMouseLeave={() => setHoveredNode(null)}
+      onNodeDragStop={handleNodeDragStop}
+      onNodeMouseEnter={onNodeMouseEnter}
+      onNodeMouseLeave={onNodeMouseLeave}
       maxZoom={40}
       minZoom={0.1}
       snapToGrid={snapToGrid}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeTypes } from '@reactflow/core/dist/esm/types';
 
-export interface UseNodeTypeValue {
-  nodeTypes: NodeTypes;
+import { NodeMouseHandler } from 'reactflow';
+
+export interface UseNodeHoverValue {
+  onNodeMouseEnter: NodeMouseHandler;
+  onNodeMouseLeave: NodeMouseHandler;
 }
