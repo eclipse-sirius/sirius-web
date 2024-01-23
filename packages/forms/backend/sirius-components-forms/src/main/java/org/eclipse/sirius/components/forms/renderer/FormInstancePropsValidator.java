@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.forms.elements.PageElementProps;
 import org.eclipse.sirius.components.forms.elements.RadioElementProps;
 import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
+import org.eclipse.sirius.components.forms.elements.SliderElementProps;
 import org.eclipse.sirius.components.forms.elements.SplitButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
@@ -106,6 +107,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof RichTextElementProps;
         } else if (ToolbarActionElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof ToolbarActionElementProps;
+        } else if (SliderElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof SliderElementProps;
         } else {
             checkValidProps = this.widgetDescriptors.stream()
                     .map(widgetDescriptor -> widgetDescriptor.validateInstanceProps(type, props))

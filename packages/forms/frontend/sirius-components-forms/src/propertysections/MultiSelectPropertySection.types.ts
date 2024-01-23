@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLMessage, GQLMultiSelect, GQLSubscriber } from '../form/FormEventFragments.types';
+import { GQLMessage } from '../form/FormEventFragments.types';
 
 export interface MultiSelectStyleProps {
   backgroundColor: string | null;
@@ -20,14 +20,6 @@ export interface MultiSelectStyleProps {
   bold: boolean | null;
   underline: boolean | null;
   strikeThrough: boolean | null;
-}
-
-export interface MultiSelectPropertySectionProps {
-  editingContextId: string;
-  formId: string;
-  widget: GQLMultiSelect;
-  subscribers: GQLSubscriber[];
-  readOnly: boolean;
 }
 
 export interface GQLEditMultiSelectMutationData {

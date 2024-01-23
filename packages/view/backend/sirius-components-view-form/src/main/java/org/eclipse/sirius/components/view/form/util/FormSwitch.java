@@ -63,6 +63,7 @@ import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SliderDescription;
 import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
@@ -352,6 +353,17 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescription(treeDescription);
                 if (result == null)
                     result = this.caseFormElementDescription(treeDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.SLIDER_DESCRIPTION: {
+                SliderDescription sliderDescription = (SliderDescription) theEObject;
+                T result = this.caseSliderDescription(sliderDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(sliderDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(sliderDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -962,6 +974,21 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseTreeDescription(TreeDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Slider Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Slider Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSliderDescription(SliderDescription object) {
         return null;
     }
 

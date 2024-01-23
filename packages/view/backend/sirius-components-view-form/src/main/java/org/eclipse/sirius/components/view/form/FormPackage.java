@@ -2132,6 +2132,104 @@ public interface FormPackage extends EPackage {
     int TREE_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.SliderDescriptionImpl <em>Slider
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.form.impl.SliderDescriptionImpl
+     * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSliderDescription()
+     * @generated
+     */
+    int SLIDER_DESCRIPTION = 23;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__NAME = WIDGET_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__LABEL_EXPRESSION = WIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Help Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Min Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Max Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Current Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
+     * The number of structural features of the '<em>Slider Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The number of operations of the '<em>Slider Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SLIDER_DESCRIPTION_OPERATION_COUNT = WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.impl.WidgetDescriptionStyleImpl
      * <em>Widget Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2139,7 +2237,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getWidgetDescriptionStyle()
      * @generated
      */
-    int WIDGET_DESCRIPTION_STYLE = 23;
+    int WIDGET_DESCRIPTION_STYLE = 24;
 
     /**
      * The number of structural features of the '<em>Widget Description Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2167,7 +2265,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getBarChartDescriptionStyle()
      * @generated
      */
-    int BAR_CHART_DESCRIPTION_STYLE = 24;
+    int BAR_CHART_DESCRIPTION_STYLE = 25;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2244,7 +2342,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalBarChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 25;
+    int CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE = 26;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2328,7 +2426,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getButtonDescriptionStyle()
      * @generated
      */
-    int BUTTON_DESCRIPTION_STYLE = 26;
+    int BUTTON_DESCRIPTION_STYLE = 27;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2415,7 +2513,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalButtonDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 27;
+    int CONDITIONAL_BUTTON_DESCRIPTION_STYLE = 28;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2509,7 +2607,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getCheckboxDescriptionStyle()
      * @generated
      */
-    int CHECKBOX_DESCRIPTION_STYLE = 28;
+    int CHECKBOX_DESCRIPTION_STYLE = 29;
 
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2554,7 +2652,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalCheckboxDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 29;
+    int CONDITIONAL_CHECKBOX_DESCRIPTION_STYLE = 30;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2606,7 +2704,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelDescriptionStyle()
      * @generated
      */
-    int LABEL_DESCRIPTION_STYLE = 30;
+    int LABEL_DESCRIPTION_STYLE = 31;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2683,7 +2781,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalLabelDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 31;
+    int CONDITIONAL_LABEL_DESCRIPTION_STYLE = 32;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2767,7 +2865,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLinkDescriptionStyle()
      * @generated
      */
-    int LINK_DESCRIPTION_STYLE = 32;
+    int LINK_DESCRIPTION_STYLE = 33;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2844,7 +2942,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalLinkDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 33;
+    int CONDITIONAL_LINK_DESCRIPTION_STYLE = 34;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2928,7 +3026,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getListDescriptionStyle()
      * @generated
      */
-    int LIST_DESCRIPTION_STYLE = 34;
+    int LIST_DESCRIPTION_STYLE = 35;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3005,7 +3103,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalListDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 35;
+    int CONDITIONAL_LIST_DESCRIPTION_STYLE = 36;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3089,7 +3187,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getMultiSelectDescriptionStyle()
      * @generated
      */
-    int MULTI_SELECT_DESCRIPTION_STYLE = 36;
+    int MULTI_SELECT_DESCRIPTION_STYLE = 37;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3184,7 +3282,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalMultiSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 37;
+    int CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE = 38;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3286,7 +3384,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getPieChartDescriptionStyle()
      * @generated
      */
-    int PIE_CHART_DESCRIPTION_STYLE = 38;
+    int PIE_CHART_DESCRIPTION_STYLE = 39;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3379,7 +3477,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalPieChartDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 39;
+    int CONDITIONAL_PIE_CHART_DESCRIPTION_STYLE = 40;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3479,7 +3577,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getRadioDescriptionStyle()
      * @generated
      */
-    int RADIO_DESCRIPTION_STYLE = 40;
+    int RADIO_DESCRIPTION_STYLE = 41;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3556,7 +3654,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalRadioDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 41;
+    int CONDITIONAL_RADIO_DESCRIPTION_STYLE = 42;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3640,7 +3738,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSelectDescriptionStyle()
      * @generated
      */
-    int SELECT_DESCRIPTION_STYLE = 42;
+    int SELECT_DESCRIPTION_STYLE = 43;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3735,7 +3833,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalSelectDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 43;
+    int CONDITIONAL_SELECT_DESCRIPTION_STYLE = 44;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3837,7 +3935,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextareaDescriptionStyle()
      * @generated
      */
-    int TEXTAREA_DESCRIPTION_STYLE = 44;
+    int TEXTAREA_DESCRIPTION_STYLE = 45;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3924,7 +4022,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalTextareaDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 45;
+    int CONDITIONAL_TEXTAREA_DESCRIPTION_STYLE = 46;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4018,7 +4116,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getTextfieldDescriptionStyle()
      * @generated
      */
-    int TEXTFIELD_DESCRIPTION_STYLE = 46;
+    int TEXTFIELD_DESCRIPTION_STYLE = 47;
 
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4105,7 +4203,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalTextfieldDescriptionStyle()
      * @generated
      */
-    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 47;
+    int CONDITIONAL_TEXTFIELD_DESCRIPTION_STYLE = 48;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4199,7 +4297,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderStyle()
      * @generated
      */
-    int CONTAINER_BORDER_STYLE = 48;
+    int CONTAINER_BORDER_STYLE = 49;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4261,7 +4359,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getConditionalContainerBorderStyle()
      * @generated
      */
-    int CONDITIONAL_CONTAINER_BORDER_STYLE = 49;
+    int CONDITIONAL_CONTAINER_BORDER_STYLE = 50;
 
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4330,7 +4428,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementFor()
      * @generated
      */
-    int FORM_ELEMENT_FOR = 50;
+    int FORM_ELEMENT_FOR = 51;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4391,7 +4489,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFormElementIf()
      * @generated
      */
-    int FORM_ELEMENT_IF = 51;
+    int FORM_ELEMENT_IF = 52;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4444,7 +4542,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getFlexDirection()
      * @generated
      */
-    int FLEX_DIRECTION = 52;
+    int FLEX_DIRECTION = 53;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.GroupDisplayMode <em>Group Display
@@ -4454,7 +4552,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getGroupDisplayMode()
      * @generated
      */
-    int GROUP_DISPLAY_MODE = 53;
+    int GROUP_DISPLAY_MODE = 54;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.LabelPlacement <em>Label
@@ -4464,7 +4562,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getLabelPlacement()
      * @generated
      */
-    int LABEL_PLACEMENT = 54;
+    int LABEL_PLACEMENT = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.form.ContainerBorderLineStyle <em>Container
@@ -4474,7 +4572,7 @@ public interface FormPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getContainerBorderLineStyle()
      * @generated
      */
-    int CONTAINER_BORDER_LINE_STYLE = 55;
+    int CONTAINER_BORDER_LINE_STYLE = 56;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.FormDescription
@@ -5579,6 +5677,76 @@ public interface FormPackage extends EPackage {
      * @generated
      */
     EReference getTreeDescription_Body();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.SliderDescription <em>Slider
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Slider Description</em>'.
+     * @see org.eclipse.sirius.components.view.form.SliderDescription
+     * @generated
+     */
+    EClass getSliderDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.SliderDescription#getMinValueExpression <em>Min Value
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Min Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.SliderDescription#getMinValueExpression()
+     * @see #getSliderDescription()
+     * @generated
+     */
+    EAttribute getSliderDescription_MinValueExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.SliderDescription#getMaxValueExpression <em>Max Value
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Max Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.SliderDescription#getMaxValueExpression()
+     * @see #getSliderDescription()
+     * @generated
+     */
+    EAttribute getSliderDescription_MaxValueExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.SliderDescription#getCurrentValueExpression <em>Current Value
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Current Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.SliderDescription#getCurrentValueExpression()
+     * @see #getSliderDescription()
+     * @generated
+     */
+    EAttribute getSliderDescription_CurrentValueExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.form.SliderDescription#getBody <em>Body</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.form.SliderDescription#getBody()
+     * @see #getSliderDescription()
+     * @generated
+     */
+    EReference getSliderDescription_Body();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.SliderDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.SliderDescription#getIsEnabledExpression()
+     * @see #getSliderDescription()
+     * @generated
+     */
+    EAttribute getSliderDescription_IsEnabledExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.PieChartDescription <em>Pie
@@ -7543,6 +7711,56 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EReference TREE_DESCRIPTION__BODY = eINSTANCE.getTreeDescription_Body();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.SliderDescriptionImpl
+         * <em>Slider Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.form.impl.SliderDescriptionImpl
+         * @see org.eclipse.sirius.components.view.form.impl.FormPackageImpl#getSliderDescription()
+         * @generated
+         */
+        EClass SLIDER_DESCRIPTION = eINSTANCE.getSliderDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Min Value Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION = eINSTANCE.getSliderDescription_MinValueExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Max Value Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION = eINSTANCE.getSliderDescription_MaxValueExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Current Value Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION = eINSTANCE.getSliderDescription_CurrentValueExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SLIDER_DESCRIPTION__BODY = eINSTANCE.getSliderDescription_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getSliderDescription_IsEnabledExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.PieChartDescriptionImpl

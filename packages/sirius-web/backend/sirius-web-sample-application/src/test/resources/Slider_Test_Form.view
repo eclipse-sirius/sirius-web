@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:customwidgets="http://www.eclipse.org/sirius-web/customwidgets" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:view="http://www.eclipse.org/sirius-web/view">
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:view="http://www.eclipse.org/sirius-web/view">
   <descriptions xmi:type="form:FormDescription" name="Slider Widget Test" domainType="flow::System" titleExpression="Slider Widget Test">
     <pages>
       <groups>
@@ -7,7 +7,7 @@
           <body xmi:type="view:SetValue" featureName="weight" valueExpression="aql:newValue"/>
           <style/>
         </children>
-        <children xmi:type="customwidgets:SliderDescription" name="Weight" labelExpression="Weight" minValueExpression="0" maxValueExpression="100" currentValueExpression="aql:self.weight">
+        <children xmi:type="form:SliderDescription" name="Weight" labelExpression="Weight" minValueExpression="0" maxValueExpression="100" currentValueExpression="aql:self.weight">
           <body xmi:type="view:SetValue" featureName="weight" valueExpression="aql:newValue"/>
         </children>
         <children xmi:type="form:FlexboxContainerDescription">
@@ -15,7 +15,7 @@
             <body xmi:type="view:SetValue" featureName="temperature" valueExpression="aql:newValue"/>
             <style/>
           </children>
-          <children xmi:type="customwidgets:SliderDescription" name="temperature" labelExpression="temperature" minValueExpression="-273" maxValueExpression="500" currentValueExpression="aql:self.temperature">
+          <children xmi:type="form:SliderDescription" name="temperature" labelExpression="temperature" minValueExpression="-273" maxValueExpression="500" currentValueExpression="aql:self.temperature">
             <body xmi:type="view:SetValue" featureName="temperature" valueExpression="aql:newValue"/>
           </children>
         </children>

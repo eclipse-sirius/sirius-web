@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

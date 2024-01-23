@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.graphql.tests.AllRepresentationDescriptions
 import org.eclipse.sirius.components.graphql.tests.AllRepresentationMetadataQueryRunner;
 import org.eclipse.sirius.components.graphql.tests.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;

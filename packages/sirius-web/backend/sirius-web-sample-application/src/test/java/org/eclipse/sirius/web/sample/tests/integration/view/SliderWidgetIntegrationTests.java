@@ -39,7 +39,7 @@ import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.sample.configuration.StereotypeDescriptionRegistryConfigurer;
-import org.eclipse.sirius.web.sample.slider.Slider;
+import org.eclipse.sirius.components.forms.Slider;
 import org.eclipse.sirius.web.sample.tests.integration.AbstractIntegrationTests;
 import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
 import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;

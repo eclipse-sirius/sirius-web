@@ -26,6 +26,7 @@ import {
   GQLRadio,
   GQLRichText,
   GQLSelect,
+  GQLSlider,
   GQLSplitButton,
   GQLTextarea,
   GQLTextfield,
@@ -68,6 +69,7 @@ import { PieChartWidget } from './PieChartWidget';
 import { RadioWidget } from './RadioWidget';
 import { RichTextWidget } from './RichTextWidget';
 import { SelectWidget } from './SelectWidget';
+import { SliderWidget } from './SliderWidget';
 import { SplitButtonWidget } from './SplitButtonWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
@@ -410,6 +412,14 @@ export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }
       <SelectWidget
         data-testid={widget.id}
         widget={widget as GQLSelect}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
+    );
+  } else if (widget.__typename === 'Slider') {
+    widgetElement = (
+      <SliderWidget
+        data-testid={widget.id}
+        widget={widget as GQLSlider}
         onDropBefore={readOnly ? noop : onDropBefore}
       />
     );

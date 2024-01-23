@@ -412,6 +412,13 @@ export interface GQLRichText extends GQLWidget {
   stringValue: string;
 }
 
+export interface GQLSlider extends GQLWidget {
+  label: string;
+  minValue: number;
+  maxValue: number;
+  currentValue: number;
+}
+
 export interface GQLMessage {
   body: string;
   level: string;

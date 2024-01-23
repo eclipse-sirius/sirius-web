@@ -314,6 +314,14 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     stringValue: value
   }
 
+  fragment sliderFields on Slider {
+    label
+    iconURL
+    minValue
+    maxValue
+    currentValue
+  }
+
   ${contributions.map(
     (widget) =>
       `
@@ -372,6 +380,9 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     }
     ... on RichText {
       ...richTextFields
+    }
+    ... on Slider {
+      ...sliderFields
     }
 
     ${contributions.map(

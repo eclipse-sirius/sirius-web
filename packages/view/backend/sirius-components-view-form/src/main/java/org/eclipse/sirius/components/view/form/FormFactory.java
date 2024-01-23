@@ -151,6 +151,14 @@ public interface FormFactory extends EFactory {
     TreeDescription createTreeDescription();
 
     /**
+     * Returns a new object of class '<em>Slider Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Slider Description</em>'.
+     * @generated
+     */
+    SliderDescription createSliderDescription();
+
+    /**
      * Returns a new object of class '<em>Pie Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Pie Chart Description</em>'.

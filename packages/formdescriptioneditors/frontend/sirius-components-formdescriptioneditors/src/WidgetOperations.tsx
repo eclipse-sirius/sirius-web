@@ -32,6 +32,7 @@ export const isKind = (value: string): value is Kind => {
     value === 'FlexboxContainer' ||
     value === 'Image' ||
     value === 'RichText' ||
+    value === 'Slider' ||
     value === 'FormElementFor' ||
     value === 'FormElementIf'
   );

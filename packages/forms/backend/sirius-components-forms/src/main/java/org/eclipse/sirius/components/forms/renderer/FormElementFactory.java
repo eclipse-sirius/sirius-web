@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
+import org.eclipse.sirius.components.forms.Slider;
 import org.eclipse.sirius.components.forms.SplitButton;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
@@ -60,6 +61,7 @@ import org.eclipse.sirius.components.forms.elements.PageElementProps;
 import org.eclipse.sirius.components.forms.elements.RadioElementProps;
 import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
+import org.eclipse.sirius.components.forms.elements.SliderElementProps;
 import org.eclipse.sirius.components.forms.elements.SplitButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
@@ -132,6 +134,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateRichText((RichTextElementProps) props, children);
         } else if (ToolbarActionElementProps.TYPE.equals(type) && props instanceof ToolbarActionElementProps) {
             object = this.instantiateToolbarAction((ToolbarActionElementProps) props, children);
+        } else if (SliderElementProps.TYPE.equals(type) && props instanceof SliderElementProps) {
+            object = this.instantiateSlider((SliderElementProps) props, children);
         } else {
             object = this.widgetDescriptors.stream()
                          .map(widgetDescriptor -> widgetDescriptor.instanciate(type, props, children))
@@ -537,6 +541,24 @@ public class FormElementFactory implements IElementFactory {
         buttonBuilder.readOnly(props.isReadOnly());
 
         return buttonBuilder.build();
+    }
+
+    private Slider instantiateSlider(SliderElementProps props, List<Object> children) {
+        var sliderBuilder = Slider.newSlider(props.getId())
+                .label(props.getLabel())
+                .minValue(props.getMinValue())
+                .maxValue(props.getMaxValue())
+                .currentValue(props.getCurrentValue())
+                .diagnostics(List.of())
+                .readOnly(props.isReadOnly())
+                .newValueHandler(props.getNewValueHandler());
+        if (props.getIconURL() != null) {
+            sliderBuilder.iconURL(props.getIconURL());
+        }
+        if (props.getHelpTextProvider() != null) {
+            sliderBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
+        return sliderBuilder.build();
     }
 
     private LabelWidget instantiateLabel(LabelWidgetElementProps props, List<Object> children) {

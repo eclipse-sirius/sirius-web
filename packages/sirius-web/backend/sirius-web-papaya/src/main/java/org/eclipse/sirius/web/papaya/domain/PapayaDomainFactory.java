@@ -35,7 +35,11 @@ public class PapayaDomainFactory {
 
     private Domain logicalArchitectureDomain;
 
+    private Domain planningDomain;
+
     private Entity rootEntity;
+
+    private Entity tagEntity;
 
     private Entity modelElementEntity;
 
@@ -85,6 +89,14 @@ public class PapayaDomainFactory {
 
     private Entity componentExchangeEntity;
 
+    private Entity projectEntity;
+
+    private Entity taskEntity;
+
+    private Entity iterationEntity;
+
+    private Entity contributionEntity;
+
     public List<Domain> getDomains() {
         this.coreDomain = DomainFactory.eINSTANCE.createDomain();
         this.coreDomain.setName("papaya_core");
@@ -95,23 +107,38 @@ public class PapayaDomainFactory {
         this.logicalArchitectureDomain = DomainFactory.eINSTANCE.createDomain();
         this.logicalArchitectureDomain.setName("papaya_logical_architecture");
 
+        this.planningDomain = DomainFactory.eINSTANCE.createDomain();
+        this.planningDomain.setName("papaya_planning");
+
         this.createEObjects();
         this.linkEObjects();
 
-        return List.of(this.coreDomain, this.operationalAnalysisDomain, this.logicalArchitectureDomain);
+        return List.of(this.coreDomain, this.operationalAnalysisDomain, this.logicalArchitectureDomain, this.planningDomain);
     }
 
     private void createEObjects() {
+        this.createCoreObjects();
+        this.createOperationalAnalysisObjects();
+        this.createLogicalArchitectureObjects();
+        this.createPlanningObjects();
+    }
+
+    private void createCoreObjects() {
         this.rootEntity = this.createEntity(this.coreDomain, "Root", false, List.of());
+        this.tagEntity = this.createEntity(this.coreDomain, "Tag", false, List.of());
         this.modelElementEntity = this.createEntity(this.coreDomain, "ModelElement", true, List.of());
         this.namedElementEntity = this.createEntity(this.coreDomain, "NamedElement", true, List.of(this.modelElementEntity));
+    }
 
+    private void createOperationalAnalysisObjects() {
         this.operationalEntityEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalEntity", false, List.of(this.namedElementEntity));
         this.operationalPerimeterEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalPerimeter", false, List.of(this.namedElementEntity));
         this.operationalActorEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalActor", false, List.of(this.namedElementEntity));
         this.operationalActivityEntity = this.createEntity(this.operationalAnalysisDomain, "OperationalActivity", false, List.of(this.namedElementEntity));
         this.interaction = this.createEntity(this.operationalAnalysisDomain, "Interaction", false, List.of(this.namedElementEntity));
+    }
 
+    private void createLogicalArchitectureObjects() {
         this.componentEntity = this.createEntity(this.logicalArchitectureDomain, "Component", false, List.of(this.namedElementEntity));
         this.providedServiceEntity = this.createEntity(this.logicalArchitectureDomain, "ProvidedService", false, List.of(this.modelElementEntity));
         this.requiredServiceEntity = this.createEntity(this.logicalArchitectureDomain, "RequiredService", false, List.of(this.modelElementEntity));
@@ -133,13 +160,36 @@ public class PapayaDomainFactory {
         this.parameterEntity = this.createEntity(this.logicalArchitectureDomain, "Parameter", false, List.of(this.typedElementEntity));
     }
 
+    private void createPlanningObjects() {
+        this.projectEntity = this.createEntity(this.planningDomain, "Project", false, List.of(this.namedElementEntity));
+        this.taskEntity = this.createEntity(this.planningDomain, "Task", false, List.of(this.namedElementEntity));
+        this.iterationEntity = this.createEntity(this.planningDomain, "Iteration", false, List.of(this.namedElementEntity));
+        this.contributionEntity = this.createEntity(this.planningDomain, "Contribution", false, List.of(this.namedElementEntity));
+    }
+
     private void linkEObjects() {
+        this.linkCoreObjects();
+        this.linkOperationAnalysisObjects();
+        this.linkLogicalArchitectureObjects();
+        this.linkPlanningObjects();
+    }
+
+    private void linkCoreObjects() {
+        this.rootEntity.getRelations().add(this.createRelation("tags", true, true, false, this.tagEntity));
         this.rootEntity.getRelations().add(this.createRelation("operationalEntities", true, true, false, this.operationalEntityEntity));
         this.rootEntity.getRelations().add(this.createRelation("operationalActors", true, true, false, this.operationalActorEntity));
         this.rootEntity.getRelations().add(this.createRelation("components", true, true, false, this.componentEntity));
         this.rootEntity.getRelations().add(this.createRelation("componentExchanges", true, true, false, this.componentExchangeEntity));
-        this.namedElementEntity.getAttributes().add(this.createAttribute("name", false, false, DataType.STRING));
+        this.rootEntity.getRelations().add(this.createRelation("projects", true, true, false, this.projectEntity));
 
+        this.tagEntity.getAttributes().add(this.createAttribute("key", false, false, DataType.STRING));
+        this.tagEntity.getAttributes().add(this.createAttribute("value", false, false, DataType.STRING));
+
+        this.modelElementEntity.getRelations().add(this.createRelation("tags", false, true, false, this.tagEntity));
+        this.namedElementEntity.getAttributes().add(this.createAttribute("name", false, false, DataType.STRING));
+    }
+
+    private void linkOperationAnalysisObjects() {
         this.operationalEntityEntity.getRelations().add(this.createRelation("operationalPerimeters", true, true, false, this.operationalPerimeterEntity));
         this.operationalEntityEntity.getRelations().add(this.createRelation("operationalActors", true, true, false, this.operationalActorEntity));
         this.operationalPerimeterEntity.getRelations().add(this.createRelation("operationalActors", true, true, false, this.operationalActorEntity));
@@ -148,7 +198,9 @@ public class PapayaDomainFactory {
         this.operationalActivityEntity.getRelations().add(this.createRelation("interactions", true, true, false, this.interaction));
         this.operationalActivityEntity.getRelations().add(this.createRelation("realizedBy", false, false, false, this.componentEntity));
         this.interaction.getRelations().add(this.createRelation("target", false, false, false, this.operationalActivityEntity));
+    }
 
+    private void linkLogicalArchitectureObjects() {
         this.componentEntity.getRelations().add(this.createRelation("packages", true, true, false, this.packageEntity));
         this.componentEntity.getRelations().add(this.createRelation("providedServices", true, true, false, this.providedServiceEntity));
         this.componentEntity.getRelations().add(this.createRelation("requiredServices", true, true, false, this.requiredServiceEntity));
@@ -179,6 +231,27 @@ public class PapayaDomainFactory {
         this.enumEntity.getRelations().add(this.createRelation("enumLiterals", true, true, false, this.enumLiteralEntity));
     }
 
+    private void linkPlanningObjects() {
+        this.projectEntity.getAttributes().add(this.createAttribute("description", false, false, DataType.STRING));
+        this.projectEntity.getRelations().add(this.createRelation("iterations", true, true, false, this.iterationEntity));
+        this.projectEntity.getRelations().add(this.createRelation("tasks", true, true, false, this.taskEntity));
+        this.projectEntity.getRelations().add(this.createRelation("contributions", true, true, false, this.contributionEntity));
+
+        this.taskEntity.getAttributes().add(this.createAttribute("description", false, false, DataType.STRING));
+        this.taskEntity.getAttributes().add(this.createAttribute("priority", false, false, DataType.NUMBER));
+        this.taskEntity.getRelations().add(this.createRelation("targets", false, true, false, this.modelElementEntity));
+        this.taskEntity.getAttributes().add(this.createAttribute("done", false, false, DataType.BOOLEAN));
+
+        this.iterationEntity.getAttributes().add(this.createAttribute("startDate", false, false, DataType.STRING));
+        this.iterationEntity.getAttributes().add(this.createAttribute("endDate", false, false, DataType.STRING));
+        this.iterationEntity.getRelations().add(this.createRelation("tasks", false, true, false, this.taskEntity));
+        this.iterationEntity.getRelations().add(this.createRelation("contributions", false, true, false, this.contributionEntity));
+
+        this.contributionEntity.getRelations().add(this.createRelation("targets", false, true, false, this.modelElementEntity));
+        this.contributionEntity.getRelations().add(this.createRelation("relatedTasks", false, true, false, this.taskEntity));
+        this.contributionEntity.getAttributes().add(this.createAttribute("done", false, false, DataType.BOOLEAN));
+    }
+
     private Entity createEntity(Domain domain, String name, boolean isAbstract, List<Entity> superTypes) {
         var entity = DomainFactory.eINSTANCE.createEntity();
         entity.setName(name);
@@ -192,7 +265,7 @@ public class PapayaDomainFactory {
         var attribute = DomainFactory.eINSTANCE.createAttribute();
         attribute.setName(name);
         attribute.setMany(isMany);
-        attribute.setOptional(false);
+        attribute.setOptional(isOptional);
         attribute.setType(type);
         return attribute;
     }

@@ -69,6 +69,7 @@ import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SliderDescription;
 import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
@@ -202,6 +203,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     private EClass treeDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass sliderDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1496,6 +1504,66 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EClass getSliderDescription() {
+        return this.sliderDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSliderDescription_MinValueExpression() {
+        return (EAttribute) this.sliderDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSliderDescription_MaxValueExpression() {
+        return (EAttribute) this.sliderDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSliderDescription_CurrentValueExpression() {
+        return (EAttribute) this.sliderDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getSliderDescription_Body() {
+        return (EReference) this.sliderDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSliderDescription_IsEnabledExpression() {
+        return (EAttribute) this.sliderDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getPieChartDescription() {
         return this.pieChartDescriptionEClass;
     }
@@ -2684,6 +2752,13 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__IS_ENABLED_EXPRESSION);
         this.createEReference(this.treeDescriptionEClass, TREE_DESCRIPTION__BODY);
 
+        this.sliderDescriptionEClass = this.createEClass(SLIDER_DESCRIPTION);
+        this.createEAttribute(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION);
+        this.createEAttribute(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION);
+        this.createEAttribute(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION);
+        this.createEReference(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__BODY);
+        this.createEAttribute(this.sliderDescriptionEClass, SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION);
+
         this.widgetDescriptionStyleEClass = this.createEClass(WIDGET_DESCRIPTION_STYLE);
 
         this.barChartDescriptionStyleEClass = this.createEClass(BAR_CHART_DESCRIPTION_STYLE);
@@ -2830,6 +2905,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.textAreaDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.textfieldDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.treeDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
+        this.sliderDescriptionEClass.getESuperTypes().add(this.getWidgetDescription());
         this.barChartDescriptionStyleEClass.getESuperTypes().add(this.getWidgetDescriptionStyle());
         this.barChartDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
         this.conditionalBarChartDescriptionStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
@@ -3146,6 +3222,18 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getTreeDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, TreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.sliderDescriptionEClass, SliderDescription.class, "SliderDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getSliderDescription_MinValueExpression(), theViewPackage.getInterpretedExpression(), "minValueExpression", null, 1, 1, SliderDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSliderDescription_MaxValueExpression(), theViewPackage.getInterpretedExpression(), "maxValueExpression", null, 1, 1, SliderDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSliderDescription_CurrentValueExpression(), theViewPackage.getInterpretedExpression(), "currentValueExpression", null, 1, 1, SliderDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getSliderDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, SliderDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSliderDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1, SliderDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.widgetDescriptionStyleEClass, WidgetDescriptionStyle.class, "WidgetDescriptionStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

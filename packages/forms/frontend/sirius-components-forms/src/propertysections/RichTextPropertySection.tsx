@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLRichText } from '../form/FormEventFragments.types';
 import { RichTextEditor } from '../richtexteditor/RichTextEditor';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
@@ -27,7 +29,6 @@ import {
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
-  RichTextPropertySectionProps,
 } from './RichTextPropertySection.types';
 
 export const editRichTextMutation = gql`
@@ -74,13 +75,13 @@ const isSuccessPayload = (
  * Defines the content of a Rich Text property section.
  * The content is submitted when the focus is lost.
  */
-export const RichTextPropertySection = ({
+export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
   readOnly,
-}: RichTextPropertySectionProps) => {
+}: PropertySectionComponentProps<GQLRichText>) => {
   const [editRichText, { loading: updateRichTextLoading, data: updateRichTextData, error: updateRichTextError }] =
     useMutation<GQLEditRichTextMutationData, GQLEditRichTextMutationVariables>(editRichTextMutation);
   const sendEditedValue = (newValue) => {

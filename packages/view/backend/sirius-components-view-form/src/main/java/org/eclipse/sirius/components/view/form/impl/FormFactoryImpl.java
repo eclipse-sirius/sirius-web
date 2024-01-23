@@ -67,6 +67,7 @@ import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SliderDescription;
 import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
@@ -156,6 +157,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createTextfieldDescription();
             case FormPackage.TREE_DESCRIPTION:
                 return this.createTreeDescription();
+            case FormPackage.SLIDER_DESCRIPTION:
+                return this.createSliderDescription();
             case FormPackage.BAR_CHART_DESCRIPTION_STYLE:
                 return this.createBarChartDescriptionStyle();
             case FormPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE:
@@ -422,6 +425,17 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
     public TreeDescription createTreeDescription() {
         TreeDescriptionImpl treeDescription = new TreeDescriptionImpl();
         return treeDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SliderDescription createSliderDescription() {
+        SliderDescriptionImpl sliderDescription = new SliderDescriptionImpl();
+        return sliderDescription;
     }
 
     /**

@@ -43,7 +43,7 @@ import org.eclipse.sirius.components.trees.tests.graphql.DeleteTreeItemMutationR
 import org.eclipse.sirius.components.trees.tests.graphql.TreeEventSubscriptionRunner;
 import org.eclipse.sirius.components.trees.tests.graphql.TreeFiltersQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -27,6 +27,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { TreeItem as MuiTreeItem } from '@material-ui/lab';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect } from 'react';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLTree } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditTreeCheckboxInput,
@@ -40,7 +42,6 @@ import {
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
   TreeItemProps,
-  TreePropertySectionProps,
 } from './TreePropertySection.types';
 
 const useTreeItemWidgetStyles = makeStyles((theme) => ({
@@ -207,13 +208,13 @@ const TreeItem = ({ node, nodes, readOnly, editingContextId, formId, widgetId }:
   );
 };
 
-export const TreePropertySection = ({
+export const TreePropertySection: PropertySectionComponent<GQLTree> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
   readOnly,
-}: TreePropertySectionProps) => {
+}: PropertySectionComponentProps<GQLTree>) => {
   let { nodes, expandedNodesIds } = widget;
 
   const { addErrorMessage, addMessages } = useMultiToast();

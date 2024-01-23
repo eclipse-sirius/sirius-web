@@ -452,6 +452,30 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
 
     /**
      * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.form.SliderDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected SliderDescriptionItemProvider sliderDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.SliderDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSliderDescriptionAdapter() {
+        if (this.sliderDescriptionItemProvider == null) {
+            this.sliderDescriptionItemProvider = new SliderDescriptionItemProvider(this);
+        }
+
+        return this.sliderDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.form.PieChartDescription} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1440,6 +1464,8 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.textfieldDescriptionItemProvider.dispose();
         if (this.treeDescriptionItemProvider != null)
             this.treeDescriptionItemProvider.dispose();
+        if (this.sliderDescriptionItemProvider != null)
+            this.sliderDescriptionItemProvider.dispose();
         if (this.barChartDescriptionStyleItemProvider != null)
             this.barChartDescriptionStyleItemProvider.dispose();
         if (this.conditionalBarChartDescriptionStyleItemProvider != null)

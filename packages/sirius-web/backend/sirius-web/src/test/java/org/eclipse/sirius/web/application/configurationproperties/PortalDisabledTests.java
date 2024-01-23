@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.fail;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.portals.description.PortalDescription;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.RichTextDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
+import org.eclipse.sirius.components.forms.description.SliderDescription;
 import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
@@ -108,6 +109,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof RichTextDescription) {
             RichTextComponentProps richTextComponentProps = new RichTextComponentProps(variableManager, (RichTextDescription) widgetDescription);
             element = new Element(RichTextComponent.class, richTextComponentProps);
+        } else if (widgetDescription instanceof SliderDescription) {
+            SliderComponentProps sliderComponentProps = new SliderComponentProps(variableManager, (SliderDescription) widgetDescription);
+            element = new Element(SliderComponent.class, sliderComponentProps);
         } else {
             element = this.props.getWidgetDescriptors().stream()
                     .map(widgetDescriptor -> widgetDescriptor.createElement(variableManager, widgetDescription))
