@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,10 @@
 import { gql, useMutation } from '@apollo/client';
 import { DRAG_SOURCES_TYPE, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
-import { Viewport, XYPosition, useStoreApi, useViewport } from 'reactflow';
+import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import {
   GQLDropOnDiagramData,
   GQLDropOnDiagramInput,
@@ -49,17 +50,6 @@ const dropOnDiagramMutation = gql`
   }
 `;
 
-const computeDropPosition = (
-  event: MouseEvent | React.MouseEvent,
-  { x: viewportX, y: viewportY, zoom: viewportZoom }: Viewport,
-  bounds?: DOMRect
-): XYPosition => {
-  return {
-    x: (event.clientX - (bounds?.left ?? 0) - viewportX) / viewportZoom,
-    y: (event.clientY - (bounds?.top ?? 0) - viewportY) / viewportZoom,
-  };
-};
-
 const isErrorPayload = (payload: GQLDropOnDiagramPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropOnDiagramSuccessPayload =>
@@ -72,9 +62,6 @@ export const useDrop = (): UseDropValue => {
     GQLDropOnDiagramData,
     GQLDropOnDiagramVariables
   >(dropOnDiagramMutation);
-  const viewport = useViewport();
-  const { domNode } = useStoreApi().getState();
-  const element = domNode?.getBoundingClientRect();
 
   useEffect(() => {
     if (droponDiagramError) {
@@ -90,7 +77,7 @@ export const useDrop = (): UseDropValue => {
       }
     }
   }, [droponDiagramElementData, droponDiagramError]);
-
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
   const onDrop = useCallback(
     (event: React.DragEvent, diagramElementId?: string) => {
       event.preventDefault();
@@ -102,8 +89,11 @@ export const useDrop = (): UseDropValue => {
       if (data === '') {
         return;
       }
+      const dropPosition = reactFlowInstance.screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
 
-      const dropPosition = computeDropPosition(event, viewport, element);
       const selectedIds = JSON.parse(data).map((entry) => entry.id);
 
       const input: GQLDropOnDiagramInput = {
@@ -117,12 +107,12 @@ export const useDrop = (): UseDropValue => {
       };
       dropMutation({ variables: { input } });
     },
-    [element?.top, element?.left, viewport]
+    [reactFlowInstance]
   );
 
-  const onDragOver = (event: React.DragEvent) => {
+  const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
-  };
+  }, []);
 
   return { onDrop, onDragOver };
 };

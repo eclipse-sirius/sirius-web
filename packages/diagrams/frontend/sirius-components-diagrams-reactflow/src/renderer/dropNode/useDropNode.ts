@@ -14,12 +14,13 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useTheme } from '@material-ui/core/styles';
 import { useCallback, useContext, useEffect } from 'react';
-import { Node, NodeDragHandler, useReactFlow, useStoreApi, useViewport, Viewport, XYPosition } from 'reactflow';
+import { Node, NodeDragHandler, XYPosition, useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { GQLDropNodeCompatibility } from '../../representation/DiagramRepresentation.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { ListNodeData } from '../node/ListNode.types';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import {
@@ -32,7 +33,6 @@ import {
   GQLSuccessPayload,
   UseDropNodeValue,
 } from './useDropNode.types';
-import { ListNodeData } from '../node/ListNode.types';
 
 const dropNodeMutation = gql`
   mutation dropNode($input: DropNodeInput!) {
@@ -129,17 +129,6 @@ const isDescendantOf = (parent: Node, candidate: Node, nodeById: (string) => Nod
   }
 };
 
-const computeDropPosition = (
-  event: MouseEvent | React.MouseEvent,
-  { x: viewportX, y: viewportY, zoom: viewportZoom }: Viewport,
-  bounds?: DOMRect
-): XYPosition => {
-  return {
-    x: (event.clientX - (bounds?.left ?? 0) - viewportX) / viewportZoom,
-    y: (event.clientY - (bounds?.top ?? 0) - viewportY) / viewportZoom,
-  };
-};
-
 export const useDropNode = (): UseDropNodeValue => {
   const {
     initialParentId,
@@ -156,9 +145,6 @@ export const useDropNode = (): UseDropNodeValue => {
 
   const onDropNode = useDropNodeMutation();
   const { getNodes, getIntersectingNodes } = useReactFlow<NodeData, EdgeData>();
-  const viewport = useViewport();
-  const { domNode } = useStoreApi().getState();
-  const element = domNode?.getBoundingClientRect();
 
   const getNodeById: (string) => Node | undefined = (id: string) => getNodes().find((n) => n.id === id);
 
@@ -170,7 +156,7 @@ export const useDropNode = (): UseDropNodeValue => {
     return node;
   };
 
-  const onNodeDragStart: NodeDragHandler = (_event, node) => {
+  const onNodeDragStart: NodeDragHandler = useCallback((_event, node) => {
     const computedNode = getDraggableNode(node);
 
     const dropDataEntry: GQLDropNodeCompatibility | undefined = diagramDescription.dropNodeCompatibility.find(
@@ -190,23 +176,30 @@ export const useDropNode = (): UseDropNodeValue => {
       compatibleNodeIds: compatibleNodes,
       droppableOnDiagram: dropDataEntry?.droppableOnDiagram || false,
     });
-  };
+  }, []);
 
-  const onNodeDrag: NodeDragHandler = (_event, node) => {
-    if (draggedNode && !draggedNode.data.isBorderNode) {
-      const intersections = getIntersectingNodes(node).filter((intersectingNode) => !intersectingNode.hidden);
-      const newParentId =
-        [...intersections]
-          .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
-          .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
-      setTargetNodeId(newParentId);
-    }
-  };
+  const onNodeDrag: NodeDragHandler = useCallback(
+    (_event, node) => {
+      if (draggedNode && !draggedNode.data.isBorderNode) {
+        const intersections = getIntersectingNodes(node).filter((intersectingNode) => !intersectingNode.hidden);
+        const newParentId =
+          [...intersections]
+            .filter((intersectingNode) => !isDescendantOf(draggedNode, intersectingNode, getNodeById))
+            .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
+        setTargetNodeId(newParentId);
+      }
+    },
+    [draggedNode?.id]
+  );
 
+  const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
   const onNodeDragStop: (onDragCancelled: (node: Node) => void) => NodeDragHandler = useCallback(
     (onDragCancelled) => {
       return (event, _node) => {
-        const dropPosition = computeDropPosition(event, viewport, element);
+        const dropPosition = reactFlowInstance.screenToFlowPosition({
+          x: event.clientX,
+          y: event.clientY,
+        });
         if (draggedNode) {
           const oldParentId: string | null = draggedNode.parentNode || null;
           const newParentId: string | null = targetNodeId;
@@ -228,7 +221,7 @@ export const useDropNode = (): UseDropNodeValue => {
         resetDrop();
       };
     },
-    [element?.top, element?.left, viewport, draggedNode, targetNodeId, droppableOnDiagram, compatibleNodeIds]
+    [draggedNode?.id, targetNodeId, droppableOnDiagram, compatibleNodeIds.join('-'), reactFlowInstance]
   );
 
   const hasDroppedNodeParentChanged = (): boolean => {
