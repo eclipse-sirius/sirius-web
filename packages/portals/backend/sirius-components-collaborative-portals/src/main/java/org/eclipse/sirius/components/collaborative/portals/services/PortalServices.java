@@ -16,10 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.portals.PortalViewLayoutData;
@@ -30,8 +33,22 @@ import org.eclipse.sirius.components.portals.PortalViewLayoutData;
  * @author pcdavid
  */
 public class PortalServices {
+    private final IRepresentationSearchService representationSearchService;
+
+    private final IEditingContext editingContext;
+
+    public PortalServices(IRepresentationSearchService representationSearchService, IEditingContext editingContext) {
+        this.editingContext = Objects.requireNonNull(editingContext);
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
+    }
+
     public boolean referencesRepresentation(Portal portal, String representationId) {
-        return portal.getViews().stream().anyMatch(portalView -> Objects.equals(portalView.getRepresentationId(), representationId));
+        if (portal.getViews().stream().anyMatch(portalView -> Objects.equals(portalView.getRepresentationId(), representationId))) {
+            return true;
+        } else {
+            return portal.getViews().stream().flatMap(view -> this.representationSearchService.findById(this.editingContext, view.getRepresentationId(), Portal.class).stream())
+                    .anyMatch(subPortal -> subPortal.getId().equals(representationId) || this.referencesRepresentation(subPortal, representationId));
+        }
     }
 
     /**
@@ -47,59 +64,48 @@ public class PortalServices {
      */
     public Portal removeRepresentation(Portal portal, String representationId) {
         // Keep only the views which do *not* refer to the representation to remove.
-        List<PortalView> newViews = portal.getViews().stream()
-                .filter(portalView -> !Objects.equals(portalView.getRepresentationId(), representationId))
-                .toList();
+        List<PortalView> newViews = portal.getViews().stream().filter(portalView -> !Objects.equals(portalView.getRepresentationId(), representationId)).toList();
 
         // Keep only the layout info for the new views.
         List<String> newViewsIds = newViews.stream().map(PortalView::getId).toList();
-        List<PortalViewLayoutData> newLayouts = portal.getLayoutData().stream()
-                .filter(viewLayoutData -> newViewsIds.contains(viewLayoutData.getPortalViewId()))
-                .toList();
+        List<PortalViewLayoutData> newLayouts = portal.getLayoutData().stream().filter(viewLayoutData -> newViewsIds.contains(viewLayoutData.getPortalViewId())).toList();
 
         return Portal.newPortal(portal).views(newViews).layoutData(newLayouts).build();
     }
 
-    public Portal addView(Portal portal, String viewRepresentationId, int x, int y, int width, int height) {
-        var newPortalViewId = this.getPortalViewId(portal, viewRepresentationId);
+    public Optional<Portal> addView(Portal portal, String viewRepresentationId, int x, int y, int width, int height) {
 
-        var newViews = portal.getViews().stream()
-                .filter(portalView -> !Objects.equals(portalView.getId(), newPortalViewId))
-                .collect(Collectors.toCollection(ArrayList::new));
-        newViews.add(PortalView.newPortalView(newPortalViewId).representationId(viewRepresentationId).build());
+        var newViews = new ArrayList<>(portal.getViews());
+        newViews.add(PortalView.newPortalView(this.getPortalViewId(portal, viewRepresentationId)).representationId(viewRepresentationId).build());
 
         var newLayoutData = new ArrayList<>(portal.getLayoutData());
-        newLayoutData.add(PortalViewLayoutData.newPortalViewLayoutData(newPortalViewId).x(x).y(y).width(width).height(height).build());
+        newLayoutData.add(PortalViewLayoutData.newPortalViewLayoutData(this.getPortalViewId(portal, viewRepresentationId)).x(x).y(y).width(width).height(height).build());
 
-        return Portal.newPortal(portal)
-                     .views(newViews)
-                     .layoutData(newLayoutData)
-                     .build();
+        var newPortal = Portal.newPortal(portal).views(newViews).layoutData(newLayoutData).build();
+        if (this.referencesRepresentation(newPortal, newPortal.getId())) {
+            return Optional.empty();
+        } else {
+            return Optional.of(newPortal);
+        }
     }
 
     public Portal removeView(Portal portal, String viewId) {
         // Keep the other views
-        List<PortalView> newViews = portal.getViews().stream()
-                .filter(portalView -> !Objects.equals(portalView.getId(), viewId))
-                .toList();
+        List<PortalView> newViews = portal.getViews().stream().filter(portalView -> !Objects.equals(portalView.getId(), viewId)).toList();
 
         // Keep only the layout info for the new views.
         List<String> newViewsIds = newViews.stream().map(PortalView::getId).toList();
-        List<PortalViewLayoutData> newLayouts = portal.getLayoutData().stream()
-                .filter(viewLayoutData -> newViewsIds.contains(viewLayoutData.getPortalViewId()))
-                .toList();
+        List<PortalViewLayoutData> newLayouts = portal.getLayoutData().stream().filter(viewLayoutData -> newViewsIds.contains(viewLayoutData.getPortalViewId())).toList();
 
         return Portal.newPortal(portal).views(newViews).layoutData(newLayouts).build();
     }
 
     public Portal layout(Portal portal, List<PortalViewLayoutData> layoutData) {
         List<String> valueViewIds = portal.getViews().stream().map(PortalView::getId).toList();
-        Map<String, PortalViewLayoutData> updatedLayouts = layoutData.stream()
-                .collect(Collectors.toMap(PortalViewLayoutData::getPortalViewId, Function.identity()));
+        Map<String, PortalViewLayoutData> updatedLayouts = layoutData.stream().collect(Collectors.toMap(PortalViewLayoutData::getPortalViewId, Function.identity()));
         List<PortalViewLayoutData> newLayoutData = portal.getLayoutData().stream()
                 .map(portalViewLayoutData -> updatedLayouts.getOrDefault(portalViewLayoutData.getPortalViewId(), portalViewLayoutData))
-                .filter(portalViewLayoutData -> valueViewIds.contains(portalViewLayoutData.getPortalViewId()))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .filter(portalViewLayoutData -> valueViewIds.contains(portalViewLayoutData.getPortalViewId())).collect(Collectors.toCollection(ArrayList::new));
         return Portal.newPortal(portal).layoutData(newLayoutData).build();
     }
 

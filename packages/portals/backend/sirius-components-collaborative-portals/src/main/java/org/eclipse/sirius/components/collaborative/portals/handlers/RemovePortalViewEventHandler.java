@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
 import org.eclipse.sirius.components.collaborative.portals.dto.RemovePortalViewInput;
 import org.eclipse.sirius.components.collaborative.portals.services.ICollaborativePortalMessageService;
-import org.eclipse.sirius.components.collaborative.portals.services.PortalServices;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -67,7 +66,7 @@ public class RemovePortalViewEventHandler implements IPortalEventHandler {
 
         try {
             if (context.getInput() instanceof RemovePortalViewInput removePortalViewInput) {
-                var newPortal = new PortalServices().removeView(context.getCurrentPortal(), removePortalViewInput.portalViewId());
+                var newPortal = context.getServices().removeView(context.getCurrentPortal(), removePortalViewInput.portalViewId());
                 context.setNextPortal(newPortal);
                 payload = new SuccessPayload(removePortalViewInput.id(), List.of());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());

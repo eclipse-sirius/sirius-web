@@ -117,6 +117,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2907[#2907] [diagram] Fix an issue on some browsers where a tool could not be executed if the tooltip was visible
 - https://github.com/eclipse-sirius/sirius-web/issues/2901[#2901] [diagram] Fix an issue where the connectionLine could be stuck on invalid nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/2940[#2940] [diagram] Fix an issue where the diagram palette would render with no tools.
+- https://github.com/eclipse-sirius/sirius-web/issues/2986[#2986] [portal] Prevent a portal from containing itself
 
 === New Features
 

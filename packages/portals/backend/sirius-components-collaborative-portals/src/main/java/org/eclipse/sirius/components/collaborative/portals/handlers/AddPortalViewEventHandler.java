@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.collaborative.portals.api.IPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
 import org.eclipse.sirius.components.collaborative.portals.dto.AddPortalViewInput;
 import org.eclipse.sirius.components.collaborative.portals.services.ICollaborativePortalMessageService;
-import org.eclipse.sirius.components.collaborative.portals.services.PortalServices;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -71,17 +70,21 @@ public class AddPortalViewEventHandler implements IPortalEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, portalInput.representationId(), portalInput);
 
         try {
-            var portalServices = new PortalServices();
+            var portalServices = context.getServices();
             if (context.getInput() instanceof AddPortalViewInput addPortalViewInput) {
                 if (this.representationSearchService.findById(context.getEditingContext(), addPortalViewInput.viewRepresentationId(), IRepresentation.class).isEmpty()) {
                     payload = new ErrorPayload(portalInput.id(), "The id passed does not correspond to an existing representation");
                 } else if (portalServices.referencesRepresentation(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId())) {
                     payload = new ErrorPayload(portalInput.id(), "The representation is already included in the portal");
                 } else {
-                    var newPortal = portalServices.addView(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId(), addPortalViewInput.x(), addPortalViewInput.y(), addPortalViewInput.width(), addPortalViewInput.height());
-                    context.setNextPortal(newPortal);
-                    payload = new SuccessPayload(addPortalViewInput.id(), List.of());
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());
+                    var optionalNewPortal = portalServices.addView(context.getCurrentPortal(), addPortalViewInput.viewRepresentationId(), addPortalViewInput.x(), addPortalViewInput.y(), addPortalViewInput.width(), addPortalViewInput.height());
+                    if (optionalNewPortal.isPresent()) {
+                        context.setNextPortal(optionalNewPortal.get());
+                        payload = new SuccessPayload(addPortalViewInput.id(), List.of());
+                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());
+                    } else {
+                        payload = new ErrorPayload(addPortalViewInput.id(), this.messageService.forbiddenLoop());
+                    }
                 }
             }
         } finally {

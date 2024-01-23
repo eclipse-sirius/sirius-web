@@ -63,7 +63,7 @@ public class PortalEventProcessorFactory implements IRepresentationEventProcesso
             var optionalPortal = this.representationSearchService.findById(editingContext, portalConfiguration.getId(), Portal.class);
             if (optionalPortal.isPresent()) {
                 Portal portal = optionalPortal.get();
-                var portalEventProcessor = new PortalEventProcessor(editingContext, this.representationPersistenceService, this.portalEventHandlers, this.subscriptionManagerFactory.create(), portal);
+                var portalEventProcessor = new PortalEventProcessor(editingContext, this.representationSearchService, this.representationPersistenceService, this.portalEventHandlers, this.subscriptionManagerFactory.create(), portal);
                 return Optional.of(portalEventProcessor)
                         .filter(representationEventProcessorClass::isInstance)
                         .map(representationEventProcessorClass::cast);

@@ -35,4 +35,9 @@ public class CollaborativePortalMessageService implements ICollaborativePortalMe
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
         return this.messageSourceAccessor.getMessage("INVALID_INPUT", new Object[] { expectedInputTypeName, receivedInputTypeName });
     }
+
+    @Override
+    public String forbiddenLoop() {
+        return this.messageSourceAccessor.getMessage("FORBIDDEN_LOOP");
+    }
 }

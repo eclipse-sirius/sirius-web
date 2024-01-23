@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.RenameRepresentationInput;
@@ -55,6 +56,8 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     private final IEditingContext editingContext;
 
+    private final IRepresentationSearchService representationSearchService;
+
     private final IRepresentationPersistenceService representationPersistenceService;
 
     private final List<IPortalEventHandler> portalEventHandlers;
@@ -65,10 +68,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
-    private final PortalServices portalServices = new PortalServices();
-
-    public PortalEventProcessor(IEditingContext editingContext, IRepresentationPersistenceService representationPersistenceService, List<IPortalEventHandler> portalEventHandlers, ISubscriptionManager subscriptionManager, Portal portal) {
+    public PortalEventProcessor(IEditingContext editingContext, IRepresentationSearchService representationSearchService, IRepresentationPersistenceService representationPersistenceService,
+            List<IPortalEventHandler> portalEventHandlers, ISubscriptionManager subscriptionManager, Portal portal) {
         this.editingContext = Objects.requireNonNull(editingContext);
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.portalEventHandlers = Objects.requireNonNull(portalEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
@@ -89,19 +92,19 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput) {
         IRepresentationInput effectiveInput = representationInput;
         if (representationInput instanceof RenameRepresentationInput renameRepresentationInput) {
-            effectiveInput = new RenamePortalInput(renameRepresentationInput.id(), renameRepresentationInput.editingContextId(), renameRepresentationInput.representationId(),
-                    renameRepresentationInput.newLabel());
+            effectiveInput = new RenamePortalInput(renameRepresentationInput.id(),
+                                                   renameRepresentationInput.editingContextId(),
+                                                   renameRepresentationInput.representationId(),
+                                                   renameRepresentationInput.newLabel());
         }
 
         if (effectiveInput instanceof IPortalInput portalInput) {
             Optional<IPortalEventHandler> optionalPortalEventHandler = this.portalEventHandlers.stream().filter(handler -> handler.canHandle(portalInput)).findFirst();
             if (optionalPortalEventHandler.isPresent()) {
                 IPortalEventHandler portalEventHandler = optionalPortalEventHandler.get();
-                PortalContext context = new PortalContext(this.editingContext, this.currentPortal, portalInput);
+                PortalContext context = new PortalContext(this.representationSearchService, this.editingContext, this.currentPortal, portalInput);
                 portalEventHandler.handle(payloadSink, changeDescriptionSink, context);
-                context.getNextPortal().ifPresent(newPortal -> {
-                    this.updatePortal(portalInput, newPortal);
-                });
+                context.getNextPortal().ifPresent(newPortal -> this.updatePortal(portalInput, newPortal));
             } else {
                 this.logger.warn("No handler found for event: {}", portalInput);
             }
@@ -116,17 +119,18 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
+        PortalServices portalServices = new PortalServices(this.representationSearchService, this.editingContext);
         if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_DELETION) && changeDescription.getInput() instanceof DeleteRepresentationInput deleteRepresentationInput) {
             var deletedRepresentationId = deleteRepresentationInput.representationId();
-            if (this.portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
-                var newPortal = this.portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
+            if (portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
+                var newPortal = portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
                 this.updatePortal(deleteRepresentationInput, newPortal);
             }
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
             // The Portal's structure itself has not changed, but clients need to refresh to show the updated names.
             String renamedRepresentationId = changeDescription.getSourceId();
-            if (this.portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
+            if (portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
                 this.emitNewPortal(changeDescription.getInput());
             }
         }
