@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -484,13 +484,13 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
                 .styleProvider(styleProvider)
-                .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext))
-                .labelEditHandler(this.createEdgeLabelEditHandler(viewEdgeDescription, converterContext));
+                .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext));
 
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), "_beginlabel", interpreter).ifPresent(builder::beginLabelDescription);
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getLabelExpression(), "_centerlabel", interpreter).ifPresent(builder::centerLabelDescription);
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getEndLabelExpression(), "_endlabel", interpreter).ifPresent(builder::endLabelDescription);
-
+        new ToolFinder().findEdgeLabelEditTool(viewEdgeDescription)
+                .ifPresent(labelEditTool -> builder.labelEditHandler(this.createEdgeLabelEditHandler(viewEdgeDescription, converterContext)));
         EdgeDescription result = builder.build();
         converterContext.getConvertedEdges().put(viewEdgeDescription, result);
         return result;

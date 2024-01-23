@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -165,11 +165,10 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 } else if (edge.getEndLabel() != null && edge.getEndLabel().getId().equals(labelId)) {
                     optionalEdgeLabelKind = Optional.of(EdgeLabelKind.END_LABEL);
                 }
-                if (optionalEdgeLabelKind.isPresent()) {
+                if (optionalEdgeLabelKind.isPresent() && edgeDescription.getLabelEditHandler() != null) {
                     VariableManager variableManager = new VariableManager();
                     variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
                     variableManager.put(VariableManager.SELF, self);
-                    // @formatter:off
                     var semanticEdgeSource = this.diagramQueryService.findNodeById(diagram, edge.getSourceId())
                             .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
                             .orElse(null);
@@ -178,7 +177,6 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                             .orElse(null);
                     variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticEdgeSource);
                     variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticEdgeTarget);
-                    // @formatter:on
                     edgeDescription.getLabelEditHandler().editLabel(variableManager, optionalEdgeLabelKind.get(), newText);
                     this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText);
                 } else {

@@ -9,7 +9,7 @@ input DiagramEventInput {
 }
 
 union DiagramEventPayload =
-    ErrorPayload
+  ErrorPayload
   | SubscribersUpdatedEventPayload
   | DiagramRefreshedEventPayload
 
@@ -190,6 +190,7 @@ type Edge {
   routingPoints: [Position]!
   sourceAnchorRelativePosition: Ratio!
   targetAnchorRelativePosition: Ratio!
+  centerLabelEditable : Boolean!
 }
 
 type EdgeStyle {
@@ -412,7 +413,7 @@ input InvokeSingleClickOnTwoDiagramElementsToolInput {
 }
 
 union InvokeSingleClickOnTwoDiagramElementsToolPayload =
-    ErrorPayload
+  ErrorPayload
   | InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload
 
 type InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
@@ -433,7 +434,7 @@ input InvokeSingleClickOnDiagramElementToolInput {
 }
 
 union InvokeSingleClickOnDiagramElementToolPayload =
-    ErrorPayload
+  ErrorPayload
   | InvokeSingleClickOnDiagramElementToolSuccessPayload
 
 type InvokeSingleClickOnDiagramElementToolSuccessPayload {
@@ -470,7 +471,7 @@ input UpdateNodePositionInput {
 }
 
 union UpdateNodePositionPayload =
-    ErrorPayload
+  ErrorPayload
   | UpdateNodePositionSuccessPayload
 
 type UpdateNodePositionSuccessPayload {

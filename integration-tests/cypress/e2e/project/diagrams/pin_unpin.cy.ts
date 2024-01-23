@@ -40,6 +40,7 @@ describe('Diagram - Pin unpin nodes', () => {
       cy.getByTestId('Unpin-element').should('not.exist');
       cy.getByTestId('Pin-element').click();
 
+      diagram.fitToScreen();
       diagram.getNodes('diagram', 'Wifi').click();
       diagram.getPalette().should('exist');
       cy.getByTestId('Pin-element').should('not.exist');
@@ -55,6 +56,7 @@ describe('Diagram - Pin unpin nodes', () => {
       cy.getByTestId('Unpin-element').should('not.exist');
       cy.getByTestId('Pin-element').click();
 
+      diagram.fitToScreen();
       cy.getByTestId('unpin-all-elements').click();
       diagram.getNodes('diagram', 'Wifi').click();
       diagram.getPalette().should('exist');
