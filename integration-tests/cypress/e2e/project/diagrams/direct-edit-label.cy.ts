@@ -19,7 +19,7 @@ import { Diagram } from '../../../workbench/Diagram';
 import { Explorer } from '../../../workbench/Explorer';
 
 describe('Diagram - Direct edit label', () => {
-  context('Given a view with only one node with a direct edit tool', () => {
+  context('Given a view with only one node with a direct edit tool and one edge with direct edit tool', () => {
     let studioProjectId: string = '';
     let domainName: string = '';
 
@@ -42,6 +42,8 @@ describe('Diagram - Direct edit label', () => {
             explorer.expand('Entity1 Node');
             explorer.expand('NodePalette');
             explorer.delete('Edit Label');
+            explorer.select('LinkedTo Edge');
+            new Details().getTextField('Label Expression').type('Edge center{enter}');
           });
         }
       });
@@ -127,6 +129,93 @@ describe('Diagram - Direct edit label', () => {
         const diagram = new Diagram();
         diagram.getNodes('diagram', 'Entity2').type('NewName{enter}');
         diagram.getNodes('diagram', 'NewName').should('exist');
+      });
+
+      it('Then we can use direct edit on edge', () => {
+        const explorer = new Explorer();
+        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.select('Entity2');
+        const details = new Details();
+        details.getTextField('Name').type('Entity2');
+        explorer.select('Entity1');
+        details.openReferenceWidgetOptions('Linked To');
+        details.selectReferenceWidgetOption('Entity2');
+        const diagram = new Diagram();
+        explorer.select('Root');
+        diagram.fitToScreen();
+        cy.getByTestId('Label - Edge center').click();
+        diagram.getPalette().should('exist');
+        cy.getByTestId('Edit - Tool').should('exist');
+        cy.getByTestId('Label - Edge center').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
+        cy.getByTestId('name-edit').should('exist');
+      });
+    });
+  });
+  context('Given a view without direct edit tool', () => {
+    let studioProjectId: string = '';
+    let domainName: string = '';
+
+    before(() => {
+      cy.createProjectFromTemplate('studio-template').then((res) => {
+        const payload = res.body.data.createProjectFromTemplate;
+        if (isCreateProjectFromTemplateSuccessPayload(payload)) {
+          const projectId = payload.project.id;
+          studioProjectId = projectId;
+
+          new Project().visit(projectId);
+
+          const explorer = new Explorer();
+          explorer.getTreeItemByLabel('DomainNewModel').dblclick();
+          cy.get('[title="domain::Domain"]').then(($div) => {
+            domainName = $div.data().testid;
+            explorer.expand('ViewNewModel');
+            explorer.expand('View');
+            explorer.expand(`${domainName} Diagram Description`);
+            explorer.select('LinkedTo Edge');
+            new Details().getTextField('Label Expression').type('Edge center{enter}');
+            explorer.expand('LinkedTo Edge');
+            explorer.expand('EdgePalette');
+            explorer.delete('Edit Label');
+          });
+        }
+      });
+    });
+
+    after(() => cy.deleteProject(studioProjectId));
+
+    context('When we create a new instance project', () => {
+      let instanceProjectId: string = '';
+
+      beforeEach(() => {
+        const studio = new Studio();
+        studio.createProjectFromDomain('Cypress - Studio Instance', domainName, 'Root').then((res) => {
+          instanceProjectId = res.projectId;
+
+          new Explorer().createRepresentation('Root', `${domainName} Diagram Description`, 'diagram');
+        });
+      });
+
+      afterEach(() => cy.deleteProject(instanceProjectId));
+
+      it('Then we can not use direct edit on edge', () => {
+        const explorer = new Explorer();
+        explorer.createObject('Root', 'Entity1s Entity1');
+        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.select('Entity2');
+        const details = new Details();
+        details.getTextField('Name').type('Entity2');
+        explorer.select('Entity1');
+        details.openReferenceWidgetOptions('Linked To');
+        details.selectReferenceWidgetOption('Entity2');
+        const diagram = new Diagram();
+        explorer.select('Root');
+        diagram.fitToScreen();
+        cy.getByTestId('Label - Edge center').click();
+        diagram.getPalette().should('exist');
+        cy.getByTestId('Edit - Tool').should('not.exist');
+        cy.getByTestId('Label - Edge center').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
+        cy.getByTestId('name-edit').should('not.exist');
       });
     });
   });

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,8 +72,18 @@ public final class Edge implements IDiagramElement {
 
     private Ratio targetAnchorRelativePosition;
 
+    private boolean centerLabelEditable;
+
     private Edge() {
         // Prevent instantiation
+    }
+
+    public static Builder newEdge(String id) {
+        return new Builder(id);
+    }
+
+    public static Builder newEdge(Edge edge) {
+        return new Builder(edge);
     }
 
     @Override
@@ -146,12 +156,8 @@ public final class Edge implements IDiagramElement {
         return this.targetAnchorRelativePosition;
     }
 
-    public static Builder newEdge(String id) {
-        return new Builder(id);
-    }
-
-    public static Builder newEdge(Edge edge) {
-        return new Builder(edge);
+    public boolean isCenterLabelEditable() {
+        return this.centerLabelEditable;
     }
 
     @Override
@@ -168,7 +174,8 @@ public final class Edge implements IDiagramElement {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String type;
 
@@ -202,6 +209,8 @@ public final class Edge implements IDiagramElement {
 
         private Ratio targetAnchorRelativePosition;
 
+        private boolean centerLabelEditable;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -224,6 +233,7 @@ public final class Edge implements IDiagramElement {
             this.routingPoints = edge.getRoutingPoints();
             this.sourceAnchorRelativePosition = edge.getSourceAnchorRelativePosition();
             this.targetAnchorRelativePosition = edge.getTargetAnchorRelativePosition();
+            this.centerLabelEditable = edge.isCenterLabelEditable();
         }
 
         public Builder type(String type) {
@@ -306,6 +316,11 @@ public final class Edge implements IDiagramElement {
             return this;
         }
 
+        public Builder centerLabelEditable(boolean centerLabelEditable) {
+            this.centerLabelEditable = centerLabelEditable;
+            return this;
+        }
+
         public Edge build() {
             Edge edge = new Edge();
             edge.id = Objects.requireNonNull(this.id);
@@ -325,6 +340,7 @@ public final class Edge implements IDiagramElement {
             edge.routingPoints = Objects.requireNonNull(this.routingPoints);
             edge.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);
             edge.targetAnchorRelativePosition = Objects.requireNonNull(this.targetAnchorRelativePosition);
+            edge.centerLabelEditable = this.centerLabelEditable;
             return edge;
         }
     }

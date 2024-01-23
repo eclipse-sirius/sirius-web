@@ -139,6 +139,7 @@ export const convertDiagram = (
       targetObjectLabel: gqlEdge.targetObjectLabel,
       label: null,
       faded: gqlEdge.state === GQLViewModifier.Faded,
+      centerLabelEditable: gqlEdge.centerLabelEditable,
     };
 
     if (gqlEdge.beginLabel) {

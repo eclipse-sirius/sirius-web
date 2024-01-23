@@ -431,6 +431,8 @@ public class ViewPaletteProvider implements IPaletteProvider {
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
             if (edgeDescription.getLabelEditHandler() instanceof IViewEdgeLabelEditHandler viewEdgeLabelEditHandler) {
                 result = viewEdgeLabelEditHandler.hasLabelEditTool(EdgeLabelKind.CENTER_LABEL);
+            } else {
+                result = false;
             }
         }
         return result;

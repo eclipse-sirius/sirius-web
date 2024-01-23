@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -175,7 +175,6 @@ public class EdgeComponent implements IComponent {
         if (shouldRender) {
             EdgeStyle style = edgeDescription.getStyleProvider().apply(edgeVariableManager);
 
-            // @formatter:off
             String edgeType = optionalPreviousEdge
                     .map(Edge::getType)
                     .orElse("edge:straight");
@@ -193,8 +192,8 @@ public class EdgeComponent implements IComponent {
                     .style(style)
                     .routingPoints(routingPoints)
                     .children(labelChildren)
+                    .centerLabelEditable(edgeDescription.getLabelEditHandler() != null)
                     .build();
-            // @formatter:on
 
             Element edgeElement = new Element(EdgeElementProps.TYPE, edgeElementProps);
             edgeIdPrefixToCount.put(edgeIdPrefix, ++count);
@@ -216,12 +215,12 @@ public class EdgeComponent implements IComponent {
      * the default set.
      *
      * @param optionalDiagramEvent
-     *            The optional diagram event modifying the default modifier set of the edge
+     *         The optional diagram event modifying the default modifier set of the edge
      * @param optionalPreviousEdge
-     *            The previous edge from which get the old modifier set. If empty, the old modifier set is set to an
-     *            empty Set
+     *         The previous edge from which get the old modifier set. If empty, the old modifier set is set to an
+     *         empty Set
      * @param id
-     *            The ID of the current edge
+     *         The ID of the current edge
      */
     private Set<ViewModifier> computeModifiers(Optional<IDiagramEvent> optionalDiagramEvent, Optional<Edge> optionalPreviousEdge, String id) {
         Set<ViewModifier> modifiers = new HashSet<>(optionalPreviousEdge.map(Edge::getModifiers).orElse(Set.of()));
@@ -254,17 +253,17 @@ public class EdgeComponent implements IComponent {
      * dominant state of the set or the default modifier if empty.
      *
      * @param optionalDiagramEvent
-     *            The optional diagram event, it is used to know the new state of the source and target nodes
+     *         The optional diagram event, it is used to know the new state of the source and target nodes
      * @param sourceNode
-     *            The source node element
+     *         The source node element
      * @param sourceId
-     *            The source node ID
+     *         The source node ID
      * @param targetNode
-     *            The target node element
+     *         The target node element
      * @param targetId
-     *            The target node ID
+     *         The target node ID
      * @param modifiers
-     *            The modifier set of the building edge
+     *         The modifier set of the building edge
      */
     private ViewModifier computeState(Optional<IDiagramEvent> optionalDiagramEvent, Element sourceNode, String sourceId, Element targetNode, String targetId, Set<ViewModifier> modifiers) {
         ViewModifier state = new ViewStateProvider().getState(modifiers);
@@ -272,8 +271,7 @@ public class EdgeComponent implements IComponent {
         ViewModifier sourceState = this.getStateFromElement(sourceNode);
         ViewModifier targetState = this.getStateFromElement(targetNode);
 
-        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent) {
-            var diagramEvent = (HideDiagramElementEvent) optionalDiagramEvent.get();
+        if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent diagramEvent) {
             boolean isSourceHidden = (diagramEvent.getElementIds().contains(sourceId) && diagramEvent.hideElement())
                     || (!diagramEvent.getElementIds().contains(sourceId) && sourceState == ViewModifier.Hidden);
 
@@ -297,19 +295,19 @@ public class EdgeComponent implements IComponent {
      * the reconnect edge event should be updated accordingly.
      *
      * @param edgeId
-     *            The id of the edge being rendered
+     *         The id of the edge being rendered
      * @param lastPreviousRenderedEdgeIds
-     *            The list of id of last previous rendered edges
+     *         The list of id of last previous rendered edges
      * @param reconnectEdgeEvent
-     *            the reconnect edge event
+     *         the reconnect edge event
      * @param edgeIdProvider
-     *            the function used to compute the edge id by apply a count.
+     *         the function used to compute the edge id by apply a count.
      * @param count
-     *            The count used to compute the id of the edge being rendered
+     *         The count used to compute the id of the edge being rendered
      * @param potentialPreviousEdge
-     *            The potential previous edge that could exist for the edge being rendered
+     *         The potential previous edge that could exist for the edge being rendered
      * @param edgeElementPropsBuilder
-     *            the edge element props build used to set the edge end anchor position according to the previous edge
+     *         the edge element props build used to set the edge end anchor position according to the previous edge
      * @return The optional previous edge
      */
     private Optional<Edge> getPreviousEdge(String edgeId, List<String> lastPreviousRenderedEdgeIds, ReconnectEdgeEvent reconnectEdgeEvent, Function<Integer, String> edgeIdProvider, int count,
@@ -374,15 +372,15 @@ public class EdgeComponent implements IComponent {
      * rendered edges.
      *
      * @param edgeId
-     *            The id of the edge being rendered
+     *         The id of the edge being rendered
      * @param lastPreviousRenderedEdgeIds
-     *            The list of id of last previous rendered edges
+     *         The list of id of last previous rendered edges
      * @param removeEdgeEvent
-     *            The remove edge event used to check if the edge being rendered does not exist anymore
+     *         The remove edge event used to check if the edge being rendered does not exist anymore
      * @param edgeIdProvider
-     *            The function used to compute the id by applying a count
+     *         The function used to compute the id by applying a count
      * @param baseCount
-     *            The count
+     *         The count
      * @return The optional previous edge.
      */
     private Optional<Edge> getPreviousEdge(String edgeId, List<String> lastPreviousRenderedEdgeIds, RemoveEdgeEvent removeEdgeEvent, Function<Integer, String> edgeIdProvider, int baseCount) {
@@ -440,7 +438,7 @@ public class EdgeComponent implements IComponent {
     }
 
     private String computeEdgeId(EdgeDescription edgeDescription, Element sourceNode, Element targetNode, int count) {
-        var descriptionId = edgeDescription.getId().toString();
+        var descriptionId = edgeDescription.getId();
         // @formatter:off
         var sourceId = Optional.of(sourceNode.getProps())
                 .filter(NodeElementProps.class::isInstance)
@@ -463,7 +461,7 @@ public class EdgeComponent implements IComponent {
     }
 
     private String computeEdgeIdPrefix(EdgeDescription edgeDescription, Element sourceNode, Element targetNode) {
-        var descriptionId = edgeDescription.getId().toString();
+        var descriptionId = edgeDescription.getId();
         // @formatter:off
         var sourceId = Optional.of(sourceNode.getProps())
                 .filter(NodeElementProps.class::isInstance)

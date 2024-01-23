@@ -168,6 +168,7 @@ public class DiagramElementFactory implements IElementFactory {
                 .targetAnchorRelativePosition(props.getTargetAnchorRelativePosition())
                 .state(props.getState())
                 .modifiers(props.getModifiers())
+                .centerLabelEditable(props.isCenterLabelEditable())
                 .build();
     }
 

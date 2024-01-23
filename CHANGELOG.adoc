@@ -20,6 +20,7 @@ On backend side, `clickHandler` has been removed from `ReferenceValue`.
 `itemClickHandlerProvider` has been removed from `ReferenceWidgetDescription`.
 EventHandler & DataFetcher on widget reference item click action have also been deleted.
 The reference widget graphql schema and the frontend have been updated accordingly.
+- https://github.com/eclipse-sirius/sirius-web/issues/2822[#2822] [diagram] The GraphQL type `Edge` must now implement `labelEditable` boolean field.
 
 === Dependency update
 
@@ -30,6 +31,7 @@ The reference widget graphql schema and the frontend have been updated according
 - https://github.com/eclipse-sirius/sirius-web/issues/2666[#2666] [formdescriptioneditors] Change widget reference preview to match its new look.
 - https://github.com/eclipse-sirius/sirius-web/issues/3004[#3004] [deck] Fix some of the console errors
 - https://github.com/eclipse-sirius/sirius-web/issues/2799[#2799] [diagram] Remove the unwanted space between the header and first element in list node
+- https://github.com/eclipse-sirius/sirius-web/issues/2822[#2822] [diagram] Prevent direct edit to be triggered on edge if there is no edit label tool corresponding
 
 === New Features
 

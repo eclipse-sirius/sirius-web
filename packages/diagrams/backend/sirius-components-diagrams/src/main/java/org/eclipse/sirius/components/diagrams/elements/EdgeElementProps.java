@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,10 +64,16 @@ public final class EdgeElementProps implements IProps {
 
     private Ratio targetAnchorRelativePosition;
 
+    private boolean centerLabelEditable;
+
     private List<Element> children;
 
     private EdgeElementProps() {
         // Prevent instantiation
+    }
+
+    public static Builder newEdgeElementProps(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -126,13 +132,13 @@ public final class EdgeElementProps implements IProps {
         return this.targetAnchorRelativePosition;
     }
 
+    public boolean isCenterLabelEditable() {
+        return this.centerLabelEditable;
+    }
+
     @Override
     public List<Element> getChildren() {
         return this.children;
-    }
-
-    public static Builder newEdgeElementProps(String id) {
-        return new Builder(id);
     }
 
     @Override
@@ -148,7 +154,8 @@ public final class EdgeElementProps implements IProps {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private String type;
 
@@ -175,6 +182,8 @@ public final class EdgeElementProps implements IProps {
         private Ratio sourceAnchorRelativePosition;
 
         private Ratio targetAnchorRelativePosition;
+
+        private boolean centerLabelEditable;
 
         private List<Element> children = new ArrayList<>();
 
@@ -247,6 +256,11 @@ public final class EdgeElementProps implements IProps {
             return this;
         }
 
+        public Builder centerLabelEditable(boolean centerLabelEditable) {
+            this.centerLabelEditable = centerLabelEditable;
+            return this;
+        }
+
         public Builder children(List<Element> children) {
             this.children = children;
             return this;
@@ -268,6 +282,7 @@ public final class EdgeElementProps implements IProps {
             edgeElementProps.routingPoints = Objects.requireNonNull(this.routingPoints);
             edgeElementProps.sourceAnchorRelativePosition = Objects.requireNonNull(this.sourceAnchorRelativePosition);
             edgeElementProps.targetAnchorRelativePosition = Objects.requireNonNull(this.targetAnchorRelativePosition);
+            edgeElementProps.centerLabelEditable = this.centerLabelEditable;
             edgeElementProps.children = this.children;
             return edgeElementProps;
         }

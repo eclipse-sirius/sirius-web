@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class EdgeDescription implements IDiagramElementDescription {
+
     /**
      * The name of the variables which points to the representation element at the source/origin of a particular edge.
      */
@@ -92,6 +93,10 @@ public final class EdgeDescription implements IDiagramElementDescription {
 
     private EdgeDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newEdgeDescription(String id) {
+        return new Builder(id);
     }
 
     @Override
@@ -163,10 +168,6 @@ public final class EdgeDescription implements IDiagramElementDescription {
         return this.labelEditHandler;
     }
 
-    public static Builder newEdgeDescription(String id) {
-        return new Builder(id);
-    }
-
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, sourceNodeDescriptionCount: {2}, targetNodeDescriptionCount: {3}'}'";
@@ -180,7 +181,8 @@ public final class EdgeDescription implements IDiagramElementDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private SynchronizationPolicy synchronizationPolicy = SynchronizationPolicy.SYNCHRONIZED;
 
@@ -317,7 +319,7 @@ public final class EdgeDescription implements IDiagramElementDescription {
             edgeDescription.targetNodesProvider = Objects.requireNonNull(this.targetNodesProvider);
             edgeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             edgeDescription.deleteHandler = Objects.requireNonNull(this.deleteHandler);
-            edgeDescription.labelEditHandler = Objects.requireNonNull(this.labelEditHandler);
+            edgeDescription.labelEditHandler = this.labelEditHandler; // Optional on purpose
             return edgeDescription;
         }
     }

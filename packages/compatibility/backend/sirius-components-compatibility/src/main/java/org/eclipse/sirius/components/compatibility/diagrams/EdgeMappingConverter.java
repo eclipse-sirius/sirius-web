@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -100,15 +100,15 @@ public class EdgeMappingConverter {
 
         Optional<LabelDescription> optionalBeginLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getBeginLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_beginlabel", edgeMapping));
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription, "_beginlabel", edgeMapping));
 
         Optional<LabelDescription> optionalCenterLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getCenterLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_centerlabel", edgeMapping));
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription, "_centerlabel", edgeMapping));
 
         Optional<LabelDescription> optionalEndLabelDescription = Optional.ofNullable(style)
                 .map(EdgeStyleDescription::getEndLabelStyleDescription)
-                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription,  "_endlabel", edgeMapping));
+                .map(labelDescription -> this.createLabelDescription(interpreter, labelStyleDescriptionConverter, labelDescription, "_endlabel", edgeMapping));
 
         ToolConverter toolConverter = new ToolConverter(interpreter, this.editService, this.modelOperationHandlerSwitchProvider);
         var deleteHandler = toolConverter.createDeleteToolHandler(edgeMapping.getDeletionDescription());
@@ -124,11 +124,13 @@ public class EdgeMappingConverter {
                 .sourceNodesProvider(sourceNodesProvider)
                 .targetNodesProvider(targetNodesProvider)
                 .styleProvider(styleProvider)
-                .labelEditHandler(labelEditHandler)
                 .deleteHandler(deleteHandler);
         optionalBeginLabelDescription.ifPresent(builder::beginLabelDescription);
         optionalCenterLabelDescription.ifPresent(builder::centerLabelDescription);
         optionalEndLabelDescription.ifPresent(builder::endLabelDescription);
+        if (labelEditHandler != null) {
+            builder.labelEditHandler(labelEditHandler);
+        }
         return builder.build();
     }
 
@@ -142,7 +144,7 @@ public class EdgeMappingConverter {
 
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.getVariables().get(LabelDescription.OWNER_ID);
-            return String.valueOf(parentId) + idSuffix;
+            return parentId + idSuffix;
         };
 
         String id = this.identifierProvider.getIdentifier(edgeMapping) + idSuffix;
@@ -159,7 +161,7 @@ public class EdgeMappingConverter {
      * Returns the node descriptions matching the given mappings.
      *
      * @param mappings
-     *            The mappings referenced by the edge description (source or target)
+     *         The mappings referenced by the edge description (source or target)
      * @return The relevant node descriptions created by the node and container description converters
      */
     private List<NodeDescription> getNodeDescriptions(List<DiagramElementMapping> mappings, Map<String, NodeDescription> id2NodeDescriptions) {

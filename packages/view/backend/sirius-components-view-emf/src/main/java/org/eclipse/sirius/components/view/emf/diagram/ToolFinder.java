@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,6 +70,11 @@ public class ToolFinder {
 
     public Optional<LabelEditTool> findNodeLabelEditTool(NodeDescription nodeDescription) {
         return Optional.ofNullable(nodeDescription).map(NodeDescription::getPalette).map(NodePalette::getLabelEditTool);
+    }
+
+    public Optional<LabelEditTool> findEdgeLabelEditTool(EdgeDescription nodeDescription) {
+        // for the moment, direct edit can only be triggered on the center label
+        return Optional.ofNullable(nodeDescription).map(EdgeDescription::getPalette).map(EdgePalette::getCenterLabelEditTool);
     }
 
     public Optional<LabelEditTool> findLabelEditTool(EdgeDescription edgeDescription, EdgeLabelKind labelKind) {

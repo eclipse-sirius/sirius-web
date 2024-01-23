@@ -41,8 +41,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       let isLabelEditable: boolean = getNodes().find((node) => node.selected)?.data.labelEditable || false;
       if (!currentlyEditedLabelId) {
         currentlyEditedLabelId = getEdges().find((edge) => edge.selected)?.data?.label?.id;
-        // GQLEdge does not expose a labelEditable flag, so we currently assume all edge (center) labels are editable.
-        isLabelEditable = true;
+        isLabelEditable = getEdges().find((edge) => edge.selected)?.data?.centerLabelEditable || false;
       }
 
       if (currentlyEditedLabelId && isLabelEditable) {

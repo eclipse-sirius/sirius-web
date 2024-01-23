@@ -79,6 +79,7 @@ export interface EdgeData {
   targetObjectLabel: string;
   label: EdgeLabel | null;
   faded: boolean;
+  centerLabelEditable: boolean;
 }
 
 export interface InsideLabel {
