@@ -91,6 +91,7 @@ export class Explorer {
     cy.getByTestId('name-edit');
     cy.getByTestId('name-edit').get('input').should('have.value', treeItemLabel);
     cy.getByTestId('name-edit').type(`${newName}{enter}`);
+    cy.getByTestId('name-edit').should('not.exist');
     this.getTreeItemByLabel(newName).should('exist');
   }
 

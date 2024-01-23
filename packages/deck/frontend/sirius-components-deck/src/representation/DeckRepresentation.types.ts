@@ -14,7 +14,7 @@ import { GQLDeck } from './deckSubscription.types';
 
 export interface DeckRepresentationState {
   id: string;
-  deck: GQLDeck | null;
+  deck: GQLDeck | undefined;
   complete: boolean;
   selectedCardIds: string[];
 }
