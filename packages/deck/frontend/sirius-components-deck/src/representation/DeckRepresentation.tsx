@@ -66,7 +66,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   const { addErrorMessage, addMessages } = useMultiToast();
   const [{ id, deck, complete, selectedCardIds }, setState] = useState<DeckRepresentationState>({
     id: crypto.randomUUID(),
-    deck: null,
+    deck: undefined,
     complete: false,
     selectedCardIds: [],
   });
@@ -95,7 +95,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     },
     onComplete: () => {
       setState((prevState) => {
-        return { ...prevState, complete: true, deck: null };
+        return { ...prevState, complete: true, deck: undefined };
       });
     },
   });
@@ -138,7 +138,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     }
   }, [selection]);
   const handleError = useCallback(
-    (loading: boolean, data, error: ApolloError) => {
+    (loading: boolean, data, error: ApolloError | undefined) => {
       if (!loading) {
         if (error) {
           addErrorMessage(error.message);
@@ -147,10 +147,12 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
           const keys = Object.keys(data);
           if (keys.length > 0) {
             const firstKey = keys[0];
-            const firstField = data[firstKey];
-            if (isStandardErrorPayload(firstField)) {
-              const { messages } = firstField;
-              addMessages(messages);
+            if (firstKey) {
+              const firstField = data[firstKey];
+              if (isStandardErrorPayload(firstField)) {
+                const { messages } = firstField;
+                addMessages(messages);
+              }
             }
           }
         }
