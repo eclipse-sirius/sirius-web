@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 import { BarChart, PieChart } from '@eclipse-sirius/sirius-components-charts';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import { GQLBarChart, GQLChart, GQLPieChart } from '../form/FormEventFragments.types';
-import { ChartWidgetPropertySectionProps } from './ChartWidgetPropertySection.types';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLBarChart, GQLChart, GQLChartWidget, GQLPieChart } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useStyles = makeStyles<Theme>(() => ({
@@ -25,14 +25,15 @@ const useStyles = makeStyles<Theme>(() => ({
 /**
  * Defines the content of a Chart property section.
  */
-export const ChartWidgetPropertySection = ({
+export const ChartWidgetPropertySection: PropertySectionComponent<GQLChartWidget> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
-}: ChartWidgetPropertySectionProps) => {
+}: PropertySectionComponentProps<GQLChartWidget>) => {
   const classes = useStyles();
   const { chart } = widget;
+
   let chartComponent: JSX.Element | null;
   if (isBarChart(chart)) {
     chartComponent = (
@@ -43,6 +44,7 @@ export const ChartWidgetPropertySection = ({
   } else if (isPieChart(chart)) {
     chartComponent = <PieChart width={300} height={300} chart={chart} />;
   }
+
   let content: JSX.Element | null;
   if (chartComponent) {
     content = (

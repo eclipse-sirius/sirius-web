@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,10 @@
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLLabelWidget } from '../form/FormEventFragments.types';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
-import { LabelStyleProps, LabelWidgetPropertySectionProps } from './LabelWidgetPropertySection.types';
+import { LabelStyleProps } from './LabelWidgetPropertySection.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 
 const useStyle = makeStyles<Theme, LabelStyleProps>((theme) => ({
@@ -27,12 +29,12 @@ const useStyle = makeStyles<Theme, LabelStyleProps>((theme) => ({
   },
 }));
 
-export const LabelWidgetPropertySection = ({
+export const LabelWidgetPropertySection: PropertySectionComponent<GQLLabelWidget> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
-}: LabelWidgetPropertySectionProps) => {
+}: PropertySectionComponentProps<GQLLabelWidget>) => {
   const props: LabelStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,

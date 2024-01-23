@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
@@ -43,7 +42,7 @@ import org.eclipse.sirius.components.forms.tests.graphql.PropertiesEventSubscrip
 import org.eclipse.sirius.components.forms.tests.navigation.FormNavigator;
 import org.eclipse.sirius.components.graphql.tests.CreateRepresentationMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.services.FormVariableViewPreEditingContextProcessor;
 import org.eclipse.sirius.web.services.MasterDetailsFormDescriptionProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,33 +88,6 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
         this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
                 .map(IEditingContextEventProcessor::getEditingContextId)
                 .forEach(this.editingContextEventProcessorRegistry::disposeEditingContextEventProcessor);
-    }
-
-    @Test
-    @DisplayName("Given a semantic object, when we subscribe to a form representation, then the form is sent")
-    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    public void givenSemanticObjectWhenSubscribeToFormRepresentationThenFormIsSent() {
-        this.commitInitializeStateBeforeThreadSwitching();
-
-        var input = new FormEventInput(UUID.randomUUID(), TestIdentifiers.SAMPLE_STUDIO_INSTANCE_PROJECT.toString(), TestIdentifiers.HUMAN_FORM_REPRESENTATION.toString());
-        var flux = this.formEventSubscriptionRunner.run(input);
-
-        Consumer<Object> formContentConsumer = object -> Optional.of(object)
-                .filter(DataFetcherResult.class::isInstance)
-                .map(DataFetcherResult.class::cast)
-                .map(DataFetcherResult::getData)
-                .filter(FormRefreshedEventPayload.class::isInstance)
-                .map(FormRefreshedEventPayload.class::cast)
-                .map(FormRefreshedEventPayload::form)
-                .ifPresent(form -> {
-                    assertThat(form.getLabel()).isEqualTo("Human Form");
-                });
-
-        StepVerifier.create(flux)
-                .consumeNextWith(formContentConsumer)
-                .thenCancel()
-                .verify(Duration.ofSeconds(5));
     }
 
     @Test

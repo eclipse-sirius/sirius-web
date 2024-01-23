@@ -22,6 +22,7 @@
     "@eclipse-sirius/sirius-components-gantt": "*",
     "@eclipse-sirius/sirius-components-portals": "*",
     "@eclipse-sirius/sirius-components-widget-reference": "*",
+    "@eclipse-sirius/sirius-components-widget-slider": "*",
     "@eclipse-sirius/sirius-components-selection": "*",
     "@eclipse-sirius/sirius-components-trees": "*",
     "@eclipse-sirius/sirius-components-validation": "*",

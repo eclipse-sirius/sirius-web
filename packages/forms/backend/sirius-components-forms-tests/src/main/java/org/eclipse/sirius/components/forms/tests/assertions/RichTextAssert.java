@@ -32,4 +32,32 @@ public class RichTextAssert extends AbstractAssert<RichTextAssert, RichText> {
         assertThat(this.actual.getValue()).isEqualTo(value);
         return this;
     }
+
+    public RichTextAssert hasLabel(String label) {
+        assertThat(this.actual.getLabel()).isEqualTo(label);
+
+        return this;
+    }
+
+    public RichTextAssert hasHelp(String help) {
+        assertThat(this.actual.getHelpTextProvider().get()).isEqualTo(help);
+
+        return this;
+    }
+
+    public RichTextAssert isReadOnly() {
+        assertThat(this.actual.isReadOnly())
+                .withFailMessage("Expecting the rich text to be read only but was not read only instead")
+                .isTrue();
+
+        return this;
+    }
+
+    public RichTextAssert isNotReadOnly() {
+        assertThat(this.actual.isReadOnly())
+                .withFailMessage("Expecting the rich text not to be read only but was read only instead")
+                .isFalse();
+
+        return this;
+    }
 }

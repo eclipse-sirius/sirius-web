@@ -19,6 +19,8 @@ import {
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import {
+  GQLWidget,
+  PropertySectionComponent,
   PropertySectionComponentProps,
   PropertySectionLabel,
   useClickHandler,
@@ -174,7 +176,19 @@ const isSuccessPayload = (
     | GQLMoveReferenceValuePayload
 ): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
-export const ReferencePropertySection = ({
+const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
+
+export const ReferencePropertySection: PropertySectionComponent<GQLWidget> = ({
+  widget,
+  ...props
+}: PropertySectionComponentProps<GQLWidget>) => {
+  if (isReferenceWidget(widget)) {
+    return <RawReferencePropertySection widget={widget} {...props} />;
+  }
+  return null;
+};
+
+const RawReferencePropertySection: PropertySectionComponent<GQLReferenceWidget> = ({
   editingContextId,
   formId,
   widget,

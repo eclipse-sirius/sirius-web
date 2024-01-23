@@ -26,6 +26,7 @@ import {
   GQLRadio,
   GQLRichText,
   GQLSelect,
+  GQLSlider,
   GQLSplitButton,
   GQLTextarea,
   GQLTextfield,
@@ -45,6 +46,7 @@ import { PropertySectionProps } from './PropertySection.types';
 import { RadioPropertySection } from './RadioPropertySection';
 import { RichTextPropertySection } from './RichTextPropertySection';
 import { SelectPropertySection } from './SelectPropertySection';
+import { SliderPropertySection } from './SliderPropertySection';
 import { SplitButtonPropertySection } from './SplitButtonPropertySection';
 import { TextfieldPropertySection } from './TextfieldPropertySection';
 import { TreePropertySection } from './TreePropertySection';
@@ -58,6 +60,7 @@ const isRadio = (widget: GQLWidget): widget is GQLRadio => widget.__typename ===
 const isList = (widget: GQLWidget): widget is GQLList => widget.__typename === 'List';
 const isLink = (widget: GQLWidget): widget is GQLLink => widget.__typename === 'Link';
 const isButton = (widget: GQLWidget): widget is GQLButton => widget.__typename === 'Button';
+const isSlider = (widget: GQLWidget): widget is GQLSlider => widget.__typename === 'Slider';
 const isSplitButton = (widget: GQLWidget): widget is GQLSplitButton => widget.__typename === 'SplitButton';
 const isLabelWidget = (widget: GQLWidget): widget is GQLLabelWidget => widget.__typename === 'LabelWidget';
 const isChartWidget = (widget: GQLWidget): widget is GQLChartWidget => widget.__typename === 'ChartWidget';
@@ -151,7 +154,14 @@ export const PropertySection = ({
     );
   } else if (isLink(widget)) {
     propertySection = (
-      <LinkPropertySection editingContextId={editingContextId} formId={formId} widget={widget} key={widget.id} />
+      <LinkPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        subscribers={subscribers}
+        readOnly={readOnly}
+      />
     );
   } else if (isButton(widget)) {
     propertySection = (
@@ -183,6 +193,7 @@ export const PropertySection = ({
         widget={widget}
         subscribers={subscribers}
         key={widget.id}
+        readOnly={readOnly}
       />
     );
   } else if (isChartWidget(widget)) {
@@ -193,6 +204,7 @@ export const PropertySection = ({
         widget={widget}
         subscribers={subscribers}
         key={widget.id}
+        readOnly={readOnly}
       />
     );
   } else if (isFlexboxContainer(widget)) {
@@ -219,11 +231,29 @@ export const PropertySection = ({
     );
   } else if (isImage(widget)) {
     propertySection = (
-      <ImagePropertySection editingContextId={editingContextId} formId={formId} widget={widget} key={widget.id} />
+      <ImagePropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        subscribers={subscribers}
+        readOnly={readOnly}
+      />
     );
   } else if (isRichText(widget)) {
     propertySection = (
       <RichTextPropertySection
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        subscribers={subscribers}
+        key={widget.id}
+        readOnly={readOnly}
+      />
+    );
+  } else if (isSlider(widget)) {
+    propertySection = (
+      <SliderPropertySection
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}

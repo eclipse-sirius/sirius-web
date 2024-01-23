@@ -160,6 +160,16 @@ public class FormBuilders {
     }
 
     /**
+     * Instantiate a SliderDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public SliderDescriptionBuilder newSliderDescription() {
+        return new SliderDescriptionBuilder();
+    }
+
+    /**
      * Instantiate a PieChartDescriptionBuilder .
      *
      * @author BuilderGenerator

@@ -186,16 +186,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-customwidgets</artifactId>
-			<version>2024.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-customwidgets-edit</artifactId>
-			<version>2024.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-customnodes</artifactId>
 			<version>2024.3.0</version>
 		</dependency>

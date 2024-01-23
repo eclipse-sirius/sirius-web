@@ -64,6 +64,7 @@ import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SliderDescription;
 import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
@@ -237,6 +238,11 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseTreeDescription(TreeDescription object) {
             return FormAdapterFactory.this.createTreeDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseSliderDescription(SliderDescription object) {
+            return FormAdapterFactory.this.createSliderDescriptionAdapter();
         }
 
         @Override
@@ -653,6 +659,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTreeDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.SliderDescription
+     * <em>Slider Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.SliderDescription
+     * @generated
+     */
+    public Adapter createSliderDescriptionAdapter() {
         return null;
     }
 

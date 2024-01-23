@@ -197,6 +197,8 @@ public class FormElementIfItemProvider extends FormElementDescriptionItemProvide
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createTreeDescription()));
 
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createSliderDescription()));
+
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createFormElementFor()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createFormElementIf()));

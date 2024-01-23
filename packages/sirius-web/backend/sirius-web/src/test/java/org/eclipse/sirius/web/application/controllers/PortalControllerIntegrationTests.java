@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalRefreshedEventPayload;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

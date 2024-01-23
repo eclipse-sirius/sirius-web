@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,8 @@ import { useEffect } from 'react';
 import { getTextDecorationLineValue } from './getTextDecorationLineValue';
 
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
+import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
+import { GQLRadio } from '../form/FormEventFragments.types';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
   GQLEditRadioInput,
@@ -35,7 +37,6 @@ import {
   GQLUpdateWidgetFocusMutationData,
   GQLUpdateWidgetFocusMutationVariables,
   GQLUpdateWidgetFocusPayload,
-  RadioPropertySectionProps,
   RadioStyleProps,
 } from './RadioPropertySection.types';
 
@@ -91,13 +92,13 @@ const isErrorPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPaylo
 const isSuccessPayload = (payload: GQLEditRadioPayload | GQLUpdateWidgetFocusPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
-export const RadioPropertySection = ({
+export const RadioPropertySection: PropertySectionComponent<GQLRadio> = ({
   editingContextId,
   formId,
   widget,
   subscribers,
   readOnly,
-}: RadioPropertySectionProps) => {
+}: PropertySectionComponentProps<GQLRadio>) => {
   const props: RadioStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
