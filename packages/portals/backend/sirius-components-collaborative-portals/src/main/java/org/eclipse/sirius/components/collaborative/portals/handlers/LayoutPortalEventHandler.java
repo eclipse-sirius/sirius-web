@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.collaborative.portals.api.PortalContext;
 import org.eclipse.sirius.components.collaborative.portals.dto.LayoutPortalInput;
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalViewLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.portals.services.ICollaborativePortalMessageService;
-import org.eclipse.sirius.components.collaborative.portals.services.PortalServices;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -70,7 +69,7 @@ public class LayoutPortalEventHandler implements IPortalEventHandler {
         try {
             if (context.getInput() instanceof LayoutPortalInput layoutPortalInput) {
                 List<PortalViewLayoutData> layoutData = layoutPortalInput.layoutData().stream().map(this::convert).toList();
-                var newPortal = new PortalServices().layout(context.getCurrentPortal(), layoutData);
+                var newPortal = context.getServices().layout(context.getCurrentPortal(), layoutData);
                 context.setNextPortal(newPortal);
                 payload = new SuccessPayload(layoutPortalInput.id(), List.of());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, context.getEditingContext().getId(), context.getInput());

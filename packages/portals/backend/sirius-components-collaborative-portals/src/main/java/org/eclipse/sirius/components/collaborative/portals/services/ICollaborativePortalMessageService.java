@@ -20,6 +20,8 @@ package org.eclipse.sirius.components.collaborative.portals.services;
 public interface ICollaborativePortalMessageService {
     String invalidInput(String receivedInputTypeName, String expectedInputTypeName);
 
+    String forbiddenLoop();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -29,6 +31,11 @@ public interface ICollaborativePortalMessageService {
 
         @Override
         public String invalidInput(String receivedInputTypeName, String expectedInputTypeName) {
+            return "";
+        }
+
+        @Override
+        public String forbiddenLoop() {
             return "";
         }
 

@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.collaborative.portals.api;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.collaborative.portals.services.PortalServices;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.portals.Portal;
 
@@ -24,6 +26,8 @@ import org.eclipse.sirius.components.portals.Portal;
  * @author pcdavid
  */
 public class PortalContext {
+    private final IRepresentationSearchService representationSearchService;
+
     private final IEditingContext editingContext;
 
     private final Portal currentPortal;
@@ -32,10 +36,15 @@ public class PortalContext {
 
     private Optional<Portal> nextPortal = Optional.empty();
 
-    public PortalContext(IEditingContext editingContext, Portal currentPortal, IPortalInput input) {
+    public PortalContext(IRepresentationSearchService representationSearchService, IEditingContext editingContext, Portal currentPortal, IPortalInput input) {
+        this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.editingContext = Objects.requireNonNull(editingContext);
         this.currentPortal = Objects.requireNonNull(currentPortal);
         this.input = Objects.requireNonNull(input);
+    }
+
+    public PortalServices getServices() {
+        return new PortalServices(this.representationSearchService, this.editingContext);
     }
 
     public IEditingContext getEditingContext() {
