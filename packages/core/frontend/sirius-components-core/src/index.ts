@@ -18,6 +18,7 @@ export * from './contexts/ServerContext.types';
 export * from './contexts/ToastContext';
 export * from './contexts/ToastContext.types';
 export * from './dataTransferTypes';
+export * from './graphql/GQLTypes.types';
 export * from './icon/IconOverlay';
 export * from './materialui';
 export * from './modals/share-representation/ShareRepresentationModal';

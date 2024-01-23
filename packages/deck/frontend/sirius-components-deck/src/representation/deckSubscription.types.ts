@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core/src/graphql/GQLTypes.types';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface GQLDeckEventSubscription {
   deckEvent: GQLDeckEventPayload;

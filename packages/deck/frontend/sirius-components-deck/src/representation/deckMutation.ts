@@ -22,6 +22,12 @@ export const deleteCardMutation = gql`
           level
         }
       }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
     }
   }
 `;
@@ -36,6 +42,12 @@ export const editCardMutation = gql`
           level
         }
       }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
     }
   }
 `;
@@ -45,6 +57,12 @@ export const createCardMutation = gql`
     createDeckCard(input: $input) {
       __typename
       ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
         messages {
           body
           level

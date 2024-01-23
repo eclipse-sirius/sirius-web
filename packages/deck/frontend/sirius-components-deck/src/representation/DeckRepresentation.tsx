@@ -20,7 +20,7 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Deck } from '../Deck';
 import { Card, CardMetadata } from '../Deck.types';
 import { convertToTrelloDeckData } from '../utils/deckGQLConverter';
@@ -37,12 +37,16 @@ import {
   GQLCreateCardData,
   GQLCreateCardVariables,
   GQLCreateDeckCardInput,
+  GQLCreateDeckCardPayload,
   GQLDeleteCardData,
   GQLDeleteCardVariables,
   GQLDeleteDeckCardInput,
+  GQLDeleteDeckCardPayload,
   GQLEditCardData,
   GQLEditCardVariables,
   GQLEditDeckCardInput,
+  GQLEditDeckCardPayload,
+  GQLSuccessPayload,
 } from './deckMutation.types';
 
 import { createCardMutation, deleteCardMutation, editCardMutation } from './deckMutation';
@@ -59,6 +63,9 @@ const isDeckRefreshedEventPayload = (payload: GQLDeckEventPayload): payload is G
 const isErrorPayload = (payload: GQLDeckEventPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 const isStandardErrorPayload = (field): field is GQLErrorPayload => field.__typename === 'ErrorPayload';
+const isSuccessPayload = (
+  payload: GQLDeleteDeckCardPayload | GQLEditDeckCardPayload | GQLCreateDeckCardPayload
+): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
 export const DeckRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const classes = useDeckRepresentationStyles();
@@ -137,39 +144,40 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       });
     }
   }, [selection]);
-  const handleError = useCallback(
-    (loading: boolean, data, error: ApolloError | undefined) => {
-      if (!loading) {
-        if (error) {
-          addErrorMessage(error.message);
-        }
-        if (data) {
-          const keys = Object.keys(data);
-          if (keys.length > 0) {
-            const firstKey = keys[0];
-            if (firstKey) {
-              const firstField = data[firstKey];
-              if (isStandardErrorPayload(firstField)) {
-                const { messages } = firstField;
-                addMessages(messages);
-              }
+  const handleError = (
+    loading: boolean,
+    data: GQLEditCardData | GQLDeleteCardData | GQLCreateCardData | null | undefined,
+    error: ApolloError | undefined
+  ) => {
+    if (!loading) {
+      if (error) {
+        addErrorMessage(error.message);
+      }
+      if (data) {
+        const keys = Object.keys(data);
+        if (keys.length > 0) {
+          const firstKey = keys[0];
+          if (firstKey) {
+            const firstField = data[firstKey];
+            if (isStandardErrorPayload(firstField) || isSuccessPayload(firstField)) {
+              const { messages } = firstField;
+              addMessages(messages);
             }
           }
         }
       }
-    },
-    [addErrorMessage, addMessages]
-  );
+    }
+  };
 
   useEffect(() => {
     handleError(deleteDeckCardLoading, deleteDeckCardData, deleteDeckCardError);
-  }, [deleteDeckCardLoading, deleteDeckCardData, deleteDeckCardError, handleError]);
+  }, [deleteDeckCardLoading, deleteDeckCardData, deleteDeckCardError]);
   useEffect(() => {
     handleError(editCardLoading, editCardData, editCardError);
-  }, [editCardLoading, editCardData, editCardError, handleError]);
+  }, [editCardLoading, editCardData, editCardError]);
   useEffect(() => {
     handleError(createCardLoading, createCardData, createCardError);
-  }, [createCardLoading, createCardData, createCardError, handleError]);
+  }, [createCardLoading, createCardData, createCardError]);
 
   const handleEditCard = (_laneId: string, card: Card) => {
     const input: GQLEditDeckCardInput = {
