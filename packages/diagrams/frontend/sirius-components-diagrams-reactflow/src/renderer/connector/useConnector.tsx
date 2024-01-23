@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import {
   Connection,
   Edge,
@@ -93,30 +93,30 @@ export const useConnector = (): UseConnectorValue => {
     },
   };
 
-  const onConnect: OnConnect = (connection: Connection) => {
+  const onConnect: OnConnect = useCallback((connection: Connection) => {
     setConnection(connection);
-  };
+  }, []);
 
-  const onConnectStart: OnConnectStart = (
-    _event: React.MouseEvent | React.TouchEvent,
-    params: OnConnectStartParams
-  ) => {
-    hideDiagramElementPalette();
-    resetConnection();
-    if (params.nodeId) {
-      updateNodeInternals(params.nodeId);
-    }
-  };
+  const onConnectStart: OnConnectStart = useCallback(
+    (_event: React.MouseEvent | React.TouchEvent, params: OnConnectStartParams) => {
+      hideDiagramElementPalette();
+      resetConnection();
+      if (params.nodeId) {
+        updateNodeInternals(params.nodeId);
+      }
+    },
+    []
+  );
 
   const onConnectorContextualMenuClose = () => resetConnection();
 
-  const onConnectionStartElementClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onConnectionStartElementClick = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.button === 0) {
       setIsNewConnection(true);
     }
-  };
+  }, []);
 
-  const onConnectEnd: OnConnectEnd = (event: MouseEvent | TouchEvent) => {
+  const onConnectEnd: OnConnectEnd = useCallback((event: MouseEvent | TouchEvent) => {
     if ('clientX' in event && 'clientY' in event) {
       setPosition({ x: event.clientX || 0, y: event.clientY });
     } else if ('touches' in event) {
@@ -124,7 +124,7 @@ export const useConnector = (): UseConnectorValue => {
       setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
     }
     setIsNewConnection(false);
-  };
+  }, []);
 
   const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
 
