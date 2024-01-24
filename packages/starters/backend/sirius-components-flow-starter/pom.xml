@@ -40,6 +40,17 @@
 		</repository>
 	</distributionManagement>
 
+	<repositories>
+		<repository>
+			<id>Central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>github-flow</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/Flow-Designer</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
