@@ -63,8 +63,8 @@ export const RepresentationFrame = ({
     };
 
     return (
-      <div data-testid={`representation-frame-${representation.id}`} className={classes.representationFrame}>
-        <div className={classes.frameHeader}>
+      <div data-testid={`representation-frame-${representation.label}`} className={classes.representationFrame}>
+        <div className={classes.frameHeader} data-testid="representation-frame-header">
           <Typography variant={'subtitle2'} className={classes.title + ' draggable'}>
             {representation.label}
           </Typography>

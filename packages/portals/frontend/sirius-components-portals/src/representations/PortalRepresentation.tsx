@@ -145,6 +145,7 @@ export const PortalRepresentation = ({
     <div
       key="drop-area"
       className={classes.dropArea}
+      data-testid="portal-drop-area"
       data-grid={{
         x: 0,
         y: 0,
@@ -206,7 +207,7 @@ export const PortalRepresentation = ({
   const cellSize: number = theme.spacing(3);
   const portalHasViews: boolean = portal && portal.views.length > 0;
   return (
-    <div className={classes.portalRepresentationArea} ref={domNode}>
+    <div className={classes.portalRepresentationArea} ref={domNode} data-representation-kind="portal">
       <PortalToolbar
         editingContextId={editingContextId}
         representationId={representationId}
@@ -216,6 +217,7 @@ export const PortalRepresentation = ({
       />
       <SelectionContext.Provider value={{ selection, setSelection: nonPropagatingSetSelection }}>
         <ResponsiveGridLayout
+          data-testid="portal-grid-layout"
           className="layout"
           rowHeight={cellSize}
           autoSize={true}

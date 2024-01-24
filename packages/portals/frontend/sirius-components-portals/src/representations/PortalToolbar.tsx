@@ -48,7 +48,7 @@ export const PortalToolbar = ({
 
   return (
     <>
-      <Paper>
+      <Paper data-testid="portal-toolbar">
         {fullscreen ? (
           <IconButton
             size="small"

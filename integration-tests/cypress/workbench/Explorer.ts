@@ -78,11 +78,14 @@ export class Explorer {
   ): void {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
-    cy.getByTestId('name').clear();
-    cy.getByTestId('name').type(representationLabel);
-    cy.getByTestId('representationDescription').click();
-    cy.getByTestId(representationDescriptionName).click();
-    cy.getByTestId('create-representation').click();
+    cy.get('[aria-labelledby="dialog-title"]').then((modal) => {
+      cy.wrap(modal).findByTestId('name').clear();
+      cy.wrap(modal).findByTestId('name').type(representationLabel);
+      cy.wrap(modal).findByTestId('representationDescription').click();
+      // Make sure we search from inside the select's choices, which is not inside the modal
+      cy.get('.MuiPopover-root').findByTestId(representationDescriptionName).click();
+      cy.wrap(modal).findByTestId('create-representation').click();
+    });
   }
 
   public rename(treeItemLabel: string, newName: string): void {
