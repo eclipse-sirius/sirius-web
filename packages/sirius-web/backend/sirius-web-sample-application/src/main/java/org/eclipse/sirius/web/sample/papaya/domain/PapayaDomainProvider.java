@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.sample.papaya.domain;
 
 import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.domain.Attribute;
 import org.eclipse.sirius.components.domain.DataType;
@@ -80,6 +81,9 @@ public class PapayaDomainProvider {
 
     private Entity parameterEntity;
 
+    private Entity componentPortEntity;
+    private Entity componentExchangeEntity;
+
     public List<EObject> getDomains() {
         this.coreDomain = DomainFactory.eINSTANCE.createDomain();
         this.coreDomain.setName("papaya_core");
@@ -111,6 +115,9 @@ public class PapayaDomainProvider {
         this.providedServiceEntity = this.createEntity(this.logicalArchitectureDomain, "ProvidedService", false, List.of(this.modelElementEntity));
         this.requiredServiceEntity = this.createEntity(this.logicalArchitectureDomain, "RequiredService", false, List.of(this.modelElementEntity));
 
+        this.componentPortEntity = this.createEntity(this.logicalArchitectureDomain, "ComponentPort", false, List.of(this.namedElementEntity));
+        this.componentExchangeEntity = this.createEntity(this.logicalArchitectureDomain, "ComponentExchange", false, List.of(this.namedElementEntity));
+
         this.packageEntity = this.createEntity(this.logicalArchitectureDomain, "Package", false, List.of(this.namedElementEntity));
         this.typeEntity = this.createEntity(this.logicalArchitectureDomain, "Type", true, List.of(this.namedElementEntity));
         this.typedElementEntity = this.createEntity(this.logicalArchitectureDomain, "TypedElement", true, List.of(this.namedElementEntity));
@@ -129,6 +136,7 @@ public class PapayaDomainProvider {
         this.rootEntity.getRelations().add(this.createRelation("operationalEntities", true, true, false, this.operationalEntityEntity));
         this.rootEntity.getRelations().add(this.createRelation("operationalActors", true, true, false, this.operationalActorEntity));
         this.rootEntity.getRelations().add(this.createRelation("components", true, true, false, this.componentEntity));
+        this.rootEntity.getRelations().add(this.createRelation("componentExchanges", true, true, false, this.componentExchangeEntity));
         this.namedElementEntity.getAttributes().add(this.createAttribute("name", false, false, DataType.STRING));
 
         this.operationalEntityEntity.getRelations().add(this.createRelation("operationalPerimeters", true, true, false, this.operationalPerimeterEntity));
@@ -143,6 +151,12 @@ public class PapayaDomainProvider {
         this.componentEntity.getRelations().add(this.createRelation("packages", true, true, false, this.packageEntity));
         this.componentEntity.getRelations().add(this.createRelation("providedServices", true, true, false, this.providedServiceEntity));
         this.componentEntity.getRelations().add(this.createRelation("requiredServices", true, true, false, this.requiredServiceEntity));
+        this.componentEntity.getRelations().add(this.createRelation("components", true, true, false, this.componentEntity));
+        this.componentEntity.getRelations().add(this.createRelation("ports", true, true, false, this.componentPortEntity));
+        this.componentPortEntity.getAttributes().add(this.createAttribute("protocol", false, false, DataType.STRING));
+        this.componentExchangeEntity.getAttributes().add(this.createAttribute("role", false, false, DataType.STRING));
+        this.componentExchangeEntity.getAttributes().add(this.createAttribute("description", false, false, DataType.STRING));
+        this.componentExchangeEntity.getRelations().add(this.createRelation("ports", false, true, true, this.componentPortEntity));
         this.providedServiceEntity.getRelations().add(this.createRelation("contract", false, false, false, this.interfaceEntity));
         this.requiredServiceEntity.getRelations().add(this.createRelation("contract", false, false, false, this.interfaceEntity));
 

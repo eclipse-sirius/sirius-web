@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ProvidedSer
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.RealizedByEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.ReferencesClassEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.RequiredServiceNodeDescriptionProvider;
+import org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.exchange.ComponentExchangeDiagramProvider;
 import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.InteractionEdgeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.OperationalActivityNodeDescriptionProvider;
 import org.eclipse.sirius.web.sample.papaya.view.operationalanalysis.OperationalActorNodeDescriptionProvider;
@@ -131,6 +132,14 @@ public class PapayaViewProvider {
         var classDiagramDescription = new ClassDiagramDescriptionProvider().create(colorProvider);
         view.getDescriptions().add(classDiagramDescription);
 
+        var componentExchangeDiagramDescription = new ComponentExchangeDiagramProvider().create(colorProvider);
+        view.getDescriptions().add(componentExchangeDiagramDescription);
+        DiagramPalette paletteExchangeDiagram = DiagramFactory.eINSTANCE.createDiagramPalette();
+        componentExchangeDiagramDescription.setPalette(paletteExchangeDiagram);
+        var newComponentExchangeDiagramNodeTool = new PapayaToolsFactory().createNamedElement("papaya_logical_architecture::Component", "components", "Component");
+        newComponentExchangeDiagramNodeTool.setName("New Component");
+        paletteExchangeDiagram.getNodeTools().addAll(List.of(newComponentExchangeDiagramNodeTool, this.getInitializeExchangeDigram()));
+
         var overviewFormDescription = new OverviewFormProvider().create(colorProvider);
         view.getDescriptions().add(overviewFormDescription);
 
@@ -156,7 +165,7 @@ public class PapayaViewProvider {
         colorPalette.getColors().add(this.createFixedColor("color_orange", "#ffcc80"));
         colorPalette.getColors().add(this.createFixedColor("color_gray", "#e0e0e0"));
         colorPalette.getColors().add(this.createFixedColor("color_gray_2", "#bdbdbd"));
-        colorPalette.getColors().add(this.createFixedColor("color_red", "#fb8c00"));
+        colorPalette.getColors().add(this.createFixedColor("color_red", "#f44336"));
 
 
         colorPalette.getColors().add(this.createFixedColor("background_green", "#004D40"));
@@ -226,4 +235,17 @@ public class PapayaViewProvider {
 
         return initializeNodeTool;
     }
+
+    private NodeTool getInitializeExchangeDigram() {
+        var initializeNodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        initializeNodeTool.setName("Initialize Data");
+
+        var changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression("aql:self.initDeploymentDiagram()");
+
+        initializeNodeTool.getBody().add(changeContext);
+
+        return initializeNodeTool;
+    }
+
 }
