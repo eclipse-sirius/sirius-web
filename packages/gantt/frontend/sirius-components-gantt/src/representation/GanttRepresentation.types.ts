@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLGantt } from '../../graphql/subscription/GanttSubscription.types';
+import { GQLGantt } from '../graphql/subscription/GanttSubscription.types';
 
 export interface GanttRepresentationState {
   id: string;

@@ -20,7 +20,7 @@ import {
 import '@ObeoNetwork/gantt-task-react/dist/style.css';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
 import { useState } from 'react';
-import { SelectableTask } from '../../graphql/subscription/GanttSubscription.types';
+import { SelectableTask } from '../graphql/subscription/GanttSubscription.types';
 import { getContextalPalette } from '../palette/ContextualPalette';
 import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState } from './Gantt.types';

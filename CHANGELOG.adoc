@@ -35,7 +35,7 @@ Its body operations are now bind on set/add instead of click.
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2775[#2775] [gantt] Handle TypeScript strict mode for Gantt module
 
 == v2024.1.0
 

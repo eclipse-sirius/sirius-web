@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Task } from '@ObeoNetwork/gantt-task-react';
 import { TaskType } from '@ObeoNetwork/gantt-task-react/dist/types/public-types';
-import { GQLGantt, GQLTask, GQLTaskDetail, SelectableTask } from '../../graphql/subscription/GanttSubscription.types';
+import { GQLGantt, GQLTask, GQLTaskDetail, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
 
 export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): Task[] {
   const tasks: Task[] = [];
@@ -55,15 +55,17 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): Task[
   return tasks;
 }
 
-export const updateTask = (gantt: GQLGantt, taskId: string, newDetail: GQLTaskDetail) => {
-  const task = findTask(gantt.tasks, taskId);
-  if (!!task) {
-    task.detail = newDetail;
+export const updateTask = (gantt: GQLGantt | null, taskId: string, newDetail: GQLTaskDetail) => {
+  if (gantt) {
+    const task = findTask(gantt.tasks, taskId);
+    if (!!task) {
+      task.detail = newDetail;
+    }
   }
 };
 
 const findTask = (tasks: GQLTask[], taskId: string): GQLTask | undefined => {
-  let foundTask: GQLTask = undefined;
+  let foundTask: GQLTask | undefined = undefined;
   tasks.every((value) => {
     if (value.id === taskId) {
       foundTask = value;

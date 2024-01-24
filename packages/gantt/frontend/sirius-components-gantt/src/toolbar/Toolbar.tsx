@@ -67,11 +67,11 @@ export const Toolbar = ({
   const onFitToScreen = () => {
     const minTime = Math.min.apply(
       null,
-      tasks.filter((task) => Boolean(task.start)).map((task) => task.start.getTime())
+      tasks.filter((task) => Boolean(task.start)).map((task) => (task.start ? task.start.getTime() : 0))
     );
     const maxTime = Math.max.apply(
       null,
-      tasks.filter((task) => Boolean(task.end)).map((task) => task.end.getTime())
+      tasks.filter((task) => Boolean(task.end)).map((task) => (task.end ? task.end.getTime() : 0))
     );
 
     const fullTime: number = (maxTime - minTime) / 1000 / 3600;
@@ -123,14 +123,14 @@ export const Toolbar = ({
     if (zoomLevel !== ViewMode.Hour) {
       const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
       const newZoomLevel = Object.values(ViewMode).at(currentIndex - 1);
-      onChangeZoomLevel(newZoomLevel);
+      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Hour);
     }
   };
   const onZoomOut = () => {
     if (zoomLevel !== ViewMode.Month) {
       const currentIndex = Object.values(ViewMode).indexOf(zoomLevel);
       const newZoomLevel = Object.values(ViewMode).at(currentIndex + 1);
-      onChangeZoomLevel(newZoomLevel);
+      onChangeZoomLevel(newZoomLevel ? newZoomLevel : ViewMode.Month);
     }
   };
 
