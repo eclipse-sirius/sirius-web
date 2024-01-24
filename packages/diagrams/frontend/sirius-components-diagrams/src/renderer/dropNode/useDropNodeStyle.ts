@@ -13,11 +13,14 @@
 
 import { useTheme } from '@material-ui/core/styles';
 import { useContext } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DropNodeContext } from './DropNodeContext';
 import { DropNodeContextValue } from './DropNodeContext.types';
 import { useDropNodeStyleValue } from './useDropNodeStyle.types';
 
 export const useDropNodeStyle = (nodeId: string): useDropNodeStyleValue => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { draggedNode, targetNodeId, compatibleNodeIds } = useContext<DropNodeContextValue>(DropNodeContext);
   const theme = useTheme();
 
@@ -25,7 +28,7 @@ export const useDropNodeStyle = (nodeId: string): useDropNodeStyleValue => {
   const isSelectedDropTarget: boolean = nodeId === targetNodeId;
   const style: React.CSSProperties = {};
 
-  if (draggedNode !== null) {
+  if (draggedNode !== null && !readOnly) {
     if (draggedNode.id !== nodeId && !isCompatibleDropTarget) {
       style.opacity = '0.4';
     }

@@ -73,7 +73,7 @@ const getNodeDepth = (node: Node<NodeData>, intersections: Node<NodeData>[]): nu
 };
 
 const useDropNodeMutation = () => {
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage, addMessages } = useMultiToast();
   const [dropMutation, { data: dropNodeData, error: dropNodeError }] = useMutation<
     GQLDropNodeData,
@@ -95,27 +95,32 @@ const useDropNodeMutation = () => {
     }
   }, [dropNodeData, dropNodeError]);
 
-  const invokeMutation = (
-    droppedNode: Node,
-    targetElementId: string | null,
-    dropPosition: XYPosition,
-    onDragCancelled: (node: Node) => void
-  ): void => {
-    const input: GQLDropNodeInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: diagramId,
-      droppedElementId: droppedNode.id,
-      targetElementId,
-      x: dropPosition.x,
-      y: dropPosition.y,
-    };
-    dropMutation({ variables: { input } }).then((result) => {
-      if (result.data?.dropNode && isErrorPayload(result.data?.dropNode)) {
-        onDragCancelled(droppedNode);
+  const invokeMutation = useCallback(
+    (
+      droppedNode: Node,
+      targetElementId: string | null,
+      dropPosition: XYPosition,
+      onDragCancelled: (node: Node) => void
+    ): void => {
+      const input: GQLDropNodeInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: diagramId,
+        droppedElementId: droppedNode.id,
+        targetElementId,
+        x: dropPosition.x,
+        y: dropPosition.y,
+      };
+      if (!readOnly) {
+        dropMutation({ variables: { input } }).then((result) => {
+          if (result.data?.dropNode && isErrorPayload(result.data?.dropNode)) {
+            onDragCancelled(droppedNode);
+          }
+        });
       }
-    });
-  };
+    },
+    [readOnly]
+  );
 
   return invokeMutation;
 };

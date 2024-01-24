@@ -54,7 +54,7 @@ const isSuccessPayload = (payload: GQLReconnectEdgePayload): payload is GQLSucce
 
 export const useReconnectEdge = (): UseReconnectEdge => {
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
     GQLReconnectEdgeData,
     GQLReconnectEdgeVariables
@@ -71,9 +71,11 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         reconnectEdgeKind,
         newEdgeEndPosition: { x: 0, y: 0 },
       };
-      updateEdgeEnd({ variables: { input } });
+      if (!readOnly) {
+        updateEdgeEnd({ variables: { input } });
+      }
     },
-    [editingContextId, diagramId, updateEdgeEnd]
+    [editingContextId, diagramId, readOnly, updateEdgeEnd]
   );
 
   useEffect(() => {

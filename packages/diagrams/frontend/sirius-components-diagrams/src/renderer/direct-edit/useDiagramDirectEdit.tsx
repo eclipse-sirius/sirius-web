@@ -12,6 +12,8 @@
  *******************************************************************************/
 import { useCallback, useContext } from 'react';
 import { useReactFlow } from 'reactflow';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramDirectEditContext } from './DiagramDirectEditContext';
 import { DiagramDirectEditContextValue } from './DiagramDirectEditContext.types';
@@ -23,13 +25,14 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
   const { currentlyEditedLabelId, editingKey, setCurrentlyEditedLabelId, resetDirectEdit } =
     useContext<DiagramDirectEditContextValue>(DiagramDirectEditContext);
   const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const onDirectEdit = useCallback(
     (event: React.KeyboardEvent<Element>) => {
       const { key } = event;
       /*If a modifier key is hit alone, do nothing*/
       const isTextField = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement;
-      if (((event.altKey || event.shiftKey) && event.getModifierState(key)) || isTextField) {
+      if (((event.altKey || event.shiftKey) && event.getModifierState(key)) || isTextField || readOnly) {
         return;
       }
 

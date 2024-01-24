@@ -29,9 +29,9 @@ import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { memo, useContext, useState } from 'react';
 import { Panel, useReactFlow } from 'reactflow';
-import { UnpinIcon } from '../../icons/UnpinIcon';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { UnpinIcon } from '../../icons/UnpinIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useFadeDiagramElements } from '../fade/useFadeDiagramElements';
 import { useFullscreen } from '../fullscreen/useFullscreen';
@@ -45,6 +45,8 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloa
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
   });
+
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const reactFlow = useReactFlow<NodeData, EdgeData>();
   const { getEdges, getNodes } = reactFlow;
@@ -136,7 +138,8 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloa
               size="small"
               aria-label="arrange all elements"
               onClick={() => arrangeAll()}
-              data-testid={'arrange-all'}>
+              data-testid={'arrange-all'}
+              disabled={readOnly}>
               <AccountTreeIcon />
             </IconButton>
           </Tooltip>
@@ -145,7 +148,8 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloa
               size="small"
               aria-label="reveal hidden elements"
               onClick={onUnhideAll}
-              data-testid="reveal-hidden-elements">
+              data-testid="reveal-hidden-elements"
+              disabled={readOnly}>
               <VisibilityOffIcon />
             </IconButton>
           </Tooltip>
@@ -154,7 +158,8 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloa
               size="small"
               aria-label="reveal faded elements"
               onClick={onUnfadeAll}
-              data-testid="reveal-faded-elements">
+              data-testid="reveal-faded-elements"
+              disabled={readOnly}>
               <TonalityIcon />
             </IconButton>
           </Tooltip>
@@ -163,7 +168,8 @@ export const DiagramPanel = memo(({ snapToGrid, onSnapToGrid, refreshEventPayloa
               size="small"
               aria-label="unpin all elements"
               onClick={onUnpinAll}
-              data-testid="unpin-all-elements">
+              data-testid="unpin-all-elements"
+              disabled={readOnly}>
               <UnpinIcon />
             </IconButton>
           </Tooltip>

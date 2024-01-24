@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo and others.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,8 @@ const connectionCreationHandleStyle = (
 };
 
 export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHandlesProps) => {
-  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const theme = useTheme();
+  const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { onConnectionStartElementClick, isConnectionInProgress } = useConnector();
   const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
 
@@ -76,12 +77,21 @@ export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHan
   });
 
   const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, nodeId);
-  const shouldRender = candidates !== null && candidates.length > 0;
+  const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
   useEffect(() => {
     if (candidates !== null) {
       setCandidates(candidates);
     }
   }, [candidates]);
+
+  useEffect(() => {
+    if (!isConnectionInProgress) {
+      setState((prevState) => ({
+        ...prevState,
+        isMouseDown: null,
+      }));
+    }
+  }, [isConnectionInProgress]);
 
   const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, position: Position) => {
     onConnectionStartElementClick(event);
@@ -105,16 +115,6 @@ export const ConnectionCreationHandles = memo(({ nodeId }: ConnectionCreationHan
     }));
   };
 
-  useEffect(() => {
-    if (!isConnectionInProgress) {
-      setState((prevState) => ({
-        ...prevState,
-        isMouseDown: null,
-      }));
-    }
-  }, [isConnectionInProgress]);
-
-  const theme = useTheme();
   return (
     <>
       {shouldRender

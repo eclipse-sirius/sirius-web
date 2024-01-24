@@ -13,7 +13,9 @@
 
 import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
+import { DiagramContext } from '../contexts/DiagramContext';
+import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { DiagramDirectEditInput } from './direct-edit/DiagramDirectEditInput';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { LabelProps } from './Label.types';
@@ -43,6 +45,7 @@ const labelStyle = (
 export const Label = memo(({ diagramElementId, label, faded, transform }: LabelProps) => {
   const theme: Theme = useTheme();
   const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const handleClose = () => {
     resetDirectEdit();
@@ -53,7 +56,7 @@ export const Label = memo(({ diagramElementId, label, faded, transform }: LabelP
   };
 
   const content: JSX.Element =
-    label.id === currentlyEditedLabelId ? (
+    label.id === currentlyEditedLabelId && !readOnly ? (
       <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
     ) : (
       <div data-id={`${label.id}-content`} style={{ display: 'flex', alignItems: 'center' }}>
