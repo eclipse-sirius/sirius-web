@@ -15,6 +15,8 @@ import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
 import { useDrop } from '../drop/useDrop';
@@ -66,6 +68,7 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
 };
 
 export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
@@ -79,7 +82,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
   useRefreshConnectionHandles(id, data.connectionHandles);
   return (
     <>
-      {data.nodeDescription?.userResizable && (
+      {data.nodeDescription?.userResizable && !readOnly ? (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}
@@ -88,7 +91,7 @@ export const ListNode = memo(({ data, id, selected }: NodeProps<ListNodeData>) =
           shouldResize={() => !data.isBorderNode}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
-      )}
+      ) : null}
       <div
         style={{
           ...listNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),

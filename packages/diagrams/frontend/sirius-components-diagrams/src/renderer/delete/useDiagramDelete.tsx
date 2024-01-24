@@ -55,7 +55,7 @@ const isSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLD
 
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
 
   const [deleteElementsMutation, { data: deleteElementsData, error: deleteElementsError }] = useMutation<
@@ -84,7 +84,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
     }
     event.preventDefault();
 
-    if (key === 'Delete' && editingContextId && diagramId) {
+    if (key === 'Delete' && editingContextId && diagramId && !readOnly) {
       const nodeToDeleteIds: string[] = getNodes()
         .filter((node) => node.selected)
         .map((node) => node.id);

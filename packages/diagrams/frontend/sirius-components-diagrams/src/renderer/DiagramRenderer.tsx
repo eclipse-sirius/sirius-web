@@ -31,6 +31,8 @@ import {
   useEdgesState,
   useNodesState,
 } from 'reactflow';
+import { DiagramContext } from '../contexts/DiagramContext';
+import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
 import { NodeTypeContextValue } from '../contexts/NodeContext.types';
 import { useDiagramDescription } from '../contexts/useDiagramDescription';
@@ -50,6 +52,7 @@ import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { useNodeHover } from './hover/useNodeHover';
+import { useFilterReadOnlyChanges } from './layout-events/useFilterReadOnlyChanges';
 import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange';
 import { RawDiagram } from './layout/layout.types';
 import { useLayout } from './layout/useLayout';
@@ -70,6 +73,7 @@ import 'reactflow/dist/style.css';
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
@@ -137,14 +141,20 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { applyHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
+  const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
 
   const handleNodesChange: OnNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      if (changes.length === 1 && changes[0]?.type === 'dimensions' && typeof changes[0].resizing !== 'boolean') {
-        setNodes((oldNodes) => applyNodeChanges(changes, oldNodes));
+      const noReadOnlyChanges = filterReadOnlyChanges(changes);
+      if (
+        noReadOnlyChanges.length === 1 &&
+        noReadOnlyChanges[0]?.type === 'dimensions' &&
+        typeof noReadOnlyChanges[0].resizing !== 'boolean'
+      ) {
+        setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
       } else {
         setNodes((oldNodes) => {
-          let transformedNodeChanges = transformBorderNodeChanges(changes);
+          let transformedNodeChanges = transformBorderNodeChanges(noReadOnlyChanges);
           transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
 
           if (transformedNodeChanges.some((change) => change.type === 'position')) {
@@ -158,7 +168,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
           setNodes(newNodes);
           layoutOnBoundsChange(transformedNodeChanges, newNodes as Node<NodeData, DiagramNodeType>[]);
 
-          updateSelectionOnNodesChange(changes);
+          updateSelectionOnNodesChange(noReadOnlyChanges);
           return newNodes;
         });
       }
@@ -227,6 +237,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       onNodesChange={handleNodesChange}
       edges={edges}
       edgeTypes={edgeTypes}
+      edgesUpdatable={!readOnly}
       onKeyDown={onKeyDown}
       onConnect={onConnect}
       onConnectStart={onConnectStart}
@@ -279,6 +290,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         onSnapToGrid={onSnapToGrid}
         refreshEventPayloadId={diagramRefreshedEventPayload.id}
       />
+
       <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
       <ConnectorContextualMenu />

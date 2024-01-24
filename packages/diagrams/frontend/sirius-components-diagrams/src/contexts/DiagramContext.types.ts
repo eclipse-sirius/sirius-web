@@ -14,4 +14,5 @@
 export interface DiagramContextValue {
   editingContextId: string;
   diagramId: string;
+  readOnly: boolean;
 }

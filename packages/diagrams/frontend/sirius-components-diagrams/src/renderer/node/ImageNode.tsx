@@ -15,6 +15,8 @@ import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-compon
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
@@ -79,6 +81,7 @@ const computeBorderRotation = (data: ImageNodeData): string | undefined => {
 };
 
 export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>) => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const theme = useTheme();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
@@ -89,16 +92,16 @@ export const ImageNode = memo(({ data, id, selected }: NodeProps<ImageNodeData>)
   useRefreshConnectionHandles(id, data.connectionHandles);
   return (
     <>
-      {data.nodeDescription?.userResizable && (
+      {data.nodeDescription?.userResizable && !readOnly ? (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
           isVisible={selected && !data.isBorderNode}
-          shouldResize={() => !data.isBorderNode}
+          shouldResize={() => !data.isBorderNode && !readOnly}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
-      )}
+      ) : null}
       <img
         src={httpOrigin + data.imageURL}
         style={{

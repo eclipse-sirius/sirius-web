@@ -11,8 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { Handle, Position, ReactFlowState, useStore } from 'reactflow';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ConnectionHandle, ConnectionHandlesProps } from './ConnectionHandles.types';
 
 const borderHandlesStyle = (position: Position): React.CSSProperties => {
@@ -55,7 +57,8 @@ const handleStyle = (
   theme: Theme,
   position: Position,
   isEdgeSelected: boolean,
-  isVirtualHandle: boolean
+  isVirtualHandle: boolean,
+  readOnly: boolean
 ): React.CSSProperties => {
   const style: React.CSSProperties = {
     position: 'relative',
@@ -73,7 +76,7 @@ const handleStyle = (
       style.left = 'auto';
       break;
   }
-  if (isEdgeSelected) {
+  if (isEdgeSelected && !readOnly) {
     style.opacity = 1;
     style.outline = `${theme.palette.selected} solid 1px`;
   }
@@ -93,6 +96,7 @@ const handleSelectedSelector = (state: ReactFlowState) =>
 export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesProps) => {
   const theme = useTheme();
   const handleSourceSelected = useStore(handleSelectedSelector);
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const isHandleSelected = (connectionHandle: ConnectionHandle): boolean => {
     return !!connectionHandle.id && handleSourceSelected.includes(connectionHandle.id);
@@ -114,7 +118,8 @@ export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesP
                     theme,
                     connectionHandle.position,
                     isHandleSelected(connectionHandle),
-                    connectionHandle.hidden
+                    connectionHandle.hidden,
+                    readOnly
                   )}
                   type={connectionHandle.type}
                   position={connectionHandle.position}

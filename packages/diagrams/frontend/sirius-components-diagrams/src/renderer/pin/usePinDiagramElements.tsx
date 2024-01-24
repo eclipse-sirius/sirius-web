@@ -46,7 +46,7 @@ const isErrorPayload = (payload: GQLPinDiagramElementPayload): payload is GQLErr
 
 export const usePinDiagramElements = (): UsePinDiagramElements => {
   const { addErrorMessage } = useMultiToast();
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const [pinElementMutation, { data: pinDiagramElementData, error: pinDiagramElementError }] = useMutation<
     GQLPinDiagramElementData,
@@ -74,9 +74,11 @@ export const usePinDiagramElements = (): UsePinDiagramElements => {
         elementIds: nodeId,
         pinned,
       };
-      pinElementMutation({ variables: { input } });
+      if (!readOnly) {
+        pinElementMutation({ variables: { input } });
+      }
     },
-    [editingContextId, diagramId, pinElementMutation]
+    [editingContextId, diagramId, readOnly, pinElementMutation]
   );
 
   return { pinDiagramElements };

@@ -78,7 +78,11 @@ export const getDiagramDescription = gql`
 const isDiagramRefreshedEventPayload = (payload: GQLDiagramEventPayload): payload is GQLDiagramRefreshedEventPayload =>
   payload.__typename === 'DiagramRefreshedEventPayload';
 
-export const DiagramRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
+export const DiagramRepresentation = ({
+  editingContextId,
+  representationId,
+  readOnly,
+}: RepresentationComponentProps) => {
   const [state, setState] = useState<DiagramRepresentationState>({
     id: crypto.randomUUID(),
     diagramRefreshedEventPayload: null,
@@ -160,7 +164,7 @@ export const DiagramRepresentation = ({ editingContextId, representationId }: Re
 
   return (
     <ReactFlowProvider>
-      <DiagramContext.Provider value={{ editingContextId, diagramId: representationId }}>
+      <DiagramContext.Provider value={{ editingContextId, diagramId: representationId, readOnly }}>
         <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
           <DiagramDirectEditContextProvider>
             <DiagramPaletteContextProvider>

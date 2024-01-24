@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useContext, useEffect } from 'react';
 import {
   BaseEdge,
   Edge,
@@ -25,6 +25,8 @@ import {
   useReactFlow,
   useStore,
 } from 'reactflow';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { DiagramElementPalette } from '../palette/DiagramElementPalette';
@@ -65,6 +67,7 @@ export const MultiLabelEdge = memo(
     sourceHandleId,
     targetHandleId,
   }: EdgeProps<MultiLabelEdgeData>) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
     const reactFlowInstance = useReactFlow<NodeData, EdgeData>();
 
@@ -132,7 +135,7 @@ export const MultiLabelEdge = memo(
       reactFlowInstance.setEdges((edges: Edge<EdgeData>[]) =>
         edges.map((edge) => {
           if (edge.id === id) {
-            if (selected) {
+            if (selected && !readOnly) {
               edge.updatable = true;
             } else {
               edge.updatable = false;

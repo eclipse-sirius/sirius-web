@@ -57,7 +57,7 @@ const isSuccessPayload = (payload: GQLDropOnDiagramPayload): payload is GQLDropO
 
 export const useDrop = (): UseDropValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const [dropMutation, { data: droponDiagramElementData, error: droponDiagramError }] = useMutation<
     GQLDropOnDiagramData,
     GQLDropOnDiagramVariables
@@ -105,9 +105,11 @@ export const useDrop = (): UseDropValue => {
         startingPositionY: dropPosition.y,
         diagramTargetElementId: diagramElementId ? diagramElementId : diagramId,
       };
-      dropMutation({ variables: { input } });
+      if (!readOnly) {
+        dropMutation({ variables: { input } });
+      }
     },
-    [reactFlowInstance]
+    [reactFlowInstance, readOnly]
   );
 
   const onDragOver = useCallback((event: React.DragEvent) => {

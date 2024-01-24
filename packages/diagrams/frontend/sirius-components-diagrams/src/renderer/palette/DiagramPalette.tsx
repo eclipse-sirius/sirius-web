@@ -11,14 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { memo } from 'react';
+import { memo, useContext } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { Palette } from './Palette';
 import { PalettePortal } from './PalettePortal';
 import { useDiagramPalette } from './useDiagramPalette';
 
 export const DiagramPalette = memo(({ diagramElementId }: DiagramPaletteProps) => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x, y } = useDiagramPalette();
+  if (readOnly) {
+    return null;
+  }
+
   return isOpened && x && y ? (
     <PalettePortal>
       <Palette x={x} y={y} diagramElementId={diagramElementId} onDirectEditClick={() => {}} />
