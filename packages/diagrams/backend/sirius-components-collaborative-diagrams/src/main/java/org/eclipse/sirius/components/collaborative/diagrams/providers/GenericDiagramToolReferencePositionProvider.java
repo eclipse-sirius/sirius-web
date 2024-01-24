@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,16 +39,22 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
     public ReferencePosition getReferencePosition(IInput diagramInput, IDiagramContext diagramContext) {
         ReferencePosition referencePosition = null;
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
-            String parentId = null;
-            if (!diagramContext.getDiagram().getId().equals(input.diagramElementId())) {
-                parentId = input.diagramElementId();
-            }
+            String parentId = this.getParentId(diagramContext, input.diagramElementId());
             referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()));
         } else if (diagramInput instanceof DropNodeInput input) {
             referencePosition = new ReferencePosition(input.targetElementId(), new Position(input.x(), input.y()));
         } else if (diagramInput instanceof DropOnDiagramInput input) {
-            referencePosition = new ReferencePosition(null, new Position(input.startingPositionX(), input.startingPositionY()));
+            String parentId = this.getParentId(diagramContext, input.diagramTargetElementId());
+            referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()));
         }
         return referencePosition;
+    }
+
+    private String getParentId(IDiagramContext diagramContext, String targetId) {
+        String parentId = null;
+        if (!diagramContext.getDiagram().getId().equals(targetId)) {
+            parentId = targetId;
+        }
+        return parentId;
     }
 }

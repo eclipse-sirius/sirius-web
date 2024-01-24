@@ -374,6 +374,7 @@ The only way to export diagram as SVG image is to use the ReactFlow toolbar loca
 - https://github.com/eclipse-sirius/sirius-web/issues/2605[#2605] [diagram] Fix an issue that prevents last node or edge to remain selected if the new selection is not displayed on the diagram.
 - https://github.com/eclipse-sirius/sirius-web/issues/2919[#2919] [diagram] Reset node position if drag and drop fails.
 - https://github.com/eclipse-sirius/sirius-web/issues/3001[#3001] [diagram] Fix an issue that inverse list order after arrangeAll
+- https://github.com/eclipse-sirius/sirius-web/issues/2982[#2982] [diagram] Fix an issue where the drop position on container was invalid.
 
 === New Features
 
