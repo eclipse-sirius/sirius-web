@@ -33,8 +33,8 @@ export interface GQLEditTaskVariables {
 export interface GQLEditGanttTaskDetailInput {
   name: string;
   description: string;
-  startTime: string;
-  endTime: string;
+  startTime?: string;
+  endTime?: string;
   progress: number;
 }
 export interface GQLEditGanttTaskInput {

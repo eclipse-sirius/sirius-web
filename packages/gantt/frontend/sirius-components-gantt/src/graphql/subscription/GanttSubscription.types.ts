@@ -79,10 +79,10 @@ export interface SelectableTask extends Task {
 export interface GQLTaskDetail {
   name: string;
   description: string;
-  startTime: string;
-  endTime: string;
+  startTime?: string;
+  endTime?: string;
   progress: number;
-  computeStartEndDynamically: boolean;
+  computeStartEndDynamically?: boolean;
 }
 
 export interface GQLTaskStyle {

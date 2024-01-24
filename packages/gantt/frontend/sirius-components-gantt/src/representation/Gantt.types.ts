@@ -28,5 +28,4 @@ export interface GanttProps {
   onEditTask: (Task: Task) => void;
   onDeleteTask: (Task: Task) => void;
   onExpandCollapse: (Task: Task) => void;
-  onSelect: (Task, isSelected: boolean) => void;
 }

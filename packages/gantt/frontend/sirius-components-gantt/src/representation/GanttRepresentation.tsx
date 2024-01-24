@@ -26,16 +26,16 @@ import {
   GQLEditGanttTaskInput,
   GQLEditTaskData,
   GQLEditTaskVariables,
-} from '../../graphql/mutation/GanttMutation.types';
-import { createTaskMutation, deleteTaskMutation, editTaskMutation } from '../../graphql/mutation/ganttMutation';
+} from '../graphql/mutation/GanttMutation.types';
+import { createTaskMutation, deleteTaskMutation, editTaskMutation } from '../graphql/mutation/ganttMutation';
 import {
   GQLErrorPayload,
   GQLGanttEventPayload,
   GQLGanttEventSubscription,
   GQLGanttRefreshedEventPayload,
   GQLTaskDetail,
-} from '../../graphql/subscription/GanttSubscription.types';
-import { ganttEventSubscription } from '../../graphql/subscription/ganttSubscription';
+} from '../graphql/subscription/GanttSubscription.types';
+import { ganttEventSubscription } from '../graphql/subscription/ganttSubscription';
 import { getTaskFromGQLTask, updateTask } from '../helper/helper';
 import { Gantt } from './Gantt';
 import { GanttRepresentationState } from './GanttRepresentation.types';
@@ -134,7 +134,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
 
   const isStandardErrorPayload = (field): field is GQLErrorPayload => field.__typename === 'ErrorPayload';
   const handleError = useCallback(
-    (loading: boolean, data, error: ApolloError) => {
+    (loading: boolean, data, error: ApolloError | undefined) => {
       if (!loading) {
         if (error) {
           addErrorMessage(error.message);
@@ -143,10 +143,12 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
           const keys = Object.keys(data);
           if (keys.length > 0) {
             const firstKey = keys[0];
-            const firstField = data[firstKey];
-            if (isStandardErrorPayload(firstField)) {
-              const { messages } = firstField;
-              addMessages(messages);
+            if (firstKey) {
+              const firstField = data[firstKey];
+              if (isStandardErrorPayload(firstField)) {
+                const { messages } = firstField;
+                addMessages(messages);
+              }
             }
           }
         }
@@ -169,8 +171,8 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
     const newDetail: GQLTaskDetail = {
       name: task.name,
       description: '',
-      startTime: task.start.toISOString(),
-      endTime: task.end.toISOString(),
+      startTime: task.start?.toISOString(),
+      endTime: task.end?.toISOString(),
       progress: task.progress,
       computeStartEndDynamically: task.isDisabled,
     };
@@ -224,7 +226,6 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         tasks={tasks}
         setSelection={setSelection}
         onCreateTask={handleCreateTask}
-        onSelect={onselect}
         onEditTask={handleEditTask}
         onDeleteTask={handleDeleteTask}
         onExpandCollapse={onExpandCollapse}
