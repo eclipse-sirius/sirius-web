@@ -117,7 +117,7 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
       const parentNode = allNodes.find((node) => node.id === parentNodeId);
       if (parentNode && isListData(parentNode)) {
         // No elk layout for child of container list
-        layoutedAllNodes = [...layoutedAllNodes, ...nodes];
+        layoutedAllNodes = [...layoutedAllNodes, ...nodes.reverse()];
         continue;
       }
       const withHeader: boolean = parentNode?.data.insideLabel?.isHeader ?? false;
