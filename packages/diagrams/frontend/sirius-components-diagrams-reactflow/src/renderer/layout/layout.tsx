@@ -93,6 +93,7 @@ export const prepareLayoutArea = (
       const element: JSX.Element = createElement('div', {
         id: `${node.id}-label-${index}`,
         key: `${node.id}-label-${index}`,
+        role: 'button', // role applied by react flow
         children,
       });
       labelElements.push(element);
