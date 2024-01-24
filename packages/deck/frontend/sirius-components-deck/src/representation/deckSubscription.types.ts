@@ -53,9 +53,6 @@ export interface GQLDeck {
 
 export interface GQLLane {
   id: string;
-  targetObjectId: string;
-  targetObjectKind: string;
-  targetObjectLabel: string;
   title: string;
   label: string;
   cards: GQLCard[];

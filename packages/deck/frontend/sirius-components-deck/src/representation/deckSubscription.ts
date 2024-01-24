@@ -34,9 +34,6 @@ export const deckEventSubscription = gql`
           targetObjectId
           lanes {
             id
-            targetObjectId
-            targetObjectKind
-            targetObjectLabel
             title
             label
             cards {

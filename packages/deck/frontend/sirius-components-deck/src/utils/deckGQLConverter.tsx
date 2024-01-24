@@ -23,18 +23,19 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]
       let editable: boolean = false;
       let className: string | undefined;
       let style: object | undefined;
+      const { targetObjectId, targetObjectLabel, targetObjectKind, ...otherCardProps } = card;
       const metadata = {
         selection: {
-          id: card.targetObjectId,
-          label: card.targetObjectLabel,
-          kind: card.targetObjectKind,
+          id: targetObjectId,
+          label: targetObjectLabel,
+          kind: targetObjectKind,
         },
       };
       if (selectedCardIds.includes(card.id)) {
         editable = true;
       }
       return {
-        ...card,
+        ...otherCardProps,
         editable,
         metadata,
         className,
