@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -342,6 +345,121 @@ public class PapayaService {
         this.drop(this.eclipseFoundation, null, diagramContext, convertedNodes);
 
         return eObject;
+    }
+
+    public EObject initDeploymentDiagram(EObject eObject) {
+        this.ePackageRegistry = eObject.eResource().getResourceSet().getPackageRegistry();
+        var componentWebBrowser = this.component("Web Browser");
+        var componentAws = this.component("Amazon Web Services");
+        this.addMany(eObject, "components", List.of(componentWebBrowser, componentAws));
+        var componentAwsEb = this.component("AWS Elastic Beanstalk");
+        var componentAwsRds = this.component("AWS RDS");
+
+        this.addMany(componentAws, "components", List.of(componentAwsEb, componentAwsRds));
+        var componentDocker = this.component("Docker");
+        this.addMany(componentAwsEb, "components", List.of(componentDocker));
+        var componentSiriusWeb = this.component("Amazon Web Services");
+        this.addMany(componentDocker, "components", List.of(componentSiriusWeb));
+        var componentPostgre = this.component("PostgreSQL");
+
+        this.addMany(componentAwsRds, "components", List.of(componentPostgre));
+
+        createComponentExchangeFromComponentList(eObject, "GraphQL queries and mutations", List.of(componentSiriusWeb, componentDocker, componentAwsEb, componentAws, componentWebBrowser));
+        createComponentExchangeFromComponentList(eObject, "DB operations", List.of(componentSiriusWeb, componentDocker, componentAwsEb, componentAwsRds, componentPostgre));
+        return eObject;
+    }
+
+    private void createComponentExchangeFromComponentList(EObject root, String name, List<EObject> listComponents) {
+        var componentExchange = this.componentExchange(name, "Component Exchange", "component exchange");
+        this.addMany(root, "componentExchanges", List.of(componentExchange));
+        for (int i = 0; i < listComponents.size(); i++) {
+            var port = this.componentPort("Port " + i, "");
+            this.addMany(listComponents.get(i), "ports", List.of(port));
+            this.componentsExchangePorts(componentExchange, port);
+        }
+
+    }
+    public EObject createComponentExchange(EObject semanticEdgeSource, EObject semanticEdgeTarget) {
+        this.ePackageRegistry = semanticEdgeSource.eResource().getResourceSet().getPackageRegistry();
+        var listSourceComponents = new ArrayList<EObject>();
+        var listTargetComponents = new ArrayList<EObject>();
+        var semanticEdgeSourceContainer = semanticEdgeSource;
+        var semanticEdgeTargetContainer = semanticEdgeTarget;
+
+        while (semanticEdgeTargetContainer.eContainer() != null || semanticEdgeSourceContainer.eContainer() != null) {
+            if (semanticEdgeTargetContainer.eContainer() != null) {
+                listTargetComponents.add(semanticEdgeTargetContainer);
+                semanticEdgeTargetContainer = semanticEdgeTargetContainer.eContainer();
+            }
+            if (semanticEdgeSourceContainer.eContainer() != null) {
+                listSourceComponents.add(semanticEdgeSourceContainer);
+                semanticEdgeSourceContainer = semanticEdgeSourceContainer.eContainer();
+            }
+        }
+        var root = this.getRoot(semanticEdgeSource);
+        this.initComponentExchangeFromComponents(listSourceComponents, listTargetComponents, root);
+        return root;
+    }
+
+    private void componentsExchangePorts(EObject componentExchange, EObject port) {
+        ((EList<EObject>) componentExchange.eGet(componentExchange.eClass().getEStructuralFeature("ports"))).add(port);
+    }
+
+    private void initComponentExchangeFromComponents(List<EObject> listSourceComponents, List<EObject> listTargetComponents, EObject root) {
+        EObject sameContainer = this.getSameContainer(listSourceComponents, listTargetComponents);
+
+        var componentExchange = this.componentExchange("Component Exchange", "Component Exchange", "component exchange");
+        this.addMany(root, "componentExchanges", List.of(componentExchange));
+
+        var index = 0;
+
+        var sourceComponent = listSourceComponents.get(0);
+        EObject lastAddedSourceComponent = null;
+        while (sourceComponent != sameContainer) {
+            var port = this.componentPort("Port " + index, "");
+            this.addMany(sourceComponent, "ports", List.of(port));
+            this.componentsExchangePorts(componentExchange, port);
+
+            if (sourceComponent.eContainer().eClass().getName().equals("Root")) {
+                lastAddedSourceComponent = sourceComponent;
+            }
+            sourceComponent = sourceComponent.eContainer();
+            index++;
+        }
+
+        Collections.reverse(listTargetComponents);
+        boolean shouldAdd = false;
+        for (EObject listTargetComponent : listTargetComponents) {
+            if (listTargetComponent.eContainer() == sameContainer) {
+                shouldAdd = true;
+            }
+            if (shouldAdd && lastAddedSourceComponent != listTargetComponent) {
+                var port = this.componentPort("Port " + index, "");
+                this.addMany(listTargetComponent, "ports", List.of(port));
+                this.componentsExchangePorts(componentExchange, port);
+                index++;
+            }
+        }
+    }
+
+    private EObject getSameContainer(List<EObject> firstList, List<EObject> secondList) {
+        EObject sameContainer = null;
+        for (EObject sourceContainer : firstList) {
+            for (EObject targetContainer : secondList) {
+                if (sourceContainer.eContainer() == targetContainer.eContainer()) {
+                    sameContainer = sourceContainer.eContainer();
+                }
+            }
+        }
+        return sameContainer;
+    }
+
+    private EObject getRoot(EObject eobject) {
+        var root = eobject;
+        while (!root.eClass().getName().equals("Root")) {
+            root = root.eContainer();
+        }
+        return root;
     }
 
     private void createStandardLibraries() {
@@ -762,6 +880,23 @@ public class PapayaService {
         var componentEClass = this.eClass("papaya_logical_architecture::Component");
         var component = componentEClass.getEPackage().getEFactoryInstance().create(componentEClass);
         component.eSet(componentEClass.getEStructuralFeature("name"), name);
+        return component;
+    }
+
+    private EObject componentPort(String name, String protocol) {
+        var componentPortEClass = this.eClass("papaya_logical_architecture::ComponentPort");
+        var component = componentPortEClass.getEPackage().getEFactoryInstance().create(componentPortEClass);
+        component.eSet(componentPortEClass.getEStructuralFeature("name"), name);
+        component.eSet(componentPortEClass.getEStructuralFeature("protocol"), name);
+        return component;
+    }
+
+    private EObject componentExchange(String name, String role, String description) {
+        var componentExchangeEClass = this.eClass("papaya_logical_architecture::ComponentExchange");
+        var component = componentExchangeEClass.getEPackage().getEFactoryInstance().create(componentExchangeEClass);
+        component.eSet(componentExchangeEClass.getEStructuralFeature("name"), name);
+        component.eSet(componentExchangeEClass.getEStructuralFeature("role"), role);
+        component.eSet(componentExchangeEClass.getEStructuralFeature("description"), description);
         return component;
     }
 

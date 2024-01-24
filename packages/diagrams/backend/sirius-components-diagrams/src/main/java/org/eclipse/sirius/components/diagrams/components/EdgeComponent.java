@@ -110,9 +110,12 @@ public class EdgeComponent implements IComponent {
 
         List<Element> sourceNodes = edgeDescription.getSourceNodesProvider().apply(edgeVariableManager);
         if (!sourceNodes.isEmpty()) {
-            List<Element> targetNodes = edgeDescription.getTargetNodesProvider().apply(edgeVariableManager);
 
             for (Element sourceNode : sourceNodes) {
+                var targetNodeVariableManager = edgeVariableManager.createChild();
+                targetNodeVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getNodeToObject().get(sourceNode));
+                targetNodeVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceNode);
+                List<Element> targetNodes = edgeDescription.getTargetNodesProvider().apply(targetNodeVariableManager);
                 for (Element targetNode : targetNodes) {
                     var edgeInstanceVariableManager = edgeVariableManager.createChild();
                     edgeInstanceVariableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, this.props.getCache().getNodeToObject().get(sourceNode));
