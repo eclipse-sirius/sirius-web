@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
@@ -41,8 +40,6 @@ public class ReferenceWidgetComponent implements IComponent {
     public static final String MOVE_FROM_VARIABLE = "fromIndex";
 
     public static final String MOVE_TO_VARIABLE = "toIndex";
-
-    public static final String CLICK_EVENT_KIND_VARIABLE = "onClickEventKind";
 
     private final ReferenceWidgetComponentProps props;
 
@@ -141,21 +138,12 @@ public class ReferenceWidgetComponent implements IComponent {
                     String itemLabel = referenceDescription.getItemLabelProvider().apply(childVariables);
                     List<String> itemImageURL = referenceDescription.getItemIconURLProvider().apply(childVariables);
                     String itemKind = referenceDescription.getItemKindProvider().apply(childVariables);
-                    Function<VariableManager, IStatus> clickHandlerProvider = referenceDescription.getItemClickHandlerProvider();
                     Function<VariableManager, IStatus> removeHandlerProvider = referenceDescription.getItemRemoveHandlerProvider();
 
                     var referenceValueBuilder = ReferenceValue.newReferenceValue(itemId)
                             .label(itemLabel)
                             .iconURL(itemImageURL)
                             .kind(itemKind);
-                    if (clickHandlerProvider != null) {
-                        Function<ClickEventKind, IStatus> clickHandler = (clickEventKind) -> {
-                            VariableManager clickHandlerVariableManager = childVariables.createChild();
-                            clickHandlerVariableManager.put(CLICK_EVENT_KIND_VARIABLE, clickEventKind.toString());
-                            return clickHandlerProvider.apply(clickHandlerVariableManager);
-                        };
-                        referenceValueBuilder.clickHandler(clickHandler);
-                    }
                     if (removeHandlerProvider != null) {
                         Supplier<IStatus> removeHandler = () -> {
                             return removeHandlerProvider.apply(childVariables);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,9 @@ package org.eclipse.sirius.components.widget.reference;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
-import org.eclipse.sirius.components.forms.ClickEventKind;
 import org.eclipse.sirius.components.representations.IStatus;
 
 /**
@@ -37,8 +35,6 @@ public final class ReferenceValue {
     private String kind;
 
     private List<String> iconURL;
-
-    private Function<ClickEventKind, IStatus> clickHandler;
 
     private Supplier<IStatus> removeHandler;
 
@@ -64,10 +60,6 @@ public final class ReferenceValue {
 
     public List<String> getIconURL() {
         return this.iconURL;
-    }
-
-    public Function<ClickEventKind, IStatus> getClickHandler() {
-        return this.clickHandler;
     }
 
     public Supplier<IStatus> getRemoveHandler() {
@@ -96,8 +88,6 @@ public final class ReferenceValue {
 
         private List<String> iconURL;
 
-        private Function<ClickEventKind, IStatus> clickHandler;
-
         private Supplier<IStatus> removeHandler;
 
         private Builder(String id) {
@@ -119,11 +109,6 @@ public final class ReferenceValue {
             return this;
         }
 
-        public Builder clickHandler(Function<ClickEventKind, IStatus> clickHandler) {
-            this.clickHandler = Objects.requireNonNull(clickHandler);
-            return this;
-        }
-
         public Builder removeHandler(Supplier<IStatus> removeHandler) {
             this.removeHandler = Objects.requireNonNull(removeHandler);
             return this;
@@ -135,7 +120,6 @@ public final class ReferenceValue {
             referenceValue.label = Objects.requireNonNull(this.label);
             referenceValue.kind = Objects.requireNonNull(this.kind);
             referenceValue.iconURL = this.iconURL;
-            referenceValue.clickHandler = this.clickHandler; // Optional on purpose
             referenceValue.removeHandler = this.removeHandler; // Optional on purpose
             return referenceValue;
         }

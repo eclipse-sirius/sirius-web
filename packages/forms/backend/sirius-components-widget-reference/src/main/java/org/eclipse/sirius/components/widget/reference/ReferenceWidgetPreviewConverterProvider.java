@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,7 +72,6 @@ public class ReferenceWidgetPreviewConverterProvider implements IWidgetPreviewCo
                 .isContainmentProvider(variableManager -> false)
                 .isManyProvider(variableManager -> false)
                 .ownerIdProvider(variableManager -> "")
-                .itemClickHandlerProvider(variableManager -> new Success())
                 .ownerIdProvider(variableManager -> "")
                 .clearHandlerProvider(variableManager -> new Success())
                 .itemRemoveHandlerProvider(variableManager -> new Success())

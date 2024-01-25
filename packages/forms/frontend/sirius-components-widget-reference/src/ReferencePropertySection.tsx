@@ -26,9 +26,6 @@ import {
   GQLClearReferenceMutationData,
   GQLClearReferenceMutationVariables,
   GQLClearReferencePayload,
-  GQLClickReferenceValueMutationData,
-  GQLClickReferenceValueMutationVariables,
-  GQLClickReferenceValuePayload,
   GQLErrorPayload,
   GQLMoveReferenceValueMutationData,
   GQLMoveReferenceValueMutationVariables,
@@ -53,26 +50,6 @@ const useStyles = makeStyles<Theme>(() => ({
     overflow: 'hidden',
   },
 }));
-
-export const clickReferenceValueMutation = gql`
-  mutation clickReferenceValue($input: ClickReferenceValueInput!) {
-    clickReferenceValue(input: $input) {
-      __typename
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-      ... on SuccessPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
 
 export const clearReferenceMutation = gql`
   mutation clearReference($input: ClearReferenceInput!) {
@@ -176,7 +153,6 @@ export const moveReferenceValueMutation = gql`
 
 const isErrorPayload = (
   payload:
-    | GQLClickReferenceValuePayload
     | GQLClearReferencePayload
     | GQLRemoveReferenceValuePayload
     | GQLSetReferenceValuePayload
@@ -185,7 +161,6 @@ const isErrorPayload = (
 ): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (
   payload:
-    | GQLClickReferenceValuePayload
     | GQLClearReferencePayload
     | GQLRemoveReferenceValuePayload
     | GQLSetReferenceValuePayload
@@ -207,11 +182,6 @@ export const ReferencePropertySection = ({
     GQLClearReferenceMutationData,
     GQLClearReferenceMutationVariables
   >(clearReferenceMutation);
-
-  const [clickReferenceValue, { loading: clickLoading, error: clickError, data: clickData }] = useMutation<
-    GQLClickReferenceValueMutationData,
-    GQLClickReferenceValueMutationVariables
-  >(clickReferenceValueMutation);
 
   const [removeReferenceValue, { loading: removeLoading, error: removeError, data: removeData }] = useMutation<
     GQLRemoveReferenceValueMutationData,
@@ -236,55 +206,16 @@ export const ReferencePropertySection = ({
   const onReferenceValueSimpleClick = (item: GQLReferenceValue) => {
     const { id, label, kind } = item;
     setSelection({ entries: [{ id, label, kind }] });
-    if (item.hasClickAction) {
-      const variables: GQLClickReferenceValueMutationVariables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          referenceValueId: item.id,
-          clickEventKind: 'SINGLE_CLICK',
-        },
-      };
-      clickReferenceValue({ variables });
-    }
   };
   const onReferenceValueDoubleClick = (item: GQLReferenceValue) => {
     const { id, label, kind } = item;
     setSelection({ entries: [{ id, label, kind }] });
-    if (item.hasClickAction) {
-      const variables: GQLClickReferenceValueMutationVariables = {
-        input: {
-          id: crypto.randomUUID(),
-          editingContextId,
-          representationId: formId,
-          referenceWidgetId: widget.id,
-          referenceValueId: item.id,
-          clickEventKind: 'DOUBLE_CLICK',
-        },
-      };
-      clickReferenceValue({ variables });
-    }
   };
 
   const clickHandler = useClickHandler<GQLReferenceValue>(onReferenceValueSimpleClick, onReferenceValueDoubleClick);
 
   const { addErrorMessage, addMessages } = useMultiToast();
 
-  useEffect(() => {
-    if (!clickLoading) {
-      if (clickError) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-      if (clickData) {
-        const { clickReferenceValue } = clickData;
-        if (isErrorPayload(clickReferenceValue) || isSuccessPayload(clickReferenceValue)) {
-          addMessages(clickReferenceValue.messages);
-        }
-      }
-    }
-  }, [clickLoading, clickError, clickData]);
   useEffect(() => {
     if (!clearLoading) {
       if (clearError) {
