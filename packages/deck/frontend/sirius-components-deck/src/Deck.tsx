@@ -14,6 +14,7 @@ import Board from '@ObeoNetwork/react-trello';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { DeckProps } from './Deck.types';
 import { DeckCard } from './card/DeckCard';
+import { DeckLaneHeader } from './laneHeader/DeckLaneHeader';
 import { Toolbar } from './toolbar/Toolbar';
 
 export const Deck = ({
@@ -21,10 +22,12 @@ export const Deck = ({
   representationId,
   data,
   onCardClick,
+  onLaneClick,
   onCardDelete,
   onCardAdd,
   onCardUpdate,
   onCardMoveAcrossLanes,
+  onLaneUpdate,
 }: DeckProps) => {
   const theme: Theme = useTheme();
   const boardStyle = {
@@ -32,6 +35,7 @@ export const Deck = ({
   };
   const components = {
     Card: DeckCard,
+    LaneHeader: DeckLaneHeader,
   };
   return (
     <div>
@@ -40,10 +44,12 @@ export const Deck = ({
         data={data}
         draggable={true}
         onCardClick={onCardClick}
+        onLaneClick={onLaneClick}
         components={components}
         onCardDelete={onCardDelete}
         onCardAdd={onCardAdd}
         onCardUpdate={onCardUpdate}
+        onLaneUpdate={onLaneUpdate}
         onCardMoveAcrossLanes={onCardMoveAcrossLanes}
         data-testid={`deck-representation`}
         style={boardStyle}

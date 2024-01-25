@@ -12,16 +12,19 @@
  *******************************************************************************/
 
 import { SelectionEntry } from '@eclipse-sirius/sirius-components-core';
+import { CSSProperties } from 'react';
 
 export interface DeckProps {
   editingContextId: string;
   representationId: string;
   data: DeckData;
   onCardClick: (cardId: string, metadata: CardMetadata, laneId: string) => void;
+  onLaneClick: (laneId: string) => void;
   onCardUpdate: (laneId: string, card: Card) => void;
   onCardAdd: (card: Card, laneId: string) => void;
   onCardDelete: (cardId: string, laneId: string) => void;
   onCardMoveAcrossLanes: (oldLaneId: string, newLaneId: string, cardId: string, addedIndex: number) => void;
+  onLaneUpdate: (laneId: string, newValue: { title: string }) => void;
 }
 export interface OnCardClickProps {
   cardId: String;
@@ -37,7 +40,9 @@ export interface Lane {
   title: string;
   label: string;
   cards: Card[];
+  editLaneTitle?: boolean;
   editable: boolean;
+  style?: CSSProperties;
   'data-testid': string;
 }
 export interface Card {

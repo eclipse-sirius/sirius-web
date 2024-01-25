@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLDeck } from './deckSubscription.types';
+package org.eclipse.sirius.components.collaborative.deck.dto.input;
 
-export interface DeckRepresentationState {
-  id: string;
-  deck: GQLDeck | undefined;
-  complete: boolean;
-}
+import java.util.UUID;
 
-export interface Subscriber {
-  username: string;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
+
+/**
+ * The input of the "Edit lane" mutation.
+ *
+ * @author fbarbin
+ */
+public record EditDeckLaneInput(UUID id, String editingContextId, String representationId, String laneId, String newTitle, String newLabel, String newDescription)
+        implements IDeckInput {
 }

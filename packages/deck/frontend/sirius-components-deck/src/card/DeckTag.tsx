@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TagSpan } from './DeckCardStyledComponents';
+import { TagSpan } from '../styled/DeckCardStyledComponents';
 import { DeckTagProps } from './DeckTag.types';
 
 export const DeckTag = ({ title, color, bgcolor, tagStyle }: DeckTagProps) => {

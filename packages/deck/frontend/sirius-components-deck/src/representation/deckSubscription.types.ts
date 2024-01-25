@@ -56,6 +56,7 @@ export interface GQLLane {
   title: string;
   label: string;
   cards: GQLCard[];
+  targetObjectId: string;
 }
 
 export interface GQLCard {

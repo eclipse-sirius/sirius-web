@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLDeck } from './deckSubscription.types';
 
-export interface DeckRepresentationState {
-  id: string;
-  deck: GQLDeck | undefined;
-  complete: boolean;
-}
+import { styled } from '@material-ui/core/styles';
 
-export interface Subscriber {
-  username: string;
-}
+export const LaneHeader = styled('header')({
+  marginBottom: ' 10px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  padding: '0px 5px',
+});

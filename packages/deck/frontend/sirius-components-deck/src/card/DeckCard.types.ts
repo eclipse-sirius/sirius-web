@@ -29,5 +29,5 @@ export interface DeckCardProps {
   tags: DeckTagProps[];
   cardDraggable: boolean;
   editable: boolean;
-  t: (value: string) => string;
+  t: (value: string) => string; // the translate function passed by the Board to handle i18n
 }

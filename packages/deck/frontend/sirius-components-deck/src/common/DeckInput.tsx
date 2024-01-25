@@ -14,12 +14,12 @@
 import TextField from '@material-ui/core/TextField';
 import { styled } from '@material-ui/core/styles';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import { DeckCardInputProps } from './DeckCardInput.types';
+import { DeckCardInputProps } from './DeckInput.types';
 
 /**
  * Inspired from react-trello InlineInput component.
  */
-export const DeckCardInput = forwardRef(
+export const DeckInput = forwardRef(
   ({ value, placeholder, onSave, style, multiline, ...otherProps }: DeckCardInputProps, ref) => {
     const StyledTextField = styled(TextField)(({ theme }) => ({
       '& .MuiInputBase-multiline': {

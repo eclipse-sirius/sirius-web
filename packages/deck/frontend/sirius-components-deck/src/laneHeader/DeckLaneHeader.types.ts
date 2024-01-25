@@ -11,6 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface DeckCardTitleProps {
-  draggable: boolean;
+export interface DeckLaneHeaderProps {
+  updateTitle: (value: string) => void;
+  editLaneTitle: boolean;
+  label: string;
+  title: string;
+  t: (value: string) => string; // the translate function passed by the Board to handle i18n
+  laneDraggable: boolean;
 }
