@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -140,15 +140,17 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
                 .messageProvider(object -> "")
                 .clearHandlerProvider(variableManager -> this.handleClearReference(variableManager, referenceDescription))
                 .itemRemoveHandlerProvider(variableManager -> this.handleItemRemove(variableManager, referenceDescription))
-                .setHandlerProvider(variableManager -> this.handleSetReference(variableManager, referenceDescription))
-                .addHandlerProvider(variableManager -> this.handleAddReference(variableManager, referenceDescription))
                 .moveHandlerProvider(variableManager -> this.handleMoveReferenceValue(variableManager, referenceDescription));
 
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(referenceDescription.getHelpExpression()));
         }
-        if (!referenceDescription.getBody().isEmpty()) {
-            builder.itemClickHandlerProvider(variableManager -> this.handleItemClick(variableManager, referenceDescription.getBody()));
+        if (referenceDescription.getBody().isEmpty()) {
+            builder.setHandlerProvider(variableManager -> this.handleSetReference(variableManager, referenceDescription));
+            builder.addHandlerProvider(variableManager -> this.handleAddReference(variableManager, referenceDescription));
+        } else {
+            builder.setHandlerProvider(variableManager -> this.newValueHandler(variableManager, referenceDescription.getBody()));
+            builder.addHandlerProvider(variableManager -> this.newValueHandler(variableManager, referenceDescription.getBody()));
         }
 
         return Optional.of(builder.build());
@@ -268,12 +270,12 @@ public class ReferenceWidgetDescriptionConverterSwitch extends ReferenceSwitch<O
         return this.widgetIdProvider.getFormElementDescriptionId(description);
     }
 
-    private IStatus handleItemClick(VariableManager variableManager, List<Operation> operations) {
+    private IStatus newValueHandler(VariableManager variableManager, List<Operation> operations) {
         OperationInterpreter operationInterpreter = new OperationInterpreter(this.interpreter, this.editService);
         Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(operations, variableManager);
         if (optionalVariableManager.isEmpty()) {
             List<Message> errorMessages = new ArrayList<>();
-            errorMessages.add(new Message("Something went wrong while handling the item click.", MessageLevel.ERROR));
+            errorMessages.add(new Message("Something went wrong while setting the reference value.", MessageLevel.ERROR));
             errorMessages.addAll(this.feedbackMessageService.getFeedbackMessages());
             return new Failure(errorMessages);
         } else {

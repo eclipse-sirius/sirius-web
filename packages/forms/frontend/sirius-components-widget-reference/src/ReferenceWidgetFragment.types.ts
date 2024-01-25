@@ -43,12 +43,10 @@ export interface GQLReferenceValue {
   label: string;
   kind: string;
   iconURL: string[];
-  hasClickAction: boolean;
 }
 
 export interface GQLErrorPayload
-  extends GQLClickReferenceValuePayload,
-    GQLClearReferencePayload,
+  extends GQLClearReferencePayload,
     GQLRemoveReferenceValuePayload,
     GQLSetReferenceValuePayload,
     GQLAddReferenceValuesPayload,
@@ -57,34 +55,12 @@ export interface GQLErrorPayload
 }
 
 export interface GQLSuccessPayload
-  extends GQLClickReferenceValuePayload,
-    GQLClearReferencePayload,
+  extends GQLClearReferencePayload,
     GQLRemoveReferenceValuePayload,
     GQLSetReferenceValuePayload,
     GQLAddReferenceValuesPayload,
     GQLMoveReferenceValuePayload {
   messages: GQLMessage[];
-}
-
-export interface GQLClickReferenceValueMutationData {
-  clickReferenceValue: GQLClickReferenceValuePayload;
-}
-
-export interface GQLClickReferenceValuePayload {
-  __typename: string;
-}
-
-export interface GQLClickReferenceValueMutationVariables {
-  input: GQLClickReferenceValueInput;
-}
-
-export interface GQLClickReferenceValueInput {
-  id: string;
-  editingContextId: string;
-  representationId: string;
-  referenceWidgetId: string;
-  referenceValueId: string;
-  clickEventKind: 'SINGLE_CLICK' | 'DOUBLE_CLICK';
 }
 
 export interface GQLClearReferenceMutationData {

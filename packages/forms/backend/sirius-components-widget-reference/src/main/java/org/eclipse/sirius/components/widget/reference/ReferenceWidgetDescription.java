@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,8 +56,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
     private Function<VariableManager, Boolean> isContainmentProvider;
 
     private Function<VariableManager, Boolean> isManyProvider;
-
-    private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
     private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
 
@@ -133,10 +131,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         return this.isManyProvider;
     }
 
-    public Function<VariableManager, IStatus> getItemClickHandlerProvider() {
-        return this.itemClickHandlerProvider;
-    }
-
     public Function<VariableManager, ReferenceWidgetStyle> getStyleProvider() {
         return this.styleProvider;
     }
@@ -210,8 +204,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
         private Function<VariableManager, Boolean> isManyProvider;
 
         private Function<VariableManager, String> helpTextProvider;
-
-        private Function<VariableManager, IStatus> itemClickHandlerProvider;
 
         private Function<VariableManager, ReferenceWidgetStyle> styleProvider;
 
@@ -317,11 +309,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             return this;
         }
 
-        public Builder itemClickHandlerProvider(Function<VariableManager, IStatus> itemClickHandlerProvider) {
-            this.itemClickHandlerProvider = Objects.requireNonNull(itemClickHandlerProvider);
-            return this;
-        }
-
         public Builder styleProvider(Function<VariableManager, ReferenceWidgetStyle> styleProvider) {
             this.styleProvider = Objects.requireNonNull(styleProvider);
             return this;
@@ -391,7 +378,6 @@ public final class ReferenceWidgetDescription extends AbstractWidgetDescription 
             referenceWidgetDescription.isContainmentProvider = Objects.requireNonNull(this.isContainmentProvider);
             referenceWidgetDescription.isManyProvider = Objects.requireNonNull(this.isManyProvider);
             referenceWidgetDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
-            referenceWidgetDescription.itemClickHandlerProvider = this.itemClickHandlerProvider; // Optional on purpose
             referenceWidgetDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             referenceWidgetDescription.ownerIdProvider = Objects.requireNonNull(this.ownerIdProvider);
             referenceWidgetDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);

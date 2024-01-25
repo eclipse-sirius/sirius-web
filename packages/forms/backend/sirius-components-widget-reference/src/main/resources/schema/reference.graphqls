@@ -42,11 +42,9 @@ type ReferenceValue {
   label: String!
   kind: String!
   iconURL: [String!]!
-  hasClickAction: Boolean!
 }
 
 extend type Mutation {
-  clickReferenceValue(input: ClickReferenceValueInput!): ClickReferenceValuePayload!
   clearReference(input: ClearReferenceInput!): ClearReferencePayload!
   removeReferenceValue(input: RemoveReferenceValueInput!): RemoveReferenceValuePayload!
   setReferenceValue(input: SetReferenceValueInput!): SetReferenceValuePayload!
@@ -54,17 +52,6 @@ extend type Mutation {
   createElementInReference(input: CreateElementInReferenceInput!): CreateElementInReferencePayload!
   moveReferenceValue(input: MoveReferenceValueInput!): MoveReferenceValuePayload!
 }
-
-input ClickReferenceValueInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  referenceWidgetId: ID!
-  referenceValueId: ID!
-  clickEventKind: ClickEventKind!
-}
-
-union ClickReferenceValuePayload = ErrorPayload | SuccessPayload
 
 input ClearReferenceInput {
   id: ID!

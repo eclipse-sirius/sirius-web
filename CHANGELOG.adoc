@@ -14,6 +14,11 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.
+On backend side, `clickHandler` has been removed from `ReferenceValue`.
+`itemClickHandlerProvider` has been removed from `ReferenceWidgetDescription`.
+EventHandler & DataFetcher on widget reference item click action have also been deleted.
+The reference widget graphql schema and the frontend have been updated accordingly.
 
 === Dependency update
 
@@ -24,6 +29,8 @@
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.
+Its body operations are now bind on set/add instead of click.
 
 === Improvements
 
@@ -106,7 +113,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
 The GraphQL type `NodeDescription` has a new field `childNodeDescriptionIds`, returning a list of Ids and replacing the field `childNodeDescriptions` which has been deleted.
 The GraphQL type `NodeDescription` has a new field `borderNodeDescriptionIds`, returning a list of Ids and replacing the field `borderNodeDescriptions` which has been deleted.
 - https://github.com/eclipse-sirius/sirius-web/issues/2872[#2872] [diagram] Change the signature of the node converters in order to leverage the diagram description to resolve the reuse descriptions.
-Additional changes to this interface will propably occur in the near future in order to support more complex use cases.
+Additional changes to this interface will probably occur in the near future in order to support more complex use cases.
 - https://github.com/eclipse-sirius/sirius-web/issues/2889[#2889] [emf] Remove the default implementation of the editing context from the `sirius-components-emf` module.
 The default implementation of the editing context for Sirius Web, which had Sirius Web specific code already, will be owned by `sirius-web-services`.
 This default implementation will now also contain all the view models properly loaded which should be considered during the lifecycle of the editing context.
@@ -141,7 +148,7 @@ Now, for a multi-valued feature, the values are properly displayed and the delet
 - https://github.com/eclipse-sirius/sirius-web/issues/2912[#2912] [diagram] Send all requested node descriptions to the frontend when requested.
 - https://github.com/eclipse-sirius/sirius-web/issues/2678[#2678] [diagram] Fix an issue where tools from the diagram palette where not executed.
 - https://github.com/eclipse-sirius/sirius-web/issues/2943[#2943] [view] Fix an issue where the default colors were not applied to sub-nodes and border nodes.
-- https://github.com/eclipse-sirius/sirius-web/issues/2957[#2957] [diagram] Fix an issue where childs of custom node lose their position.
+- https://github.com/eclipse-sirius/sirius-web/issues/2957[#2957] [diagram] Fix an issue where children of custom node lose their position.
 - https://github.com/eclipse-sirius/sirius-web/issues/2934[#2934] [portal] Fix the initial position of representations added into portals
 - https://github.com/eclipse-sirius/sirius-web/issues/2907[#2907] [diagram] Fix an issue on some browsers where a tool could not be executed if the tooltip was visible
 - https://github.com/eclipse-sirius/sirius-web/issues/2901[#2901] [diagram] Fix an issue where the connectionLine could be stuck on invalid nodes.

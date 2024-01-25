@@ -96,7 +96,6 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
                  label
                  kind
                  iconURL
-                 hasClickAction
                }
                style {
                  color
