@@ -1,0 +1,39 @@
+= ADR-127 - Add the ability to extend the Sirius Web backend
+
+== Context
+
+The architecture of Sirius Web does not allow it to be easily extensible by consumers.
+In order to have an extensible architecture, we will have to define more clearly the various parts of our lifecycle and the boundaries of our domains.
+
+Since we have some custom-made solutions in our application for which community ones are now available (i.e. our GraphQL Java integration), we may switch to community ones which are more extensible than ours instead of improving ours.
+
+== Decision
+
+We will embrace both a domain design approach based on an event driven architecture.
+As such, we will emit events to clearly identify the various steps of our lifecycle.
+We will use this approach to decouple more clearly various parts of our application.
+
+With this change, we will move away from the existing layer based architecture (persistence, services, controllers) to improve the reusability and extensibility of our code.
+We will thus embrace the various components of the Spring ecosystem designed for a domain driven approach and event driven architectures.
+
+We will use the vocabulary of domain driven design in both our code and architecture with terms such as "aggregate".
+This change in architecture will have a deep impact on our architecture and best practices.
+As such, this will be accompanied by new architectural changes to validate the architecture.
+
+In order to respect key principles of domain driven design regarding the organization of the various aggregates, we will switch from `spring-boot-starter-data-jpa` to `spring-boot-starter-data-jdbc`.
+This newer Spring project will give us access to a simpler approach to manipulate our data and help us enforce domain driven design principles.
+Spring Data JDBC will help us decouple our various domains by banning back references usually defined using `@ManyToOne` or `@ManyToMany`.
+
+We will also extract external dependencies and configuration to an infrastructure layer.
+
+We may also start switching to Spring GraphQL to leverage all the configurability of this integration of GraphQL Java in Spring compared to our custom-made solution.
+
+== Consequences
+
+We will break pretty much everything in the `sirius-web-xxx` maven modules.
+Projects like `sirius-web-services` will be deeply impacted.
+Additional projects will also be created to split our code.
+
+== Status
+
+Work in progress
