@@ -91,3 +91,23 @@ export const dropDeckCardMutation = gql`
     }
   }
 `;
+
+export const editLaneMutation = gql`
+  mutation editDeckLane($input: EditDeckLaneInput!) {
+    editDeckLane(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

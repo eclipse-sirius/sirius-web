@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeleteCardTool;
 import org.eclipse.sirius.components.view.deck.EditCardTool;
+import org.eclipse.sirius.components.view.deck.EditLaneTool;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
 
 /**
@@ -79,12 +80,26 @@ public class ViewDeckDescriptionBuilder {
     private LaneDescription createLaneDescription() {
         CreateCardTool createCardTool = this.createCardTool();
         CardDropTool cardDropTool = this.createCardDropTool();
+        EditLaneTool editLaneTool = this.createEditLaneTool();
         return this.deckBuilders.newLaneDescription()
                 .semanticCandidatesExpression("aql:self.ownedTags->select(tag | tag.prefix == 'daily')")
                 .labelExpression("aql:self.getTasksWithTag()->size() + ' / ' + self.eContainer().oclAsType(task::Project).ownedTasks->select(task | task.tags->exists(tag | tag.prefix == 'daily'))->size()")
                 .titleExpression("aql:self.suffix")
                 .createTool(createCardTool)
                 .cardDropTool(cardDropTool)
+                .editTool(editLaneTool)
+                .build();
+    }
+
+    private EditLaneTool createEditLaneTool() {
+        SetValue setValue = this.viewBuilders.newSetValue()
+                .featureName("suffix")
+                .valueExpression("aql:newTitle")
+                .build();
+
+        return this.deckBuilders.newEditLaneTool()
+                .name("Edit Lane Title")
+                .body(setValue)
                 .build();
     }
 

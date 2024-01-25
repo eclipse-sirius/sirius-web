@@ -97,10 +97,31 @@ export interface GQLDropDeckCardPayload {
   __typename: string;
 }
 
+export interface GQLEditLaneVariables {
+  input: GQLEditDeckLaneInput;
+}
+
+export interface GQLEditDeckLaneInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  laneId: string;
+  newTitle: string;
+}
+
+export interface GQLEditLaneData {
+  editDeckLane: GQLEditDeckLanePayload;
+}
+
+export interface GQLEditDeckLanePayload {
+  __typename: string;
+}
+
 export interface GQLSuccessPayload
   extends GQLCreateDeckCardPayload,
     GQLDeleteDeckCardPayload,
     GQLEditDeckCardPayload,
-    GQLDropDeckCardPayload {
+    GQLDropDeckCardPayload,
+    GQLEditDeckLanePayload {
   messages: GQLMessage[];
 }

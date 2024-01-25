@@ -45,10 +45,11 @@ As a result, all the APIs relying on this code have been deleted too such as the
 - https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.
 Its body operations are now bind on set/add instead of click.
 - https://github.com/eclipse-sirius/sirius-web/issues/2942[#2942] [deck] Add the Card Drag and Drop capability in the Deck representation.
-- https://github.com/eclipse-sirius/sirius-web/issues/3024[#3024] [sirius-web] Add a new Papaya example diagram `Deployment Diagram` that will allow us to test border nodes 
+- https://github.com/eclipse-sirius/sirius-web/issues/3024[#3024] [sirius-web] Add a new Papaya example diagram `Deployment Diagram` that will allow us to test border nodes
 +
 .Deployment Diagram
 image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3015[#3015] [deck] Add the Lane Selection and Direct edit capability.
 
 === Improvements
 

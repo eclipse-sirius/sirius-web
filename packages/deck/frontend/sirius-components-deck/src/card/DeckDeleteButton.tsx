@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import DeleteIcon from '@material-ui/icons/Delete';
-import { CardDeleteIconButton } from './DeckCardStyledComponents';
+import { CardDeleteIconButton } from '../styled/DeckCardStyledComponents';
 
 export const DeckDeleteButton = (props) => {
   return (

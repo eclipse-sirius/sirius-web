@@ -11,22 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@material-ui/core/styles';
 import { useRef } from 'react';
 import { Card } from '../Deck.types';
-import { DeckCardProps } from './DeckCard.types';
-import { DeckCardInput } from './DeckCardInput';
+import { DeckInput } from '../common/DeckInput';
 import {
   DeckCardHeader,
   DeckCardRightContent,
-  DeckCardTitle,
   DeckDraggableCardWrapper,
   Detail,
   Footer,
   cardDetailFontStyle,
   cardLabelFontStyle,
-  cardTitleFontStyle,
-} from './DeckCardStyledComponents';
+} from '../styled/DeckCardStyledComponents';
+import { DeckTitle, titleFontStyle } from '../styled/DeckStyledComponents';
+import { DeckCardProps } from './DeckCard.types';
 import { DeckDeleteButton } from './DeckDeleteButton';
 import { DeckTag } from './DeckTag';
 
@@ -48,7 +47,7 @@ export const DeckCard = ({
   tags,
   cardDraggable,
   editable,
-  t,
+  t: translate,
 }: DeckCardProps) => {
   const updateCard = (card: Card) => {
     onChange(card);
@@ -59,7 +58,7 @@ export const DeckCard = ({
     e.stopPropagation();
   };
 
-  const theme = useTheme();
+  const theme: Theme = useTheme();
 
   const cardStyle: React.CSSProperties = {
     border: editable ? `2px solid ${theme.palette.selected}` : undefined,
@@ -86,25 +85,25 @@ export const DeckCard = ({
       data-testid={`card-${title}`}
       onDragStart={(e) => e.preventDefault()}>
       <DeckCardHeader>
-        <DeckCardTitle draggable={cardDraggable} style={cardTitleFontStyle}>
+        <DeckTitle draggable={cardDraggable} style={titleFontStyle} theme={theme}>
           {editable ? (
-            <DeckCardInput
+            <DeckInput
               ref={titleInputRef}
               value={title}
-              placeholder={t('placeholder.title')}
+              placeholder={translate('placeholder.title')}
               onSave={(value) => updateCard({ title: value, label, description, id })}
-              style={cardTitleFontStyle}
+              style={titleFontStyle}
               data-testid={'card-input-title'}
             />
           ) : (
             title
           )}
-        </DeckCardTitle>
+        </DeckTitle>
         <DeckCardRightContent style={cardLabelFontStyle}>
           {editable ? (
-            <DeckCardInput
+            <DeckInput
               value={label}
-              placeholder={t('placeholder.label')}
+              placeholder={translate('placeholder.label')}
               onSave={(value) => updateCard({ title, label: value, description, id })}
               style={cardLabelFontStyle}
               data-testid={'card-input-label'}
@@ -117,9 +116,9 @@ export const DeckCard = ({
       </DeckCardHeader>
       <Detail style={cardDetailFontStyle}>
         {editable ? (
-          <DeckCardInput
+          <DeckInput
             value={description}
-            placeholder={t('placeholder.description')}
+            placeholder={translate('placeholder.description')}
             onSave={(value) => updateCard({ title, label, description: value, id })}
             style={cardDetailFontStyle}
             multiline

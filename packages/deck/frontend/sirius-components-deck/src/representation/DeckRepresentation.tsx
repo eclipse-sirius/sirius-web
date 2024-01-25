@@ -19,11 +19,17 @@ import {
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { Deck } from '../Deck';
 import { Card, CardMetadata } from '../Deck.types';
-import { convertToTrelloDeckData, moveCardInDeckLanes } from '../utils/deckGQLHelper';
+import {
+  convertToTrelloDeckData,
+  findLaneById,
+  moveCardInDeckLanes,
+  updateCard,
+  updateLane,
+} from '../utils/deckGQLHelper';
 import { DeckRepresentationState } from './DeckRepresentation.types';
 import { deckEventSubscription } from './deckSubscription';
 import {
@@ -31,6 +37,7 @@ import {
   GQLDeckEventSubscription,
   GQLDeckRefreshedEventPayload,
   GQLErrorPayload,
+  GQLLane,
 } from './deckSubscription.types';
 
 import {
@@ -49,10 +56,19 @@ import {
   GQLEditCardVariables,
   GQLEditDeckCardInput,
   GQLEditDeckCardPayload,
+  GQLEditDeckLaneInput,
+  GQLEditLaneData,
+  GQLEditLaneVariables,
   GQLSuccessPayload,
 } from './deckMutation.types';
 
-import { createCardMutation, deleteCardMutation, dropDeckCardMutation, editCardMutation } from './deckMutation';
+import {
+  createCardMutation,
+  deleteCardMutation,
+  dropDeckCardMutation,
+  editCardMutation,
+  editLaneMutation,
+} from './deckMutation';
 const useDeckRepresentationStyles = makeStyles(() => ({
   complete: {
     display: 'flex',
@@ -71,14 +87,14 @@ const isSuccessPayload = (
 ): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
 export const DeckRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
+  const theme: Theme = useTheme();
   const classes = useDeckRepresentationStyles();
   const { selection, setSelection }: UseSelectionValue = useSelection();
   const { addErrorMessage, addMessages } = useMultiToast();
-  const [{ id, deck, complete, selectedCardIds }, setState] = useState<DeckRepresentationState>({
+  const [{ id, deck, complete }, setState] = useState<DeckRepresentationState>({
     id: crypto.randomUUID(),
     deck: undefined,
     complete: false,
-    selectedCardIds: [],
   });
 
   const { error } = useSubscription<GQLDeckEventSubscription>(deckEventSubscription, {
@@ -128,6 +144,11 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   const [dropDeckCard, { loading: dropDeckCardLoading, data: dropDeckCardData, error: dropDeckCardError }] =
     useMutation<GQLDropDeckCardData, GQLDropDeckCardVariables>(dropDeckCardMutation);
 
+  const [editDeckLane, { loading: editLaneLoading, data: editLaneData, error: editLaneError }] = useMutation<
+    GQLEditLaneData,
+    GQLEditLaneVariables
+  >(editLaneMutation);
+
   useEffect(() => {
     if (error) {
       addErrorMessage(error.message);
@@ -137,22 +158,29 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   useEffect(() => {
     if (deck && selection.entries) {
       const selectionIds: string[] = selection.entries.map((entry) => entry.id);
-      const tempSelectedCardIds: string[] = [];
+      const tempselectedElementIds: string[] = [];
       deck.lanes
         .flatMap((lane) => lane.cards)
         .forEach((card) => {
           if (selectionIds.includes(card.targetObjectId)) {
-            tempSelectedCardIds.push(card.id);
+            tempselectedElementIds.push(card.id);
           }
         });
       setState((prevState) => {
-        return { ...prevState, selectedCardIds: tempSelectedCardIds };
+        return { ...prevState, selectedElementIds: tempselectedElementIds };
       });
     }
   }, [selection]);
   const handleError = (
     loading: boolean,
-    data: GQLEditCardData | GQLDeleteCardData | GQLCreateCardData | GQLDropDeckCardData | null | undefined,
+    data:
+      | GQLEditCardData
+      | GQLDeleteCardData
+      | GQLCreateCardData
+      | GQLDropDeckCardData
+      | GQLEditLaneData
+      | null
+      | undefined,
     error: ApolloError | undefined
   ) => {
     if (!loading) {
@@ -188,6 +216,10 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     handleError(dropDeckCardLoading, dropDeckCardData, dropDeckCardError);
   }, [dropDeckCardLoading, dropDeckCardData, dropDeckCardError]);
 
+  useEffect(() => {
+    handleError(editLaneLoading, editLaneData, editLaneError);
+  }, [editLaneLoading, editLaneData, editLaneError]);
+
   const handleEditCard = (_laneId: string, card: Card) => {
     const input: GQLEditDeckCardInput = {
       id: crypto.randomUUID(),
@@ -199,10 +231,35 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       newDescription: card.description,
     };
 
-    // // to avoid blink because useMutation implies a re-render as the task value is the old one
-    // updateTask(gantt, task.id, newDetail);
+    if (deck) {
+      // to avoid blink because useMutation implies a re-render as the card value is the old one
+      const updatedDeck = updateCard(deck, card);
+      setState((prevState) => {
+        return { ...prevState, deck: updatedDeck };
+      });
+    }
     editDeckCard({ variables: { input } });
   };
+
+  const handleEditLane = (laneId: string, newValue: { title: string }) => {
+    const input: GQLEditDeckLaneInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      laneId,
+      newTitle: newValue.title,
+    };
+
+    if (deck) {
+      // to avoid blink because useMutation implies a re-render as the lane value is the old one
+      const updatedDeck = updateLane(deck, laneId, newValue.title);
+      setState((prevState) => {
+        return { ...prevState, deck: updatedDeck };
+      });
+    }
+    editDeckLane({ variables: { input } });
+  };
+
   const handleDeleteCard = (cardId: string, _laneId: string) => {
     const input: GQLDeleteDeckCardInput = {
       id: crypto.randomUUID(),
@@ -247,6 +304,23 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     }
   };
 
+  const handleLaneClicked = (laneId: string) => {
+    if (deck) {
+      const lane: GQLLane | undefined = findLaneById(deck, laneId);
+      if (lane) {
+        setSelection({
+          entries: [
+            {
+              id: lane.targetObjectId,
+              kind: 'lane',
+              label: lane.label,
+            },
+          ],
+        });
+      }
+    }
+  };
+
   let content: JSX.Element | null = null;
   if (complete) {
     content = (
@@ -257,7 +331,8 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       </div>
     );
   } else if (deck) {
-    const data = convertToTrelloDeckData(deck, selectedCardIds);
+    const selectedElementIds: string[] = selection.entries.map((entry) => entry.id);
+    const data = convertToTrelloDeckData(deck, selectedElementIds, theme);
     content = (
       <Deck
         editingContextId={editingContextId}
@@ -268,6 +343,8 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         onCardAdd={handleCreateCard}
         onCardUpdate={handleEditCard}
         onCardMoveAcrossLanes={handleDropDeckCard}
+        onLaneClick={handleLaneClicked}
+        onLaneUpdate={handleEditLane}
       />
     );
   }

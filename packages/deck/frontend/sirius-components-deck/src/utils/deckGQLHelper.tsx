@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Card, DeckData } from '../Deck.types';
+import { Theme } from '@material-ui/core/styles';
+import { Card, DeckData, Lane } from '../Deck.types';
 import { GQLCard, GQLDeck, GQLLane } from '../representation/deckSubscription.types';
 
-export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]): DeckData => {
+export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: string[], theme: Theme): DeckData => {
   const data: DeckData = {
     lanes: [],
   };
@@ -21,8 +22,6 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]
   for (const lane of deck.lanes) {
     const cards: Card[] = lane.cards.map((card) => {
       let editable: boolean = false;
-      let className: string | undefined;
-      let style: object | undefined;
       const { targetObjectId, targetObjectLabel, targetObjectKind, ...otherCardProps } = card;
       const metadata = {
         selection: {
@@ -31,23 +30,34 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedCardIds: string[]
           kind: targetObjectKind,
         },
       };
-      if (selectedCardIds.includes(card.id)) {
+      if (selectedElementIds.includes(card.targetObjectId)) {
         editable = true;
       }
       return {
         ...otherCardProps,
         editable,
         metadata,
-        className,
-        style,
       };
     });
-    data.lanes.push({
-      ...lane,
+
+    const { id, label, title, targetObjectId } = lane;
+    const selectedLane: boolean = selectedElementIds.includes(targetObjectId);
+
+    const style: React.CSSProperties = {
+      border: selectedLane ? `2px solid ${theme.palette.selected}` : undefined,
+    };
+
+    const convertedLane: Lane = {
+      id,
+      label,
+      title,
+      editLaneTitle: selectedLane,
       editable: true,
       cards,
+      style,
       'data-testid': `lane-${lane.title}`,
-    });
+    };
+    data.lanes.push(convertedLane);
   }
   return data;
 };
@@ -83,4 +93,52 @@ export const moveCardInDeckLanes = (
     newLane.cards.splice(addedIndex, 0, cardToMove);
   }
   return deckToReturn;
+};
+
+export const findLaneById = (deck: GQLDeck, laneId: string): GQLLane | undefined => {
+  return deck.lanes.find((lane) => lane.id === laneId);
+};
+
+export const updateCard = (deck: GQLDeck, newCard: Card): GQLDeck => {
+  const newDeck: GQLDeck = {
+    ...deck,
+  };
+
+  newDeck.lanes.forEach((lane) => {
+    const index: number = lane.cards.findIndex((card) => card.id === newCard.id);
+    if (index > -1) {
+      const removedCards: GQLCard[] = lane.cards.splice(index, 1);
+      if (removedCards.length === 1) {
+        const removedCard = removedCards[0] as GQLCard;
+        const cardToUpdate: GQLCard = {
+          ...removedCard,
+          description: newCard.description,
+          label: newCard.label,
+          title: newCard.title,
+        };
+        lane.cards.splice(index, 0, cardToUpdate);
+      }
+    }
+  });
+  return newDeck;
+};
+
+export const updateLane = (deck: GQLDeck, laneId: string, newTitle: string): GQLDeck => {
+  const newDeck: GQLDeck = {
+    ...deck,
+  };
+
+  const index: number = newDeck.lanes.findIndex((lane) => lane.id === laneId);
+  if (index > -1) {
+    const removedLanes: GQLLane[] = newDeck.lanes.splice(index, 1);
+    if (removedLanes.length === 1) {
+      const removedLane = removedLanes[0] as GQLLane;
+      const laneToUpdate: GQLLane = {
+        ...removedLane,
+        title: newTitle,
+      };
+      newDeck.lanes.splice(index, 0, laneToUpdate);
+    }
+  }
+  return newDeck;
 };

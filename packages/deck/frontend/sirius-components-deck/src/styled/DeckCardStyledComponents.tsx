@@ -14,13 +14,6 @@
 import IconButton from '@material-ui/core/IconButton';
 import { styled } from '@material-ui/core/styles';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
-import { DeckCardTitleProps } from './DeckCardStyledComponents.types';
-
-export const cardTitleFontStyle: CSSProperties = {
-  fontWeight: 'bold',
-  fontSize: '14px',
-  lineHeight: '18px',
-};
 
 export const cardLabelFontStyle: CSSProperties = {
   fontSize: '10px',
@@ -29,6 +22,7 @@ export const cardLabelFontStyle: CSSProperties = {
 
 export const cardDetailFontStyle: CSSProperties = {
   fontSize: '12px',
+  minHeight: '20px',
 };
 
 export const DeckDraggableCardWrapper = styled('article')(({ theme }) => ({
@@ -52,11 +46,6 @@ export const DeckCardHeader = styled('article')(({ theme }) => ({
   paddingBottom: '6px',
   color: theme.palette.text.primary,
 }));
-
-export const DeckCardTitle = styled('span')({
-  cursor: (props: DeckCardTitleProps) => (props.draggable ? 'grab' : `auto`),
-  width: '70%',
-});
 
 export const DeckCardRightContent = styled('span')({
   width: ' 38%',
