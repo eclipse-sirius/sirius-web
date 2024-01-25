@@ -1,0 +1,38 @@
+= ADR-125 - Add the ability to reuse both the Sirius Web frontend and backend easily
+
+== Context
+
+To get started with an application built on top of Sirius Web, some complex steps need to be performed.
+On the frontend, things have been simplified with the introduction of `@eclipse-sirius/sirius-web-application`.
+On the backend, consumers still need to depend on every single one of our components by themselves.
+
+While consumers want to be able to reuse Sirius Web off the shelf very easily, they also want to control what can appear in the end result.
+
+== Decision
+
+We will introduce a dedicated starter for the Sirius Web backend named `sirius-web-application-starter`.
+This starter will depend on everything required to get started with both Sirius Web and Sirius Components.
+Applications depending on this starter will retrieve as a dependency every module from Sirius Components and Sirius Web at once.
+Yet not all the features of those modules will be active by default.
+
+In order to give consumers the ability to select what they want to see in their applications, we will leverage the same approach as the spring-boot project.
+In https://github.com/spring-projects/spring-boot/tree/main/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure[its autoconfiguration support], it provides configurations and services for countless frameworks, yet those services are only scanned and added to the application context if desired by the consumers.
+
+For that, the `sirius-web-application-starter` will stop scanning everything coming from Sirius Components and will only scan core concepts instead.
+We may have to update the namespace of some Sirius Components concepts to identify them clearly as core concepts.
+Most of the Sirius Components code automatically scanned by Sirius Web should thus come `sirius-components-collaborative`, `sirius-components-emf` and their dependencies.
+We will have to review very conservatively the scope of the code which enters this module and its dependencies since they will become compulsory for every consumer of Sirius Web.
+
+After that, consumers of Sirius Web will have to opt-in for every other part of Sirius Components that they want to see included in their applications.
+For a first version, this choice will have to be expressed thanks to dedicated configuration properties.
+We will start by letting consumers opt in for every kind of representations.
+
+As a result, we should be able to see a version of Eclipse SysOn consuming this `sirius-web-application-starter` and opting in to have support for diagrams, forms, trees but maybe not form description editors or deck, gantt and portal.
+
+== Consequences
+
+We will have to review conservatively the boundaries of our various domains and set up a test procedure of a Sirius Web based application with various features selected (for example support for deck, forms and portals but not diagrams or gantt).
+
+== Status
+
+Work in progress

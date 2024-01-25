@@ -4,9 +4,13 @@
 
 === Shapes
 
+- Transform Sirius Web into an extensible platform
 
 === Architectural decision records
 
+- [ADR-125] Add the ability to reuse both the Sirius Web frontend and backend easily
+- [ADR-126] Add the ability to extend the Sirius Web frontend
+- [ADR-127] Add the ability to extend the Sirius Web backend
 
 === Breaking changes
 

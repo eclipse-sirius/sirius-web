@@ -1,0 +1,52 @@
+= Transform Sirius Web into an extensible platform
+
+== Problem
+
+Up until today, Sirius Web has only been a sample application showcasing the features of the framework Sirius Components.
+As such, the recommended approach to build an application on top of Sirius Components was to fork Sirius Web.
+While this approach gave consumers the ability to do anything they wanted, it also came with the drawback that a lot of our consumers wanted to do pretty much the same thing as our Sirius Web sample with some additional features.
+As a result, our consumers had to keep up their fork of Sirius Web up to date with our version.
+
+Using this experience, we now have a pretty good idea of the features expected by most of our consumers to start providing relevant APIs.
+
+== Key Result
+
+The most popular applications of the Eclipse Foundation leveraging Sirius Components should be based on Sirius Web directly to minimize the forked code.
+
+== Solution
+
+There won't be a single solution to cover all the required features of our community.
+We will have a set of features that we will provide in Sirius Web.
+For that, we will start by modernizing some key points of the Sirius Web code and by making it easier to reuse Sirius Web while still keeping the ability to customize it.
+
+* Add the ability to reuse both the Sirius Web frontend and backend easily
+** Provide some kind of equivalent of `sirius-web-application` on the backend
+** Provide the ability to configure what is being reused (representation kinds, workbench views...)
+* Add the ability to extend the Sirius Web frontend
+** Improve the configurability of `SiriusWebApplication`
+** Provide a more uniform API to extend the various parts of Sirius Components and Sirius Web
+* Add the ability to extend the Sirius Web backend
+** Switch to a domain driven design architecture
+** Identify the various steps of our lifecycle
+** Define more clearly the boundaries of our various domains
+** Remove some of our custom solutions to adopt standard ones
+
+== Scenario
+
+Once this work is done, popular applications of the Eclipse Foundation based on Sirius Components such as Eclipse SysON or Eclipse Papyrus Web should be reusing Sirius Web as an extensible and configurable platform.
+
+=== Breadboarding
+
+No user interface involved.
+
+=== Cutting backs
+
+Nothing identified for now
+
+== Rabbit holes
+
+Nothing identified for now
+
+== No-gos
+
+Nothing identified for now

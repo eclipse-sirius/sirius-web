@@ -1,0 +1,46 @@
+= ADR-126 - Add the ability to extend the Sirius Web frontend
+
+== Context
+
+We have created various APIs to extend key parts of the Sirius Components frontend.
+Each API is very specific to one kind of extension even if they are all performing the same job.
+They could be simplified and unified to provide a better developer experience.
+
+We also have recently introduced an API to reuse everything provided by the Sirius Web frontend very easily with the components `SiriusWebApplication`.
+While it helps get started with Sirius Web, it does not provide the same API features as hand crafting your frontend based on Sirius Components.
+While we cannot possibly provide the same level of configurability as forking the Sirius Web frontend, there are key APIs missing to help extend Sirius Web.
+
+== Decision
+
+We will introduce a uniformed API to extend the various parts of Sirius Components which will be reused to extend additional parts of Sirius Components or Sirius Web.
+We will validate this new API on both the extensibility of a Sirius Web component and an existing Sirius Components use case.
+
+To fulfill our needs, the new API should let us both replace an existing component and contribute additional components too.
+We currently have very different APIs for such use cases.
+
+=== Add new components
+
+For example, to contribute a new property section in `sirius-components-forms`, we have a dedicated API to perform multiple jobs.
+
+- Contribute an additional component using `PropertySectionsRegistry#getComponent(widget)`
+- Contribute additional parts to the form subscription using `PropertySectionsRegistry#getWidgetContributions()`
+- Contribute an additional component for its rendering in the form description editor (which is the same use case as contributing a new component but which should be extracted in the support for form description editors)
+
+=== Replace an existing component
+
+In `SiriusWebApplication`, we have created two specific APIs to replace both the application icon and the application menu using the following API:
+
+[source]
+----
+<SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
+  <Views applicationIcon={...} applicationBarMenu={...} />
+</SiriusWebApplication>
+----
+
+== Consequences
+
+We will change the way additional property sections are contributed into `sirius-components-forms` and application icons are contributed into `SiriusWebApplication` to leverage this new uniform API.
+
+== Status
+
+Work in progress
