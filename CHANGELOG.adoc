@@ -5,6 +5,7 @@
 === Shapes
 
 - Transform Sirius Web into an extensible platform
+- Facilitate the insertion of elements into a list node
 
 === Architectural decision records
 
