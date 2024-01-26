@@ -114,6 +114,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="areChildNodesDraggableExpression"
         lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="topGapExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bottomGapExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FreeFormLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription"/>
   <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">

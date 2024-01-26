@@ -62,6 +62,8 @@ fragment nodeFragment on Node {
     ... on ListLayoutStrategy {
       kind
       areChildNodesDraggable
+      topGap
+      bottomGap
     }
     ... on FreeFormLayoutStrategy {
       kind

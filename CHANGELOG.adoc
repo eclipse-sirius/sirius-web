@@ -29,6 +29,7 @@ As a result, all the APIs relying on this code have been deleted too such as the
 - https://github.com/eclipse-sirius/sirius-web/issues/2823[#2823] [diagram] Some changes have been made for node layout, there may be an impact on the custom node.
 * `getNodeOrMinWidth` and `getNodeOrMinHeight` have been renamed `getDefaultOrMinWidth` and `getDefaultOrMinHeight`.
 * `computePreviousSize` no longer returns `{0,0}` when it's a new node but its default size.
+- https://github.com/eclipse-sirius/sirius-web/issues/2606[#2606] [diagram] Add the attributes `topGap` and `bottomGap` to graphql `ListLayoutStrategy`.
 
 === Dependency update
 
@@ -57,6 +58,7 @@ Its body operations are now bind on set/add instead of click.
 image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3015[#3015] [deck] Add the Lane Selection and Direct edit capability.
 - https://github.com/eclipse-sirius/sirius-web/issues/3033[#3033] [deck] Add the Lane Drag and Drop capability.
+- https://github.com/eclipse-sirius/sirius-web/issues/2606[#2606] [diagram] Add the possibility to insert free space before or after elements in list layouted node
 
 === Improvements
 

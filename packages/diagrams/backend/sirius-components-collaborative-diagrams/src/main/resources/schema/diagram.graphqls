@@ -88,6 +88,8 @@ type FreeFormLayoutStrategy {
 type ListLayoutStrategy {
   kind: String!
   areChildNodesDraggable: Boolean!
+  topGap: Int!
+  bottomGap: Int!
 }
 
 union ILayoutStrategy = FreeFormLayoutStrategy | ListLayoutStrategy

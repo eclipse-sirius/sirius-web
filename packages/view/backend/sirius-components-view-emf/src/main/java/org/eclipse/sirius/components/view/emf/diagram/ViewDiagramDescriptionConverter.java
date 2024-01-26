@@ -232,8 +232,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
 
             LayoutStrategyDescription childrenLayoutStrategyFromViewModel = viewNodeDescription.getChildrenLayoutStrategy();
             if (childrenLayoutStrategyFromViewModel instanceof ListLayoutStrategyDescription listLayoutStrategyDescription) {
-                Result result = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getAreChildNodesDraggableExpression());
-                childrenLayoutStrategy = ListLayoutStrategy.newListLayoutStrategy().areChildNodesDraggable(result.asBoolean().orElse(true)).build();
+                childrenLayoutStrategy = this.getiLayoutStrategy(listLayoutStrategyDescription, variableManager, interpreter);
             } else if (childrenLayoutStrategyFromViewModel instanceof FreeFormLayoutStrategyDescription) {
                 childrenLayoutStrategy = new FreeFormLayoutStrategy();
             }
@@ -288,6 +287,21 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         NodeDescription result = builder.build();
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
+    }
+    private  ILayoutStrategy getiLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        Result resultAreChildNodesDraggable = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getAreChildNodesDraggableExpression());
+        var builder = ListLayoutStrategy.newListLayoutStrategy()
+                .areChildNodesDraggable(resultAreChildNodesDraggable.asBoolean().orElse(true));
+        if (listLayoutStrategyDescription.getBottomGapExpression() != null && !listLayoutStrategyDescription.getBottomGapExpression().isBlank()) {
+            Result resultBottomGap = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getBottomGapExpression());
+            builder.bottomGap(resultBottomGap.asInt().orElse(0));
+        }
+        if (listLayoutStrategyDescription.getTopGapExpression() != null && !listLayoutStrategyDescription.getTopGapExpression().isBlank()) {
+            Result resultTopGap = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getTopGapExpression());
+            builder.topGap(resultTopGap.asInt().orElse(0));
+        }
+
+        return builder.build();
     }
 
     private Integer computeDefaultSizeProvider(String defaultSizeExpression, AQLInterpreter interpreter, VariableManager variableManager) {
