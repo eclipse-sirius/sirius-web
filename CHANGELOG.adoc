@@ -78,6 +78,7 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3056[#3056] [trees] Expand the clickable/draggable zone for tree items
 - [forms] Avoid creating a new subscription when re-selecting the same element
 - [tree] Avoid sending treePath query if the selection does not actually change
+- [core] Ignore empty changes of kind ChangeKind.NOTHING
 
 
 == v2024.1.0

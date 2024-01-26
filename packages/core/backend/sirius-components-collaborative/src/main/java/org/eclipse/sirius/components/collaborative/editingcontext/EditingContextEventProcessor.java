@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,7 +112,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private final Disposable changeDescriptionDisposable;
 
     private final List<IInputPreProcessor> inputPreProcessors;
-    
+
     private final List<IInputPostProcessor> inputPostProcessors;
 
     private final MeterRegistry meterRegistry;
@@ -149,6 +149,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
                             (String) representationLabel);
                     this.doHandle(Sinks.one(), renameRepresentationInput);
                 }
+            } else if (ChangeKind.NOTHING.equals(changeDescription.getKind())) {
+                return;
             }
 
             this.publishEvent(changeDescription);
@@ -384,7 +386,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         if (optionalRepresentationEventProcessor.isPresent()) {
             var representationId = optionalRepresentationEventProcessor.get().getRepresentation().getId();
-            var timer = meterRegistry.timer(Monitoring.TIMER_CREATE_REPRESENATION_EVENT_PROCESSOR,
+            var timer = this.meterRegistry.timer(Monitoring.TIMER_CREATE_REPRESENATION_EVENT_PROCESSOR,
                     "editingContext", this.editingContext.getId(),
                     "input", input.getClass().getSimpleName(),
                     REPRESENTATION_ID, representationId);
