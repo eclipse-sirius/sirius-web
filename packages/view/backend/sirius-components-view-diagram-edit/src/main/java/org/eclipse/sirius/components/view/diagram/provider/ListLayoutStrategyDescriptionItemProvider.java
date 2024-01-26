@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
  */
 public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapter
         implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -61,6 +62,8 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
             super.getPropertyDescriptors(object);
 
             this.addAreChildNodesDraggableExpressionPropertyDescriptor(object);
+            this.addTopGapExpressionPropertyDescriptor(object);
+            this.addBottomGapExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -76,6 +79,31 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
                 this.getString("_UI_ListLayoutStrategyDescription_areChildNodesDraggableExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_ListLayoutStrategyDescription_areChildNodesDraggableExpression_feature", "_UI_ListLayoutStrategyDescription_type"),
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Top Gap Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addTopGapExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ListLayoutStrategyDescription_topGapExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ListLayoutStrategyDescription_topGapExpression_feature", "_UI_ListLayoutStrategyDescription_type"),
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Bottom Gap Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addBottomGapExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ListLayoutStrategyDescription_bottomGapExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ListLayoutStrategyDescription_bottomGapExpression_feature", "_UI_ListLayoutStrategyDescription_type"),
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -122,6 +150,8 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
 
         switch (notification.getFeatureID(ListLayoutStrategyDescription.class)) {
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION:
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

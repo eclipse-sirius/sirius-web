@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,10 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
     public static final String KIND = "List";
     private boolean areChildNodesDraggable;
 
+    private int topGap;
+
+    private int bottomGap;
+
     private ListLayoutStrategy() {
         // Prevent instantiation
     }
@@ -42,6 +46,14 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
         return this.areChildNodesDraggable;
     }
 
+    public int getTopGap() {
+        return this.topGap;
+    }
+
+    public int getBottomGap() {
+        return this.bottomGap;
+    }
+
     /**
      * The builder used to create a listLayoutStrategy.
      *
@@ -52,6 +64,10 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
 
         private boolean areChildNodesDraggable = true;
 
+        private int topGap;
+
+        private int bottomGap;
+
         private Builder() {
             // Prevent instantiation
         }
@@ -61,9 +77,21 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
             return this;
         }
 
+        public Builder topGap(int topGap) {
+            this.topGap = topGap;
+            return this;
+        }
+
+        public Builder bottomGap(int bottomGap) {
+            this.bottomGap = bottomGap;
+            return this;
+        }
+
         public ListLayoutStrategy build() {
             ListLayoutStrategy listLayoutStrategy = new ListLayoutStrategy();
             listLayoutStrategy.areChildNodesDraggable = this.areChildNodesDraggable;
+            listLayoutStrategy.topGap = this.topGap;
+            listLayoutStrategy.bottomGap = this.bottomGap;
             return listLayoutStrategy;
         }
     }

@@ -146,7 +146,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     directNodesChildren.forEach((child, index) => {
       child.position = {
         x: borderWidth,
-        y: borderWidth + (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0),
+        y: borderWidth + (withHeader ? labelElement?.getBoundingClientRect().height ?? 0 : 0) + node.data.topGap,
       };
       const previousSibling = directNodesChildren[index - 1];
       if (previousSibling) {
@@ -159,7 +159,8 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const labelOnlyWidth = labelElement?.getBoundingClientRect().width ?? 0;
     const nodeWidth = Math.max(childrenContentBox.width, labelOnlyWidth) + borderWidth * 2;
 
-    const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + borderWidth;
+    const directChildrenAwareNodeHeight =
+      childrenContentBox.y + childrenContentBox.height + borderWidth + node.data.bottomGap;
 
     const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
     const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);

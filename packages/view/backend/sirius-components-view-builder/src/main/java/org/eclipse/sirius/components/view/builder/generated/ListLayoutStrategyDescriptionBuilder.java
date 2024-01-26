@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,14 @@ public class ListLayoutStrategyDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription.
+     *
      * @generated
      */
-    private org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription listLayoutStrategyDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+    private final org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription listLayoutStrategyDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription getListLayoutStrategyDescription() {
@@ -36,6 +38,7 @@ public class ListLayoutStrategyDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription build() {
@@ -49,6 +52,26 @@ public class ListLayoutStrategyDescriptionBuilder {
      */
     public ListLayoutStrategyDescriptionBuilder areChildNodesDraggableExpression(java.lang.String value) {
         this.getListLayoutStrategyDescription().setAreChildNodesDraggableExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for TopGapExpression.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder topGapExpression(java.lang.String value) {
+        this.getListLayoutStrategyDescription().setTopGapExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for BottomGapExpression.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder bottomGapExpression(java.lang.String value) {
+        this.getListLayoutStrategyDescription().setBottomGapExpression(value);
         return this;
     }
 

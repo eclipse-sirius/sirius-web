@@ -93,6 +93,8 @@
     <genClasses image="false" ecoreClass="diagram.ecore#//LayoutStrategyDescription"/>
     <genClasses ecoreClass="diagram.ecore#//ListLayoutStrategyDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ListLayoutStrategyDescription/areChildNodesDraggableExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ListLayoutStrategyDescription/topGapExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ListLayoutStrategyDescription/bottomGapExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//FreeFormLayoutStrategyDescription"/>
     <genClasses image="false" ecoreClass="diagram.ecore#//Style">

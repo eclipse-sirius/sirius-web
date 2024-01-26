@@ -15,4 +15,6 @@ import { NodeData } from '../DiagramRenderer.types';
 
 export interface ListNodeData extends NodeData {
   areChildNodesDraggable: boolean;
+  topGap: number;
+  bottomGap: number;
 }

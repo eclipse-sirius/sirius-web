@@ -98,6 +98,8 @@ const toListNode = (
     areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
       ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
       : true,
+    topGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.topGap : 0,
+    bottomGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.bottomGap : 0,
     resizedByUser,
   };
 
