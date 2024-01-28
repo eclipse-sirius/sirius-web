@@ -21,9 +21,11 @@ On backend side, `clickHandler` has been removed from `ReferenceValue`.
 EventHandler & DataFetcher on widget reference item click action have also been deleted.
 The reference widget graphql schema and the frontend have been updated accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/2822[#2822] [diagram] The GraphQL type `Edge` must now implement `labelEditable` boolean field.
+- https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove the package `sirius-components-diagrams` containing the Sprotty based implementation of our diagrams
 
 === Dependency update
 
+- https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove our dependency to Sprotty and Snabbdom
 
 === Bug fixes
 

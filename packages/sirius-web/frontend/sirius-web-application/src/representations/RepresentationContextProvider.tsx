@@ -19,8 +19,7 @@ import {
   RepresentationContextValue,
 } from '@eclipse-sirius/sirius-components-core';
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
-import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
@@ -33,10 +32,8 @@ export const RepresentationContextProvider = ({ children }: RepresentationContex
       const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
       const params = new URLSearchParams(query);
       const type = params.get('type');
-      if (type === 'Diagram' && representation.label.endsWith('__SPROTTY')) {
+      if (type === 'Diagram') {
         return DiagramRepresentation;
-      } else if (type === 'Diagram') {
-        return ReactFlowDiagramRepresentation;
       } else if (type === 'Form') {
         return FormRepresentation;
       } else if (type === 'FormDescriptionEditor') {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,9 @@
  *******************************************************************************/
 
 import { Selection, SelectionContextProvider } from '@eclipse-sirius/sirius-components-core';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
-import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import React, { useEffect, useState } from 'react';
-import './Sprotty.css';
 import './reset.css';
 import './variables.css';
 
@@ -106,18 +104,7 @@ export const App = ({
 
   let component;
   let selection: Selection = { entries: [] };
-  if (
-    representationKind.startsWith('siriusComponents://representation?type=Diagram') &&
-    representationLabel.endsWith('__REACT_FLOW')
-  ) {
-    component = (
-      <ReactFlowDiagramRepresentation
-        editingContextId={state.editingContextId}
-        representationId={state.representationId}
-        readOnly={false}
-      />
-    );
-  } else if (representationKind.startsWith('siriusComponents://representation?type=Diagram')) {
+  if (representationKind.startsWith('siriusComponents://representation?type=Diagram')) {
     component = (
       <DiagramRepresentation
         editingContextId={state.editingContextId}

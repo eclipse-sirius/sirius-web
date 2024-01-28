@@ -88,4 +88,12 @@ export class Diagram {
       });
     });
   }
+
+  public shareDiagram(): void {
+    cy.getByTestId('share').click();
+  }
+
+  public dropOnDiagram(diagramLabel: string, dataTransfer: DataTransfer): void {
+    this.getDiagram(diagramLabel).getByTestId('rf__wrapper').trigger('drop', 'bottomRight', { dataTransfer });
+  }
 }
