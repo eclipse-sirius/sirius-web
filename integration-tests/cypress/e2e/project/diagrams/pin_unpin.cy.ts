@@ -31,6 +31,7 @@ describe('Diagram - Pin unpin nodes', () => {
     });
 
     afterEach(() => cy.deleteProject(projectId));
+
     it('Then it is possible to pin unpin node', () => {
       const diagram = new Diagram();
       diagram.fitToScreen();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -369,7 +369,6 @@ public class GeneralPurposeTests {
     private void testHeight100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
         var whitelist = Stream.of(
-                Path.of("Sprotty.css"),
                 Path.of("Modal.module.css"),
                 Path.of("ToolSection.module.css")
         );
@@ -400,7 +399,6 @@ public class GeneralPurposeTests {
     private void testWidth100Percent(int index, String line, Path cssFilePath) {
         // @formatter:off
         var whitelist = Stream.of(
-                Path.of("Sprotty.css"),
                 Path.of("Modal.module.css"),
                 Path.of("ToolSection.module.css")
         );

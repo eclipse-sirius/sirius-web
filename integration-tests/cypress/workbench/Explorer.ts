@@ -102,4 +102,8 @@ export class Explorer {
     this.getTreeItemByLabel(treeItemLabel).find('button').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
   }
+
+  public dragTreeItem(treeItemLabel: string, dataTransfer: DataTransfer): void {
+    this.getTreeItemByLabel(treeItemLabel).trigger('dragstart', { dataTransfer });
+  }
 }

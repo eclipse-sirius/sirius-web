@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 describe('/projects/:projectId/edit - Tree toolbar', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
@@ -27,38 +28,11 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography__SPROTTY');
+    cy.getByTestId('name').type('Topography');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
-    cy.getByTestId('Topography__SPROTTY').click();
-  });
-
-  it('Deactivate the synchronisation mode does not reveal the semantic element selected on a diagram but activating it will', () => {
-    // 1. Deactivate the synchronisation mode
-    cy.getByTestId('tree-synchronise').click();
-
-    // 2. On the diagram, click on the 'CaptureSubSystem'
-    cy.getByTestId('CaptureSubSystem').should('exist');
-    cy.getByTestId('Rectangle - CaptureSubSystem').click(0, 0);
-
-    // 3. CHECK that the 'CaptureSubSystem' node is visible and selected in the explorer
-    cy.getByTestId('selected').contains('CaptureSubSystem');
-
-    // 4. On the diagram, click on the 'DSP'
-    cy.getByTestId('DSP').should('not.exist');
-    cy.getByTestId('Label - DSP').click();
-
-    // 5. CHECK that the 'DSP' node is not visible and not selected in the explorer
-    cy.getByTestId('DSP').should('not.exist');
-    cy.getByTestId('selected').should('not.exist');
-
-    // 6. Activate the synchronisation mode
-    cy.getByTestId('tree-synchronise').click();
-
-    // 5. CHECK that the 'DSP' node is visible and selected
-    cy.getByTestId('DSP').should('exist');
-    cy.getByTestId('selected').findByTestId('DSP').should('exist');
+    cy.getByTestId('Topography').click();
   });
 
   it('can open the new model modal', () => {
