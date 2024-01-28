@@ -22,6 +22,7 @@ EventHandler & DataFetcher on widget reference item click action have also been 
 The reference widget graphql schema and the frontend have been updated accordingly.
 - https://github.com/eclipse-sirius/sirius-web/issues/2822[#2822] [diagram] The GraphQL type `Edge` must now implement `labelEditable` boolean field.
 - https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove the package `sirius-components-diagrams` containing the Sprotty based implementation of our diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Rename the package `sirius-components-diagrams-reactflow` to `sirius-components-diagrams` since we only have one implementation now
 
 === Dependency update
 

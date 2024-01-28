@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { Selection, SelectionContextProvider } from '@eclipse-sirius/sirius-components-core';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DetailsView, FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import React, { useEffect, useState } from 'react';
 import './reset.css';

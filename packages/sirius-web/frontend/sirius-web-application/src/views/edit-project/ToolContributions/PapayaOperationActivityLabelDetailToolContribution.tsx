@@ -10,10 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  DiagramPaletteToolContributionComponentProps,
-  NodeData,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -21,6 +17,10 @@ import IconButton from '@material-ui/core/IconButton';
 import { Slideshow } from '@material-ui/icons';
 import { Fragment, useState } from 'react';
 import { useNodes } from 'reactflow';
+import {
+  DiagramPaletteToolContributionComponentProps,
+  NodeData,
+} from '../../../../../../../diagrams/frontend/sirius-components-diagrams/dist';
 
 type Modal = 'dialog';
 export const PapayaOperationActivityLabelDetailToolContribution = ({
