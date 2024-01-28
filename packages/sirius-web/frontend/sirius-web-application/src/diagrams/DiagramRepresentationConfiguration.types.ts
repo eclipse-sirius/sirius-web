@@ -16,7 +16,7 @@ import {
   INodeLayoutHandler,
   NodeData,
   NodeTypeContributionElement,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '../../../../../diagrams/frontend/sirius-components-diagrams/dist';
 
 export interface DiagramRepresentationConfigurationProps {
   nodeTypeRegistry: NodeTypeRegistry;

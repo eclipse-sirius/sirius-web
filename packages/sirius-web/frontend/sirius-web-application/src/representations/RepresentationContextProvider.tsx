@@ -19,11 +19,12 @@ import {
   RepresentationContextValue,
 } from '@eclipse-sirius/sirius-components-core';
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
+
 import { RepresentationContextProviderProps } from './RepresentationContextProvider.types';
 
 export const RepresentationContextProvider = ({ children }: RepresentationContextProviderProps) => {

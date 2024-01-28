@@ -31,7 +31,7 @@ import {
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 
 export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {

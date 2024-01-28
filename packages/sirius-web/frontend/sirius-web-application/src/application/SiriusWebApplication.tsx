@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { ApolloProvider } from '@apollo/client';
 import { RepresentationPathContext, ServerContext } from '@eclipse-sirius/sirius-components-core';
-import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
 import React, { useMemo } from 'react';

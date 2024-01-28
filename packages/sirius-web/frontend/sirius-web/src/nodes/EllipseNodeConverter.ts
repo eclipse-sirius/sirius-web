@@ -28,7 +28,7 @@ import {
   convertLabelStyle,
   convertLineStyle,
   convertOutsideLabels,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 

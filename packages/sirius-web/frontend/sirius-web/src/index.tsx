@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLWidget,
   PropertySectionComponent,
