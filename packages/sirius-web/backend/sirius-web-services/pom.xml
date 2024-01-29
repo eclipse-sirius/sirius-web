@@ -51,21 +51,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-diagrams-layout</artifactId>
-			<version>2024.1.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis-ext</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
 			<version>2024.1.1</version>
 		</dependency>

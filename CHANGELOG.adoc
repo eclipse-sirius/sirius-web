@@ -23,6 +23,9 @@ The reference widget graphql schema and the frontend have been updated according
 - https://github.com/eclipse-sirius/sirius-web/issues/2822[#2822] [diagram] The GraphQL type `Edge` must now implement `labelEditable` boolean field.
 - https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove the package `sirius-components-diagrams` containing the Sprotty based implementation of our diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Rename the package `sirius-components-diagrams-reactflow` to `sirius-components-diagrams` since we only have one implementation now
+- https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove the modules `sirius-components-diagrams-layout-api` and `sirius-components-diagrams-layout` in favor of the frontend based layout API.
+As a result, all the APIs relying on this code have been deleted too such as the dead code used to export diagrams on the server or the API for parametric SVGs which was replaced in Reactflow based diagrams.
+
 
 === Dependency update
 

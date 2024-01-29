@@ -87,11 +87,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-diagrams-layout</artifactId>
-			<version>2024.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
 			<version>2024.1.1</version>
 		</dependency>

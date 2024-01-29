@@ -283,10 +283,7 @@ type DiagramDescription implements RepresentationDescription {
   childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
   palette(diagramElementId: ID!): Palette!
-  connectorTools(
-    sourceDiagramElementId: ID!
-    targetDiagramElementId: ID!
-  ): [Tool!]!
+  connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   debug: Boolean

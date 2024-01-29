@@ -152,7 +152,7 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('representationDescription').click();
     cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Diagram__SPROTTY');
+    cy.getByTestId('name').type('Diagram');
     cy.getByTestId('create-representation').click();
     cy.getByTestId('Diagram').should('exist');
     cy.getByTestId('Diagram')
