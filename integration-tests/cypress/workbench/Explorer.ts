@@ -86,6 +86,9 @@ export class Explorer {
       cy.get('.MuiPopover-root').findByTestId(representationDescriptionName).click();
       cy.wrap(modal).findByTestId('create-representation').click();
     });
+    // Wait for the modal to be closed and the representation actually opened
+    cy.get('[aria-labelledby="dialog-title"]').should('not.exist');
+    cy.getByTestId(`representation-tab-${representationLabel}`).should('be.visible');
   }
 
   public rename(treeItemLabel: string, newName: string): void {

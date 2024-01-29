@@ -178,6 +178,21 @@ describe('/projects/:projectId/edit - Portal', () => {
           });
         });
 
+        it('A portal which already contains a representation opens in direct mode', () => {
+          const portal = new Portal();
+          portal.addRepresentationFromExplorer('Portal', diagramTitle);
+          portal.getFrame(diagramTitle).should('be.visible');
+          cy.getByTestId('close-representation-tab-Portal').click();
+          const explorer = new Explorer();
+          explorer.getTreeItemByLabel('Portal').click();
+          portal.getToolbar().then((res) => {
+            const toolbar = cy.wrap(res);
+            toolbar.should('be.visible');
+            toolbar.get('[aria-label="edit portal configuration').should('be.visible').should('be.enabled');
+            toolbar.get('[aria-label="edit representations').should('be.visible').should('be.disabled');
+          });
+        });
+
         it('We can share the URL of the diagram from inside the portal', () => {
           // Find the diagram's direct URL
           let diagramURL = '';
