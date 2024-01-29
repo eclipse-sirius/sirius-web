@@ -22,11 +22,12 @@ import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { Deck } from '../Deck';
-import { Card, CardMetadata } from '../Deck.types';
+import { Card, CardMetadata, Lane } from '../Deck.types';
 import {
   convertToTrelloDeckData,
   findLaneById,
   moveCardInDeckLanes,
+  moveLaneInDeck,
   updateCard,
   updateLane,
 } from '../utils/deckGQLHelper';
@@ -52,6 +53,9 @@ import {
   GQLDropDeckCardData,
   GQLDropDeckCardInput,
   GQLDropDeckCardVariables,
+  GQLDropDeckLaneData,
+  GQLDropDeckLaneInput,
+  GQLDropDeckLaneVariables,
   GQLEditCardData,
   GQLEditCardVariables,
   GQLEditDeckCardInput,
@@ -66,6 +70,7 @@ import {
   createCardMutation,
   deleteCardMutation,
   dropDeckCardMutation,
+  dropDeckLaneMutation,
   editCardMutation,
   editLaneMutation,
 } from './deckMutation';
@@ -149,6 +154,9 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     GQLEditLaneVariables
   >(editLaneMutation);
 
+  const [dropDeckLane, { loading: dropDeckLaneLoading, data: dropDeckLaneData, error: dropDeckLaneError }] =
+    useMutation<GQLDropDeckLaneData, GQLDropDeckLaneVariables>(dropDeckLaneMutation);
+
   useEffect(() => {
     if (error) {
       addErrorMessage(error.message);
@@ -179,6 +187,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       | GQLCreateCardData
       | GQLDropDeckCardData
       | GQLEditLaneData
+      | GQLDropDeckLaneData
       | null
       | undefined,
     error: ApolloError | undefined
@@ -215,6 +224,9 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   useEffect(() => {
     handleError(dropDeckCardLoading, dropDeckCardData, dropDeckCardError);
   }, [dropDeckCardLoading, dropDeckCardData, dropDeckCardError]);
+  useEffect(() => {
+    handleError(dropDeckLaneLoading, dropDeckLaneData, dropDeckLaneError);
+  }, [dropDeckLaneLoading, dropDeckLaneData, dropDeckLaneError]);
 
   useEffect(() => {
     handleError(editLaneLoading, editLaneData, editLaneError);
@@ -299,7 +311,10 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         cardId,
         addedIndex,
       };
-      moveCardInDeckLanes(deck, oldLaneId, newLaneId, cardId, addedIndex);
+      const updatedDeck = moveCardInDeckLanes(deck, oldLaneId, newLaneId, cardId, addedIndex);
+      setState((prevState) => {
+        return { ...prevState, deck: updatedDeck };
+      });
       dropDeckCard({ variables: { input } });
     }
   };
@@ -318,6 +333,23 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
           ],
         });
       }
+    }
+  };
+
+  const handleLaneDragEnd = (oldIndex: number, newIndex: number, lane: Lane) => {
+    if (deck) {
+      const input: GQLDropDeckLaneInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId,
+        laneId: lane.id,
+        newIndex,
+      };
+      const updatedDeck = moveLaneInDeck(deck, oldIndex, newIndex);
+      setState((prevState) => {
+        return { ...prevState, deck: updatedDeck };
+      });
+      dropDeckLane({ variables: { input } });
     }
   };
 
@@ -345,6 +377,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         onCardMoveAcrossLanes={handleDropDeckCard}
         onLaneClick={handleLaneClicked}
         onLaneUpdate={handleEditLane}
+        handleLaneDragEnd={handleLaneDragEnd}
       />
     );
   }

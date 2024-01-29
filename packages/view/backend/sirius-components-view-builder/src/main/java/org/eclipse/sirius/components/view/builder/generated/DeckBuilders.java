@@ -99,5 +99,15 @@ public class DeckBuilders {
         return new CardDropToolBuilder();
     }
 
+    /**
+     * Instantiate a LaneDropToolBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public LaneDropToolBuilder newLaneDropTool() {
+        return new LaneDropToolBuilder();
+    }
+
 
 }

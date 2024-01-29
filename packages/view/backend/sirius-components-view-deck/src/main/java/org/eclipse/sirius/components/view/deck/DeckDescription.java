@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.UserColor;
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDescriptions <em>Lane
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getBackgroundColor <em>Background Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDropTool <em>Lane Drop Tool</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckDescription()
@@ -67,5 +68,28 @@ public interface DeckDescription extends RepresentationDescription {
      * @generated
      */
     void setBackgroundColor(UserColor value);
+
+    /**
+     * Returns the value of the '<em><b>Lane Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Lane Drop Tool</em>' containment reference.
+     * @see #setLaneDropTool(LaneDropTool)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckDescription_LaneDropTool()
+     * @model containment="true"
+     * @generated
+     */
+    LaneDropTool getLaneDropTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDropTool <em>Lane
+     * Drop Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Lane Drop Tool</em>' containment reference.
+     * @see #getLaneDropTool()
+     * @generated
+     */
+    void setLaneDropTool(LaneDropTool value);
 
 } // DeckDescription

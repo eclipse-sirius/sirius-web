@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.view.deck.LaneDescription;
  * @generated
  */
 public class LaneDescriptionItemProvider extends ItemProviderAdapter
-implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

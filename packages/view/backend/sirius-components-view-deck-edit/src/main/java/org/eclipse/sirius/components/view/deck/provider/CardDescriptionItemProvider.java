@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.view.deck.DeckPackage;
  * @generated
  */
 public class CardDescriptionItemProvider extends ItemProviderAdapter
-implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

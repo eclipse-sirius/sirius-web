@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.deck.DeleteCardTool;
 import org.eclipse.sirius.components.view.deck.EditCardTool;
 import org.eclipse.sirius.components.view.deck.EditLaneTool;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
+import org.eclipse.sirius.components.view.deck.LaneDropTool;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -84,6 +85,8 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
                 return this.createEditLaneTool();
             case DeckPackage.CARD_DROP_TOOL:
                 return this.createCardDropTool();
+            case DeckPackage.LANE_DROP_TOOL:
+                return this.createLaneDropTool();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -175,6 +178,17 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
     public CardDropTool createCardDropTool() {
         CardDropToolImpl cardDropTool = new CardDropToolImpl();
         return cardDropTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public LaneDropTool createLaneDropTool() {
+        LaneDropToolImpl laneDropTool = new LaneDropToolImpl();
+        return laneDropTool;
     }
 
     /**

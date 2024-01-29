@@ -94,6 +94,14 @@ public interface DeckFactory extends EFactory {
     CardDropTool createCardDropTool();
 
     /**
+     * Returns a new object of class '<em>Lane Drop Tool</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Lane Drop Tool</em>'.
+     * @generated
+     */
+    LaneDropTool createLaneDropTool();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

@@ -6,6 +6,8 @@
         eType="#//LaneDescription" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="laneDropTool" eType="#//LaneDropTool"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LaneDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
@@ -52,4 +54,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeleteCardTool" eSuperTypes="#//DeckTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="EditLaneTool" eSuperTypes="#//DeckTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="CardDropTool" eSuperTypes="#//DeckTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LaneDropTool" eSuperTypes="#//DeckTool"/>
 </ecore:EPackage>

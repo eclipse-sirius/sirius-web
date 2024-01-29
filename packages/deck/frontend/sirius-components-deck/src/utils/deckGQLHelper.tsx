@@ -142,3 +142,15 @@ export const updateLane = (deck: GQLDeck, laneId: string, newTitle: string): GQL
   }
   return newDeck;
 };
+
+export const moveLaneInDeck = (deck: GQLDeck, oldIndex: number, newIndex: number): GQLDeck => {
+  const deckToReturn = {
+    ...deck,
+  };
+  const laneToMove: GQLLane | undefined = deckToReturn.lanes[oldIndex];
+  if (laneToMove) {
+    deckToReturn.lanes.splice(oldIndex, 1);
+    deckToReturn.lanes.splice(newIndex, 0, laneToMove);
+  }
+  return deckToReturn;
+};

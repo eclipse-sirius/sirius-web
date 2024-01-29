@@ -48,6 +48,7 @@ extend type Mutation {
   editDeckCard(input: EditDeckCardInput!): EditDeckCardPayload
   dropDeckCard(input: DropDeckCardInput!): DropDeckCardPayload
   editDeckLane(input: EditDeckLaneInput!): EditDeckLanePayload
+  dropDeckLane(input: DropDeckLaneInput!): DropDeckLanePayload
 }
 
 input CreateDeckCardInput {
@@ -102,3 +103,13 @@ input EditDeckLaneInput {
   newTitle: String!
 }
 union EditDeckLanePayload = SuccessPayload | ErrorPayload
+
+input DropDeckLaneInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  laneId: ID!
+  newIndex: Int!
+}
+
+union DropDeckLanePayload = SuccessPayload | ErrorPayload
