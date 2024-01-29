@@ -125,13 +125,22 @@ public interface DeckPackage extends EPackage {
     int DECK_DESCRIPTION__BACKGROUND_COLOR = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Lane Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_DESCRIPTION__LANE_DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int DECK_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+    int DECK_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -630,6 +639,59 @@ public interface DeckPackage extends EPackage {
     int CARD_DROP_TOOL_OPERATION_COUNT = DECK_TOOL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.LaneDropToolImpl <em>Lane Drop
+     * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.deck.impl.LaneDropToolImpl
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getLaneDropTool()
+     * @generated
+     */
+    int LANE_DROP_TOOL = 9;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DROP_TOOL__NAME = DECK_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DROP_TOOL__PRECONDITION_EXPRESSION = DECK_TOOL__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DROP_TOOL__BODY = DECK_TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Lane Drop Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DROP_TOOL_FEATURE_COUNT = DECK_TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Lane Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DROP_TOOL_OPERATION_COUNT = DECK_TOOL_OPERATION_COUNT + 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.DeckDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -662,6 +724,18 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EReference getDeckDescription_BackgroundColor();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDropTool <em>Lane Drop Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Lane Drop Tool</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDropTool()
+     * @see #getDeckDescription()
+     * @generated
+     */
+    EReference getDeckDescription_LaneDropTool();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.LaneDescription <em>Lane
@@ -935,6 +1009,16 @@ public interface DeckPackage extends EPackage {
     EClass getCardDropTool();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.LaneDropTool <em>Lane Drop
+     * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Lane Drop Tool</em>'.
+     * @see org.eclipse.sirius.components.view.deck.LaneDropTool
+     * @generated
+     */
+    EClass getLaneDropTool();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -981,6 +1065,14 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EReference DECK_DESCRIPTION__BACKGROUND_COLOR = eINSTANCE.getDeckDescription_BackgroundColor();
+
+        /**
+         * The meta object literal for the '<em><b>Lane Drop Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_DESCRIPTION__LANE_DROP_TOOL = eINSTANCE.getDeckDescription_LaneDropTool();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.deck.impl.LaneDescriptionImpl
@@ -1189,6 +1281,16 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EClass CARD_DROP_TOOL = eINSTANCE.getCardDropTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.deck.impl.LaneDropToolImpl
+         * <em>Lane Drop Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.deck.impl.LaneDropToolImpl
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getLaneDropTool()
+         * @generated
+         */
+        EClass LANE_DROP_TOOL = eINSTANCE.getLaneDropTool();
 
     }
 

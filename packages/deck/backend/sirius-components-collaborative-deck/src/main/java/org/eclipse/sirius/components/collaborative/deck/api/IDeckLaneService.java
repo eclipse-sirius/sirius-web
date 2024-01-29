@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck.api;
 
+import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckLaneInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckLaneInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -26,6 +27,8 @@ public interface IDeckLaneService {
 
     IPayload editLane(EditDeckLaneInput editDeckLaneInput, IEditingContext editingContext, Deck deck);
 
+    IPayload dropLane(DropDeckLaneInput dropDeckLaneInput, IEditingContext editingContext, Deck deck);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -37,6 +40,12 @@ public interface IDeckLaneService {
         public IPayload editLane(EditDeckLaneInput editDeckLaneInput, IEditingContext editingContext, Deck deck) {
             return null;
         }
+
+        @Override
+        public IPayload dropLane(DropDeckLaneInput dropDeckLaneInput, IEditingContext editingContext, Deck deck) {
+            return null;
+        }
     }
+
 
 }

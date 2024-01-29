@@ -87,8 +87,10 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
         Function<VariableManager, String> labelProvider = variableManager -> this.computeDeckLabel(viewDeckDescription, variableManager, interpreter);
         Predicate<VariableManager> canCreatePredicate = variableManager -> this.canCreate(viewDeckDescription.getDomainType(), viewDeckDescription.getPreconditionExpression(), variableManager,
                 interpreter);
+        Consumer<VariableManager> dropLaneProvider = Optional.ofNullable(viewDeckDescription.getLaneDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
+        });
 
-        return new org.eclipse.sirius.components.deck.description.DeckDescription(id, label, idProvider, labelProvider, this::getTargetObjectId, canCreatePredicate, laneDescriptions);
+        return new org.eclipse.sirius.components.deck.description.DeckDescription(id, label, idProvider, labelProvider, this::getTargetObjectId, canCreatePredicate, laneDescriptions, dropLaneProvider);
     }
 
     private Consumer<VariableManager> getOperationsHandler(List<Operation> operations, AQLInterpreter interpreter) {

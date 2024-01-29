@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.deck.description;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -29,13 +30,19 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @PublicApi
 public record DeckDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
-        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<LaneDescription> laneDescriptions) implements IRepresentationDescription {
+        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<LaneDescription> laneDescriptions, Consumer<VariableManager> dropLaneProvider)
+        implements IRepresentationDescription {
 
     public static final String LABEL = "label";
+
     public static final String NEW_TITLE = "newTitle";
+
     public static final String NEW_DESCRIPTION = "newDescription";
+
     public static final String NEW_LABEL = "newLabel";
+
     public static final String TITLE = "title";
+
     public static final String DESCRIPTION = "description";
 
     public DeckDescription {
@@ -46,6 +53,7 @@ public record DeckDescription(String id, String label, Function<VariableManager,
         Objects.requireNonNull(targetObjectIdProvider);
         Objects.requireNonNull(canCreatePredicate);
         Objects.requireNonNull(laneDescriptions);
+        Objects.requireNonNull(dropLaneProvider);
     }
 
     @Override

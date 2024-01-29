@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,6 +97,16 @@ public class DeckDescriptionBuilder {
      */
     public DeckDescriptionBuilder backgroundColor(org.eclipse.sirius.components.view.UserColor value) {
         this.getDeckDescription().setBackgroundColor(value);
+        return this;
+    }
+
+    /**
+     * Setter for LaneDropTool.
+     *
+     * @generated
+     */
+    public DeckDescriptionBuilder laneDropTool(org.eclipse.sirius.components.view.deck.LaneDropTool value) {
+        this.getDeckDescription().setLaneDropTool(value);
         return this;
     }
 

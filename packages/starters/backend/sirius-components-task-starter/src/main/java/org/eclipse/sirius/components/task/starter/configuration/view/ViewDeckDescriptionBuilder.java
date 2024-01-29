@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.deck.DeleteCardTool;
 import org.eclipse.sirius.components.view.deck.EditCardTool;
 import org.eclipse.sirius.components.view.deck.EditLaneTool;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
+import org.eclipse.sirius.components.view.deck.LaneDropTool;
 
 /**
  * Builder of the "Deck" view description.
@@ -104,10 +105,25 @@ public class ViewDeckDescriptionBuilder {
     }
 
     private DeckDescription createDeckDescription() {
+
+        LaneDropTool laneDropTool = this.createLaneDropTool();
+
         return this.deckBuilders.newDeckDescription()
                 .name(DECK_REP_DESC_NAME)
                 .domainType("task::Project")
                 .titleExpression("New Daily Representation")
+                .laneDropTool(laneDropTool)
+                .build();
+    }
+
+    private LaneDropTool createLaneDropTool() {
+        ChangeContext changeContext = this.viewBuilders.newChangeContext()
+                .expression("aql:self.moveLaneAtIndex(index)")
+                .build();
+
+        return this.deckBuilders.newLaneDropTool()
+                .name("Lane Drop Tool")
+                .body(changeContext)
                 .build();
     }
 

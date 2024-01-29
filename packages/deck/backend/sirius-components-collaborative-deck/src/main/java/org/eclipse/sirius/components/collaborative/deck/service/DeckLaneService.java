@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckLaneService;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckLaneInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckLaneInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -75,6 +76,28 @@ public class DeckLaneService implements IDeckLaneService {
                 optionalLaneDescription.get().editLaneProvider().accept(variableManager);
 
                 payload = this.getPayload(editDeckLaneInput.id());
+            }
+        }
+
+        return payload;
+    }
+
+    @Override
+    public IPayload dropLane(DropDeckLaneInput dropDeckLaneInput, IEditingContext editingContext, Deck deck) {
+        IPayload payload = new ErrorPayload(dropDeckLaneInput.id(), "Move lane failed");
+
+        Optional<Lane> optionalLane = this.findLane(lane -> Objects.equals(lane.id(), dropDeckLaneInput.laneId()), deck);
+        Optional<DeckDescription> optionalDeckDescription =  this.findDeckDescription(deck.descriptionId(), editingContext);
+
+        if (optionalLane.isPresent() && optionalDeckDescription.isPresent()) {
+            Optional<Object> optionalTargetObject = this.objectService.getObject(editingContext, optionalLane.get().targetObjectId());
+            if (optionalTargetObject.isPresent()) {
+                VariableManager variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, optionalTargetObject.get());
+                variableManager.put(LaneDescription.INDEX, dropDeckLaneInput.newIndex());
+                optionalDeckDescription.get().dropLaneProvider().accept(variableManager);
+
+                payload = this.getPayload(dropDeckLaneInput.id());
             }
         }
 

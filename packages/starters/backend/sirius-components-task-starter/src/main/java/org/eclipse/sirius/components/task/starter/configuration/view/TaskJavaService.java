@@ -158,8 +158,7 @@ public class TaskJavaService {
                 if (oldIndex < newIndex) {
                     newIndex--;
                 }
-                project.getOwnedTasks().remove(task);
-                project.getOwnedTasks().add(newIndex, task);
+                project.getOwnedTasks().move(newIndex, task);
             }
         }
         return task;
@@ -189,6 +188,54 @@ public class TaskJavaService {
             // We need to locate the task after the last one in the lane
             Task lastTask = unmovedLaneTasks.get(unmovedLaneTasks.size() - 1);
             newIndex = project.getOwnedTasks().indexOf(lastTask) + 1;
+        }
+        return newIndex;
+    }
+
+    public void moveLaneAtIndex(TaskTag movedTag, int index) {
+        EObject eContainer = movedTag.eContainer();
+        if (eContainer instanceof Project project) {
+            String prefix = movedTag.getPrefix();
+            List<TaskTag> tagList = project.getOwnedTags().stream().filter(tag -> tag.getPrefix().equals(prefix)).toList();
+
+            int newIndex = this.computeIndexOfTagToMove(movedTag, index, tagList, project);
+            // We move the current tag before the tagToReplace in the project ownTags list.
+            int oldIndex = project.getOwnedTags().indexOf(movedTag);
+            // If the moved tag was located before the new location, the index after having remove the tag is decremented.
+            if (oldIndex < newIndex) {
+                newIndex--;
+            }
+            project.getOwnedTags().move(newIndex, movedTag);
+
+        }
+    }
+
+    /**
+     * When a lane is moved, we change the underlying tag ordering. We need to compute the new index in the project tag
+     * list.
+     *
+     * @param tag
+     *            the tag to move.
+     * @param index
+     *            the new index in the project tag list.
+     * @param tagList
+     *            the current deck representation tag list (might be a sub set of the project tag list).
+     * @param project
+     *            the project owning the tags.
+     * @return the index on which the tag should be moved in the project tag list to match the new index in the deck
+     *         representation.
+     */
+    private int computeIndexOfTagToMove(TaskTag tag, int index, List<TaskTag> tagList, Project project) {
+        int newIndex;
+        List<TaskTag> unmovedLaneTags = tagList.stream().filter(currentTag -> currentTag != tag).toList();
+        if (index < unmovedLaneTags.size()) {
+            // We retrieve the tag that will be located after the moved one.
+            TaskTag tagToMoveAround = unmovedLaneTags.get(index);
+            newIndex = project.getOwnedTags().indexOf(tagToMoveAround);
+        } else {
+            // We need to locate the tag after the last one in the deck representation
+            TaskTag lastTag = unmovedLaneTags.get(unmovedLaneTags.size() - 1);
+            newIndex = project.getOwnedTags().indexOf(lastTag) + 1;
         }
         return newIndex;
     }

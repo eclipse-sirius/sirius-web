@@ -111,3 +111,23 @@ export const editLaneMutation = gql`
     }
   }
 `;
+
+export const dropDeckLaneMutation = gql`
+  mutation dropDeckLane($input: DropDeckLaneInput!) {
+    dropDeckLane(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

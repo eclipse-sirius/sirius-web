@@ -70,6 +70,7 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DESCRIPTIONS);
             this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__BACKGROUND_COLOR);
+            this.childrenFeatures.add(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DROP_TOOL);
         }
         return this.childrenFeatures;
     }
@@ -132,6 +133,7 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
         switch (notification.getFeatureID(DeckDescription.class)) {
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
             case DeckPackage.DECK_DESCRIPTION__BACKGROUND_COLOR:
+            case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -151,6 +153,8 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DESCRIPTIONS, DeckFactory.eINSTANCE.createLaneDescription()));
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_DESCRIPTION__BACKGROUND_COLOR, ViewFactory.eINSTANCE.createFixedColor()));
+
+        newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.DECK_DESCRIPTION__LANE_DROP_TOOL, DeckFactory.eINSTANCE.createLaneDropTool()));
     }
 
 }

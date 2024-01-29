@@ -17,6 +17,7 @@
     <genClasses ecoreClass="deck.ecore#//DeckDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/laneDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/backgroundColor"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/laneDropTool"/>
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//LaneDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//LaneDescription/semanticCandidatesExpression"/>
@@ -45,5 +46,6 @@
     <genClasses ecoreClass="deck.ecore#//DeleteCardTool"/>
     <genClasses ecoreClass="deck.ecore#//EditLaneTool"/>
     <genClasses ecoreClass="deck.ecore#//CardDropTool"/>
+    <genClasses ecoreClass="deck.ecore#//LaneDropTool"/>
   </genPackages>
 </genmodel:GenModel>

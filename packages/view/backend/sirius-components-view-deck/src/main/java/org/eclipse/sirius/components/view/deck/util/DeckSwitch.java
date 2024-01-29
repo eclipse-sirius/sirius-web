@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.deck.DeleteCardTool;
 import org.eclipse.sirius.components.view.deck.EditCardTool;
 import org.eclipse.sirius.components.view.deck.EditLaneTool;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
+import org.eclipse.sirius.components.view.deck.LaneDropTool;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -149,6 +150,15 @@ public class DeckSwitch<T> extends Switch<T> {
                 T result = this.caseCardDropTool(cardDropTool);
                 if (result == null)
                     result = this.caseDeckTool(cardDropTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DeckPackage.LANE_DROP_TOOL: {
+                LaneDropTool laneDropTool = (LaneDropTool) theEObject;
+                T result = this.caseLaneDropTool(laneDropTool);
+                if (result == null)
+                    result = this.caseDeckTool(laneDropTool);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -288,6 +298,21 @@ public class DeckSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseCardDropTool(CardDropTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Lane Drop Tool</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Lane Drop Tool</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLaneDropTool(LaneDropTool object) {
         return null;
     }
 
