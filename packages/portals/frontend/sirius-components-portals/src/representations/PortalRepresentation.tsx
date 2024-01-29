@@ -83,10 +83,20 @@ export const PortalRepresentation = ({
     editingContextId,
     representationId
   );
-  const [mode, setMode] = useState<PortalRepresentationMode>(readOnly ? 'read-only' : 'edit');
+
+  const [mode, setMode] = useState<PortalRepresentationMode | null>(null);
+  const portalHasViews: boolean | null = portal && portal.views.length > 0;
   useEffect(() => {
-    setMode(readOnly ? 'read-only' : 'edit');
-  }, [readOnly]);
+    if (readOnly) {
+      setMode('read-only');
+    } else if (portal !== null && (mode === null || mode === 'read-only')) {
+      // We pass here when we have received the portal (it is non-null) but:
+      // - either we have not yet decided what the initial/default mode should be
+      //   (mode is still null);
+      // - or we were previously in read-only mode and become editable again.
+      setMode(portalHasViews ? 'direct' : 'edit');
+    }
+  }, [readOnly, portal, portalHasViews]);
 
   const portalIncludesRepresentation = (representationId: string) => {
     return portal?.views.find((view) => view?.representationMetadata?.id === representationId);
@@ -159,7 +169,7 @@ export const PortalRepresentation = ({
       </Typography>
     </div>,
   ];
-  if (portal && portal.views.length > 0) {
+  if (mode && portal && portal.views.length > 0) {
     items = portal.views
       .filter((view) => view?.representationMetadata?.id !== representationId)
       .map((view) => {
@@ -200,12 +210,11 @@ export const PortalRepresentation = ({
   if (complete) {
     return <div>The representation is not available anymore</div>;
   }
-  if (!portal) {
+  if (!portal || !mode) {
     return <div></div>;
   }
 
   const cellSize: number = theme.spacing(3);
-  const portalHasViews: boolean = portal && portal.views.length > 0;
   return (
     <div className={classes.portalRepresentationArea} ref={domNode} data-representation-kind="portal">
       <PortalToolbar
