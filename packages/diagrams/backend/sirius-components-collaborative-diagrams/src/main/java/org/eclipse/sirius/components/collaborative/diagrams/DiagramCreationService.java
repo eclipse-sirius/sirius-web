@@ -32,11 +32,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.events.ArrangeAllEvent;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
-import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutEngine;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderer;
 import org.eclipse.sirius.components.representations.Element;
@@ -61,12 +57,6 @@ public class DiagramCreationService implements IDiagramCreationService {
 
     private final IObjectService objectService;
 
-    private final ILayoutService layoutService;
-
-    private final IDiagramLayoutEngine diagramLayoutEngine;
-
-    private final IDiagramLayoutConfigurationProvider diagramLayoutConfigurationProvider;
-
     private final IOperationValidator operationValidator;
 
     private final Timer timer;
@@ -74,13 +64,9 @@ public class DiagramCreationService implements IDiagramCreationService {
     private final Logger logger = LoggerFactory.getLogger(DiagramCreationService.class);
 
     public DiagramCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectService objectService,
-                                  ILayoutService layoutService, IDiagramLayoutEngine diagramLayoutEngine, IDiagramLayoutConfigurationProvider diagramLayoutConfigurationProvider,
                                   IOperationValidator operationValidator, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
-        this.layoutService = Objects.requireNonNull(layoutService);
-        this.diagramLayoutEngine = Objects.requireNonNull(diagramLayoutEngine);
-        this.diagramLayoutConfigurationProvider = Objects.requireNonNull(diagramLayoutConfigurationProvider);
         this.operationValidator = Objects.requireNonNull(operationValidator);
         // @formatter:off
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
@@ -162,13 +148,6 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         Diagram newDiagram = new DiagramRenderer().render(element);
 
-        // The auto layout is used for the first rendering and after that if it is activated
-        if (this.shouldPerformFullLayout(optionalDiagramContext, diagramDescription)) {
-            newDiagram = this.layoutService.layout(editingContext, newDiagram);
-        } else if (optionalDiagramContext.isPresent()) {
-            newDiagram = this.layoutService.incrementalLayout(editingContext, newDiagram, optionalDiagramElementEvent);
-        }
-
         var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of()));
         newDiagram = Diagram.newDiagram(newDiagram)
                 .layoutData(newLayoutData)
@@ -180,32 +159,4 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         return newDiagram;
     }
-
-    /**
-     * Indicates when the full layout should be performed.
-     *
-     * This method will return true in the following situations:
-     *
-     * <ul>
-     * <li>The first rendering of the diagram</li>
-     * <li>The description of the diagram indicates that layout should be automatic</li>
-     * <li>The arrange all event is currently being processed</li>
-     * </ul>
-     *
-     * @param optionalDiagramContext
-     *            The diagram context if one is available
-     * @param diagramDescription
-     *            The description of the diagram
-     * @return <code>true</code> if the full layout of the diagram should be performed, <code>false</code> otherwise
-     */
-    private boolean shouldPerformFullLayout(Optional<IDiagramContext> optionalDiagramContext, DiagramDescription diagramDescription) {
-        // @formatter:off
-        return optionalDiagramContext.isEmpty()
-                || diagramDescription.isAutoLayout()
-                || optionalDiagramContext.map(IDiagramContext::getDiagramEvent)
-                .filter(ArrangeAllEvent.class::isInstance)
-                .isPresent();
-        // @formatter:on
-    }
-
 }

@@ -31,9 +31,6 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutConfigurationProvider;
-import org.eclipse.sirius.components.diagrams.layout.api.experimental.IDiagramLayoutEngine;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IOperationValidator;
@@ -165,9 +162,8 @@ public class DynamicDiagramsTests {
         };
 
         IObjectService objectService = new IObjectService.NoOp();
-        ILayoutService layoutService = new ILayoutService.NoOp();
         MeterRegistry meterRegistry = new SimpleMeterRegistry();
-        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, objectService, layoutService, new IDiagramLayoutEngine.NoOp(), new IDiagramLayoutConfigurationProvider.NoOp(), new IOperationValidator.NoOp(), meterRegistry);
+        var diagramCreationService = new DiagramCreationService(representationDescriptionSearchService, objectService, new IOperationValidator.NoOp(), meterRegistry);
 
         IEditingContext editinContext = new IEditingContext.NoOp();
 

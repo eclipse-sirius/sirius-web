@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,11 +31,11 @@ import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.NodeType;
+import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
-import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.diagram.business.api.query.ContainerMappingQuery;
@@ -63,16 +63,13 @@ public class AbstractNodeMappingConverter {
 
     private final IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider;
 
-    private final ImageSizeProvider imageSizeProvider;
-
     public AbstractNodeMappingConverter(IObjectService objectService, IEditService editService, IIdentifierProvider identifierProvider,
-            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider, ImageSizeProvider imageSizeService) {
+            ISemanticCandidatesProviderFactory semanticCandidatesProviderFactory, IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider) {
         this.objectService = Objects.requireNonNull(objectService);
         this.editService = Objects.requireNonNull(editService);
         this.identifierProvider = Objects.requireNonNull(identifierProvider);
         this.semanticCandidatesProviderFactory = Objects.requireNonNull(semanticCandidatesProviderFactory);
         this.modelOperationHandlerSwitchProvider = Objects.requireNonNull(modelOperationHandlerSwitchProvider);
-        this.imageSizeProvider = Objects.requireNonNull(imageSizeService);
     }
 
     public NodeDescription convert(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<String, NodeDescription> id2NodeDescriptions) {
@@ -117,7 +114,7 @@ public class AbstractNodeMappingConverter {
             }
             return result;
         };
-        AbstractNodeMappingSizeProvider sizeProvider = new AbstractNodeMappingSizeProvider(interpreter, abstractNodeMapping, this.imageSizeProvider);
+        Function<VariableManager, Size> sizeProvider = variableManager -> Size.UNDEFINED;
 
         String domainClass = abstractNodeMapping.getDomainClass();
         String semanticCandidatesExpression = abstractNodeMapping.getSemanticCandidatesExpression();

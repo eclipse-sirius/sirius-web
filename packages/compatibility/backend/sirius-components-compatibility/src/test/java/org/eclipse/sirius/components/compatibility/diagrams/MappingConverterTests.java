@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,6 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ImageSizeProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.diagram.ContainerLayout;
@@ -114,8 +113,7 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
-                new ImageSizeProvider());
+        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider);
 
         NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<>());
         InsideLabelDescription insideLabelDescription = convertedNodeDescription.getInsideLabelDescription();
@@ -175,8 +173,7 @@ public class MappingConverterTests {
         IModelOperationHandlerSwitchProvider modelOperationHandlerSwitchProvider = interpreter -> modelOperation -> Optional.empty();
 
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
-                new ImageSizeProvider());
+        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider);
         NodeDescription convertedNodeDescription = converter.convert(containerMapping, interpreter, new HashMap<>());
 
         VariableManager variableManager = new VariableManager();
@@ -243,8 +240,7 @@ public class MappingConverterTests {
 
         VariableManager variableManager = new VariableManager();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(EcorePackage.eINSTANCE));
-        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider,
-                new ImageSizeProvider());
+        var converter = new AbstractNodeMappingConverter(new IObjectService.NoOp(), new IEditService.NoOp(), identifierProvider, semanticCandidatesProviderFactory, modelOperationHandlerSwitchProvider);
 
         NodeDescription convertedNodeDescription = converter.convert(nodeMapping, interpreter, new HashMap<>());
         InsideLabelDescription insideLabelDescription = convertedNodeDescription.getInsideLabelDescription();
