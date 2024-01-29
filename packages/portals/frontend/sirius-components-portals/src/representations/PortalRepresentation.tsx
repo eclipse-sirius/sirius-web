@@ -77,7 +77,7 @@ export const PortalRepresentation = ({
   const classes = usePortalRepresentationStyles();
   const domNode = useRef<HTMLDivElement>(null);
   const { addErrorMessage } = useMultiToast();
-  const { selection, setSelection } = useSelection();
+  const { selection, setSelection, addToSelection, removeFromSelection } = useSelection();
   const { portal, complete, message } = usePortal(editingContextId, representationId);
   const { addPortalView, removePortalView, layoutPortal, layoutInProgress } = usePortalMutations(
     editingContextId,
@@ -224,7 +224,8 @@ export const PortalRepresentation = ({
         portalMode={mode}
         setPortalMode={(newMode) => setMode(newMode)}
       />
-      <SelectionContext.Provider value={{ selection, setSelection: nonPropagatingSetSelection }}>
+      <SelectionContext.Provider
+        value={{ selection, setSelection: nonPropagatingSetSelection, addToSelection, removeFromSelection }}>
         <ResponsiveGridLayout
           data-testid="portal-grid-layout"
           className="layout"

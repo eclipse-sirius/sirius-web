@@ -378,6 +378,8 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
       value={{
         selection: containerSelected,
         setSelection: onBrowserSelection,
+        addToSelection: () => {},
+        removeFromSelection: () => {},
       }}>
       <Dialog
         open={true}

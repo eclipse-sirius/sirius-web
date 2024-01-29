@@ -145,6 +145,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
 
   const handleNodesChange: OnNodesChange = useCallback(
     (changes: NodeChange[]) => {
+      console.log(changes);
       const noReadOnlyChanges = filterReadOnlyChanges(changes);
       if (
         noReadOnlyChanges.length === 1 &&
