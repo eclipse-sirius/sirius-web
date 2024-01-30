@@ -14,7 +14,7 @@
 import { Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { RawDiagram } from './layout.types';
+import { RawDiagram, ForcedDimensions } from './layout.types';
 
 export interface ILayoutEngine {
   registerNodeLayoutHandlerContribution(nodeLayoutHandlerContribution: INodeLayoutHandler<NodeData>);
@@ -24,7 +24,7 @@ export interface ILayoutEngine {
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   );
 }
 
@@ -38,6 +38,6 @@ export interface INodeLayoutHandler<T extends NodeData> {
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   );
 }

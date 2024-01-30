@@ -15,7 +15,7 @@ import { NodeData } from '../DiagramRenderer.types';
 import { IconLabelNodeData } from '../node/IconsLabelNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
-import { RawDiagram } from './layout.types';
+import { RawDiagram, ForcedDimensions } from './layout.types';
 
 const rectangularNodePadding = 8;
 
@@ -23,6 +23,7 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
   canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'iconLabelNode';
   }
+
   handle(
     _layoutEngine: ILayoutEngine,
     _previousDiagram: RawDiagram | null,
@@ -30,13 +31,13 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
     _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
     node.width =
-      forceWidth ??
+      forceDimensions?.width ??
       rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
     node.height = labelElement?.getBoundingClientRect().height;
   }

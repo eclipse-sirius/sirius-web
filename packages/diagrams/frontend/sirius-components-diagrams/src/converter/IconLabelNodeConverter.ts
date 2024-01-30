@@ -26,6 +26,7 @@ import { IconLabelNodeData } from '../renderer/node/IconsLabelNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
+import { isListLayoutStrategy } from './convertDiagram';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -79,6 +80,7 @@ const toIconLabelNode = (
     connectionHandles,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
   if (insideLabel) {

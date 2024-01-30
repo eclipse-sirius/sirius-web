@@ -179,7 +179,12 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
     const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
     applyElkOnSubNodes(subNodes, nodes).then((nodes: Node<NodeData, string>[]) => {
       const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
-      laidOutNodesWithElk.forEach((node) => (node.data.resizedByUser = true)); // allows elk to resize nodes during layout
+      laidOutNodesWithElk
+        .filter((laidOutNode) => {
+          const parentNode = nodes.find((node) => node.id === laidOutNode.parentNode);
+          return !parentNode || !isListData(parentNode);
+        })
+        .forEach((laidOutNode) => (laidOutNode.data.resizedByUser = true)); // allows elk to resize nodes during layout
 
       const diagramToLayout: RawDiagram = {
         nodes: laidOutNodesWithElk,

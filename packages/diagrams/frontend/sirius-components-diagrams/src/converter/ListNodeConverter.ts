@@ -19,8 +19,6 @@ import {
   GQLNodeStyle,
   GQLRectangularNodeStyle,
   GQLViewModifier,
-  ILayoutStrategy,
-  ListLayoutStrategy,
 } from '../graphql/subscription/nodeFragment.types';
 import { BorderNodePosition } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
@@ -30,11 +28,9 @@ import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
+import { isListLayoutStrategy } from './convertDiagram';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
-
-const isListLayoutStrategy = (strategy: ILayoutStrategy | undefined): strategy is ListLayoutStrategy =>
-  strategy?.kind === 'List';
 
 const toListNode = (
   gqlDiagram: GQLDiagram,
@@ -100,7 +96,11 @@ const toListNode = (
       : true,
     topGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.topGap : 0,
     bottomGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.bottomGap : 0,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
     resizedByUser,
+    growableNodeIds: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
+      ? gqlNode.childrenLayoutStrategy.growableNodeIds
+      : [],
   };
 
   if (insideLabel) {

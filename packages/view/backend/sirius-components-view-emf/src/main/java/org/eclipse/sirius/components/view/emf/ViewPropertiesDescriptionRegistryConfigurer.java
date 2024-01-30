@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,6 +78,7 @@ public class ViewPropertiesDescriptionRegistryConfigurer implements IPropertiesD
             DiagramPackage.Literals.IMAGE_NODE_STYLE_DESCRIPTION,
             DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION,
             DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION,
+            DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION,
             DiagramPackage.Literals.EDGE_STYLE,
             ViewPackage.Literals.FIXED_COLOR
     );

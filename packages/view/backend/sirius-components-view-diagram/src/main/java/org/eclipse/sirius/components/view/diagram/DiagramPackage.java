@@ -56,6 +56,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     String eNS_PREFIX = "diagram";
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl
      * <em>Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -65,6 +66,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramDescription()
      */
     int DIAGRAM_DESCRIPTION = 0;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -72,6 +74,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__NAME = ViewPackage.REPRESENTATION_DESCRIPTION__NAME;
+
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -79,6 +82,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__DOMAIN_TYPE = ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -87,6 +91,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__PRECONDITION_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -95,6 +100,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__TITLE_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -102,6 +108,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__AUTO_LAYOUT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -110,6 +117,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__PALETTE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Node Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -118,6 +126,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
+
     /**
      * The feature id for the '<em><b>Edge Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -126,6 +135,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+
     /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -134,6 +144,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
+
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -141,6 +152,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_DESCRIPTION_OPERATION_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl
      * <em>Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -150,6 +162,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramElementDescription()
      */
     int DIAGRAM_ELEMENT_DESCRIPTION = 1;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -157,6 +170,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION__NAME = 0;
+
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -164,6 +178,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE = 1;
+
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -172,6 +187,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 2;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -180,6 +196,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION = 3;
+
     /**
      * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -188,6 +205,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = 4;
+
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -196,6 +214,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 5;
+
     /**
      * The number of structural features of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -204,6 +223,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 6;
+
     /**
      * The number of operations of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -212,6 +232,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_ELEMENT_DESCRIPTION_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodeDescriptionImpl <em>Node
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -221,6 +242,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeDescription()
      */
     int NODE_DESCRIPTION = 2;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -228,6 +250,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__NAME = DIAGRAM_ELEMENT_DESCRIPTION__NAME;
+
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -235,6 +258,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__DOMAIN_TYPE = DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE;
+
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -243,6 +267,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -251,6 +276,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -259,6 +285,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
+
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -267,6 +294,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Collapsible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -274,6 +302,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__COLLAPSIBLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -282,6 +311,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -290,6 +320,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -298,6 +329,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -306,6 +338,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+
     /**
      * The feature id for the '<em><b>Children Descriptions</b></em>' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -314,6 +347,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+
     /**
      * The feature id for the '<em><b>Border Nodes Descriptions</b></em>' containment reference list. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -322,6 +356,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+
     /**
      * The feature id for the '<em><b>Reused Child Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -330,6 +365,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+
     /**
      * The feature id for the '<em><b>Reused Border Node Descriptions</b></em>' reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -338,6 +374,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+
     /**
      * The feature id for the '<em><b>User Resizable</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -345,6 +382,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__USER_RESIZABLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+
     /**
      * The feature id for the '<em><b>Default Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -353,6 +391,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+
     /**
      * The feature id for the '<em><b>Default Height Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -361,6 +400,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 11;
+
     /**
      * The feature id for the '<em><b>Keep Aspect Ratio</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -369,6 +409,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__KEEP_ASPECT_RATIO = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 12;
+
     /**
      * The number of structural features of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -377,6 +418,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 13;
+
     /**
      * The number of operations of the '<em>Node Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -384,6 +426,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION_OPERATION_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeDescriptionImpl <em>Edge
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -393,6 +436,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeDescription()
      */
     int EDGE_DESCRIPTION = 3;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -400,6 +444,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__NAME = DIAGRAM_ELEMENT_DESCRIPTION__NAME;
+
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -407,6 +452,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__DOMAIN_TYPE = DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE;
+
     /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -415,6 +461,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -423,6 +470,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__PRECONDITION_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Synchronization Policy</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -431,6 +479,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
+
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -439,6 +488,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Begin Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -447,6 +497,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>End Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -455,6 +506,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__END_LABEL_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Is Domain Based Edge</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -463,6 +515,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
+
     /**
      * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -471,6 +524,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__PALETTE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
+
     /**
      * The feature id for the '<em><b>Source Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -479,6 +533,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
+
     /**
      * The feature id for the '<em><b>Target Node Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -487,6 +542,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
+
     /**
      * The feature id for the '<em><b>Source Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -495,6 +551,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 6;
+
     /**
      * The feature id for the '<em><b>Target Nodes Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -503,6 +560,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 7;
+
     /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -511,6 +569,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__STYLE = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 8;
+
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -519,6 +578,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__CONDITIONAL_STYLES = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 9;
+
     /**
      * The number of structural features of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -527,6 +587,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION_FEATURE_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT + 10;
+
     /**
      * The number of operations of the '<em>Edge Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -534,6 +595,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION_OPERATION_COUNT = DIAGRAM_ELEMENT_DESCRIPTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription
      * <em>Layout Strategy Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -543,6 +605,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutStrategyDescription()
      */
     int LAYOUT_STRATEGY_DESCRIPTION = 4;
+
     /**
      * The number of structural features of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -551,6 +614,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = 0;
+
     /**
      * The number of operations of the '<em>Layout Strategy Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -559,6 +623,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl <em>List Layout
@@ -569,6 +634,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getListLayoutStrategyDescription()
      */
     int LIST_LAYOUT_STRATEGY_DESCRIPTION = 5;
+
     /**
      * The feature id for the '<em><b>Are Child Nodes Draggable Expression</b></em>' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -577,6 +643,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Top Gap Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -585,6 +652,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Bottom Gap Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -593,6 +661,16 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Growable Nodes</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 3;
+
     /**
      * The number of structural features of the '<em>List Layout Strategy Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -600,7 +678,8 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LIST_LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 3;
+    int LIST_LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT + 4;
+
     /**
      * The number of operations of the '<em>List Layout Strategy Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -609,6 +688,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LIST_LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT = LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl <em>Free Form
@@ -619,6 +699,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getFreeFormLayoutStrategyDescription()
      */
     int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION = 6;
+
     /**
      * The number of structural features of the '<em>Free Form Layout Strategy Description</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -627,6 +708,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT = LAYOUT_STRATEGY_DESCRIPTION_FEATURE_COUNT;
+
     /**
      * The number of operations of the '<em>Free Form Layout Strategy Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -635,6 +717,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT = LAYOUT_STRATEGY_DESCRIPTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.StyleImpl <em>Style</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -644,6 +727,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getStyle()
      */
     int STYLE = 7;
+
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -651,6 +735,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int STYLE__COLOR = 0;
+
     /**
      * The number of structural features of the '<em>Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -658,6 +743,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int STYLE_FEATURE_COUNT = 1;
+
     /**
      * The number of operations of the '<em>Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -665,6 +751,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int STYLE_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.BorderStyle <em>Border Style</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -674,6 +761,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getBorderStyle()
      */
     int BORDER_STYLE = 8;
+
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -681,6 +769,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int BORDER_STYLE__BORDER_COLOR = 0;
+
     /**
      * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -688,6 +777,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int BORDER_STYLE__BORDER_RADIUS = 1;
+
     /**
      * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -695,6 +785,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int BORDER_STYLE__BORDER_SIZE = 2;
+
     /**
      * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -703,6 +794,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int BORDER_STYLE__BORDER_LINE_STYLE = 3;
+
     /**
      * The number of structural features of the '<em>Border Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -711,6 +803,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int BORDER_STYLE_FEATURE_COUNT = 4;
+
     /**
      * The number of operations of the '<em>Border Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -718,6 +811,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int BORDER_STYLE_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription <em>Node Style
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -727,6 +821,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeStyleDescription()
      */
     int NODE_STYLE_DESCRIPTION = 9;
+
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1239,6 +1334,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getRectangularNodeStyleDescription()
      */
     int RECTANGULAR_NODE_STYLE_DESCRIPTION = 11;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl
      * <em>Image Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1248,6 +1344,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getImageNodeStyleDescription()
      */
     int IMAGE_NODE_STYLE_DESCRIPTION = 12;
+
     /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.view.diagram.impl.IconLabelNodeStyleDescriptionImpl <em>Icon Label Node
@@ -1258,6 +1355,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getIconLabelNodeStyleDescription()
      */
     int ICON_LABEL_NODE_STYLE_DESCRIPTION = 13;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl <em>Edge
      * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1267,6 +1365,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeStyle()
      */
     int EDGE_STYLE = 14;
+
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1274,6 +1373,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__COLOR = STYLE__COLOR;
+
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1281,6 +1381,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__FONT_SIZE = STYLE_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1288,6 +1389,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__ITALIC = STYLE_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1295,6 +1397,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__BOLD = STYLE_FEATURE_COUNT + 2;
+
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1302,6 +1405,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__UNDERLINE = STYLE_FEATURE_COUNT + 3;
+
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1309,6 +1413,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
+
     /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1316,6 +1421,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__LINE_STYLE = STYLE_FEATURE_COUNT + 5;
+
     /**
      * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1324,6 +1430,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 6;
+
     /**
      * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1332,6 +1439,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 7;
+
     /**
      * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1339,6 +1447,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__EDGE_WIDTH = STYLE_FEATURE_COUNT + 8;
+
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1346,6 +1455,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__SHOW_ICON = STYLE_FEATURE_COUNT + 9;
+
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1353,6 +1463,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE__LABEL_ICON = STYLE_FEATURE_COUNT + 10;
+
     /**
      * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1361,6 +1472,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 11;
+
     /**
      * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1368,6 +1480,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl
      * <em>Conditional Edge Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1377,6 +1490,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getConditionalEdgeStyle()
      */
     int CONDITIONAL_EDGE_STYLE = 15;
+
     /**
      * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1384,6 +1498,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
+
     /**
      * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1391,6 +1506,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1398,6 +1514,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__FONT_SIZE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1405,6 +1522,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__ITALIC = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
+
     /**
      * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1412,6 +1530,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__BOLD = ViewPackage.CONDITIONAL_FEATURE_COUNT + 3;
+
     /**
      * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1419,6 +1538,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__UNDERLINE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
+
     /**
      * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1426,6 +1546,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__STRIKE_THROUGH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+
     /**
      * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1433,6 +1554,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__LINE_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+
     /**
      * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1441,6 +1563,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__SOURCE_ARROW_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+
     /**
      * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1449,6 +1572,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__TARGET_ARROW_STYLE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 8;
+
     /**
      * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1456,6 +1580,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__EDGE_WIDTH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 9;
+
     /**
      * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1463,6 +1588,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__SHOW_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 10;
+
     /**
      * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1470,6 +1596,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE__LABEL_ICON = ViewPackage.CONDITIONAL_FEATURE_COUNT + 11;
+
     /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1478,6 +1605,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 12;
+
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1486,6 +1614,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CONDITIONAL_EDGE_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramPaletteImpl
      * <em>Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1495,6 +1624,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramPalette()
      */
     int DIAGRAM_PALETTE = 16;
+
     /**
      * The feature id for the '<em><b>Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1503,6 +1633,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_PALETTE__DROP_TOOL = 0;
+
     /**
      * The feature id for the '<em><b>Drop Node Tool</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1511,6 +1642,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_PALETTE__DROP_NODE_TOOL = 1;
+
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1519,6 +1651,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_PALETTE__NODE_TOOLS = 2;
+
     /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1527,6 +1660,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_PALETTE__TOOL_SECTIONS = 3;
+
     /**
      * The number of structural features of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1534,6 +1668,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_PALETTE_FEATURE_COUNT = 4;
+
     /**
      * The number of operations of the '<em>Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1541,6 +1676,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_PALETTE_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl <em>Node
      * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1550,6 +1686,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodePalette()
      */
     int NODE_PALETTE = 17;
+
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1558,6 +1695,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE__DELETE_TOOL = 0;
+
     /**
      * The feature id for the '<em><b>Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1566,6 +1704,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE__LABEL_EDIT_TOOL = 1;
+
     /**
      * The feature id for the '<em><b>Drop Node Tool</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1574,6 +1713,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE__DROP_NODE_TOOL = 2;
+
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1582,6 +1722,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE__NODE_TOOLS = 3;
+
     /**
      * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1590,6 +1731,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE__EDGE_TOOLS = 4;
+
     /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1598,6 +1740,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE__TOOL_SECTIONS = 5;
+
     /**
      * The number of structural features of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1606,6 +1749,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE_FEATURE_COUNT = 6;
+
     /**
      * The number of operations of the '<em>Node Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1613,6 +1757,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_PALETTE_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgePaletteImpl <em>Edge
      * Palette</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1622,6 +1767,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgePalette()
      */
     int EDGE_PALETTE = 18;
+
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1630,6 +1776,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE__DELETE_TOOL = 0;
+
     /**
      * The feature id for the '<em><b>Center Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1638,6 +1785,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL = 1;
+
     /**
      * The feature id for the '<em><b>Begin Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1646,6 +1794,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL = 2;
+
     /**
      * The feature id for the '<em><b>End Label Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1654,6 +1803,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE__END_LABEL_EDIT_TOOL = 3;
+
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1662,6 +1812,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE__NODE_TOOLS = 4;
+
     /**
      * The feature id for the '<em><b>Edge Reconnection Tools</b></em>' containment reference list. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -1670,6 +1821,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE__EDGE_RECONNECTION_TOOLS = 5;
+
     /**
      * The feature id for the '<em><b>Tool Sections</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1678,6 +1830,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE__TOOL_SECTIONS = 6;
+
     /**
      * The number of structural features of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1686,6 +1839,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE_FEATURE_COUNT = 7;
+
     /**
      * The number of operations of the '<em>Edge Palette</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1693,6 +1847,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_PALETTE_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl <em>Tool</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1702,6 +1857,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getTool()
      */
     int TOOL = 19;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1709,6 +1865,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL__NAME = 0;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1717,6 +1874,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL__PRECONDITION_EXPRESSION = 1;
+
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1725,6 +1883,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL__BODY = 2;
+
     /**
      * The number of structural features of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1732,6 +1891,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL_FEATURE_COUNT = 3;
+
     /**
      * The number of operations of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1739,6 +1899,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DeleteToolImpl <em>Delete
      * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1748,6 +1909,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDeleteTool()
      */
     int DELETE_TOOL = 20;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1755,6 +1917,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL__NAME = TOOL__NAME;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1763,6 +1926,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1771,6 +1935,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL__BODY = TOOL__BODY;
+
     /**
      * The number of structural features of the '<em>Delete Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1779,6 +1944,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT;
+
     /**
      * The number of operations of the '<em>Delete Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1786,6 +1952,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DropToolImpl <em>Drop
      * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1795,6 +1962,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDropTool()
      */
     int DROP_TOOL = 21;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1802,6 +1970,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_TOOL__NAME = TOOL__NAME;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1810,6 +1979,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1818,6 +1988,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_TOOL__BODY = TOOL__BODY;
+
     /**
      * The number of structural features of the '<em>Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1826,6 +1997,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT;
+
     /**
      * The number of operations of the '<em>Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1833,6 +2005,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolImpl <em>Edge
      * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1842,6 +2015,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeTool()
      */
     int EDGE_TOOL = 22;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1849,6 +2023,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__NAME = TOOL__NAME;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1857,6 +2032,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1865,6 +2041,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__BODY = TOOL__BODY;
+
     /**
      * The feature id for the '<em><b>Target Element Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1873,6 +2050,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS = TOOL_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Icon UR Ls Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -1881,6 +2059,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__ICON_UR_LS_EXPRESSION = TOOL_FEATURE_COUNT + 1;
+
     /**
      * The number of structural features of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -1889,6 +2068,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 2;
+
     /**
      * The number of operations of the '<em>Edge Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1896,6 +2076,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL_OPERATION_COUNT = TOOL_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeReconnectionToolImpl
      * <em>Edge Reconnection Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1905,6 +2086,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeReconnectionTool()
      */
     int EDGE_RECONNECTION_TOOL = 23;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2150,6 +2332,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSourceEdgeEndReconnectionTool()
      */
     int SOURCE_EDGE_END_RECONNECTION_TOOL = 26;
+
     /**
      * The meta object id for the
      * '{@link org.eclipse.sirius.components.view.diagram.impl.TargetEdgeEndReconnectionToolImpl <em>Target Edge End
@@ -2160,6 +2343,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getTargetEdgeEndReconnectionTool()
      */
     int TARGET_EDGE_END_RECONNECTION_TOOL = 27;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl <em>Create
      * View</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2169,6 +2353,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getCreateView()
      */
     int CREATE_VIEW = 28;
+
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2177,6 +2362,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW__CHILDREN = ViewPackage.OPERATION__CHILDREN;
+
     /**
      * The feature id for the '<em><b>Parent View Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2185,6 +2371,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW__PARENT_VIEW_EXPRESSION = ViewPackage.OPERATION_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Element Description</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2193,6 +2380,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW__ELEMENT_DESCRIPTION = ViewPackage.OPERATION_FEATURE_COUNT + 1;
+
     /**
      * The feature id for the '<em><b>Semantic Element Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2201,6 +2389,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION = ViewPackage.OPERATION_FEATURE_COUNT + 2;
+
     /**
      * The feature id for the '<em><b>Variable Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2208,6 +2397,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW__VARIABLE_NAME = ViewPackage.OPERATION_FEATURE_COUNT + 3;
+
     /**
      * The feature id for the '<em><b>Containment Kind</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2216,6 +2406,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW__CONTAINMENT_KIND = ViewPackage.OPERATION_FEATURE_COUNT + 4;
+
     /**
      * The number of structural features of the '<em>Create View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2224,6 +2415,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW_FEATURE_COUNT = ViewPackage.OPERATION_FEATURE_COUNT + 5;
+
     /**
      * The number of operations of the '<em>Create View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2231,6 +2423,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int CREATE_VIEW_OPERATION_COUNT = ViewPackage.OPERATION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DeleteViewImpl <em>Delete
      * View</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2240,6 +2433,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDeleteView()
      */
     int DELETE_VIEW = 29;
+
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2248,6 +2442,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_VIEW__CHILDREN = ViewPackage.OPERATION__CHILDREN;
+
     /**
      * The feature id for the '<em><b>View Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2255,6 +2450,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_VIEW__VIEW_EXPRESSION = ViewPackage.OPERATION_FEATURE_COUNT;
+
     /**
      * The number of structural features of the '<em>Delete View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2263,6 +2459,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_VIEW_FEATURE_COUNT = ViewPackage.OPERATION_FEATURE_COUNT + 1;
+
     /**
      * The number of operations of the '<em>Delete View</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2270,6 +2467,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_VIEW_OPERATION_COUNT = ViewPackage.OPERATION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDescriptionImpl
      * <em>Selection Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2279,6 +2477,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSelectionDescription()
      */
     int SELECTION_DESCRIPTION = 30;
+
     /**
      * The feature id for the '<em><b>Selection Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2287,6 +2486,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int SELECTION_DESCRIPTION__SELECTION_CANDIDATES_EXPRESSION = 0;
+
     /**
      * The feature id for the '<em><b>Selection Message</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2295,6 +2495,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int SELECTION_DESCRIPTION__SELECTION_MESSAGE = 1;
+
     /**
      * The number of structural features of the '<em>Selection Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2303,6 +2504,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int SELECTION_DESCRIPTION_FEATURE_COUNT = 2;
+
     /**
      * The number of operations of the '<em>Selection Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2311,6 +2513,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int SELECTION_DESCRIPTION_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl <em>Tool
      * Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2320,6 +2523,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getToolSection()
      */
     int TOOL_SECTION = 31;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2327,6 +2531,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL_SECTION__NAME = 0;
+
     /**
      * The number of structural features of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2335,6 +2540,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL_SECTION_FEATURE_COUNT = 1;
+
     /**
      * The number of operations of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2342,6 +2548,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TOOL_SECTION_OPERATION_COUNT = 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolSectionImpl
      * <em>Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2351,6 +2558,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramToolSection()
      */
     int DIAGRAM_TOOL_SECTION = 32;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2358,6 +2566,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2366,6 +2575,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_TOOL_SECTION__NODE_TOOLS = TOOL_SECTION_FEATURE_COUNT;
+
     /**
      * The number of structural features of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -2374,6 +2584,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 1;
+
     /**
      * The number of operations of the '<em>Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2381,6 +2592,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DIAGRAM_TOOL_SECTION_OPERATION_COUNT = TOOL_SECTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolSectionImpl <em>Node
      * Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2390,6 +2602,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeToolSection()
      */
     int NODE_TOOL_SECTION = 33;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2397,6 +2610,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2405,6 +2619,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL_SECTION__NODE_TOOLS = TOOL_SECTION_FEATURE_COUNT;
+
     /**
      * The feature id for the '<em><b>Edge Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2413,6 +2628,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL_SECTION__EDGE_TOOLS = TOOL_SECTION_FEATURE_COUNT + 1;
+
     /**
      * The number of structural features of the '<em>Node Tool Section</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2421,6 +2637,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 2;
+
     /**
      * The number of operations of the '<em>Node Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2428,6 +2645,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL_SECTION_OPERATION_COUNT = TOOL_SECTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeToolSectionImpl <em>Edge
      * Tool Section</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2437,6 +2655,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeToolSection()
      */
     int EDGE_TOOL_SECTION = 34;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2444,6 +2663,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL_SECTION__NAME = TOOL_SECTION__NAME;
+
     /**
      * The feature id for the '<em><b>Node Tools</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2452,6 +2672,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL_SECTION__NODE_TOOLS = TOOL_SECTION_FEATURE_COUNT;
+
     /**
      * The number of structural features of the '<em>Edge Tool Section</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2460,6 +2681,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL_SECTION_FEATURE_COUNT = TOOL_SECTION_FEATURE_COUNT + 1;
+
     /**
      * The number of operations of the '<em>Edge Tool Section</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2467,6 +2689,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL_SECTION_OPERATION_COUNT = TOOL_SECTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.DropNodeToolImpl <em>Drop Node
      * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2476,6 +2699,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDropNodeTool()
      */
     int DROP_NODE_TOOL = 35;
+
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -2483,6 +2707,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_NODE_TOOL__NAME = TOOL__NAME;
+
     /**
      * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2491,6 +2716,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_NODE_TOOL__PRECONDITION_EXPRESSION = TOOL__PRECONDITION_EXPRESSION;
+
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -2499,6 +2725,7 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_NODE_TOOL__BODY = TOOL__BODY;
+
     /**
      * The feature id for the '<em><b>Accepted Node Types</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -3066,6 +3293,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getListLayoutStrategyDescription()
      */
     EAttribute getListLayoutStrategyDescription_BottomGapExpression();
+
+    /**
+     * Returns the meta object for the reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription#getGrowableNodes <em>Growable
+     * Nodes</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference list '<em>Growable Nodes</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription#getGrowableNodes()
+     * @see #getListLayoutStrategyDescription()
+     */
+    EReference getListLayoutStrategyDescription_GrowableNodes();
 
     /**
      * Returns the meta object for class
@@ -4487,6 +4726,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION = eINSTANCE.getListLayoutStrategyDescription_BottomGapExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Growable Nodes</b></em>' reference list feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES = eINSTANCE.getListLayoutStrategyDescription_GrowableNodes();
 
         /**
          * The meta object literal for the

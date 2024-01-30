@@ -118,6 +118,8 @@
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bottomGapExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="growableNodes" upperBound="-1"
+        eType="#//NodeDescription"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FreeFormLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription"/>
   <eClassifiers xsi:type="ecore:EClass" name="Style" abstract="true">

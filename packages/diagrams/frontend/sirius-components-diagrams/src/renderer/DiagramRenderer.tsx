@@ -69,6 +69,7 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
+import { useResizeChange } from './resize/useResizeChange';
 
 const GRID_STEP: number = 10;
 
@@ -139,6 +140,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { updateSelectionOnNodesChange, updateSelectionOnEdgesChange } = useDiagramSelection();
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
+  const { transformResizeListNodeChanges } = useResizeChange();
   const { applyHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
@@ -156,6 +158,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         setNodes((oldNodes) => {
           let transformedNodeChanges = transformBorderNodeChanges(noReadOnlyChanges);
           transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
+          transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
 
           if (transformedNodeChanges.some((change) => change.type === 'position')) {
             hideDiagramElementPalette();

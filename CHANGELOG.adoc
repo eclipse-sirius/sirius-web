@@ -61,7 +61,7 @@ The EMF validation support will now be provided by `sirius-web-services`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3156[#3156] [core] In our GraphQL schema, `Viewer` is now a type instead of an interface.
 Having `Viewer` as a type did not bring any additional value and it created some overhead by having to create and keep updated an additional type without any benefit.
 - [sirius-web] The field `ChangeKind.PROJECT_RENAMING` has been deleted since it does not make any sense in Sirius Components.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2713[#2713] [diagram] Add the attribute `growableNodeIds` to graphql `ListLayoutStrategy`.
 
 === Dependency update
 
@@ -140,6 +140,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3079[#3079] [deck] Add a name attribute on CardDescription and LaneDescription
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [sirius-web] Improve the new architecture to let product builders reuse Sirius Web
 - https://github.com/eclipse-sirius/sirius-web/issues/3141[#3141] [portal] Make the header of embedded representations sticky so that it (and its icon) are always visible.
+- https://github.com/eclipse-sirius/sirius-web/issues/2713[#2713] [diagram] Enhances resize support for list nodes
 
 == v2024.1.0
 

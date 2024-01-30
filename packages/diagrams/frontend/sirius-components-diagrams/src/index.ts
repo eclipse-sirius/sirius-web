@@ -16,7 +16,7 @@ export type { DiagramContextValue } from './contexts/DiagramContext.types';
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
 export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
-export { convertLineStyle } from './converter/convertDiagram';
+export { convertLineStyle, isListLayoutStrategy } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export { convertHandles } from './converter/convertHandles';
 export { convertLabelStyle, convertOutsideLabels } from './converter/convertLabel';
@@ -39,6 +39,7 @@ export { ConnectionTargetHandle } from './renderer/handles/ConnectionTargetHandl
 export { useRefreshConnectionHandles } from './renderer/handles/useRefreshConnectionHandles';
 export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/LayoutEngine.types';
 export { computePreviousPosition, computePreviousSize } from './renderer/layout/bounds';
+export type { ForcedDimensions } from './renderer/layout/layout.types';
 export * from './renderer/layout/layoutBorderNodes';
 export * from './renderer/layout/layoutNode';
 export { useLayout } from './renderer/layout/useLayout';

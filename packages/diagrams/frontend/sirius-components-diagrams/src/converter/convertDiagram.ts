@@ -15,7 +15,13 @@ import { Edge, Node } from 'reactflow';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagram } from '../graphql/subscription/diagramFragment.types';
 import { GQLLabel } from '../graphql/subscription/labelFragment.types';
-import { GQLNode, GQLNodeStyle, GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
+import {
+  GQLNode,
+  GQLNodeStyle,
+  GQLViewModifier,
+  ILayoutStrategy,
+  ListLayoutStrategy,
+} from '../graphql/subscription/nodeFragment.types';
 import { Diagram, EdgeLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { RawDiagram } from '../renderer/layout/layout.types';
@@ -68,6 +74,9 @@ export const convertLineStyle = (lineStyle: string): string => {
   }
   return 'solid';
 };
+
+export const isListLayoutStrategy = (strategy: ILayoutStrategy | undefined): strategy is ListLayoutStrategy =>
+  strategy?.kind === 'List';
 
 const defaultNodeConverters: INodeConverter[] = [
   new RectangleNodeConverter(),

@@ -14,9 +14,7 @@
 import { ServerContext, ServerContextValue, getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer } from 'reactflow';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { NodeProps } from 'reactflow';
 import { BorderNodePosition } from '../DiagramRenderer.types';
 import { Label } from '../Label';
 import { useConnector } from '../connector/useConnector';
@@ -30,6 +28,7 @@ import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { NodeContext } from './NodeContext';
 import { NodeContextValue } from './NodeContext.types';
+import { Resizer } from './Resizer';
 
 const freeFormNodeStyle = (
   theme: Theme,
@@ -75,20 +74,7 @@ const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
   return undefined;
 };
 
-const resizeLineStyle = (theme: Theme): React.CSSProperties => {
-  return { borderWidth: theme.spacing(0.15) };
-};
-
-const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
-  return {
-    width: theme.spacing(1),
-    height: theme.spacing(1),
-    borderRadius: '100%',
-  };
-};
-
 export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNodeData>) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const theme = useTheme();
@@ -110,16 +96,7 @@ export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNode
 
   return (
     <>
-      {data.nodeDescription.userResizable && !readOnly ? (
-        <NodeResizer
-          handleStyle={{ ...resizeHandleStyle(theme) }}
-          lineStyle={{ ...resizeLineStyle(theme) }}
-          color={theme.palette.selected}
-          isVisible={selected}
-          shouldResize={() => !data.isBorderNode}
-          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-        />
-      ) : null}
+      <Resizer data={data} selected={selected} />
       <div
         style={{
           ...freeFormNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded, rotation, imageURL),

@@ -13,6 +13,7 @@
 import {
   Diagram,
   DiagramNodeType,
+  ForcedDimensions,
   ILayoutEngine,
   INodeLayoutHandler,
   NodeData,
@@ -46,7 +47,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
@@ -131,7 +132,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
 
-    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node); // WARN: not sure yet for the forceWidth to be here.
+    const nodeWith = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);

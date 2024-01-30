@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.annotations.Immutable;
 
 /**
@@ -28,6 +31,8 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
     private int topGap;
 
     private int bottomGap;
+
+    private List<String> growableNodeIds;
 
     private ListLayoutStrategy() {
         // Prevent instantiation
@@ -54,6 +59,10 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
         return this.bottomGap;
     }
 
+    public List<String> getGrowableNodeIds() {
+        return this.growableNodeIds;
+    }
+
     /**
      * The builder used to create a listLayoutStrategy.
      *
@@ -67,6 +76,8 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
         private int topGap;
 
         private int bottomGap;
+
+        private List<String> growableNodeIds = List.of();
 
         private Builder() {
             // Prevent instantiation
@@ -87,11 +98,17 @@ public final class ListLayoutStrategy implements ILayoutStrategy {
             return this;
         }
 
+        public Builder growableNodeIds(List<String> growableNodeIds) {
+            this.growableNodeIds = growableNodeIds;
+            return this;
+        }
+
         public ListLayoutStrategy build() {
             ListLayoutStrategy listLayoutStrategy = new ListLayoutStrategy();
             listLayoutStrategy.areChildNodesDraggable = this.areChildNodesDraggable;
             listLayoutStrategy.topGap = this.topGap;
             listLayoutStrategy.bottomGap = this.bottomGap;
+            listLayoutStrategy.growableNodeIds = Objects.requireNonNull(this.growableNodeIds);
             return listLayoutStrategy;
         }
     }

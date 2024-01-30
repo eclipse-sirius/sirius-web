@@ -64,6 +64,7 @@ fragment nodeFragment on Node {
       areChildNodesDraggable
       topGap
       bottomGap
+      growableNodeIds
     }
     ... on FreeFormLayoutStrategy {
       kind

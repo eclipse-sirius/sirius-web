@@ -19,3 +19,8 @@ export interface RawDiagram {
 
   edges: Edge<EdgeData>[];
 }
+
+export interface ForcedDimensions {
+  width: number | null;
+  height: number | null;
+}

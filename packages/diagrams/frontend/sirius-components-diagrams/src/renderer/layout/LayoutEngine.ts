@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node } from 'reactflow';
+import { Dimensions, Node } from 'reactflow';
 import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { FreeFormNodeLayoutHandler } from './FreeFormNodeLayoutHandler';
@@ -32,7 +32,7 @@ export class LayoutEngine implements ILayoutEngine {
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     nodesToLayout: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceDimensions?: Dimensions
   ) {
     nodesToLayout.forEach((node) => {
       const nodeLayoutHandler: INodeLayoutHandler<NodeData> | undefined = this.nodeLayoutHandlers.find((handler) =>
@@ -40,7 +40,15 @@ export class LayoutEngine implements ILayoutEngine {
       );
       if (nodeLayoutHandler) {
         const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentNode === node.id);
-        nodeLayoutHandler.handle(this, previousDiagram, node, visibleNodes, directChildren, newlyAddedNode, forceWidth);
+        nodeLayoutHandler.handle(
+          this,
+          previousDiagram,
+          node,
+          visibleNodes,
+          directChildren,
+          newlyAddedNode,
+          forceDimensions
+        );
 
         node.style = {
           ...node.style,
