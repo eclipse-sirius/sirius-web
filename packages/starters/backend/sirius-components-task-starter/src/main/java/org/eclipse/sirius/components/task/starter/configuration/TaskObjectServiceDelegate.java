@@ -47,7 +47,7 @@ public class TaskObjectServiceDelegate extends DefaultObjectService implements I
 
     @Override
     public boolean canHandle(IEditingContext editingContext) {
-        return true;
+        return false;
     }
 
     @Override
