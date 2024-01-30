@@ -13,6 +13,7 @@
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
@@ -50,43 +51,43 @@ export const PortalToolbar = ({
     <>
       <Paper data-testid="portal-toolbar">
         {fullscreen ? (
-          <IconButton
-            size="small"
-            aria-label="exit full screen mode"
-            title="Exit full screen mode"
-            onClick={() => setFullscreen(false)}>
-            <FullscreenExitIcon />
-          </IconButton>
+          <Tooltip title="Exit full screen mode">
+            <IconButton size="small" aria-label="exit full screen mode" onClick={() => setFullscreen(false)}>
+              <FullscreenExitIcon />
+            </IconButton>
+          </Tooltip>
         ) : (
+          <Tooltip title="Toggle full screen mode">
+            <IconButton size="small" aria-label="toggle full screen mode" onClick={() => setFullscreen(true)}>
+              <FullscreenIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        <Tooltip title="Share portal">
+          <IconButton size="small" aria-label="share portal" onClick={onShare} data-testid="share">
+            <ShareIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Edit portal configuration">
           <IconButton
             size="small"
-            aria-label="toggle full screen mode"
-            title="Toggle full screen mode"
-            onClick={() => setFullscreen(true)}>
-            <FullscreenIcon />
+            aria-label="edit portal configuration"
+            disabled={portalMode === 'edit' || portalMode === 'read-only'}
+            onClick={() => setPortalMode('edit')}
+            data-testid="portal-edit-portal-mode">
+            <EditIcon />
           </IconButton>
-        )}
-        <IconButton size="small" aria-label="share portal" title="Share portal" onClick={onShare} data-testid="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          aria-label="edit portal configuration"
-          title="Edit portal configuration"
-          disabled={portalMode === 'edit' || portalMode === 'read-only'}
-          onClick={() => setPortalMode('edit')}
-          data-testid="portal-edit-portal-mode">
-          <EditIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          aria-label="edit representations"
-          title="Edit representations"
-          disabled={portalMode === 'direct' || portalMode === 'read-only'}
-          onClick={() => setPortalMode('direct')}
-          data-testid="portal-edit-representations-mode">
-          <PanToolIcon />
-        </IconButton>
+        </Tooltip>
+        <Tooltip title="Edit representations">
+          <IconButton
+            size="small"
+            aria-label="edit representations"
+            disabled={portalMode === 'direct' || portalMode === 'read-only'}
+            onClick={() => setPortalMode('direct')}
+            data-testid="portal-edit-representations-mode">
+            <PanToolIcon />
+          </IconButton>
+        </Tooltip>
       </Paper>
       {modalElement}
     </>

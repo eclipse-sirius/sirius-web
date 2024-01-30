@@ -103,6 +103,7 @@ In read-only mode, the palette can not be displayed, some of the panel action ar
 - https://github.com/eclipse-sirius/sirius-web/issues/3021[#3021] [sirius-web] Leverage the new Spring Boot APIs to create the sirius-web-starter autoconfiguration
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Simplify the contribution of views in the workbench
 - https://github.com/eclipse-sirius/sirius-web/issues/3066[#3066] [core] The core object-related services now can also find/resolve representations.
+- [portal] Use MUI tooltips for Portal toolbar elements
 
 == v2024.1.0
 
