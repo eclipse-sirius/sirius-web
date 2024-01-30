@@ -28,6 +28,7 @@ import {
   convertLabelStyle,
   convertLineStyle,
   convertOutsideLabels,
+  isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
@@ -88,6 +89,7 @@ const toEllipseNode = (
     labelEditable,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
   if (insideLabel) {

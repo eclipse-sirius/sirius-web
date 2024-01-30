@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram;
 
+import org.eclipse.emf.common.util.EList;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>List Layout Strategy Description</b></em>'. <!--
  * end-user-doc -->
@@ -26,6 +28,8 @@ package org.eclipse.sirius.components.view.diagram;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription#getBottomGapExpression <em>Bottom
  * Gap Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription#getGrowableNodes <em>Growable
+ * Nodes</em>}</li>
  * </ul>
  *
  * @model
@@ -105,4 +109,15 @@ public interface ListLayoutStrategyDescription extends LayoutStrategyDescription
      * @see #getBottomGapExpression()
      */
     void setBottomGapExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Growable Nodes</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Growable Nodes</em>' reference list.
+     * @model
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getListLayoutStrategyDescription_GrowableNodes()
+     */
+    EList<NodeDescription> getGrowableNodes();
 } // ListLayoutStrategyDescription

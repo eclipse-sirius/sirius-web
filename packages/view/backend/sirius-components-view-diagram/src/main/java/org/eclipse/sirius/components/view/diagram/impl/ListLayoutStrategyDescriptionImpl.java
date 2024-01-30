@@ -12,12 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>List Layout Strategy Description</b></em>'.
@@ -32,6 +37,8 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
  * <em>Top Gap Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getBottomGapExpression
  * <em>Bottom Gap Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ListLayoutStrategyDescriptionImpl#getGrowableNodes
+ * <em>Growable Nodes</em>}</li>
  * </ul>
  *
  * @generated
@@ -92,6 +99,16 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      * @see #getBottomGapExpression()
      */
     protected String bottomGapExpression = BOTTOM_GAP_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getGrowableNodes() <em>Growable Nodes</em>}' reference list. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getGrowableNodes()
+     */
+    protected EList<NodeDescription> growableNodes;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -188,6 +205,19 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      * @generated
      */
     @Override
+    public EList<NodeDescription> getGrowableNodes() {
+        if (this.growableNodes == null) {
+            this.growableNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES);
+        }
+        return this.growableNodes;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
@@ -196,6 +226,8 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
                 return this.getTopGapExpression();
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION:
                 return this.getBottomGapExpression();
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES:
+                return this.getGrowableNodes();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -205,6 +237,7 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -216,6 +249,10 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
                 return;
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION:
                 this.setBottomGapExpression((String) newValue);
+                return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES:
+                this.getGrowableNodes().clear();
+                this.getGrowableNodes().addAll((Collection<? extends NodeDescription>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -238,6 +275,9 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION:
                 this.setBottomGapExpression(BOTTOM_GAP_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES:
+                this.getGrowableNodes().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -257,6 +297,8 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
                 return TOP_GAP_EXPRESSION_EDEFAULT == null ? this.topGapExpression != null : !TOP_GAP_EXPRESSION_EDEFAULT.equals(this.topGapExpression);
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION:
                 return BOTTOM_GAP_EXPRESSION_EDEFAULT == null ? this.bottomGapExpression != null : !BOTTOM_GAP_EXPRESSION_EDEFAULT.equals(this.bottomGapExpression);
+            case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES:
+                return this.growableNodes != null && !this.growableNodes.isEmpty();
         }
         return super.eIsSet(featureID);
     }

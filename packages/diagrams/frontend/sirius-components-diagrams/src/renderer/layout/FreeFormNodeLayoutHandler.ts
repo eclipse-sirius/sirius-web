@@ -17,7 +17,7 @@ import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition, computePreviousSize } from './bounds';
-import { RawDiagram } from './layout.types';
+import { RawDiagram, ForcedDimensions } from './layout.types';
 import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
@@ -47,7 +47,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-freeFormNode-${nodeIndex}`)?.children[0];
@@ -62,10 +62,10 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
         directChildren,
         newlyAddedNode,
         borderWidth,
-        forceWidth
+        forceDimensions
       );
     } else {
-      this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceWidth);
+      this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceDimensions);
     }
   }
 
@@ -77,7 +77,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     borderWidth: number,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
@@ -167,8 +167,8 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
 
-    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node); // WARN: not sure yet for the forceWidth to be here.
-    const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
+    const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
@@ -184,7 +184,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = nodeWith;
+      node.width = nodeWidth;
       node.height = nodeHeight;
     }
 
@@ -204,7 +204,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     node: Node<FreeFormNodeData, 'freeFormNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
@@ -217,8 +217,8 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     const nodeMinComputeHeight =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
 
-    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
+    const nodeWith = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);

@@ -23,6 +23,7 @@ import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
+import { isListLayoutStrategy } from './convertDiagram';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -81,6 +82,7 @@ const toImageNode = (
     connectionHandles,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
   if (insideLabel) {

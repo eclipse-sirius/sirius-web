@@ -291,7 +291,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private  ILayoutStrategy getiLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Result resultAreChildNodesDraggable = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getAreChildNodesDraggableExpression());
         var builder = ListLayoutStrategy.newListLayoutStrategy()
-                .areChildNodesDraggable(resultAreChildNodesDraggable.asBoolean().orElse(true));
+                .areChildNodesDraggable(resultAreChildNodesDraggable.asBoolean().orElse(true))
+                .growableNodeIds(listLayoutStrategyDescription.getGrowableNodes().stream().map(this.diagramIdProvider::getId).toList());
         if (listLayoutStrategyDescription.getBottomGapExpression() != null && !listLayoutStrategyDescription.getBottomGapExpression().isBlank()) {
             Result resultBottomGap = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getBottomGapExpression());
             builder.bottomGap(resultBottomGap.asInt().orElse(0));

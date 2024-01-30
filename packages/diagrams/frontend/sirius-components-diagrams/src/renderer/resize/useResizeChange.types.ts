@@ -10,12 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { NodeChange } from 'reactflow';
 
-import { NodeData } from '../DiagramRenderer.types';
-
-export interface ListNodeData extends NodeData {
-  areChildNodesDraggable: boolean;
-  topGap: number;
-  bottomGap: number;
-  growableNodeIds: string[];
+export interface UseResizeChangeValue {
+  transformResizeListNodeChanges: (changes: NodeChange[]) => NodeChange[];
 }

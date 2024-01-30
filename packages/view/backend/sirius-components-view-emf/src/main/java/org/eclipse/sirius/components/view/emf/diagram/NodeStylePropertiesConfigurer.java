@@ -23,7 +23,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -55,6 +57,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
@@ -94,6 +98,54 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         registry.add(this.getRectangularNodeStyleProperties());
         registry.add(this.getIconLabelNodeStyleProperties());
         registry.add(this.getImageNodeStyleProperties());
+        registry.add(this.getListLayoutStrategyProperties());
+    }
+
+    private PageDescription getListLayoutStrategyProperties() {
+        String id = UUID.nameUUIDFromBytes("listLayoutStrategy".getBytes()).toString();
+
+        List<AbstractControlDescription> controls = new ArrayList<>();
+        var areChildNodesDraggableExpression = this.propertiesWidgetCreationService.createExpressionField("listLayoutStrategy.areChildNodesDraggableExpression",
+                "Are Child Nodes Draggable Expression",
+                desc -> String.valueOf(((ListLayoutStrategyDescription) desc).getAreChildNodesDraggableExpression()),
+                (desc, newValue) -> ((ListLayoutStrategyDescription) desc).setAreChildNodesDraggableExpression(newValue),
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION);
+        controls.add(areChildNodesDraggableExpression);
+        var topGapExpression = this.propertiesWidgetCreationService.createExpressionField("listLayoutStrategy.topGapExpression",
+                "Top Gap Expression",
+                desc -> String.valueOf(((ListLayoutStrategyDescription) desc).getTopGapExpression()),
+                (desc, newValue) -> ((ListLayoutStrategyDescription) desc).setTopGapExpression(newValue),
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION);
+        controls.add(topGapExpression);
+        var bottomGapExpression = this.propertiesWidgetCreationService.createExpressionField("listLayoutStrategy.bottomGapExpression",
+                "Bottom Gap Expression",
+                desc -> String.valueOf(((ListLayoutStrategyDescription) desc).getBottomGapExpression()),
+                (desc, newValue) -> ((ListLayoutStrategyDescription) desc).setBottomGapExpression(newValue),
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION);
+        controls.add(bottomGapExpression);
+
+        var growableNodes = this.propertiesWidgetCreationService.createReferenceWidget("listLayoutStrategy.growableNodes",
+                "Growable Nodes",
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES,
+                this::getSubNodes);
+        controls.add(growableNodes);
+
+        GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
+
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .filter(ListLayoutStrategyDescription.class::isInstance)
+                .isPresent();
+
+        return this.propertiesWidgetCreationService.createSimplePageDescription(id, groupDescription, canCreatePagePredicate);
+    }
+
+    private List<NodeDescription> getSubNodes(VariableManager variableManager) {
+        return variableManager.get("self", ListLayoutStrategyDescription.class)
+                .map(EObject::eContainer)
+                .filter(NodeDescription.class::isInstance)
+                .map(NodeDescription.class::cast)
+                .map(NodeDescription::getChildrenDescriptions)
+                .orElseGet(BasicEList::new);
     }
 
     private PageDescription getImageNodeStyleProperties() {

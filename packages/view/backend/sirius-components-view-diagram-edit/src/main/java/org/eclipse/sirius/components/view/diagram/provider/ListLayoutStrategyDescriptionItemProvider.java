@@ -64,6 +64,7 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
             this.addAreChildNodesDraggableExpressionPropertyDescriptor(object);
             this.addTopGapExpressionPropertyDescriptor(object);
             this.addBottomGapExpressionPropertyDescriptor(object);
+            this.addGrowableNodesPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -104,6 +105,18 @@ public class ListLayoutStrategyDescriptionItemProvider extends ItemProviderAdapt
                 this.getString("_UI_ListLayoutStrategyDescription_bottomGapExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_ListLayoutStrategyDescription_bottomGapExpression_feature", "_UI_ListLayoutStrategyDescription_type"),
                 DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Growable Nodes feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addGrowableNodesPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_ListLayoutStrategyDescription_growableNodes_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ListLayoutStrategyDescription_growableNodes_feature", "_UI_ListLayoutStrategyDescription_type"),
+                DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES, true, false, true, null, null, null));
     }
 
     /**

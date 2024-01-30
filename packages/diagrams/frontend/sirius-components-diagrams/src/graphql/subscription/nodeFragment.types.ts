@@ -44,6 +44,7 @@ export interface ListLayoutStrategy extends ILayoutStrategy {
   areChildNodesDraggable: boolean;
   topGap: number;
   bottomGap: number;
+  growableNodeIds: string[];
 }
 
 export interface FreeFormLayoutStrategy extends ILayoutStrategy {

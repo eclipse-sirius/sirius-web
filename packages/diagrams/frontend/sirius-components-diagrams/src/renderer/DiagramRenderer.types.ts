@@ -64,6 +64,7 @@ export interface NodeData {
   connectionHandles: ConnectionHandle[];
   isNew: boolean;
   resizedByUser: boolean;
+  isListChild: boolean;
 }
 
 export enum BorderNodePosition {

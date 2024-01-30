@@ -75,6 +75,18 @@ public class ListLayoutStrategyDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for GrowableNodes.
+     *
+     * @generated
+     */
+    public ListLayoutStrategyDescriptionBuilder growableNodes(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
+            this.getListLayoutStrategyDescription().getGrowableNodes().add(value);
+        }
+        return this;
+    }
+
 
 }
 

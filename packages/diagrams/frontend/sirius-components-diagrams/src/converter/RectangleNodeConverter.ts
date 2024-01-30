@@ -25,7 +25,7 @@ import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
-import { convertLineStyle } from './convertDiagram';
+import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
 import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
@@ -89,6 +89,7 @@ const toRectangularNode = (
     connectionHandles,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
   if (insideLabel) {

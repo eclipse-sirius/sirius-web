@@ -90,6 +90,7 @@ type ListLayoutStrategy {
   areChildNodesDraggable: Boolean!
   topGap: Int!
   bottomGap: Int!
+  growableNodeIds: [ID!]!
 }
 
 union ILayoutStrategy = FreeFormLayoutStrategy | ListLayoutStrategy
