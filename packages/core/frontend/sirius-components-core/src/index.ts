@@ -23,6 +23,8 @@ export * from './icon/IconOverlay';
 export * from './materialui';
 export * from './modals/share-representation/ShareRepresentationModal';
 export * from './modals/share-representation/ShareRepresentationModal.types';
+export * from './monitoring/MonitoringContext';
+export * from './monitoring/useMonitoring';
 export * from './selection/SelectionContext';
 export * from './selection/SelectionContext.types';
 export * from './selection/useSelection';

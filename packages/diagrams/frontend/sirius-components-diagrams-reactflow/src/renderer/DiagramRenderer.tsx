@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, useMonitoring, useSelection } from '@eclipse-sirius/sirius-components-core';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import {
   Background,
@@ -70,6 +70,7 @@ import 'reactflow/dist/style.css';
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
+  const { startSpan, addMeasurement, endMeasurement } = useMonitoring();
   const { diagramDescription } = useDiagramDescription();
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
@@ -100,8 +101,14 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { setSelection } = useSelection();
 
   useEffect(() => {
+    startSpan('DiagramRepresentation');
+  }, []);
+
+  useEffect(() => {
     const { diagram, cause } = diagramRefreshedEventPayload;
     const convertedDiagram: Diagram = convertDiagram(diagram, nodeConverters, diagramDescription);
+
+    const measureIndex = addMeasurement('diagram_refresh_event_payload', diagramRefreshedEventPayload.id);
 
     const selectedNodeIds = nodes.filter((node) => node.selected).map((node) => node.id);
     if (cause === 'layout') {
@@ -112,6 +119,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       setNodes(convertedDiagram.nodes);
       setEdges(convertedDiagram.edges);
       fitToScreen();
+      endMeasurement(measureIndex, '-layout');
     } else if (cause === 'refresh') {
       const previousDiagram: RawDiagram = {
         nodes: nodes as Node<NodeData, DiagramNodeType>[],
@@ -128,6 +136,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         hideDiagramElementPalette();
 
         synchronizeLayoutData(diagramRefreshedEventPayload.id, laidOutDiagram);
+        endMeasurement(measureIndex, '-refresh');
       });
     }
   }, [diagramRefreshedEventPayload, diagramDescription]);
