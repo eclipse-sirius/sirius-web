@@ -12,6 +12,7 @@
 - [ADR-126] Add the ability to reuse both the Sirius Web frontend and backend easily
 - [ADR-127] Add the ability to extend the Sirius Web frontend
 - [ADR-128] Add the ability to extend the Sirius Web backend
+- [ADR-129] Add support for confirmation dialogs
 
 === Breaking changes
 
