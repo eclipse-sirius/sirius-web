@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,7 +106,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
                             .selection(List.of())
                             .build();
 
-                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, this.widgetDescriptors,
+                    IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors,
                             this.formEventHandlers),
                             this.subscriptionManagerFactory.create(), this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry,
                             this.formPostProcessor);

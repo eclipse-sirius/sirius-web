@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.representations.Representatio
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.junit.jupiter.api.Test;
@@ -78,7 +79,7 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, List.of(), List.of()),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
                 new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
 
@@ -104,7 +105,7 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, List.of(), List.of()),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
                 new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
 
@@ -134,7 +135,7 @@ public class FormEventProcessorTests {
                 .build();
         // @formatter:on
 
-        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, List.of(), List.of()),
+        FormEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, new IObjectService.NoOp(), formCreationParameters, List.of(), List.of()),
                 new SubscriptionManager(), new WidgetSubscriptionManager(),
                 new RepresentationRefreshPolicyRegistry(), new IFormPostProcessor.NoOp());
 
