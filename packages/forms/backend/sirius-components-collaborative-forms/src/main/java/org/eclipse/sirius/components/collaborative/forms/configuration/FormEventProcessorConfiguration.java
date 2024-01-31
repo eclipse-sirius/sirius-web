@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.FormCreationParamet
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventProcessor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 
 /**
@@ -26,7 +27,7 @@ import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
  *
  * @author frouene
  */
-public record FormEventProcessorConfiguration(IEditingContext editingContext, FormCreationParameters formCreationParameters, List<IWidgetDescriptor> widgetDescriptors,
-                                              List<IFormEventHandler> formEventHandlers) {
+public record FormEventProcessorConfiguration(IEditingContext editingContext, IObjectService objectService, FormCreationParameters formCreationParameters,
+                                              List<IWidgetDescriptor> widgetDescriptors, List<IFormEventHandler> formEventHandlers) {
 
 }

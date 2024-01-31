@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.collaborative.forms.dto.UpdateWidgetFocusSu
 import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.forms.Form;
@@ -70,6 +71,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final IEditingContext editingContext;
 
+    private final IObjectService objectService;
+
     private final FormCreationParameters formCreationParameters;
 
     private final List<IWidgetDescriptor> widgetDescriptors;
@@ -92,8 +95,8 @@ public class FormEventProcessor implements IFormEventProcessor {
             ISubscriptionManager subscriptionManager, IWidgetSubscriptionManager widgetSubscriptionManager,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, IFormPostProcessor formPostProcessor) {
         this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
-
         this.editingContext = Objects.requireNonNull(configuration.editingContext());
+        this.objectService = Objects.requireNonNull(configuration.objectService());
         this.formCreationParameters = Objects.requireNonNull(configuration.formCreationParameters());
         this.widgetDescriptors = Objects.requireNonNull(configuration.widgetDescriptors());
         this.formEventHandlers = Objects.requireNonNull(configuration.formEventHandlers());
@@ -174,7 +177,11 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private Form refreshForm() {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, this.formCreationParameters.getObject());
+        var self = this.formCreationParameters.getObject();
+        if (this.currentForm.get() != null) {
+            self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
+        }
+        variableManager.put(VariableManager.SELF, self);
         variableManager.put(FormVariableProvider.SELECTION.name(), this.formCreationParameters.getSelection());
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.formCreationParameters.getEditingContext());

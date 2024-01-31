@@ -38,6 +38,7 @@ As a result, all the APIs relying on this code have been deleted too such as the
 - https://github.com/eclipse-sirius/sirius-web/issues/3004[#3004] [deck] Fix some of the console errors
 - https://github.com/eclipse-sirius/sirius-web/issues/2799[#2799] [diagram] Remove the unwanted space between the header and first element in list node
 - https://github.com/eclipse-sirius/sirius-web/issues/2822[#2822] [diagram] Prevent direct edit to be triggered on edge if there is no edit label tool corresponding
+- https://github.com/eclipse-sirius/sirius-web/issues/3061[#3061] [form] Ensure Forms are always refreshed using the _current_ version of their target element
 
 === New Features
 
@@ -52,7 +53,6 @@ Its body operations are now bind on set/add instead of click.
 - https://github.com/eclipse-sirius/sirius-web/issues/2988[#2988] [diagram] Fix an issue with ReactFlow OnNodesChange event that were slowing down the application.
 - https://github.com/eclipse-sirius/sirius-web/issues/2978[#2978] [diagram] Fix issues with ReactFlow edge and drag events that were slowing down the application.
 - https://github.com/eclipse-sirius/sirius-web/issues/3000[#3000] [portal] Portals which already contain representation now open in "direct" mode.
-
 - https://github.com/eclipse-sirius/sirius-web/issues/2875[#2875] [forms] Make the Representations view a plain FormBasedView
 
 == v2024.1.0

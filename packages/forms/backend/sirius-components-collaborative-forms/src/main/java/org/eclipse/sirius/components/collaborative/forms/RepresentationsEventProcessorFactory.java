@@ -95,7 +95,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
                         .selection(objects)
                         .build();
 
-                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, formCreationParameters, this.widgetDescriptors,
+                IRepresentationEventProcessor formEventProcessor = new FormEventProcessor(new FormEventProcessorConfiguration(editingContext, this.objectService, formCreationParameters, this.widgetDescriptors,
                         this.formEventHandlers), this.subscriptionManagerFactory.create(),
                         this.widgetSubscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry, this.formPostProcessor);
 
