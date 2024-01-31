@@ -60,7 +60,8 @@ public class DeckElementFactory implements IElementFactory {
                 .filter(Card.class::isInstance)//
                 .map(Card.class::cast)//
                 .toList();
-        return new Lane(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), cards);
+        return new Lane(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.collapsible(),
+                props.collapsed(), cards);
     }
 
     private Card instantiateCard(CardElementProps props, List<Object> children) {

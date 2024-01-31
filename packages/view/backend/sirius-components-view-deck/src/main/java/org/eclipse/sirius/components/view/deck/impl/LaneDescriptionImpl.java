@@ -152,6 +152,26 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
     protected CardDropTool cardDropTool;
 
     /**
+     * The default value of the '{@link #getIsCollapsibleExpression() <em>Is Collapsible Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIsCollapsibleExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String IS_COLLAPSIBLE_EXPRESSION_EDEFAULT = "aql:true";
+
+    /**
+     * The cached value of the '{@link #getIsCollapsibleExpression() <em>Is Collapsible Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getIsCollapsibleExpression()
+     * @generated
+     * @ordered
+     */
+    protected String isCollapsibleExpression = IS_COLLAPSIBLE_EXPRESSION_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -403,6 +423,29 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @generated
      */
     @Override
+    public String getIsCollapsibleExpression() {
+        return this.isCollapsibleExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIsCollapsibleExpression(String newIsCollapsibleExpression) {
+        String oldIsCollapsibleExpression = this.isCollapsibleExpression;
+        this.isCollapsibleExpression = newIsCollapsibleExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION, oldIsCollapsibleExpression, this.isCollapsibleExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:
@@ -439,6 +482,8 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.getCreateTool();
             case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
                 return this.getCardDropTool();
+            case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
+                return this.getIsCollapsibleExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -474,6 +519,9 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
             case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
                 this.setCardDropTool((CardDropTool) newValue);
                 return;
+            case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
+                this.setIsCollapsibleExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -507,6 +555,9 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
             case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
                 this.setCardDropTool((CardDropTool) null);
                 return;
+            case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
+                this.setIsCollapsibleExpression(IS_COLLAPSIBLE_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -533,6 +584,8 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return this.createTool != null;
             case DeckPackage.LANE_DESCRIPTION__CARD_DROP_TOOL:
                 return this.cardDropTool != null;
+            case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
+                return IS_COLLAPSIBLE_EXPRESSION_EDEFAULT == null ? this.isCollapsibleExpression != null : !IS_COLLAPSIBLE_EXPRESSION_EDEFAULT.equals(this.isCollapsibleExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -554,6 +607,8 @@ public class LaneDescriptionImpl extends MinimalEObjectImpl.Container implements
         result.append(this.titleExpression);
         result.append(", labelExpression: ");
         result.append(this.labelExpression);
+        result.append(", isCollapsibleExpression: ");
+        result.append(this.isCollapsibleExpression);
         result.append(')');
         return result.toString();
     }

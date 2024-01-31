@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,13 @@ package org.eclipse.sirius.components.deck.renderer.component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.deck.Lane;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
 import org.eclipse.sirius.components.deck.renderer.elements.LaneElementProps;
+import org.eclipse.sirius.components.deck.renderer.events.ChangeLaneCollapseStateDeckEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -59,25 +62,42 @@ public class LaneComponent implements IComponent {
     private Element doRender(VariableManager childVariableManager) {
 
         LaneDescription laneDescription = this.props.laneDescription();
-        String laneId = UUID.randomUUID().toString();
-        List<Element> childrenElements = this.getChildren(childVariableManager, laneDescription, laneId);
         String targetObjectId = laneDescription.targetObjectIdProvider().apply(childVariableManager);
         String targetObjectKind = laneDescription.targetObjectKindProvider().apply(childVariableManager);
         String targetObjectLabel = laneDescription.targetObjectLabelProvider().apply(childVariableManager);
         String title = laneDescription.titleProvider().apply(childVariableManager);
         String label = laneDescription.labelProvider().apply(childVariableManager);
 
-        LaneElementProps laneElementProps = new LaneElementProps(laneId, laneDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, title, label, childrenElements);
+        Optional<Lane> optionalPreviousLane = this.props.previousLanes().stream().filter(lane -> lane.targetObjectId().equals(targetObjectId)).findFirst();
+        String laneId = optionalPreviousLane.map(Lane::id).orElse(UUID.randomUUID().toString());
+        List<Element> childrenElements = this.getChildren(childVariableManager, laneDescription, laneId);
+
+        boolean collapsible = laneDescription.collapsibleProvider().apply(childVariableManager);
+
+        boolean collapsed = this.computeCollapsed(optionalPreviousLane);
+        LaneElementProps laneElementProps = new LaneElementProps(laneId, laneDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, title, label, collapsible, collapsed,
+                childrenElements);
         return new Element(LaneElementProps.TYPE, laneElementProps);
     }
 
+    private boolean computeCollapsed(Optional<Lane> optionalPreviousLane) {
+        if (optionalPreviousLane.isPresent()) {
+            return this.props.optionalDeckEvent()
+                    .filter(ChangeLaneCollapseStateDeckEvent.class::isInstance)
+                    .map(ChangeLaneCollapseStateDeckEvent.class::cast)
+                    .filter(event -> event.laneId().equals(optionalPreviousLane.get().id()))
+                    .map(ChangeLaneCollapseStateDeckEvent::collapsed)
+                    .orElse(optionalPreviousLane.get().collapsed());
+        }
+        return false;
+    }
+
     private List<Element> getChildren(VariableManager variableManager, LaneDescription laneDescription, String laneId) {
-        return laneDescription.cardDescriptions()//
-                .stream()//
+        return laneDescription.cardDescriptions().stream()
                 .map(cardDescription -> {
                     CardComponentProps cardComponentProps = new CardComponentProps(variableManager, cardDescription, laneId);
                     return new Element(CardComponent.class, cardComponentProps);
-                })//
+                })
                 .toList();
 
     }

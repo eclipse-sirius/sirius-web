@@ -25,7 +25,7 @@ public class ListLayoutStrategyDescriptionBuilder {
      *
      * @generated
      */
-    private final org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription listLayoutStrategyDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+    private org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription listLayoutStrategyDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription.

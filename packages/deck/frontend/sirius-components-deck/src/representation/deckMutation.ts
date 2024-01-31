@@ -131,3 +131,23 @@ export const dropDeckLaneMutation = gql`
     }
   }
 `;
+
+export const changeLaneCollapsedStateMutation = gql`
+  mutation changeLaneCollapsedState($input: ChangeLaneCollapsedStateInput!) {
+    changeLaneCollapsedState(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;

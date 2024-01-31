@@ -55,6 +55,10 @@ export class Deck {
     new Explorer().getTreeItemByLabel(representationName).click();
   }
 
+  public closeDeckRepresentation(representationName: string) {
+    cy.getByTestId(`close-representation-tab-${representationName}`).click();
+  }
+
   /**
    * Creates the Deck view from the stereotype.
    * @returns the created studio project id.
@@ -103,5 +107,19 @@ export class Deck {
           return cy.wrap(taskProjectId);
         });
       });
+  }
+
+  public collapseLane(laneName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getLane(laneName).findByTestId('lane-collapse-btn').click({ force: true });
+  }
+
+  public expandLane(laneName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getLane(laneName).findByTestId('lane-expand-btn').click({ force: true });
+  }
+
+  public isCollapse(laneName: string, expected: boolean): Cypress.Chainable<JQuery<HTMLElement>> {
+    return expected
+      ? this.getLane(laneName).findByTestId('lane-expand-btn').should('exist')
+      : this.getLane(laneName).findByTestId('lane-collapse-btn').should('exist');
   }
 }

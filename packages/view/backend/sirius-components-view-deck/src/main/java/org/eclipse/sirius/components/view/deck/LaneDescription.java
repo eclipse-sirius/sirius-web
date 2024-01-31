@@ -189,4 +189,27 @@ public interface LaneDescription extends EObject {
      */
     void setCardDropTool(CardDropTool value);
 
+    /**
+     * Returns the value of the '<em><b>Is Collapsible Expression</b></em>' attribute. The default value is
+     * <code>"aql:true"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Is Collapsible Expression</em>' attribute.
+     * @see #setIsCollapsibleExpression(String)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getLaneDescription_IsCollapsibleExpression()
+     * @model default="aql:true" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getIsCollapsibleExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getIsCollapsibleExpression
+     * <em>Is Collapsible Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Is Collapsible Expression</em>' attribute.
+     * @see #getIsCollapsibleExpression()
+     * @generated
+     */
+    void setIsCollapsibleExpression(String value);
+
 } // LaneDescription

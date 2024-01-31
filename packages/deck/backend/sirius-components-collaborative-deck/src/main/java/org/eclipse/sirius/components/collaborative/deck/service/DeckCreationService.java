@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.deck.description.DeckDescription;
 import org.eclipse.sirius.components.deck.renderer.DeckRenderer;
 import org.eclipse.sirius.components.deck.renderer.component.DeckComponent;
 import org.eclipse.sirius.components.deck.renderer.component.DeckComponentProps;
+import org.eclipse.sirius.components.deck.renderer.events.IDeckEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -59,29 +61,33 @@ public class DeckCreationService implements IDeckCreationService {
     }
 
     @Override
-    public Optional<Deck> refresh(IEditingContext editingContext, Deck previousDeck) {
+    public Optional<Deck> refresh(IEditingContext editingContext, IDeckContext deckContext) {
+        Deck previousDeck = deckContext.getDeck();
         var optionalObject = this.objectService.getObject(editingContext, previousDeck.targetObjectId());
-        var optionalDeckDescription = this.representationDescriptionSearchService.findById(editingContext, previousDeck.getDescriptionId()).filter(DeckDescription.class::isInstance)
+        var optionalDeckDescription = this.representationDescriptionSearchService.findById(editingContext, previousDeck.getDescriptionId())
+                .filter(DeckDescription.class::isInstance)
                 .map(DeckDescription.class::cast);
 
         if (optionalObject.isPresent() && optionalDeckDescription.isPresent()) {
             Object object = optionalObject.get();
             DeckDescription deckDescription = optionalDeckDescription.get();
-            Deck deck = this.doRender(previousDeck.getLabel(), object, editingContext, deckDescription, Optional.of(previousDeck));
+            Deck deck = this.doRender(previousDeck.getLabel(), object, editingContext, deckDescription, Optional.of(deckContext));
             return Optional.of(deck);
         }
         return Optional.empty();
     }
 
-    private Deck doRender(String label, Object targetObject, IEditingContext editingContext, DeckDescription deckDescription, Optional<Deck> optionalPreviousDeck) {
+    private Deck doRender(String label, Object targetObject, IEditingContext editingContext, DeckDescription deckDescription, Optional<IDeckContext> optionalDeckContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
         variableManager.put(DeckDescription.LABEL, label);
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        Optional<Deck> optionalPreviousDeck = optionalDeckContext.map(IDeckContext::getDeck);
+        Optional<IDeckEvent> optionalDeckEvent = optionalDeckContext.map(IDeckContext::getDeckEvent);
 
-        DeckComponentProps deckComponentProps = new DeckComponentProps(variableManager, deckDescription, optionalPreviousDeck);
+        DeckComponentProps deckComponentProps = new DeckComponentProps(variableManager, deckDescription, optionalPreviousDeck, optionalDeckEvent);
 
         Element element = new Element(DeckComponent.class, deckComponentProps);
         Deck newDeck = new DeckRenderer().render(element);

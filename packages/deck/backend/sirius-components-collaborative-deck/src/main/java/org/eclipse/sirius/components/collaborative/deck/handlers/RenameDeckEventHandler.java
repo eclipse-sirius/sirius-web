@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.RenameDeckInput;
@@ -69,7 +70,7 @@ public class RenameDeckEventHandler implements IDeckEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Deck deck, IDeckInput deckInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDeckContext deckContext, IDeckInput deckInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(deckInput.getClass().getSimpleName(), RenameDeckInput.class.getSimpleName());

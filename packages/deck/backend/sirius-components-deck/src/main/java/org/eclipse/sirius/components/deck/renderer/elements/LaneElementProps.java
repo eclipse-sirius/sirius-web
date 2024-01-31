@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.representations.IProps;
  * @author fbarbin
  */
 
-public record LaneElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, List<Element> children)
-        implements IProps {
+public record LaneElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, boolean collapsible,
+        boolean collapsed, List<Element> children) implements IProps {
 
     public static final String TYPE = "Lane";
 

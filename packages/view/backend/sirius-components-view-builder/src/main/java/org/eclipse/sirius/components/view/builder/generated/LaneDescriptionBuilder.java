@@ -111,5 +111,15 @@ public class LaneDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for IsCollapsibleExpression.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder isCollapsibleExpression(java.lang.String value) {
+        this.getLaneDescription().setIsCollapsibleExpression(value);
+        return this;
+    }
+
 }
 

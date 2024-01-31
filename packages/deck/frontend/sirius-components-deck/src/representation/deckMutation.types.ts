@@ -136,12 +136,33 @@ export interface GQLDropDeckLanePayload {
   __typename: string;
 }
 
+export interface GQLChangeLaneCollapsedStateVariables {
+  input: GQLChangeLaneCollapsedStateInput;
+}
+
+export interface GQLChangeLaneCollapsedStateInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  laneId: string;
+  collapsed: boolean;
+}
+
+export interface GQLChangeLaneCollapsedStateData {
+  changeLaneCollapsedState: GQLChangeLaneCollapsedStatePayload;
+}
+
+export interface GQLChangeLaneCollapsedStatePayload {
+  __typename: string;
+}
+
 export interface GQLSuccessPayload
   extends GQLCreateDeckCardPayload,
     GQLDeleteDeckCardPayload,
     GQLEditDeckCardPayload,
     GQLDropDeckCardPayload,
     GQLEditDeckLanePayload,
-    GQLDropDeckLanePayload {
+    GQLDropDeckLanePayload,
+    GQLChangeLaneCollapsedStatePayload {
   messages: GQLMessage[];
 }

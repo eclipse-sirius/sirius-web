@@ -106,16 +106,22 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
         Function<VariableManager, List<Object>> semanticElementsProvider = variableManager -> this.getSemanticElements(viewLaneDescription, variableManager, interpreter);
         Function<VariableManager, String> titleProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewLaneDescription.getTitleExpression());
         Function<VariableManager, String> labelProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewLaneDescription.getLabelExpression());
-        Consumer<VariableManager> editLaneProvider = Optional.ofNullable(viewLaneDescription.getEditTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
-        });
-        Consumer<VariableManager> createCardProvider = Optional.ofNullable(viewLaneDescription.getCreateTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
-        });
-        Consumer<VariableManager> dropCardProvider = Optional.ofNullable(viewLaneDescription.getCardDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
-        });
+        Consumer<VariableManager> editLaneProvider = Optional.ofNullable(viewLaneDescription.getEditTool())
+                .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                .orElse(variable -> { });
+        Consumer<VariableManager> createCardProvider = Optional.ofNullable(viewLaneDescription.getCreateTool())
+                .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                .orElse(variable -> { });
+        Consumer<VariableManager> dropCardProvider = Optional.ofNullable(viewLaneDescription.getCardDropTool()).
+                map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                .orElse(variable -> { });
+        Function<VariableManager, Boolean> collapsibleProvider = variableManager -> this.evaluateBoolean(interpreter, variableManager, viewLaneDescription.getIsCollapsibleExpression());
 
-        List<CardDescription> cardDescriptions = viewLaneDescription.getOwnedCardDescriptions().stream().map(cardDescription -> this.convert(cardDescription, interpreter)).toList();
+        List<CardDescription> cardDescriptions = viewLaneDescription.getOwnedCardDescriptions().stream()
+                .map(cardDescription -> this.convert(cardDescription, interpreter))
+                .toList();
         return new LaneDescription(id, this.semanticTargetKindProvider, this.semanticTargetLabelProvider, this.semanticTargetIdProvider, semanticElementsProvider, titleProvider, labelProvider,
-                cardDescriptions, editLaneProvider, createCardProvider, dropCardProvider);
+                cardDescriptions, editLaneProvider, createCardProvider, dropCardProvider, collapsibleProvider);
     }
 
     private CardDescription convert(org.eclipse.sirius.components.view.deck.CardDescription viewCardDescription, AQLInterpreter interpreter) {
@@ -179,7 +185,15 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private String evaluateString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
-        return interpreter.evaluateExpression(variableManager.getVariables(), expression).asString().orElse("");
+        return interpreter.evaluateExpression(variableManager.getVariables(), expression)
+                .asString()
+                .orElse("");
+    }
+
+    private Boolean evaluateBoolean(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
+        return interpreter.evaluateExpression(variableManager.getVariables(), expression)
+                .asBoolean()
+                .orElse(true);
     }
 
     private Optional<Object> self(VariableManager variableManager) {

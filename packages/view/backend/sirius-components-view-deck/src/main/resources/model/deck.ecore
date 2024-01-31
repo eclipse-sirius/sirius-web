@@ -25,6 +25,9 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cardDropTool" eType="#//CardDropTool"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isCollapsibleExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
+        defaultValueLiteral="aql:true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CardDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"

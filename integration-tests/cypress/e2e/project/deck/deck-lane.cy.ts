@@ -63,7 +63,34 @@ describe('Verify the Deck Representation lanes selection and editing', () => {
     const deck = new Deck();
     deck.getLane('Monday').click('top').getByTestId('lane-input-title').click().type('Monday_renamed{enter}');
     new Explorer().getTreeItemByLabel('daily::Monday_renamed').should('exist');
+    const details = new Details();
+    details.getTextField('Suffix').should('have.value', 'Monday_renamed');
+    details.getTextField('Suffix').type('{selectAll}Monday{enter}');
+    deck.getLane('Monday').should('exist');
+  });
 
-    new Details().getTextField('Suffix').should('have.value', 'Monday_renamed');
+  it('We verify the lane collapsing.', () => {
+    const deck = new Deck();
+    //We first verify if the collapse works as expected
+    deck.getCard('Monday', 'Idea').should('exist');
+    deck.getCard('Monday', 'Specification').should('exist');
+    deck.collapseLane('Monday').then(() => {
+      deck.isCollapse('Monday', true);
+      deck.getCard('Monday', 'Idea').should('not.exist');
+      deck.getCard('Monday', 'Specification').should('not.exist');
+    });
+
+    //We close and reopen the Deck representation to make sure that the collapse state is persisted.
+    deck.closeDeckRepresentation('New Daily Representation');
+    deck.getDeckRepresentation().should('not.exist');
+    new Explorer().getTreeItemByLabel('New Daily Representation').click();
+
+    deck.getCard('Monday', 'Idea').should('not.exist');
+    deck.getCard('Monday', 'Specification').should('not.exist');
+    deck.expandLane('Monday').then(() => {
+      deck.isCollapse('Monday', false);
+      deck.getCard('Monday', 'Idea').should('exist');
+      deck.getCard('Monday', 'Specification').should('exist');
+    });
   });
 });

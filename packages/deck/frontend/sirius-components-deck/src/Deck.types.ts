@@ -25,6 +25,7 @@ export interface DeckProps {
   onCardDelete: (cardId: string, laneId: string) => void;
   onCardMoveAcrossLanes: (oldLaneId: string, newLaneId: string, cardId: string, addedIndex: number) => void;
   onLaneUpdate: (laneId: string, newValue: { title: string }) => void;
+  onLaneCollapseUpdate: (laneId: string, collapsed: boolean) => void;
   handleLaneDragEnd: (oldIndew: number, newIndew: number, payload: Lane) => void;
 }
 export interface OnCardClickProps {
@@ -43,6 +44,8 @@ export interface Lane {
   cards: Card[];
   editLaneTitle?: boolean;
   editable: boolean;
+  collapsible?: boolean;
+  collapsed?: boolean;
   style?: CSSProperties;
   'data-testid': string;
 }

@@ -28,6 +28,7 @@ export const Deck = ({
   onCardUpdate,
   onCardMoveAcrossLanes,
   onLaneUpdate,
+  onLaneCollapseUpdate,
   handleLaneDragEnd,
 }: DeckProps) => {
   const theme: Theme = useTheme();
@@ -51,6 +52,7 @@ export const Deck = ({
         onCardAdd={onCardAdd}
         onCardUpdate={onCardUpdate}
         onLaneUpdate={onLaneUpdate}
+        onLaneCollapseUpdate={onLaneCollapseUpdate}
         onCardMoveAcrossLanes={onCardMoveAcrossLanes}
         handleLaneDragEnd={handleLaneDragEnd}
         data-testid={`deck-representation`}

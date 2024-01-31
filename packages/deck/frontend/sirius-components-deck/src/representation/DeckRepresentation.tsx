@@ -42,6 +42,9 @@ import {
 } from './deckSubscription.types';
 
 import {
+  GQLChangeLaneCollapsedStateData,
+  GQLChangeLaneCollapsedStateInput,
+  GQLChangeLaneCollapsedStateVariables,
   GQLCreateCardData,
   GQLCreateCardVariables,
   GQLCreateDeckCardInput,
@@ -67,6 +70,7 @@ import {
 } from './deckMutation.types';
 
 import {
+  changeLaneCollapsedStateMutation,
   createCardMutation,
   deleteCardMutation,
   dropDeckCardMutation,
@@ -157,6 +161,13 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   const [dropDeckLane, { loading: dropDeckLaneLoading, data: dropDeckLaneData, error: dropDeckLaneError }] =
     useMutation<GQLDropDeckLaneData, GQLDropDeckLaneVariables>(dropDeckLaneMutation);
 
+  const [
+    changeLaneCollapsedState,
+    { loading: changeLaneCollapsedLoading, data: changeLaneCollapsedData, error: changeLaneCollapsedError },
+  ] = useMutation<GQLChangeLaneCollapsedStateData, GQLChangeLaneCollapsedStateVariables>(
+    changeLaneCollapsedStateMutation
+  );
+
   useEffect(() => {
     if (error) {
       addErrorMessage(error.message);
@@ -188,6 +199,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       | GQLDropDeckCardData
       | GQLEditLaneData
       | GQLDropDeckLaneData
+      | GQLChangeLaneCollapsedStateData
       | null
       | undefined,
     error: ApolloError | undefined
@@ -227,6 +239,9 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
   useEffect(() => {
     handleError(dropDeckLaneLoading, dropDeckLaneData, dropDeckLaneError);
   }, [dropDeckLaneLoading, dropDeckLaneData, dropDeckLaneError]);
+  useEffect(() => {
+    handleError(changeLaneCollapsedLoading, changeLaneCollapsedData, changeLaneCollapsedError);
+  }, [changeLaneCollapsedLoading, changeLaneCollapsedData, changeLaneCollapsedError]);
 
   useEffect(() => {
     handleError(editLaneLoading, editLaneData, editLaneError);
@@ -353,6 +368,18 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     }
   };
 
+  const handleLaneCollapsedUpdate = (laneId: string, collapsed: boolean) => {
+    const input: GQLChangeLaneCollapsedStateInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId,
+      laneId,
+      collapsed,
+    };
+
+    changeLaneCollapsedState({ variables: { input } });
+  };
+
   let content: JSX.Element | null = null;
   if (complete) {
     content = (
@@ -377,6 +404,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         onCardMoveAcrossLanes={handleDropDeckCard}
         onLaneClick={handleLaneClicked}
         onLaneUpdate={handleEditLane}
+        onLaneCollapseUpdate={handleLaneCollapsedUpdate}
         handleLaneDragEnd={handleLaneDragEnd}
       />
     );
