@@ -1,0 +1,52 @@
+= ADR-129 - Add support for confirmation dialogs
+
+== Context
+
+Sirius Web does not have an undo/redo mechanism.
+When an element has been deleted, either from the Explorer view, from any representation, or any other view, there is no way to retrieve it.
+All delete actions are executable in one click.
+Any accidental click on a delete action can lead to the unwanted loss of data.
+By extension, some one-click actions may lead to unwanted consequences.
+
+== Decision
+
+The first decision is about the delete actions (click on the delete tool on a node, click on DEL key on a node, click on the delete menu item on an object in the Explorer view).
+For these actions, a confirmation dialog will be added, asking to confirm the deletion.
+It will be possible to disable these dialogs by clicking on the "Don't ask me again" checkbox inside them.
+These checkboxes will be associated to local storage, allowing to remember which dialogs have been disabled or not, for each end-users.
+
+A new optional `ConfirmationDialog` attribute will be added into `Tool` interface in `diagram.graphqls`:
+
+```
+interface Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  confirmation: ConfirmationDialog
+}
+
+interface ConfirmationDialog {
+  id: ID!
+  message: String! // the message that will be displayed on confirmation
+  label: String! // the label that will be displayed on the confirmation button (or any other graphical element used to confirm the execution of the tool)
+}
+```
+
+On frontend side, a new react component will be created for the confirmation dialog.
+```
+<ConfirmationDialog id={id} message={message} label={label} onConfirm={// execution of the tool}/>
+```
+
+The second decision is about the diagrams tools.
+A confirmation dialog mechanism will be available on any tool in diagrams, not only the delete tool.
+Thus, a specifier could associate a confirmation dialog on the execution of its tools. This capability will be available on the Diagram View DSL.
+On a tool description, the specifier could enable the confirmation dialog and set a message expression and a button label expression (i.e. AQL expressions), allowing to call the confirmation dialog when the tool is executed by end-users.
+
+
+== Consequences
+
+To enable a disabled confirmation dialog, the end-user will have to delete the associated local storage.
+
+== Status
+
+Accepted
