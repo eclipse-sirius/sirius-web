@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckCardService;
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeleteDeckCardInput;
@@ -25,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.deck.message.ICollaborativeDe
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.deck.Deck;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -62,7 +62,7 @@ public class DeleteCardEventHandler implements IDeckEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, Deck deck, IDeckInput deckInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDeckContext deckContext, IDeckInput deckInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(deckInput.getClass().getSimpleName(), DeleteDeckCardInput.class.getSimpleName());
@@ -70,7 +70,7 @@ public class DeleteCardEventHandler implements IDeckEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, deckInput.representationId(), deckInput);
 
         if (deckInput instanceof DeleteDeckCardInput input) {
-            payload = this.deckCardService.deleteCard(input, editingContext, deck);
+            payload = this.deckCardService.deleteCard(input, editingContext, deckContext.getDeck());
 
             changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, deckInput.representationId(), deckInput);
         }

@@ -40,7 +40,7 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: strin
       };
     });
 
-    const { id, label, title, targetObjectId } = lane;
+    const { id, label, title, targetObjectId, collapsed, collapsible } = lane;
     const selectedLane: boolean = selectedElementIds.includes(targetObjectId);
 
     const style: React.CSSProperties = {
@@ -55,6 +55,8 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: strin
       editable: true,
       cards,
       style,
+      collapsible,
+      collapsed,
       'data-testid': `lane-${lane.title}`,
     };
     data.lanes.push(convertedLane);

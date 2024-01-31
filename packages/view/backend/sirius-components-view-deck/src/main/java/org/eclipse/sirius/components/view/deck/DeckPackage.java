@@ -224,13 +224,22 @@ public interface DeckPackage extends EPackage {
     int LANE_DESCRIPTION__CARD_DROP_TOOL = 6;
 
     /**
+     * The feature id for the '<em><b>Is Collapsible Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = 7;
+
+    /**
      * The number of structural features of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION_FEATURE_COUNT = 7;
+    int LANE_DESCRIPTION_FEATURE_COUNT = 8;
 
     /**
      * The number of operations of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -832,6 +841,18 @@ public interface DeckPackage extends EPackage {
     EReference getLaneDescription_CardDropTool();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getIsCollapsibleExpression <em>Is Collapsible
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Collapsible Expression</em>'.
+     * @see org.eclipse.sirius.components.view.deck.LaneDescription#getIsCollapsibleExpression()
+     * @see #getLaneDescription()
+     * @generated
+     */
+    EAttribute getLaneDescription_IsCollapsibleExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.CardDescription <em>Card
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1139,6 +1160,14 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EReference LANE_DESCRIPTION__CARD_DROP_TOOL = eINSTANCE.getLaneDescription_CardDropTool();
+
+        /**
+         * The meta object literal for the '<em><b>Is Collapsible Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = eINSTANCE.getLaneDescription_IsCollapsibleExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.deck.impl.CardDescriptionImpl

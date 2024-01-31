@@ -29,6 +29,8 @@ type Lane {
   targetObjectLabel: String!
   title: String!
   label: String!
+  collapsible: Boolean!
+  collapsed: Boolean!
   cards: [Card!]!
 }
 
@@ -49,6 +51,7 @@ extend type Mutation {
   dropDeckCard(input: DropDeckCardInput!): DropDeckCardPayload
   editDeckLane(input: EditDeckLaneInput!): EditDeckLanePayload
   dropDeckLane(input: DropDeckLaneInput!): DropDeckLanePayload
+  changeLaneCollapsedState(input: ChangeLaneCollapsedStateInput!): ChangeLaneCollapsedStatePayload
 }
 
 input CreateDeckCardInput {
@@ -113,3 +116,12 @@ input DropDeckLaneInput {
 }
 
 union DropDeckLanePayload = SuccessPayload | ErrorPayload
+
+input ChangeLaneCollapsedStateInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  laneId: ID!
+  collapsed: Boolean!
+}
+union ChangeLaneCollapsedStatePayload = SuccessPayload | ErrorPayload

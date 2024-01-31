@@ -32,7 +32,7 @@
   "peerDependencies": {
     "@apollo/client": "3.8.1",
     "@eclipse-sirius/sirius-components-core": "*",
-    "@ObeoNetwork/react-trello": "2.4.4",
+    "@ObeoNetwork/react-trello": "2.4.7",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "@xstate/react": "1.6.3",
@@ -49,7 +49,7 @@
     "@material-ui/icons": "4.11.3",
     "@types/react": "17.0.37",
     "@vitejs/plugin-react": "4.0.4",
-    "@ObeoNetwork/react-trello": "2.4.4",
+    "@ObeoNetwork/react-trello": "2.4.7",
     "@xstate/react": "1.6.3",
     "graphql": "16.8.0",
     "prettier": "2.7.1",

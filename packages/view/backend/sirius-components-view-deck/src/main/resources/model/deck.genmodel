@@ -27,6 +27,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/editTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/createTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/cardDropTool"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//LaneDescription/isCollapsibleExpression"/>
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//CardDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//CardDescription/semanticCandidatesExpression"/>

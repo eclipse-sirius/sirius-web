@@ -57,6 +57,8 @@ export interface GQLLane {
   label: string;
   cards: GQLCard[];
   targetObjectId: string;
+  collapsible: boolean;
+  collapsed: boolean;
 }
 
 export interface GQLCard {

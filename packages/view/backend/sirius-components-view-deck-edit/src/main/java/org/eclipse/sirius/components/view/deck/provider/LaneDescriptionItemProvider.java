@@ -64,6 +64,7 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addTitleExpressionPropertyDescriptor(object);
             this.addLabelExpressionPropertyDescriptor(object);
+            this.addIsCollapsibleExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -103,6 +104,19 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
                 this.getString("_UI_LaneDescription_labelExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_labelExpression_feature", "_UI_LaneDescription_type"),
                 DeckPackage.Literals.LANE_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Is Collapsible Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addIsCollapsibleExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LaneDescription_isCollapsibleExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_isCollapsibleExpression_feature", "_UI_LaneDescription_type"),
+                DeckPackage.Literals.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -184,6 +198,7 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
             case DeckPackage.LANE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             case DeckPackage.LANE_DESCRIPTION__TITLE_EXPRESSION:
             case DeckPackage.LANE_DESCRIPTION__LABEL_EXPRESSION:
+            case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DeckPackage.LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS:

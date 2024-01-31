@@ -20,7 +20,8 @@ import java.util.Objects;
  *
  * @author fbarbin
  */
-public record Lane(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, List<Card> cards) {
+public record Lane(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, boolean collapsible, boolean collapsed,
+        List<Card> cards) {
     public Lane {
         Objects.requireNonNull(id);
         Objects.requireNonNull(descriptionId);

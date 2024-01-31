@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
+import org.eclipse.sirius.components.deck.renderer.events.IDeckEvent;
 import org.eclipse.sirius.components.representations.IProps;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -25,11 +26,12 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author fbarbin
  */
-public record DeckComponentProps(VariableManager variableManager, DeckDescription deckDescription, Optional<Deck> previousDeck) implements IProps {
+public record DeckComponentProps(VariableManager variableManager, DeckDescription deckDescription, Optional<Deck> optionalPreviousDeck, Optional<IDeckEvent> optionalDeckEvent) implements IProps {
 
     public DeckComponentProps {
         Objects.requireNonNull(variableManager);
         Objects.requireNonNull(deckDescription);
-        Objects.requireNonNull(previousDeck);
+        Objects.requireNonNull(optionalPreviousDeck);
+        Objects.requireNonNull(optionalDeckEvent);
     }
 }

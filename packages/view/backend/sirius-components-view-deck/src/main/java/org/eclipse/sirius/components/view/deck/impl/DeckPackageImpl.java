@@ -297,6 +297,16 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
      * @generated
      */
     @Override
+    public EAttribute getLaneDescription_IsCollapsibleExpression() {
+        return (EAttribute) this.laneDescriptionEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getCardDescription() {
         return this.cardDescriptionEClass;
     }
@@ -503,6 +513,7 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__EDIT_TOOL);
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__CREATE_TOOL);
         this.createEReference(this.laneDescriptionEClass, LANE_DESCRIPTION__CARD_DROP_TOOL);
+        this.createEAttribute(this.laneDescriptionEClass, LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION);
 
         this.cardDescriptionEClass = this.createEClass(CARD_DESCRIPTION);
         this.createEAttribute(this.cardDescriptionEClass, CARD_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
@@ -593,6 +604,8 @@ public class DeckPackageImpl extends EPackageImpl implements DeckPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getLaneDescription_CardDropTool(), this.getCardDropTool(), null, "cardDropTool", null, 0, 1, LaneDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLaneDescription_IsCollapsibleExpression(), theViewPackage.getInterpretedExpression(), "isCollapsibleExpression", "aql:true", 0, 1, LaneDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.cardDescriptionEClass, CardDescription.class, "CardDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCardDescription_SemanticCandidatesExpression(), theViewPackage.getInterpretedExpression(), "semanticCandidatesExpression", "aql:self", 1, 1, CardDescription.class,

@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
@@ -44,12 +45,15 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final List<IDeckEventHandler> deckEventHandlers;
 
-    public DeckEventProcessorFactory(IRepresentationSearchService representationSearchService, DeckCreationService deckCreationService,
-            ISubscriptionManagerFactory subscriptionManagerFactory, List<IDeckEventHandler> deckEventHandlers) {
+    private final IRepresentationPersistenceService representationPersistenceService;
+
+    public DeckEventProcessorFactory(IRepresentationSearchService representationSearchService, DeckCreationService deckCreationService, ISubscriptionManagerFactory subscriptionManagerFactory,
+            List<IDeckEventHandler> deckEventHandlers, IRepresentationPersistenceService representationPersistenceService) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.deckCreationService = Objects.requireNonNull(deckCreationService);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.deckEventHandlers = Objects.requireNonNull(deckEventHandlers);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
     }
 
     @Override
@@ -64,12 +68,12 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
             var optionalDeck = this.representationSearchService.findById(editingContext, deckConfiguration.getId(), Deck.class);
             if (optionalDeck.isPresent()) {
                 Deck deck = optionalDeck.get();
+                DeckContext deckContext = new DeckContext(deck);
 
-                IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, deck,
-                        this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers);
+                IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers,
+                        deckContext, this.representationPersistenceService);
 
-                return Optional.of(deckEventProcessor)
-                        .map(representationEventProcessorClass::cast);
+                return Optional.of(deckEventProcessor).map(representationEventProcessorClass::cast);
             }
         }
         return Optional.empty();

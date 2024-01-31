@@ -37,6 +37,8 @@ export const deckEventSubscription = gql`
             title
             label
             targetObjectId
+            collapsible
+            collapsed
             cards {
               id
               targetObjectId

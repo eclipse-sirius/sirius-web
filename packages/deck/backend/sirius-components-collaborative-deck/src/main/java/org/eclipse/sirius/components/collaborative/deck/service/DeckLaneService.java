@@ -19,7 +19,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckLaneService;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeLaneCollapsedStateInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckLaneInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckLaneInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -33,6 +35,7 @@ import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.Lane;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
+import org.eclipse.sirius.components.deck.renderer.events.ChangeLaneCollapseStateDeckEvent;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -134,6 +137,12 @@ public class DeckLaneService implements IDeckLaneService {
                 .flatMap(Collection::stream)
                 .filter(laneDesc -> laneDesc.id().equals(descriptionId))
                 .findFirst();
+    }
+
+    @Override
+    public IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput changeLaneCollapsedStateInput, IEditingContext editingContext, IDeckContext deckContext) {
+        deckContext.setDeckEvent(new ChangeLaneCollapseStateDeckEvent(changeLaneCollapsedStateInput.laneId(), changeLaneCollapsedStateInput.collapsed()));
+        return this.getPayload(changeLaneCollapsedStateInput.id());
     }
 
 }
