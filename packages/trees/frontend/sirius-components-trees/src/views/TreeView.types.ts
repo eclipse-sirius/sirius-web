@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { GQLStyledString, WorkbenchViewComponentProps } from '@eclipse-sirius/sirius-components-core';
 import { TreeConverter } from './TreeConverter.types';
 
 export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
@@ -55,7 +55,7 @@ export interface GQLTree {
 
 export interface GQLTreeItem {
   id: string;
-  label: string;
+  label: GQLStyledString;
   kind: string;
   iconURL: [string];
   hasChildren: boolean;

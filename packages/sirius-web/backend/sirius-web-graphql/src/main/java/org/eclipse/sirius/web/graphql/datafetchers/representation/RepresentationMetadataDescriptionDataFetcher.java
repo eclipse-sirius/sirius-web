@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 
 import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,7 +63,7 @@ public class RepresentationMetadataDescriptionDataFetcher implements IDataFetche
             .idProvider(new GetOrCreateRandomIdProvider())
             .treeItemIdProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
             .kindProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
-            .labelProvider(variableManager -> TreeEventProcessorFactory.TREE_ID)
+            .labelProvider(variableManager -> new StyledString(List.of()))
             .iconURLProvider(variableManager -> List.of(TreeEventProcessorFactory.TREE_ID))
             .editableProvider(variableManager -> null)
             .deletableProvider(variableManager -> null)

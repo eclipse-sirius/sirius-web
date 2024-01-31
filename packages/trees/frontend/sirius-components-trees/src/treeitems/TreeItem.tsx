@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,14 @@
  *******************************************************************************/
 import {
   DRAG_SOURCES_TYPE,
+  GQLStyledString,
   IconOverlay,
   Selection,
   SelectionEntry,
+  StyledLabel,
   useSelection,
 } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -29,7 +30,7 @@ import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
 import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
-import { isFilterCandidate, splitText } from './filterTreeItem';
+import { isFilterCandidate } from './filterTreeItem';
 
 const useTreeItemStyle = makeStyles((theme) => ({
   treeItem: {
@@ -99,9 +100,6 @@ const useTreeItemStyle = makeStyles((theme) => ({
   selectedLabel: {
     fontWeight: 'bold',
   },
-  marked: {
-    fontWeight: 'bold',
-  },
   ul: {
     marginLeft: theme.spacing(3),
   },
@@ -109,6 +107,10 @@ const useTreeItemStyle = makeStyles((theme) => ({
     backgroundColor: theme.palette.navigation.leftBackground,
   },
 }));
+
+const getString = (styledString: GQLStyledString): string => {
+  return styledString.styledStringFragments.map((fragments) => fragments.text).join();
+};
 
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\w&é§èàùçÔØÁÛÊË"«»’”„´$¥€£\\¿?!=+-,;:%/{}[\]–#@*.]/;
@@ -292,40 +294,13 @@ export const TreeItem = ({
         onClose={onCloseEditingMode}></TreeItemDirectEditInput>
     );
   } else {
-    let itemLabel: JSX.Element;
-    const splitLabelWithTextToHighlight: string[] = splitText(item.label, textToHighlight);
-    if (
-      textToHighlight === null ||
-      textToHighlight === '' ||
-      (splitLabelWithTextToHighlight.length === 1 &&
-        splitLabelWithTextToHighlight[0].toLocaleLowerCase() !== item.label.toLocaleLowerCase())
-    ) {
-      itemLabel = <>{item.label}</>;
-    } else {
-      const languages: string[] = Array.from(navigator.languages);
-      itemLabel = (
-        <>
-          {splitLabelWithTextToHighlight.map((value, index) => {
-            const shouldHighlight = value.localeCompare(textToHighlight, languages, { sensitivity: 'base' }) === 0;
-            return (
-              <span
-                key={value + index}
-                data-testid={`${item.label}-${value}-${index}`}
-                className={shouldHighlight ? classes.highlight : ''}>
-                {value}
-              </span>
-            );
-          })}
-        </>
-      );
-    }
-    text = (
-      <Typography
-        variant="body2"
-        className={`${classes.label} ${selected ? classes.selectedLabel : ''} ${marked ? classes.marked : ''}`}>
-        {itemLabel}
-      </Typography>
-    );
+    const styledLabelProps = {
+      styledString: item.label,
+      selected: false,
+      textToHighlight: textToHighlight,
+      marked: marked,
+    };
+    text = <StyledLabel {...styledLabelProps}></StyledLabel>;
   }
 
   const onClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
@@ -343,13 +318,13 @@ export const TreeItem = ({
           setSelection(newSelection);
         } else {
           const { id, label, kind } = item;
-          const newEntry = { id, label, kind };
+          const newEntry = { id, label: getString(label), kind };
           const newSelection: Selection = { entries: [...selection.entries, newEntry] };
           setSelection(newSelection);
         }
       } else {
         const { id, label, kind } = item;
-        setSelection({ entries: [{ id, label, kind }] });
+        setSelection({ entries: [{ id, label: getString(label), kind }] });
       }
     }
   };
@@ -376,7 +351,7 @@ export const TreeItem = ({
     const isDraggedItemSelected = selection.entries.map((entry) => entry.id).includes(item.id);
     if (!isDraggedItemSelected) {
       // If we're dragging a non-selected item, drag it alone
-      const itemEntry: SelectionEntry = { id: item.id, label: item.label, kind: item.kind };
+      const itemEntry: SelectionEntry = { id: item.id, label: getString(item.label), kind: item.kind };
       event.dataTransfer.setData(DRAG_SOURCES_TYPE, JSON.stringify([itemEntry]));
     } else if (selection.entries.length > 0) {
       // Otherwise drag the whole selection
@@ -409,11 +384,12 @@ export const TreeItem = ({
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
   } else {
+    const label = getString(item.label);
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
         <div className={className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${item.label}-toggle`} />
+          <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
@@ -423,7 +399,7 @@ export const TreeItem = ({
             onDragStart={dragStart}
             onDragOver={dragOver}
             data-treeitemid={item.id}
-            data-treeitemlabel={item.label}
+            data-treeitemlabel={label}
             data-treeitemkind={item.kind}
             data-haschildren={item.hasChildren.toString()}
             data-depth={depth}
@@ -434,7 +410,7 @@ export const TreeItem = ({
                 className={`${classes.imageAndLabel} ${item.selectable ? classes.imageAndLabelSelectable : ''}`}
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
                 title={tooltipText}
-                data-testid={item.label}>
+                data-testid={label}>
                 {image}
                 {text}
               </div>
@@ -443,7 +419,7 @@ export const TreeItem = ({
                   className={classes.more}
                   size="small"
                   onClick={openContextMenu}
-                  data-testid={`${item.label}-more`}>
+                  data-testid={`${label}-more`}>
                   <MoreVertIcon style={{ fontSize: 12 }} />
                 </IconButton>
               ) : null}

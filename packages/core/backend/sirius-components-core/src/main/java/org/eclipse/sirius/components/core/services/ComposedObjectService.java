@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.api.IDefaultObjectService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IObjectServiceDelegate;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.springframework.stereotype.Service;
 
 /**
@@ -60,6 +61,17 @@ public class ComposedObjectService implements IObjectService {
             return optionalDelegate.get().getLabel(object);
         }
         return this.defaultObjectService.getLabel(object);
+    }
+
+    @Override
+    public StyledString getStyledLabel(Object object) {
+        var optionalDelegate = this.objectServiceDelegates.stream()
+                .filter(delegate -> delegate.canHandle(object))
+                .findFirst();
+        if (optionalDelegate.isPresent()) {
+            return optionalDelegate.get().getStyledLabel(object);
+        }
+        return this.defaultObjectService.getStyledLabel(object);
     }
 
     @Override

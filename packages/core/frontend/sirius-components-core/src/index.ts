@@ -20,6 +20,8 @@ export * from './contexts/ToastContext.types';
 export * from './dataTransferTypes';
 export * from './graphql/GQLTypes.types';
 export * from './icon/IconOverlay';
+export * from './label/StyledLabel';
+export * from './label/StyledLabel.type';
 export * from './materialui';
 export * from './modals/share-representation/ShareRepresentationModal';
 export * from './modals/share-representation/ShareRepresentationModal.types';

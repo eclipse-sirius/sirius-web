@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
@@ -143,22 +144,25 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
         return kind;
     }
 
-    private String getLabel(VariableManager variableManager) {
+    private StyledString getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-
         String label = "";
         if (self instanceof RepresentationMetadata representationMetadata) {
             label = representationMetadata.getLabel();
         } else if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
         } else if (self instanceof EObject) {
-            label = this.objectService.getLabel(self);
-            if (label.isBlank()) {
+            StyledString styledString = this.objectService.getStyledLabel(self);
+            if (!styledString.toString().isBlank()) {
+                return styledString;
+            }
+            else {
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
         }
-        return label;
+
+        return StyledString.of(label);
     }
 
     private String getResourceLabel(Resource resource) {

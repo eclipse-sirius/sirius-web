@@ -20,6 +20,7 @@ On backend side, `clickHandler` has been removed from `ReferenceValue`.
 `itemClickHandlerProvider` has been removed from `ReferenceWidgetDescription`.
 EventHandler & DataFetcher on widget reference item click action have also been deleted.
 The reference widget graphql schema and the frontend have been updated accordingly.
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [diagram] Added getStyledLabel method in IObjectService and IDefaultObjectService. The graphql type TreeItem will now return a StyledString unstead of a label, queries that are using this type are impacted.
 
 === Dependency update
 
@@ -36,6 +37,10 @@ The reference widget graphql schema and the frontend have been updated according
 - https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.
 Its body operations are now bind on set/add instead of click.
 - https://github.com/eclipse-sirius/sirius-web/issues/2942[#2942] [deck] Add the Card Drag and Drop capability in the Deck representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/2204[#2204] [diagram] Added emf StyledString provider support, IStyledStringConverter can be used in an objectservice to convert an EMF StyledString to a SiriusWeb StyledString.
++
+.Example of StyledString
+image:doc/screenshots/treeItemLabelStyled.jpg[Example of StyledString,70%]
 
 === Improvements
 

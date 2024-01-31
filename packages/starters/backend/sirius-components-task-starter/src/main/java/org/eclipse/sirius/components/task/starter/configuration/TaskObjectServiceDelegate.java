@@ -12,19 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.configuration;
 
-import java.util.Optional;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IObjectServiceDelegate;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.DefaultObjectService;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.ext.emf.edit.EditingDomainServices;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * This class allows to override {@link IObjectService} behavior.
@@ -74,6 +75,15 @@ public class TaskObjectServiceDelegate extends DefaultObjectService implements I
             return Optional.of(this.editingDomainServices.getLabelProviderText((EObject) object));
         } else {
             return super.getLabelField(object);
+        }
+    }
+
+    @Override
+    public StyledString getStyledLabel(Object object) {
+        if (object instanceof TaskTag tag) {
+            return StyledString.of(this.editingDomainServices.getLabelProviderText((EObject) object));
+        } else {
+            return StyledString.of(super.getLabel(object));
         }
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+
 
 /**
  * Renderer used to create the tree from its description and some variables.
@@ -41,7 +43,7 @@ public class TreeRenderer {
 
     public Tree render() {
         String treeId = this.treeDescription.getIdProvider().apply(this.variableManager);
-        String label = this.treeDescription.getLabelProvider().apply(this.variableManager);
+        String label = this.treeDescription.getLabelProvider().apply(this.variableManager).toString();
 
         List<?> rootElements = this.treeDescription.getElementsProvider().apply(this.variableManager);
         List<TreeItem> childrenItems = new ArrayList<>(rootElements.size());
@@ -61,7 +63,7 @@ public class TreeRenderer {
     private TreeItem renderTreeItem(VariableManager treeItemVariableManager) {
         String id = this.treeDescription.getTreeItemIdProvider().apply(treeItemVariableManager);
         String kind = this.treeDescription.getKindProvider().apply(treeItemVariableManager);
-        String label = this.treeDescription.getLabelProvider().apply(treeItemVariableManager);
+        StyledString label = this.treeDescription.getLabelProvider().apply(treeItemVariableManager);
         boolean editable = this.treeDescription.getEditableProvider().apply(treeItemVariableManager);
         boolean deletable = this.treeDescription.getDeletableProvider().apply(treeItemVariableManager);
         boolean selectable = this.treeDescription.getSelectableProvider().apply(treeItemVariableManager);

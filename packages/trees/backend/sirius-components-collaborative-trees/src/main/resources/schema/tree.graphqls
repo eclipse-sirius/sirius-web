@@ -34,7 +34,7 @@ type Tree implements Representation {
 
 type TreeItem {
   id: ID!
-  label: String!
+  label: StyledString!
   kind: String!
   iconURL: [String!]!
   editable: Boolean!
@@ -43,6 +43,52 @@ type TreeItem {
   expanded: Boolean!
   hasChildren: Boolean!
   children: [TreeItem]!
+}
+
+type StyledString {
+  styledStringFragments: [StyledStringFragment]!
+}
+
+type StyledStringFragment {
+ text: String!
+ styledStringFragmentStyle : StyledStringFragmentStyle
+}
+ 
+type StyledStringFragmentStyle {
+    isStrikedout: Boolean
+    underlineStyle: UnderLineStyle
+    borderStyle: BorderStyle
+    font: String
+    backgroundColor: String
+    foregroundColor: String
+    strikeoutColor: String
+    underlineColor: String
+    borderColor: String
+}
+
+enum UnderLineStyle {
+  NONE
+  HIDDEN
+  DOTTED
+  DASHED
+  SOLID
+  DOUBLE
+  GROOVE
+  RIDGE
+  INSET
+  OUTSET
+}
+
+enum BorderStyle {
+  NONE
+  SOLID
+  DOTTED
+  DASHED
+  DOUBLE
+  GROOVE
+  RIGE
+  INSET
+  OUTSET
 }
 
 type TreeDescription implements RepresentationDescription {

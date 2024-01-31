@@ -37,6 +37,7 @@ import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.sirius.components.core.api.IDefaultObjectService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,11 +125,16 @@ public class DefaultObjectService implements IDefaultObjectService {
 
     @Override
     public String getLabel(Object object) {
-        return Optional.of(object).filter(EObject.class::isInstance)
+        return this.getStyledLabel(object).toString();
+    }
+
+    public StyledString getStyledLabel(Object object) {
+        var label = Optional.of(object).filter(EObject.class::isInstance)
                 .map(EObject.class::cast)
                 .flatMap(eObject -> this.getLabelEAttribute(eObject).map(eObject::eGet))
                 .map(Object::toString)
                 .orElse("");
+        return StyledString.of(label);
     }
 
     @Override

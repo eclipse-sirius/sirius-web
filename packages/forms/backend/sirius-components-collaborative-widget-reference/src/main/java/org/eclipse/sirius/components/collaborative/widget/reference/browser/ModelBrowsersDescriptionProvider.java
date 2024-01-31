@@ -33,11 +33,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -241,19 +243,25 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         return kind;
     }
 
-    private String getLabel(VariableManager variableManager) {
+    private StyledString getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         String label = "";
-        if (self instanceof Resource resource) {
+        if (self instanceof RepresentationMetadata representationMetadata) {
+            label = representationMetadata.getLabel();
+        } else if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
         } else if (self instanceof EObject) {
-            label = this.objectService.getLabel(self);
-            if (label.isBlank()) {
+            StyledString styledString = this.objectService.getStyledLabel(self);
+            if (!styledString.toString().isBlank()) {
+                return styledString;
+            }
+            else {
                 var kind = this.objectService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
         }
-        return label;
+
+        return StyledString.of(label);
     }
 
     private String getResourceLabel(Resource resource) {
