@@ -1,0 +1,135 @@
+= ADR-132 - Add support for filters in Explorer View
+
+== Context
+
+In Sirius Web, the Explorer view displays tree containing data.
+These data comes from the backend where specifier have total control.
+But, once displayed in the Explorer view, end-users cannot (graphically) modify the tree.
+
+== Decision
+
+
+=== Filter contextual menu
+
+A new toolbar action will be added in the Explorer view's toolbar.
+This new action will display a list of filters, provided by the backend.
+
+For that, a new interface will be introduced in order to let specifiers provide new tree filters:
+
+```
+package org.eclipse.sirius.components.collaborative.trees.services.api;
+
+public ITreeFilterProvider {
+  List<TreeFilter> get(IEditingContext editingContext);
+}
+```
+
+```
+public record TreeFilter(String id, String label) {}
+```
+
+To retrieve the filters on the frontend, we will provide a new GraphQL endpoint dedicated to tree filters:
+
+```
+type TreeDescription implements RepresentationDescription {
+  // existing fields
+  filters: [TreeFilter!]!
+}
+
+type TreeFilter {
+  id: ID!
+  label: String!
+}
+```
+
+The frontend will display the filters in a contextual menu with some checkboxes to activate or not any filter.
+Since filters will only be active per instance of the representation subscribed by the frontend, the state of the filter will be stored on the frontend.
+
+For that, the `TreeView` component will store along with the list of `expanded` tree item ids, the activation state of each filters.
+The list of filters should probably be requested when the representation is opened, just like the diagram description in the diagram part.
+Anytime the activation state of a filter is updated, it should be transmitted in the backend subscription to refresh the representation.
+
+
+=== Subscription
+
+In order to have filters activated per subscription, we will need to keep the list of active filters in the `TreeEventInput` just like the list of expanded tree item ids.
+
+```
+input TreeEventInput {
+  // existing fields
+  activeFilterIds: [String!]!
+}
+```
+
+Once on the backend, this list of active filter identifiers will be used to compute the identifier of the tree, just like the list of expanded tree items today.
+They will also be provided to the tree renderer using the variable manager just like `TreeRenderer#EXPANDED`.
+Thanks to this propagation of the status of the filter, the backend will be able to compute things differently depending on the list of active filters.
+
+
+=== Filtering tree items
+
+In order to filter tree items, we will need to make the description of the explorer extensible and customizable.
+For that, the `ExplorerDescriptionProvider` will need to be configured with a list of `ITreeContentProvider` and `ITreeItemContentProvider`.
+Those providers will replace the default behavior which creates an explorer showing the structure of the semantic data.
+
+```
+package org.eclipse.sirius.web.services.explorer.api;
+
+public interface IExplorerTreeContentProvider {
+  boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds);
+
+  List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds);
+}
+```
+
+```
+package org.eclipse.sirius.web.services.explorer.api;
+
+public interface IExplorerTreeItemContentProvider {
+  boolean canHandle(Object object, List<String> activeFilterIds);
+
+  List<Object> getChildren(Object object, List<String> activeFilterIds);
+}
+```
+
+Thanks to those two interfaces, one could contribute a new `IExplorerTreeContentProvider` to display conditionnaly some specific resources:
+
+```
+@Service
+public class LibraryExplorerTreeContentProvider implements IExplorerTreeContentProvider {
+  public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
+    return // does the editing context supports what I want and is my filter active?
+  }
+
+  public List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds) {
+    return // Filter some resources from the editing context and return only a subset of the resources
+  }
+}
+```
+
+One could also filter the content of a tree item using the same approach:
+
+```
+@Service
+public class HideSomeFeatureTreeItemContentProvider implements IExplorerTreeItemContentProvider {
+  public boolean canHandle(Object object, List<String> activeFilterIds) {
+    return // is this object relevant for me and is my filter active?
+  }
+
+  public List<Object> getChildren(Object object, List<String> activeFilterIds) {
+    return // A custom subset of my containment relationships for example
+  }
+}
+```
+
+If at least one XxxContentProvider can handle the method `getElements` or `getChildren`, then we should not use the default behavior which is currently hardcoded in the `ExplorerDescriptionProvider` and which returns the structure of the semantic elements following containment relationships.
+If one specifier desire to customize the root elements and children of a specific level, we should not try to add anything more.
+
+
+== Consequences
+
+No consequences detected for now.
+
+== Status
+
+To be reviewed
