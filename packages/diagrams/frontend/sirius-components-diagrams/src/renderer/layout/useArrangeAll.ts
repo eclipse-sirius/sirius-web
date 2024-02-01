@@ -17,7 +17,7 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ListNodeData } from '../node/ListNode.types';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { headerVerticalOffset } from './layoutParams';
+import { headerVerticalOffset, labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
 import { RawDiagram } from './layout.types';
 import { useLayout } from './useLayout';
 import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
@@ -50,15 +50,30 @@ const elkOptions = {
   'elk.layered.spacing.edgeNodeBetweenLayers': '40',
 };
 
-const computeContainerLabel = (parentNode, viewportZoom): ElkLabel[] => {
+const computeLabels = (node, viewportZoom: number): ElkLabel[] => {
   const labels: ElkLabel[] = [];
-  if (parentNode && parentNode.data.insideLabel) {
-    const label = document.querySelector<HTMLDivElement>(`[data-id="${parentNode.data.insideLabel.id}-content"]`);
+  if (node && node.data.insideLabel) {
+    const label = document.querySelector<HTMLDivElement>(`[data-id="${node.data.insideLabel.id}-content"]`);
     if (label) {
       const elkLabel: ElkLabel = {
-        width: label.getBoundingClientRect().width / viewportZoom,
-        height: label.getBoundingClientRect().height / viewportZoom,
-        text: parentNode.data.insideLabel.text,
+        id: node.data.insideLabel.id,
+        width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
+        height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
+        text: node.data.insideLabel.text,
+      };
+      labels.push(elkLabel);
+    }
+  }
+  if (node && node.data.outsideLabels.BOTTOM_MIDDLE) {
+    const label = document.querySelector<HTMLDivElement>(
+      `[data-id="${node.data.outsideLabels.BOTTOM_MIDDLE.id}-content"]`
+    );
+    if (label) {
+      const elkLabel: ElkLabel = {
+        id: node.data.outsideLabels.BOTTOM_MIDDLE.id,
+        width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
+        height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
+        text: node.data.outsideLabels.BOTTOM_MIDDLE.text,
       };
       labels.push(elkLabel);
     }
@@ -77,7 +92,6 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
   const getELKLayout = async (
     nodes,
     edges,
-    labels: ElkLabel[],
     options: LayoutOptions = {},
     parentNodeId: string,
     withHeader: boolean
@@ -86,7 +100,7 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
       id: parentNodeId,
       layoutOptions: options,
       children: nodes.map((node) => ({
-        labels,
+        labels: computeLabels(node, viewport.zoom),
         ...node,
       })),
       edges,
@@ -140,27 +154,22 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
           edge.source = parentNodeId;
         }
       });
-      await getELKLayout(
-        subGroupNodes,
-        subGroupEdges,
-        computeContainerLabel(parentNode, viewport.zoom),
-        elkOptions,
-        parentNodeId,
-        withHeader
-      ).then(({ nodes: layoutedSubNodes, layoutReturn }) => {
-        const parentNode = allNodes.find((node) => node.id === parentNodeId);
-        if (parentNode) {
-          parentNode.width = layoutReturn.width;
-          parentNode.height = layoutReturn.height + (withHeader ? headerVerticalOffset : 0);
-          parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
-          parentNodeWithNewSize.push(parentNode);
+      await getELKLayout(subGroupNodes, subGroupEdges, elkOptions, parentNodeId, withHeader).then(
+        ({ nodes: layoutedSubNodes, layoutReturn }) => {
+          const parentNode = allNodes.find((node) => node.id === parentNodeId);
+          if (parentNode) {
+            parentNode.width = layoutReturn.width;
+            parentNode.height = layoutReturn.height + (withHeader ? headerVerticalOffset : 0);
+            parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
+            parentNodeWithNewSize.push(parentNode);
+          }
+          layoutedAllNodes = [
+            ...layoutedAllNodes,
+            ...layoutedSubNodes,
+            ...nodes.filter((node) => node.data.isBorderNode),
+          ];
         }
-        layoutedAllNodes = [
-          ...layoutedAllNodes,
-          ...layoutedSubNodes,
-          ...nodes.filter((node) => node.data.isBorderNode),
-        ];
-      });
+      );
     }
     return layoutedAllNodes;
   };
@@ -170,6 +179,7 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
     const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
     applyElkOnSubNodes(subNodes, nodes).then((nodes: Node<NodeData, string>[]) => {
       const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
+      laidOutNodesWithElk.forEach((node) => (node.data.resizedByUser = true)); // allows elk to resize nodes during layout
 
       const diagramToLayout: RawDiagram = {
         nodes: laidOutNodesWithElk,

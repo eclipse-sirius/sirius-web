@@ -98,6 +98,25 @@ export const prepareLayoutArea = (
       });
       labelElements.push(element);
     }
+    if (hiddenContainer && node.data.outsideLabels.BOTTOM_MIDDLE) {
+      const outsideLabel = node.data.outsideLabels.BOTTOM_MIDDLE;
+      const children: JSX.Element[] = [
+        createElement(Label, {
+          diagramElementId: node.id,
+          label: outsideLabel,
+          faded: false,
+          transform: '',
+          key: outsideLabel.id,
+        }),
+      ];
+      const element: JSX.Element = createElement('div', {
+        id: `${outsideLabel.id}-label`,
+        key: `${outsideLabel.id}-label`,
+        role: 'button', // role applied by react flow
+        children,
+      });
+      labelElements.push(element);
+    }
   });
 
   // The container used to render label is a flex container authorizing wrapping.

@@ -20,3 +20,5 @@ export const borderNodeOffset = 5;
 export const defaultWidth = 150;
 export const defaultHeight = 70;
 export const headerVerticalOffset = 25;
+export const labelVerticalPadding = 8;
+export const labelHorizontalPadding = 16;
