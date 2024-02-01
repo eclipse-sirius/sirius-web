@@ -63,6 +63,7 @@ This changes a core assumption from before where an element known to those servi
 - https://github.com/eclipse-sirius/sirius-web/issues/3030[#3030] [diagram] Fix the position of the palette when multiple diagrams are open at the same time (e.g. inside a portal)
 - https://github.com/eclipse-sirius/sirius-web/issues/2823[#2823] [diagram] Fix an issue that prevents nodes from being resized smaller than their default size.
 - https://github.com/eclipse-sirius/sirius-web/issues/3063[#3063] [selection] Ensure Selections are always refreshed using the _current_ version of their target element
+- https://github.com/eclipse-sirius/sirius-web/issues/2721[#2721] [diagram] Prevent labels to exceed their container
 
 === New Features
 
