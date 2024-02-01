@@ -1,0 +1,72 @@
+= Evolution of the Sirius Web architecture
+Stéphane Bégaudeau <stephane.begaudeau@obeo.fr>
+:description: Technical explanation of the changes that will be made in the architecture of Sirius Web.
+:revdate: 2024-01-31
+
+WARNING: This is a living document which will be updated multiple times during the iteration to clarify where we are heading. Take everything written here with a pinch of salt.
+
+== Context
+
+For a long time, Sirius Web has been a sample application showing how to build a Spring and React based application integrating every features of Sirius Components.
+Over the time, our community has grown and multiple applications based on Sirius Components have started to appear.
+The desire for something more opinionated than a sample application has grown too.
+For that, we are modernizing the architecture of Sirius Web in order to match the various expectations of our community.
+
+Most of the consumers of Sirius Components seems to have little desire to build their own application from scratch.
+While we want to keep the ability to build a custom based application on your own, we want to simplify a large set of use cases by providing a reference implementation which can be extended and configured easily.
+
+For that, we will perform some key changes in both the backend and the frontend of Sirius Web.
+
+== Backend
+
+The Sirius Web backend is based on a "layered architecture" with:
+
+- The controller layer containing our GraphQL API
+- The service layer containing our business services
+- The persistence layer containing our repositories and entities
+
+While this has worked well for the last few years, we believe that this architecture needs to evolve in order to achieve additional goals.
+
+=== Goals
+
+We will modernize our architecture in order to clarify the various parts of Sirius Web, how they can be reused and extended.
+For that, we will move to a "domain driven design" (DDD) approach in order to leverage its advantages regarding the reusability of the code.
+We will thus start by organizing our project by following domain driven design best practices with:
+
+- The domain containing our key business objects, repositories and services
+- The infrastructure containing the configuration and communication with other technologies
+- The application containing our communication with remote parts
+
+While this approach is popular for those who are building micro-services based applications, we do not intend on transforming Sirius Web into a micro-services based application.
+This approach will instead help us clarify the various parts of Sirius Web, their responsibility and how they interact one with the other.
+Sirius Web will still be a modular monolith.
+
+NOTE: The term "domain" mentioned in this document and other architectural documents is a reference to the project `sirius-web-domain` which will contain the key parts of the Sirius Web business domain.
+It has nothing to do with the projects `sirius-components-domain-xxx` which are used by end users to define the concepts of their business domain.
+
+On the other hand, this modernization effort will also simplify the lifecycle of the application for consumers of Sirius Web.
+For that, we will also embrace an "event driven architecture" (EDA) to serve as the structure of the application.
+Thanks to an event driven architecture, we will be able to clarify the lifecycle of the application and provide a bird eye view of the various capabilities of our architecture.
+It will help us decouple parts of our application and make the boundaries between the various parts of our application more visible in order to embrace a domain driven design approach.
+
+This evolution will have a minimal impact on the code of Sirius Components modules.
+
+=== Evolution
+
+We will start by updating our reference documentation with details of the new architecture and its constraints.
+We will detail in this reference documentation the clear rules to respect with the new architecture.
+We will use new architectural tests to enforce them.
+
+This new architecture will start by a heavy transformation of our current persistence layer which will be replaced by our domain.
+The domain will have more responsibilities, more code and way more complex code then our current persistence layermake us have a richer domain layer with more complex classes.
+We will stop relying on plain old Java objects (POJO) anymore for the persistence.
+This approach is way too limited for our new needs.
+
+We will have to start thinking in aggregate which will come with a deep change of philosophy of the code.
+Our technological stack will mostly remain the same.
+The main difference will be the switch to `spring-boot-starter-data-jdbc` instead of `spring-boot-starter-data-jpa`.
+Spring Data JPA is a great project but way overkill for one current needs.
+It also comes with a massive amount of complexity which, at best, we are ignoring.
+We will simplify how we interact with the database by switching to Spring Data JDBC.
+This more recent project has been created with a domain driven approach in mind and as such it will greatly help us enforce some key principles of our architecture.
+We may move back to Spring Data JPA one day in the future if we feel the need for some of the complexity that it provides.
