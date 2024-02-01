@@ -33,8 +33,6 @@
 
 	<modules>
 		<module>sirius-components-diagrams</module>
-		<module>sirius-components-diagrams-layout-api</module>
-		<module>sirius-components-diagrams-layout</module>
 		<module>sirius-components-diagrams-tests</module>
 		<module>sirius-components-collaborative-diagrams</module>
 		<module>sirius-components-diagrams-graphql</module>

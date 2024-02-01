@@ -1,9 +1,0 @@
-{
-  "name": "diag:Root",
-  "children": [
-    {
-      "name": "rect:Parent",
-      "children": []
-    }
-  ]
-}
