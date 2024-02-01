@@ -1,0 +1,186 @@
+= Architecture
+Stéphane Bégaudeau <stephane.begaudeau@obeo.fr>
+:description: Reference documentation on the architecture of Sirius Web and Sirius Components
+:revdate: 2024-01-31
+
+== Sirius Web Backend
+
+NOTE: This document is being written while we are transforming the Sirius Web architecture.
+As a result, everything written here may not have been applied yet in the code base.
+This document will also evolve very quickly.
+
+The Sirius Web backend embraces a domain driven design approach with an event driven architecture.
+Its code is separated in the following maven modules:
+
+- sirius-web-domain
+- sirius-web-application
+- sirius-web-infrastructure
+- sirius-web-starter
+
+=== Sirius Web Domain
+
+This module contains the key parts of the domain logic of Sirius Web.
+This is the place where most of the business code of Sirius Web will live.
+
+=== Dependencies
+
+This module will contain the data and services used to manipulate our business needs.
+For that, it will leverage on the following dependencies:
+
+* `spring-boot-starter-data-jdbc`
+** Spring Data Relational
+*** Annotations like `@Table` or `@Column`
+** Spring Data Domain for API specific for domain driven design
+** Spring Data in general to express the mapping of our data
+*** Annotations like `@Id`
+* `spring-boot-starter-validation` to help perform some validation
+* Spring Modulith
+** jmolecules
+
+While some purists of domain driven design and hexagonal architecture may explain that our domain should not have any technical dependency, we have no interest right now in setting up a more complex architecture in order to make our domain independent of any persistence solution.
+We are not planning anytime soon to add support for MongoDB or some non-relational database as a persistence solution in Sirius Web.
+Having a small dependency to Spring Data and Spring Data JDBC is thus not an issue for us.
+
+=== Bounded Contexts
+
+The domain of Sirius Web will be separated into multiple bounded contexts.
+Some concepts will exist only in one of those bounded contexts while others may exist in multiple bounded contexts but with different details.
+Each bounded context is then subdivided into aggregates.
+Most of the time our bounded contexts will have only one aggregate since they are quite simple but it will change over time.
+
+=== Aggregates
+
+The aggregates are the atomic unit of data persistence.
+We will thus load and save data as aggregates.
+For that, we have identified one object per aggregate used as the root of the aggregate which will be used as the entry point.
+
+==== Aggregate Roots
+
+All aggregate roots must extend the class `AbstractAggregateRoot` from Spring Data directly or indirectly.
+Thanks to this, they will be properly identified by various Spring projects.
+
+A Spring repository must exist for each aggregate root and only for them.
+This ensures that aggregates can only be manipulated thanks to their aggregate root.
+It is a key constraint that will shape the code of the persistence.
+
+All modifications of an aggregate must be performed thanks to the aggregate root.
+With this approach, we will ensure that we have a single point of entry for any modification of the aggregate to guarantee the structural consistency of the aggregate.
+Thanks to this constraint, we will be able to easily ensure that the aggregate root will be the concept responsible for all events emitted from the aggregate.
+The aggregate root will not perform business validation since this task will require too much business code and dependencies.
+
+The aggregate root should at least provide a creation date and a last modification date.
+Entities and value objects may also provide such properties.
+
+==== Implementation
+
+An aggregate is composed of both entities and value objects.
+
+Entities have an identity which is unique and stable over time.
+Two entities with the same properties but a different identity are not the same, just like two individuals named John Doe.
+We will use `UUID` most of the time as the identity of an entity.
+Entities must be implemented with classes.
+
+Value objects have no concept of identity on top of their properties.
+Two value objects with the same properties are the same, for example two user addresses are the same objects if they designated the same location.
+Since they have no stable identity over time apart from the properties, value objects should be implemented using records.
+
+While we will have a large set of objects as part of our aggregates, they will not follow the principles of plain old Java objects (POJO) or the JavaBeans specification.
+For example, our entities and value objects must not have any setter.
+Setters are considered to be simple methods used to update a single property without side effects.
+In our situation, the methods available to update the aggregate will be available on the aggregate root.
+They may not update the properties of the aggregate root.
+The may update the properties of dozens of objects at once.
+Finally, they will have some side effect since they must emit an event to indicate that something has been changed.
+The methods used to modify the aggregate will instead try to be named `updateXxx(...)`.
+
+The aggregate roots should use a builder pattern in order to perform the proper initialization of the aggregate.
+Among those task, will be the initialization of the identity of the entities.
+If the aggregate roots want to send an event, it will need properly identified entities otherwise the event will be worthless for consumers.
+For that, our aggregate roots will have to implement the interface `Persistable` from Spring Data to control the lifecycle of persistence.
+
+==== References
+
+References are allowed without much constraints inside an aggregate.
+On the other hand, references cannot cross the aggregate boundary since it would imply that we would persist objects from outside our aggregate.
+In order to ensure that references do not violate this constraint, we will have architectural tests enforcing this constraint.
+On top of that, the annotations `@ManyToOne` and `@ManyToMany` which allow back-references across aggregates are must not be used.
+
+References to objects in another aggregates can only be represented using the class `AggregateReference`.
+Since the unit of persistence is the aggregate which can only be manipulated by its root, references to objects in another aggregate must include the identity of the root too.
+
+==== Persistence
+
+While we are following a domain driven design approach, we will use foreign keys to create relations between tables in our database.
+This includes foreign keys between concepts from different aggregates.
+In theory, one could say that only events should be used to synchronize various aggregates.
+
+For the time being, since we are not trying to build a set of micro-services, we will not prevent ourselves from leveraging our database to perform some cascade effects during the deletion of a concept.
+
+=== Events
+
+On top of the aggregates, the bounded contexts will also contain various events.
+They will be used to synchronize the lifecycle of the application between aggregates.
+Every modification of domain should fire at least an event.
+
+Events are implemented using records implementing `IDomainEvent`.
+Events must allow their consumers to retrieve the source of the event.
+Either by providing its identifier or the object directly.
+We will try different approaches for our various kind of events.
+
+Events must provide a creation time.
+
+=== Domain Services
+
+The bounded contexts will contain various domain services.
+Those services are used to perform the various queries and mutations of the aggregates.
+They must not perform any transaction and they should be as small as reasonably possible since they should be composable in any way by various consumers.
+
+They must not throw any exception but instead rely on objects to indicate a failure or success.
+In order to keep a strong typing, the various identifiers which should be manipulated must use the class `AggregateReference`.
+
+=== Metadata
+
+We will add `package-info.java` files in several key packages of our bounded contexts in order to identify the role of each package.
+They will be used to express the dependencies of the various bounded contexts of the domain.
+Thanks to them, tools like Spring Modulith and JMolecules will be able to perform various checks of our architecture.
+
+
+=== Sirius Web Application
+
+This module is be responsible, among other things, for the communication with the outside world.
+It contains the various controllers of our REST and GraphQL API for both HTTP and WebSocket support.
+It also contains the static resources of the frontend.
+
+This module is also in charge of cross aggregate query, update and synchronization.
+Think about it as the part of the code which receive a request from outside, requests data from various bounded contexts (or micro-services), update others and send a response back.
+
+==== Application Services
+
+Application services are used to create a response for a given request.
+For example, for the requests asking for a mutation of the system, they will receive an `IInput` and respond with an `IPayload`.
+
+To build this response, they will leverage one or more domain services which they will surround with a transaction.
+The management of transactions is under the responsibility of the application module.
+
+==== Listeners
+
+Listeners can be viewed as a kind of application services which received events as a request to perform some action.
+They are responsible for cross-aggregate synchronisation.
+
+They will also manage transactions and leverage domain service to perform their tasks.
+
+
+=== Sirius Web Infrastructure
+
+This module is used to configure technical solutions on which the system is built.
+It will contain various Spring configurations such as the configuration of Spring Data and PostgreSQL, Liquibase, GraphQL Java, etc.
+
+It contains static configuration data like our database changesets, our GraphQL schema, etc.
+
+Configuration of Sirius Components specific code will also end up in this module.
+
+
+=== Sirius Web Starter
+
+This module is a Spring starter which will be used as the sole entry point for those who want to build an application on top of Sirius Web.
+It will configure everything related to Sirius Web and Sirius Components.
