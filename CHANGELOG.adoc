@@ -75,7 +75,7 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3050[#3050] [sirius-web] Contributes a first version of the new Sirius Web architecture
 - https://github.com/eclipse-sirius/sirius-web/issues/1844[#1844] [emf] Unload resources by default when the EMF based editing context is disposed
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Improve the creation of the Apollo GraphQL client.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3056[#3056] [trees] Expand the clickable/draggable zone for tree items
 
 == v2024.1.0
 

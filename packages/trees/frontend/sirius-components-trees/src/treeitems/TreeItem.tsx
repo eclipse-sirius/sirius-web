@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -412,16 +412,19 @@ export const TreeItem = ({
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
-        <div className={className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div
+          className={className}
+          draggable={true}
+          onClick={onClick}
+          onDragStart={dragStart}
+          onDragOver={dragOver}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${item.label}-toggle`} />
           <div
             ref={refDom}
             tabIndex={0}
             onKeyDown={onBeginEditing}
-            draggable={true}
-            onClick={onClick}
-            onDragStart={dragStart}
-            onDragOver={dragOver}
             data-treeitemid={item.id}
             data-treeitemlabel={item.label}
             data-treeitemkind={item.kind}
