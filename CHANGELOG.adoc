@@ -69,6 +69,8 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/2732[#2732] [diagram] Add missing support for feedback messages on tool action.
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Simplify the code used to update the navigation bar menu and icon.
 - https://github.com/eclipse-sirius/sirius-web/issues/3024[#3024] [diagram] Added two new variables `semanticEdgeSource` and `graphicalEdgeSource` to compute the target nodes of an edge.
+- https://github.com/eclipse-sirius/sirius-web/issues/3050[#3050] [sirius-web] Contributes a first version of the new Sirius Web architecture
+
 
 == v2024.1.0
 

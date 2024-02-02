@@ -162,6 +162,10 @@ For example, for the requests asking for a mutation of the system, they will rec
 To build this response, they will leverage one or more domain services which they will surround with a transaction.
 The management of transactions is under the responsibility of the application module.
 
+Transactions can involve reading data from multiple bounded contexts to perform some changes but a transaction should as must as possible change data only from a single bounded countext.
+It cannot be done 100% of the time since some business concerns can require quite complex update at a time but we should try to minimize such weakpoint as much as possible.
+Instead other bounded contexts should react to the events sent by the transaction.
+
 ==== Listeners
 
 Listeners can be viewed as a kind of application services which received events as a request to perform some action.
