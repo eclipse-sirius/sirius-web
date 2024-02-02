@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2024 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="01-initial-schema" author="sbegaudeau">
+        <sql dbms="PostgreSQL">
+            CREATE EXTENSION IF NOT EXISTS pgcrypto
+        </sql>
+
+        <createTable tableName="project">
+            <column name="id"  type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="TEXT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE project ADD CONSTRAINT project_name_length CHECK (char_length(name) &gt; 0 AND char_length(name) &lt;= 1024)
+        </sql>
+
+        <createTable tableName="nature">
+            <column name="project_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="TEXT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="nature" columnNames="project_id, name"/>
+        <addForeignKeyConstraint baseTableName="nature" baseColumnNames="project_id" constraintName="fk_nature_project_id" referencedTableName="project" referencedColumnNames="id" onDelete="CASCADE"/>
+        <sql>
+            ALTER TABLE nature ADD CONSTRAINT nature_name_length CHECK (char_length(name) &gt; 0 AND char_length(name) &lt;= 1024)
+        </sql>
+
+    </changeSet>
+</databaseChangeLog>

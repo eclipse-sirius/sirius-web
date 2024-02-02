@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2022 Obeo.
+ Copyright (c) 2022, 2024 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -43,5 +43,11 @@
 		<module>sirius-web-sample-application</module>
 		<module>sirius-web-customnodes</module>
 		<module>sirius-web-customnodes-edit</module>
+
+		<module>sirius-web-domain</module>
+		<module>sirius-web-application</module>
+		<module>sirius-web-infrastructure</module>
+		<module>sirius-web-starter</module>
+		<module>sirius-web</module>
 	</modules>
 </project>
