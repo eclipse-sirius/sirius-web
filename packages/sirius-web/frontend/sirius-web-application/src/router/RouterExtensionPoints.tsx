@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
-import { Theme } from '@material-ui/core/styles';
-import { ReactNode } from 'react';
 
-export interface SiriusWebApplicationProps {
-  httpOrigin: string;
-  wsOrigin: string;
-  extensionRegistry?: ExtensionRegistry;
-  theme?: Theme;
-  children?: ReactNode;
-}
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { RouterProps } from 'react-router-dom';
+
+export const routerExtensionPoint: DataExtensionPoint<Array<RouterProps>> = {
+  identifier: 'router#routes',
+  fallback: [],
+};

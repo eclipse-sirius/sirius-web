@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 import React from 'react';
-import { SiriusIcon } from '../core/SiriusIcon';
-import { Help } from '../navigationBar/Help';
-import { ViewsContextValue } from './ViewsContext.types';
+import { ExtensionContextValue, ExtensionProviderProps } from './ExtensionProvider.types';
+import { ExtensionRegistry } from './ExtensionRegistry';
 
-const applicationIcon: JSX.Element = <SiriusIcon fontSize="large" />;
-const applicationBarMenu: JSX.Element = <Help />;
-const defaultValue: ViewsContextValue = {
-  applicationIcon,
-  applicationBarMenu,
+export const ExtensionContext = React.createContext<ExtensionContextValue>({
+  registry: new ExtensionRegistry(),
+});
+
+export const ExtensionProvider = ({ children, registry }: ExtensionProviderProps) => {
+  return <ExtensionContext.Provider value={{ registry }}>{children}</ExtensionContext.Provider>;
 };
-
-export const ViewsContext = React.createContext<ViewsContextValue>(defaultValue);

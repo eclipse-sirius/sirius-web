@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,4 +14,8 @@
 export { SiriusWebApplication } from './application/SiriusWebApplication';
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
 export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
-export { Views } from './views/Views';
+export { type NavigationBarIconProps, type NavigationBarMenuProps } from './navigationBar/NavigationBar.types';
+export {
+  navigationBarIconExtensionPoint,
+  navigationBarMenuExtensionPoint,
+} from './navigationBar/NavigationBarExtensionPoints';
