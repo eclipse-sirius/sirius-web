@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { createPortal } from 'react-dom';
+import { useStoreApi } from 'reactflow';
 import { PalettePortalProps } from './PalettePortal.types';
 
 //The sibling dom element .react-flow__renderer have a zIndex of 4, so we set it here to 5 to have the palette in front of the diagram.
@@ -21,7 +22,7 @@ const palettePortalStyle: React.CSSProperties = {
 };
 
 export const PalettePortal = ({ children }: PalettePortalProps) => {
-  const wrapperRef = document.querySelector('.react-flow');
+  const wrapperRef = useStoreApi().getState().domNode;
 
   if (!wrapperRef) {
     return null;
