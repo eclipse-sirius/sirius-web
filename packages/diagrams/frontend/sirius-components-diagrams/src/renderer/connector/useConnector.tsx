@@ -57,7 +57,8 @@ export const useConnector = (): UseConnectorValue => {
   const updateNodeInternals = useUpdateNodeInternals();
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
   const connectionNodeId = useStore((state) => state.connectionNodeId);
-  const isConnectionInProgress = !!connectionNodeId || !!connection;
+  const isConnectionInProgress = (!!connectionNodeId && isNewConnection) || !!connection;
+  const isReconnectionInProgress = !!connectionNodeId && !isNewConnection;
 
   const newConnectionStyleProvider: NodeStyleProvider = {
     getNodeStyle: (id: string, descriptionId: string): React.CSSProperties => {
@@ -105,7 +106,7 @@ export const useConnector = (): UseConnectorValue => {
         updateNodeInternals(params.nodeId);
       }
     },
-    []
+    [hideDiagramElementPalette]
   );
 
   const onConnectorContextualMenuClose = () => resetConnection();
@@ -170,6 +171,7 @@ export const useConnector = (): UseConnectorValue => {
     connection,
     position,
     isConnectionInProgress,
+    isReconnectionInProgress,
     candidates,
   };
 };
