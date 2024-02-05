@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.selection.api.ISelectionEvent
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -56,9 +57,11 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private final SelectionDescription selectionDescription;
 
+    private final IObjectService objectService;
+
     private final String id;
 
-    private final Object object;
+    private final String objectId;
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
@@ -68,14 +71,14 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private final AtomicReference<Selection> currentSelection = new AtomicReference<>();
 
-    public SelectionEventProcessor(IEditingContext editingContext, SelectionDescription selectionDescription, String id, Object object, ISubscriptionManager subscriptionManager,
+    public SelectionEventProcessor(IEditingContext editingContext, IObjectService objectService, SelectionDescription selectionDescription, String id, String objectId, ISubscriptionManager subscriptionManager,
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
         this.logger.trace("Creating the selection event processor {}", id);
-
+        this.objectService = Objects.requireNonNull(objectService);
         this.selectionDescription = Objects.requireNonNull(selectionDescription);
         this.editingContext = Objects.requireNonNull(editingContext);
         this.id = Objects.requireNonNull(id);
-        this.object = Objects.requireNonNull(object);
+        this.objectId = Objects.requireNonNull(objectId);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
 
@@ -129,7 +132,8 @@ public class SelectionEventProcessor implements ISelectionEventProcessor {
 
     private Selection refreshSelection() {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, this.object);
+        var optionalObject = this.objectService.getObject(this.editingContext, this.objectId);
+        variableManager.put(VariableManager.SELF, optionalObject.orElse(null));
         variableManager.put(IEditingContext.EDITING_CONTEXT, this.editingContext);
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.id);
 
