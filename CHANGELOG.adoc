@@ -6,6 +6,7 @@
 
 - Transform Sirius Web into an extensible platform
 - Facilitate the insertion of elements into a list node
+- Add support to filter elements on a diagram
 
 === Architectural decision records
 
@@ -14,6 +15,7 @@
 - [ADR-128] Add the ability to extend the Sirius Web backend
 - [ADR-129] Add support for confirmation dialogs
 - [ADR-130] Add support for outside and inside node labels
+- [ADR-131] Add more filtering capabilities on diagram
 
 === Breaking changes
 

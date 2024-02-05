@@ -1,0 +1,44 @@
+= ADR-131 - Add more filtering capabilities on diagram
+
+== Context
+
+A new modal will be accessible from the diagram panel or the palette of an element.
+This modal will display the structure of the diagram as a tree or the structure of the selected element.
+From this modal it will be possible to change the appearance of elements.
+
+== Decision
+
+The modal will be a representation and be synchronized with the content of the diagram.
+We need a tree to display elements, a text area to filter elements and a button to apply a change of appearance to selected elements.
+Since form based representation can already contain a tree, text area and button, we will use that.
+
+
+== Consequences
+
+We will need to add some features to existing widgets : 
+
+* Add multiple selection to tree widget (this will add checkboxes)
+* Add icons after the label of a tree element (to see the current appearance)
+* Add multiple action to a button (drop down button)
+* The text to filter elements will need to allow us to set several filter (filter by appearance for example)
+
+We might add a dedicated ADR per feature listed above.
+
+The actual behavior of forms will not allow us to share the filtered elements from the text area to the tree and to share the selected elements on the tree to the button.
+To be able to share variables between widgets we will continue the work done on [ADR-109] Link widgets together in forms.
+We will add a new attribute to Node and Edges that will allow us to change the label appearance of an element.
+
+[source,java]
+----
+public enum ViewLabelModifier {
+    Visible, IconHidden, LabelHidden, Hidden
+}
+----
+
+On top of all that, we will need to build a form-based representation displaying the content of another representation synchronized in real time.
+In this representation, we will have to leverage new diagram services to change the appearance of the relevant diagram elements.
+
+
+== Status
+
+Work in progress
