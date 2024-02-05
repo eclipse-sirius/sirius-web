@@ -39,6 +39,7 @@ As a result, all the APIs relying on this code have been deleted too such as the
 - https://github.com/eclipse-sirius/sirius-web/issues/2799[#2799] [diagram] Remove the unwanted space between the header and first element in list node
 - https://github.com/eclipse-sirius/sirius-web/issues/2822[#2822] [diagram] Prevent direct edit to be triggered on edge if there is no edit label tool corresponding
 - https://github.com/eclipse-sirius/sirius-web/issues/3061[#3061] [form] Ensure Forms are always refreshed using the _current_ version of their target element
+- https://github.com/eclipse-sirius/sirius-web/issues/3052[#3052] [diagram] Fix an issue that prevented user from reconnecting an edge.
 
 === New Features
 
