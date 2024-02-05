@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,9 +72,9 @@ public class SelectionEventProcessorFactory implements IRepresentationEventProce
             Optional<Object> optionalObject = this.objectService.getObject(editingContext, selectionConfiguration.getTargetObjectId());
             if (optionalSelectionDescription.isPresent() && optionalObject.isPresent()) {
                 SelectionDescription selectionDescription = optionalSelectionDescription.get();
-                Object object = optionalObject.get();
+                String objectId = this.objectService.getId(optionalObject.get());
 
-                IRepresentationEventProcessor selectionEventProcessor = new SelectionEventProcessor(editingContext, selectionDescription, selectionConfiguration.getId(), object,
+                IRepresentationEventProcessor selectionEventProcessor = new SelectionEventProcessor(editingContext, this.objectService, selectionDescription, selectionConfiguration.getId(), objectId,
                         this.subscriptionManagerFactory.create(), this.representationRefreshPolicyRegistry);
 
                 // @formatter:off
