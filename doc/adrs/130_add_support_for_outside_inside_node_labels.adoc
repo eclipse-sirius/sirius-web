@@ -1,0 +1,40 @@
+= ADR-130 - Add support for outside and inside node labels
+
+== Context
+
+In the future, a node should be able to manage a large number of labels:
+
+* one label contained inside the node with different position options (_top-center_, _center-right_...)
+* several labels outside the node (_bottom-center_, _right-center_...)
+
+Today only one label can be declared per node, and its position is fixed according to its node type.
+
+For example, for a `RectangularNodeStyle`, it will be placed inside at the _top-center_, while for an `ImageNodeStyle`, it will be placed outside at the _bottom-center_.
+
+== Decision
+
+Change in the structure of the View DSL:
+
+* `labelExpression` will no longer be an attribute of `DiagramElementDescription`
+* `NodeStyleDescription` will no longer depend on `LabelStyle`, and `showIcon`, `labelIcon` will be removed.
+* With the removal from `DiagramElementDescription`, `centerLabelExpression` will be added directly to `EdgeDescription`
+* Add `InsideLabelDescription` and `OutsideLabelDescription` classes
+* `insideLabel` (mono-value) and `outsideLabels` (multi-value) references added to `NodeDescription`
+* `NodeLabelStyle` with super type `LabelStyle` (only to carry the `labelColor`, `showIcon` and `labelIcon`)
+* `InsideLabelDescription` and `OutsideLabelDescription` extends a new super type `LabelDescription` with the attribute `labelExpression` and reference `style`
+* `InsideLabelStyle` and `OutsideLabelStyle` with super type `NodeLabelStyle` and the equivalent in conditional
+* `withHeader` and `displayHeaderSeparator` will be moved from `RectangularNodeStyleDescription` to `InsideLabelStyle`
+
+`InsideLabelDescription` and `OutsideLabelDescription` will have one attribute `position` of type respectively `InsideLabelPosition` and `OutsideLabelPosition`.
+
+For now, `InsideLabelPosition` will have only one value _top-center_.
+`OutsideLabelPosition` will have only one value _bottom-center_.
+
+== Consequences
+
+* It's possible to declare a node without any label.
+* These changes will break the existing `DiagramDescription`.
+
+== Status
+
+Work in progress
