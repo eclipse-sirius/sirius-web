@@ -25,7 +25,7 @@ The reference widget graphql schema and the frontend have been updated according
 - https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Rename the package `sirius-components-diagrams-reactflow` to `sirius-components-diagrams` since we only have one implementation now
 - https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove the modules `sirius-components-diagrams-layout-api` and `sirius-components-diagrams-layout` in favor of the frontend based layout API.
 As a result, all the APIs relying on this code have been deleted too such as the dead code used to export diagrams on the server or the API for parametric SVGs which was replaced in Reactflow based diagrams.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Remove the component `Views` and its dependencies in favor of a more straightforward API.
 
 === Dependency update
 
@@ -55,6 +55,7 @@ Its body operations are now bind on set/add instead of click.
 - https://github.com/eclipse-sirius/sirius-web/issues/3000[#3000] [portal] Portals which already contain representation now open in "direct" mode.
 - https://github.com/eclipse-sirius/sirius-web/issues/2875[#2875] [forms] Make the Representations view a plain FormBasedView
 - https://github.com/eclipse-sirius/sirius-web/issues/2732[#2732] [diagram] Add missing support for feedback messages on tool action.
+- https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Simplify the code used to update the navigation bar menu and icon.
 
 == v2024.1.0
 

@@ -18,6 +18,18 @@ export * from './contexts/ServerContext.types';
 export * from './contexts/ToastContext';
 export * from './contexts/ToastContext.types';
 export * from './dataTransferTypes';
+export { ExtensionProvider } from './extension/ExtensionProvider';
+export { type ExtensionProviderProps } from './extension/ExtensionProvider.types';
+export { ExtensionRegistry } from './extension/ExtensionRegistry';
+export {
+  type ComponentExtension,
+  type ComponentExtensionPoint,
+  type DataExtension,
+  type DataExtensionPoint,
+} from './extension/ExtensionRegistry.types';
+export { useComponent } from './extension/useComponent';
+export { useComponents } from './extension/useComponents';
+export { useData } from './extension/useData';
 export * from './graphql/GQLTypes.types';
 export * from './icon/IconOverlay';
 export * from './materialui';

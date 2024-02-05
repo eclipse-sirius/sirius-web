@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useComponent } from '@eclipse-sirius/sirius-components-core';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { emphasize, makeStyles } from '@material-ui/core/styles';
-import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { ViewsContext } from '../views/ViewsContext';
-import { ViewsContextValue } from '../views/ViewsContext.types';
 import { NavigationBarProps } from './NavigationBar.types';
+import { navigationBarIconExtensionPoint, navigationBarMenuExtensionPoint } from './NavigationBarExtensionPoints';
 
 const useNavigationBarStyles = makeStyles((theme) => ({
   navbar: {
@@ -63,7 +62,8 @@ const useNavigationBarStyles = makeStyles((theme) => ({
 export const NavigationBar = ({ children }: NavigationBarProps) => {
   const classes = useNavigationBarStyles();
 
-  const { applicationIcon, applicationBarMenu } = useContext<ViewsContextValue>(ViewsContext);
+  const { Component: Icon } = useComponent(navigationBarIconExtensionPoint);
+  const { Component: Menu } = useComponent(navigationBarMenuExtensionPoint);
 
   return (
     <div className={classes.navbar}>
@@ -74,13 +74,15 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
             <Tooltip title="Back to the homepage">
               <Link component={RouterLink} to="/" className={classes.link} color="inherit">
                 <IconButton className={classes.onDarkBackground} color="inherit">
-                  {applicationIcon}
+                  <Icon />
                 </IconButton>
               </Link>
             </Tooltip>
           </div>
           {children}
-          <div className={classes.right}>{applicationBarMenu}</div>
+          <div className={classes.right}>
+            <Menu />
+          </div>
         </Toolbar>
       </AppBar>
     </div>
