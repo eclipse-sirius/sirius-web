@@ -13,6 +13,7 @@
 - [ADR-127] Add the ability to extend the Sirius Web frontend
 - [ADR-128] Add the ability to extend the Sirius Web backend
 - [ADR-129] Add support for confirmation dialogs
+- [ADR-130] Add support for outside and inside node labels
 
 === Breaking changes
 
