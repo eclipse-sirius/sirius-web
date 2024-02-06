@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.emf.services;
 
-import org.springframework.stereotype.Service;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IDefaultIdentityService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
-
-import java.util.Objects;
+import org.eclipse.sirius.components.representations.IRepresentation;
+import org.springframework.stereotype.Service;
 
 /**
  * Default implementation of {@link IDefaultIdentityService}.
@@ -50,16 +50,21 @@ public class DefaultIdentityService implements IDefaultIdentityService {
             if (id == null && eObject.eIsProxy()) {
                 id = ((InternalEObject) eObject).eProxyURI().toString();
             }
+        } else if (object instanceof IRepresentation representation) {
+            return representation.getId();
         }
         return id;
     }
 
     @Override
     public String getKind(Object object) {
+        String kind = "";
         if (object instanceof EObject eObject) {
-            return this.emfKindService.getKind(eObject.eClass());
+            kind = this.emfKindService.getKind(eObject.eClass());
+        } else if (object instanceof IRepresentation representation) {
+            kind = representation.getKind();
         }
-        return "";
+        return kind;
     }
 
     private String getIdFromIDAdapter(EObject eObject) {

@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -282,10 +283,10 @@ public class DynamicWidgetsTests {
         View wrapperView = ViewFactory.eINSTANCE.createView();
         wrapperView.getDescriptions().add(formDescription);
 
-        ILabelService labelService = new ComposedLabelService(List.of(), new DefaultLabelService(new LabelFeatureProviderRegistry(), this.composedAdapterFactory));
+        ILabelService labelService = new ComposedLabelService(List.of(), new DefaultLabelService(new LabelFeatureProviderRegistry(), this.composedAdapterFactory, List.of()));
         IContentService contentService = new ComposedContentService(List.of(), new DefaultContentService(this.composedAdapterFactory));
         IIdentityService iIdentityService = new ComposedIdentityService(List.of(), new DefaultIdentityService(new EMFKindService(new URLParser())));
-        IObjectSearchService iObjectServices = new ComposedObjectSearchService(List.of(), new DefaultObjectSearchService());
+        IObjectSearchService iObjectServices = new ComposedObjectSearchService(List.of(), new DefaultObjectSearchService(new IRepresentationSearchService.NoOp()));
 
         ObjectService objectService = new ObjectService(labelService, contentService, iIdentityService, iObjectServices);
 

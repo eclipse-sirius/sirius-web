@@ -20,6 +20,7 @@
 - [ADR-132] Add support for filters in Explorer View
 - [ADR-133] Add Tree Widget to the View DSL
 - [ADR-134] Split IObjectService in multiples sub services
+- [ADR-135] Add support for representations in object related services
 
 === Breaking changes
 
@@ -42,6 +43,8 @@ As a result, all the APIs relying on this code have been deleted too such as the
 If you used the default implementation of `IObjectService` you can still use it to retrieve the default implementation of the new services.
 Yet we are recommending using each individual services since this aggregated one may be deprecated in the future.
 If you want to add your own custom behaviour, please use the new services, see the related ADR for more details.
+- https://github.com/eclipse-sirius/sirius-web/issues/3066[#3066] [core] `IObjectSearchService`, `IIdentityService`, `ILabelService` now can also find/resolve representations.
+This changes a core assumption from before where an element known to those services (i.e. an element for which `IIdentityService.getId` returned a non-null value) was a "semantic element" and thus *could not be* a representation.
 
 
 === Dependency update
@@ -99,7 +102,7 @@ In read-only mode, the palette can not be displayed, some of the panel action ar
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Improve the project browser to make the code more robust
 - https://github.com/eclipse-sirius/sirius-web/issues/3021[#3021] [sirius-web] Leverage the new Spring Boot APIs to create the sirius-web-starter autoconfiguration
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Simplify the contribution of views in the workbench
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3066[#3066] [core] The core object-related services now can also find/resolve representations.
 
 == v2024.1.0
 
