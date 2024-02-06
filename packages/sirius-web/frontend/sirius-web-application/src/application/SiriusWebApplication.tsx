@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloProvider } from '@apollo/client';
 import {
   ExtensionProvider,
   ExtensionRegistry,
@@ -20,15 +19,15 @@ import {
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from '../../src/toast/ToastProvider';
-import { createApolloGraphQLClient } from '../ApolloGraphQLClient';
 import {
   DiagramRepresentationConfiguration,
   defaultNodeTypeRegistry,
 } from '../diagrams/DiagramRepresentationConfiguration';
 import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepresentationConfiguration.types';
+import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
 import { RepresentationContextProvider } from '../representations/RepresentationContextProvider';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
@@ -50,8 +49,6 @@ export const SiriusWebApplication = ({
 }: SiriusWebApplicationProps) => {
   const siriusWebTheme: Theme = theme ? theme : defaultTheme;
 
-  const apolloClient = useMemo(() => createApolloGraphQLClient(httpOrigin, wsOrigin), [httpOrigin, wsOrigin]);
-
   let nodeTypeRegistryValue: NodeTypeContextValue = { ...defaultNodeTypeRegistry };
   React.Children.forEach(children, (child) => {
     if (React.isValidElement(child) && child.type === DiagramRepresentationConfiguration) {
@@ -69,7 +66,7 @@ export const SiriusWebApplication = ({
 
   return (
     <ExtensionProvider registry={extensionRegistry ?? new ExtensionRegistry()}>
-      <ApolloProvider client={apolloClient}>
+      <ApolloGraphQLProvider httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
         <BrowserRouter>
           <ThemeProvider theme={siriusWebTheme}>
             <CssBaseline />
@@ -88,7 +85,7 @@ export const SiriusWebApplication = ({
             </ServerContext.Provider>
           </ThemeProvider>
         </BrowserRouter>
-      </ApolloProvider>
+      </ApolloGraphQLProvider>
     </ExtensionProvider>
   );
 };

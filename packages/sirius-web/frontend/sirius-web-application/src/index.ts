@@ -14,6 +14,18 @@
 export { SiriusWebApplication } from './application/SiriusWebApplication';
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
 export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
+export {
+  type ApolloClientOptionsConfigurer,
+  type CacheOptionsConfigurer,
+  type HttpOptionsConfigurer,
+  type WebSocketOptionsConfigurer,
+} from './graphql/useCreateApolloClient.types';
+export {
+  apolloClientOptionsConfigurersExtensionPoint,
+  cacheOptionsConfigurersExtensionPoint,
+  httpOptionsConfigurersExtensionPoint,
+  webSocketOptionsConfigurersExtensionPoint,
+} from './graphql/useCreateApolloClientExtensionPoints';
 export { type NavigationBarIconProps, type NavigationBarMenuProps } from './navigationBar/NavigationBar.types';
 export {
   navigationBarIconExtensionPoint,
