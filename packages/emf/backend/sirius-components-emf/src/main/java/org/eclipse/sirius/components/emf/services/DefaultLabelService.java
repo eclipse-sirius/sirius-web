@@ -13,9 +13,11 @@
 package org.eclipse.sirius.components.emf.services;
 
 import java.net.URL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import java.util.Collection;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
@@ -26,13 +28,12 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.Objects;
-import java.util.Optional;
+import org.eclipse.sirius.components.representations.IRepresentation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * Default implementation of {@link IDefaultLabelService}.
@@ -46,30 +47,40 @@ public class DefaultLabelService implements IDefaultLabelService {
     private static final String DEFAULT_LABEL_FEATURE = "name";
     private final LabelFeatureProviderRegistry labelFeatureProviderRegistry;
     private final ComposedAdapterFactory composedAdapterFactory;
+
+    private final List<IRepresentationImageProvider> representationImageProviders;
     private final Logger logger = LoggerFactory.getLogger(LabelFeatureProviderRegistry.class);
 
-    public DefaultLabelService(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory) {
+    public DefaultLabelService(LabelFeatureProviderRegistry labelFeatureProviderRegistry, ComposedAdapterFactory composedAdapterFactory, List<IRepresentationImageProvider> representationImageProviders) {
         this.labelFeatureProviderRegistry = Objects.requireNonNull(labelFeatureProviderRegistry);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
     }
     @Override
     public String getLabel(Object object) {
-        return Optional.of(object).filter(EObject.class::isInstance)
-                .map(EObject.class::cast)
-                .flatMap(eObject -> this.getLabelEAttribute(eObject).map(eObject::eGet))
-                .map(Object::toString)
-                .orElse("");
+        String label = "";
+        if (object instanceof EObject eObject) {
+            label = this.getLabelEAttribute(eObject)
+                    .map(eObject::eGet)
+                    .map(Object::toString)
+                    .orElse("");
+        } else if (object instanceof IRepresentation representation) {
+            label = representation.getLabel();
+        }
+        return label;
     }
 
     @Override
     public String getFullLabel(Object object) {
-        String fullLabel;
+        String fullLabel = "";
         if (object instanceof EObject eObject) {
             fullLabel = eObject.eClass().getName();
             String label = this.getLabel(eObject);
             if (label != null && !label.isEmpty()) {
                 fullLabel += " " + label;
             }
+        } else if (object instanceof IRepresentation representation) {
+            fullLabel = representation.getLabel();
         } else {
             fullLabel = this.getLabel(object);
         }
@@ -106,22 +117,28 @@ public class DefaultLabelService implements IDefaultLabelService {
 
     @Override
     public List<String> getImagePath(Object object) {
-        if (object instanceof EObject eObject) {
+        List<String> result = List.of(DEFAULT_ICON_PATH);
 
+        if (object instanceof EObject eObject) {
             Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider && !(adapter instanceof ReflectiveItemProvider)) {
                 try {
                     Object image = labelProvider.getImage(eObject);
                     List<String> imageFullPath = this.findImagePath(image);
                     if (imageFullPath != null) {
-                        return imageFullPath.stream().map(this::getImageRelativePath).toList();
+                        result = imageFullPath.stream().map(this::getImageRelativePath).toList();
                     }
                 } catch (MissingResourceException exception) {
                     this.logger.warn("Missing icon for {}", eObject);
                 }
             }
+        } else if (object instanceof IRepresentation representation) {
+            result = this.representationImageProviders.stream()
+                    .map(provider -> provider.getImageURL(representation.getKind()))
+                    .flatMap(Optional::stream)
+                    .toList();
         }
-        return List.of(DEFAULT_ICON_PATH);
+        return result;
     }
 
     private List<String> findImagePath(Object image) {

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.configuration;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -34,7 +35,7 @@ public class TaskLabelServiceDelegate extends DefaultLabelService implements ILa
     private EditingDomainServices editingDomainServices = new EditingDomainServices();
 
     public TaskLabelServiceDelegate(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
-        super(labelFeatureProviderRegistry, composedAdapterFactory);
+        super(labelFeatureProviderRegistry, composedAdapterFactory, List.of());
     }
 
     @Override

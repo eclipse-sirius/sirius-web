@@ -13,7 +13,8 @@
 package org.eclipse.sirius.components.emf.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -21,8 +22,7 @@ import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-
-import java.util.List;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the EMF-base {@link org.eclipse.sirius.components.core.api.IDefaultLabelService} implementation.
@@ -35,7 +35,7 @@ public class DefaultLabelServiceTests {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(List.of(new EcoreItemProviderAdapterFactory()));
         composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
         composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        DefaultLabelService labelService = new DefaultLabelService(new LabelFeatureProviderRegistry(), composedAdapterFactory);
+        DefaultLabelService labelService = new DefaultLabelService(new LabelFeatureProviderRegistry(), composedAdapterFactory, List.of());
         EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
         List<String> imagePath = labelService.getImagePath(attr);
         assertThat(imagePath).hasSize(1);

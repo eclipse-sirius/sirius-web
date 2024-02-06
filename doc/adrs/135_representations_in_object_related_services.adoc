@@ -1,0 +1,32 @@
+= ADR-135 - Add support for representations in object related services
+
+== Context
+
+We currently distinguish between "semantic elements" (any Java Object known to `IObjectService`) and "representations" (instances of some `IRepresentation` implementation) and consider these as distinct.
+The _target object_ of a representation is supposed to be a semantic element, so it can *not* be a representation.
+
+This prevents creating "representations on representation", for example a _Form_ which displays information about a diagram.
+
+== Decision
+
+We will update the default implementation of the object related services (`IObjectSearchService`, `IIdentityService`, `IContentService` and `ILabelService`) so that it handles `IRepresentation`s.
+In particular, if passed an `IRepresentation`:
+
+* `IIdentityService.getId(Object)` and `IIdentityService.getKind(Object)` will return the representation's `IRepresentation.getId()` and `IRepresentation.getKind()`.
+* `ILabelService.getLabel(Object)` and `ILabelService.getFullLabel(Object)` will return the representation's label.
+* `ILabelService.getImagePath(Object)` will return return the image URL for a representation as defined by `IRepresentationImageProvider`.
+* `IObjectSearchService.getObject(IEditingContext editingContext, String objectId)` will interpret the `objectId` as a potential representation id and try to resolve it using `IRepresentationSearchService`.
+* `IContentService.getContents(Object)` will return an empty list for representations.
+
+== Consequences
+
+* This changes a core (though implicit) assumption from before where an element known to the object related services (i.e. an element for which `IIdentityService.getId` returned a non-null value) was a "semantic element" and thus *could not be* a representation.
+Code which handled both semantic elements _and_ representations will need to be carefully reviewed to make sure it correctly detects both cases.
+* Only representations known to `IRepresentationSearchService` will be supported.
+In Sirius Web, this excludes _transient_ representations which exist in memory but are not stored in the database.
+* Note that this does not necessarily fix all issues to fully enable "representations on representation".
+In particular this does not address how to decide the order in which to refresh representations if they start depending on one another.
+
+== Status
+
+Accepted
