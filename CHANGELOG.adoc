@@ -9,9 +9,9 @@
 
 === Architectural decision records
 
-- [ADR-125] Add the ability to reuse both the Sirius Web frontend and backend easily
-- [ADR-126] Add the ability to extend the Sirius Web frontend
-- [ADR-127] Add the ability to extend the Sirius Web backend
+- [ADR-126] Add the ability to reuse both the Sirius Web frontend and backend easily
+- [ADR-127] Add the ability to extend the Sirius Web frontend
+- [ADR-128] Add the ability to extend the Sirius Web backend
 
 === Breaking changes
 
@@ -76,7 +76,8 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 
 - [ADR-122] Use the page object model in integration tests
 - [ADR-123] Improve frontend selection support
-- [ADR-124] Provide a common ShareRepresentationModal
+- [ADR-124] Add support for libraries
+- [ADR-125] Provide a common ShareRepresentationModal
 
 === Breaking changes
 
