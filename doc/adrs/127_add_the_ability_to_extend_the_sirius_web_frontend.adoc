@@ -1,4 +1,4 @@
-= ADR-126 - Add the ability to extend the Sirius Web frontend
+= ADR-127 - Add the ability to extend the Sirius Web frontend
 
 == Context
 

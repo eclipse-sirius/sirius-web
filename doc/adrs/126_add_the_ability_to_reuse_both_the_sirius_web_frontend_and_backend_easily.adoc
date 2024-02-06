@@ -1,4 +1,4 @@
-= ADR-125 - Add the ability to reuse both the Sirius Web frontend and backend easily
+= ADR-126 - Add the ability to reuse both the Sirius Web frontend and backend easily
 
 == Context
 

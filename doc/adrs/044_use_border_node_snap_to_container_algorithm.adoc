@@ -1,4 +1,4 @@
-= ADR-44 - Use border node "snap to parent container" algorithm
+= ADR-044 - Use border node "snap to parent container" algorithm
 
 == Context
 
