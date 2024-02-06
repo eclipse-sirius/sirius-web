@@ -1,0 +1,110 @@
+= (L) Add initial support for search
+
+== Problem
+
+Currently the only way a user to find elements of interest inside in his documents is to manually look into the explorer.
+
+For example he can "Expand all" from the root of all his documents and then use 'Ctrl-F' to open the filter, but:
+
+* this does not scale well for large models;
+* this only allows basic filtering/search on the element's labels (the only thing known to the frontend).
+
+We should provide support for search.
+This first version will keep things simple with a default implementation in Sirius Web Sample Application.
+It will be improved in later iterations, in particular to allow applications to extend/customize it without forking.
+
+The implementation provided in Sirius Web will perform simple text search on the labels of all the semantic elements inside the current project.
+
+== Key Result
+
+* There should be a clearly visible UI to start a _quick search_ inside a project just by typing some text and hitting "Enter".
+* There should be an alternative UI for _advanced search_ where non-default search parameters can be configured if needed.
+The "quick search" should just be a shortcut to using the full UI with sane defaults.
+* There should be a view to display the search results.
+It should not be a modal, as it should be possible to keep the search results visible after a search, to navigate to multiple of them.
+* Implied by the above, the search results should be _navigable_ elements.
+In practice, the results returned by a search can be any kind of element that can be displayed and selected from the _Explorer_ view.
+* Results should be quick to appear (less than 1s).
+It is more important to get a subset of the matching result (ideally the most relevant ones) _quickly_ than to wait several seconds for a full set of matches.
+* The UI should distinguish clearly the states "search in progress, no result to show yet", from "search finished, no matches found".
+* There should be a way to refresh/re-run the previous search if the project's content has changed.
+Ideally there should be a marker in the search results view indicating that the results shown may be out of date.
+* The scope of a search is limited to the content of the current project/editing context.
+There is no system-wide search.
+* The result of a search is a flat list of items of the same kind as the ones displayed in the _Explorer_.
+Indeed, any item returned from a search should also be attainable from the explorer (if one knew exactly where to look).
+
+== Solution
+
+We will add two main UI elements:
+
+* a _search box_ in the project header to trigger a "quick search" with the default settings.
+* a _Search_ view available in the left panel (below the _Explorer_ and the _Validation_ views).
+This view will show a _search form_ with all the query parameters in its top part, and a _result list_ to show the search result below.
+
+=== Scenario: Quick Search
+
+* The user enters his search terms in the search box and hits "Enter".
+* The _Search_ view immediatly opens
+** it's top part (query parameters) show the search terms used and the (default) paramters for a _Quick Search_.
+** its bottom part indicates that the query is in progress until we have received the results from the backend.
+* Once the frontend has received the results, they are displayed immediatly in the bottom part of the _Search_ view.
+* The end-user can click on any of the result items, which selects them exactly as if they had been selected from inside the explorer.
+
+=== Scenario: Advanced Search
+
+* The user opens the _Search_ view.
+* In the top part of the view he fills the search terms _and_ configures any of the parameters.
+* When ready he clicks on the "Search" button.
+* The rest of the scenario is identical as for a _Quick search_.
+
+=== Search Parameters
+
+In this version, we will only support basic text search in the full content of the project's _documents_ (not inside representations).
+The input of a search are (inspired by the flags proposed in VS Code, with additional ones that are more specific):
+
+* a textual search term, which can be any string (e.g. "`Robot`", "`comp flow unused`");
+* a boolean flag _Match case_ to indicate if the search should be case sensitive or not;
+* a boolean flag _Match whole word_ to indicate if the search term should consider each search term to correspond to a full word or possibly only a substring of a word;
+* a boolean flag _Use regular expression_ to indicate if the search term
+* a boolean flag _Search inside attributes_. When enabled, the search will not limit itself to an element's label but also to the text representation of the element's attribute values.
+
+By default, the search term will be matched against only the _label_ of every object in every document of the project.
+
+If _Search inside attributes_ is enabled, the match will also be done on the textual representation of all the attributes of the objects.
+If at least one of an object's attribute matches, the result is the object itself, not the specific attribute.
+In this case, some marker should be shown in the search result UI (maybe just a " (matched in attribute)" suffix) so that the user is not confused by the presence of an item whose visible label does not include the search term.
+
+=== Breadboarding
+
+* _Quick Search_ box
+** text input with embedded `SearchIcon` and "Search..." placeholder
+** location: in the project header, at the right of the application icon, aligned left
+* _Search_ panel/view
+** icon: `SearchIcon`
+** title: "Search"
+** position: left panel, below the existing "Explorer" & "Validation" views
+* _Search Form_ (top part of the _Search_ view)
+* _Search Result_ (bottom part of the _Search_ view)
+
+=== Cutting backs
+
+* Try and make the implementation extensible without (too much) forking, for example by testing a version where
+** the search input can include a list of element types to consider (e.g. only search in "Processor" and "CompositeProcessor" in a project with Flow models);
+** the search result UI can swtich between a flat list, or a tree where matches are grouped either document/model and/or by type.
+
+== Rabbit holes
+
+* We want the search parameters *and results* to persist when the user closes the _Search_ view (for example to temporarily go back to the _Explorer_).
+However currently when a view is closed from one of the side panels, it is destroyed/unmounted, and re-opening it resets it to its default state.
+This is already annoying for the _Explorer_ view, but not acceptable for the _Search_ view.
+We will need to store the state of the search view into some new context defined higher in the component hierarchy so that it is not lost when closing/reoping the view.
+* We want the search feature to be customizable & extensible by applications while minimizing the amount of code to ducplicate/fork (ideally none).
+
+== No-gos
+
+* The search results will not be "live".
+They will correspond to a snapshot of the project's state at the time the search was _run_, but may become obsolete if the project continues to be edited.
+The UI should make this clear (not sure how).
+* No "Saved searches".
+* No search inside the contents of representations.
