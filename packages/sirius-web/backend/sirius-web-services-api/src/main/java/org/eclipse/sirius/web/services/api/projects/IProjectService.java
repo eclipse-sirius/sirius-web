@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.springframework.data.domain.Page;
 
 import reactor.core.publisher.Flux;
 
@@ -33,7 +34,7 @@ public interface IProjectService {
         return List.of();
     }
 
-    List<Project> getProjects();
+    Page<Project> getProjects(int page, int limit);
 
     IPayload createProject(CreateProjectInput input);
 
@@ -58,8 +59,8 @@ public interface IProjectService {
         }
 
         @Override
-        public List<Project> getProjects() {
-            return List.of();
+        public Page<Project> getProjects(int page, int limit) {
+            return Page.empty();
         }
 
         @Override

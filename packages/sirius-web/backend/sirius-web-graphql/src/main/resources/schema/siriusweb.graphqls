@@ -1,6 +1,6 @@
 extend interface Viewer {
   project(projectId: ID!): Project
-  projects(page: Int): ViewerProjectConnection!
+  projects(page: Int!, limit: Int!): ViewerProjectConnection!
 }
 
 type ViewerProjectConnection {
@@ -49,7 +49,7 @@ type ProjectTemplate {
 }
 
 extend interface Viewer {
-  projectTemplates(page: Int, limit: Int): ViewerProjectTemplateConnection!
+  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplateConnection!
 }
 
 type ViewerProjectTemplateConnection {
@@ -66,8 +66,8 @@ type User implements Viewer {
   username: String!
   editingContext(editingContextId: ID!): EditingContext
   project(projectId: ID!): Project
-  projects(page: Int): ViewerProjectConnection!
-  projectTemplates(page: Int, limit: Int): ViewerProjectTemplateConnection!
+  projects(page: Int!, limit: Int!): ViewerProjectConnection!
+  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplateConnection!
 }
 
 extend type Mutation {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface DeleteProjectModalProps {
-  project: Project;
-  onSuccess: () => void;
-  onCancel: () => void;
-}
+import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { ProjectRow } from './ProjectRow';
+import { ProjectRowProps } from './ProjectRow.types';
 
-export interface Project {
-  id: string;
-  name: string;
-}
+export const projectsTableRowExtensionPoint: ComponentExtensionPoint<ProjectRowProps> = {
+  identifier: 'projectsTable#row',
+  FallbackComponent: ProjectRow,
+};

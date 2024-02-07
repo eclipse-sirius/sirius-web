@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ProjectTemplate } from '../../views/projects/ProjectsView.types';
+import { GQLProjectTemplate } from './useProjectTemplates.types';
 
-export interface ProjectTemplateCardProps {
-  template: ProjectTemplate;
-  running: boolean;
-  disabled: boolean;
-  onCreateProject: () => void;
+export interface ProjectTemplatesModalProps {
+  onClose: () => void;
+}
+
+export interface ProjectTemplatesModalState {
+  page: number;
+  limit: number;
+  runningTemplate: GQLProjectTemplate | null;
+  projectTemplates: GQLProjectTemplate[] | null;
+  count: number | null;
 }
