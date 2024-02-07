@@ -17,18 +17,10 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.IChildCreationExtender;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
@@ -40,8 +32,7 @@ import org.eclipse.sirius.components.view.deck.LaneDescription;
  *
  * @generated
  */
-public class LaneDescriptionItemProvider extends ItemProviderAdapter
-        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -61,49 +52,9 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addSemanticCandidatesExpressionPropertyDescriptor(object);
-            this.addTitleExpressionPropertyDescriptor(object);
-            this.addLabelExpressionPropertyDescriptor(object);
             this.addIsCollapsibleExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Semantic Candidates Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addSemanticCandidatesExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LaneDescription_semanticCandidatesExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_semanticCandidatesExpression_feature", "_UI_LaneDescription_type"),
-                DeckPackage.Literals.LANE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Title Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addTitleExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LaneDescription_titleExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_titleExpression_feature", "_UI_LaneDescription_type"),
-                DeckPackage.Literals.LANE_DESCRIPTION__TITLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
-
-    /**
-     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LaneDescription_labelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LaneDescription_labelExpression_feature", "_UI_LaneDescription_type"),
-                DeckPackage.Literals.LANE_DESCRIPTION__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -179,7 +130,7 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        String label = ((LaneDescription) object).getSemanticCandidatesExpression();
+        String label = ((LaneDescription) object).getName();
         return label == null || label.length() == 0 ? this.getString("_UI_LaneDescription_type") : this.getString("_UI_LaneDescription_type") + " " + label;
     }
 
@@ -195,9 +146,6 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(LaneDescription.class)) {
-            case DeckPackage.LANE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            case DeckPackage.LANE_DESCRIPTION__TITLE_EXPRESSION:
-            case DeckPackage.LANE_DESCRIPTION__LABEL_EXPRESSION:
             case DeckPackage.LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
@@ -228,16 +176,6 @@ public class LaneDescriptionItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__CREATE_TOOL, DeckFactory.eINSTANCE.createCreateCardTool()));
 
         newChildDescriptors.add(this.createChildParameter(DeckPackage.Literals.LANE_DESCRIPTION__CARD_DROP_TOOL, DeckFactory.eINSTANCE.createCardDropTool()));
-    }
-
-    /**
-     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
     }
 
 }

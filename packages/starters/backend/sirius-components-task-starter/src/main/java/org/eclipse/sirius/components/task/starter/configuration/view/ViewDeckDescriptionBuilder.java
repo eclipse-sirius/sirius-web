@@ -69,6 +69,7 @@ public class ViewDeckDescriptionBuilder {
         EditCardTool editCardTool = this.createEditCardTool();
         DeleteCardTool deleteCardTool = this.createDeleteCardTool();
         return this.deckBuilders.newCardDescription()
+                .name("Card Description")
                 .semanticCandidatesExpression("aql:self.getTasksWithTag()")
                 .titleExpression("aql:self.name")
                 .labelExpression("aql:self.computeTaskDurationDays()")
@@ -83,6 +84,7 @@ public class ViewDeckDescriptionBuilder {
         CardDropTool cardDropTool = this.createCardDropTool();
         EditLaneTool editLaneTool = this.createEditLaneTool();
         return this.deckBuilders.newLaneDescription()
+                .name("Lane Description")
                 .semanticCandidatesExpression("aql:self.ownedTags->select(tag | tag.prefix == 'daily')")
                 .labelExpression("aql:self.getTasksWithTag()->size() + ' / ' + self.eContainer().oclAsType(task::Project).ownedTasks->select(task | task.tags->exists(tag | tag.prefix == 'daily'))->size()")
                 .titleExpression("aql:self.suffix")

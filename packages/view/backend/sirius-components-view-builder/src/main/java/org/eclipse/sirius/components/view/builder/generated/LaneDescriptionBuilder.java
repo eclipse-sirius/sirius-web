@@ -43,6 +43,16 @@ public class LaneDescriptionBuilder {
     }
 
     /**
+     * Setter for Name.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder name(java.lang.String value) {
+        this.getLaneDescription().setName(value);
+        return this;
+    }
+
+    /**
      * Setter for SemanticCandidatesExpression.
      *
      * @generated

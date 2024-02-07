@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.deck.CardDescription;
 import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
+import org.eclipse.sirius.components.view.deck.DeckElementDescription;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.DeckTool;
 import org.eclipse.sirius.components.view.deck.DeleteCardTool;
@@ -92,12 +93,16 @@ public class DeckSwitch<T> extends Switch<T> {
                 LaneDescription laneDescription = (LaneDescription) theEObject;
                 T result = this.caseLaneDescription(laneDescription);
                 if (result == null)
+                    result = this.caseDeckElementDescription(laneDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
             case DeckPackage.CARD_DESCRIPTION: {
                 CardDescription cardDescription = (CardDescription) theEObject;
                 T result = this.caseCardDescription(cardDescription);
+                if (result == null)
+                    result = this.caseDeckElementDescription(cardDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -159,6 +164,13 @@ public class DeckSwitch<T> extends Switch<T> {
                 T result = this.caseLaneDropTool(laneDropTool);
                 if (result == null)
                     result = this.caseDeckTool(laneDropTool);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DeckPackage.DECK_ELEMENT_DESCRIPTION: {
+                DeckElementDescription deckElementDescription = (DeckElementDescription) theEObject;
+                T result = this.caseDeckElementDescription(deckElementDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -313,6 +325,21 @@ public class DeckSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseLaneDropTool(LaneDropTool object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeckElementDescription(DeckElementDescription object) {
         return null;
     }
 
