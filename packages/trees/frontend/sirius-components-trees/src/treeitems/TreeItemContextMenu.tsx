@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast } from '@eclipse-sirius/sirius-components-core';
+import { Toast, useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
@@ -63,6 +63,8 @@ export const TreeItemContextMenu = ({
 }: TreeItemContextMenuProps) => {
   const [state, setState] = useState<TreeItemContextMenuState>({ message: null });
 
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+
   const expandItem = () => {
     if (!item.expanded && item.hasChildren) {
       onExpand(item.id, depth);
@@ -79,8 +81,10 @@ export const TreeItemContextMenu = ({
       representationId: treeId,
       treeItemId: item.id,
     };
-    deleteTreeItem({ variables: { input } });
-    onClose();
+    showDeletionConfirmation(() => {
+      deleteTreeItem({ variables: { input } });
+      onClose();
+    });
   };
 
   useEffect(() => {

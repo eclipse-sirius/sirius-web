@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { IconOverlay, getCSSColor, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  IconOverlay,
+  getCSSColor,
+  useDeletionConfirmationDialog,
+  useMultiToast,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
@@ -128,6 +134,7 @@ export const ListPropertySection = ({
   const classes = useListPropertySectionStyles(props);
   const theme = useTheme();
   const { setSelection } = useSelection();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   let items = [...widget.items];
   if (items.length === 0) {
@@ -158,7 +165,9 @@ export const ListPropertySection = ({
         listItemId: item.id,
       },
     };
-    deleteListItem({ variables });
+    showDeletionConfirmation(() => {
+      deleteListItem({ variables });
+    });
   };
 
   const { addErrorMessage, addMessages } = useMultiToast();

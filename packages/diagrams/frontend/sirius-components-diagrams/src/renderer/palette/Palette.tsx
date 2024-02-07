@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -224,6 +224,7 @@ export const Palette = ({
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
   const { addErrorMessage, addMessages } = useMultiToast();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const diagramPaletteToolComponents = useContext<DiagramPaletteToolContextValue>(DiagramPaletteToolContext)
     .filter((contribution) => contribution.props.canHandle(diagramId, diagramElementId))
@@ -404,7 +405,9 @@ export const Palette = ({
         onDirectEditClick();
         break;
       case 'semantic-delete':
-        invokeDelete(diagramElementId, GQLDeletionPolicy.SEMANTIC);
+        showDeletionConfirmation(() => {
+          invokeDelete(diagramElementId, GQLDeletionPolicy.SEMANTIC);
+        });
         break;
       case 'graphical-delete':
         invokeDelete(diagramElementId, GQLDeletionPolicy.GRAPHICAL);

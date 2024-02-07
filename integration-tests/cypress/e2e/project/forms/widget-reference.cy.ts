@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Studio } from '../../../usecases/Studio';
-import { Explorer } from '../../../workbench/Explorer';
-import { Details } from '../../../workbench/Details';
-import { Flow } from '../../../usecases/Flow';
 import { Project } from '../../../pages/Project';
-import { Form } from '../../../workbench/Form';
 import { isCreateProjectFromTemplateSuccessPayload } from '../../../support/server/createProjectFromTemplateCommand';
+import { Flow } from '../../../usecases/Flow';
+import { Studio } from '../../../usecases/Studio';
+import { Details } from '../../../workbench/Details';
+import { Explorer } from '../../../workbench/Explorer';
+import { Form } from '../../../workbench/Form';
 
 const createFormWithWidgetRef = (domainType: string, name: string, reference: string) => {
   const explorer = new Explorer();
@@ -159,6 +159,7 @@ describe('Forms Widget-reference', () => {
         form.getWidget('Test Widget Reference').should('exist');
         form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-add').should('exist');
         explorer.getTreeItemByLabel('1000').should('not.exist');
+
         form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-add').click();
         cy.getByTestId('create-modal').should('exist');
         cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
@@ -173,6 +174,55 @@ describe('Forms Widget-reference', () => {
         cy.getByTestId('create-modal').findByTestId('create-object').click();
         cy.getByTestId('reference-value-1000').should('exist');
         explorer.getTreeItemByLabel('1000').should('exist');
+
+        // click on the delete icon on the Chip
+        cy.get('.MuiChip-deleteIcon').should('exist').click();
+
+        cy.getByTestId('confirmation-dialog').should('be.visible');
+        cy.getByTestId('confirmation-dialog-button-cancel').click();
+        cy.getByTestId('confirmation-dialog').should('not.exist');
+
+        cy.getByTestId('reference-value-1000').should('exist');
+        cy.get('.MuiChip-deleteIcon').should('exist').click();
+
+        cy.getByTestId('confirmation-dialog').should('be.visible');
+        cy.getByTestId('confirmation-dialog-button-ok').click();
+        cy.getByTestId('confirmation-dialog').should('not.exist');
+
+        cy.getByTestId('reference-value-1000').should('not.exist');
+        explorer.getTreeItemByLabel('1000').should('not.exist');
+
+        form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-add').click();
+        cy.getByTestId('create-modal').should('exist');
+        cy.getByTestId('create-modal').findByTestId('tree-root-elements').should('not.exist');
+        cy.getByTestId('create-modal').findByTestId('childCreationDescription').should('exist');
+        cy.getByTestId('childCreationDescription')
+          .children('[role="button"]')
+          .invoke('text')
+          .should('have.length.gt', 1);
+        cy.getByTestId('childCreationDescription').click();
+        cy.getByTestId('childCreationDescription').get('[data-value]').should('have.length', 1);
+        cy.getByTestId('childCreationDescription').get('[data-value="Power Output"]').should('exist').click();
+        cy.getByTestId('create-modal').findByTestId('create-object').click();
+        cy.getByTestId('reference-value-1000').should('exist');
+        explorer.getTreeItemByLabel('1000').should('exist');
+
+        // click on the delete icon on the Widget Reference
+        form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-clear').click();
+
+        cy.getByTestId('confirmation-dialog').should('be.visible');
+        cy.getByTestId('confirmation-dialog-button-cancel').click();
+        cy.getByTestId('confirmation-dialog').should('not.exist');
+
+        cy.getByTestId('reference-value-1000').should('exist');
+        form.getWidgetElement('Test Widget Reference', 'Test Widget Reference-clear').click();
+
+        cy.getByTestId('confirmation-dialog').should('be.visible');
+        cy.getByTestId('confirmation-dialog-button-ok').click();
+        cy.getByTestId('confirmation-dialog').should('not.exist');
+
+        cy.getByTestId('reference-value-1000').should('not.exist');
+        explorer.getTreeItemByLabel('1000').should('not.exist');
       });
 
       it('Then widget reference non containment is available', () => {

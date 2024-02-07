@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast, getCSSColor, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  Selection,
+  Toast,
+  getCSSColor,
+  useDeletionConfirmationDialog,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   GQLWidget,
   PropertySectionContext,
@@ -152,6 +158,7 @@ export const Group = ({ editingContextId, representationId, formDescriptionEdito
   const [state, setState] = useState<GroupState>(initialState);
   const { message, selected } = state;
   const { selection, setSelection } = useSelection();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -307,7 +314,9 @@ export const Group = ({ editingContextId, representationId, formDescriptionEdito
         groupId: group.id,
       };
       const deleteGroupVariables: GQLDeleteGroupMutationVariables = { input: deleteGroupInput };
-      deleteGroup({ variables: deleteGroupVariables });
+      showDeletionConfirmation(() => {
+        deleteGroup({ variables: deleteGroupVariables });
+      });
       event.stopPropagation();
     }
   };

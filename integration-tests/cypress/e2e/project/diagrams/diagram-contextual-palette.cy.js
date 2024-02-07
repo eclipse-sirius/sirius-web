@@ -49,11 +49,11 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography__REACT_FLOW');
+    cy.getByTestId('name').type('Topography');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
-    cy.getByTestId('Topography__REACT_FLOW').click();
+    cy.getByTestId('Topography').click();
   };
 
   beforeEach(() => {
@@ -75,8 +75,8 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
   it.skip('can fade any type of nodes', () => {
     createFlowReactFlowDiagram();
     fadeByElementTestId('IconLabel - Temperature: 25');
-    fadeByElementTestId('Image - Motion_Engine');
-    fadeByElementTestId('Rectangle - Central_Unit');
+    fadeByElementTestId('FreeForm - Motion_Engine');
+    fadeByElementTestId('FreeForm - Central_Unit');
     fadeByElementTestId('List - Description');
   });
 
@@ -89,9 +89,9 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('form').findByTestId('Temperature').type('{selectall}').type('25').type('{enter}');
     cy.getByTestId('Label - Temperature: 25').should('have.length', 2);
     hideByElementTestId('Label - Temperature: 25');
-    hideByElementTestId('Image - Motion_Engine');
+    hideByElementTestId('FreeForm - Motion_Engine');
     hideByElementTestId('List - Description');
-    hideByElementTestId('Rectangle - Central_Unit');
+    hideByElementTestId('FreeForm - Central_Unit');
   });
 
   it('can not open multi tool section in the same time', () => {
@@ -147,7 +147,7 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
     cy.getByTestId('Root-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('__REACT_FLOW');
+    cy.getByTestId('name').type('my new diagram');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Diagram Description').click();
     cy.getByTestId('create-representation').click();
@@ -179,12 +179,12 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
       cy.visit(`/projects/${projectId}/edit`);
     });
 
-    // Rename the diagram switch it to React Flow
+    // Rename the diagram
     cy.getByTestId('onboard-open-Domain').click();
     cy.getByTestId('Domain').click();
     cy.getByTestId('Domain-more').click();
     cy.getByTestId('rename-tree-item').click();
-    cy.getByTestId('name-edit').type('Domain__REACT_FLOW{enter}');
+    cy.getByTestId('name-edit').type('Domain{enter}');
 
     // Open the palette of the "Root" entity.
     cy.getByTestId('rf__wrapper').findByTestId('Label - Root').click();
@@ -214,12 +214,12 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
       cy.visit(`/projects/${projectId}/edit`);
     });
 
-    // Rename the diagram switch it to React Flow
+    // Rename the diagram
     cy.getByTestId('onboard-open-Domain').click();
     cy.getByTestId('Domain').click();
     cy.getByTestId('Domain-more').click();
     cy.getByTestId('rename-tree-item').click();
-    cy.getByTestId('name-edit').type('Domain__REACT_FLOW{enter}');
+    cy.getByTestId('name-edit').type('Domain{enter}');
 
     cy.getByTestId('rf__wrapper').click(100, 100);
     cy.getByTestId('Palette').should('exist');
@@ -234,16 +234,34 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
       cy.visit(`/projects/${projectId}/edit`);
     });
 
-    // Rename the diagram switch it to React Flow
+    // Rename the diagram
     cy.getByTestId('onboard-open-Domain').click();
     cy.getByTestId('Domain').click();
     cy.getByTestId('Domain-more').click();
     cy.getByTestId('rename-tree-item').click();
-    cy.getByTestId('name-edit').type('Domain__REACT_FLOW{enter}');
+    cy.getByTestId('name-edit').type('Domain{enter}');
 
     cy.getByTestId('rf__wrapper').findByTestId('Label - Root').click();
     cy.getByTestId('Palette').should('exist');
     cy.get('body').type('{esc}');
     cy.getByTestId('Palette').should('not.exist');
+  });
+
+  it('semantic delete tool with confirmation dialog', () => {
+    createFlowReactFlowDiagram();
+    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('exist').click();
+    cy.getByTestId('Delete from model - Tool').should('exist').click();
+
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-cancel').click();
+    cy.getByTestId('confirmation-dialog').should('not.exist');
+
+    cy.getByTestId('Delete from model - Tool').should('exist').click();
+
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
+
+    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('not.exist');
+    cy.getByTestId('confirmation-dialog').should('not.exist');
   });
 });

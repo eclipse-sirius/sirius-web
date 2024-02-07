@@ -30,7 +30,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1__REACT_FLOW');
+    cy.getByTestId('name').type('Topography1');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
@@ -52,7 +52,7 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1__REACT_FLOW');
+    cy.getByTestId('name').type('Topography1');
     cy.getByTestId('representationDescription').click();
     cy.getByTestId('Topography with auto layout').click();
     cy.getByTestId('create-representation').click();
@@ -78,28 +78,58 @@ describe('/projects/:projectId/edit - Diagram', () => {
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography1__REACT_FLOW');
+    cy.getByTestId('name').type('Topography1');
     cy.getByTestId('create-representation').click();
 
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
 
     cy.getByTestId('name').clear();
-    cy.getByTestId('name').type('Topography2__REACT_FLOW');
+    cy.getByTestId('name').type('Topography2');
     cy.getByTestId('create-representation').click();
 
-    cy.getByTestId('Topography1__REACT_FLOW').click();
+    cy.getByTestId('Topography1').click();
 
-    cy.getByTestId('representation-tab-Topography1__REACT_FLOW').should('have.attr', 'data-testselected', 'true');
-    cy.getByTestId('representation-tab-Topography2__REACT_FLOW').should('have.attr', 'data-testselected', 'false');
+    cy.getByTestId('representation-tab-Topography1').should('have.attr', 'data-testselected', 'true');
+    cy.getByTestId('representation-tab-Topography2').should('have.attr', 'data-testselected', 'false');
 
-    cy.getByTestId('Topography2__REACT_FLOW').click();
-    cy.getByTestId('representation-tab-Topography1__REACT_FLOW').should('have.attr', 'data-testselected', 'false');
-    cy.getByTestId('representation-tab-Topography2__REACT_FLOW').should('have.attr', 'data-testselected', 'true');
+    cy.getByTestId('Topography2').click();
+    cy.getByTestId('representation-tab-Topography1').should('have.attr', 'data-testselected', 'false');
+    cy.getByTestId('representation-tab-Topography2').should('have.attr', 'data-testselected', 'true');
 
-    cy.getByTestId('representation-tab-Topography1__REACT_FLOW').click();
+    cy.getByTestId('representation-tab-Topography1').click();
 
-    cy.getByTestId('representation-tab-Topography1__REACT_FLOW').should('have.attr', 'data-testselected', 'true');
-    cy.getByTestId('representation-tab-Topography2__REACT_FLOW').should('have.attr', 'data-testselected', 'false');
+    cy.getByTestId('representation-tab-Topography1').should('have.attr', 'data-testselected', 'true');
+    cy.getByTestId('representation-tab-Topography2').should('have.attr', 'data-testselected', 'false');
+  });
+
+  it('can delete element with DEL key', () => {
+    cy.getByTestId('robot').dblclick();
+    cy.getByTestId('Robot').dblclick();
+    cy.getByTestId('Robot-more').click();
+
+    cy.getByTestId('treeitem-contextmenu').findByTestId('new-representation').click();
+
+    cy.getByTestId('name').clear();
+    cy.getByTestId('name').type('Topography1');
+    cy.getByTestId('representationDescription').click();
+    cy.getByTestId('Topography').click();
+    cy.getByTestId('create-representation').click();
+
+    cy.getByTestId('rf__wrapper').should('exist');
+    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('exist').click();
+    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').type('{del}');
+
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-cancel').click();
+    cy.getByTestId('confirmation-dialog').should('not.exist');
+
+    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').type('{del}');
+
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
+
+    cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('not.exist');
+    cy.getByTestId('confirmation-dialog').should('not.exist');
   });
 });

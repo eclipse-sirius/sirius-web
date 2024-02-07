@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  ConfirmationDialogContextProvider,
   ExtensionProvider,
   ExtensionRegistry,
   RepresentationPathContext,
@@ -125,13 +126,15 @@ export const SiriusWebApplication = ({
             <ServerContext.Provider value={{ httpOrigin }}>
               <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
                 <ToastProvider>
-                  <RepresentationContextProvider>
-                    <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                      <div style={style}>
-                        <Router />
-                      </div>
-                    </NodeTypeContext.Provider>
-                  </RepresentationContextProvider>
+                  <ConfirmationDialogContextProvider>
+                    <RepresentationContextProvider>
+                      <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                        <div style={style}>
+                          <Router />
+                        </div>
+                      </NodeTypeContext.Provider>
+                    </RepresentationContextProvider>
+                  </ConfirmationDialogContextProvider>
                 </ToastProvider>
               </RepresentationPathContext.Provider>
             </ServerContext.Provider>

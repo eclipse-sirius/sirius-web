@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,5 +14,15 @@
 export class Project {
   public visit(projectId: string): Cypress.Chainable<Cypress.AUTWindow> {
     return cy.visit(`/projects/${projectId}/edit`);
+  }
+  public disableDeletionConfirmationDialog(): void {
+    cy.window().then((win) => {
+      win.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(true));
+    });
+  }
+  public enableDeletionConfirmationDialog(): void {
+    cy.window().then((win) => {
+      win.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(false));
+    });
   }
 }

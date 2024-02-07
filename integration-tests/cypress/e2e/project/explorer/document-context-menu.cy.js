@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
     cy.createProject('Cypress Project').then((res) => {
       const projectId = res.body.data.createProject.project.id;
       const robot_flow_id = 'c26b6086-b444-3ee6-b8cd-9a4fde5956a7';
-      cy.createDocument(projectId, robot_flow_id, 'robot').then((_res) => {
+      cy.createDocument(projectId, robot_flow_id, 'robot').then(() => {
         cy.visit(`/projects/${projectId}/edit`);
       });
     });
@@ -69,8 +69,18 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
     cy.getByTestId('robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
 
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-cancel').click();
+    cy.getByTestId('confirmation-dialog').should('not.exist');
+
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
+
     cy.getByTestId('treeitem-contextmenu').should('not.exist');
     cy.getByTestId('robot').should('not.exist');
+    cy.getByTestId('confirmation-dialog').should('not.exist');
   });
 
   it('can rename a document', () => {
@@ -143,10 +153,16 @@ describe('/projects/:projectId/edit - Document Context Menu', () => {
     cy.getByTestId('Robot').dblclick();
     cy.getByTestId('Central_Unit-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
     cy.getByTestId('CaptureSubSystem-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
     cy.getByTestId('Wifi-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
 
     cy.getByTestId('robot').should('exist');
     cy.getByTestId('Robot').should('exist');

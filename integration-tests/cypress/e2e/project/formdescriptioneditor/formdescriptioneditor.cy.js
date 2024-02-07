@@ -96,6 +96,8 @@ describe('/projects/:projectId/edit - FormDescriptionEditor', () => {
     cy.wait(500); // Wait for representation to refresh
     cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 2);
     cy.get('[data-testid^="Page-"]').eq(0).click().type('{del}');
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
     cy.wait(500); // Wait for representation to refresh
     cy.get('[data-testid^="Page-"]').not('[data-testid="Page-DropArea"]').should('have.lengthOf', 1);
   });

@@ -11,7 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { DRAG_SOURCES_TYPE, SelectionEntry, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import {
+  DRAG_SOURCES_TYPE,
+  SelectionEntry,
+  useDeletionConfirmationDialog,
+  useMultiToast,
+  useSelection,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   PropertySectionComponentProps,
   PropertySectionLabel,
@@ -177,6 +183,7 @@ export const ReferencePropertySection = ({
 }: PropertySectionComponentProps<GQLReferenceWidget>) => {
   const classes = useStyles();
   const { setSelection } = useSelection();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const [clearReference, { loading: clearLoading, error: clearError, data: clearData }] = useMutation<
     GQLClearReferenceMutationData,
@@ -291,7 +298,13 @@ export const ReferencePropertySection = ({
         referenceWidgetId: widget.id,
       },
     };
-    clearReference({ variables });
+    if (widget.reference.containment) {
+      showDeletionConfirmation(() => {
+        clearReference({ variables });
+      });
+    } else {
+      clearReference({ variables });
+    }
   };
 
   const callSetReferenceValue = (newValueId: string | null) => {
@@ -335,7 +348,13 @@ export const ReferencePropertySection = ({
           referenceValueId: valueId,
         },
       };
-      removeReferenceValue({ variables });
+      if (widget.reference.containment) {
+        showDeletionConfirmation(() => {
+          removeReferenceValue({ variables });
+        });
+      } else {
+        removeReferenceValue({ variables });
+      }
     }
   };
 

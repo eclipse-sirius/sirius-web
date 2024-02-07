@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useCallback, useContext, useEffect } from 'react';
 import { useReactFlow } from 'reactflow';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -55,6 +55,7 @@ const isSuccessPayload = (payload: GQLDeleteFromDiagramPayload): payload is GQLD
 
 export const useDiagramDelete = (): UseDiagramDeleteValue => {
   const { addErrorMessage, addMessages } = useMultiToast();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { getNodes } = useReactFlow<NodeData, EdgeData>();
 
@@ -96,7 +97,9 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
         edgeIds: [],
         deletionPolicy: GQLDeletionPolicy.SEMANTIC,
       };
-      deleteElementsMutation({ variables: { input } });
+      showDeletionConfirmation(() => {
+        deleteElementsMutation({ variables: { input } });
+      });
     }
   }, []);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast, useDeletionConfirmationDialog, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
   GQLButton,
   GQLChartWidget,
@@ -137,6 +137,7 @@ export const WidgetEntry = ({
   const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
 
   const { setSelection } = useSelection();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const [addWidget, { loading: addWidgetLoading, data: addWidgetData, error: addWidgetError }] = useMutation<
     GQLAddWidgetMutationData,
@@ -229,7 +230,9 @@ export const WidgetEntry = ({
         widgetId: widget.id,
       };
       const deleteWidgetVariables: GQLDeleteWidgetMutationVariables = { input: deleteWidgetInput };
-      deleteWidget({ variables: deleteWidgetVariables });
+      showDeletionConfirmation(() => {
+        deleteWidget({ variables: deleteWidgetVariables });
+      });
       event.stopPropagation();
     }
   };
