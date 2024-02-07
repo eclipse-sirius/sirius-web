@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.deck.CardDescription;
 import org.eclipse.sirius.components.view.deck.CardDropTool;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
+import org.eclipse.sirius.components.view.deck.DeckElementDescription;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.DeckTool;
 import org.eclipse.sirius.components.view.deck.DeleteCardTool;
@@ -128,6 +129,11 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseLaneDropTool(LaneDropTool object) {
             return DeckAdapterFactory.this.createLaneDropToolAdapter();
+        }
+
+        @Override
+        public Adapter caseDeckElementDescription(DeckElementDescription object) {
+            return DeckAdapterFactory.this.createDeckElementDescriptionAdapter();
         }
 
         @Override
@@ -290,6 +296,20 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLaneDropToolAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription <em>Element Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription
+     * @generated
+     */
+    public Adapter createDeckElementDescriptionAdapter() {
         return null;
     }
 

@@ -43,6 +43,16 @@ public class CardDescriptionBuilder {
     }
 
     /**
+     * Setter for Name.
+     *
+     * @generated
+     */
+    public CardDescriptionBuilder name(java.lang.String value) {
+        this.getCardDescription().setName(value);
+        return this;
+    }
+
+    /**
      * Setter for SemanticCandidatesExpression.
      *
      * @generated

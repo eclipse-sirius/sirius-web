@@ -111,6 +111,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3066[#3066] [core] The core object-related services now can also find/resolve representations.
 - [portal] Use MUI tooltips for Portal toolbar elements
 - https://github.com/eclipse-sirius/sirius-web/issues/2480[#2480] [diagram] Merge the rectangle node and the image node into FreeFormNode.
+- https://github.com/eclipse-sirius/sirius-web/issues/3079[#3079] [deck] Add a name attribute on CardDescription and LaneDescription
 
 == v2024.1.0
 

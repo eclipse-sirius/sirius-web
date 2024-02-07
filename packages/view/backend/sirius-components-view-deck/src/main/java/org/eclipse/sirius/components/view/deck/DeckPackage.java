@@ -151,6 +151,69 @@ public interface DeckPackage extends EPackage {
     int DECK_DESCRIPTION_OPERATION_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionImpl
+     * <em>Element Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionImpl
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getDeckElementDescription()
+     * @generated
+     */
+    int DECK_ELEMENT_DESCRIPTION = 10;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 1;
+
+    /**
+     * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION = 2;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 3;
+
+    /**
+     * The number of structural features of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.LaneDescriptionImpl <em>Lane
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -161,13 +224,21 @@ public interface DeckPackage extends EPackage {
     int LANE_DESCRIPTION = 1;
 
     /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION__NAME;
+
+    /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 0;
+    int LANE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -176,7 +247,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__TITLE_EXPRESSION = 1;
+    int LANE_DESCRIPTION__TITLE_EXPRESSION = DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -185,7 +256,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__LABEL_EXPRESSION = 2;
+    int LANE_DESCRIPTION__LABEL_EXPRESSION = DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Owned Card Descriptions</b></em>' containment reference list. <!-- begin-user-doc
@@ -194,7 +265,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS = 3;
+    int LANE_DESCRIPTION__OWNED_CARD_DESCRIPTIONS = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -203,7 +274,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__EDIT_TOOL = 4;
+    int LANE_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Create Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -212,7 +283,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__CREATE_TOOL = 5;
+    int LANE_DESCRIPTION__CREATE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Card Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -221,7 +292,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__CARD_DROP_TOOL = 6;
+    int LANE_DESCRIPTION__CARD_DROP_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Is Collapsible Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -230,7 +301,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = 7;
+    int LANE_DESCRIPTION__IS_COLLAPSIBLE_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The number of structural features of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!--
@@ -239,7 +310,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION_FEATURE_COUNT = 8;
+    int LANE_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Lane Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -247,7 +318,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int LANE_DESCRIPTION_OPERATION_COUNT = 0;
+    int LANE_DESCRIPTION_OPERATION_COUNT = DECK_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.CardDescriptionImpl <em>Card
@@ -260,13 +331,21 @@ public interface DeckPackage extends EPackage {
     int CARD_DESCRIPTION = 2;
 
     /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DESCRIPTION__NAME = DECK_ELEMENT_DESCRIPTION__NAME;
+
+    /**
      * The feature id for the '<em><b>Semantic Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = 0;
+    int CARD_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -275,7 +354,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__TITLE_EXPRESSION = 1;
+    int CARD_DESCRIPTION__TITLE_EXPRESSION = DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -284,7 +363,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__LABEL_EXPRESSION = 2;
+    int CARD_DESCRIPTION__LABEL_EXPRESSION = DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -293,7 +372,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__DESCRIPTION_EXPRESSION = 3;
+    int CARD_DESCRIPTION__DESCRIPTION_EXPRESSION = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Edit Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -302,7 +381,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__EDIT_TOOL = 4;
+    int CARD_DESCRIPTION__EDIT_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Delete Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -311,7 +390,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION__DELETE_TOOL = 5;
+    int CARD_DESCRIPTION__DELETE_TOOL = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Card Description</em>' class. <!-- begin-user-doc --> <!--
@@ -320,7 +399,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION_FEATURE_COUNT = 6;
+    int CARD_DESCRIPTION_FEATURE_COUNT = DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Card Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -328,7 +407,7 @@ public interface DeckPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CARD_DESCRIPTION_OPERATION_COUNT = 0;
+    int CARD_DESCRIPTION_OPERATION_COUNT = DECK_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.DeckToolImpl <em>Tool</em>}'
@@ -757,42 +836,6 @@ public interface DeckPackage extends EPackage {
     EClass getLaneDescription();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getSemanticCandidatesExpression <em>Semantic
-     * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
-     * @see org.eclipse.sirius.components.view.deck.LaneDescription#getSemanticCandidatesExpression()
-     * @see #getLaneDescription()
-     * @generated
-     */
-    EAttribute getLaneDescription_SemanticCandidatesExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getTitleExpression <em>Title Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Title Expression</em>'.
-     * @see org.eclipse.sirius.components.view.deck.LaneDescription#getTitleExpression()
-     * @see #getLaneDescription()
-     * @generated
-     */
-    EAttribute getLaneDescription_TitleExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getLabelExpression <em>Label Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Label Expression</em>'.
-     * @see org.eclipse.sirius.components.view.deck.LaneDescription#getLabelExpression()
-     * @see #getLaneDescription()
-     * @generated
-     */
-    EAttribute getLaneDescription_LabelExpression();
-
-    /**
      * Returns the meta object for the containment reference list
      * '{@link org.eclipse.sirius.components.view.deck.LaneDescription#getOwnedCardDescriptions <em>Owned Card
      * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -861,42 +904,6 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EClass getCardDescription();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.CardDescription#getSemanticCandidatesExpression <em>Semantic
-     * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
-     * @see org.eclipse.sirius.components.view.deck.CardDescription#getSemanticCandidatesExpression()
-     * @see #getCardDescription()
-     * @generated
-     */
-    EAttribute getCardDescription_SemanticCandidatesExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.CardDescription#getTitleExpression <em>Title Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Title Expression</em>'.
-     * @see org.eclipse.sirius.components.view.deck.CardDescription#getTitleExpression()
-     * @see #getCardDescription()
-     * @generated
-     */
-    EAttribute getCardDescription_TitleExpression();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.deck.CardDescription#getLabelExpression <em>Label Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Label Expression</em>'.
-     * @see org.eclipse.sirius.components.view.deck.CardDescription#getLabelExpression()
-     * @see #getCardDescription()
-     * @generated
-     */
-    EAttribute getCardDescription_LabelExpression();
 
     /**
      * Returns the meta object for the attribute
@@ -1040,6 +1047,64 @@ public interface DeckPackage extends EPackage {
     EClass getLaneDropTool();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription
+     * <em>Element Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Element Description</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription
+     * @generated
+     */
+    EClass getDeckElementDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getName <em>Name</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription#getName()
+     * @see #getDeckElementDescription()
+     * @generated
+     */
+    EAttribute getDeckElementDescription_Name();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getSemanticCandidatesExpression
+     * <em>Semantic Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription#getSemanticCandidatesExpression()
+     * @see #getDeckElementDescription()
+     * @generated
+     */
+    EAttribute getDeckElementDescription_SemanticCandidatesExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getTitleExpression <em>Title
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Title Expression</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription#getTitleExpression()
+     * @see #getDeckElementDescription()
+     * @generated
+     */
+    EAttribute getDeckElementDescription_TitleExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getLabelExpression <em>Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription#getLabelExpression()
+     * @see #getDeckElementDescription()
+     * @generated
+     */
+    EAttribute getDeckElementDescription_LabelExpression();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -1106,30 +1171,6 @@ public interface DeckPackage extends EPackage {
         EClass LANE_DESCRIPTION = eINSTANCE.getLaneDescription();
 
         /**
-         * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute LANE_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getLaneDescription_SemanticCandidatesExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Title Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute LANE_DESCRIPTION__TITLE_EXPRESSION = eINSTANCE.getLaneDescription_TitleExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute LANE_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getLaneDescription_LabelExpression();
-
-        /**
          * The meta object literal for the '<em><b>Owned Card Descriptions</b></em>' containment reference list feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -1178,30 +1219,6 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EClass CARD_DESCRIPTION = eINSTANCE.getCardDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute CARD_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getCardDescription_SemanticCandidatesExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Title Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute CARD_DESCRIPTION__TITLE_EXPRESSION = eINSTANCE.getCardDescription_TitleExpression();
-
-        /**
-         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute CARD_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getCardDescription_LabelExpression();
 
         /**
          * The meta object literal for the '<em><b>Description Expression</b></em>' attribute feature. <!--
@@ -1320,6 +1337,49 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EClass LANE_DROP_TOOL = eINSTANCE.getLaneDropTool();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionImpl <em>Element
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionImpl
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getDeckElementDescription()
+         * @generated
+         */
+        EClass DECK_ELEMENT_DESCRIPTION = eINSTANCE.getDeckElementDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DECK_ELEMENT_DESCRIPTION__NAME = eINSTANCE.getDeckElementDescription_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Semantic Candidates Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DECK_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION = eINSTANCE.getDeckElementDescription_SemanticCandidatesExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Title Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DECK_ELEMENT_DESCRIPTION__TITLE_EXPRESSION = eINSTANCE.getDeckElementDescription_TitleExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getDeckElementDescription_LabelExpression();
 
     }
 
