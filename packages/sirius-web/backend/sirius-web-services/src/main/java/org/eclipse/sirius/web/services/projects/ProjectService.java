@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -39,6 +37,8 @@ import org.eclipse.sirius.web.services.api.projects.IProjectTemplateService;
 import org.eclipse.sirius.web.services.api.projects.Project;
 import org.eclipse.sirius.web.services.api.projects.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -93,12 +93,9 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<Project> getProjects() {
-        // @formatter:off
-        return StreamSupport.stream(this.projectRepository.findAll().spliterator(), false)
-                .map(this.projectMapper::toDTO)
-                .collect(Collectors.toUnmodifiableList());
-        // @formatter:on
+    public Page<Project> getProjects(int page, int limit) {
+        var pageable = PageRequest.of(page, limit);
+        return this.projectRepository.findAll(pageable).map(this.projectMapper::toDTO);
     }
 
     @Override

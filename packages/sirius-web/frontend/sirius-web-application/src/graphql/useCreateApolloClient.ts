@@ -22,10 +22,15 @@ import {
   NormalizedCacheObject,
   split,
 } from '@apollo/client';
+import { FragmentRegistryAPI, createFragmentRegistry } from '@apollo/client/cache';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { useMemo } from 'react';
+import {
+  ProjectFragment,
+  ViewerProjectsFragment,
+} from '../views/project-browser/list-projects-area/useProjects.fragments';
 import {
   apolloClientOptionsConfigurersExtensionPoint,
   cacheOptionsConfigurersExtensionPoint,
@@ -54,7 +59,12 @@ export const useCreateApolloClient = (httpOrigin: string, wsOrigin: string): Apo
     webSocketOptions = configurer(webSocketOptions);
   });
 
-  let cacheOptions: InMemoryCacheConfig = {};
+  let fragmentRegistry: FragmentRegistryAPI = createFragmentRegistry();
+  fragmentRegistry.register(ViewerProjectsFragment, ProjectFragment);
+
+  let cacheOptions: InMemoryCacheConfig = {
+    fragments: fragmentRegistry,
+  };
   const { data: cacheOptionsConfigurers } = useData(cacheOptionsConfigurersExtensionPoint);
   cacheOptionsConfigurers.forEach((configurer) => {
     cacheOptions = configurer(cacheOptions);

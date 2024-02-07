@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -158,16 +158,9 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
   let modal = null;
   if (project && navbar === 'modalDisplayedState') {
     if (modalDisplayed === 'RenameProject') {
-      modal = (
-        <RenameProjectModal
-          projectId={project.id}
-          initialProjectName={projectName}
-          onRename={onCloseModal}
-          onClose={onCloseModal}
-        />
-      );
+      modal = <RenameProjectModal project={project} onSuccess={onCloseModal} onCancel={onCloseModal} />;
     } else if (modalDisplayed === 'DeleteProject') {
-      modal = <DeleteProjectModal projectId={project.id} onDelete={onProjectDeleted} onClose={onCloseModal} />;
+      modal = <DeleteProjectModal project={project} onSuccess={onProjectDeleted} onCancel={onCloseModal} />;
     }
   }
   return (

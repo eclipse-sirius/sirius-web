@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { ProjectTemplateCardProps } from './ProjectTemplateCard.types';
+import { ProjectTemplateCardProps, ShowAllTemplatesCardProps } from './ProjectTemplateCard.types';
 
 const useProjectTemplateStyles = makeStyles((theme) => ({
   projectTemplateCard: {
@@ -110,6 +111,12 @@ const useProjectCardStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  showAllTemplatesCardContent: {
+    backgroundColor: theme.palette.divider,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 export const NewProjectCard = () => {
@@ -144,6 +151,26 @@ export const UploadProjectCard = () => {
           <Tooltip title={'Upload project'}>
             <Typography variant="h5" className={classes.projectCardLabel}>
               + Upload project
+            </Typography>
+          </Tooltip>
+        </CardActions>
+      </Card>
+    </Button>
+  );
+};
+
+export const ShowAllTemplatesCard = ({ onClick }: ShowAllTemplatesCardProps) => {
+  const classes = useProjectCardStyles();
+  return (
+    <Button onClick={onClick} data-testid="show-all-templates">
+      <Card className={classes.projectCard}>
+        <CardContent className={classes.showAllTemplatesCardContent}>
+          <MoreHorizIcon className={classes.projectCardIcon} htmlColor="white" />
+        </CardContent>
+        <CardActions className={classes.projectCardActions}>
+          <Tooltip title={'Show all templates'}>
+            <Typography variant="h5" className={classes.projectCardLabel}>
+              Show all templates
             </Typography>
           </Tooltip>
         </CardActions>

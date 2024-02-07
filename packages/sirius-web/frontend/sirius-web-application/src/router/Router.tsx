@@ -15,8 +15,8 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { withErrorBoundary } from '../errors/ErrorBoundary';
 import { EditProjectView } from '../views/edit-project/EditProjectView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
+import { ProjectBrowser } from '../views/project-browser/ProjectBrowser';
 import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
-import { ProjectsView } from '../views/projects/ProjectsView';
 import { UploadProjectView } from '../views/upload-project/UploadProjectView';
 import { routerExtensionPoint } from './RouterExtensionPoints';
 
@@ -26,7 +26,7 @@ export const Router = () => {
     <Switch>
       <Route exact path="/new/project" component={withErrorBoundary(NewProjectView)} />
       <Route exact path="/upload/project" component={withErrorBoundary(UploadProjectView)} />
-      <Route exact path="/projects" component={withErrorBoundary(ProjectsView)} />
+      <Route exact path="/projects" component={withErrorBoundary(ProjectBrowser)} />
       <Route exact path="/projects/:projectId/edit/:representationId?" component={withErrorBoundary(EditProjectView)} />
       <Route exact path="/projects/:projectId/settings" component={withErrorBoundary(ProjectSettingsView)} />
       {routes.map((props, index) => (

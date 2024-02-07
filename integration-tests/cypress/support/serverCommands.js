@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,9 @@ const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 
 Cypress.Commands.add('deleteAllProjects', () => {
   const getProjectsQuery = `
-  query getProjects($page: Int!) {
+  query getProjects($page: Int!, $limit: Int!) {
     viewer {
-      projects(page: $page) {
+      projects(page: $page, limit: $limit) {
         edges {
           node {
             id
@@ -32,7 +32,7 @@ Cypress.Commands.add('deleteAllProjects', () => {
     method: 'POST',
     mode: 'cors',
     url,
-    body: { query: getProjectsQuery, variables: { page: 0 } },
+    body: { query: getProjectsQuery, variables: { page: 0, limit: 50 } },
   }).then((res) => {
     const projectIds = res.body.data.viewer.projects.edges.map((edge) => edge.node.id);
 

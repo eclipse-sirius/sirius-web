@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface DeleteProjectModalProps {
-  project: Project;
-  onSuccess: () => void;
-  onCancel: () => void;
-}
 
-export interface Project {
-  id: string;
-  name: string;
+import { GQLProject } from './useProjects.types';
+
+export interface ProjectRowProps {
+  project: GQLProject;
+  onChange: () => void;
 }

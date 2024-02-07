@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,21 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
 export interface RenameProjectModalProps {
-  projectId: string;
-  initialProjectName: string;
-  onRename: () => void;
-  onClose: () => void;
+  project: Project;
+  onSuccess: () => void;
+  onCancel: () => void;
 }
 
-export interface GQLRenameProjectMutationData {
-  renameProject: GQLRenameProjectPayload;
+export interface RenameProjectModalState {
+  newName: string;
+  pristine: boolean;
 }
 
-export interface GQLRenameProjectPayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLRenameProjectPayload {
-  message: string;
+export interface Project {
+  id: string;
+  name: string;
 }
