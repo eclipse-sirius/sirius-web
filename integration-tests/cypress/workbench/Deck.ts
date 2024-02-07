@@ -47,7 +47,9 @@ export class Deck {
 
   public openDeckRepresentation(taskProjectId: string, projectName: string, representationName: string) {
     new Projects().visit();
-    new Project().visit(taskProjectId);
+    const project = new Project();
+    project.visit(taskProjectId);
+    project.disableDeletionConfirmationDialog();
     const explorer = new Explorer();
     explorer.expand('Task Model');
     explorer.expand('Company');

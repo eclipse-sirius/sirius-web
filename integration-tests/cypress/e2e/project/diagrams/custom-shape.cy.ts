@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { Project } from '../../../pages/Project';
+import { Studio } from '../../../usecases/Studio';
+
 describe('/projects/:projectId/edit - Custom Shape', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
-    cy.createProjectFromTemplate('studio-template').then((res) => {
-      const projectId = res.body.data.createProjectFromTemplate.project.id;
-      cy.visit(`/projects/${projectId}/edit`);
+    new Studio().createStudioProject().then((createdProjectData) => {
+      const project = new Project();
+      project.visit(createdProjectData.projectId);
+      project.disableDeletionConfirmationDialog();
     });
   });
 
@@ -63,7 +67,6 @@ describe('/projects/:projectId/edit - Custom Shape', () => {
     cy.getByTestId('representationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('representationDescription').click();
     cy.get('[data-testid$=" Diagram Description"]').should('exist').click();
-    cy.getByTestId('name').clear().type('diagram__REACT_FLOW');
     cy.getByTestId('create-representation').click();
 
     cy.getByTestId('Root-more').click();

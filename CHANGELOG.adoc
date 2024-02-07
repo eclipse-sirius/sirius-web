@@ -81,6 +81,9 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/2841[#2841] [diagram] Add the support for read-only diagram.
 In read-only mode, the palette can not be displayed, some of the panel action are disabled, a node cannot be moved or be resized.
 - https://github.com/eclipse-sirius/sirius-web/issues/3042[#3042] [core] IObjectService have been divided in smaller services IContentService, IObjectSearchService, IIdentityService and ILabelService, see the related ADR for more details.
+- https://github.com/eclipse-sirius/sirius-web/issues/3089[#3089] [sirius-web] Add confirmation dialog on delete.
++
+image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,70%]
 
 === Improvements
 

@@ -25,7 +25,9 @@ describe('/projects/:projectId/edit - Portal', () => {
     beforeEach(() =>
       new Flow().createRobotProject(projectName).then((createdProjectData) => {
         projectId = createdProjectData.projectId;
-        new Project().visit(projectId);
+        const project = new Project();
+        project.visit(projectId);
+        project.disableDeletionConfirmationDialog();
       })
     );
 

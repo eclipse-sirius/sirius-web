@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
-import { GQLGroup, GQLPage } from '@eclipse-sirius/sirius-components-forms';
+import { ConfirmationDialogContext, Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
+import { GQLContainerBorderStyle, GQLGroup, GQLPage } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addGroupMutation, deleteGroupMutation, moveGroupMutation } from '../FormDescriptionEditorEventFragment';
 import {
@@ -80,6 +81,10 @@ const moveGroupSuccessData: GQLMoveGroupMutationData = {
   moveGroup: successPayload,
 };
 
+const showConfirmation = (_title: string, _message: string, _buttonLabel: string, onConfirm: () => void) => {
+  onConfirm();
+};
+
 const emptySelection: Selection = {
   entries: [],
 };
@@ -87,6 +92,13 @@ const emptySelection: Selection = {
 const emptySetSelection = (_: Selection) => {};
 
 test('should drop the Group in the drop area', async () => {
+  const containerBorderStyle: GQLContainerBorderStyle = {
+    color: null,
+    lineStyle: '',
+    radius: 0,
+    size: 0,
+  };
+
   const group: GQLGroup = {
     id: 'Group1',
     displayMode: 'LIST',
@@ -94,6 +106,7 @@ test('should drop the Group in the drop area', async () => {
     label: 'Group1',
     widgets: [],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const page: GQLPage = {
@@ -124,8 +137,7 @@ test('should drop the Group in the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
         <Group
           editingContextId="editingContextId"
           representationId="formDescriptionEditorId"
@@ -153,6 +165,13 @@ test('should drop the Group in the drop area', async () => {
 });
 
 test('should delete the Group from the drop area', async () => {
+  const containerBorderStyle: GQLContainerBorderStyle = {
+    color: null,
+    lineStyle: '',
+    radius: 0,
+    size: 0,
+  };
+
   const group: GQLGroup = {
     id: 'Group1',
     displayMode: 'LIST',
@@ -160,6 +179,7 @@ test('should delete the Group from the drop area', async () => {
     label: 'Group1',
     widgets: [],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const page: GQLPage = {
@@ -190,16 +210,20 @@ test('should delete the Group from the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <Group
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          page={page}
-          group={group}
-        />
-      </SelectionContext.Provider>
+      <ConfirmationDialogContext.Provider
+        value={{
+          showConfirmation,
+        }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+          <Group
+            editingContextId="editingContextId"
+            representationId="formDescriptionEditorId"
+            formDescriptionEditor={formDescriptionEditor}
+            page={page}
+            group={group}
+          />
+        </SelectionContext.Provider>
+      </ConfirmationDialogContext.Provider>
     </MockedProvider>
   );
 
@@ -217,6 +241,13 @@ test('should delete the Group from the drop area', async () => {
 });
 
 test('should move the existing Group from/into the drop area', async () => {
+  const containerBorderStyle: GQLContainerBorderStyle = {
+    color: null,
+    lineStyle: '',
+    radius: 0,
+    size: 0,
+  };
+
   const group1: GQLGroup = {
     id: 'Group1',
     displayMode: 'LIST',
@@ -224,6 +255,7 @@ test('should move the existing Group from/into the drop area', async () => {
     label: 'Group1',
     widgets: [],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const group2: GQLGroup = {
@@ -233,6 +265,7 @@ test('should move the existing Group from/into the drop area', async () => {
     label: 'Group2',
     widgets: [],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const page: GQLPage = {
@@ -263,8 +296,7 @@ test('should move the existing Group from/into the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
         <Group
           editingContextId="editingContextId"
           representationId="formDescriptionEditorId"

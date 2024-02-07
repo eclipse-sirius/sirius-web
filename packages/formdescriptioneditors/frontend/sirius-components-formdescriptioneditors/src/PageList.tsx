@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMutation } from '@apollo/client';
-import { Selection, Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, Toast, useDeletionConfirmationDialog, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { GQLFlexboxContainer, GQLPage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -113,6 +113,7 @@ export const PageList = ({ editingContextId, representationId, formDescriptionEd
   const { message } = state;
 
   const { selection, setSelection } = useSelection();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   useEffect(() => {
     const entry = selection.entries.at(0);
@@ -257,7 +258,9 @@ export const PageList = ({ editingContextId, representationId, formDescriptionEd
         pageId: state.selectedPage.id,
       };
       const deletePageVariables: GQLDeletePageMutationVariables = { input: deletePageInput };
-      deletePage({ variables: deletePageVariables });
+      showDeletionConfirmation(() => {
+        deletePage({ variables: deletePageVariables });
+      });
       event.stopPropagation();
     }
   };

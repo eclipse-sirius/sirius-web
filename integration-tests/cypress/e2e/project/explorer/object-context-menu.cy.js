@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,17 @@ describe('/projects/:projectId/edit - Object Context Menu', () => {
     cy.getByTestId('Robot-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
 
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-cancel').click();
+    cy.getByTestId('confirmation-dialog').should('not.exist');
+
+    cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
+
     cy.getByTestId('Robot').should('not.exist');
+    cy.getByTestId('confirmation-dialog').should('not.exist');
   });
 
   it('can open the new object modal', () => {

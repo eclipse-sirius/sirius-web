@@ -10,12 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import { Project } from '../../../pages/Project';
+import { Studio } from '../../../usecases/Studio';
+
 describe('/projects/:projectId/edit - Studio', () => {
   beforeEach(() => {
     cy.deleteAllProjects();
-    cy.createProjectFromTemplate('studio-template').then((res) => {
-      const projectId = res.body.data.createProjectFromTemplate.project.id;
-      cy.visit(`/projects/${projectId}/edit`);
+    new Studio().createStudioProject().then((createdProjectData) => {
+      const project = new Project();
+      project.visit(createdProjectData.projectId);
+      project.disableDeletionConfirmationDialog();
     });
   });
 

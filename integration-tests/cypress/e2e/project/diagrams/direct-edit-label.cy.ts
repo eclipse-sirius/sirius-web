@@ -30,7 +30,9 @@ describe('Diagram - Direct edit label', () => {
           const projectId = payload.project.id;
           studioProjectId = projectId;
 
-          new Project().visit(projectId);
+          const project = new Project();
+          project.visit(projectId);
+          project.disableDeletionConfirmationDialog();
 
           const explorer = new Explorer();
           explorer.getTreeItemByLabel('DomainNewModel').dblclick();
@@ -163,7 +165,9 @@ describe('Diagram - Direct edit label', () => {
           const projectId = payload.project.id;
           studioProjectId = projectId;
 
-          new Project().visit(projectId);
+          const project = new Project();
+          project.visit(projectId);
+          project.disableDeletionConfirmationDialog();
 
           const explorer = new Explorer();
           explorer.getTreeItemByLabel('DomainNewModel').dblclick();

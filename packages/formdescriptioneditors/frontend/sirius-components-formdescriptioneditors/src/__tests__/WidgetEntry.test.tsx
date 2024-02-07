@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,17 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
-import { GQLChartWidget, GQLGroup, GQLPage, GQLPieChart, GQLTextfield } from '@eclipse-sirius/sirius-components-forms';
+import { ConfirmationDialogContext, Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
+import {
+  GQLChartWidget,
+  GQLContainerBorderStyle,
+  GQLGroup,
+  GQLPage,
+  GQLPieChart,
+  GQLTextfield,
+} from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../FormDescriptionEditorEventFragment';
 import {
@@ -83,6 +91,10 @@ const moveWidgetVariables: GQLMoveWidgetMutationVariables = {
 
 const moveWidgetSuccessData: GQLMoveWidgetMutationData = { moveWidget: successPayload };
 
+const showConfirmation = (_title: string, _message: string, _buttonLabel: string, onConfirm: () => void) => {
+  onConfirm();
+};
+
 const emptySelection: Selection = {
   entries: [],
 };
@@ -108,6 +120,14 @@ test('should drop the Textfield in the drop area', async () => {
       strikeThrough: null,
     },
     supportsCompletion: false,
+    readOnly: false,
+  };
+
+  const containerBorderStyle: GQLContainerBorderStyle = {
+    color: null,
+    lineStyle: '',
+    radius: 0,
+    size: 0,
   };
 
   const group: GQLGroup = {
@@ -117,6 +137,7 @@ test('should drop the Textfield in the drop area', async () => {
     label: 'group1',
     widgets: [textfieldWidget],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const page: GQLPage = {
@@ -147,8 +168,7 @@ test('should drop the Textfield in the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
         <WidgetEntry
           editingContextId="editingContextId"
           representationId="formDescriptionEditorId"
@@ -197,6 +217,14 @@ test('should delete the Textfield from the drop area', async () => {
       strikeThrough: null,
     },
     supportsCompletion: false,
+    readOnly: false,
+  };
+
+  const containerBorderStyle: GQLContainerBorderStyle = {
+    color: null,
+    lineStyle: '',
+    radius: 0,
+    size: 0,
   };
 
   const group: GQLGroup = {
@@ -206,6 +234,7 @@ test('should delete the Textfield from the drop area', async () => {
     label: 'group1',
     widgets: [textfieldWidget],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const page: GQLPage = {
@@ -236,19 +265,23 @@ test('should delete the Textfield from the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <WidgetEntry
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          page={page}
-          container={group}
-          flexDirection={'row'}
-          flexGrow={0}
-          widget={textfieldWidget}
-        />
-      </SelectionContext.Provider>
+      <ConfirmationDialogContext.Provider
+        value={{
+          showConfirmation,
+        }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+          <WidgetEntry
+            editingContextId="editingContextId"
+            representationId="formDescriptionEditorId"
+            formDescriptionEditor={formDescriptionEditor}
+            page={page}
+            container={group}
+            flexDirection={'row'}
+            flexGrow={0}
+            widget={textfieldWidget}
+          />
+        </SelectionContext.Provider>
+      </ConfirmationDialogContext.Provider>
     </MockedProvider>
   );
 
@@ -294,6 +327,14 @@ test('should delete the PieChart from the drop area', async () => {
     __typename: 'ChartWidget',
     diagnostics: [],
     chart: pieChart,
+    readOnly: false,
+  };
+
+  const containerBorderStyle: GQLContainerBorderStyle = {
+    color: null,
+    lineStyle: '',
+    radius: 0,
+    size: 0,
   };
 
   const group: GQLGroup = {
@@ -303,6 +344,7 @@ test('should delete the PieChart from the drop area', async () => {
     label: 'group1',
     widgets: [pieChartWidget],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const page: GQLPage = {
@@ -333,19 +375,23 @@ test('should delete the PieChart from the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <WidgetEntry
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          page={page}
-          container={group}
-          flexDirection={'row'}
-          flexGrow={0}
-          widget={pieChartWidget}
-        />
-      </SelectionContext.Provider>
+      <ConfirmationDialogContext.Provider
+        value={{
+          showConfirmation,
+        }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+          <WidgetEntry
+            editingContextId="editingContextId"
+            representationId="formDescriptionEditorId"
+            formDescriptionEditor={formDescriptionEditor}
+            page={page}
+            container={group}
+            flexDirection={'row'}
+            flexGrow={0}
+            widget={pieChartWidget}
+          />
+        </SelectionContext.Provider>
+      </ConfirmationDialogContext.Provider>
     </MockedProvider>
   );
 
@@ -380,6 +426,14 @@ test('should move the existing Textfield from/into the drop area', async () => {
       strikeThrough: null,
     },
     supportsCompletion: false,
+    readOnly: false,
+  };
+
+  const containerBorderStyle: GQLContainerBorderStyle = {
+    color: null,
+    lineStyle: '',
+    radius: 0,
+    size: 0,
   };
 
   const group: GQLGroup = {
@@ -389,6 +443,7 @@ test('should move the existing Textfield from/into the drop area', async () => {
     label: 'group1',
     widgets: [textfieldWidget],
     toolbarActions: [],
+    borderStyle: containerBorderStyle,
   };
 
   const page: GQLPage = {
@@ -419,8 +474,7 @@ test('should move the existing Textfield from/into the drop area', async () => {
 
   render(
     <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
         <WidgetEntry
           editingContextId="editingContextId"
           representationId="formDescriptionEditorId"

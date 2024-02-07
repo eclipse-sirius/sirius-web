@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -158,10 +158,16 @@ describe('/projects/:projectId/edit - Tree filter bar', () => {
     cy.getByTestId('Robot').dblclick();
     cy.getByTestId('Central_Unit-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
     cy.getByTestId('CaptureSubSystem-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
     cy.getByTestId('Wifi-more').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog').should('be.visible');
+    cy.getByTestId('confirmation-dialog-button-ok').click();
 
     cy.getByTestId('flow').click().type('{ctrl+f}');
 
