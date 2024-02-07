@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,10 +46,13 @@ public class ForComponent implements IComponent {
         List<?> objects = forDescription.getIterableProvider().apply(variableManager);
         List<Element> children = new ArrayList<>(objects.size());
 
+        int index = 0;
         for (Object object : objects) {
             VariableManager childVariableManager = variableManager.createChild();
             childVariableManager.put(forDescription.getIterator(), object);
-            childVariableManager.put(FormComponent.PARENT_ELEMENT_ID, forDescription.getId());
+            childVariableManager.put(FormComponent.PARENT_ELEMENT_ID, forDescription.getId() + ":" + index);
+            index = index + 1;
+
             List<Element> forChildren = new ArrayList<>();
 
             List<AbstractControlDescription> controlDescriptions = forDescription.getControlDescriptions();
