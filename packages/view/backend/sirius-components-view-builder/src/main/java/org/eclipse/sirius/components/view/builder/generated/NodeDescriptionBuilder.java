@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    private org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodeDescription();
+    private final org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodeDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.NodeDescription.
@@ -96,16 +96,6 @@ public class NodeDescriptionBuilder {
     }
 
     /**
-     * Setter for LabelExpression.
-     *
-     * @generated
-     */
-    public NodeDescriptionBuilder labelExpression(java.lang.String value) {
-        this.getNodeDescription().setLabelExpression(value);
-        return this;
-    }
-
-    /**
      * Setter for Collapsible.
      *
      * @generated
@@ -150,7 +140,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle ... values) {
+    public NodeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle... values) {
         for (org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle value : values) {
             this.getNodeDescription().getConditionalStyles().add(value);
         }
@@ -162,7 +152,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder childrenDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+    public NodeDescriptionBuilder childrenDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription... values) {
         for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getChildrenDescriptions().add(value);
         }
@@ -174,7 +164,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder borderNodesDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+    public NodeDescriptionBuilder borderNodesDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription... values) {
         for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getBorderNodesDescriptions().add(value);
         }
@@ -186,7 +176,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder reusedChildNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+    public NodeDescriptionBuilder reusedChildNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription... values) {
         for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getReusedChildNodeDescriptions().add(value);
         }
@@ -198,7 +188,7 @@ public class NodeDescriptionBuilder {
      *
      * @generated
      */
-    public NodeDescriptionBuilder reusedBorderNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+    public NodeDescriptionBuilder reusedBorderNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription... values) {
         for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getNodeDescription().getReusedBorderNodeDescriptions().add(value);
         }
@@ -236,12 +226,6 @@ public class NodeDescriptionBuilder {
     }
 
     /**
-     * Setter for MinWidthExpression.
-     *
-     * @generated
-     */
-
-    /**
      * Setter for KeepAspectRatio.
      *
      * @generated
@@ -250,6 +234,29 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setKeepAspectRatio(value);
         return this;
     }
+
+    /**
+     * Setter for InsideLabel.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder insideLabel(org.eclipse.sirius.components.view.diagram.InsideLabelDescription value) {
+        this.getNodeDescription().setInsideLabel(value);
+        return this;
+    }
+
+    /**
+     * Setter for OutsideLabels.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder outsideLabels(org.eclipse.sirius.components.view.diagram.OutsideLabelDescription... values) {
+        for (org.eclipse.sirius.components.view.diagram.OutsideLabelDescription value : values) {
+            this.getNodeDescription().getOutsideLabels().add(value);
+        }
+        return this;
+    }
+
 
 }
 

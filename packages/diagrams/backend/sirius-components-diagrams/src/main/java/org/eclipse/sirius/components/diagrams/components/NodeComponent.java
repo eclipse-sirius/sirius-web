@@ -182,7 +182,8 @@ public class NodeComponent implements IComponent {
 
         List<Element> nodeChildren = new ArrayList<>();
 
-        nodeChildren.addAll(this.getInsideLabel(nodeVariableManager, optionalPreviousNode, nodeDescription, nodeId, containmentKind, type, style));
+        nodeChildren.addAll(this.getInsideLabel(nodeVariableManager, optionalPreviousNode, nodeDescription, nodeId));
+        nodeChildren.addAll(this.getOutsideLabel(nodeVariableManager, nodeDescription, nodeId));
         nodeChildren.addAll(this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor));
         nodeChildren.addAll(this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor));
 
@@ -370,23 +371,29 @@ public class NodeComponent implements IComponent {
         return size;
     }
 
-    private List<Element> getInsideLabel(VariableManager nodeVariableManager, Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, String nodeId,
-            NodeContainmentKind containmentKind, String type, INodeStyle style) {
+    private List<Element> getInsideLabel(VariableManager nodeVariableManager, Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, String nodeId) {
         List<Element> nodeChildren = new ArrayList<>();
         InsideLabelDescription labelDescription = nodeDescription.getInsideLabelDescription();
         if (labelDescription != null) {
             nodeVariableManager.put(InsideLabelDescription.OWNER_ID, nodeId);
 
-            // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
-            // the diagrams-layout.
-            LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
-
             Optional<InsideLabel> optionalPreviousInsideLabel = optionalPreviousNode.map(Node::getInsideLabel);
-            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousInsideLabel, dummyLabelType.getValue());
+            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousInsideLabel);
             Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
             nodeChildren.add(insideLabelElement);
         }
         return nodeChildren;
+    }
+
+    private List<Element> getOutsideLabel(VariableManager nodeVariableManager, NodeDescription nodeDescription, String nodeId) {
+
+        return nodeDescription.getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
+            nodeVariableManager.put(InsideLabelDescription.OWNER_ID, nodeId);
+
+            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(nodeVariableManager, outsideLabelDescription);
+            return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
+        }).toList();
+
     }
 
     private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, ViewModifier state,

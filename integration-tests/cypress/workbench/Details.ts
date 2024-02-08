@@ -43,4 +43,9 @@ export class Details {
   public selectReferenceWidgetOption(option: string): void {
     cy.getByTestId(`option-${option}`).should('exist').click();
   }
+
+  public selectValue(selectWidgetLabel: string, valueLabel: string): void {
+    this.getDetailsView().findByTestId(selectWidgetLabel).click();
+    cy.get('ul[role="listbox"]').contains(valueLabel).click();
+  }
 }

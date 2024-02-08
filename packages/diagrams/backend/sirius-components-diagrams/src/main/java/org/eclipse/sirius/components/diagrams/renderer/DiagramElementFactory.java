@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.InsideLabelElementProps;
 import org.eclipse.sirius.components.diagrams.elements.LabelElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.elements.OutsideLabelElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
 import org.slf4j.Logger;
@@ -55,6 +56,8 @@ public class DiagramElementFactory implements IElementFactory {
             object = this.instantiateLabel(labelElementProps);
         } else if (InsideLabelElementProps.TYPE.equals(type) && props instanceof InsideLabelElementProps insideLabelElementProps) {
             object = this.instantiateInsideLabel(insideLabelElementProps);
+        } else if (OutsideLabelElementProps.TYPE.equals(type) && props instanceof OutsideLabelElementProps outsideLabelElementProps) {
+            object = this.instantiateOutsideLabel(outsideLabelElementProps);
         }
         return object;
     }
@@ -195,16 +198,16 @@ public class DiagramElementFactory implements IElementFactory {
 
     private InsideLabel instantiateInsideLabel(InsideLabelElementProps props) {
         return InsideLabel.newLabel(props.getId())
-                .type(props.getType())
                 .text(props.getText())
                 .insideLabelLocation(props.getInsideLabelLocation())
-                .position(props.getPosition())
-                .size(props.getSize())
-                .alignment(props.getAlignment())
                 .style(props.getStyle())
                 .isHeader(props.isIsHeader())
                 .displayHeaderSeparator(props.isDisplayHeaderSeparator())
                 .build();
+    }
+
+    private OutsideLabel instantiateOutsideLabel(OutsideLabelElementProps props) {
+        return new OutsideLabel(props.getId(), props.getText(), props.getOutsideLabelLocation(), props.getStyle());
     }
 
 }

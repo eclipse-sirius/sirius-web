@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,132 +36,102 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
  * <em>Precondition Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSynchronizationPolicy
  * <em>Synchronization Policy</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getLabelExpression <em>Label
- * Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.Container implements DiagramElementDescription {
+
     /**
      * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see #getName()
      * @generated
      * @ordered
+     * @see #getName()
      */
     protected static final String NAME_EDEFAULT = "NewRepresentationDescription";
-
-    /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
-    protected String name = NAME_EDEFAULT;
-
     /**
      * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getDomainType()
      * @generated
      * @ordered
+     * @see #getDomainType()
      */
     protected static final String DOMAIN_TYPE_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
-    protected String domainType = DOMAIN_TYPE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSemanticCandidatesExpression()
      * @generated
      * @ordered
+     * @see #getSemanticCandidatesExpression()
      */
     protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self.eContents()";
-
-    /**
-     * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSemanticCandidatesExpression()
-     * @generated
-     * @ordered
-     */
-    protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getPreconditionExpression()
      * @generated
      * @ordered
+     * @see #getPreconditionExpression()
      */
     protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getPreconditionExpression()
-     * @generated
-     * @ordered
-     */
-    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #getSynchronizationPolicy() <em>Synchronization Policy</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSynchronizationPolicy()
      * @generated
      * @ordered
+     * @see #getSynchronizationPolicy()
      */
     protected static final SynchronizationPolicy SYNCHRONIZATION_POLICY_EDEFAULT = SynchronizationPolicy.SYNCHRONIZED;
-
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     * @see #getName()
+     */
+    protected String name = NAME_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDomainType()
+     */
+    protected String domainType = DOMAIN_TYPE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSemanticCandidatesExpression()
+     */
+    protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPreconditionExpression()
+     */
+    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #getSynchronizationPolicy() <em>Synchronization Policy</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSynchronizationPolicy()
      * @generated
      * @ordered
+     * @see #getSynchronizationPolicy()
      */
     protected SynchronizationPolicy synchronizationPolicy = SYNCHRONIZATION_POLICY_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
-    protected static final String LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
-
-    /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
-    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -304,29 +274,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
-    public String getLabelExpression() {
-        return this.labelExpression;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setLabelExpression(String newLabelExpression) {
-        String oldLabelExpression = this.labelExpression;
-        this.labelExpression = newLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
@@ -339,8 +286,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getPreconditionExpression();
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 return this.getSynchronizationPolicy();
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-                return this.getLabelExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -367,9 +312,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return;
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 this.setSynchronizationPolicy((SynchronizationPolicy) newValue);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -398,9 +340,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 this.setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
                 return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -423,8 +362,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION:
-                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -450,8 +387,6 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.preconditionExpression);
         result.append(", synchronizationPolicy: ");
         result.append(this.synchronizationPolicy);
-        result.append(", labelExpression: ");
-        result.append(this.labelExpression);
         result.append(')');
         return result.toString();
     }

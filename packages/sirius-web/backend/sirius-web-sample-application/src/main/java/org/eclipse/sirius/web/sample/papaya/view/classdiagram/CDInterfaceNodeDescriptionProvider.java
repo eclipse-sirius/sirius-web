@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
  * @author sbegaudeau
  */
 public class CDInterfaceNodeDescriptionProvider implements INodeDescriptionProvider {
+
     public static final String NAME = "CD Node Interface";
 
     private final IColorProvider colorProvider;
@@ -45,9 +46,6 @@ public class CDInterfaceNodeDescriptionProvider implements INodeDescriptionProvi
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        nodeStyle.setWithHeader(true);
-        nodeStyle.setDisplayHeaderSeparator(true);
 
         var builder = new PapayaViewBuilder();
         var domainType = builder.domainType(builder.entity("Interface"));
@@ -57,7 +55,7 @@ public class CDInterfaceNodeDescriptionProvider implements INodeDescriptionProvi
         nodeDescription.setDomainType(domainType);
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
-        nodeDescription.setLabelExpression("aql:self.name");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescriptionWithHeader("aql:self.name", this.colorProvider.getColor("label_white"), true));
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,13 +21,15 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class LabelDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.form.LabelDescription.
+     * Create instance org.eclipse.sirius.components.view.diagram.LabelDescription.
+     *
      * @generated
      */
-    private org.eclipse.sirius.components.view.form.LabelDescription labelDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createLabelDescription();
+    private final org.eclipse.sirius.components.view.form.LabelDescription labelDescription = org.eclipse.sirius.components.view.form.FormFactory.eINSTANCE.createLabelDescription();
 
     /**
-     * Return instance org.eclipse.sirius.components.view.form.LabelDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.LabelDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.form.LabelDescription getLabelDescription() {
@@ -35,7 +37,8 @@ public class LabelDescriptionBuilder {
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.form.LabelDescription.
+     * Return instance org.eclipse.sirius.components.view.diagram.LabelDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.form.LabelDescription build() {
@@ -51,6 +54,7 @@ public class LabelDescriptionBuilder {
         this.getLabelDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for LabelExpression.
      *
@@ -60,6 +64,7 @@ public class LabelDescriptionBuilder {
         this.getLabelDescription().setLabelExpression(value);
         return this;
     }
+
     /**
      * Setter for HelpExpression.
      *
@@ -69,6 +74,7 @@ public class LabelDescriptionBuilder {
         this.getLabelDescription().setHelpExpression(value);
         return this;
     }
+
     /**
      * Setter for ValueExpression.
      *
@@ -78,6 +84,7 @@ public class LabelDescriptionBuilder {
         this.getLabelDescription().setValueExpression(value);
         return this;
     }
+
     /**
      * Setter for Style.
      *
@@ -87,18 +94,18 @@ public class LabelDescriptionBuilder {
         this.getLabelDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public LabelDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle ... values) {
+    public LabelDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle... values) {
         for (org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle value : values) {
             this.getLabelDescription().getConditionalStyles().add(value);
         }
         return this;
     }
-
 
 }
 

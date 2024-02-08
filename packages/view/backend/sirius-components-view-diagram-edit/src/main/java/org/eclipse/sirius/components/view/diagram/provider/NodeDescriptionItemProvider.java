@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,10 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 
 /**
@@ -38,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescriptio
  * @generated
  */
 public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemProvider {
+
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -173,6 +176,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS);
         }
         return this.childrenFeatures;
     }
@@ -246,6 +251,8 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
             case DiagramPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+            case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
+            case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -288,6 +295,12 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, DiagramFactory.eINSTANCE.createListLayoutStrategyDescription()));
+        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        insideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createInsideLabelStyle());
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL, insideLabelDescription));
+        OutsideLabelDescription outsideLabelDescription = DiagramFactory.eINSTANCE.createOutsideLabelDescription();
+        outsideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createOutsideLabelStyle());
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS, outsideLabelDescription));
     }
 
     /**

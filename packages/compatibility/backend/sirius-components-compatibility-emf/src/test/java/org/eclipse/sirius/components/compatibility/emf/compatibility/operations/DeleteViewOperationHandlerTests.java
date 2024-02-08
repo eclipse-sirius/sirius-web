@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.compatibility.emf.compatibility.operations;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,12 +98,8 @@ public class DeleteViewOperationHandlerTests {
                 .targetObjectKind("ecore::EPackage")
                 .targetObjectLabel(OperationTestContext.ROOT_PACKAGE_NAME)
                 .insideLabel(InsideLabel.newLabel(UUID.randomUUID().toString())
-                        .type("Label")
                         .text(OperationTestContext.ROOT_PACKAGE_NAME)
                         .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
-                        .position(Position.at(0, 0))
-                        .size(Size.of(10, 10))
-                        .alignment(Position.at(0, 0))
                         .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL(List.of()).build())
                         .isHeader(false)
                         .displayHeaderSeparator(false)
@@ -168,7 +164,7 @@ public class DeleteViewOperationHandlerTests {
         // check the nominal case
         IStatus handleResult = this.deleteViewOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertTrue(handleResult instanceof Success);
+        assertInstanceOf(Success.class, handleResult);
     }
 
     private NodeDescription getNodeDescription(String nodeDescriptionId) {
@@ -203,7 +199,7 @@ public class DeleteViewOperationHandlerTests {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return nodeDescriptionId + "__" +  object;
+                return nodeDescriptionId + "__" + object;
             }
             return null;
         };

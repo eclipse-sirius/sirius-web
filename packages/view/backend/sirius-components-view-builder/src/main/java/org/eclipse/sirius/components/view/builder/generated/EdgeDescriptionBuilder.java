@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,14 @@ public class EdgeDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.EdgeDescription.
+     *
      * @generated
      */
-    private org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createEdgeDescription();
+    private final org.eclipse.sirius.components.view.diagram.EdgeDescription edgeDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createEdgeDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.EdgeDescription.
+     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.EdgeDescription getEdgeDescription() {
@@ -36,6 +38,7 @@ public class EdgeDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.EdgeDescription.
+     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.EdgeDescription build() {
@@ -51,6 +54,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *
@@ -60,6 +64,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setDomainType(value);
         return this;
     }
+
     /**
      * Setter for SemanticCandidatesExpression.
      *
@@ -69,6 +74,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setSemanticCandidatesExpression(value);
         return this;
     }
+
     /**
      * Setter for PreconditionExpression.
      *
@@ -78,6 +84,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setPreconditionExpression(value);
         return this;
     }
+
     /**
      * Setter for SynchronizationPolicy.
      *
@@ -87,15 +94,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setSynchronizationPolicy(value);
         return this;
     }
-    /**
-     * Setter for LabelExpression.
-     *
-     * @generated
-     */
-    public EdgeDescriptionBuilder labelExpression(java.lang.String value) {
-        this.getEdgeDescription().setLabelExpression(value);
-        return this;
-    }
+
     /**
      * Setter for BeginLabelExpression.
      *
@@ -105,6 +104,17 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setBeginLabelExpression(value);
         return this;
     }
+
+    /**
+     * Setter for CenterLabelExpression.
+     *
+     * @generated
+     */
+    public EdgeDescriptionBuilder centerLabelExpression(java.lang.String value) {
+        this.getEdgeDescription().setCenterLabelExpression(value);
+        return this;
+    }
+
     /**
      * Setter for EndLabelExpression.
      *
@@ -114,6 +124,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setEndLabelExpression(value);
         return this;
     }
+
     /**
      * Setter for IsDomainBasedEdge.
      *
@@ -123,6 +134,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setIsDomainBasedEdge(value);
         return this;
     }
+
     /**
      * Setter for Palette.
      *
@@ -132,12 +144,13 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setPalette(value);
         return this;
     }
+
     /**
      * Setter for SourceNodeDescriptions.
      *
      * @generated
      */
-    public EdgeDescriptionBuilder sourceNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+    public EdgeDescriptionBuilder sourceNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription... values) {
         for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getEdgeDescription().getSourceNodeDescriptions().add(value);
         }
@@ -149,7 +162,7 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder targetNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription ... values) {
+    public EdgeDescriptionBuilder targetNodeDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription... values) {
         for (org.eclipse.sirius.components.view.diagram.NodeDescription value : values) {
             this.getEdgeDescription().getTargetNodeDescriptions().add(value);
         }
@@ -165,6 +178,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setSourceNodesExpression(value);
         return this;
     }
+
     /**
      * Setter for TargetNodesExpression.
      *
@@ -174,6 +188,7 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setTargetNodesExpression(value);
         return this;
     }
+
     /**
      * Setter for Style.
      *
@@ -183,12 +198,13 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *
      * @generated
      */
-    public EdgeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle ... values) {
+    public EdgeDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle... values) {
         for (org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle value : values) {
             this.getEdgeDescription().getConditionalStyles().add(value);
         }

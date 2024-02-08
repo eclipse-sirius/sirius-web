@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,8 @@ public final class NodeDescription implements IDiagramElementDescription {
     private Predicate<VariableManager> shouldRenderPredicate;
 
     private InsideLabelDescription insideLabelDescription;
+
+    private List<OutsideLabelDescription> outsideLabelDescriptions;
 
     private Function<VariableManager, INodeStyle> styleProvider;
 
@@ -130,6 +132,10 @@ public final class NodeDescription implements IDiagramElementDescription {
 
     public InsideLabelDescription getInsideLabelDescription() {
         return this.insideLabelDescription;
+    }
+
+    public List<OutsideLabelDescription> getOutsideLabelDescriptions() {
+        return this.outsideLabelDescriptions;
     }
 
     public Function<VariableManager, INodeStyle> getStyleProvider() {
@@ -224,6 +230,8 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         private InsideLabelDescription insideLabelDescription;
 
+        private List<OutsideLabelDescription> outsideLabelDescriptions = List.of();
+
         private Function<VariableManager, INodeStyle> styleProvider;
 
         private Function<VariableManager, ILayoutStrategy> childrenLayoutStrategyProvider;
@@ -267,6 +275,7 @@ public final class NodeDescription implements IDiagramElementDescription {
             this.targetObjectLabelProvider = nodeDescription.getTargetObjectLabelProvider();
             this.semanticElementsProvider = nodeDescription.getSemanticElementsProvider();
             this.insideLabelDescription = nodeDescription.getInsideLabelDescription();
+            this.outsideLabelDescriptions = nodeDescription.getOutsideLabelDescriptions();
             this.styleProvider = nodeDescription.getStyleProvider();
             this.sizeProvider = nodeDescription.getSizeProvider();
             this.childrenLayoutStrategyProvider = nodeDescription.getChildrenLayoutStrategyProvider();
@@ -322,6 +331,11 @@ public final class NodeDescription implements IDiagramElementDescription {
 
         public Builder insideLabelDescription(InsideLabelDescription insideLabelDescription) {
             this.insideLabelDescription = Objects.requireNonNull(insideLabelDescription);
+            return this;
+        }
+
+        public Builder outsideLabelDescriptions(List<OutsideLabelDescription> outsideLabelDescriptions) {
+            this.outsideLabelDescriptions = Objects.requireNonNull(outsideLabelDescriptions);
             return this;
         }
 
@@ -410,7 +424,8 @@ public final class NodeDescription implements IDiagramElementDescription {
             nodeDescription.targetObjectLabelProvider = Objects.requireNonNull(this.targetObjectLabelProvider);
             nodeDescription.semanticElementsProvider = Objects.requireNonNull(this.semanticElementsProvider);
             nodeDescription.shouldRenderPredicate = Objects.requireNonNull(this.shouldRenderPredicate);
-            nodeDescription.insideLabelDescription = this.insideLabelDescription;
+            nodeDescription.insideLabelDescription = this.insideLabelDescription; // Optional on purpose
+            nodeDescription.outsideLabelDescriptions = Objects.requireNonNull(this.outsideLabelDescriptions);
             nodeDescription.styleProvider = Objects.requireNonNull(this.styleProvider);
             nodeDescription.sizeProvider = Objects.requireNonNull(this.sizeProvider);
             nodeDescription.userResizable = this.userResizable;

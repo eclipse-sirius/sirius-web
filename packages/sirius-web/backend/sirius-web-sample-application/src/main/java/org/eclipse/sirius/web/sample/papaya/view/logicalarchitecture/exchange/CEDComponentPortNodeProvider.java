@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.sample.papaya.view.logicalarchitecture.exchange;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaToolsFactory;
 import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
-
-import java.util.Objects;
 
 
 /**
@@ -40,13 +40,10 @@ public class CEDComponentPortNodeProvider implements INodeDescriptionProvider {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_red"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("color_red"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
-        nodeStyle.setWithHeader(false);
-        nodeStyle.setDisplayHeaderSeparator(false);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("ComponentPort");
         nodeDescription.setSemanticCandidatesExpression("aql:self.ports");
-        nodeDescription.setLabelExpression("aql:self.name");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name", this.colorProvider.getColor("label_black")));
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setUserResizable(false);
         nodeDescription.setDefaultHeightExpression("aql:'20'");

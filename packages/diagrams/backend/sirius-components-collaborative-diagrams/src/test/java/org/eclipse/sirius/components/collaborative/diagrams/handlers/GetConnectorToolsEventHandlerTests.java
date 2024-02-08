@@ -101,12 +101,8 @@ public class GetConnectorToolsEventHandlerTests {
                 .iconURL(List.of())
                 .build();
         InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
-                .type("labelType")
                 .text("text")
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
-                .alignment(Position.UNDEFINED)
                 .style(labelStyle)
                 .isHeader(false)
                 .displayHeaderSeparator(false)

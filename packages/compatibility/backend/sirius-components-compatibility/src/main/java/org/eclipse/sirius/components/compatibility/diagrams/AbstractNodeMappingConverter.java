@@ -186,15 +186,14 @@ public class AbstractNodeMappingConverter {
     private Function<VariableManager, String> getLabelIdProvider() {
         return variableManager -> {
             Object parentId = variableManager.getVariables().get(InsideLabelDescription.OWNER_ID);
-            return String.valueOf(parentId) + InsideLabelDescription.INSIDE_LABEL_SUFFIX;
+            return parentId + InsideLabelDescription.INSIDE_LABEL_SUFFIX;
         };
     }
 
     private List<NodeDescription> getChildNodeDescriptions(AbstractNodeMapping abstractNodeMapping, AQLInterpreter interpreter, Map<String, NodeDescription> id2NodeDescriptions) {
         List<NodeDescription> childNodeDescriptions = new ArrayList<>();
 
-        if (abstractNodeMapping instanceof ContainerMapping) {
-            ContainerMapping containerMapping = (ContainerMapping) abstractNodeMapping;
+        if (abstractNodeMapping instanceof ContainerMapping containerMapping) {
             List<NodeDescription> childNodeMappingDescriptions = containerMapping.getSubNodeMappings().stream()
                     .map(childNodeMapping -> this.convert(childNodeMapping, interpreter, id2NodeDescriptions))
                     .toList();

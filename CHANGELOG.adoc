@@ -55,7 +55,11 @@ This changes a core assumption from before where an element known to those servi
 This new interface will move in the near future from `sirius-components-core` to `sirius-web-application`.
 It's current location is only there to simplify the transition to the new Sirius Web architecture.
 - https://github.com/eclipse-sirius/sirius-web/issues/3021[#3021] [sirius-web] Make the `ISuggestedRootObjectTypesProvider` optional in `sirius-components-emf` in order to be able to reuse this maven module without the Sirius Desktop compatibility one.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3088[#3088] [diagram] Some changes have been made in the View DSL for diagram:
+* attribute `labelExpression` has been renamed to `centerLabelExpression` for edges
+* attribute `labelExpression` has been removed from `NodeDescription` in favor of `InsideLabelDescription`
++
+For further information, please refer to ADR _130_add_support_for_outside_inside_node_labels.adoc_
 
 === Dependency update
 
@@ -76,7 +80,7 @@ It's current location is only there to simplify the transition to the new Sirius
 - https://github.com/eclipse-sirius/sirius-web/issues/3063[#3063] [selection] Ensure Selections are always refreshed using the _current_ version of their target element
 - https://github.com/eclipse-sirius/sirius-web/issues/2721[#2721] [diagram] Prevent labels to exceed their container
 - https://github.com/eclipse-sirius/sirius-web/issues/3100[#3100] [diagram] Add support for drop on `IconLabelNode`
-- https://github.com/eclipse-sirius/sirius-web/issues/3124[#3124] [diagram] Fix an issue that prevents manual line break in node label
+-https://github.com/eclipse-sirius/sirius-web/issues/3124[#3124] [diagram] Fix an issue that prevents manual line break in node label
 - https://github.com/eclipse-sirius/sirius-web/issues/3127[#3127] [diagram] Fix an issue with handles position
 
 === New Features
@@ -99,6 +103,10 @@ In read-only mode, the palette can not be displayed, some of the panel action ar
 +
 image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3087[#3087] [deck] Add the Zoom, Full Screen and Fit to screen actions.
+- https://github.com/eclipse-sirius/sirius-web/issues/3088[#3088] [diagram] Add the support for inside/outside labels.
+In this first version, the only available positions _top_center_ for inside label en _bottom_center_ for outside label.
++
+image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70%]
 
 === Improvements
 

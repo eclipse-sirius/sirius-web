@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,7 +76,6 @@ public class DiagramDescriptionValidator implements EValidator {
         }
         if (eObject instanceof NodeStyleDescription nodeStyle) {
             isValid = this.hasProperColor(nodeStyle, diagnostics) && isValid;
-            isValid = this.hasProperLabelColor(nodeStyle, diagnostics) && isValid;
             isValid = this.hasProperBorderColor(nodeStyle, diagnostics) && isValid;
 
         }
@@ -149,25 +148,6 @@ public class DiagramDescriptionValidator implements EValidator {
                     new Object [] {
                         nodeStyle,
                         DiagramPackage.Literals.STYLE__COLOR,
-                    });
-
-            diagnostics.add(basicDiagnostic);
-        }
-
-        return isValid;
-    }
-
-    private boolean hasProperLabelColor(NodeStyleDescription nodeStyle, DiagnosticChain diagnostics) {
-        boolean isValid = Objects.nonNull(nodeStyle.getLabelColor());
-
-        if (!isValid && diagnostics != null) {
-            BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
-                    SIRIUS_COMPONENTS_EMF_PACKAGE,
-                    0,
-                    "The label color should not be empty",
-                    new Object [] {
-                        nodeStyle,
-                        DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
                     });
 
             diagnostics.add(basicDiagnostic);

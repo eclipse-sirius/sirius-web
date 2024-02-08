@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -50,6 +51,7 @@ import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -63,17 +65,20 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.diagram.providers.api.IViewToolImageProvider;
 import org.springframework.stereotype.Service;
@@ -246,7 +251,6 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         Function<VariableManager, Integer> defaultHeightProvider = variableManager -> this.computeDefaultSizeProvider(viewNodeDescription.getDefaultHeightExpression(), interpreter,
                 variableManager);
 
-        // @formatter:off
         List<String> reusedChildNodeDescriptionIds = viewNodeDescription.getReusedChildNodeDescriptions().stream()
                 .map(this.diagramIdProvider::getId)
                 .toList();
@@ -259,6 +263,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return result.asBoolean().orElse(true);
         };
 
+        var insideLabel = this.getInsideLabelDescription(viewNodeDescription, interpreter);
+
         NodeDescription.Builder builder = NodeDescription.newNodeDescription(this.diagramIdProvider.getId(viewNodeDescription))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .targetObjectKindProvider(this.semanticTargetKindProvider)
@@ -266,7 +272,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .semanticElementsProvider(this.getSemanticElementsProvider(viewNodeDescription, interpreter))
                 .synchronizationPolicy(synchronizationPolicy)
                 .typeProvider(typeProvider)
-                .insideLabelDescription(this.getInsideLabelDescription(viewNodeDescription, interpreter))
+                .outsideLabelDescriptions(this.getOutsideLabelDescriptions(viewNodeDescription, interpreter))
                 .styleProvider(styleProvider)
                 .childrenLayoutStrategyProvider(childrenLayoutStrategyProvider)
                 .childNodeDescriptions(childNodeDescriptions)
@@ -281,6 +287,9 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .defaultWidthProvider(defaultWidthProvider)
                 .defaultHeightProvider(defaultHeightProvider)
                 .keepAspectRatio(viewNodeDescription.isKeepAspectRatio());
+        if (insideLabel != null) {
+            builder.insideLabelDescription(insideLabel);
+        }
         new ToolFinder().findDropNodeTool(viewNodeDescription).ifPresent(dropNoteTool -> builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext)));
         new ToolFinder().findNodeLabelEditTool(viewNodeDescription)
                 .ifPresent(labelEditTool -> builder.labelEditHandler(this.createNodeLabelEditHandler(viewNodeDescription, converterContext)));
@@ -288,7 +297,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
         return result;
     }
-    private  ILayoutStrategy getiLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+
+    private ILayoutStrategy getiLayoutStrategy(ListLayoutStrategyDescription listLayoutStrategyDescription, VariableManager variableManager, AQLInterpreter interpreter) {
         Result resultAreChildNodesDraggable = interpreter.evaluateExpression(variableManager.getVariables(), listLayoutStrategyDescription.getAreChildNodesDraggableExpression());
         var builder = ListLayoutStrategy.newListLayoutStrategy()
                 .areChildNodesDraggable(resultAreChildNodesDraggable.asBoolean().orElse(true));
@@ -343,40 +353,81 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     }
 
     private InsideLabelDescription getInsideLabelDescription(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
+        var viewInsideLabelDescription = viewNodeDescription.getInsideLabel();
+        if (viewInsideLabelDescription == null) {
+            return null;
+        }
+
         Function<VariableManager, String> labelIdProvider = variableManager -> {
             Object parentId = variableManager.get(InsideLabelDescription.OWNER_ID, Object.class).orElse(null);
             return parentId + InsideLabelDescription.INSIDE_LABEL_SUFFIX;
         };
 
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
-            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
-            return this.stylesFactory.createLabelStyleDescription(effectiveStyle);
+            var effectiveStyle = this.findEffectiveInsideLabelStyle(viewInsideLabelDescription, interpreter, variableManager);
+            return this.stylesFactory.createInsideLabelStyle(effectiveStyle);
         };
 
         Function<VariableManager, Boolean> isHeaderProvider = variableManager -> {
-            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
-            if (effectiveStyle instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription) {
-                return rectangularNodeStyleDescription.isWithHeader();
+            var effectiveStyle = this.findEffectiveInsideLabelStyle(viewInsideLabelDescription, interpreter, variableManager);
+            if (effectiveStyle != null) {
+                return effectiveStyle.isWithHeader();
             }
             return false;
         };
 
         Function<VariableManager, Boolean> displayHeaderSeparatorProvider = variableManager -> {
-            var effectiveStyle = this.findEffectiveStyle(viewNodeDescription, interpreter, variableManager);
-            if (effectiveStyle instanceof RectangularNodeStyleDescription rectangularNodeStyleDescription) {
-                return rectangularNodeStyleDescription.isDisplayHeaderSeparator();
+            var effectiveStyle = this.findEffectiveInsideLabelStyle(viewInsideLabelDescription, interpreter, variableManager);
+            if (effectiveStyle != null) {
+                return effectiveStyle.isDisplayHeaderSeparator();
             }
             return false;
         };
 
         return InsideLabelDescription.newInsideLabelDescription(EcoreUtil.getURI(viewNodeDescription).toString() + InsideLabelDescription.INSIDE_LABEL_SUFFIX)
                 .idProvider(labelIdProvider)
-                .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDescription.getLabelExpression()))
+                .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewInsideLabelDescription.getLabelExpression()))
                 .styleDescriptionProvider(styleDescriptionProvider)
                 .isHeaderProvider(isHeaderProvider)
                 .displayHeaderSeparatorProvider(displayHeaderSeparatorProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .build();
+    }
+
+    private List<OutsideLabelDescription> getOutsideLabelDescriptions(org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription, AQLInterpreter interpreter) {
+        return viewNodeDescription.getOutsideLabels().stream().map(outsideLabelDescription -> {
+            Function<VariableManager, String> labelIdProvider = variableManager -> {
+                Object parentId = variableManager.get(OutsideLabelDescription.OWNER_ID, Object.class).orElse(null);
+                return parentId + OutsideLabelDescription.OUTSIDE_LABEL_SUFFIX + outsideLabelDescription.getPosition().getLiteral();
+            };
+
+            Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
+                var effectiveStyle = this.findEffectiveOutsideLabelStyle(outsideLabelDescription, interpreter, variableManager);
+                return this.stylesFactory.createOutsideLabelStyle(effectiveStyle);
+            };
+
+            return OutsideLabelDescription.newOutsideLabelDescription(EcoreUtil.getURI(viewNodeDescription)
+                            .toString() + OutsideLabelDescription.OUTSIDE_LABEL_SUFFIX + outsideLabelDescription.getPosition().getLiteral())
+                    .idProvider(labelIdProvider)
+                    .textProvider(variableManager -> this.evaluateString(interpreter, variableManager, outsideLabelDescription.getLabelExpression()))
+                    .styleDescriptionProvider(styleDescriptionProvider)
+                    .outsideLabelLocation(OutsideLabelLocation.BOTTOM_MIDDLE)
+                    .build();
+        }).toList();
+    }
+
+    private InsideLabelStyle findEffectiveInsideLabelStyle(org.eclipse.sirius.components.view.diagram.InsideLabelDescription insideLabelDescription, AQLInterpreter interpreter,
+            VariableManager variableManager) {
+        return insideLabelDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                .map(ConditionalInsideLabelStyle::getStyle).findFirst()
+                .orElseGet(insideLabelDescription::getStyle);
+    }
+
+    private OutsideLabelStyle findEffectiveOutsideLabelStyle(org.eclipse.sirius.components.view.diagram.OutsideLabelDescription outsideLabelDescription, AQLInterpreter interpreter,
+            VariableManager variableManager) {
+        return outsideLabelDescription.getConditionalStyles().stream().filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                .map(ConditionalOutsideLabelStyle::getStyle).findFirst()
+                .orElseGet(outsideLabelDescription::getStyle);
     }
 
     private Optional<LabelDescription> getSpecificEdgeLabelDescription(org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription, String labelExpression, String labelSuffix,
@@ -501,7 +552,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .deleteHandler(this.createDeleteHandler(viewEdgeDescription, converterContext));
 
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getBeginLabelExpression(), "_beginlabel", interpreter).ifPresent(builder::beginLabelDescription);
-        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getLabelExpression(), "_centerlabel", interpreter).ifPresent(builder::centerLabelDescription);
+        this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getCenterLabelExpression(), "_centerlabel", interpreter).ifPresent(builder::centerLabelDescription);
         this.getSpecificEdgeLabelDescription(viewEdgeDescription, viewEdgeDescription.getEndLabelExpression(), "_endlabel", interpreter).ifPresent(builder::endLabelDescription);
         new ToolFinder().findEdgeLabelEditTool(viewEdgeDescription)
                 .ifPresent(labelEditTool -> builder.labelEditHandler(this.createEdgeLabelEditHandler(viewEdgeDescription, converterContext)));
@@ -589,8 +640,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             Optional<LabelEditTool> optionalTool = new ToolFinder().findLabelEditTool(edgeDescription, edgeLabelKind);
             if (optionalTool.isPresent()) {
                 result = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, this.getDiagramContext(variableManager),
-                                                         convertedNodes, this.feedbackMessageService)
-                         .executeTool(optionalTool.get(), childVariableManager);
+                        convertedNodes, this.feedbackMessageService)
+                        .executeTool(optionalTool.get(), childVariableManager);
             } else {
                 result = new Failure("No label edition tool configured");
             }

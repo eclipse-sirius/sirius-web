@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -102,12 +102,8 @@ public class TestDiagramBuilder {
                     .iconURL(List.of())
                     .build();
             InsideLabel insideLabel = InsideLabel.newLabel(UUID.randomUUID().toString())
-                    .type("labelType")
                     .text("text")
                     .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
-                    .position(Position.UNDEFINED)
-                    .size(Size.UNDEFINED)
-                    .alignment(Position.UNDEFINED)
                     .style(labelStyle)
                     .isHeader(false)
                     .displayHeaderSeparator(false)

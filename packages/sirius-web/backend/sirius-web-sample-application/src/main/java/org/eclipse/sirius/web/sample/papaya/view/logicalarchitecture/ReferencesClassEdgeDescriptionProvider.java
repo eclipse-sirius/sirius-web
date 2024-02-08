@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class ReferencesClassEdgeDescriptionProvider implements IEdgeDescriptionP
 
         var extendsClassEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsClassEdgeDescription.setName("Edge References class");
-        extendsClassEdgeDescription.setLabelExpression("aql:self.name");
+        extendsClassEdgeDescription.setCenterLabelExpression("aql:self.name");
         extendsClassEdgeDescription.setStyle(extendsClassEdgeStyle);
         extendsClassEdgeDescription.setSemanticCandidatesExpression("aql:self.eAllContents()");
         extendsClassEdgeDescription.setDomainType("papaya_logical_architecture::Reference");

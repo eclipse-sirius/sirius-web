@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,13 +33,10 @@ public class InsideLabelComponentProps implements IProps {
 
     private final Optional<InsideLabel> optionalPreviousInsideLabel;
 
-    private final String type;
-
-    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, Optional<InsideLabel> optionalPreviousInsideLabel, String type) {
+    public InsideLabelComponentProps(VariableManager variableManager, InsideLabelDescription labelDescription, Optional<InsideLabel> optionalPreviousInsideLabel) {
         this.variableManager = Objects.requireNonNull(variableManager);
         this.insideLabelDescription = Objects.requireNonNull(labelDescription);
         this.optionalPreviousInsideLabel = Objects.requireNonNull(optionalPreviousInsideLabel);
-        this.type = Objects.requireNonNull(type);
     }
 
     public VariableManager getVariableManager() {
@@ -52,10 +49,6 @@ public class InsideLabelComponentProps implements IProps {
 
     public Optional<InsideLabel> getPreviousInsideLabel() {
         return this.optionalPreviousInsideLabel;
-    }
-
-    public String getType() {
-        return this.type;
     }
 
 }

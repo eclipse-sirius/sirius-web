@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,12 +42,10 @@ public class OperationalPerimeterNodeDescriptionProvider implements INodeDescrip
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_gray_2"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray_2"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
-        nodeStyle.setWithHeader(true);
-        nodeStyle.setDisplayHeaderSeparator(false);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalPerimeter");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalPerimeters");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescriptionWithHeader("aql:self.name", this.colorProvider.getColor("label_black"), false));
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 

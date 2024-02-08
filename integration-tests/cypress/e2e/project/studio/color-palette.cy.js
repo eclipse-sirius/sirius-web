@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,8 +64,6 @@ describe('/projects/:projectId/edit - Color Palette', () => {
     cy.get('[title="diagram::DiagramDescription"]').dblclick();
     cy.getByTestId('Entity1 Node-toggle').click();
     cy.get('[title="diagram::RectangularNodeStyleDescription"]').click();
-    cy.getByTestId('Label Color').click();
-    cy.getByTestId('option-color_dark').should('exist').click();
     cy.getByTestId('Color').click();
     cy.getByTestId('option-color_dark').should('exist').click();
     cy.getByTestId('Border Color').click();

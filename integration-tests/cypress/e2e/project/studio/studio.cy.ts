@@ -189,7 +189,6 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('create-object').click();
     cy.getByTestId('Node').dblclick();
     cy.getByTestId('RectangularNodeStyleDescription').click();
-    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
     cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
     cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
   });
@@ -213,7 +212,6 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('create-object').click();
     cy.getByTestId('Sub-node-toggle').click();
     cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
-    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
     cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
     cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
   });
@@ -237,7 +235,6 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('create-object').click();
     cy.getByTestId('Border node-toggle').click();
     cy.getByTestId('RectangularNodeStyleDescription').eq(1).click();
-    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
     cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
     cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
   });
@@ -256,7 +253,6 @@ describe('/projects/:projectId/edit - Studio', () => {
     cy.getByTestId('childCreationDescription').get('[data-value="Style Rectangular"]').should('exist').click();
     cy.getByTestId('create-object').click();
     cy.getByTestId('RectangularNodeStyleDescription').click();
-    cy.getByTestId('Label Color').findByTestId('reference-value-black').should('exist');
     cy.getByTestId('Color').findByTestId('reference-value-white').should('exist');
     cy.getByTestId('Border Color').findByTestId('reference-value-black').should('exist');
   });

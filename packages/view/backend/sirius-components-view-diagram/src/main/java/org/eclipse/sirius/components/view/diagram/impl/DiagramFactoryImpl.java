@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,9 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
@@ -39,6 +41,10 @@ import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutDirection;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -48,6 +54,9 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
@@ -60,6 +69,16 @@ import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
  * @generated
  */
 public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
+
+    /**
+     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public DiagramFactoryImpl() {
+        super();
+    }
+
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -78,12 +97,14 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     }
 
     /**
-     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
+     * @deprecated
      */
-    public DiagramFactoryImpl() {
-        super();
+    @Deprecated
+    public static DiagramPackage getPackage() {
+        return DiagramPackage.eINSTANCE;
     }
 
     /**
@@ -104,8 +125,22 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createListLayoutStrategyDescription();
             case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION:
                 return this.createFreeFormLayoutStrategyDescription();
+            case DiagramPackage.LABEL_DESCRIPTION:
+                return this.createLabelDescription();
+            case DiagramPackage.INSIDE_LABEL_DESCRIPTION:
+                return this.createInsideLabelDescription();
+            case DiagramPackage.OUTSIDE_LABEL_DESCRIPTION:
+                return this.createOutsideLabelDescription();
+            case DiagramPackage.INSIDE_LABEL_STYLE:
+                return this.createInsideLabelStyle();
+            case DiagramPackage.OUTSIDE_LABEL_STYLE:
+                return this.createOutsideLabelStyle();
             case DiagramPackage.CONDITIONAL_NODE_STYLE:
                 return this.createConditionalNodeStyle();
+            case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE:
+                return this.createConditionalInsideLabelStyle();
+            case DiagramPackage.CONDITIONAL_OUTSIDE_LABEL_STYLE:
+                return this.createConditionalOutsideLabelStyle();
             case DiagramPackage.RECTANGULAR_NODE_STYLE_DESCRIPTION:
                 return this.createRectangularNodeStyleDescription();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION:
@@ -173,6 +208,10 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createNodeContainmentKindFromString(eDataType, initialValue);
             case DiagramPackage.SYNCHRONIZATION_POLICY:
                 return this.createSynchronizationPolicyFromString(eDataType, initialValue);
+            case DiagramPackage.INSIDE_LABEL_POSITION:
+                return this.createInsideLabelPositionFromString(eDataType, initialValue);
+            case DiagramPackage.OUTSIDE_LABEL_POSITION:
+                return this.createOutsideLabelPositionFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -196,6 +235,10 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertNodeContainmentKindToString(eDataType, instanceValue);
             case DiagramPackage.SYNCHRONIZATION_POLICY:
                 return this.convertSynchronizationPolicyToString(eDataType, instanceValue);
+            case DiagramPackage.INSIDE_LABEL_POSITION:
+                return this.convertInsideLabelPositionToString(eDataType, instanceValue);
+            case DiagramPackage.OUTSIDE_LABEL_POSITION:
+                return this.convertOutsideLabelPositionToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -262,9 +305,86 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     @Override
+    public LabelDescription createLabelDescription() {
+        LabelDescriptionImpl labelDescription = new LabelDescriptionImpl();
+        return labelDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public InsideLabelDescription createInsideLabelDescription() {
+        InsideLabelDescriptionImpl insideLabelDescription = new InsideLabelDescriptionImpl();
+        return insideLabelDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OutsideLabelDescription createOutsideLabelDescription() {
+        OutsideLabelDescriptionImpl outsideLabelDescription = new OutsideLabelDescriptionImpl();
+        return outsideLabelDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public InsideLabelStyle createInsideLabelStyle() {
+        InsideLabelStyleImpl insideLabelStyle = new InsideLabelStyleImpl();
+        return insideLabelStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OutsideLabelStyle createOutsideLabelStyle() {
+        OutsideLabelStyleImpl outsideLabelStyle = new OutsideLabelStyleImpl();
+        return outsideLabelStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public ConditionalNodeStyle createConditionalNodeStyle() {
         ConditionalNodeStyleImpl conditionalNodeStyle = new ConditionalNodeStyleImpl();
         return conditionalNodeStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalInsideLabelStyle createConditionalInsideLabelStyle() {
+        ConditionalInsideLabelStyleImpl conditionalInsideLabelStyle = new ConditionalInsideLabelStyleImpl();
+        return conditionalInsideLabelStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalOutsideLabelStyle createConditionalOutsideLabelStyle() {
+        ConditionalOutsideLabelStyleImpl conditionalOutsideLabelStyle = new ConditionalOutsideLabelStyleImpl();
+        return conditionalOutsideLabelStyle;
     }
 
     /**
@@ -619,20 +739,51 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      *
      * @generated
      */
-    @Override
-    public DiagramPackage getDiagramPackage() {
-        return (DiagramPackage) this.getEPackage();
+    public InsideLabelPosition createInsideLabelPositionFromString(EDataType eDataType, String initialValue) {
+        InsideLabelPosition result = InsideLabelPosition.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @deprecated
      * @generated
      */
-    @Deprecated
-    public static DiagramPackage getPackage() {
-        return DiagramPackage.eINSTANCE;
+    public String convertInsideLabelPositionToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public OutsideLabelPosition createOutsideLabelPositionFromString(EDataType eDataType, String initialValue) {
+        OutsideLabelPosition result = OutsideLabelPosition.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertOutsideLabelPositionToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DiagramPackage getDiagramPackage() {
+        return (DiagramPackage) this.getEPackage();
     }
 
 } // DiagramFactoryImpl

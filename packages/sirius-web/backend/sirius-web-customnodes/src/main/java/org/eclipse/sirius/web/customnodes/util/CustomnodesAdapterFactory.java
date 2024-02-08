@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.Style;
@@ -27,8 +26,8 @@ import org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription;
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.web.customnodes.CustomnodesPackage
  * @generated
+ * @see org.eclipse.sirius.web.customnodes.CustomnodesPackage
  */
 public class CustomnodesAdapterFactory extends AdapterFactoryImpl {
 
@@ -53,11 +52,6 @@ public class CustomnodesAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseStyle(Style object) {
             return CustomnodesAdapterFactory.this.createStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseLabelStyle(LabelStyle object) {
-            return CustomnodesAdapterFactory.this.createLabelStyleAdapter();
         }
 
         @Override
@@ -110,7 +104,7 @@ public class CustomnodesAdapterFactory extends AdapterFactoryImpl {
      * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param target
-     *            the object to adapt.
+     *         the object to adapt.
      * @return the adapter for the <code>target</code>.
      * @generated
      */
@@ -126,8 +120,8 @@ public class CustomnodesAdapterFactory extends AdapterFactoryImpl {
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription
      * @generated
+     * @see org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription
      */
     public Adapter createEllipseNodeStyleDescriptionAdapter() {
         return null;
@@ -139,23 +133,10 @@ public class CustomnodesAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.Style
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.Style
      */
     public Adapter createStyleAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.LabelStyle
-     * @generated
-     */
-    public Adapter createLabelStyleAdapter() {
         return null;
     }
 

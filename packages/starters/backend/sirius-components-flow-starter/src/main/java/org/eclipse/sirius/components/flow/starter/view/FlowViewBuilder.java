@@ -18,8 +18,12 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 
 /**
  * Used to help creating the Flow view.
@@ -59,7 +63,6 @@ public class FlowViewBuilder {
                 .shape(shapeId)
                 .color(colorProvider.getColor("transparent"))
                 .borderColor(colorProvider.getColor("transparent"))
-                .labelColor(colorProvider.getColor("Flow_Black"))
                 .borderSize(0)
                 .build();
     }
@@ -119,6 +122,35 @@ public class FlowViewBuilder {
                 .name("Indirect Dependencies")
                 .targetElementDescriptions(processorNodeDescription)
                 .body(changeContext.build())
+                .build();
+    }
+
+
+    public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression) {
+        return this.getInsideLabelDescription(colorProvider, labelExpression, false, false, false);
+    }
+
+
+    public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression, boolean bold, boolean withHeader, boolean displayHeaderSeparator) {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression(labelExpression)
+                .style(this.diagramBuilderHelper.newInsideLabelStyle()
+                        .labelColor(colorProvider.getColor("Flow_Black"))
+                        .bold(bold)
+                        .withHeader(withHeader)
+                        .displayHeaderSeparator(displayHeaderSeparator)
+                        .build())
+                .position(InsideLabelPosition.TOP_CENTER)
+                .build();
+    }
+
+    public OutsideLabelDescription getOutsideLabelDescription(IColorProvider colorProvider, String labelExpression) {
+        return this.diagramBuilderHelper.newOutsideLabelDescription()
+                .labelExpression(labelExpression)
+                .style(this.diagramBuilderHelper.newOutsideLabelStyle()
+                        .labelColor(colorProvider.getColor("Flow_Black"))
+                        .build())
+                .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .build();
     }
 

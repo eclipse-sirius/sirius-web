@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -124,14 +124,6 @@ public class ViewValidatorTests {
                 new Object [] {
                     conditionalNodeStyle,
                     DiagramPackage.Literals.STYLE__COLOR,
-                }));
-        expected.add(new BasicDiagnostic(Diagnostic.ERROR,
-                SIRIUS_COMPONENTS_EMF_PACKAGE,
-                0,
-                "The label color should not be empty",
-                new Object [] {
-                    conditionalNodeStyle,
-                    DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
                 }));
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,

@@ -17,5 +17,6 @@ package org.eclipse.sirius.components.diagrams;
  *
  * @author gcoutable
  */
-public record OutsideLabel(String id, String type, String text, OutsideLabelLocation outsideLabelLocation, LabelStyle style) {
+public record OutsideLabel(String id, String text, OutsideLabelLocation outsideLabelLocation, LabelStyle style) {
+
 }

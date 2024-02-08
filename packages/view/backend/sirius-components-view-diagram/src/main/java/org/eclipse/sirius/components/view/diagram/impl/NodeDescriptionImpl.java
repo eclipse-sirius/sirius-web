@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,10 +25,12 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Node Description</b></em>'. <!-- end-user-doc
@@ -60,185 +62,189 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
  * @generated
  */
 public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implements NodeDescription {
+
     /**
      * The default value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #isCollapsible()
      * @generated
      * @ordered
+     * @see #isCollapsible()
      */
     protected static final boolean COLLAPSIBLE_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isCollapsible()
-     * @generated
-     * @ordered
-     */
-    protected boolean collapsible = COLLAPSIBLE_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getPalette()
-     * @generated
-     * @ordered
-     */
-    protected NodePalette palette;
-
-    /**
-     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getChildrenLayoutStrategy()
-     * @generated
-     * @ordered
-     */
-    protected LayoutStrategyDescription childrenLayoutStrategy;
-
-    /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
-    protected NodeStyleDescription style;
-
-    /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getConditionalStyles()
-     * @generated
-     * @ordered
-     */
-    protected EList<ConditionalNodeStyle> conditionalStyles;
-
-    /**
-     * The cached value of the '{@link #getChildrenDescriptions() <em>Children Descriptions</em>}' containment reference
-     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getChildrenDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> childrenDescriptions;
-
-    /**
-     * The cached value of the '{@link #getBorderNodesDescriptions() <em>Border Nodes Descriptions</em>}' containment
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getBorderNodesDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> borderNodesDescriptions;
-
-    /**
-     * The cached value of the '{@link #getReusedChildNodeDescriptions() <em>Reused Child Node Descriptions</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReusedChildNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> reusedChildNodeDescriptions;
-
-    /**
-     * The cached value of the '{@link #getReusedBorderNodeDescriptions() <em>Reused Border Node Descriptions</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReusedBorderNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> reusedBorderNodeDescriptions;
-
     /**
      * The default value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see #isUserResizable()
      * @generated
      * @ordered
+     * @see #isUserResizable()
      */
     protected static final boolean USER_RESIZABLE_EDEFAULT = true;
-
-    /**
-     * The cached value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #isUserResizable()
-     * @generated
-     * @ordered
-     */
-    protected boolean userResizable = USER_RESIZABLE_EDEFAULT;
-
     /**
      * The default value of the '{@link #getDefaultWidthExpression() <em>Default Width Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getDefaultWidthExpression()
      * @generated
      * @ordered
+     * @see #getDefaultWidthExpression()
      */
     protected static final String DEFAULT_WIDTH_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getDefaultWidthExpression() <em>Default Width Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getDefaultWidthExpression()
-     * @generated
-     * @ordered
-     */
-    protected String defaultWidthExpression = DEFAULT_WIDTH_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getDefaultHeightExpression()
      * @generated
      * @ordered
+     * @see #getDefaultHeightExpression()
      */
     protected static final String DEFAULT_HEIGHT_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getDefaultHeightExpression()
-     * @generated
-     * @ordered
-     */
-    protected String defaultHeightExpression = DEFAULT_HEIGHT_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #isKeepAspectRatio() <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #isKeepAspectRatio()
      * @generated
      * @ordered
+     * @see #isKeepAspectRatio()
      */
     protected static final boolean KEEP_ASPECT_RATIO_EDEFAULT = false;
-
+    /**
+     * The cached value of the '{@link #isCollapsible() <em>Collapsible</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isCollapsible()
+     */
+    protected boolean collapsible = COLLAPSIBLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPalette()
+     */
+    protected NodePalette palette;
+    /**
+     * The cached value of the '{@link #getChildrenLayoutStrategy() <em>Children Layout Strategy</em>}' containment
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getChildrenLayoutStrategy()
+     */
+    protected LayoutStrategyDescription childrenLayoutStrategy;
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getStyle()
+     */
+    protected NodeStyleDescription style;
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getConditionalStyles()
+     */
+    protected EList<ConditionalNodeStyle> conditionalStyles;
+    /**
+     * The cached value of the '{@link #getChildrenDescriptions() <em>Children Descriptions</em>}' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getChildrenDescriptions()
+     */
+    protected EList<NodeDescription> childrenDescriptions;
+    /**
+     * The cached value of the '{@link #getBorderNodesDescriptions() <em>Border Nodes Descriptions</em>}' containment
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBorderNodesDescriptions()
+     */
+    protected EList<NodeDescription> borderNodesDescriptions;
+    /**
+     * The cached value of the '{@link #getReusedChildNodeDescriptions() <em>Reused Child Node Descriptions</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getReusedChildNodeDescriptions()
+     */
+    protected EList<NodeDescription> reusedChildNodeDescriptions;
+    /**
+     * The cached value of the '{@link #getReusedBorderNodeDescriptions() <em>Reused Border Node Descriptions</em>}'
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getReusedBorderNodeDescriptions()
+     */
+    protected EList<NodeDescription> reusedBorderNodeDescriptions;
+    /**
+     * The cached value of the '{@link #isUserResizable() <em>User Resizable</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isUserResizable()
+     */
+    protected boolean userResizable = USER_RESIZABLE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getDefaultWidthExpression() <em>Default Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDefaultWidthExpression()
+     */
+    protected String defaultWidthExpression = DEFAULT_WIDTH_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getDefaultHeightExpression() <em>Default Height Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDefaultHeightExpression()
+     */
+    protected String defaultHeightExpression = DEFAULT_HEIGHT_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #isKeepAspectRatio() <em>Keep Aspect Ratio</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #isKeepAspectRatio()
      * @generated
      * @ordered
+     * @see #isKeepAspectRatio()
      */
     protected boolean keepAspectRatio = KEEP_ASPECT_RATIO_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getInsideLabel() <em>Inside Label</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getInsideLabel()
+     */
+    protected InsideLabelDescription insideLabel;
+
+    /**
+     * The cached value of the '{@link #getOutsideLabels() <em>Outside Labels</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getOutsideLabels()
+     */
+    protected EList<OutsideLabelDescription> outsideLabels;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -297,24 +303,6 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetPalette(NodePalette newPalette, NotificationChain msgs) {
-        NodePalette oldPalette = this.palette;
-        this.palette = newPalette;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__PALETTE, oldPalette, newPalette);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public void setPalette(NodePalette newPalette) {
         if (newPalette != this.palette) {
@@ -335,9 +323,17 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    @Override
-    public LayoutStrategyDescription getChildrenLayoutStrategy() {
-        return this.childrenLayoutStrategy;
+    public NotificationChain basicSetPalette(NodePalette newPalette, NotificationChain msgs) {
+        NodePalette oldPalette = this.palette;
+        this.palette = newPalette;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__PALETTE, oldPalette, newPalette);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -345,18 +341,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy, NotificationChain msgs) {
-        LayoutStrategyDescription oldChildrenLayoutStrategy = this.childrenLayoutStrategy;
-        this.childrenLayoutStrategy = newChildrenLayoutStrategy;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, oldChildrenLayoutStrategy,
-                    newChildrenLayoutStrategy);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
+    @Override
+    public LayoutStrategyDescription getChildrenLayoutStrategy() {
+        return this.childrenLayoutStrategy;
     }
 
     /**
@@ -384,9 +371,18 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    @Override
-    public NodeStyleDescription getStyle() {
-        return this.style;
+    public NotificationChain basicSetChildrenLayoutStrategy(LayoutStrategyDescription newChildrenLayoutStrategy, NotificationChain msgs) {
+        LayoutStrategyDescription oldChildrenLayoutStrategy = this.childrenLayoutStrategy;
+        this.childrenLayoutStrategy = newChildrenLayoutStrategy;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY, oldChildrenLayoutStrategy,
+                    newChildrenLayoutStrategy);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -394,17 +390,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetStyle(NodeStyleDescription newStyle, NotificationChain msgs) {
-        NodeStyleDescription oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
+    @Override
+    public NodeStyleDescription getStyle() {
+        return this.style;
     }
 
     /**
@@ -425,6 +413,24 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(NodeStyleDescription newStyle, NotificationChain msgs) {
+        NodeStyleDescription oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -590,6 +596,67 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
+    public InsideLabelDescription getInsideLabel() {
+        return this.insideLabel;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setInsideLabel(InsideLabelDescription newInsideLabel) {
+        if (newInsideLabel != this.insideLabel) {
+            NotificationChain msgs = null;
+            if (this.insideLabel != null)
+                msgs = ((InternalEObject) this.insideLabel).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL, null, msgs);
+            if (newInsideLabel != null)
+                msgs = ((InternalEObject) newInsideLabel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL, null, msgs);
+            msgs = this.basicSetInsideLabel(newInsideLabel, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL, newInsideLabel, newInsideLabel));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetInsideLabel(InsideLabelDescription newInsideLabel, NotificationChain msgs) {
+        InsideLabelDescription oldInsideLabel = this.insideLabel;
+        this.insideLabel = newInsideLabel;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL, oldInsideLabel, newInsideLabel);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<OutsideLabelDescription> getOutsideLabels() {
+        if (this.outsideLabels == null) {
+            this.outsideLabels = new EObjectContainmentEList<>(OutsideLabelDescription.class, this, DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS);
+        }
+        return this.outsideLabels;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
@@ -604,6 +671,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return ((InternalEList<?>) this.getChildrenDescriptions()).basicRemove(otherEnd, msgs);
             case DiagramPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
                 return ((InternalEList<?>) this.getBorderNodesDescriptions()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
+                return this.basicSetInsideLabel(null, msgs);
+            case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
+                return ((InternalEList<?>) this.getOutsideLabels()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -642,6 +713,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return this.getDefaultHeightExpression();
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 return this.isKeepAspectRatio();
+            case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
+                return this.getInsideLabel();
+            case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
+                return this.getOutsideLabels();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -699,6 +774,13 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 this.setKeepAspectRatio((Boolean) newValue);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
+                this.setInsideLabel((InsideLabelDescription) newValue);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
+                this.getOutsideLabels().clear();
+                this.getOutsideLabels().addAll((Collection<? extends OutsideLabelDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -750,6 +832,12 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 this.setKeepAspectRatio(KEEP_ASPECT_RATIO_EDEFAULT);
                 return;
+            case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
+                this.setInsideLabel((InsideLabelDescription) null);
+                return;
+            case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
+                this.getOutsideLabels().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -788,6 +876,10 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 return DEFAULT_HEIGHT_EXPRESSION_EDEFAULT == null ? this.defaultHeightExpression != null : !DEFAULT_HEIGHT_EXPRESSION_EDEFAULT.equals(this.defaultHeightExpression);
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 return this.keepAspectRatio != KEEP_ASPECT_RATIO_EDEFAULT;
+            case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
+                return this.insideLabel != null;
+            case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
+                return this.outsideLabels != null && !this.outsideLabels.isEmpty();
         }
         return super.eIsSet(featureID);
     }
