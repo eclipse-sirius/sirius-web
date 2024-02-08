@@ -1,0 +1,34 @@
+= ADR-133 - Add Tree Widget to the View DSL
+
+== Context
+
+We already have a tree representation (the explorer) and a programmatic tree widget description (used in the related element view).
+
+
+== Decision
+
+In order to be able to use the tree widget more easily, we will add it to the form part of the View DSL in order to allow the creation of his description for an end user.
+We will also add the tree widget in the form description editor.
+
+Finally in order to have a Tree widget able to satisfy the requirement of `ADR-131 - Add more filtering capabilities on diagram` we will add theses feature :
+
+* Add multiple selection to tree widget (this will add checkboxes)
+* Add icons after the label of a tree element
+
+== Consequences
+
+We will implement the identity bellow :
+
+* TreeDescription -> WidgetDescription
+
+With these attributes : 
+
+* childExpression : InterpretedExpression
+* treeItemLabelExpression : InterpretedExpression
+* isTreeitemSelectableExpression : InterpretedExpression
+* isMultipleSelectionEnabled : EBoolean
+* treeItemLabelEndIconsExpression : InterpretedExpression
+
+== Status
+
+Work in progress

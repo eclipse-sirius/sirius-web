@@ -18,6 +18,7 @@
 - [ADR-130] Add support for outside and inside node labels
 - [ADR-131] Add more filtering capabilities on diagram
 - [ADR-132] Add support for filters in Explorer View
+- [ADR-133] Add Tree Widget to the View DSL
 
 === Breaking changes
 
