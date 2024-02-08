@@ -10,15 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface ToolbarProps {
-  editingContextId: string;
-  representationId: string;
-  onZoomIn: () => void;
-  onZoomOut: () => void;
-  onFitToScreen: () => void;
-  fullscreenNode: React.RefObject<HTMLDivElement>;
-}
 
-export interface ToolbarState {
-  modal: 'share' | null;
+export interface UseZoomValue {
+  zoom: number;
+  zoomIn: () => void;
+  zoomOut: () => void;
+  fitToScreen: () => void;
 }
