@@ -15,11 +15,12 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import ShareIcon from '@material-ui/icons/Share';
-import Visibility from '@material-ui/icons/Visibility';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import { useState } from 'react';
+import { useFullscreen } from '../hooks/useFullScreen';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -35,9 +36,17 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Toolbar = ({ editingContextId, representationId }: ToolbarProps) => {
+export const DeckToolbar = ({
+  editingContextId,
+  representationId,
+  onZoomIn,
+  onZoomOut,
+  onFitToScreen,
+  fullscreenNode,
+}: ToolbarProps) => {
   const classes = useToolbarStyles();
   const [state, setState] = useState<ToolbarState>({ modal: null });
+  const { fullscreen, setFullscreen } = useFullscreen(fullscreenNode);
 
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
   const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));
@@ -56,24 +65,54 @@ export const Toolbar = ({ editingContextId, representationId }: ToolbarProps) =>
   return (
     <>
       <div className={classes.toolbar}>
-        <IconButton size="small">
-          <FullscreenIcon />
-        </IconButton>
-        <IconButton size="small" data-testid="fit-to-screen">
-          <AspectRatioIcon />
-        </IconButton>
-        <IconButton size="small">
+        {fullscreen ? (
+          <IconButton
+            size="small"
+            color="inherit"
+            aria-label="exit full screen mode"
+            title="Exit full screen mode"
+            onClick={() => setFullscreen(false)}>
+            <FullscreenExitIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            size="small"
+            color="inherit"
+            aria-label="toggle full screen mode"
+            title="Toggle full screen mode"
+            onClick={() => setFullscreen(true)}>
+            <FullscreenIcon />
+          </IconButton>
+        )}
+        {!fullscreen ? (
+          //We disable the Fit to Screen but in Full screen mode because of issues to compute the parent container size.
+          <IconButton
+            size="small"
+            color="inherit"
+            aria-label="fit to screen"
+            title="Fit to Screen"
+            onClick={onFitToScreen}
+            data-testid="fit-to-screen">
+            <AspectRatioIcon />
+          </IconButton>
+        ) : null}
+        <IconButton
+          size="small"
+          color="inherit"
+          aria-label="zoom in"
+          title="Zoom In"
+          onClick={onZoomIn}
+          data-testid="share">
           <ZoomInIcon />
-        </IconButton>
-        <IconButton size="small">
-          <ZoomOutIcon />
         </IconButton>
         <IconButton
           size="small"
-          aria-label="reveal hidden elements"
-          title="Reveal hidden elements"
-          data-testid="reveal-hidden-elements">
-          <Visibility />
+          color="inherit"
+          aria-label="zoom out"
+          title="Zoom Out"
+          onClick={onZoomOut}
+          data-testid="share">
+          <ZoomOutIcon />
         </IconButton>
         <IconButton size="small" color="inherit" aria-label="share" title="Share" onClick={onShare} data-testid="share">
           <ShareIcon />

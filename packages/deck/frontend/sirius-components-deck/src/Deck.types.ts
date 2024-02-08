@@ -28,6 +28,10 @@ export interface DeckProps {
   onLaneCollapseUpdate: (laneId: string, collapsed: boolean) => void;
   handleLaneDragEnd: (oldIndew: number, newIndew: number, payload: Lane) => void;
 }
+
+export interface DeckState {
+  zoom: number;
+}
 export interface OnCardClickProps {
   cardId: String;
   metadata: any;
