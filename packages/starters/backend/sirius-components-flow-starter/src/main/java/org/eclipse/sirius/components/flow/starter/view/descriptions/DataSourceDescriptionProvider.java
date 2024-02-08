@@ -61,7 +61,7 @@ public class DataSourceDescriptionProvider implements INodeDescriptionProvider {
                 .domainType("flow::DataSource")
                 .semanticCandidatesExpression("feature:elements")
                 .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
-                .labelExpression("aql:self.name")
+                .outsideLabels(this.flowViewBuilder.getOutsideLabelDescription(this.colorProvider, "aql:self.name"))
                 .defaultHeightExpression("aql:self.volume*15")
                 .defaultWidthExpression("aql:self.computeDataSourceHeight()")
                 .userResizable(false)

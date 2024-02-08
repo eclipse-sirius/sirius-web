@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,14 +46,11 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        nodeStyle.setWithHeader(true);
-        nodeStyle.setDisplayHeaderSeparator(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
-        nodeDescription.setLabelExpression("aql:self.name");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescriptionWithHeader("aql:self.name", this.colorProvider.getColor("label_white"), true));
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.attributesNodeDescription());
         nodeDescription.getChildrenDescriptions().add(this.operationsNodeDescription());
@@ -70,8 +67,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var abstractNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
-        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        abstractNodeStyle.setWithHeader(true);
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         abstractConditionalNodeStyle.setCondition("aql:self.abstract");
@@ -117,14 +112,12 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setBorderRadius(0);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
         nodeDescription.setName(nodeDescription.getName() + " - Attributes");
         nodeDescription.setSemanticCandidatesExpression("aql:self");
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
-        nodeDescription.setLabelExpression("");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.attributeNodeDescription());
 
@@ -137,9 +130,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var abstractNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
-        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        abstractNodeStyle.setWithHeader(false);
-        abstractNodeStyle.setDisplayHeaderSeparator(false);
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         abstractConditionalNodeStyle.setCondition("aql:self.abstract");
@@ -153,11 +143,11 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Attribute");
         nodeDescription.setSemanticCandidatesExpression("aql:self.attributes");
-        nodeDescription.setLabelExpression("aql:self.name + ': ' + if self.type = null then 'void' else self.type.name endif");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name + ': ' + if self.type = null then 'void' else self.type.name endif",
+                this.colorProvider.getColor("label_white")));
         nodeDescription.setStyle(nodeStyle);
 
         return nodeDescription;
@@ -167,14 +157,12 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
         nodeStyle.setBorderRadius(0);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Class");
         nodeDescription.setName(nodeDescription.getName() + " - Operations");
         nodeDescription.setSemanticCandidatesExpression("aql:self");
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
-        nodeDescription.setLabelExpression("");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.operationNodeDescription());
 
@@ -187,9 +175,6 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var abstractNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         abstractNodeStyle.setColor(this.colorProvider.getColor("color_green"));
         abstractNodeStyle.setBorderColor(this.colorProvider.getColor("border_green"));
-        abstractNodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        abstractNodeStyle.setWithHeader(false);
-        abstractNodeStyle.setDisplayHeaderSeparator(false);
 
         var abstractConditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         abstractConditionalNodeStyle.setCondition("aql:self.abstract");
@@ -203,11 +188,11 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Operation");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operations");
-        nodeDescription.setLabelExpression("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif",
+                this.colorProvider.getColor("label_white")));
         nodeDescription.setStyle(nodeStyle);
 
         return nodeDescription;

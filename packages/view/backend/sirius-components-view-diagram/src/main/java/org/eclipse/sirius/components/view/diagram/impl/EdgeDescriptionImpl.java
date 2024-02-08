@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,133 +60,140 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * @generated
  */
 public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implements EdgeDescription {
+
     /**
      * The default value of the '{@link #getBeginLabelExpression() <em>Begin Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getBeginLabelExpression()
      * @generated
      * @ordered
+     * @see #getBeginLabelExpression()
      */
     protected static final String BEGIN_LABEL_EXPRESSION_EDEFAULT = "";
-
     /**
-     * The cached value of the '{@link #getBeginLabelExpression() <em>Begin Label Expression</em>}' attribute. <!--
+     * The default value of the '{@link #getCenterLabelExpression() <em>Center Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getBeginLabelExpression()
      * @generated
      * @ordered
+     * @see #getCenterLabelExpression()
      */
-    protected String beginLabelExpression = BEGIN_LABEL_EXPRESSION_EDEFAULT;
-
+    protected static final String CENTER_LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
     /**
      * The default value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getEndLabelExpression()
      * @generated
      * @ordered
+     * @see #getEndLabelExpression()
      */
     protected static final String END_LABEL_EXPRESSION_EDEFAULT = "";
-
-    /**
-     * The cached value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getEndLabelExpression()
-     * @generated
-     * @ordered
-     */
-    protected String endLabelExpression = END_LABEL_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #isIsDomainBasedEdge() <em>Is Domain Based Edge</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #isIsDomainBasedEdge()
      * @generated
      * @ordered
+     * @see #isIsDomainBasedEdge()
      */
     protected static final boolean IS_DOMAIN_BASED_EDGE_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isIsDomainBasedEdge() <em>Is Domain Based Edge</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #isIsDomainBasedEdge()
-     * @generated
-     * @ordered
-     */
-    protected boolean isDomainBasedEdge = IS_DOMAIN_BASED_EDGE_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @see #getPalette()
-     * @generated
-     * @ordered
-     */
-    protected EdgePalette palette;
-
-    /**
-     * The cached value of the '{@link #getSourceNodeDescriptions() <em>Source Node Descriptions</em>}' reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSourceNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> sourceNodeDescriptions;
-
-    /**
-     * The cached value of the '{@link #getTargetNodeDescriptions() <em>Target Node Descriptions</em>}' reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTargetNodeDescriptions()
-     * @generated
-     * @ordered
-     */
-    protected EList<NodeDescription> targetNodeDescriptions;
-
     /**
      * The default value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getSourceNodesExpression()
      * @generated
      * @ordered
+     * @see #getSourceNodesExpression()
      */
     protected static final String SOURCE_NODES_EXPRESSION_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSourceNodesExpression()
-     * @generated
-     * @ordered
-     */
-    protected String sourceNodesExpression = SOURCE_NODES_EXPRESSION_EDEFAULT;
-
     /**
      * The default value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getTargetNodesExpression()
      * @generated
      * @ordered
+     * @see #getTargetNodesExpression()
      */
     protected static final String TARGET_NODES_EXPRESSION_EDEFAULT = "aql:self.eCrossReferences()";
-
+    /**
+     * The cached value of the '{@link #getBeginLabelExpression() <em>Begin Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getBeginLabelExpression()
+     */
+    protected String beginLabelExpression = BEGIN_LABEL_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getCenterLabelExpression() <em>Center Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getCenterLabelExpression()
+     */
+    protected String centerLabelExpression = CENTER_LABEL_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getEndLabelExpression() <em>End Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getEndLabelExpression()
+     */
+    protected String endLabelExpression = END_LABEL_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #isIsDomainBasedEdge() <em>Is Domain Based Edge</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #isIsDomainBasedEdge()
+     */
+    protected boolean isDomainBasedEdge = IS_DOMAIN_BASED_EDGE_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPalette()
+     */
+    protected EdgePalette palette;
+    /**
+     * The cached value of the '{@link #getSourceNodeDescriptions() <em>Source Node Descriptions</em>}' reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSourceNodeDescriptions()
+     */
+    protected EList<NodeDescription> sourceNodeDescriptions;
+    /**
+     * The cached value of the '{@link #getTargetNodeDescriptions() <em>Target Node Descriptions</em>}' reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTargetNodeDescriptions()
+     */
+    protected EList<NodeDescription> targetNodeDescriptions;
+    /**
+     * The cached value of the '{@link #getSourceNodesExpression() <em>Source Nodes Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getSourceNodesExpression()
+     */
+    protected String sourceNodesExpression = SOURCE_NODES_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #getTargetNodesExpression() <em>Target Nodes Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getTargetNodesExpression()
      * @generated
      * @ordered
+     * @see #getTargetNodesExpression()
      */
     protected String targetNodesExpression = TARGET_NODES_EXPRESSION_EDEFAULT;
 
@@ -194,9 +201,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see #getStyle()
      * @generated
      * @ordered
+     * @see #getStyle()
      */
     protected EdgeStyle style;
 
@@ -204,9 +211,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getConditionalStyles()
      * @generated
      * @ordered
+     * @see #getConditionalStyles()
      */
     protected EList<ConditionalEdgeStyle> conditionalStyles;
 
@@ -250,6 +257,29 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         this.beginLabelExpression = newBeginLabelExpression;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION, oldBeginLabelExpression, this.beginLabelExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCenterLabelExpression() {
+        return this.centerLabelExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCenterLabelExpression(String newCenterLabelExpression) {
+        String oldCenterLabelExpression = this.centerLabelExpression;
+        this.centerLabelExpression = newCenterLabelExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION, oldCenterLabelExpression, this.centerLabelExpression));
     }
 
     /**
@@ -313,24 +343,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetPalette(EdgePalette newPalette, NotificationChain msgs) {
-        EdgePalette oldPalette = this.palette;
-        this.palette = newPalette;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__PALETTE, oldPalette, newPalette);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public void setPalette(EdgePalette newPalette) {
         if (newPalette != this.palette) {
@@ -344,6 +356,24 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__PALETTE, newPalette, newPalette));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetPalette(EdgePalette newPalette, NotificationChain msgs) {
+        EdgePalette oldPalette = this.palette;
+        this.palette = newPalette;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__PALETTE, oldPalette, newPalette);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -433,24 +463,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
-    public NotificationChain basicSetStyle(EdgeStyle newStyle, NotificationChain msgs) {
-        EdgeStyle oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public void setStyle(EdgeStyle newStyle) {
         if (newStyle != this.style) {
@@ -464,6 +476,24 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(EdgeStyle newStyle, NotificationChain msgs) {
+        EdgeStyle oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
     }
 
     /**
@@ -507,6 +537,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
             case DiagramPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
                 return this.getBeginLabelExpression();
+            case DiagramPackage.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION:
+                return this.getCenterLabelExpression();
             case DiagramPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
                 return this.getEndLabelExpression();
             case DiagramPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
@@ -540,6 +572,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
             case DiagramPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
                 this.setBeginLabelExpression((String) newValue);
+                return;
+            case DiagramPackage.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION:
+                this.setCenterLabelExpression((String) newValue);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
                 this.setEndLabelExpression((String) newValue);
@@ -586,6 +621,9 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
                 this.setBeginLabelExpression(BEGIN_LABEL_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION:
+                this.setCenterLabelExpression(CENTER_LABEL_EXPRESSION_EDEFAULT);
+                return;
             case DiagramPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
                 this.setEndLabelExpression(END_LABEL_EXPRESSION_EDEFAULT);
                 return;
@@ -627,6 +665,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         switch (featureID) {
             case DiagramPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
                 return BEGIN_LABEL_EXPRESSION_EDEFAULT == null ? this.beginLabelExpression != null : !BEGIN_LABEL_EXPRESSION_EDEFAULT.equals(this.beginLabelExpression);
+            case DiagramPackage.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION:
+                return CENTER_LABEL_EXPRESSION_EDEFAULT == null ? this.centerLabelExpression != null : !CENTER_LABEL_EXPRESSION_EDEFAULT.equals(this.centerLabelExpression);
             case DiagramPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
                 return END_LABEL_EXPRESSION_EDEFAULT == null ? this.endLabelExpression != null : !END_LABEL_EXPRESSION_EDEFAULT.equals(this.endLabelExpression);
             case DiagramPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
@@ -662,6 +702,8 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (beginLabelExpression: ");
         result.append(this.beginLabelExpression);
+        result.append(", centerLabelExpression: ");
+        result.append(this.centerLabelExpression);
         result.append(", endLabelExpression: ");
         result.append(this.endLabelExpression);
         result.append(", isDomainBasedEdge: ");

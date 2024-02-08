@@ -27,6 +27,11 @@ The removal of those deprecated modules will occur during the iteration 2024.9.0
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3271[#3271] [test] Move `IGraphQLRequestor` to `org.eclipse.sirius.components.graphql.tests.api`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3088[#3088] [diagram] Some changes have been made in the View DSL for diagram:
+* attribute `labelExpression` has been renamed to `centerLabelExpression` for edges
+* attribute `labelExpression` has been removed from `NodeDescription` in favor of `InsideLabelDescription`
++
+For further information, please refer to ADR _130_add_support_for_outside_inside_node_labels.adoc_
 
 
 === Dependency update
@@ -45,6 +50,11 @@ The removal of those deprecated modules will occur during the iteration 2024.9.0
 - https://github.com/eclipse-sirius/sirius-web/issues/3236[#3236] [view] Add a new expression in `NodeDescription` to specify whether a node is collapsed by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3236[#3236] [diagram] Add a new predicate in `NodeDescription` to specify whether a node is collapsed by default.
 - https://github.com/eclipse-sirius/sirius-web/issues/3163[#3163] [gantt] Add support for task drag&drop in task table.
+- https://github.com/eclipse-sirius/sirius-web/issues/3088[#3088] [diagram] Add the support for inside/outside labels.
+In this first version, the only available positions _top_center_ for inside label en _bottom_center_ for outside label.
++
+image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70%]
+
 
 === Improvements
 

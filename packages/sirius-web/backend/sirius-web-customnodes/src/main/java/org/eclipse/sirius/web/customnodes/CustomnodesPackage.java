@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,9 +27,9 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
  * </ul>
  * <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.web.customnodes.CustomnodesFactory
  * @model kind="package"
  * @generated
+ * @see org.eclipse.sirius.web.customnodes.CustomnodesFactory
  */
 public interface CustomnodesPackage extends EPackage {
 
@@ -58,9 +58,9 @@ public interface CustomnodesPackage extends EPackage {
      * The meta object id for the '{@link org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl
      * <em>Ellipse Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated
      * @see org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl
      * @see org.eclipse.sirius.web.customnodes.impl.CustomnodesPackageImpl#getEllipseNodeStyleDescription()
-     * @generated
      */
     int ELLIPSE_NODE_STYLE_DESCRIPTION = 0;
 
@@ -78,46 +78,6 @@ public interface CustomnodesPackage extends EPackage {
      * @ordered
      */
     int ELLIPSE_NODE_STYLE_DESCRIPTION__COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__COLOR;
-
-    /**
-     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__FONT_SIZE = DiagramPackage.NODE_STYLE_DESCRIPTION__FONT_SIZE;
-
-    /**
-     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__ITALIC = DiagramPackage.NODE_STYLE_DESCRIPTION__ITALIC;
-
-    /**
-     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__BOLD = DiagramPackage.NODE_STYLE_DESCRIPTION__BOLD;
-
-    /**
-     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__UNDERLINE = DiagramPackage.NODE_STYLE_DESCRIPTION__UNDERLINE;
-
-    /**
-     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = DiagramPackage.NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -153,30 +113,6 @@ public interface CustomnodesPackage extends EPackage {
     int ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
-     * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR;
-
-    /**
-     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__SHOW_ICON = DiagramPackage.NODE_STYLE_DESCRIPTION__SHOW_ICON;
-
-    /**
-     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__LABEL_ICON = DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_ICON;
-
-    /**
      * The number of structural features of the '<em>Ellipse Node Style Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -199,8 +135,8 @@ public interface CustomnodesPackage extends EPackage {
      * <em>Ellipse Node Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Ellipse Node Style Description</em>'.
-     * @see org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription
      * @generated
+     * @see org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription
      */
     EClass getEllipseNodeStyleDescription();
 
@@ -232,9 +168,9 @@ public interface CustomnodesPackage extends EPackage {
          * '{@link org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl <em>Ellipse Node Style
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
+         * @generated
          * @see org.eclipse.sirius.web.customnodes.impl.EllipseNodeStyleDescriptionImpl
          * @see org.eclipse.sirius.web.customnodes.impl.CustomnodesPackageImpl#getEllipseNodeStyleDescription()
-         * @generated
          */
         EClass ELLIPSE_NODE_STYLE_DESCRIPTION = eINSTANCE.getEllipseNodeStyleDescription();
 

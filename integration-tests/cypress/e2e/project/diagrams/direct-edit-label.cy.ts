@@ -45,7 +45,7 @@ describe('Diagram - Direct edit label', () => {
             explorer.expand('NodePalette');
             explorer.delete('Edit Label');
             explorer.select('LinkedTo Edge');
-            new Details().getTextField('Label Expression').type('Edge center{enter}');
+            new Details().getTextField('Center Label Expression').type('Edge center{enter}');
           });
         }
       });
@@ -196,7 +196,7 @@ describe('Diagram - Direct edit label', () => {
             explorer.expand('View');
             explorer.expand(`${domainName} Diagram Description`);
             explorer.select('LinkedTo Edge');
-            new Details().getTextField('Label Expression').type('Edge center{enter}');
+            new Details().getTextField('Center Label Expression').type('Edge center{enter}');
             explorer.expand('LinkedTo Edge');
             explorer.expand('EdgePalette');
             explorer.delete('Edit Label');

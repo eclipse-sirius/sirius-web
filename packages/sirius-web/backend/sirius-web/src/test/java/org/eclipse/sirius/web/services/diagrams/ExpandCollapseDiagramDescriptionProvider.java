@@ -22,10 +22,13 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -71,11 +74,17 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
         var nodeStyle = new RectangularNodeStyleDescriptionBuilder()
                 .build();
 
+        var insideLabel = new InsideLabelDescriptionBuilder()
+                .labelExpression("aql:self.name")
+                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                .position(InsideLabelPosition.TOP_CENTER)
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya_logical_architecture:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
-                .labelExpression("aql:self.name")
+                .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .collapsible(true)
                 .isCollapsedByDefaultExpression("aql:self.name.endsWith('-domain')")

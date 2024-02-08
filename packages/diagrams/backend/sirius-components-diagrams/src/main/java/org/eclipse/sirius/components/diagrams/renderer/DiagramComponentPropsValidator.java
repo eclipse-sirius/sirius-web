@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.diagrams.components.LabelComponent;
 import org.eclipse.sirius.components.diagrams.components.LabelComponentProps;
 import org.eclipse.sirius.components.diagrams.components.NodeComponent;
 import org.eclipse.sirius.components.diagrams.components.NodeComponentProps;
+import org.eclipse.sirius.components.diagrams.components.OutsideLabelComponent;
+import org.eclipse.sirius.components.diagrams.components.OutsideLabelComponentProps;
 import org.eclipse.sirius.components.representations.IComponentPropsValidator;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -46,6 +48,8 @@ public class DiagramComponentPropsValidator implements IComponentPropsValidator 
             checkValidProps = props instanceof LabelComponentProps;
         } else if (InsideLabelComponent.class.equals(componentType)) {
             checkValidProps = props instanceof InsideLabelComponentProps;
+        } else if (OutsideLabelComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof OutsideLabelComponentProps;
         }
 
         return checkValidProps;

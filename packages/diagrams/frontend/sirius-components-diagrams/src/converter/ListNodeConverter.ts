@@ -25,9 +25,8 @@ import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
-import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
-import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
+import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
 import { isListLayoutStrategy } from './convertDiagram';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
@@ -103,39 +102,11 @@ const toListNode = (
       : [],
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      iconURL: labelStyle.iconURL,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
-      },
-    };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      if (alignement.primaryAlignment === 'TOP') {
-        if (data.insideLabel.displayHeaderSeparator) {
-          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-        }
-        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-      }
-      if (alignement.secondaryAlignment === 'CENTER') {
-        data.style = { ...data.style, alignItems: 'stretch' };
-        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-      }
-    }
-  }
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
   const node: Node<ListNodeData> = {
     id,

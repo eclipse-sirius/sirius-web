@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,12 +39,11 @@ public class DataTypeNodeDescriptionProvider implements INodeDescriptionProvider
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_5"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("bordre_green"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("DataType");
         nodeDescription.setPreconditionExpression("aql:self.oclIsTypeOf(papaya_logical_architecture::DataType)");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
-        nodeDescription.setLabelExpression("aql:self.name");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name", this.colorProvider.getColor("label_white")));
         nodeDescription.setStyle(nodeStyle);
 
         var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();

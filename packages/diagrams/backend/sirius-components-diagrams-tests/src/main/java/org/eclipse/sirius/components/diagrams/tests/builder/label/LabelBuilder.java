@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,12 +64,8 @@ public final class LabelBuilder {
                 .build();
 
         return InsideLabel.newLabel(UUID.randomUUID().toString())
-                .type(Objects.requireNonNull(labelType).getValue())
                 .text(Objects.requireNonNull(text))
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
-                .alignment(Position.UNDEFINED)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .style(labelStyle)
                 .isHeader(isHeader)
                 .displayHeaderSeparator(isHeader)

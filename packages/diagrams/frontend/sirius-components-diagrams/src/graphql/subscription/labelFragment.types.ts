@@ -13,14 +13,12 @@
 
 export interface GQLLabel {
   id: string;
-  type: string;
   text: string;
   style: GQLLabelStyle;
 }
 
 export interface GQLInsideLabel {
   id: string;
-  type: string;
   text: string;
   insideLabelLocation: GQLInsideLabelLocation;
   style: GQLLabelStyle;
@@ -32,7 +30,6 @@ export type GQLInsideLabelLocation = 'TOP_CENTER';
 
 export interface GQLOutsideLabel {
   id: string;
-  type: string;
   text: string;
   outsideLabelLocation: GQLOutsideLabelLocation;
   style: GQLLabelStyle;

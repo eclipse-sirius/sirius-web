@@ -10,9 +10,51 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLLabelStyle, GQLOutsideLabel, GQLInsideLabel } from '../graphql/subscription/labelFragment.types';
+import { OutsideLabel, OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
+import { AlignmentMap } from './convertDiagram.types';
 
-import { GQLLabelStyle, GQLOutsideLabel } from '../graphql/subscription/labelFragment.types';
-import { OutsideLabel, OutsideLabels } from '../renderer/DiagramRenderer.types';
+export const convertInsideLabel = (
+  gqlInsideLabel: GQLInsideLabel | undefined,
+  data: NodeData,
+  borderStyle: string
+): InsideLabel | null => {
+  if (!gqlInsideLabel) {
+    return null;
+  }
+  const labelStyle = gqlInsideLabel.style;
+  const insideLabel: InsideLabel = {
+    id: gqlInsideLabel.id,
+    text: gqlInsideLabel.text,
+    isHeader: gqlInsideLabel.isHeader,
+    displayHeaderSeparator: gqlInsideLabel.displayHeaderSeparator,
+    style: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '8px 16px',
+      textAlign: 'center',
+      ...convertLabelStyle(labelStyle),
+    },
+    iconURL: labelStyle.iconURL,
+  };
+
+  const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
+  if (alignement.isPrimaryVerticalAlignment) {
+    if (alignement.primaryAlignment === 'TOP') {
+      if (insideLabel.displayHeaderSeparator) {
+        insideLabel.style.borderBottom = borderStyle;
+      }
+      data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
+    }
+    if (alignement.secondaryAlignment === 'CENTER') {
+      data.style = { ...data.style, alignItems: 'stretch' };
+      insideLabel.style = { ...insideLabel.style, justifyContent: 'center' };
+    }
+  }
+  return insideLabel;
+};
 
 export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): OutsideLabels => {
   const outsideLabels: OutsideLabels = {};
@@ -28,6 +70,7 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       text,
       iconURL,
       style: {
+        justifyContent: 'center',
         ...convertLabelStyle(labelStyle),
       },
     };

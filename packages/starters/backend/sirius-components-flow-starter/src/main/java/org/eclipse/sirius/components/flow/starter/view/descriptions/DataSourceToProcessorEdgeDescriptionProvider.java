@@ -57,7 +57,7 @@ public class DataSourceToProcessorEdgeDescriptionProvider implements IEdgeDescri
                 .targetNodesExpression("feature:target")
                 .sourceNodesExpression("feature:source")
                 .isDomainBasedEdge(true)
-                .labelExpression("aql:self.capacity")
+                .centerLabelExpression("aql:self.capacity")
                 .style(this.diagramBuilderHelper.newEdgeStyle()
                         .lineStyle(LineStyle.DASH)
                         .color(this.colorProvider.getColor("Flow_Gray"))

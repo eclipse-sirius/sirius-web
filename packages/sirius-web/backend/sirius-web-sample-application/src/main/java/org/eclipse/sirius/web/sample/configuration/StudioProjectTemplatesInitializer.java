@@ -50,6 +50,9 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
@@ -270,7 +273,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         entity1Node.setName("Entity1 Node");
         entity1Node.setDomainType(domainName + "::Entity1");
         entity1Node.setSemanticCandidatesExpression("aql:self.eContents()");
-        entity1Node.setLabelExpression("aql:self.name");
+        entity1Node.setInsideLabel(this.createInsideLabel(view));
         entity1Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity1Node.setStyle(this.createRectangularNodeStyle(view, "color_blue", "border_blue"));
         entity1Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
@@ -282,7 +285,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         entity2Node.setName("Entity2 Node");
         entity2Node.setDomainType(domainName + "::Entity2");
         entity2Node.setSemanticCandidatesExpression("aql:self.eContents()");
-        entity2Node.setLabelExpression("aql:self.name");
+        entity2Node.setInsideLabel(this.createInsideLabel(view));
         entity2Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity2Node.setStyle(this.createRectangularNodeStyle(view, "color_green", "border_green"));
         entity2Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
@@ -305,7 +308,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         EdgeDescription linkedToEdge = DiagramFactory.eINSTANCE.createEdgeDescription();
         linkedToEdge.setName("LinkedTo Edge");
         linkedToEdge.setSemanticCandidatesExpression("");
-        linkedToEdge.setLabelExpression("");
+        linkedToEdge.setCenterLabelExpression("");
         linkedToEdge.getSourceNodeDescriptions().add(entity1Node);
         linkedToEdge.setSourceNodesExpression("aql:self");
         linkedToEdge.getTargetNodeDescriptions().add(entity2Node);
@@ -318,6 +321,16 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
         linkedToEdge.setStyle(edgeStyle);
 
         return this.stereotypeBuilder.getStereotypeBody(List.of(view));
+    }
+
+    private InsideLabelDescription createInsideLabel(View view) {
+        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        insideLabelDescription.setLabelExpression("aql:self.name");
+        insideLabelDescription.setPosition(InsideLabelPosition.TOP_CENTER);
+        InsideLabelStyle insideLabelStyle = DiagramFactory.eINSTANCE.createInsideLabelStyle();
+        insideLabelStyle.setLabelColor(this.getColorFromPalette(view, "color_dark"));
+        insideLabelDescription.setStyle(insideLabelStyle);
+        return insideLabelDescription;
     }
 
     private RectangularNodeStyleDescription createRectangularNodeStyle(View view, String color, String borderColor) {

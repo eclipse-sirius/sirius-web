@@ -22,7 +22,7 @@ import { GQLDiagramDescription } from '../representation/DiagramRepresentation.t
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle } from './convertDiagram';
 import { convertHandles } from './convertHandles';
-import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
+import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
 import { isListLayoutStrategy } from './convertDiagram';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
@@ -85,26 +85,11 @@ const toImageNode = (
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
-  if (insideLabel) {
-    const {
-      id,
-      text,
-      style: labelStyle,
-      style: { iconURL },
-    } = insideLabel;
-    data.outsideLabels = {
-      BOTTOM_MIDDLE: {
-        id,
-        text,
-        iconURL,
-        style: {
-          ...convertLabelStyle(labelStyle),
-          justifyContent: 'center',
-          padding: '8px 16px',
-        },
-      },
-    };
-  }
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
   const node: Node<FreeFormNodeData> = {
     id,

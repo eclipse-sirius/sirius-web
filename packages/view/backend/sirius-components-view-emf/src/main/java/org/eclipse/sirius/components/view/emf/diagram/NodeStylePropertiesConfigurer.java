@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -48,10 +47,8 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ColorPalette;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
@@ -190,17 +187,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         String id = UUID.nameUUIDFromBytes("rectangularnodestyle".getBytes()).toString();
 
-        List<AbstractControlDescription> controls = new ArrayList<>();
-        controls.add(this.propertiesWidgetCreationService.createCheckbox("nodestyle.isWithHeader", "With Header",
-                style -> ((RectangularNodeStyleDescription) style).isWithHeader(),
-                (style, newWithHeaderValue) -> ((RectangularNodeStyleDescription) style).setWithHeader(newWithHeaderValue),
-                DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER, Optional.empty()));
-        controls.add(this.propertiesWidgetCreationService.createCheckbox("nodestyle.displayHeaderSeparator", "Display header separator",
-                style -> ((RectangularNodeStyleDescription) style).isDisplayHeaderSeparator(),
-                (style, newDisplayHeaderSeparator) -> ((RectangularNodeStyleDescription) style).setDisplayHeaderSeparator(newDisplayHeaderSeparator),
-                DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR, Optional.empty()));
-
-        controls.addAll(this.getGeneralControlDescription(NodeType.NODE_RECTANGLE));
+        List<AbstractControlDescription> controls = new ArrayList<>(this.getGeneralControlDescription(NodeType.NODE_RECTANGLE));
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
@@ -214,18 +201,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     private List<AbstractControlDescription> getGeneralControlDescription(String nodeType) {
         List<AbstractControlDescription> controls = new ArrayList<>();
 
-        var showIcon = this.propertiesWidgetCreationService.createCheckbox("nodestyle.showIcon", "Show Icon",
-                style -> ((NodeStyleDescription) style).isShowIcon(),
-                (style, newValue) -> ((NodeStyleDescription) style).setShowIcon(newValue),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON,
-                Optional.of(variableManager -> "Show an icon near the label, use the default one if no custom icon is set."));
-        controls.add(showIcon);
-
-        controls.add(this.createIconSelectionField());
-
         Function<VariableManager, List<?>> colorOptionsProvider = variableManager -> this.getColorsFromColorPalettesStream(variableManager).toList();
-        var labelColor = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.labelColor", "Label Color", DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR, colorOptionsProvider);
-        controls.add(labelColor);
 
         if (!Objects.equals(nodeType, NodeType.NODE_IMAGE)) {
             var color = this.propertiesWidgetCreationService.createReferenceWidget("nodestyle.color", "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
@@ -260,42 +236,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         var borderStyle = this.createBorderLineStyleSelectionField();
         controls.add(borderStyle);
-
-        var fontSize = this.propertiesWidgetCreationService.createTextField("nodestyle.fontSize", "Font Size",
-                style -> String.valueOf(((LabelStyle) style).getFontSize()),
-                (style, newColor) -> {
-                    try {
-                        ((LabelStyle) style).setFontSize(Integer.parseInt(newColor));
-                    } catch (NumberFormatException nfe) {
-                        // Ignore.
-                    }
-                },
-                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE);
-        controls.add(fontSize);
-
-        var italic = this.propertiesWidgetCreationService.createCheckbox("nodestyle.italic", "Italic",
-                style -> ((LabelStyle) style).isItalic(),
-                (style, newItalic) -> ((LabelStyle) style).setItalic(newItalic),
-                ViewPackage.Literals.LABEL_STYLE__ITALIC, Optional.empty());
-        controls.add(italic);
-
-        var bold = this.propertiesWidgetCreationService.createCheckbox("nodestyle.bold", "Bold",
-                style -> ((LabelStyle) style).isBold(),
-                (style, newBold) -> ((LabelStyle) style).setBold(newBold),
-                ViewPackage.Literals.LABEL_STYLE__BOLD, Optional.empty());
-        controls.add(bold);
-
-        var underline = this.propertiesWidgetCreationService.createCheckbox("nodestyle.underline", "Underline",
-                style -> ((LabelStyle) style).isUnderline(),
-                (style, newUnderline) -> ((LabelStyle) style).setUnderline(newUnderline),
-                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, Optional.empty());
-        controls.add(underline);
-
-        var strikeThrough = this.propertiesWidgetCreationService.createCheckbox("nodestyle.strikeThrough", "Strike Through",
-                style -> ((LabelStyle) style).isStrikeThrough(),
-                (style, newStrikeThrough) -> ((LabelStyle) style).setStrikeThrough(newStrikeThrough),
-                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, Optional.empty());
-        controls.add(strikeThrough);
 
         return controls;
     }
@@ -350,34 +290,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .flatMap(EList::stream);
     }
 
-    private SelectDescription createIconSelectionField() {
-        return SelectDescription.newSelectDescription("nodestyle.iconLabelSelector")
-                .idProvider(variableManager -> "nodestyle.iconLabelSelector")
-                .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
-                .labelProvider(variableManager -> "Custom Icon")
-                .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, NodeStyleDescription.class).map(NodeStyleDescription::getLabelIcon).orElse(EMPTY))
-                .optionsProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                        .map(IEditingContext::getId)
-                        .map(this.customImageSearchService::getAvailableImages)
-                        .orElse(List.of())
-                )
-                .optionIdProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(customImageMetadataEntity -> String.format(CUSTOM, customImageMetadataEntity.getId().toString()))
-                        .orElse(EMPTY))
-                .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(CustomImageMetadata::getLabel)
-                        .orElse(EMPTY))
-                .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, CustomImageMetadata.class)
-                        .map(customImageMetadataEntity -> List.of(String.format(CUSTOM, customImageMetadataEntity.getId().toString())))
-                        .orElse(List.of()))
-                .newValueHandler(this.getIconLabelValueHandler())
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON))
-                .kindProvider(this.propertiesConfigurerService.getKindProvider())
-                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
-                .helpTextProvider(variableManager -> "Set a custom icon for the label, use in association with Show Icon property")
-                .build();
-    }
 
     private SelectDescription createShapeSelectionField() {
         return SelectDescription.newSelectDescription("nodestyle.shapeSelector")
@@ -433,20 +345,6 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .build();
     }
 
-    private BiFunction<VariableManager, String, IStatus> getIconLabelValueHandler() {
-        return (variableManager, newValue) -> {
-            var optionalNodeStyle = variableManager.get(VariableManager.SELF, NodeStyleDescription.class);
-            if (optionalNodeStyle.isPresent()) {
-                String newIcon = newValue;
-                if (newValue != null && newValue.isBlank()) {
-                    newIcon = null;
-                }
-                optionalNodeStyle.get().setLabelIcon(newIcon);
-                return new Success();
-            }
-            return new Failure("");
-        };
-    }
 
     private BiFunction<VariableManager, String, IStatus> getNewShapeValueHandler() {
         return (variableManager, newValue) -> {

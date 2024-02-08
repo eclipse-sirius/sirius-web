@@ -22,7 +22,9 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
@@ -43,6 +45,10 @@ import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutDirection;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
@@ -50,10 +56,14 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
@@ -131,6 +141,27 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EClass labelDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass insideLabelDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass outsideLabelDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass styleEClass = null;
 
     /**
@@ -145,6 +176,27 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EClass insideLabelStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass outsideLabelStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass nodeLabelStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EClass nodeStyleDescriptionEClass = null;
 
     /**
@@ -153,6 +205,20 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EClass conditionalNodeStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalInsideLabelStyleEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass conditionalOutsideLabelStyleEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -369,6 +435,20 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EEnum insideLabelPositionEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum outsideLabelPositionEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private boolean isCreated = false;
 
     /**
@@ -403,10 +483,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
-     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -543,16 +623,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EAttribute getDiagramElementDescription_SynchronizationPolicy() {
         return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(4);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getDiagramElementDescription_LabelExpression() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -711,6 +781,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getNodeDescription_InsideLabel() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodeDescription_OutsideLabels() {
+        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(15);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getEdgeDescription() {
         return this.edgeDescriptionEClass;
     }
@@ -731,7 +821,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_EndLabelExpression() {
+    public EAttribute getEdgeDescription_CenterLabelExpression() {
         return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -741,7 +831,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_IsDomainBasedEdge() {
+    public EAttribute getEdgeDescription_EndLabelExpression() {
         return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -751,8 +841,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgeDescription_Palette() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(3);
+    public EAttribute getEdgeDescription_IsDomainBasedEdge() {
+        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -761,7 +851,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgeDescription_SourceNodeDescriptions() {
+    public EReference getEdgeDescription_Palette() {
         return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -771,7 +861,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getEdgeDescription_TargetNodeDescriptions() {
+    public EReference getEdgeDescription_SourceNodeDescriptions() {
         return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -781,8 +871,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_SourceNodesExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
+    public EReference getEdgeDescription_TargetNodeDescriptions() {
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -791,7 +881,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getEdgeDescription_TargetNodesExpression() {
+    public EAttribute getEdgeDescription_SourceNodesExpression() {
         return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
@@ -801,8 +891,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getEdgeDescription_TargetNodesExpression() {
+        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getEdgeDescription_Style() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(8);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -812,7 +912,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getEdgeDescription_ConditionalStyles() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(9);
+        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
     /**
@@ -891,6 +991,106 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getLabelDescription() {
+        return this.labelDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelDescription_LabelExpression() {
+        return (EAttribute) this.labelDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getInsideLabelDescription() {
+        return this.insideLabelDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getInsideLabelDescription_Position() {
+        return (EAttribute) this.insideLabelDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getInsideLabelDescription_Style() {
+        return (EReference) this.insideLabelDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getInsideLabelDescription_ConditionalStyles() {
+        return (EReference) this.insideLabelDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getOutsideLabelDescription() {
+        return this.outsideLabelDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getOutsideLabelDescription_Position() {
+        return (EAttribute) this.outsideLabelDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getOutsideLabelDescription_Style() {
+        return (EReference) this.outsideLabelDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getOutsideLabelDescription_ConditionalStyles() {
+        return (EReference) this.outsideLabelDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getStyle() {
         return this.styleEClass;
     }
@@ -961,38 +1161,88 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getInsideLabelStyle() {
+        return this.insideLabelStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getInsideLabelStyle_WithHeader() {
+        return (EAttribute) this.insideLabelStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getInsideLabelStyle_DisplayHeaderSeparator() {
+        return (EAttribute) this.insideLabelStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getOutsideLabelStyle() {
+        return this.outsideLabelStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getNodeLabelStyle() {
+        return this.nodeLabelStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodeLabelStyle_LabelColor() {
+        return (EReference) this.nodeLabelStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeLabelStyle_ShowIcon() {
+        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getNodeLabelStyle_LabelIcon() {
+        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getNodeStyleDescription() {
         return this.nodeStyleDescriptionEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getNodeStyleDescription_LabelColor() {
-        return (EReference) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getNodeStyleDescription_ShowIcon() {
-        return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getNodeStyleDescription_LabelIcon() {
-        return (EAttribute) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -1021,28 +1271,48 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getConditionalInsideLabelStyle() {
+        return this.conditionalInsideLabelStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getConditionalInsideLabelStyle_Style() {
+        return (EReference) this.conditionalInsideLabelStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getConditionalOutsideLabelStyle() {
+        return this.conditionalOutsideLabelStyleEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getConditionalOutsideLabelStyle_Style() {
+        return (EReference) this.conditionalOutsideLabelStyleEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getRectangularNodeStyleDescription() {
         return this.rectangularNodeStyleDescriptionEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getRectangularNodeStyleDescription_WithHeader() {
-        return (EAttribute) this.rectangularNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getRectangularNodeStyleDescription_DisplayHeaderSeparator() {
-        return (EAttribute) this.rectangularNodeStyleDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1811,6 +2081,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getInsideLabelPosition() {
+        return this.insideLabelPositionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EEnum getOutsideLabelPosition() {
+        return this.outsideLabelPositionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -1839,7 +2129,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY);
-        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__LABEL_EXPRESSION);
 
         this.nodeDescriptionEClass = this.createEClass(NODE_DESCRIPTION);
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__COLLAPSIBLE);
@@ -1856,9 +2145,12 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION);
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__KEEP_ASPECT_RATIO);
         this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION);
+        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__INSIDE_LABEL);
+        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__OUTSIDE_LABELS);
 
         this.edgeDescriptionEClass = this.createEClass(EDGE_DESCRIPTION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION);
+        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__END_LABEL_EXPRESSION);
         this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE);
         this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__PALETTE);
@@ -1879,6 +2171,19 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.freeFormLayoutStrategyDescriptionEClass = this.createEClass(FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION);
 
+        this.labelDescriptionEClass = this.createEClass(LABEL_DESCRIPTION);
+        this.createEAttribute(this.labelDescriptionEClass, LABEL_DESCRIPTION__LABEL_EXPRESSION);
+
+        this.insideLabelDescriptionEClass = this.createEClass(INSIDE_LABEL_DESCRIPTION);
+        this.createEAttribute(this.insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__POSITION);
+        this.createEReference(this.insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__STYLE);
+        this.createEReference(this.insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__CONDITIONAL_STYLES);
+
+        this.outsideLabelDescriptionEClass = this.createEClass(OUTSIDE_LABEL_DESCRIPTION);
+        this.createEAttribute(this.outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__POSITION);
+        this.createEReference(this.outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__STYLE);
+        this.createEReference(this.outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__CONDITIONAL_STYLES);
+
         this.styleEClass = this.createEClass(STYLE);
         this.createEReference(this.styleEClass, STYLE__COLOR);
 
@@ -1888,17 +2193,29 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_SIZE);
         this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_LINE_STYLE);
 
+        this.insideLabelStyleEClass = this.createEClass(INSIDE_LABEL_STYLE);
+        this.createEAttribute(this.insideLabelStyleEClass, INSIDE_LABEL_STYLE__WITH_HEADER);
+        this.createEAttribute(this.insideLabelStyleEClass, INSIDE_LABEL_STYLE__DISPLAY_HEADER_SEPARATOR);
+
+        this.outsideLabelStyleEClass = this.createEClass(OUTSIDE_LABEL_STYLE);
+
+        this.nodeLabelStyleEClass = this.createEClass(NODE_LABEL_STYLE);
+        this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_COLOR);
+        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__SHOW_ICON);
+        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_ICON);
+
         this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
-        this.createEReference(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__LABEL_COLOR);
-        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__SHOW_ICON);
-        this.createEAttribute(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__LABEL_ICON);
 
         this.conditionalNodeStyleEClass = this.createEClass(CONDITIONAL_NODE_STYLE);
         this.createEReference(this.conditionalNodeStyleEClass, CONDITIONAL_NODE_STYLE__STYLE);
 
+        this.conditionalInsideLabelStyleEClass = this.createEClass(CONDITIONAL_INSIDE_LABEL_STYLE);
+        this.createEReference(this.conditionalInsideLabelStyleEClass, CONDITIONAL_INSIDE_LABEL_STYLE__STYLE);
+
+        this.conditionalOutsideLabelStyleEClass = this.createEClass(CONDITIONAL_OUTSIDE_LABEL_STYLE);
+        this.createEReference(this.conditionalOutsideLabelStyleEClass, CONDITIONAL_OUTSIDE_LABEL_STYLE__STYLE);
+
         this.rectangularNodeStyleDescriptionEClass = this.createEClass(RECTANGULAR_NODE_STYLE_DESCRIPTION);
-        this.createEAttribute(this.rectangularNodeStyleDescriptionEClass, RECTANGULAR_NODE_STYLE_DESCRIPTION__WITH_HEADER);
-        this.createEAttribute(this.rectangularNodeStyleDescriptionEClass, RECTANGULAR_NODE_STYLE_DESCRIPTION__DISPLAY_HEADER_SEPARATOR);
 
         this.imageNodeStyleDescriptionEClass = this.createEClass(IMAGE_NODE_STYLE_DESCRIPTION);
         this.createEAttribute(this.imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__SHAPE);
@@ -2001,6 +2318,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
         this.nodeContainmentKindEEnum = this.createEEnum(NODE_CONTAINMENT_KIND);
         this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
+        this.insideLabelPositionEEnum = this.createEEnum(INSIDE_LABEL_POSITION);
+        this.outsideLabelPositionEEnum = this.createEEnum(OUTSIDE_LABEL_POSITION);
     }
 
     /**
@@ -2032,10 +2351,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
         this.listLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
         this.freeFormLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
+        this.insideLabelDescriptionEClass.getESuperTypes().add(this.getLabelDescription());
+        this.outsideLabelDescriptionEClass.getESuperTypes().add(this.getLabelDescription());
+        this.insideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
+        this.outsideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
+        this.nodeLabelStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
         this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getStyle());
-        this.nodeStyleDescriptionEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
         this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
         this.conditionalNodeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+        this.conditionalInsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+        this.conditionalOutsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
         this.rectangularNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
         this.imageNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
         this.iconLabelNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
@@ -2080,8 +2405,6 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getDiagramElementDescription_SynchronizationPolicy(), this.getSynchronizationPolicy(), "synchronizationPolicy", null, 0, 1, DiagramElementDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDiagramElementDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", "aql:self.name", 0, 1, DiagramElementDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.nodeDescriptionEClass, NodeDescription.class, "NodeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getNodeDescription_Collapsible(), this.ecorePackage.getEBoolean(), "collapsible", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -2112,10 +2435,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeDescription_IsCollapsedByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isCollapsedByDefaultExpression", null, 0, 1, NodeDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeDescription_InsideLabel(), this.getInsideLabelDescription(), null, "insideLabel", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeDescription_OutsideLabels(), this.getOutsideLabelDescription(), null, "outsideLabels", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getEdgeDescription_BeginLabelExpression(), theViewPackage.getInterpretedExpression(), "beginLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getEdgeDescription_CenterLabelExpression(), theViewPackage.getInterpretedExpression(), "centerLabelExpression", "aql:self.name", 0, 1, EdgeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeDescription_EndLabelExpression(), theViewPackage.getInterpretedExpression(), "endLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getEdgeDescription_IsDomainBasedEdge(), this.ecorePackage.getEBoolean(), "isDomainBasedEdge", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -2150,6 +2479,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.freeFormLayoutStrategyDescriptionEClass, FreeFormLayoutStrategyDescription.class, "FreeFormLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
+        this.initEClass(this.labelDescriptionEClass, LabelDescription.class, "LabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getLabelDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", "aql:self.name", 0, 1, LabelDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.insideLabelDescriptionEClass, InsideLabelDescription.class, "InsideLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getInsideLabelDescription_Position(), this.getInsideLabelPosition(), "position", null, 1, 1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getInsideLabelDescription_Style(), this.getInsideLabelStyle(), null, "style", null, 0, 1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getInsideLabelDescription_ConditionalStyles(), this.getConditionalInsideLabelStyle(), null, "conditionalStyles", null, 0, -1, InsideLabelDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.outsideLabelDescriptionEClass, OutsideLabelDescription.class, "OutsideLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getOutsideLabelDescription_Position(), this.getOutsideLabelPosition(), "position", null, 1, 1, OutsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getOutsideLabelDescription_Style(), this.getOutsideLabelStyle(), null, "style", null, 0, 1, OutsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getOutsideLabelDescription_ConditionalStyles(), this.getConditionalOutsideLabelStyle(), null, "conditionalStyles", null, 0, -1, OutsideLabelDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2164,23 +2513,37 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEAttribute(this.getBorderStyle_BorderLineStyle(), this.getLineStyle(), "borderLineStyle", null, 0, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.insideLabelStyleEClass, InsideLabelStyle.class, "InsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getInsideLabelStyle_WithHeader(), this.ecorePackage.getEBoolean(), "withHeader", null, 0, 1, InsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getInsideLabelStyle_DisplayHeaderSeparator(), this.ecorePackage.getEBoolean(), "displayHeaderSeparator", null, 0, 1, InsideLabelStyle.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.outsideLabelStyleEClass, OutsideLabelStyle.class, "OutsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.nodeLabelStyleEClass, NodeLabelStyle.class, "NodeLabelStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getNodeLabelStyle_LabelColor(), theViewPackage.getUserColor(), null, "labelColor", null, 1, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeLabelStyle_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", "false", 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getNodeLabelStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getNodeStyleDescription_LabelColor(), theViewPackage.getUserColor(), null, "labelColor", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyleDescription_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeStyleDescription_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getConditionalNodeStyle_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, ConditionalNodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.conditionalInsideLabelStyleEClass, ConditionalInsideLabelStyle.class, "ConditionalInsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getConditionalInsideLabelStyle_Style(), this.getInsideLabelStyle(), null, "style", null, 0, 1, ConditionalInsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.conditionalOutsideLabelStyleEClass, ConditionalOutsideLabelStyle.class, "ConditionalOutsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getConditionalOutsideLabelStyle_Style(), this.getOutsideLabelStyle(), null, "style", null, 0, 1, ConditionalOutsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         this.initEClass(this.rectangularNodeStyleDescriptionEClass, RectangularNodeStyleDescription.class, "RectangularNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getRectangularNodeStyleDescription_WithHeader(), this.ecorePackage.getEBoolean(), "withHeader", null, 0, 1, RectangularNodeStyleDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getRectangularNodeStyleDescription_DisplayHeaderSeparator(), this.ecorePackage.getEBoolean(), "displayHeaderSeparator", null, 0, 1,
-                RectangularNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.imageNodeStyleDescriptionEClass, ImageNodeStyleDescription.class, "ImageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getImageNodeStyleDescription_Shape(), this.ecorePackage.getEString(), "shape", null, 0, 1, ImageNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -2359,6 +2722,12 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEEnum(this.synchronizationPolicyEEnum, SynchronizationPolicy.class, "SynchronizationPolicy");
         this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.SYNCHRONIZED);
         this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.UNSYNCHRONIZED);
+
+        this.initEEnum(this.insideLabelPositionEEnum, InsideLabelPosition.class, "InsideLabelPosition");
+        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.TOP_CENTER);
+
+        this.initEEnum(this.outsideLabelPositionEEnum, OutsideLabelPosition.class, "OutsideLabelPosition");
+        this.addEEnumLiteral(this.outsideLabelPositionEEnum, OutsideLabelPosition.BOTTOM_CENTER);
 
         // Create resource
         this.createResource(eNS_URI);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,11 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
  * the model. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage
  */
 public interface DiagramFactory extends EFactory {
+
     /**
      * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -72,12 +73,70 @@ public interface DiagramFactory extends EFactory {
     FreeFormLayoutStrategyDescription createFreeFormLayoutStrategyDescription();
 
     /**
+     * Returns a new object of class '<em>Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Label Description</em>'.
+     * @generated
+     */
+    LabelDescription createLabelDescription();
+
+    /**
+     * Returns a new object of class '<em>Inside Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Inside Label Description</em>'.
+     * @generated
+     */
+    InsideLabelDescription createInsideLabelDescription();
+
+    /**
+     * Returns a new object of class '<em>Outside Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Outside Label Description</em>'.
+     * @generated
+     */
+    OutsideLabelDescription createOutsideLabelDescription();
+
+    /**
+     * Returns a new object of class '<em>Inside Label Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Inside Label Style</em>'.
+     * @generated
+     */
+    InsideLabelStyle createInsideLabelStyle();
+
+    /**
+     * Returns a new object of class '<em>Outside Label Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Outside Label Style</em>'.
+     * @generated
+     */
+    OutsideLabelStyle createOutsideLabelStyle();
+
+    /**
      * Returns a new object of class '<em>Conditional Node Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Conditional Node Style</em>'.
      * @generated
      */
     ConditionalNodeStyle createConditionalNodeStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Inside Label Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Inside Label Style</em>'.
+     * @generated
+     */
+    ConditionalInsideLabelStyle createConditionalInsideLabelStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Outside Label Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Outside Label Style</em>'.
+     * @generated
+     */
+    ConditionalOutsideLabelStyle createConditionalOutsideLabelStyle();
 
     /**
      * Returns a new object of class '<em>Rectangular Node Style Description</em>'. <!-- begin-user-doc --> <!--

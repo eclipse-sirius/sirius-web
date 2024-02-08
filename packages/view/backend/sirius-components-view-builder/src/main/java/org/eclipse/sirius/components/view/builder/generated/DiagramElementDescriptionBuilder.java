@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ public abstract class DiagramElementDescriptionBuilder {
 
     /**
      * Builder for org.eclipse.sirius.components.view.diagram.DiagramElementDescription.
+     *
      * @generated
      */
     protected abstract org.eclipse.sirius.components.view.diagram.DiagramElementDescription getDiagramElementDescription();
@@ -35,6 +36,7 @@ public abstract class DiagramElementDescriptionBuilder {
         this.getDiagramElementDescription().setName(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *
@@ -44,6 +46,7 @@ public abstract class DiagramElementDescriptionBuilder {
         this.getDiagramElementDescription().setDomainType(value);
         return this;
     }
+
     /**
      * Setter for SemanticCandidatesExpression.
      *
@@ -53,6 +56,7 @@ public abstract class DiagramElementDescriptionBuilder {
         this.getDiagramElementDescription().setSemanticCandidatesExpression(value);
         return this;
     }
+
     /**
      * Setter for PreconditionExpression.
      *
@@ -62,6 +66,7 @@ public abstract class DiagramElementDescriptionBuilder {
         this.getDiagramElementDescription().setPreconditionExpression(value);
         return this;
     }
+
     /**
      * Setter for SynchronizationPolicy.
      *
@@ -69,15 +74,6 @@ public abstract class DiagramElementDescriptionBuilder {
      */
     public DiagramElementDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.diagram.SynchronizationPolicy value) {
         this.getDiagramElementDescription().setSynchronizationPolicy(value);
-        return this;
-    }
-    /**
-     * Setter for LabelExpression.
-     *
-     * @generated
-     */
-    public DiagramElementDescriptionBuilder labelExpression(java.lang.String value) {
-        this.getDiagramElementDescription().setLabelExpression(value);
         return this;
     }
 

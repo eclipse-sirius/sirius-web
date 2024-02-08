@@ -109,11 +109,7 @@ type InsideLabel {
   id: ID!
   text: String!
   insideLabelLocation: InsideLabelLocation!
-  type: String!
   style: LabelStyle!
-  alignment: Position!
-  position: Position!
-  size: Size!
   isHeader: Boolean!
   displayHeaderSeparator: Boolean!
 }
@@ -126,7 +122,6 @@ type OutsideLabel {
   id: ID!
   text: String!
   outsideLabelLocation: OutsideLabelLocation!
-  type: String!
   style: LabelStyle!
 }
 

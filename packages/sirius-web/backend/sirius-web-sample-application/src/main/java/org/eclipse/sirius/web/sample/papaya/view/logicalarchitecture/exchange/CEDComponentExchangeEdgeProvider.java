@@ -48,7 +48,7 @@ public class CEDComponentExchangeEdgeProvider implements IEdgeDescriptionProvide
 
         var componentExchangeEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         componentExchangeEdgeDescription.setName("Edge Component Exchange");
-        componentExchangeEdgeDescription.setLabelExpression("aql:self.name");
+        componentExchangeEdgeDescription.setCenterLabelExpression("aql:self.name");
         componentExchangeEdgeDescription.setStyle(componentExchangeEdgeStyle);
         componentExchangeEdgeDescription.setDomainType("papaya_logical_architecture::ComponentExchange");
         componentExchangeEdgeDescription.setSemanticCandidatesExpression("aql:self.componentExchanges");

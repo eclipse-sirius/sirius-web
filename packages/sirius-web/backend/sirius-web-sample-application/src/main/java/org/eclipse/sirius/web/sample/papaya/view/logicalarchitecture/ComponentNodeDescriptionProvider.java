@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,13 +42,10 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_4"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_4"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
-        nodeStyle.setWithHeader(true);
-        nodeStyle.setDisplayHeaderSeparator(false);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Component");
         nodeDescription.setSemanticCandidatesExpression("aql:self.components");
-        nodeDescription.setLabelExpression("aql:self.name");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescriptionWithHeader("aql:self.name", this.colorProvider.getColor("label_black"), false));
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeDescription.setStyle(nodeStyle);
 

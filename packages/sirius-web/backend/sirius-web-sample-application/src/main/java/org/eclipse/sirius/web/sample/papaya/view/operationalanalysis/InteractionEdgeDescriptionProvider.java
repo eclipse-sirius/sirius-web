@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class InteractionEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
         var interactionEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         interactionEdgeDescription.setName("Edge Interaction");
-        interactionEdgeDescription.setLabelExpression("aql:'interacts with'");
+        interactionEdgeDescription.setCenterLabelExpression("aql:'interacts with'");
         interactionEdgeDescription.setSemanticCandidatesExpression("aql:self.eAllContents()");
         interactionEdgeDescription.setDomainType(builder.domainType(builder.entity("Interaction")));
         interactionEdgeDescription.setIsDomainBasedEdge(true);

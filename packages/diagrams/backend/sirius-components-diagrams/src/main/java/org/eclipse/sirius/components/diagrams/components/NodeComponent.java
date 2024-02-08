@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
-import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
@@ -34,6 +33,7 @@ import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
@@ -183,7 +183,8 @@ public class NodeComponent implements IComponent {
 
         List<Element> nodeChildren = new ArrayList<>();
 
-        nodeChildren.addAll(this.getInsideLabel(nodeVariableManager, optionalPreviousNode, nodeDescription, nodeId, containmentKind, type, style));
+        nodeChildren.addAll(this.getInsideLabel(nodeVariableManager, nodeDescription, nodeId));
+        nodeChildren.addAll(this.getOutsideLabel(nodeVariableManager, nodeDescription, nodeId));
         nodeChildren.addAll(this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor));
         nodeChildren.addAll(this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor));
 
@@ -373,23 +374,28 @@ public class NodeComponent implements IComponent {
         return size;
     }
 
-    private List<Element> getInsideLabel(VariableManager nodeVariableManager, Optional<Node> optionalPreviousNode, NodeDescription nodeDescription, String nodeId,
-            NodeContainmentKind containmentKind, String type, INodeStyle style) {
+    private List<Element> getInsideLabel(VariableManager nodeVariableManager, NodeDescription nodeDescription, String nodeId) {
         List<Element> nodeChildren = new ArrayList<>();
         InsideLabelDescription labelDescription = nodeDescription.getInsideLabelDescription();
         if (labelDescription != null) {
             nodeVariableManager.put(InsideLabelDescription.OWNER_ID, nodeId);
 
-            // This value is not the real label type. The real one will be provided by the ISiriusWebLayoutConfigurator in
-            // the diagrams-layout.
-            LabelType dummyLabelType = this.getLabelType(containmentKind, type, style);
-
-            Optional<InsideLabel> optionalPreviousInsideLabel = optionalPreviousNode.map(Node::getInsideLabel);
-            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription, optionalPreviousInsideLabel, dummyLabelType.getValue());
+            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription);
             Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
             nodeChildren.add(insideLabelElement);
         }
         return nodeChildren;
+    }
+
+    private List<Element> getOutsideLabel(VariableManager nodeVariableManager, NodeDescription nodeDescription, String nodeId) {
+
+        return nodeDescription.getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
+            nodeVariableManager.put(OutsideLabelDescription.OWNER_ID, nodeId);
+
+            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(nodeVariableManager, outsideLabelDescription);
+            return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
+        }).toList();
+
     }
 
     private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, ViewModifier state,
@@ -406,7 +412,7 @@ public class NodeComponent implements IComponent {
         return borderNodeDescriptions.stream().map(borderNodeDescription -> {
             List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription))
                     .orElse(List.of());
-            List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(node -> node.getTargetObjectId()).toList();
+            List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(Node::getTargetObjectId).toList();
             INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(nodeVariableManager)
@@ -441,7 +447,7 @@ public class NodeComponent implements IComponent {
         return childNodeDescriptions.stream().map(childNodeDescription -> {
             List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription))
                     .orElse(List.of());
-            List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(node -> node.getTargetObjectId()).toList();
+            List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(Node::getTargetObjectId).toList();
             INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
             var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
                     .variableManager(nodeVariableManager)

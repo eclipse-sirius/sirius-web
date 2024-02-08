@@ -58,7 +58,7 @@ public class FanDescriptionProvider implements INodeDescriptionProvider {
                 .domainType("flow::Fan")
                 .semanticCandidatesExpression("feature:elements")
                 .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
-                .labelExpression("feature:speed")
+                .outsideLabels(this.flowViewBuilder.getOutsideLabelDescription(this.colorProvider, "feature:speed"))
                 .defaultHeightExpression("aql:self.speed/2")
                 .defaultWidthExpression("aql:self.speed/2")
                 .userResizable(false)

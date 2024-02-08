@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,12 +45,12 @@ public class ProvidedServiceNodeDescriptionProvider implements INodeDescriptionP
         nodeStyle.setColor(this.colorProvider.getColor("color_white"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         nodeStyle.setBorderSize(0);
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
         nodeStyle.setPositionDependentRotation(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("ProvidedService");
         nodeDescription.setSemanticCandidatesExpression("aql:self.providedServices");
-        nodeDescription.setLabelExpression("aql:if self.contract = null then 'undefined' else self.contract.name endif");
+        nodeDescription.getOutsideLabels().add(new PapayaViewBuilder().createOutsideLabelDescription("aql:if self.contract = null then 'undefined' else self.contract.name endif",
+                this.colorProvider.getColor("label_black")));
         nodeDescription.setStyle(nodeStyle);
 
         var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();

@@ -39,6 +39,8 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -94,10 +96,15 @@ public class DynamicDiagramsTests {
         diagramDescription.setAutoLayout(false);
         diagramDescription.setDomainType("ecore::EPackage");
 
+        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        insideLabelDescription.setLabelExpression(NAME_EXPRESSION);
+        insideLabelDescription.setStyle(DiagramFactory.eINSTANCE.createInsideLabelStyle());
+        insideLabelDescription.setPosition(InsideLabelPosition.TOP_CENTER);
+
         NodeDescription eClassNode = DiagramFactory.eINSTANCE.createNodeDescription();
         eClassNode.setName("EClass Node");
         eClassNode.setDomainType("ecore::EClass");
-        eClassNode.setLabelExpression(NAME_EXPRESSION);
+        eClassNode.setInsideLabel(insideLabelDescription);
         eClassNode.setSemanticCandidatesExpression("aql:self.eClassifiers");
         eClassNode.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         this.setBasicNodeStyle(eClassNode, "red");
@@ -123,7 +130,6 @@ public class DynamicDiagramsTests {
         NodeDescription eClassNode = DiagramFactory.eINSTANCE.createNodeDescription();
         eClassNode.setName("EClass Node");
         eClassNode.setDomainType("ecore::EClass");
-        eClassNode.setLabelExpression(NAME_EXPRESSION);
         eClassNode.setSemanticCandidatesExpression("aql:self.eClassifiers");
         eClassNode.setSynchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED);
         this.setBasicNodeStyle(eClassNode, "red");

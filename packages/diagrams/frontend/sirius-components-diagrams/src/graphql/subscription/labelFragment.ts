@@ -14,7 +14,6 @@
 export const labelFragment = `
 fragment labelFragment on Label {
   id
-  type
   text
   style {
     color
@@ -31,7 +30,6 @@ fragment labelFragment on Label {
 export const insideLabelFragment = `
 fragment insideLabelFragment on InsideLabel {
   id
-  type
   text
   insideLabelLocation
   isHeader
@@ -51,7 +49,6 @@ fragment insideLabelFragment on InsideLabel {
 export const outsideLabelFragment = `
 fragment outsideLabelFragment on OutsideLabel {
   id
-  type
   text
   outsideLabelLocation
   style {

@@ -49,6 +49,12 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//SynchronizationPolicy/SYNCHRONIZED"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//SynchronizationPolicy/UNSYNCHRONIZED"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//InsideLabelPosition">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//InsideLabelPosition/TOP_CENTER"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//OutsideLabelPosition">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//OutsideLabelPosition/BOTTOM_CENTER"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/palette"/>
@@ -61,7 +67,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/preconditionExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/synchronizationPolicy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/labelExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//NodeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/collapsible"/>
@@ -78,9 +83,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/defaultHeightExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/keepAspectRatio"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeDescription/isCollapsedByDefaultExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/insideLabel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDescription/outsideLabels"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//EdgeDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeDescription/beginLabelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeDescription/centerLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeDescription/endLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//EdgeDescription/isDomainBasedEdge"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//EdgeDescription/palette"/>
@@ -99,6 +107,19 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//ListLayoutStrategyDescription/growableNodes"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//FreeFormLayoutStrategyDescription"/>
+    <genClasses ecoreClass="diagram.ecore#//LabelDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//LabelDescription/labelExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//InsideLabelDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelDescription/position"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//InsideLabelDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//InsideLabelDescription/conditionalStyles"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//OutsideLabelDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//OutsideLabelDescription/position"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//OutsideLabelDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//OutsideLabelDescription/conditionalStyles"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//Style">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference diagram.ecore#//Style/color"/>
     </genClasses>
@@ -108,18 +129,27 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//BorderStyle/borderSize"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//BorderStyle/borderLineStyle"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="diagram.ecore#//NodeStyleDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference diagram.ecore#//NodeStyleDescription/labelColor"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeStyleDescription/showIcon"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeStyleDescription/labelIcon"/>
+    <genClasses ecoreClass="diagram.ecore#//InsideLabelStyle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelStyle/withHeader"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelStyle/displayHeaderSeparator"/>
     </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//OutsideLabelStyle"/>
+    <genClasses image="false" ecoreClass="diagram.ecore#//NodeLabelStyle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeLabelStyle/labelColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/showIcon"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeLabelStyle/labelIcon"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="diagram.ecore#//NodeStyleDescription"/>
     <genClasses ecoreClass="diagram.ecore#//ConditionalNodeStyle">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//ConditionalNodeStyle/style"/>
     </genClasses>
-    <genClasses ecoreClass="diagram.ecore#//RectangularNodeStyleDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//RectangularNodeStyleDescription/withHeader"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//RectangularNodeStyleDescription/displayHeaderSeparator"/>
+    <genClasses ecoreClass="diagram.ecore#//ConditionalInsideLabelStyle">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//ConditionalInsideLabelStyle/style"/>
     </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//ConditionalOutsideLabelStyle">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//ConditionalOutsideLabelStyle/style"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//RectangularNodeStyleDescription"/>
     <genClasses ecoreClass="diagram.ecore#//ImageNodeStyleDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ImageNodeStyleDescription/shape"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ImageNodeStyleDescription/positionDependentRotation"/>

@@ -317,7 +317,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .map(customImageMetadataEntity -> List.of(String.format("/custom/%s", customImageMetadataEntity.getId().toString())))
                         .orElse(List.of()))
                 .newValueHandler(this.getIconLabelValueHandler())
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON))
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__LABEL_ICON))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .helpTextProvider(variableManager -> "Set a custom icon for the label, use in association with Show Icon property")

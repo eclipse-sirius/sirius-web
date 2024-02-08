@@ -26,9 +26,8 @@ import { FreeFormNodeData } from '../renderer/node/FreeFormNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
-import { AlignmentMap } from './convertDiagram.types';
 import { convertHandles } from './convertHandles';
-import { convertLabelStyle, convertOutsideLabels } from './convertLabel';
+import { convertOutsideLabels, convertInsideLabel } from './convertLabel';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
@@ -92,39 +91,11 @@ const toRectangularNode = (
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
-      },
-      iconURL: labelStyle.iconURL,
-    };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      if (alignement.primaryAlignment === 'TOP') {
-        if (data.insideLabel.displayHeaderSeparator) {
-          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-        }
-        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-      }
-      if (alignement.secondaryAlignment === 'CENTER') {
-        data.style = { ...data.style, alignItems: 'stretch' };
-        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-      }
-    }
-  }
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
   const node: Node<FreeFormNodeData> = {
     id,

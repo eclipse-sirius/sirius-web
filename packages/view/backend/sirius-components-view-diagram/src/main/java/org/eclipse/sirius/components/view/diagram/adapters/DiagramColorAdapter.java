@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
  */
 public class DiagramColorAdapter extends EContentAdapter {
 
-    private ColorPaletteService colorPaletteService;
+    private final ColorPaletteService colorPaletteService;
 
     public DiagramColorAdapter(View colorPalettesView) {
         this.colorPaletteService = new ColorPaletteService(colorPalettesView);
@@ -74,9 +74,6 @@ public class DiagramColorAdapter extends EContentAdapter {
         }
         if (style != null && style.getBorderColor() == null) {
             style.setBorderColor(this.colorPaletteService.getColorFromPalette(object, "black"));
-        }
-        if (style != null && style.getLabelColor() == null) {
-            style.setLabelColor(this.colorPaletteService.getColorFromPalette(object, "black"));
         }
     }
 }

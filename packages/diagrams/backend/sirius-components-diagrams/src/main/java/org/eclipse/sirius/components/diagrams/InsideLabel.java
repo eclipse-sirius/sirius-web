@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,19 +24,12 @@ import org.eclipse.sirius.components.annotations.Immutable;
  */
 @Immutable
 public final class InsideLabel {
-    private String id;
 
-    private String type;
+    private String id;
 
     private String text;
 
     private InsideLabelLocation insideLabelLocation;
-
-    private Position position;
-
-    private Size size;
-
-    private Position alignment;
 
     private LabelStyle style;
 
@@ -48,12 +41,16 @@ public final class InsideLabel {
         // Prevent instantiation
     }
 
-    public String getId() {
-        return this.id;
+    public static Builder newLabel(String id) {
+        return new Builder(id);
     }
 
-    public String getType() {
-        return this.type;
+    public static Builder newInsideLabel(InsideLabel insideLabel) {
+        return new Builder(insideLabel);
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public String getText() {
@@ -62,18 +59,6 @@ public final class InsideLabel {
 
     public InsideLabelLocation getInsideLabelLocation() {
         return this.insideLabelLocation;
-    }
-
-    public Position getPosition() {
-        return this.position;
-    }
-
-    public Size getSize() {
-        return this.size;
-    }
-
-    public Position getAlignment() {
-        return this.alignment;
     }
 
     public LabelStyle getStyle() {
@@ -88,18 +73,10 @@ public final class InsideLabel {
         return this.displayHeaderSeparator;
     }
 
-    public static Builder newLabel(String id) {
-        return new Builder(id);
-    }
-
-    public static Builder newInsideLabel(InsideLabel insideLabel) {
-        return new Builder(insideLabel);
-    }
-
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, type: {2}, text: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.type, this.text);
+        String pattern = "{0} '{'id: {1}, text: {2}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.text);
     }
 
     /**
@@ -109,19 +86,12 @@ public final class InsideLabel {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
 
-        private String type;
+        private final String id;
 
         private String text;
 
         private InsideLabelLocation insideLabelLocation;
-
-        private Position position;
-
-        private Size size;
-
-        private Position alignment;
 
         private LabelStyle style;
 
@@ -135,21 +105,12 @@ public final class InsideLabel {
 
         public Builder(InsideLabel insideLabel) {
             this.id = insideLabel.getId();
-            this.type = insideLabel.getType();
             this.text = insideLabel.getText();
             this.insideLabelLocation = insideLabel.getInsideLabelLocation();
-            this.position = insideLabel.getPosition();
-            this.size = insideLabel.getSize();
-            this.alignment = insideLabel.getAlignment();
             this.style = insideLabel.getStyle();
             this.isHeader = insideLabel.isIsHeader();
             this.displayHeaderSeparator = insideLabel.isDisplayHeaderSeparator();
 
-        }
-
-        public Builder type(String type) {
-            this.type = Objects.requireNonNull(type);
-            return this;
         }
 
         public Builder text(String text) {
@@ -159,21 +120,6 @@ public final class InsideLabel {
 
         public Builder insideLabelLocation(InsideLabelLocation insideLabelLocation) {
             this.insideLabelLocation = Objects.requireNonNull(insideLabelLocation);
-            return this;
-        }
-
-        public Builder position(Position position) {
-            this.position = Objects.requireNonNull(position);
-            return this;
-        }
-
-        public Builder size(Size size) {
-            this.size = Objects.requireNonNull(size);
-            return this;
-        }
-
-        public Builder alignment(Position aligment) {
-            this.alignment = Objects.requireNonNull(aligment);
             return this;
         }
 
@@ -195,12 +141,8 @@ public final class InsideLabel {
         public InsideLabel build() {
             InsideLabel label = new InsideLabel();
             label.id = Objects.requireNonNull(this.id);
-            label.type = Objects.requireNonNull(this.type);
             label.text = Objects.requireNonNull(this.text);
             label.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
-            label.position = Objects.requireNonNull(this.position);
-            label.size = Objects.requireNonNull(this.size);
-            label.alignment = Objects.requireNonNull(this.alignment);
             label.style = Objects.requireNonNull(this.style);
             label.isHeader = this.isHeader;
             label.displayHeaderSeparator = this.displayHeaderSeparator;
