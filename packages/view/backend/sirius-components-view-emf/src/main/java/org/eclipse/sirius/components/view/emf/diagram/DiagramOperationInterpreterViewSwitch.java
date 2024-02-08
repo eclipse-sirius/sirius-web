@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,14 +72,20 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
     /**
      * Default constructor.
      *
-     * @param variableManager      the current {@link VariableManager}.
-     * @param interpreter          the {@link AQLInterpreter}.
-     * @param objectService        the {@link IObjectService}.
-     * @param editService          the {@link IEditService}.
-     * @param diagramContext       the {@link IDiagramContext} (optional).
-     * @param operationInterpreter the {@link IOperationInterpreter} used for delegating sub operations executions. It is the
-     *                             responsibility of the {@link IOperationInterpreter} to delegate each operation execution to the
-     *                             appropriate switch according to the concrete representation.
+     * @param variableManager
+     *         the current {@link VariableManager}.
+     * @param interpreter
+     *         the {@link AQLInterpreter}.
+     * @param objectService
+     *         the {@link IObjectService}.
+     * @param editService
+     *         the {@link IEditService}.
+     * @param diagramContext
+     *         the {@link IDiagramContext} (optional).
+     * @param operationInterpreter
+     *         the {@link IOperationInterpreter} used for delegating sub operations executions. It is the
+     *         responsibility of the {@link IOperationInterpreter} to delegate each operation execution to the
+     *         appropriate switch according to the concrete representation.
      */
     public DiagramOperationInterpreterViewSwitch(VariableManager variableManager, AQLInterpreter interpreter, IObjectService objectService, IEditService editService, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, IOperationInterpreter operationInterpreter) {
@@ -98,7 +104,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
             return Optional.empty();
         }
         Map<String, Object> variables = this.variableManager.getVariables();
-        var optionalParentNode  = this.interpreter.evaluateExpression(variables, createViewOperation.getParentViewExpression())
+        var optionalParentNode = this.interpreter.evaluateExpression(variables, createViewOperation.getParentViewExpression())
                 .asObject()
                 .filter(Node.class::isInstance)
                 .map(Node.class::cast);
@@ -170,12 +176,8 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .build();
 
         var insideLabel = InsideLabel.newLabel("")
-                .type("")
                 .text("")
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
-                .alignment(Position.UNDEFINED)
                 .style(labelStyle)
                 .isHeader(false)
                 .displayHeaderSeparator(false)

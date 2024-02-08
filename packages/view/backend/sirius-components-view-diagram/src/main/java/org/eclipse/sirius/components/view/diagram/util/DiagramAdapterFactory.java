@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,9 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
@@ -42,14 +44,20 @@ import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
@@ -62,47 +70,17 @@ import org.eclipse.sirius.components.view.diagram.ToolSection;
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage
  */
 public class DiagramAdapterFactory extends AdapterFactoryImpl {
+
     /**
      * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected static DiagramPackage modelPackage;
-
-    /**
-     * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public DiagramAdapterFactory() {
-        if (modelPackage == null) {
-            modelPackage = DiagramPackage.eINSTANCE;
-        }
-    }
-
-    /**
-     * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc --> This
-     * implementation returns <code>true</code> if the object is either the model's package or is an instance object of
-     * the model. <!-- end-user-doc -->
-     *
-     * @return whether this factory is applicable for the type of the object.
-     * @generated
-     */
-    @Override
-    public boolean isFactoryForType(Object object) {
-        if (object == modelPackage) {
-            return true;
-        }
-        if (object instanceof EObject) {
-            return ((EObject) object).eClass().getEPackage() == modelPackage;
-        }
-        return false;
-    }
-
     /**
      * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -145,6 +123,21 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseLabelDescription(LabelDescription object) {
+            return DiagramAdapterFactory.this.createLabelDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseInsideLabelDescription(InsideLabelDescription object) {
+            return DiagramAdapterFactory.this.createInsideLabelDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseOutsideLabelDescription(OutsideLabelDescription object) {
+            return DiagramAdapterFactory.this.createOutsideLabelDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseStyle(Style object) {
             return DiagramAdapterFactory.this.createStyleAdapter();
         }
@@ -155,6 +148,21 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseInsideLabelStyle(InsideLabelStyle object) {
+            return DiagramAdapterFactory.this.createInsideLabelStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseOutsideLabelStyle(OutsideLabelStyle object) {
+            return DiagramAdapterFactory.this.createOutsideLabelStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseNodeLabelStyle(NodeLabelStyle object) {
+            return DiagramAdapterFactory.this.createNodeLabelStyleAdapter();
+        }
+
+        @Override
         public Adapter caseNodeStyleDescription(NodeStyleDescription object) {
             return DiagramAdapterFactory.this.createNodeStyleDescriptionAdapter();
         }
@@ -162,6 +170,16 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseConditionalNodeStyle(ConditionalNodeStyle object) {
             return DiagramAdapterFactory.this.createConditionalNodeStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalInsideLabelStyle(ConditionalInsideLabelStyle object) {
+            return DiagramAdapterFactory.this.createConditionalInsideLabelStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalOutsideLabelStyle(ConditionalOutsideLabelStyle object) {
+            return DiagramAdapterFactory.this.createConditionalOutsideLabelStyleAdapter();
         }
 
         @Override
@@ -316,10 +334,40 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
     };
 
     /**
+     * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public DiagramAdapterFactory() {
+        if (modelPackage == null) {
+            modelPackage = DiagramPackage.eINSTANCE;
+        }
+    }
+
+    /**
+     * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc --> This
+     * implementation returns <code>true</code> if the object is either the model's package or is an instance object of
+     * the model. <!-- end-user-doc -->
+     *
+     * @return whether this factory is applicable for the type of the object.
+     * @generated
+     */
+    @Override
+    public boolean isFactoryForType(Object object) {
+        if (object == modelPackage) {
+            return true;
+        }
+        if (object instanceof EObject) {
+            return ((EObject) object).eClass().getEPackage() == modelPackage;
+        }
+        return false;
+    }
+
+    /**
      * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param target
-     *            the object to adapt.
+     *         the object to adapt.
      * @return the adapter for the <code>target</code>.
      * @generated
      */
@@ -335,8 +383,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription
      */
     public Adapter createDiagramDescriptionAdapter() {
         return null;
@@ -349,8 +397,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramElementDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramElementDescription
      */
     public Adapter createDiagramElementDescriptionAdapter() {
         return null;
@@ -363,8 +411,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.NodeDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeDescription
      */
     public Adapter createNodeDescriptionAdapter() {
         return null;
@@ -377,8 +425,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeDescription
      */
     public Adapter createEdgeDescriptionAdapter() {
         return null;
@@ -391,8 +439,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription
      */
     public Adapter createLayoutStrategyDescriptionAdapter() {
         return null;
@@ -405,8 +453,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription
      */
     public Adapter createListLayoutStrategyDescriptionAdapter() {
         return null;
@@ -420,10 +468,52 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription
      */
     public Adapter createFreeFormLayoutStrategyDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.LabelDescription
+     * <em>Label Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelDescription
+     */
+    public Adapter createLabelDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription <em>Inside Label Description</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.InsideLabelDescription
+     */
+    public Adapter createInsideLabelDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription <em>Outside Label Description</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.OutsideLabelDescription
+     */
+    public Adapter createOutsideLabelDescriptionAdapter() {
         return null;
     }
 
@@ -433,8 +523,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.Style
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.Style
      */
     public Adapter createStyleAdapter() {
         return null;
@@ -447,10 +537,52 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.BorderStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.BorderStyle
      */
     public Adapter createBorderStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.InsideLabelStyle
+     * <em>Inside Label Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.InsideLabelStyle
+     */
+    public Adapter createInsideLabelStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelStyle
+     * <em>Outside Label Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.OutsideLabelStyle
+     */
+    public Adapter createOutsideLabelStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.NodeLabelStyle
+     * <em>Node Label Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeLabelStyle
+     */
+    public Adapter createNodeLabelStyleAdapter() {
         return null;
     }
 
@@ -461,8 +593,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.NodeStyleDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeStyleDescription
      */
     public Adapter createNodeStyleDescriptionAdapter() {
         return null;
@@ -475,10 +607,38 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle
      */
     public Adapter createConditionalNodeStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle <em>Conditional Inside Label
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle
+     */
+    public Adapter createConditionalInsideLabelStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle <em>Conditional Outside Label
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle
+     */
+    public Adapter createConditionalOutsideLabelStyleAdapter() {
         return null;
     }
 
@@ -489,8 +649,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription
      */
     public Adapter createRectangularNodeStyleDescriptionAdapter() {
         return null;
@@ -503,8 +663,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription
      */
     public Adapter createImageNodeStyleDescriptionAdapter() {
         return null;
@@ -517,8 +677,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription
      */
     public Adapter createIconLabelNodeStyleDescriptionAdapter() {
         return null;
@@ -531,8 +691,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle
      */
     public Adapter createEdgeStyleAdapter() {
         return null;
@@ -545,8 +705,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
      */
     public Adapter createConditionalEdgeStyleAdapter() {
         return null;
@@ -558,8 +718,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPalette
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPalette
      */
     public Adapter createDiagramPaletteAdapter() {
         return null;
@@ -572,8 +732,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.NodePalette
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodePalette
      */
     public Adapter createNodePaletteAdapter() {
         return null;
@@ -586,8 +746,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.EdgePalette
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgePalette
      */
     public Adapter createEdgePaletteAdapter() {
         return null;
@@ -599,8 +759,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.Tool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.Tool
      */
     public Adapter createToolAdapter() {
         return null;
@@ -613,8 +773,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DeleteTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DeleteTool
      */
     public Adapter createDeleteToolAdapter() {
         return null;
@@ -626,8 +786,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DropTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DropTool
      */
     public Adapter createDropToolAdapter() {
         return null;
@@ -639,8 +799,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeTool
      */
     public Adapter createEdgeToolAdapter() {
         return null;
@@ -653,8 +813,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool
      */
     public Adapter createEdgeReconnectionToolAdapter() {
         return null;
@@ -667,8 +827,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.LabelEditTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelEditTool
      */
     public Adapter createLabelEditToolAdapter() {
         return null;
@@ -680,8 +840,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.NodeTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeTool
      */
     public Adapter createNodeToolAdapter() {
         return null;
@@ -694,8 +854,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool
      */
     public Adapter createSourceEdgeEndReconnectionToolAdapter() {
         return null;
@@ -708,8 +868,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool
      */
     public Adapter createTargetEdgeEndReconnectionToolAdapter() {
         return null;
@@ -722,8 +882,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.CreateView
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.CreateView
      */
     public Adapter createCreateViewAdapter() {
         return null;
@@ -736,8 +896,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DeleteView
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DeleteView
      */
     public Adapter createDeleteViewAdapter() {
         return null;
@@ -750,8 +910,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.SelectionDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDescription
      */
     public Adapter createSelectionDescriptionAdapter() {
         return null;
@@ -764,8 +924,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.ToolSection
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.ToolSection
      */
     public Adapter createToolSectionAdapter() {
         return null;
@@ -778,8 +938,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramToolSection
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramToolSection
      */
     public Adapter createDiagramToolSectionAdapter() {
         return null;
@@ -792,8 +952,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.NodeToolSection
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.NodeToolSection
      */
     public Adapter createNodeToolSectionAdapter() {
         return null;
@@ -806,8 +966,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeToolSection
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.EdgeToolSection
      */
     public Adapter createEdgeToolSectionAdapter() {
         return null;
@@ -820,8 +980,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.DropNodeTool
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DropNodeTool
      */
     public Adapter createDropNodeToolAdapter() {
         return null;
@@ -834,8 +994,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.RepresentationDescription
      * @generated
+     * @see org.eclipse.sirius.components.view.RepresentationDescription
      */
     public Adapter createRepresentationDescriptionAdapter() {
         return null;
@@ -847,8 +1007,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.LabelStyle
      * @generated
+     * @see org.eclipse.sirius.components.view.LabelStyle
      */
     public Adapter createLabelStyleAdapter() {
         return null;
@@ -861,8 +1021,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.Conditional
      * @generated
+     * @see org.eclipse.sirius.components.view.Conditional
      */
     public Adapter createConditionalAdapter() {
         return null;
@@ -875,8 +1035,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * -->
      *
      * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.Operation
      * @generated
+     * @see org.eclipse.sirius.components.view.Operation
      */
     public Adapter createOperationAdapter() {
         return null;

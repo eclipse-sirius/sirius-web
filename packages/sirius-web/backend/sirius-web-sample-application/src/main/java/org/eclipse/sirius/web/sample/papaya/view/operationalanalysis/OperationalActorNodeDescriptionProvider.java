@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,16 +41,12 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         var operationalActorNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         operationalActorNodeStyle.setColor(this.colorProvider.getColor("color_gray"));
         operationalActorNodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
-        operationalActorNodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
-        operationalActorNodeStyle.setWithHeader(true);
-        operationalActorNodeStyle.setDisplayHeaderSeparator(false);
 
         var operationalActorEmptyNodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         operationalActorEmptyNodeStyle.setShape("4d9a22c0-dc36-31c9-bb6a-c18c66b51d93");
         operationalActorEmptyNodeStyle.setColor(this.colorProvider.getColor("color_white"));
         operationalActorEmptyNodeStyle.setBorderColor(this.colorProvider.getColor("border_empty"));
         operationalActorEmptyNodeStyle.setBorderSize(0);
-        operationalActorEmptyNodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
 
         var conditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         conditionalNodeStyle.setCondition("aql:collapsingState.toString() = 'COLLAPSED'");
@@ -59,6 +55,7 @@ public class OperationalActorNodeDescriptionProvider implements INodeDescription
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("OperationalActor");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalActors");
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name", this.colorProvider.getColor("label_black")));
         nodeDescription.setStyle(operationalActorNodeStyle);
         nodeDescription.getConditionalStyles().add(conditionalNodeStyle);
         nodeDescription.setCollapsible(true);

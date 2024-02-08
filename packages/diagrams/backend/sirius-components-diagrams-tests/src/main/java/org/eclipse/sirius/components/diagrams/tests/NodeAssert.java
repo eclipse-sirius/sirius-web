@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,12 +19,10 @@ import java.util.List;
 
 import org.assertj.core.api.AbstractAssert;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
-import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.Size;
-import org.eclipse.sirius.components.diagrams.components.LabelType;
 
 /**
  * Custom assertion class used to perform some tests on a node.
@@ -32,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.components.LabelType;
  * @author sbegaudeau
  */
 public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
+
     public NodeAssert(Node node) {
         super(node, NodeAssert.class);
     }
@@ -76,11 +75,9 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
             assertThat(this.actual.getInsideLabel()).matches(node.getInsideLabel(), idPolicy, layoutPolicy);
 
             assertThat(this.actual.getStyle().getClass()).isEqualTo(node.getStyle().getClass());
-            if (this.actual.getStyle() instanceof ImageNodeStyle && node.getStyle() instanceof ImageNodeStyle) {
-                ImageNodeStyle imageNodeStyle = (ImageNodeStyle) this.actual.getStyle();
+            if (this.actual.getStyle() instanceof ImageNodeStyle imageNodeStyle && node.getStyle() instanceof ImageNodeStyle) {
                 assertThat(imageNodeStyle).matches((ImageNodeStyle) node.getStyle());
-            } else if (this.actual.getStyle() instanceof RectangularNodeStyle && node.getStyle() instanceof RectangularNodeStyle) {
-                RectangularNodeStyle rectangularNodeStyle = (RectangularNodeStyle) this.actual.getStyle();
+            } else if (this.actual.getStyle() instanceof RectangularNodeStyle rectangularNodeStyle && node.getStyle() instanceof RectangularNodeStyle) {
                 assertThat(rectangularNodeStyle).matches((RectangularNodeStyle) node.getStyle());
             }
 
@@ -176,19 +173,6 @@ public class NodeAssert extends AbstractAssert<NodeAssert, Node> {
 
     public void hasNoOverflow() {
         Size size = this.actual.getSize();
-
-        InsideLabel insidelabel = this.actual.getInsideLabel();
-        if (!insidelabel.getType().equals(LabelType.OUTSIDE.getValue()) && !insidelabel.getType().equals(LabelType.OUTSIDE_CENTER.getValue())) {
-            Position labelTopLeftCorner = Position.at(insidelabel.getPosition().getX() + insidelabel.getAlignment().getX(), insidelabel.getPosition().getY() + insidelabel.getAlignment().getY());
-            Position labelTopRightCorner = Position.at(labelTopLeftCorner.getX() + insidelabel.getSize().getWidth(), labelTopLeftCorner.getY());
-            Position labelBottomLeftCorner = Position.at(labelTopLeftCorner.getX(), labelTopLeftCorner.getY() + insidelabel.getSize().getHeight());
-            Position labelBottomRightCorner = Position.at(labelTopRightCorner.getX(), labelBottomLeftCorner.getY());
-
-            assertThat(labelTopLeftCorner).isInside(size);
-            assertThat(labelTopRightCorner).isInside(size);
-            assertThat(labelBottomLeftCorner).isInside(size);
-            assertThat(labelBottomRightCorner).isInside(size);
-        }
 
         List<Node> childNodes = this.actual.getChildNodes();
         for (Node childNode : childNodes) {

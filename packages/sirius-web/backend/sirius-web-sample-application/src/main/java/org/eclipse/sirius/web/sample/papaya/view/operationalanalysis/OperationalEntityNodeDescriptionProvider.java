@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,14 +41,12 @@ public class OperationalEntityNodeDescriptionProvider implements INodeDescriptio
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_gray"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_gray"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_black"));
-        nodeStyle.setWithHeader(true);
-        nodeStyle.setDisplayHeaderSeparator(false);
 
         var builder = new PapayaViewBuilder();
 
         var nodeDescription = builder.createNodeDescription("OperationalEntity");
         nodeDescription.setSemanticCandidatesExpression("aql:self.operationalEntities");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescriptionWithHeader("aql:self.name", this.colorProvider.getColor("label_black"), false));
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,14 +40,11 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         var nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
         nodeStyle.setBorderColor(this.colorProvider.getColor("border_blue_2"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
-        nodeStyle.setWithHeader(true);
-        nodeStyle.setDisplayHeaderSeparator(true);
 
         var nodeDescription = new PapayaViewBuilder().createNodeDescription("Interface");
         nodeDescription.setSemanticCandidatesExpression("aql:self.types");
         nodeDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
-        nodeDescription.setLabelExpression("aql:self.name");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescriptionWithHeader("aql:self.name", this.colorProvider.getColor("label_white"), true));
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.getChildrenDescriptions().add(this.operationNodeDescription());
 
@@ -78,13 +75,12 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
     private NodeDescription operationNodeDescription() {
         var nodeStyle = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
         nodeStyle.setColor(this.colorProvider.getColor("color_blue_3"));
-        nodeStyle.setLabelColor(this.colorProvider.getColor("label_white"));
 
         var builder = new PapayaViewBuilder();
         var nodeDescription = builder.createNodeDescription("Operation");
         nodeDescription.setStyle(nodeStyle);
         nodeDescription.setSemanticCandidatesExpression("aql:self.operations");
-        nodeDescription.setLabelExpression("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif");
+        nodeDescription.setInsideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name + '(): ' + if self.type = null then 'void' else self.type.name endif", this.colorProvider.getColor("label_white")));
 
         var nodePalette = DiagramFactory.eINSTANCE.createNodePalette();
         nodeDescription.setPalette(nodePalette);

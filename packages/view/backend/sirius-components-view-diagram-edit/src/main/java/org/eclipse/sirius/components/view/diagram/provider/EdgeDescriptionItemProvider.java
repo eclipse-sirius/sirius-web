@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
             super.getPropertyDescriptors(object);
 
             this.addBeginLabelExpressionPropertyDescriptor(object);
+            this.addCenterLabelExpressionPropertyDescriptor(object);
             this.addEndLabelExpressionPropertyDescriptor(object);
             this.addIsDomainBasedEdgePropertyDescriptor(object);
             this.addSourceNodeDescriptionsPropertyDescriptor(object);
@@ -77,6 +78,19 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
                 this.getString("_UI_EdgeDescription_beginLabelExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_beginLabelExpression_feature", "_UI_EdgeDescription_type"),
                 DiagramPackage.Literals.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Center Label Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addCenterLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeDescription_centerLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeDescription_centerLabelExpression_feature", "_UI_EdgeDescription_type"),
+                DiagramPackage.Literals.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -233,6 +247,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         switch (notification.getFeatureID(EdgeDescription.class)) {
             case DiagramPackage.EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION:
+            case DiagramPackage.EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION:
             case DiagramPackage.EDGE_DESCRIPTION__END_LABEL_EXPRESSION:
             case DiagramPackage.EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE:
             case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:

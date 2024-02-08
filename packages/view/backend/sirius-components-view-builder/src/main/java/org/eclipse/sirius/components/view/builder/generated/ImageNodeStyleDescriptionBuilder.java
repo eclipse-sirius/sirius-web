@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,56 +56,6 @@ public class ImageNodeStyleDescriptionBuilder {
     }
 
     /**
-     * Setter for FontSize.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder fontSize(java.lang.Integer value) {
-        this.getImageNodeStyleDescription().setFontSize(value);
-        return this;
-    }
-
-    /**
-     * Setter for Italic.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder italic(java.lang.Boolean value) {
-        this.getImageNodeStyleDescription().setItalic(value);
-        return this;
-    }
-
-    /**
-     * Setter for Bold.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder bold(java.lang.Boolean value) {
-        this.getImageNodeStyleDescription().setBold(value);
-        return this;
-    }
-
-    /**
-     * Setter for Underline.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder underline(java.lang.Boolean value) {
-        this.getImageNodeStyleDescription().setUnderline(value);
-        return this;
-    }
-
-    /**
-     * Setter for StrikeThrough.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder strikeThrough(java.lang.Boolean value) {
-        this.getImageNodeStyleDescription().setStrikeThrough(value);
-        return this;
-    }
-
-    /**
      * Setter for BorderColor.
      *
      * @generated
@@ -142,36 +92,6 @@ public class ImageNodeStyleDescriptionBuilder {
      */
     public ImageNodeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getImageNodeStyleDescription().setBorderLineStyle(value);
-        return this;
-    }
-
-    /**
-     * Setter for LabelColor.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder labelColor(org.eclipse.sirius.components.view.UserColor value) {
-        this.getImageNodeStyleDescription().setLabelColor(value);
-        return this;
-    }
-
-    /**
-     * Setter for ShowIcon.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder showIcon(java.lang.Boolean value) {
-        this.getImageNodeStyleDescription().setShowIcon(value);
-        return this;
-    }
-
-    /**
-     * Setter for LabelIcon.
-     *
-     * @generated
-     */
-    public ImageNodeStyleDescriptionBuilder labelIcon(java.lang.String value) {
-        this.getImageNodeStyleDescription().setLabelIcon(value);
         return this;
     }
 

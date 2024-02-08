@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class CDExtendsInterfaceEdgeDescriptionProvider implements IEdgeDescripti
 
         var extendsInterfaceEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsInterfaceEdgeDescription.setName(NAME);
-        extendsInterfaceEdgeDescription.setLabelExpression("aql:'Extends'");
+        extendsInterfaceEdgeDescription.setCenterLabelExpression("aql:'Extends'");
         extendsInterfaceEdgeDescription.setStyle(extendsInterfaceEdgeStyle);
         extendsInterfaceEdgeDescription.setSourceNodesExpression("aql:self");
         extendsInterfaceEdgeDescription.setTargetNodesExpression("aql:self.extends");

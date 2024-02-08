@@ -95,15 +95,6 @@ public class NodeDescriptionBuilder {
         return this;
     }
 
-    /**
-     * Setter for LabelExpression.
-     *
-     * @generated
-     */
-    public NodeDescriptionBuilder labelExpression(java.lang.String value) {
-        this.getNodeDescription().setLabelExpression(value);
-        return this;
-    }
 
     /**
      * Setter for Collapsible.
@@ -258,6 +249,28 @@ public class NodeDescriptionBuilder {
      */
     public NodeDescriptionBuilder isCollapsedByDefaultExpression(java.lang.String value) {
         this.getNodeDescription().setIsCollapsedByDefaultExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for InsideLabel.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder insideLabel(org.eclipse.sirius.components.view.diagram.InsideLabelDescription value) {
+        this.getNodeDescription().setInsideLabel(value);
+        return this;
+    }
+
+    /**
+     * Setter for OutsideLabels.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder outsideLabels(org.eclipse.sirius.components.view.diagram.OutsideLabelDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.OutsideLabelDescription value : values) {
+            this.getNodeDescription().getOutsideLabels().add(value);
+        }
         return this;
     }
 

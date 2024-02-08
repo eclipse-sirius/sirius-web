@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,7 @@ public class RealizedByEdgeDescriptionProvider implements IEdgeDescriptionProvid
 
         var realizedByEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         realizedByEdgeDescription.setName("Edge Realized by");
-        realizedByEdgeDescription.setLabelExpression("aql:self.name + ' is realized by ' + self.realizedBy.name");
+        realizedByEdgeDescription.setCenterLabelExpression("aql:self.name + ' is realized by ' + self.realizedBy.name");
         realizedByEdgeDescription.setStyle(realizedByEdgeStyle);
         realizedByEdgeDescription.setSourceNodesExpression("aql:self");
         realizedByEdgeDescription.setTargetNodesExpression("aql:self.realizedBy");

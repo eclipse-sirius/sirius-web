@@ -28,12 +28,15 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramDescriptionBu
 import org.eclipse.sirius.components.view.builder.generated.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DropToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.IfBuilder;
+import org.eclipse.sirius.components.view.builder.generated.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.SetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -82,11 +85,17 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
         var nodeStyle = new RectangularNodeStyleDescriptionBuilder()
                 .build();
 
+        var insideLabel = new InsideLabelDescriptionBuilder()
+                .labelExpression("aql:self.name")
+                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                .position(InsideLabelPosition.TOP_CENTER)
+                .build();
+
         var nodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya_logical_architecture:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
-                .labelExpression("aql:self.name")
+                .insideLabel(insideLabel)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .style(nodeStyle)
                 .build();

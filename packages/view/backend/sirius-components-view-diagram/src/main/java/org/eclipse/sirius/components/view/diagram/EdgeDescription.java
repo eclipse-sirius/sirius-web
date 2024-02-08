@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,20 +42,21 @@ import org.eclipse.emf.common.util.EList;
  * Styles</em>}</li>
  * </ul>
  *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription()
  */
 public interface EdgeDescription extends DiagramElementDescription {
+
     /**
      * Returns the value of the '<em><b>Begin Label Expression</b></em>' attribute. The default value is
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Begin Label Expression</em>' attribute.
-     * @see #setBeginLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_BeginLabelExpression()
      * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setBeginLabelExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_BeginLabelExpression()
      */
     String getBeginLabelExpression();
 
@@ -64,21 +65,44 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <em>Begin Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Begin Label Expression</em>' attribute.
-     * @see #getBeginLabelExpression()
+     *         the new value of the '<em>Begin Label Expression</em>' attribute.
      * @generated
+     * @see #getBeginLabelExpression()
      */
     void setBeginLabelExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Center Label Expression</b></em>' attribute. The default value is
+     * <code>"aql:self.name"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Center Label Expression</em>' attribute.
+     * @model default="aql:self.name" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     * @see #setCenterLabelExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_CenterLabelExpression()
+     */
+    String getCenterLabelExpression();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getCenterLabelExpression
+     * <em>Center Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Center Label Expression</em>' attribute.
+     * @generated
+     * @see #getCenterLabelExpression()
+     */
+    void setCenterLabelExpression(String value);
 
     /**
      * Returns the value of the '<em><b>End Label Expression</b></em>' attribute. The default value is <code>""</code>.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>End Label Expression</em>' attribute.
-     * @see #setEndLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_EndLabelExpression()
      * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setEndLabelExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_EndLabelExpression()
      */
     String getEndLabelExpression();
 
@@ -87,9 +111,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <em>End Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>End Label Expression</em>' attribute.
-     * @see #getEndLabelExpression()
+     *         the new value of the '<em>End Label Expression</em>' attribute.
      * @generated
+     * @see #getEndLabelExpression()
      */
     void setEndLabelExpression(String value);
 
@@ -98,10 +122,10 @@ public interface EdgeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Is Domain Based Edge</em>' attribute.
-     * @see #setIsDomainBasedEdge(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_IsDomainBasedEdge()
      * @model
      * @generated
+     * @see #setIsDomainBasedEdge(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_IsDomainBasedEdge()
      */
     boolean isIsDomainBasedEdge();
 
@@ -110,9 +134,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <em>Is Domain Based Edge</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Is Domain Based Edge</em>' attribute.
-     * @see #isIsDomainBasedEdge()
+     *         the new value of the '<em>Is Domain Based Edge</em>' attribute.
      * @generated
+     * @see #isIsDomainBasedEdge()
      */
     void setIsDomainBasedEdge(boolean value);
 
@@ -121,10 +145,10 @@ public interface EdgeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Palette</em>' containment reference.
-     * @see #setPalette(EdgePalette)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_Palette()
      * @model containment="true"
      * @generated
+     * @see #setPalette(EdgePalette)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_Palette()
      */
     EdgePalette getPalette();
 
@@ -133,9 +157,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <em>Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Palette</em>' containment reference.
-     * @see #getPalette()
+     *         the new value of the '<em>Palette</em>' containment reference.
      * @generated
+     * @see #getPalette()
      */
     void setPalette(EdgePalette value);
 
@@ -144,9 +168,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Source Node Descriptions</em>' reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceNodeDescriptions()
      * @model required="true"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceNodeDescriptions()
      */
     EList<NodeDescription> getSourceNodeDescriptions();
 
@@ -155,9 +179,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Target Node Descriptions</em>' reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetNodeDescriptions()
      * @model required="true"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetNodeDescriptions()
      */
     EList<NodeDescription> getTargetNodeDescriptions();
 
@@ -166,10 +190,10 @@ public interface EdgeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Source Nodes Expression</em>' attribute.
-     * @see #setSourceNodesExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceNodesExpression()
      * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setSourceNodesExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_SourceNodesExpression()
      */
     String getSourceNodesExpression();
 
@@ -178,9 +202,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <em>Source Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Source Nodes Expression</em>' attribute.
-     * @see #getSourceNodesExpression()
+     *         the new value of the '<em>Source Nodes Expression</em>' attribute.
      * @generated
+     * @see #getSourceNodesExpression()
      */
     void setSourceNodesExpression(String value);
 
@@ -189,10 +213,10 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <code>"aql:self.eCrossReferences()"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Target Nodes Expression</em>' attribute.
-     * @see #setTargetNodesExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetNodesExpression()
      * @model default="aql:self.eCrossReferences()" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setTargetNodesExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_TargetNodesExpression()
      */
     String getTargetNodesExpression();
 
@@ -201,9 +225,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <em>Target Nodes Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Target Nodes Expression</em>' attribute.
-     * @see #getTargetNodesExpression()
+     *         the new value of the '<em>Target Nodes Expression</em>' attribute.
      * @generated
+     * @see #getTargetNodesExpression()
      */
     void setTargetNodesExpression(String value);
 
@@ -212,10 +236,10 @@ public interface EdgeDescription extends DiagramElementDescription {
      * -->
      *
      * @return the value of the '<em>Style</em>' containment reference.
-     * @see #setStyle(EdgeStyle)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_Style()
      * @model containment="true"
      * @generated
+     * @see #setStyle(EdgeStyle)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_Style()
      */
     EdgeStyle getStyle();
 
@@ -224,9 +248,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
+     *         the new value of the '<em>Style</em>' containment reference.
      * @generated
+     * @see #getStyle()
      */
     void setStyle(EdgeStyle value);
 
@@ -236,9 +260,9 @@ public interface EdgeDescription extends DiagramElementDescription {
      * end-user-doc -->
      *
      * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_ConditionalStyles()
      * @model containment="true"
      * @generated
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_ConditionalStyles()
      */
     EList<ConditionalEdgeStyle> getConditionalStyles();
 

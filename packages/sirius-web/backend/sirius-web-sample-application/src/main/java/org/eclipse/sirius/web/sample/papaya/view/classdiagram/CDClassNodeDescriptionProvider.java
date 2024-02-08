@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.sample.papaya.view.PapayaViewBuilder;
  * @author sbegaudeau
  */
 public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider {
+
     public static final String NAME = "CD Node Class";
 
     private final IColorProvider colorProvider;
@@ -57,13 +58,10 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
                 .domainType(domainType)
                 .semanticCandidatesExpression("aql:self.types")
                 .childrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())
-                .labelExpression("aql:self.name")
+                .insideLabel(new PapayaViewBuilder().createInsideLabelDescription("aql:self.name", this.colorProvider.getColor("label_white")))
                 .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                         .color(this.colorProvider.getColor("color_blue"))
                         .borderColor(this.colorProvider.getColor("border_blue"))
-                        .labelColor(this.colorProvider.getColor("label_white"))
-                        .withHeader(false)
-                        .displayHeaderSeparator(false)
                         .build())
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .conditionalStyles(this.diagramBuilderHelper.newConditionalNodeStyle()
@@ -71,9 +69,6 @@ public class CDClassNodeDescriptionProvider implements INodeDescriptionProvider 
                         .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                                 .color(this.colorProvider.getColor("color_green"))
                                 .borderColor(this.colorProvider.getColor("border_green"))
-                                .labelColor(this.colorProvider.getColor("label_white"))
-                                .withHeader(false)
-                                .displayHeaderSeparator(false)
                                 .build())
                         .build())
                 .build();

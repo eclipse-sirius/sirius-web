@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,66 +16,10 @@ package org.eclipse.sirius.components.view.diagram;
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Rectangular Node Style Description</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isWithHeader <em>With
- * Header</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isDisplayHeaderSeparator
- * <em>Display Header Separator</em>}</li>
- * </ul>
- *
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription()
  * @model
  * @generated
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription()
  */
 public interface RectangularNodeStyleDescription extends NodeStyleDescription {
-    /**
-     * Returns the value of the '<em><b>With Header</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>With Header</em>' attribute.
-     * @see #setWithHeader(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription_WithHeader()
-     * @model
-     * @generated
-     */
-    boolean isWithHeader();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isWithHeader <em>With
-     * Header</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>With Header</em>' attribute.
-     * @see #isWithHeader()
-     * @generated
-     */
-    void setWithHeader(boolean value);
-
-    /**
-     * Returns the value of the '<em><b>Display Header Separator</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Display Header Separator</em>' attribute.
-     * @see #setDisplayHeaderSeparator(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getRectangularNodeStyleDescription_DisplayHeaderSeparator()
-     * @model
-     * @generated
-     */
-    boolean isDisplayHeaderSeparator();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription#isDisplayHeaderSeparator
-     * <em>Display Header Separator</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Display Header Separator</em>' attribute.
-     * @see #isDisplayHeaderSeparator()
-     * @generated
-     */
-    void setDisplayHeaderSeparator(boolean value);
 
 } // RectangularNodeStyleDescription

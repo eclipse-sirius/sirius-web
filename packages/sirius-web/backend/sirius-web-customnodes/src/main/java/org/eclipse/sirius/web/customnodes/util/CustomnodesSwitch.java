@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.customnodes.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.Style;
@@ -28,8 +27,8 @@ import org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription;
  * starting with the actual class of the object and proceeding up the inheritance hierarchy until a non-null result is
  * returned, which is the result of the switch. <!-- end-user-doc -->
  *
- * @see org.eclipse.sirius.web.customnodes.CustomnodesPackage
  * @generated
+ * @see org.eclipse.sirius.web.customnodes.CustomnodesPackage
  */
 public class CustomnodesSwitch<T> extends Switch<T> {
 
@@ -55,7 +54,7 @@ public class CustomnodesSwitch<T> extends Switch<T> {
      * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param ePackage
-     *            the package in question.
+     *         the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
@@ -82,8 +81,6 @@ public class CustomnodesSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseStyle(ellipseNodeStyleDescription);
                 if (result == null)
-                    result = this.caseLabelStyle(ellipseNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(ellipseNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -100,7 +97,7 @@ public class CustomnodesSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Ellipse Node Style Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -114,26 +111,12 @@ public class CustomnodesSwitch<T> extends Switch<T> {
      * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseStyle(Style object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Label Style</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Label Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseLabelStyle(LabelStyle object) {
         return null;
     }
 
@@ -142,10 +125,10 @@ public class CustomnodesSwitch<T> extends Switch<T> {
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Border Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseBorderStyle(BorderStyle object) {
         return null;
@@ -157,7 +140,7 @@ public class CustomnodesSwitch<T> extends Switch<T> {
      * end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Node Style Description</em>'.
      * @generated
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -172,10 +155,10 @@ public class CustomnodesSwitch<T> extends Switch<T> {
      * anyway. <!-- end-user-doc -->
      *
      * @param object
-     *            the target of the switch.
+     *         the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      * @generated
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
     public T defaultCase(EObject object) {

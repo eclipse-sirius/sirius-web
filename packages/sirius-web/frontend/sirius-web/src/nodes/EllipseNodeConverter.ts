@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  AlignmentMap,
   BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
@@ -25,8 +24,8 @@ import {
   IConvertEngine,
   INodeConverter,
   convertHandles,
-  convertLabelStyle,
   convertLineStyle,
+  convertInsideLabel,
   convertOutsideLabels,
   isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
@@ -92,39 +91,11 @@ const toEllipseNode = (
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
-      },
-      iconURL: labelStyle.iconURL,
-    };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      if (alignement.primaryAlignment === 'TOP') {
-        if (data.insideLabel.isHeader) {
-          data.insideLabel.style.borderBottom = `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`;
-        }
-        data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-      }
-      if (alignement.secondaryAlignment === 'CENTER') {
-        data.style = { ...data.style, alignItems: 'stretch' };
-        data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-      }
-    }
-  }
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
   const node: Node<EllipseNodeData> = {
     id,

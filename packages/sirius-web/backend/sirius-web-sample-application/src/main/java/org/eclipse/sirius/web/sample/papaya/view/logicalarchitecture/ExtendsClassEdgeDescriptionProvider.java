@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ public class ExtendsClassEdgeDescriptionProvider implements IEdgeDescriptionProv
 
         var extendsClassEdgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         extendsClassEdgeDescription.setName("Edge Extends class");
-        extendsClassEdgeDescription.setLabelExpression("");
+        extendsClassEdgeDescription.setCenterLabelExpression("");
         extendsClassEdgeDescription.setStyle(extendsClassEdgeStyle);
         extendsClassEdgeDescription.setSourceNodesExpression("aql:self");
         extendsClassEdgeDescription.setTargetNodesExpression("aql:self.extends");

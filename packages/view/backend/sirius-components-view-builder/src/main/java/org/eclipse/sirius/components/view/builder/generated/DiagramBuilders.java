@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ package org.eclipse.sirius.components.view.builder.generated;
  * @generated
  */
 public class DiagramBuilders {
+
     /**
      * Instantiate a DiagramDescriptionBuilder .
      *
@@ -70,6 +71,56 @@ public class DiagramBuilders {
     }
 
     /**
+     * Instantiate a LabelDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public LabelDescriptionBuilder newLabelDescription() {
+        return new LabelDescriptionBuilder();
+    }
+
+    /**
+     * Instantiate a InsideLabelDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public InsideLabelDescriptionBuilder newInsideLabelDescription() {
+        return new InsideLabelDescriptionBuilder();
+    }
+
+    /**
+     * Instantiate a OutsideLabelDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public OutsideLabelDescriptionBuilder newOutsideLabelDescription() {
+        return new OutsideLabelDescriptionBuilder();
+    }
+
+    /**
+     * Instantiate a InsideLabelStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public InsideLabelStyleBuilder newInsideLabelStyle() {
+        return new InsideLabelStyleBuilder();
+    }
+
+    /**
+     * Instantiate a OutsideLabelStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public OutsideLabelStyleBuilder newOutsideLabelStyle() {
+        return new OutsideLabelStyleBuilder();
+    }
+
+    /**
      * Instantiate a ConditionalNodeStyleBuilder .
      *
      * @author BuilderGenerator
@@ -77,6 +128,26 @@ public class DiagramBuilders {
      */
     public ConditionalNodeStyleBuilder newConditionalNodeStyle() {
         return new ConditionalNodeStyleBuilder();
+    }
+
+    /**
+     * Instantiate a ConditionalInsideLabelStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ConditionalInsideLabelStyleBuilder newConditionalInsideLabelStyle() {
+        return new ConditionalInsideLabelStyleBuilder();
+    }
+
+    /**
+     * Instantiate a ConditionalOutsideLabelStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ConditionalOutsideLabelStyleBuilder newConditionalOutsideLabelStyle() {
+        return new ConditionalOutsideLabelStyleBuilder();
     }
 
     /**

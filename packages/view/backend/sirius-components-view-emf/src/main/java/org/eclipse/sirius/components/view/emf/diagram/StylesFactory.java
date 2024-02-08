@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,9 @@ import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.ViewConverter;
 
@@ -49,31 +51,6 @@ public final class StylesFactory {
     public StylesFactory(List<INodeStyleProvider> iNodeStyleProviders, IObjectService objectService) {
         this.iNodeStyleProviders = Objects.requireNonNull(iNodeStyleProviders);
         this.objectService = Objects.requireNonNull(objectService);
-    }
-
-    public LabelStyleDescription createLabelStyleDescription(NodeStyleDescription nodeStyle) {
-        return LabelStyleDescription.newLabelStyleDescription()
-                .colorProvider(variableManager -> Optional.ofNullable(nodeStyle.getLabelColor())
-                        .filter(FixedColor.class::isInstance)
-                        .map(FixedColor.class::cast)
-                        .map(FixedColor::getValue)
-                        .orElse(DEFAULT_COLOR))
-                .fontSizeProvider(variableManager -> nodeStyle.getFontSize())
-                .boldProvider(variableManager -> nodeStyle.isBold())
-                .italicProvider(variableManager -> nodeStyle.isItalic())
-                .underlineProvider(variableManager -> nodeStyle.isUnderline())
-                .strikeThroughProvider(variableManager -> nodeStyle.isStrikeThrough())
-                .iconURLProvider(variableManager -> {
-                    List<String> iconURL = List.of();
-                    if (nodeStyle.isShowIcon() && nodeStyle.getLabelIcon() == null) {
-                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
-                    }
-                    if (nodeStyle.isShowIcon() && nodeStyle.getLabelIcon() != null) {
-                        iconURL = List.of(nodeStyle.getLabelIcon());
-                    }
-                    return iconURL;
-                })
-                .build();
     }
 
     public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
@@ -184,5 +161,55 @@ public final class StylesFactory {
         }
 
         return result;
+    }
+
+    public LabelStyleDescription createInsideLabelStyle(InsideLabelStyle labelStyle) {
+        return LabelStyleDescription.newLabelStyleDescription()
+                .colorProvider(variableManager -> Optional.ofNullable(labelStyle.getLabelColor())
+                        .filter(FixedColor.class::isInstance)
+                        .map(FixedColor.class::cast)
+                        .map(FixedColor::getValue)
+                        .orElse(DEFAULT_COLOR))
+                .fontSizeProvider(variableManager -> labelStyle.getFontSize())
+                .boldProvider(variableManager -> labelStyle.isBold())
+                .italicProvider(variableManager -> labelStyle.isItalic())
+                .underlineProvider(variableManager -> labelStyle.isUnderline())
+                .strikeThroughProvider(variableManager -> labelStyle.isStrikeThrough())
+                .iconURLProvider(variableManager -> {
+                    List<String> iconURL = List.of();
+                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() == null) {
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                    }
+                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() != null) {
+                        iconURL = List.of(labelStyle.getLabelIcon());
+                    }
+                    return iconURL;
+                })
+                .build();
+    }
+
+    public LabelStyleDescription createOutsideLabelStyle(OutsideLabelStyle labelStyle) {
+        return LabelStyleDescription.newLabelStyleDescription()
+                .colorProvider(variableManager -> Optional.ofNullable(labelStyle.getLabelColor())
+                        .filter(FixedColor.class::isInstance)
+                        .map(FixedColor.class::cast)
+                        .map(FixedColor::getValue)
+                        .orElse(DEFAULT_COLOR))
+                .fontSizeProvider(variableManager -> labelStyle.getFontSize())
+                .boldProvider(variableManager -> labelStyle.isBold())
+                .italicProvider(variableManager -> labelStyle.isItalic())
+                .underlineProvider(variableManager -> labelStyle.isUnderline())
+                .strikeThroughProvider(variableManager -> labelStyle.isStrikeThrough())
+                .iconURLProvider(variableManager -> {
+                    List<String> iconURL = List.of();
+                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() == null) {
+                        iconURL = variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getImagePath).orElse(List.of());
+                    }
+                    if (labelStyle.isShowIcon() && labelStyle.getLabelIcon() != null) {
+                        iconURL = List.of(labelStyle.getLabelIcon());
+                    }
+                    return iconURL;
+                })
+                .build();
     }
 }
