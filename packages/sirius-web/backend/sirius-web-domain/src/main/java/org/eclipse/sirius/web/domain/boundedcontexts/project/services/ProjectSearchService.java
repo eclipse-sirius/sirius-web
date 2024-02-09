@@ -38,8 +38,13 @@ public class ProjectSearchService implements IProjectSearchService {
     }
 
     @Override
-    public Optional<Project> findById(UUID id) {
-        return this.projectRepository.findById(id);
+    public boolean existsById(UUID projectId) {
+        return this.projectRepository.existsById(projectId);
+    }
+
+    @Override
+    public Optional<Project> findById(UUID projectId) {
+        return this.projectRepository.findById(projectId);
     }
 
     @Override

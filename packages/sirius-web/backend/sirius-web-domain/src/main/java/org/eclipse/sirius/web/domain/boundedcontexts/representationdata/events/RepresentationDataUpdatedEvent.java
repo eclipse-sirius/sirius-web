@@ -10,25 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events;
 
-import java.util.Optional;
+import java.time.Instant;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to retrieve projects.
+ * Event fired when some representation data are updated.
  *
  * @author sbegaudeau
  */
-public interface IProjectSearchService {
-
-    boolean existsById(UUID projectId);
-
-    Optional<Project> findById(UUID projectId);
-
-    Page<Project> findAll(Pageable pageable);
+public record RepresentationDataUpdatedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull RepresentationData representationData) implements IRepresentationDataEvent {
 }

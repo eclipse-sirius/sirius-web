@@ -10,25 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
+package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.List;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
+import org.springframework.stereotype.Service;
 
 /**
- * Used to retrieve projects.
+ * A service used to retrieve all the EPackages accessible for a given editing context.
  *
  * @author sbegaudeau
  */
-public interface IProjectSearchService {
-
-    boolean existsById(UUID projectId);
-
-    Optional<Project> findById(UUID projectId);
-
-    Page<Project> findAll(Pageable pageable);
+@Service
+public class EditingContextEPackageService implements IEditingContextEPackageService {
+    @Override
+    public List<EPackage> getEPackages(String editingContextId) {
+        return List.of();
+    }
 }

@@ -1,0 +1,43 @@
+extend interface Viewer {
+  project(projectId: ID!): Project
+  projects(page: Int!, limit: Int!): ViewerProjectConnection!
+}
+
+type ViewerProjectConnection {
+  edges: [ViewerProjectEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ViewerProjectEdge {
+  node: Project!
+}
+
+type Project {
+  id: ID!
+  name: String!
+}
+
+type DefaultViewer implements Viewer {
+  id: ID!
+  username: String!
+  editingContext(editingContextId: ID!): EditingContext
+  project(projectId: ID!): Project
+  projects(page: Int!, limit: Int!): ViewerProjectConnection!
+}
+
+extend type Mutation {
+  createProject(input: CreateProjectInput!): CreateProjectPayload!
+}
+
+input CreateProjectInput {
+  id: ID!
+  name: String!
+  natures: [String!]!
+}
+
+union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload
+
+type CreateProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}

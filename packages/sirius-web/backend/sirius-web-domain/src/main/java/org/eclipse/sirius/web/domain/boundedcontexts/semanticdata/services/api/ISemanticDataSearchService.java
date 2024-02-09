@@ -10,25 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
- * Used to retrieve projects.
+ * Used to retrieve the semantic data.
  *
  * @author sbegaudeau
  */
-public interface IProjectSearchService {
+public interface ISemanticDataSearchService {
 
-    boolean existsById(UUID projectId);
+    boolean existsByProject(AggregateReference<Project, UUID> project);
 
-    Optional<Project> findById(UUID projectId);
-
-    Page<Project> findAll(Pageable pageable);
+    Optional<SemanticData> findByProject(AggregateReference<Project, UUID> project);
 }

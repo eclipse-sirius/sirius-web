@@ -59,6 +59,21 @@
 			<artifactId>sirius-components-graphql-api</artifactId>
 			<version>2024.1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative</artifactId>
+			<version>2024.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-emf</artifactId>
+			<version>2024.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view</artifactId>
+			<version>2024.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

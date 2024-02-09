@@ -10,25 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
-
-import java.util.Optional;
-import java.util.UUID;
-
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api;
 
 /**
- * Used to retrieve projects.
+ * Used to create new representation data.
  *
  * @author sbegaudeau
  */
-public interface IProjectSearchService {
-
-    boolean existsById(UUID projectId);
-
-    Optional<Project> findById(UUID projectId);
-
-    Page<Project> findAll(Pageable pageable);
+public interface IRepresentationDataCreationService {
 }

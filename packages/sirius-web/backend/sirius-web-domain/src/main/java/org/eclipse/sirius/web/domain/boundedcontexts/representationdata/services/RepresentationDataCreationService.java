@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services;
 
-import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { RouteProps } from 'react-router-dom';
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataCreationService;
+import org.springframework.stereotype.Service;
 
-export const routerExtensionPoint: DataExtensionPoint<Array<RouteProps>> = {
-  identifier: 'router#routes',
-  fallback: [],
-};
+/**
+ * Used to create new representation data.
+ *
+ * @author sbegaudeau
+ */
+@Service
+public class RepresentationDataCreationService implements IRepresentationDataCreationService {
+}

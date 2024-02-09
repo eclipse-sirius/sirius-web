@@ -49,6 +49,16 @@
 			<artifactId>sirius-web-infrastructure</artifactId>
 			<version>2024.1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-graphql</artifactId>
+			<version>2024.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-web</artifactId>
+			<version>2024.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
