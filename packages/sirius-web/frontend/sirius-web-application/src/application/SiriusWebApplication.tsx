@@ -15,10 +15,21 @@ import {
   ExtensionRegistry,
   RepresentationPathContext,
   ServerContext,
+  WorkbenchViewContribution,
+  workbenchMainAreaExtensionPoint,
+  workbenchViewContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
+import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
+import { ExplorerView } from '@eclipse-sirius/sirius-components-trees';
+import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import Filter from '@material-ui/icons/Filter';
+import LinkIcon from '@material-ui/icons/Link';
+import MenuIcon from '@material-ui/icons/Menu';
+import WarningIcon from '@material-ui/icons/Warning';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from '../../src/toast/ToastProvider';
@@ -28,6 +39,7 @@ import {
 } from '../diagrams/DiagramRepresentationConfiguration';
 import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepresentationConfiguration.types';
 import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
+import { OnboardArea } from '../onboarding/OnboardArea';
 import { RepresentationContextProvider } from '../representations/RepresentationContextProvider';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
@@ -64,8 +76,48 @@ export const SiriusWebApplication = ({
     return `/projects/${editingContextId}/edit/${representationId}`;
   };
 
+  const workbenchViewContributions: WorkbenchViewContribution[] = [
+    {
+      side: 'left',
+      title: 'Explorer',
+      icon: <AccountTreeIcon />,
+      component: ExplorerView,
+    },
+    {
+      side: 'left',
+      title: 'Validation',
+      icon: <WarningIcon />,
+      component: ValidationView,
+    },
+    {
+      side: 'right',
+      title: 'Details',
+      icon: <MenuIcon />,
+      component: DetailsView,
+    },
+    {
+      side: 'right',
+      title: 'Representations',
+      icon: <Filter />,
+      component: RepresentationsView,
+    },
+    {
+      side: 'right',
+      title: 'Related Elements',
+      icon: <LinkIcon />,
+      component: RelatedElementsView,
+    },
+  ];
+
+  const internalExtensionRegistry = new ExtensionRegistry();
+  internalExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, { Component: OnboardArea });
+  internalExtensionRegistry.putData(workbenchViewContributionExtensionPoint, { data: workbenchViewContributions });
+  if (extensionRegistry) {
+    internalExtensionRegistry.addAll(extensionRegistry);
+  }
+
   return (
-    <ExtensionProvider registry={extensionRegistry ?? new ExtensionRegistry()}>
+    <ExtensionProvider registry={internalExtensionRegistry}>
       <ApolloGraphQLProvider httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
         <BrowserRouter>
           <ThemeProvider theme={siriusWebTheme}>

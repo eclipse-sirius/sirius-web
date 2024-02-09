@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,9 @@
 import { gql, useSubscription } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { useComponent } from '../extension/useComponent';
+import { useData } from '../extension/useData';
 import { useSelection } from '../selection/useSelection';
 import { Toast } from '../toast/Toast';
 import { Panels } from './Panels';
@@ -25,7 +27,9 @@ import {
   Representation,
   RepresentationComponentProps,
   WorkbenchProps,
+  WorkbenchViewContribution,
 } from './Workbench.types';
+import { workbenchMainAreaExtensionPoint, workbenchViewContributionExtensionPoint } from './WorkbenchExtensionPoints';
 import {
   HandleCompleteEvent,
   HandleSubscriptionResultEvent,
@@ -38,7 +42,6 @@ import {
   WorkbenchEvent,
   workbenchMachine,
 } from './WorkbenchMachine';
-import { WorkbenchViewContribution } from './WorkbenchViewContribution';
 
 const editingContextEventSubscription = gql`
   subscription editingContextEvent($input: EditingContextEventInput!) {
@@ -70,9 +73,7 @@ export const Workbench = ({
   editingContextId,
   initialRepresentationSelected,
   onRepresentationSelected,
-  mainAreaComponent,
   readOnly,
-  children,
 }: WorkbenchProps) => {
   const classes = useWorkbenchStyles();
   const { registry } = useContext<RepresentationContextValue>(RepresentationContext);
@@ -143,19 +144,19 @@ export const Workbench = ({
     }
   }, [onRepresentationSelected, initialRepresentationSelected, displayedRepresentation]);
 
-  const workbenchViewLeftSideContributions: JSX.Element[] = [];
-  const workbenchViewRightSideContributions: JSX.Element[] = [];
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.type === WorkbenchViewContribution) {
-      if (child.props.side === 'left') {
-        workbenchViewLeftSideContributions.push(child);
-      } else if (child.props.side === 'right') {
-        workbenchViewRightSideContributions.push(child);
-      }
-    }
-  });
+  const workbenchViewLeftSideContributions: WorkbenchViewContribution[] = [];
+  const workbenchViewRightSideContributions: WorkbenchViewContribution[] = [];
 
-  const MainComponent = mainAreaComponent;
+  const { data: workbenchViewContributions } = useData(workbenchViewContributionExtensionPoint);
+  for (const workbenchViewContribution of workbenchViewContributions) {
+    if (workbenchViewContribution.side === 'left') {
+      workbenchViewLeftSideContributions.push(workbenchViewContribution);
+    } else if (workbenchViewContribution.side === 'right') {
+      workbenchViewRightSideContributions.push(workbenchViewContribution);
+    }
+  }
+
+  const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
   let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
 
   if (displayedRepresentation) {

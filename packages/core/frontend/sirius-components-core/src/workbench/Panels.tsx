@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef, useState } from 'react';
-import { PanelsProps } from './Panels.types';
+import { PanelState, PanelsProps } from './Panels.types';
 import { Site } from './Site';
 
 const MIN_PANEL_WIDTH: number = 42;
@@ -37,13 +37,6 @@ const usePanelStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-interface PanelState {
-  isDragging: boolean;
-  initialPosition: number;
-  expanded: boolean;
-  resizablePanelSize: number;
-}
 
 export const Panels = ({
   editingContextId,

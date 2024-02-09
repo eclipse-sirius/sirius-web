@@ -47,4 +47,4 @@ export * from './workbench/RepresentationContext';
 export * from './workbench/RepresentationContext.types';
 export * from './workbench/Workbench';
 export * from './workbench/Workbench.types';
-export * from './workbench/WorkbenchViewContribution';
+export * from './workbench/WorkbenchExtensionPoints';
