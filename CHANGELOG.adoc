@@ -176,6 +176,8 @@ image:doc/screenshots/borderNodeCreationArea.png[BorderNode creation area,50%]
 In other scenarios, the default creation position border remains the eastern one.
 - https://github.com/eclipse-sirius/sirius-web/issues/2785[#2785] [gantt] Add cypress tests
 
+- https://github.com/eclipse-sirius/sirius-web/issues/1546[#1546] [sirius-web] Newly created documents are not automatically selected in the _Explorer_ view.
+
 == v2024.1.0
 
 === Shapes

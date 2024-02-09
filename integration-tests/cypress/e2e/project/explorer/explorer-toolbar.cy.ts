@@ -78,6 +78,7 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
 
         cy.get('.MuiDialog-container').should('not.exist');
         cy.getByTestId('explorer://').contains('nobel');
+        cy.getByTestId('selected').should('have.attr', 'data-treeitemlabel', 'nobel');
       });
 
       it('can open the upload document modal', () => {
