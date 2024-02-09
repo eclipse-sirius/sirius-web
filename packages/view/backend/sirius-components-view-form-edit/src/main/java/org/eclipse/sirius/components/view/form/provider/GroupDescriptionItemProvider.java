@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -254,6 +254,8 @@ public class GroupDescriptionItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createTextAreaDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createTextfieldDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createTreeDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__BORDER_STYLE, FormFactory.eINSTANCE.createContainerBorderStyle()));
 

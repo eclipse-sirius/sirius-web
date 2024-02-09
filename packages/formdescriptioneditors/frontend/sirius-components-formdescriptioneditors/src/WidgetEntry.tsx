@@ -28,6 +28,7 @@ import {
   GQLSelect,
   GQLTextarea,
   GQLTextfield,
+  GQLTree,
   GQLWidget,
   PropertySectionContext,
   PropertySectionContextValue,
@@ -68,6 +69,7 @@ import { RichTextWidget } from './RichTextWidget';
 import { SelectWidget } from './SelectWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
+import { TreeWidget } from './TreeWidget';
 import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
 import { isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
 
@@ -396,6 +398,8 @@ export const WidgetEntry = ({
     widgetElement = (
       <TextfieldWidget data-testid={widget.id} widget={widget as GQLTextfield} onDropBefore={onDropBefore} />
     );
+  } else if (widget.__typename === 'TreeWidget') {
+    widgetElement = <TreeWidget data-testid={widget.id} widget={widget as GQLTree} onDropBefore={onDropBefore} />;
   } else if (widget.__typename === 'ChartWidget') {
     const chartWidget: GQLChartWidget = widget as GQLChartWidget;
     if (chartWidget.chart.metadata.kind === 'BarChart') {

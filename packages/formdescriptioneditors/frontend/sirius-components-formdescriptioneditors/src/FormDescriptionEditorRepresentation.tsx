@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
@@ -429,6 +430,17 @@ export const FormDescriptionEditorRepresentation = ({
             <TextFieldsIcon />
             <Typography variant="caption" gutterBottom>
               Textfield
+            </Typography>
+          </div>
+          <div
+            id="Tree"
+            data-testid="FormDescriptionEditor-Tree"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStartWidget}>
+            <AccountTreeIcon />
+            <Typography variant="caption" gutterBottom>
+              Tree
             </Typography>
           </div>
 

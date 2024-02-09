@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -180,6 +180,8 @@ public class FormElementIfItemProvider extends FormElementDescriptionItemProvide
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createListDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createMultiSelectDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createTreeDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, FormFactory.eINSTANCE.createPieChartDescription()));
 

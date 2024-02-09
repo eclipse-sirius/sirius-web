@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,7 @@ import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TreeDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
 
@@ -254,6 +255,17 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescription(multiSelectDescription);
                 if (result == null)
                     result = this.caseFormElementDescription(multiSelectDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.TREE_DESCRIPTION: {
+                TreeDescription treeDescription = (TreeDescription) theEObject;
+                T result = this.caseTreeDescription(treeDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(treeDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(treeDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -886,6 +898,21 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseMultiSelectDescription(MultiSelectDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Tree Description</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Tree Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTreeDescription(TreeDescription object) {
         return null;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -125,6 +125,14 @@ public interface FormFactory extends EFactory {
      * @generated
      */
     MultiSelectDescription createMultiSelectDescription();
+
+    /**
+     * Returns a new object of class '<em>Tree Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Tree Description</em>'.
+     * @generated
+     */
+    TreeDescription createTreeDescription();
 
     /**
      * Returns a new object of class '<em>Pie Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

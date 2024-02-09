@@ -144,7 +144,7 @@ public class BuilderGenerator {
         StringBuilder factory = new StringBuilder();
         factory.append("""
                 /*******************************************************************************
-                 * Copyright (c) 2023 Obeo.
+                 * Copyright (c) 2023, 2024 Obeo.
                  * This program and the accompanying materials
                  * are made available under the terms of the Eclipse Public License v2.0
                  * which accompanies this distribution, and is available at
@@ -257,7 +257,7 @@ public class BuilderGenerator {
         if (clazz.isAbstract()) {
             builder.append("""
                     /*******************************************************************************
-                     * Copyright (c) 2023 Obeo.
+                     * Copyright (c) 2023, 2024 Obeo.
                      * This program and the accompanying materials
                      * are made available under the terms of the Eclipse Public License v2.0
                      * which accompanies this distribution, and is available at
@@ -295,7 +295,7 @@ public class BuilderGenerator {
         } else {
             builder.append("""
                     /*******************************************************************************
-                     * Copyright (c) 2023 Obeo.
+                     * Copyright (c) 2023, 2024 Obeo.
                      * This program and the accompanying materials
                      * are made available under the terms of the Eclipse Public License v2.0
                      * which accompanies this distribution, and is available at

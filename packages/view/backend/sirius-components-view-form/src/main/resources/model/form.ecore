@@ -157,6 +157,15 @@
         eType="#//ConditionalMultiSelectDescriptionStyle" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsEnabledExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TreeDescription" eSuperTypes="#//WidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="childExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemLabelExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isTreeItemSelectableExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemBeginIconExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PieChartDescription" eSuperTypes="#//WidgetDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="valuesExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="keysExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
