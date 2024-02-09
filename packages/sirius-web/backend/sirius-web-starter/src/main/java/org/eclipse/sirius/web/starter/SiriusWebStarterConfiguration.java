@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.starter;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 /**
  * AutoConfiguration of the Sirius Web application.
  *
  * @author sbegaudeau
  */
-@Configuration
+@AutoConfiguration
 public class SiriusWebStarterConfiguration {
 }
