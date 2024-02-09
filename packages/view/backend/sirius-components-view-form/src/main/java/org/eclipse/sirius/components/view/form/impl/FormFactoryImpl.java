@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,6 +70,7 @@ import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
+import org.eclipse.sirius.components.view.form.TreeDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -135,6 +136,8 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createListDescription();
             case FormPackage.MULTI_SELECT_DESCRIPTION:
                 return this.createMultiSelectDescription();
+            case FormPackage.TREE_DESCRIPTION:
+                return this.createTreeDescription();
             case FormPackage.PIE_CHART_DESCRIPTION:
                 return this.createPieChartDescription();
             case FormPackage.RADIO_DESCRIPTION:
@@ -380,6 +383,17 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
     public MultiSelectDescription createMultiSelectDescription() {
         MultiSelectDescriptionImpl multiSelectDescription = new MultiSelectDescriptionImpl();
         return multiSelectDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public TreeDescription createTreeDescription() {
+        TreeDescriptionImpl treeDescription = new TreeDescriptionImpl();
+        return treeDescription;
     }
 
     /**

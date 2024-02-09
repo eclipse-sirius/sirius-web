@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@ import {
   GQLButton,
   GQLChartWidget,
   GQLCheckbox,
-  GQLFlexboxContainer,
   GQLFlexDirection,
+  GQLFlexboxContainer,
   GQLGroup,
   GQLImage,
   GQLLabelWidget,
@@ -28,6 +28,7 @@ import {
   GQLSelect,
   GQLTextarea,
   GQLTextfield,
+  GQLTree,
   GQLWidget,
 } from '@eclipse-sirius/sirius-components-forms';
 import React from 'react';
@@ -73,6 +74,7 @@ export type RichTextWidgetProps = WidgetProps<GQLRichText>;
 export type SelectWidgetProps = WidgetProps<GQLSelect>;
 export type TextareaWidgetProps = WidgetProps<GQLTextarea>;
 export type TextfieldWidgetProps = WidgetProps<GQLTextfield>;
+export type TreeWidgetProps = WidgetProps<GQLTree>;
 
 export interface WidgetEntryState {
   message: string | null;

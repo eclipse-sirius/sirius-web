@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,6 +55,7 @@ import org.eclipse.sirius.components.forms.description.RichTextDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
+import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
@@ -93,6 +94,31 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         this.formDescriptionEditorDescription = formDescriptionEditorDescription;
         this.variableManager = variableManager;
         this.customWidgetConverter = customWidgetConverter;
+    }
+
+    @Override
+    public AbstractWidgetDescription caseTreeDescription(org.eclipse.sirius.components.view.form.TreeDescription treeDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, treeDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+
+        return TreeDescription.newTreeDescription(id)
+                .idProvider(vm -> id)
+                .labelProvider(vm -> this.getWidgetLabel(treeDescription, "Tree"))
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "")
+                .targetObjectIdProvider(vm -> "")
+                .childrenProvider(vm -> List.of())
+                .nodeIdProvider(vm -> "")
+                .nodeSelectableProvider(vm -> false)
+                .helpTextProvider(vm -> "")
+                .nodeIconURLProvider(vm -> List.of())
+                .nodeKindProvider(object -> "")
+                .nodeLabelProvider(vm -> "")
+                .expandedNodeIdsProvider(vm -> List.of())
+                .iconURLProvider(vm -> List.of())
+                .build();
     }
 
     @Override

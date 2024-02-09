@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -378,6 +378,29 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
         }
 
         return this.multiSelectDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.TreeDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected TreeDescriptionItemProvider treeDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.TreeDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTreeDescriptionAdapter() {
+        if (this.treeDescriptionItemProvider == null) {
+            this.treeDescriptionItemProvider = new TreeDescriptionItemProvider(this);
+        }
+
+        return this.treeDescriptionItemProvider;
     }
 
     /**
@@ -1352,6 +1375,8 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.listDescriptionItemProvider.dispose();
         if (this.multiSelectDescriptionItemProvider != null)
             this.multiSelectDescriptionItemProvider.dispose();
+        if (this.treeDescriptionItemProvider != null)
+            this.treeDescriptionItemProvider.dispose();
         if (this.pieChartDescriptionItemProvider != null)
             this.pieChartDescriptionItemProvider.dispose();
         if (this.radioDescriptionItemProvider != null)

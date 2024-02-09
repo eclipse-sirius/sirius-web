@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,7 @@ import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
+import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.representations.Failure;
@@ -698,6 +699,63 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .build());
     }
 
+    @Override
+    public Optional<AbstractControlDescription> caseTreeDescription(org.eclipse.sirius.components.view.form.TreeDescription treeDescription) {
+        String descriptionId = this.getDescriptionId(treeDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(treeDescription.getLabelExpression());
+        StringValueProvider itemLabelProvider = this.getStringValueProvider(treeDescription.getTreeItemLabelExpression());
+        Function<VariableManager, String> nodeIdProvider = this::getTreeItemId;
+        Function<VariableManager, String> itemKindProvider = this::getTreeItemKind;
+        Function<VariableManager, List<String>> nodeIconURLProvider = this.getTreeValuesProvider(treeDescription.getTreeItemBeginIconExpression());
+        Function<VariableManager, List<? extends Object>> childrenProvider = this.getMultiValueProvider(treeDescription.getChildExpression());
+        Function<VariableManager, Boolean> nodeSelectableProvider = this.getBooleanValueProvider(treeDescription.getIsTreeItemSelectableExpression());
+
+        //isReadOnlyProvider is true by default in org.eclipse.sirius.components.forms.description.Builder
+        var builder = TreeDescription.newTreeDescription(descriptionId)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .idProvider(idProvider)
+                .labelProvider(labelProvider)
+                .iconURLProvider(vm -> List.of())   // This is the icon of the name of the widget, not supported currently
+                .childrenProvider(childrenProvider)
+                .nodeIdProvider(nodeIdProvider)
+                .nodeLabelProvider(itemLabelProvider)
+                .nodeKindProvider(itemKindProvider)
+                .nodeIconURLProvider(nodeIconURLProvider)
+                .nodeSelectableProvider(nodeSelectableProvider)
+                .expandedNodeIdsProvider(vm -> List.of())
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "");
+        if (treeDescription.getHelpExpression() != null && !treeDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(treeDescription.getHelpExpression()));
+        }
+
+        return Optional.of(builder.build());
+    }
+
+    private String getTreeItemId(VariableManager variableManager) {
+        Object treeItem = variableManager.getVariables().get(VariableManager.SELF);
+        return this.objectService.getId(treeItem);
+    }
+
+    private Function<VariableManager, List<String>> getTreeValuesProvider(String valueExpression) {
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
+        return variableManager -> {
+            List<String> values = new ArrayList<>();
+            if (!safeValueExpression.isBlank()) {
+                Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression).asObjects();
+                if (optionalResult.isPresent()) {
+                    values = optionalResult.get().stream().filter(String.class::isInstance).map(String.class::cast).toList();
+                }
+            }
+            return values;
+        };
+    }
+    private String getTreeItemKind(VariableManager variableManager) {
+        Object candidate = variableManager.getVariables().get(VariableManager.SELF);
+        return this.objectService.getKind(candidate);
+    }
     @Override
     public Optional<AbstractControlDescription> caseWidgetDescription(WidgetDescription widgetDescription) {
         return this.customWidgetConverters.doSwitch(widgetDescription).map(AbstractControlDescription.class::cast);
