@@ -52,4 +52,13 @@ export class ExtensionRegistry {
   public getData<P>(extensionPoint: DataExtensionPoint<P>): DataExtension<P> | null {
     return this.data[extensionPoint.identifier] ?? null;
   }
+
+  public addAll(extensionRegistry: ExtensionRegistry): void {
+    Object.entries(extensionRegistry.components).forEach((entry) => {
+      this.components[entry[0]] = entry[1];
+    });
+    Object.entries(extensionRegistry.data).forEach((entry) => {
+      this.data[entry[0]] = entry[1];
+    });
+  }
 }

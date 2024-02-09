@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,8 +109,8 @@ export const Site = ({ editingContextId, readOnly, side, expanded, toggleExpansi
   const viewSelector = (
     <div className={side === 'left' ? classes.viewSelectorLeft : classes.viewSelectorRight}>
       {contributions.map((contribution, index) => {
-        const title = contribution.props.title;
-        const icon = contribution.props.icon;
+        const { title, icon } = contribution;
+
         let iconClassName = side === 'left' ? classes.viewSelectorIconLeft : classes.viewSelectorIconRight;
         if (index === selectedViewIndex) {
           iconClassName =
@@ -143,7 +143,7 @@ export const Site = ({ editingContextId, readOnly, side, expanded, toggleExpansi
   let selectedView: JSX.Element | null = null;
   const contribution = contributions[selectedViewIndex];
   if (isExpanded && contribution) {
-    const { title, icon, component: Component } = contribution.props;
+    const { title, icon, component: Component } = contribution;
     selectedView = (
       <div className={classes.view}>
         <div className={classes.viewHeader}>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, expect, test } from 'vitest';
 import { theme } from '../../theme';
 import { Site } from '../Site';
-import { WorkbenchViewContribution } from '../WorkbenchViewContribution';
+import { WorkbenchViewContribution } from '../Workbench.types';
 
 afterEach(() => cleanup());
 
@@ -60,10 +60,10 @@ test('should render an empty site with no selector or view', () => {
 });
 
 test('should initially display the first view', () => {
-  const contributions = [
-    <WorkbenchViewContribution title="First" side="left" icon={<div></div>} component={MockView1} />,
-    <WorkbenchViewContribution title="Second" side="left" icon={<div></div>} component={MockView2} />,
-    <WorkbenchViewContribution title="Third" side="left" icon={<div></div>} component={MockView3} />,
+  const contributions: WorkbenchViewContribution[] = [
+    { title: 'First', side: 'left', icon: <div></div>, component: MockView1 },
+    { title: 'Second', side: 'left', icon: <div></div>, component: MockView2 },
+    { title: 'Third', side: 'left', icon: <div></div>, component: MockView3 },
   ];
   render(
     <ThemeProvider theme={theme}>
@@ -87,10 +87,10 @@ test('should initially display the first view', () => {
 });
 
 test('should display a specific view when selected from its icon', () => {
-  const contributions = [
-    <WorkbenchViewContribution title="First" side="left" icon={<div></div>} component={MockView1} />,
-    <WorkbenchViewContribution title="Second" side="left" icon={<div></div>} component={MockView2} />,
-    <WorkbenchViewContribution title="Third" side="left" icon={<div></div>} component={MockView3} />,
+  const contributions: WorkbenchViewContribution[] = [
+    { title: 'First', side: 'left', icon: <div></div>, component: MockView1 },
+    { title: 'Second', side: 'left', icon: <div></div>, component: MockView2 },
+    { title: 'Third', side: 'left', icon: <div></div>, component: MockView3 },
   ];
   render(
     <ThemeProvider theme={theme}>
@@ -122,10 +122,10 @@ test('should display a specific view when selected from its icon', () => {
 });
 
 test('should highlight the icon of the selected view', () => {
-  const contributions = [
-    <WorkbenchViewContribution title="First" side="left" icon={<div></div>} component={MockView1} />,
-    <WorkbenchViewContribution title="Second" side="left" icon={<div></div>} component={MockView2} />,
-    <WorkbenchViewContribution title="Third" side="left" icon={<div></div>} component={MockView3} />,
+  const contributions: WorkbenchViewContribution[] = [
+    { title: 'First', side: 'left', icon: <div></div>, component: MockView1 },
+    { title: 'Second', side: 'left', icon: <div></div>, component: MockView2 },
+    { title: 'Third', side: 'left', icon: <div></div>, component: MockView3 },
   ];
   render(
     <ThemeProvider theme={theme}>
@@ -162,9 +162,9 @@ test('should highlight the icon of the selected view', () => {
 });
 
 test("should toggle state when clicking on the selected view's icon (if expanded)", () => {
-  const contributions = [
-    <WorkbenchViewContribution title="First" side="left" icon={<div></div>} component={MockView1} />,
-    <WorkbenchViewContribution title="Second" side="left" icon={<div></div>} component={MockView2} />,
+  const contributions: WorkbenchViewContribution[] = [
+    { title: 'First', side: 'left', icon: <div></div>, component: MockView1 },
+    { title: 'Second', side: 'left', icon: <div></div>, component: MockView2 },
   ];
 
   let toggleCalled = false;
@@ -190,9 +190,9 @@ test("should toggle state when clicking on the selected view's icon (if expanded
 });
 
 test("should toggle state when clicking on the selected view's icon (if collapsed)", () => {
-  const contributions = [
-    <WorkbenchViewContribution title="First" side="left" icon={<div></div>} component={MockView1} />,
-    <WorkbenchViewContribution title="Second" side="left" icon={<div></div>} component={MockView2} />,
+  const contributions: WorkbenchViewContribution[] = [
+    { title: 'First', side: 'left', icon: <div></div>, component: MockView1 },
+    { title: 'Second', side: 'left', icon: <div></div>, component: MockView2 },
   ];
 
   let toggleCalled = false;
@@ -218,9 +218,9 @@ test("should toggle state when clicking on the selected view's icon (if collapse
 });
 
 test('should toggle state when closed but a different view is selected', () => {
-  const contributions = [
-    <WorkbenchViewContribution title="First" side="left" icon={<div></div>} component={MockView1} />,
-    <WorkbenchViewContribution title="Second" side="left" icon={<div></div>} component={MockView2} />,
+  const contributions: WorkbenchViewContribution[] = [
+    { title: 'First', side: 'left', icon: <div></div>, component: MockView1 },
+    { title: 'Second', side: 'left', icon: <div></div>, component: MockView2 },
   ];
 
   let toggleCalled = false;
@@ -249,9 +249,9 @@ test('should toggle state when closed but a different view is selected', () => {
 });
 
 test('should not toggle state when expanded and a different view is selected', () => {
-  const contributions = [
-    <WorkbenchViewContribution title="First" side="left" icon={<div></div>} component={MockView1} />,
-    <WorkbenchViewContribution title="Second" side="left" icon={<div></div>} component={MockView2} />,
+  const contributions: WorkbenchViewContribution[] = [
+    { title: 'First', side: 'left', icon: <div></div>, component: MockView1 },
+    { title: 'Second', side: 'left', icon: <div></div>, component: MockView2 },
   ];
 
   let toggleCalled = false;

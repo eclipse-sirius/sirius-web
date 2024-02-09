@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo and others.
+ * Copyright (c) 2021, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 export interface GQLEditingContextEventPayload {
   __typename: string;
@@ -34,7 +34,7 @@ export type Representation = {
 
 export type WorkbenchViewSide = 'left' | 'right';
 
-export interface WorkbenchViewContributionProps {
+export interface WorkbenchViewContribution {
   side: WorkbenchViewSide;
   title: string;
   icon: React.ReactElement;
@@ -51,15 +51,11 @@ export interface MainAreaComponentProps {
   readOnly: boolean;
 }
 
-export type MainAreaComponent = (props: MainAreaComponentProps) => JSX.Element | null;
-
 export type WorkbenchProps = {
   editingContextId: string;
   initialRepresentationSelected: Representation | null;
   onRepresentationSelected: (representation: Representation | null) => void;
   readOnly: boolean;
-  mainAreaComponent: MainAreaComponent;
-  children: ReactNode;
 };
 
 export type RepresentationComponentProps = {

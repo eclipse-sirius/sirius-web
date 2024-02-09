@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { WorkbenchViewContribution } from './Workbench.types';
+
 export interface PanelsProps {
   editingContextId: string;
   readOnly: boolean;
-  leftContributions: React.ReactElement[];
-  rightContributions: React.ReactElement[];
+  leftContributions: WorkbenchViewContribution[];
+  rightContributions: WorkbenchViewContribution[];
   mainArea: JSX.Element;
   leftPanelInitialSize: number;
   rightPanelInitialSize: number;
+}
+
+export interface PanelState {
+  isDragging: boolean;
+  initialPosition: number;
+  expanded: boolean;
+  resizablePanelSize: number;
 }

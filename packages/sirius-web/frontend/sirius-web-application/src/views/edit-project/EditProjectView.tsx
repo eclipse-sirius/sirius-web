@@ -17,7 +17,6 @@ import {
   SelectionContextProvider,
   Toast,
   Workbench,
-  WorkbenchViewContribution,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   DiagramPaletteToolContext,
@@ -25,9 +24,7 @@ import {
   DiagramPaletteToolContribution,
   NodeData,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
-  ExplorerView,
   GQLTreeItem,
   TreeItemContextMenuContext,
   TreeItemContextMenuContextValue,
@@ -36,21 +33,14 @@ import {
   TreeToolBarContextValue,
   TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
-import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import Filter from '@material-ui/icons/Filter';
-import LinkIcon from '@material-ui/icons/Link';
-import MenuIcon from '@material-ui/icons/Menu';
-import WarningIcon from '@material-ui/icons/Warning';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { OnboardArea } from '../../onboarding/OnboardArea';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
@@ -216,34 +206,8 @@ export const EditProjectView = () => {
               editingContextId={project.currentEditingContext.id}
               initialRepresentationSelected={representation}
               onRepresentationSelected={onRepresentationSelected}
-              mainAreaComponent={OnboardArea}
-              readOnly={false}>
-              <WorkbenchViewContribution
-                side="left"
-                title="Explorer"
-                icon={<AccountTreeIcon />}
-                component={ExplorerView}
-              />
-              <WorkbenchViewContribution
-                side="left"
-                title="Validation"
-                icon={<WarningIcon />}
-                component={ValidationView}
-              />
-              <WorkbenchViewContribution side="right" title="Details" icon={<MenuIcon />} component={DetailsView} />
-              <WorkbenchViewContribution
-                side="right"
-                title="Representations"
-                icon={<Filter />}
-                component={RepresentationsView}
-              />
-              <WorkbenchViewContribution
-                side="right"
-                title="Related Elements"
-                icon={<LinkIcon />}
-                component={RelatedElementsView}
-              />
-            </Workbench>
+              readOnly={false}
+            />
           </DiagramPaletteToolContext.Provider>
         </TreeToolBarContext.Provider>
       </TreeItemContextMenuContext.Provider>
