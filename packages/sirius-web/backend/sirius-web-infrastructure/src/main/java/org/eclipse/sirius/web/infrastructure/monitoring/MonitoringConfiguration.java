@@ -10,25 +10,23 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
+package org.eclipse.sirius.web.infrastructure.monitoring;
 
-import java.util.Optional;
-import java.util.UUID;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 /**
- * Used to retrieve projects.
+ * Configuration of the monitoring support for Sirius Web.
  *
- * @author sbegaudeau
+ * @author hmarchadour
  */
-public interface IProjectSearchService {
-
-    boolean existsById(UUID projectId);
-
-    Optional<Project> findById(UUID projectId);
-
-    Page<Project> findAll(Pageable pageable);
+@Configuration
+public class MonitoringConfiguration {
+    @Bean
+    public MeterRegistry meterRegistry() {
+        return new SimpleMeterRegistry();
+    }
 }

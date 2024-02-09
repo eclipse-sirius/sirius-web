@@ -10,25 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events;
 
-import java.util.Optional;
+import java.time.Instant;
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to retrieve projects.
+ * Event fired when the semantic data are created.
  *
  * @author sbegaudeau
  */
-public interface IProjectSearchService {
-
-    boolean existsById(UUID projectId);
-
-    Optional<Project> findById(UUID projectId);
-
-    Page<Project> findAll(Pageable pageable);
+public record SemanticDataCreatedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull SemanticData semanticData) implements ISemanticDataEvent {
 }

@@ -28,6 +28,12 @@
             <column name="name" type="TEXT">
                 <constraints nullable="false" />
             </column>
+            <column name="created_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
         </createTable>
         <sql>
             ALTER TABLE project ADD CONSTRAINT project_name_length CHECK (char_length(name) &gt; 0 AND char_length(name) &lt;= 1024)
@@ -46,6 +52,76 @@
         <sql>
             ALTER TABLE nature ADD CONSTRAINT nature_name_length CHECK (char_length(name) &gt; 0 AND char_length(name) &lt;= 1024)
         </sql>
+
+        <createTable tableName="representation_data">
+            <column name="id"  type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="project_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_object_id" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description_id" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="label" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kind" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="representation_data" baseColumnNames="project_id" constraintName="fk_representation_data_project_id" referencedTableName="project" referencedColumnNames="id" onDelete="CASCADE"/>
+        
+        
+        <createTable tableName="semantic_data">
+            <column name="id"  type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="project_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="semantic_data" baseColumnNames="project_id" constraintName="fk_semantic_data_project_id" referencedTableName="project" referencedColumnNames="id" onDelete="CASCADE"/>
+
+        <createTable tableName="document">
+            <column name="id"  type="UUID" defaultValueComputed="gen_random_uuid()">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="semantic_data_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="TEXT">
+                <constraints nullable="false" />
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modified_on" type="TIMESTAMPTZ">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="document" baseColumnNames="semantic_data_id" constraintName="fk_document_semantic_data_id" referencedTableName="semantic_data" referencedColumnNames="id" onDelete="CASCADE"/>
 
     </changeSet>
 </databaseChangeLog>
