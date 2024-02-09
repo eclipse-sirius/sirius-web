@@ -84,6 +84,7 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - [tree] Avoid sending treePath query if the selection does not actually change
 - [core] Ignore empty changes of kind ChangeKind.NOTHING
 - https://github.com/eclipse-sirius/sirius-web/issues/3020[#3020] [sirius-web] Improve the project browser to make the code more robust
+- https://github.com/eclipse-sirius/sirius-web/issues/3021[#3021] [sirius-web] Leverage the new Spring Boot APIs to create the sirius-web-starter autoconfiguration
 
 
 == v2024.1.0
