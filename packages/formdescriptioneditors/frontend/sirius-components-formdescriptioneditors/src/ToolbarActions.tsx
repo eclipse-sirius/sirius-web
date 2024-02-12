@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import {
   GQLMoveToolbarActionMutationVariables,
   GQLMoveToolbarActionPayload,
 } from './FormDescriptionEditorEventFragment.types';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 import { ToolbarActionsProps } from './ToolbarActions.types';
 import { ToolbarActionWidget } from './ToolbarActionWidget';
 
@@ -68,13 +69,9 @@ const isErrorPayload = (
   payload: GQLAddToolbarActionPayload | GQLMoveToolbarActionPayload
 ): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
-export const ToolbarActions = ({
-  editingContextId,
-  representationId,
-  formDescriptionEditor,
-  toolbarActions,
-  containerId,
-}: ToolbarActionsProps) => {
+export const ToolbarActions = ({ toolbarActions, containerId }: ToolbarActionsProps) => {
+  const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
+  const noop = () => {};
   const classes = useToolbarActionsStyles();
 
   const [message, setMessage] = useState<string | null>(null);
@@ -174,9 +171,6 @@ export const ToolbarActions = ({
         <div className={classes.toolbarAction} key={toolbarAction.id}>
           <ToolbarActionWidget
             data-testid={toolbarAction.id}
-            editingContextId={editingContextId}
-            representationId={representationId}
-            formDescriptionEditor={formDescriptionEditor}
             toolbarActions={toolbarActions}
             containerId={containerId}
             toolbarAction={toolbarAction}
@@ -186,14 +180,14 @@ export const ToolbarActions = ({
       <div
         data-testid={`ToolbarActions-DropArea-${containerId}`}
         className={classes.toolbarActionDropArea}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        onDragEnter={readOnly ? noop : handleDragEnter}
+        onDragOver={readOnly ? noop : handleDragOver}
+        onDragLeave={readOnly ? noop : handleDragLeave}
+        onDrop={readOnly ? noop : handleDrop}
       />
       <div className={classes.newToolbarAction}>
         <Tooltip title={'Add new Toolbar Action'} arrow data-testid={`ToolbarActions-NewAction-${containerId}`}>
-          <IconButton size="small" aria-label="add" color="primary" onClick={handleAddToolbarAction}>
+          <IconButton size="small" aria-label="add" color="primary" onClick={readOnly ? noop : handleAddToolbarAction}>
             <AddIcon />
           </IconButton>
         </Tooltip>

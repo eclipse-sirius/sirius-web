@@ -42,6 +42,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { SplitButtonWidgetState } from './SplitButtonWidget.type';
 import { SplitButtonWidgetProps } from './WidgetEntry.types';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const isErrorPayload = (payload: GQLAddWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -108,7 +109,9 @@ const useStyles = makeStyles<Theme>((theme) => ({
   },
 }));
 
-export const SplitButtonWidget = ({ widget, editingContextId, representationId }: SplitButtonWidgetProps) => {
+export const SplitButtonWidget = ({ widget }: SplitButtonWidgetProps) => {
+  const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
+  const noop = () => {};
   const initialState: SplitButtonWidgetState = {
     selected: false,
     open: false,
@@ -360,10 +363,10 @@ export const SplitButtonWidget = ({ widget, editingContextId, representationId }
       <div
         data-testid={`${widget.__typename}-Widgets-DropArea-${widget.id}`}
         className={classes.bottomDropArea}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}>
+        onDragEnter={readOnly ? noop : handleDragEnter}
+        onDragOver={readOnly ? noop : handleDragOver}
+        onDragLeave={readOnly ? noop : handleDragLeave}
+        onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a button widget here'}</Typography>
       </div>
       <Toast

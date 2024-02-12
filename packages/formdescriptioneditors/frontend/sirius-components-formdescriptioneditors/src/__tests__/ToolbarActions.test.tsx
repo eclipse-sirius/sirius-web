@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Selection, SelectionContext } from '@eclipse-sirius/sirius-components-core';
 import { GQLGroup, GQLPage, GQLToolbarAction } from '@eclipse-sirius/sirius-components-forms';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import {
   addToolbarActionMutation,
@@ -31,6 +32,7 @@ import {
   GQLSuccessPayload,
 } from '../FormDescriptionEditorEventFragment.types';
 import { ToolbarActions } from '../ToolbarActions';
+import { FormDescriptionEditorContext } from '../hooks/FormDescriptionEditorContext';
 import { DataTransfer } from './DataTransfer';
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
@@ -113,6 +115,24 @@ const emptySelection: Selection = {
 
 const emptySetSelection = (_: Selection) => {};
 
+const TestContextProvider = ({ mocks, formDescriptionEditor, children }) => {
+  return (
+    <MockedProvider mocks={mocks}>
+      <FormDescriptionEditorContext.Provider
+        value={{
+          editingContextId: 'editingContextId',
+          representationId: 'formDescriptionEditorId',
+          formDescriptionEditor,
+          readOnly: false,
+        }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+          {children}
+        </SelectionContext.Provider>
+      </FormDescriptionEditorContext.Provider>
+    </MockedProvider>
+  );
+};
+
 test('add ToolbarAction by clicking on the Add Toolbar Action button', async () => {
   const toolbarAction: GQLToolbarAction = {
     id: 'ToolbarAction1',
@@ -169,18 +189,9 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
   const mocks: MockedResponse<Record<string, any>>[] = [addToolbarActionSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <ToolbarActions
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          toolbarActions={group.toolbarActions}
-          containerId={group.id}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <ToolbarActions toolbarActions={group.toolbarActions} containerId={group.id} />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId(`ToolbarActions-NewAction-${group.id}`);
@@ -268,18 +279,9 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [deleteToolbarActionSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <ToolbarActions
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          toolbarActions={group.toolbarActions}
-          containerId={group.id}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <ToolbarActions toolbarActions={group.toolbarActions} containerId={group.id} />
+    </TestContextProvider>
   );
 
   const toolbarActionElt: HTMLElement = screen.getByTestId('ToolbarAction1');
@@ -369,18 +371,9 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [moveToolbarActionSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <ToolbarActions
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          toolbarActions={group.toolbarActions}
-          containerId={group.id}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <ToolbarActions toolbarActions={group.toolbarActions} containerId={group.id} />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId('ToolbarAction-DropArea-ToolbarAction1');
@@ -472,18 +465,9 @@ test('move the existing ToolbarAction from/into the drop area located at the end
   const mocks: MockedResponse<Record<string, any>>[] = [moveToolbarActionAtTheEndSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <ToolbarActions
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          toolbarActions={group.toolbarActions}
-          containerId={group.id}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <ToolbarActions toolbarActions={group.toolbarActions} containerId={group.id} />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId(`ToolbarActions-DropArea-${group.id}`);
@@ -548,18 +532,9 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button for a page'
   const mocks: MockedResponse<Record<string, any>>[] = [addToolbarActionSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider
-        value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
-        <ToolbarActions
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          toolbarActions={page.toolbarActions}
-          containerId={page.id}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <ToolbarActions toolbarActions={page.toolbarActions} containerId={page.id} />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId(`ToolbarActions-NewAction-${page.id}`);

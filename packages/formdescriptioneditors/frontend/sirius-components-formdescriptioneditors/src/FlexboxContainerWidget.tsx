@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import {
 import { WidgetEntry } from './WidgetEntry';
 import { FlexboxContainerWidgetProps } from './WidgetEntry.types';
 import { isKind } from './WidgetOperations';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const isErrorPayload = (payload: GQLAddWidgetPayload | GQLMoveWidgetPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -85,13 +86,9 @@ const useStyles = makeStyles<Theme, FlexboxContainerWidgetStyleProps>((theme) =>
   },
 }));
 
-export const FlexboxContainerWidget = ({
-  editingContextId,
-  representationId,
-  formDescriptionEditor,
-  page,
-  widget,
-}: FlexboxContainerWidgetProps) => {
+export const FlexboxContainerWidget = ({ page, widget }: FlexboxContainerWidgetProps) => {
+  const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
+  const noop = () => {};
   const classes = useStyles({
     flexDirection: widget.flexDirection,
     flexWrap: widget.flexWrap,
@@ -220,9 +217,6 @@ export const FlexboxContainerWidget = ({
     return (
       <WidgetEntry
         key={childWidget.id}
-        editingContextId={editingContextId}
-        representationId={representationId}
-        formDescriptionEditor={formDescriptionEditor}
         page={page}
         container={widget}
         widget={childWidget}
@@ -256,10 +250,10 @@ export const FlexboxContainerWidget = ({
       <div
         data-testid={`${widget.__typename}-Widgets-DropArea-${widget.id}`}
         className={classes.bottomDropArea}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}>
+        onDragEnter={readOnly ? noop : handleDragEnter}
+        onDragOver={readOnly ? noop : handleDragOver}
+        onDragLeave={readOnly ? noop : handleDragLeave}
+        onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a widget here'}</Typography>
       </div>
       <Toast

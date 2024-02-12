@@ -33,12 +33,8 @@ import {
   GQLWidget,
 } from '@eclipse-sirius/sirius-components-forms';
 import React from 'react';
-import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 
 export interface WidgetEntryProps {
-  editingContextId: string;
-  representationId: string;
-  formDescriptionEditor: GQLFormDescriptionEditor;
   page: GQLPage;
   container: GQLGroup | GQLFlexboxContainer;
   widget: GQLWidget;
@@ -61,9 +57,6 @@ export interface SplitButtonWidgetProps extends WidgetProps<GQLSplitButton> {
 }
 
 export interface FlexboxContainerWidgetProps {
-  editingContextId: string;
-  representationId: string;
-  formDescriptionEditor: GQLFormDescriptionEditor;
   page: GQLPage;
   container: GQLGroup | GQLFlexboxContainer;
   widget: GQLFlexboxContainer;

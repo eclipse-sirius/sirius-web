@@ -10,13 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLPage } from '@eclipse-sirius/sirius-components-forms/src';
 
-export interface PageProps {
-  page: GQLPage;
-}
+import { GQLFormDescriptionEditor } from '../FormDescriptionEditorEventFragment.types';
 
-export interface PageState {
-  message: string | null;
-  selected: boolean;
-}
+export type FormDescriptionEditorContextValue = {
+  editingContextId: string;
+  representationId: string;
+  formDescriptionEditor: GQLFormDescriptionEditor;
+  readOnly: boolean;
+};
+
+export type FormDescriptionEditorContextProviderProps = {
+  editingContextId: string;
+  representationId: string;
+  formDescriptionEditor: GQLFormDescriptionEditor;
+  readOnly: boolean;
+  children: React.ReactNode;
+};

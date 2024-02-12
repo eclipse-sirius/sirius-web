@@ -74,6 +74,7 @@ import { TextfieldWidget } from './TextfieldWidget';
 import { TreeWidget } from './TreeWidget';
 import { WidgetEntryProps, WidgetEntryState, WidgetEntryStyleProps } from './WidgetEntry.types';
 import { isFlexboxContainer, isGroup, isKind } from './WidgetOperations';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const useWidgetEntryStyles = makeStyles<Theme, WidgetEntryStyleProps>((theme) => ({
   widget: {
@@ -122,16 +123,9 @@ const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteWidgetPayload | GQLMoveWidgetPayload
 ): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
-export const WidgetEntry = ({
-  editingContextId,
-  representationId,
-  formDescriptionEditor,
-  page,
-  container,
-  widget,
-  flexDirection,
-  flexGrow,
-}: WidgetEntryProps) => {
+export const WidgetEntry = ({ page, container, widget, flexDirection, flexGrow }: WidgetEntryProps) => {
+  const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
+  const noop = () => {};
   const classes = useWidgetEntryStyles({ flexDirection, flexGrow, kind: widget.__typename });
 
   const initialState: WidgetEntryState = { message: null };
@@ -315,7 +309,13 @@ export const WidgetEntry = ({
 
   let widgetElement: JSX.Element | null = null;
   if (widget.__typename === 'Button') {
-    widgetElement = <ButtonWidget data-testid={widget.id} widget={widget as GQLButton} onDropBefore={onDropBefore} />;
+    widgetElement = (
+      <ButtonWidget
+        data-testid={widget.id}
+        widget={widget as GQLButton}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
+    );
   } else if (widget.__typename === 'SplitButton') {
     widgetElement = (
       <SplitButtonWidget
@@ -323,20 +323,21 @@ export const WidgetEntry = ({
         editingContextId={editingContextId}
         representationId={representationId}
         widget={widget as GQLSplitButton}
-        onDropBefore={onDropBefore}
+        onDropBefore={readOnly ? noop : onDropBefore}
       />
     );
   } else if (widget.__typename === 'Checkbox') {
     widgetElement = (
-      <CheckboxWidget data-testid={widget.id} widget={widget as GQLCheckbox} onDropBefore={onDropBefore} />
+      <CheckboxWidget
+        data-testid={widget.id}
+        widget={widget as GQLCheckbox}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
     );
   } else if (widget.__typename === 'FlexboxContainer') {
     widgetElement = (
       <FlexboxContainerWidget
         data-testid={widget.id}
-        editingContextId={editingContextId}
-        representationId={representationId}
-        formDescriptionEditor={formDescriptionEditor}
         page={page}
         container={container}
         widget={widget as GQLFlexboxContainer}
@@ -351,15 +352,7 @@ export const WidgetEntry = ({
       children: (widget as GQLContainer).children,
     };
     widgetElement = (
-      <FlexboxContainerWidget
-        data-testid={widget.id}
-        editingContextId={editingContextId}
-        representationId={representationId}
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        container={container}
-        widget={ifPreview}
-      />
+      <FlexboxContainerWidget data-testid={widget.id} page={page} container={container} widget={ifPreview} />
     );
   } else if (widget.__typename === 'FormDescriptionEditorFor') {
     const forPreview: GQLFlexboxContainer = {
@@ -370,45 +363,71 @@ export const WidgetEntry = ({
       children: (widget as GQLContainer).children,
     };
     widgetElement = (
-      <FlexboxContainerWidget
-        data-testid={widget.id}
-        editingContextId={editingContextId}
-        representationId={representationId}
-        formDescriptionEditor={formDescriptionEditor}
-        page={page}
-        container={container}
-        widget={forPreview}
-      />
+      <FlexboxContainerWidget data-testid={widget.id} page={page} container={container} widget={forPreview} />
     );
   } else if (widget.__typename === 'Image') {
-    widgetElement = <ImageWidget data-testid={widget.id} widget={widget as GQLImage} onDropBefore={onDropBefore} />;
+    widgetElement = (
+      <ImageWidget data-testid={widget.id} widget={widget as GQLImage} onDropBefore={readOnly ? noop : onDropBefore} />
+    );
   } else if (widget.__typename === 'LabelWidget') {
     widgetElement = (
-      <LabelWidget data-testid={widget.id} widget={widget as GQLLabelWidget} onDropBefore={onDropBefore} />
+      <LabelWidget
+        data-testid={widget.id}
+        widget={widget as GQLLabelWidget}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
     );
   } else if (widget.__typename === 'Link') {
-    widgetElement = <LinkWidget data-testid={widget.id} widget={widget as GQLLink} onDropBefore={onDropBefore} />;
+    widgetElement = (
+      <LinkWidget data-testid={widget.id} widget={widget as GQLLink} onDropBefore={readOnly ? noop : onDropBefore} />
+    );
   } else if (widget.__typename === 'List') {
-    widgetElement = <ListWidget data-testid={widget.id} widget={widget as GQLList} onDropBefore={onDropBefore} />;
+    widgetElement = (
+      <ListWidget data-testid={widget.id} widget={widget as GQLList} onDropBefore={readOnly ? noop : onDropBefore} />
+    );
   } else if (widget.__typename === 'MultiSelect') {
     widgetElement = (
-      <MultiSelectWidget data-testid={widget.id} widget={widget as GQLMultiSelect} onDropBefore={onDropBefore} />
+      <MultiSelectWidget
+        data-testid={widget.id}
+        widget={widget as GQLMultiSelect}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
     );
   } else if (widget.__typename === 'Radio') {
-    widgetElement = <RadioWidget data-testid={widget.id} widget={widget as GQLRadio} onDropBefore={onDropBefore} />;
+    widgetElement = (
+      <RadioWidget data-testid={widget.id} widget={widget as GQLRadio} onDropBefore={readOnly ? noop : onDropBefore} />
+    );
   } else if (widget.__typename === 'RichText') {
     widgetElement = (
-      <RichTextWidget data-testid={widget.id} widget={widget as GQLRichText} onDropBefore={onDropBefore} />
+      <RichTextWidget
+        data-testid={widget.id}
+        widget={widget as GQLRichText}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
     );
   } else if (widget.__typename === 'Select') {
-    widgetElement = <SelectWidget data-testid={widget.id} widget={widget as GQLSelect} onDropBefore={onDropBefore} />;
+    widgetElement = (
+      <SelectWidget
+        data-testid={widget.id}
+        widget={widget as GQLSelect}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
+    );
   } else if (widget.__typename === 'Textarea') {
     widgetElement = (
-      <TextAreaWidget data-testid={widget.id} widget={widget as GQLTextarea} onDropBefore={onDropBefore} />
+      <TextAreaWidget
+        data-testid={widget.id}
+        widget={widget as GQLTextarea}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
     );
   } else if (widget.__typename === 'Textfield') {
     widgetElement = (
-      <TextfieldWidget data-testid={widget.id} widget={widget as GQLTextfield} onDropBefore={onDropBefore} />
+      <TextfieldWidget
+        data-testid={widget.id}
+        widget={widget as GQLTextfield}
+        onDropBefore={readOnly ? noop : onDropBefore}
+      />
     );
   } else if (widget.__typename === 'TreeWidget') {
     widgetElement = <TreeWidget data-testid={widget.id} widget={widget as GQLTree} onDropBefore={onDropBefore} />;
@@ -416,19 +435,31 @@ export const WidgetEntry = ({
     const chartWidget: GQLChartWidget = widget as GQLChartWidget;
     if (chartWidget.chart.metadata.kind === 'BarChart') {
       widgetElement = (
-        <BarChartWidget data-testid={widget.id} widget={widget as GQLChartWidget} onDropBefore={onDropBefore} />
+        <BarChartWidget
+          data-testid={widget.id}
+          widget={widget as GQLChartWidget}
+          onDropBefore={readOnly ? noop : onDropBefore}
+        />
       );
     } else if (chartWidget.chart.metadata.kind === 'PieChart') {
       widgetElement = (
-        <PieChartWidget data-testid={widget.id} widget={widget as GQLChartWidget} onDropBefore={onDropBefore} />
+        <PieChartWidget
+          data-testid={widget.id}
+          widget={widget as GQLChartWidget}
+          onDropBefore={readOnly ? noop : onDropBefore}
+        />
       );
     }
   } else {
     const PreviewComponent = propertySectionsRegistry.getPreviewComponent(widget);
     if (PreviewComponent) {
-      widgetElement = <PreviewComponent data-testid={widget.id} widget={widget} onDropBefore={onDropBefore} />;
+      widgetElement = (
+        <PreviewComponent data-testid={widget.id} widget={widget} onDropBefore={readOnly ? noop : onDropBefore} />
+      );
     } else if (propertySectionsRegistry.getComponent(widget)) {
-      widgetElement = <CustomWidget data-testid={widget.id} widget={widget} onDropBefore={onDropBefore} />;
+      widgetElement = (
+        <CustomWidget data-testid={widget.id} widget={widget} onDropBefore={readOnly ? noop : onDropBefore} />
+      );
     } else {
       console.error(`Unsupported widget type ${widget.__typename}`);
     }
@@ -439,19 +470,19 @@ export const WidgetEntry = ({
       <div
         data-testid={`WidgetEntry-DropArea-${widget.id}`}
         className={classes.placeholder}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        onDragEnter={readOnly ? noop : handleDragEnter}
+        onDragOver={readOnly ? noop : handleDragOver}
+        onDragLeave={readOnly ? noop : handleDragLeave}
+        onDrop={readOnly ? noop : handleDrop}
       />
       <WidgetTooltip title={widget.__typename} placement="top-end">
         <div
           className={classes.widgetElement}
-          onClick={handleClick}
+          onClick={readOnly ? noop : handleClick}
           tabIndex={0}
-          onKeyDown={handleDelete}
-          draggable="true"
-          onDragStart={handleDragStart}>
+          onKeyDown={readOnly ? noop : handleDelete}
+          draggable={!readOnly}
+          onDragStart={readOnly ? noop : handleDragStart}>
           {widgetElement}
         </div>
       </WidgetTooltip>

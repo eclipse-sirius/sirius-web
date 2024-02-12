@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLGroup, GQLPage } from '@eclipse-sirius/sirius-components-forms';
-import { GQLFormDescriptionEditor } from './FormDescriptionEditorEventFragment.types';
 
 export interface GroupProps {
-  editingContextId: string;
-  representationId: string;
-  formDescriptionEditor: GQLFormDescriptionEditor;
   page: GQLPage;
   group: GQLGroup;
 }

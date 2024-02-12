@@ -17,20 +17,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import ImageIcon from '@material-ui/icons/Image';
-import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
-import LinkIcon from '@material-ui/icons/Link';
-import PieChartIcon from '@material-ui/icons/PieChart';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import TextFormatIcon from '@material-ui/icons/TextFormat';
 import ViewAgendaIcon from '@material-ui/icons/ViewAgenda';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import WebIcon from '@material-ui/icons/Web';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
@@ -40,6 +27,7 @@ import {
   GQLFormDescriptionEditorEventSubscription,
   GQLFormDescriptionEditorEventVariables,
 } from './FormDescriptionEditorEventFragment.types';
+import { WidgetDescriptor } from './FormDescriptionEditorRepresentation.types';
 import {
   FormDescriptionEditorRepresentationContext,
   FormDescriptionEditorRepresentationEvent,
@@ -51,7 +39,8 @@ import {
   formDescriptionEditorRepresentationMachine,
 } from './FormDescriptionEditorRepresentationMachine';
 import { PageList } from './PageList';
-import { Button } from './icons/Button';
+import { coreWidgets } from './coreWidgets';
+import { FormDescriptionEditorContextProvider } from './hooks/FormDescriptionEditorContext';
 import { ForIcon } from './icons/ForIcon';
 import { IfIcon } from './icons/IfIcon';
 
@@ -69,6 +58,9 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
     padding: '4px 8px 4px 8px',
     display: 'flex',
     flexDirection: 'row',
+  },
+  disabledOverlay: {
+    opacity: 0.5,
   },
   main: {
     display: 'flex',
@@ -144,8 +136,10 @@ const useFormDescriptionEditorStyles = makeStyles((theme) => ({
 export const FormDescriptionEditorRepresentation = ({
   editingContextId,
   representationId,
+  readOnly,
 }: RepresentationComponentProps) => {
   const classes = useFormDescriptionEditorStyles();
+  const noop = () => {};
 
   const [{ value, context }, dispatch] = useMachine<
     FormDescriptionEditorRepresentationContext,
@@ -154,13 +148,19 @@ export const FormDescriptionEditorRepresentation = ({
   const { toast, formDescriptionEditorRepresentation } = value as SchemaValue;
   const { id, formDescriptionEditor, subscribers, message } = context;
 
+  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
+  const allWidgets: WidgetDescriptor[] = [...coreWidgets];
+  propertySectionsRegistry.getWidgetContributions().forEach((widgetContribution) => {
+    allWidgets.push({ name: widgetContribution.name, label: widgetContribution.name, icon: widgetContribution.icon });
+  });
+  allWidgets.sort((a, b) => (a.label || a.name).localeCompare(b.label || b.name));
+
   const input: GQLFormDescriptionEditorEventInput = {
     id,
     editingContextId,
     formDescriptionEditorId: representationId,
   };
   const variables: GQLFormDescriptionEditorEventVariables = { input };
-  const { propertySectionsRegistry } = useContext<PropertySectionContextValue>(PropertySectionContext);
   const { error } = useSubscription<GQLFormDescriptionEditorEventSubscription, GQLFormDescriptionEditorEventVariables>(
     gql(formDescriptionEditorEventSubscription(propertySectionsRegistry.getWidgetContributions())),
     {
@@ -223,9 +223,9 @@ export const FormDescriptionEditorRepresentation = ({
           <div
             id="Page"
             data-testid="FormDescriptionEditor-Page"
-            draggable="true"
+            draggable={!readOnly}
             className={classes.widgetKind}
-            onDragStart={handleDragStartPage}>
+            onDragStart={readOnly ? noop : handleDragStartPage}>
             <WebIcon />
             <Typography variant="caption" gutterBottom>
               Page
@@ -235,9 +235,9 @@ export const FormDescriptionEditorRepresentation = ({
           <div
             id="Group"
             data-testid="FormDescriptionEditor-Group"
-            draggable="true"
+            draggable={!readOnly}
             className={classes.widgetKind}
-            onDragStart={handleDragStartGroup}>
+            onDragStart={readOnly ? noop : handleDragStartGroup}>
             <ViewAgendaIcon />
             <Typography variant="caption" gutterBottom>
               Group
@@ -247,9 +247,9 @@ export const FormDescriptionEditorRepresentation = ({
           <div
             id="FormElementFor"
             data-testid="FormDescriptionEditor-FormElementFor"
-            draggable="true"
+            draggable={!readOnly}
             className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
+            onDragStart={readOnly ? noop : handleDragStartWidget}>
             <ForIcon />
             <Typography variant="caption" gutterBottom>
               For
@@ -258,215 +258,28 @@ export const FormDescriptionEditorRepresentation = ({
           <div
             id="FormElementIf"
             data-testid="FormDescriptionEditor-FormElementIf"
-            draggable="true"
+            draggable={!readOnly}
             className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
+            onDragStart={readOnly ? noop : handleDragStartWidget}>
             <IfIcon />
             <Typography variant="caption" gutterBottom>
               If
             </Typography>
           </div>
           <Typography gutterBottom>Widgets</Typography>
-          <div
-            id="BarChart"
-            data-testid="FormDescriptionEditor-BarChart"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <BarChartIcon />
-            <Typography variant="caption" gutterBottom>
-              BarChart
-            </Typography>
-          </div>
-          <div
-            id="Button"
-            data-testid="FormDescriptionEditor-Button"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <Button width={'24px'} height={'24px'} color={'secondary'} />
-            <Typography variant="caption" gutterBottom>
-              Button
-            </Typography>
-          </div>
-          <div
-            id="Checkbox"
-            data-testid="FormDescriptionEditor-Checkbox"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <CheckBoxIcon />
-            <Typography variant="caption" gutterBottom>
-              Checkbox
-            </Typography>
-          </div>
-          <div
-            id="FlexboxContainer"
-            data-testid="FormDescriptionEditor-FlexboxContainer"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <ViewColumnIcon width={'24px'} height={'24px'} color={'secondary'} />
-            <Typography variant="caption" gutterBottom align="center">
-              Flexbox Container
-            </Typography>
-          </div>
-          <div
-            id="Image"
-            data-testid="FormDescriptionEditor-Image"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <ImageIcon width={'24px'} height={'24px'} color={'secondary'} />
-            <Typography variant="caption" gutterBottom>
-              Image
-            </Typography>
-          </div>
-          <div
-            id="Label"
-            data-testid="FormDescriptionEditor-Label"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <LabelOutlinedIcon />
-            <Typography variant="caption" gutterBottom>
-              Label
-            </Typography>
-          </div>
-          <div
-            id="Link"
-            data-testid="FormDescriptionEditor-Link"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <LinkIcon />
-            <Typography variant="caption" gutterBottom>
-              Link
-            </Typography>
-          </div>
-          <div
-            id="List"
-            data-testid="FormDescriptionEditor-List"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <FormatListBulletedIcon />
-            <Typography variant="caption" gutterBottom>
-              List
-            </Typography>
-          </div>
-          <div
-            id="MultiSelect"
-            data-testid="FormDescriptionEditor-MultiSelect"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <ArrowDropDownCircleIcon />
-            <Typography variant="caption" gutterBottom>
-              MultiSelect
-            </Typography>
-          </div>
-          <div
-            id="PieChart"
-            data-testid="FormDescriptionEditor-PieChart"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <PieChartIcon />
-            <Typography variant="caption" gutterBottom>
-              PieChart
-            </Typography>
-          </div>
-          <div
-            id="Radio"
-            data-testid="FormDescriptionEditor-Radio"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <RadioButtonCheckedIcon />
-            <Typography variant="caption" gutterBottom>
-              Radio
-            </Typography>
-          </div>
-          <div
-            id="RichText"
-            data-testid="FormDescriptionEditor-RichText"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <TextFormatIcon />
-            <Typography variant="caption" gutterBottom>
-              RichText
-            </Typography>
-          </div>
-          <div
-            id="Select"
-            data-testid="FormDescriptionEditor-Select"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <ArrowDropDownCircleIcon />
-            <Typography variant="caption" gutterBottom>
-              Select
-            </Typography>
-          </div>
-          <div
-            id="SplitButton"
-            data-testid="FormDescriptionEditor-SplitButton"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <Button width={'24px'} height={'24px'} color={'secondary'} />
-            <Typography variant="caption" gutterBottom>
-              SplitButton
-            </Typography>
-          </div>
-          <div
-            id="TextArea"
-            data-testid="FormDescriptionEditor-TextArea"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <TextFieldsIcon />
-            <Typography variant="caption" gutterBottom>
-              Textarea
-            </Typography>
-          </div>
-          <div
-            id="Textfield"
-            data-testid="FormDescriptionEditor-Textfield"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <TextFieldsIcon />
-            <Typography variant="caption" gutterBottom>
-              Textfield
-            </Typography>
-          </div>
-          <div
-            id="Tree"
-            data-testid="FormDescriptionEditor-Tree"
-            draggable="true"
-            className={classes.widgetKind}
-            onDragStart={handleDragStartWidget}>
-            <AccountTreeIcon />
-            <Typography variant="caption" gutterBottom>
-              Tree
-            </Typography>
-          </div>
 
-          {propertySectionsRegistry.getWidgetContributions().map((customWidget) => {
+          {allWidgets.map((widgetDescriptor) => {
             return (
               <div
-                id={customWidget.name}
-                key={customWidget.name}
-                data-testid={`FormDescriptionEditor-${customWidget.name}`}
-                draggable="true"
+                id={widgetDescriptor.name}
+                key={widgetDescriptor.name}
+                data-testid={`FormDescriptionEditor-${widgetDescriptor.name}`}
+                draggable={!readOnly}
                 className={classes.widgetKind}
-                onDragStart={handleDragStartWidget}>
-                {customWidget.icon}
-                <Typography variant="caption" gutterBottom>
-                  {customWidget.name}
+                onDragStart={readOnly ? noop : handleDragStartWidget}>
+                {widgetDescriptor.icon}
+                <Typography variant="caption" gutterBottom align="center">
+                  {widgetDescriptor.label || widgetDescriptor.name}
                 </Typography>
               </div>
             );
@@ -474,11 +287,7 @@ export const FormDescriptionEditorRepresentation = ({
         </div>
         <div className={classes.preview}>
           <div className={classes.body}>
-            <PageList
-              editingContextId={editingContextId}
-              representationId={representationId}
-              formDescriptionEditor={formDescriptionEditor}
-            />
+            <PageList />
           </div>
         </div>
       </div>
@@ -496,23 +305,29 @@ export const FormDescriptionEditorRepresentation = ({
   }
 
   return (
-    <div className={classes.formDescriptionEditor}>
-      <div className={classes.header}>
-        <Typography>Form</Typography>
-        <div className={classes.subscribers}>
-          {subscribers.map((subscriber) => (
-            <Tooltip title={subscriber.username} arrow key={subscriber.username}>
-              <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
-            </Tooltip>
-          ))}
+    <FormDescriptionEditorContextProvider
+      editingContextId={editingContextId}
+      representationId={representationId}
+      readOnly={readOnly}
+      formDescriptionEditor={formDescriptionEditor}>
+      <div className={classes.formDescriptionEditor}>
+        <div className={classes.header}>
+          <Typography>Form</Typography>
+          <div className={classes.subscribers}>
+            {subscribers.map((subscriber) => (
+              <Tooltip title={subscriber.username} arrow key={subscriber.username}>
+                <Avatar classes={{ root: classes.avatar }}>{subscriber.username.substring(0, 1).toUpperCase()}</Avatar>
+              </Tooltip>
+            ))}
+          </div>
         </div>
+        {readOnly ? <div className={classes.disabledOverlay}>{content}</div> : content}
+        <Toast
+          message={message}
+          open={toast === 'visible'}
+          onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
+        />
       </div>
-      {content}
-      <Toast
-        message={message}
-        open={toast === 'visible'}
-        onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
-      />
-    </div>
+    </FormDescriptionEditorContextProvider>
   );
 };

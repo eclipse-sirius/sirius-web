@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import {
 } from './FormDescriptionEditorEventFragment.types';
 import { Group } from './Group';
 import { PageProps, PageState } from './Page.types';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -64,7 +65,9 @@ const usePageStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Page = ({ editingContextId, representationId, formDescriptionEditor, page }: PageProps) => {
+export const Page = ({ page }: PageProps) => {
+  const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
+  const noop = () => {};
   const classes = usePageStyles();
 
   const initialState: PageState = { message: null, selected: false };
@@ -188,25 +191,16 @@ export const Page = ({ editingContextId, representationId, formDescriptionEditor
     <div className={classes.preview}>
       <div className={classes.page}>
         {page.groups.map((group) => {
-          return (
-            <Group
-              key={group.id}
-              editingContextId={editingContextId}
-              representationId={representationId}
-              formDescriptionEditor={formDescriptionEditor}
-              page={page}
-              group={group}
-            />
-          );
+          return <Group key={group.id} page={page} group={group} />;
         })}
       </div>
       <div
         data-testid="Page-DropArea"
         className={classes.bottomDropArea}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}>
+        onDragEnter={readOnly ? noop : handleDragEnter}
+        onDragOver={readOnly ? noop : handleDragOver}
+        onDragLeave={readOnly ? noop : handleDragLeave}
+        onDrop={readOnly ? noop : handleDrop}>
         <Typography variant="body1">{'Drag and drop a group here'}</Typography>
       </div>
       <Toast
