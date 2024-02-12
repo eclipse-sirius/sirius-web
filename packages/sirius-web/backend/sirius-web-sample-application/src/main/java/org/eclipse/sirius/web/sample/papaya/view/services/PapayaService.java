@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
@@ -39,7 +39,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class PapayaService {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private EPackage.Registry ePackageRegistry;
 
@@ -319,8 +319,8 @@ public class PapayaService {
 
     private EObject operationIRepresentationDescriptionGetLabel;
 
-    public PapayaService(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public PapayaService(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     public EObject initialize(EObject eObject, IDiagramContext diagramContext,
@@ -980,7 +980,7 @@ public class PapayaService {
                 .map(Node::getTargetObjectId)
                 .orElse(diagramContext.getDiagram().getId());
 
-        var targetObjectId = this.objectService.getId(self);
+        var targetObjectId = this.identityService.getId(self);
 
         var domainType = self.eClass().getEPackage().getName() + "::" + self.eClass().getName();
         var nodeDescriptionName = "Node " + domainType;

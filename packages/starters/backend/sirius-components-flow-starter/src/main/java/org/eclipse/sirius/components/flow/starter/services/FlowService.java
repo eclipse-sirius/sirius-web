@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
@@ -34,10 +34,10 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  */
 public class FlowService {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public FlowService(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public FlowService(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     public EObject drop(EObject self, Node selectedNode, IDiagramContext diagramContext,
@@ -46,7 +46,7 @@ public class FlowService {
                 .map(Node::getId)
                 .orElse(diagramContext.getDiagram().getId());
 
-        var targetObjectId = this.objectService.getId(self);
+        var targetObjectId = this.identityService.getId(self);
 
         String nodeDescriptionName;
         if (self.eClass() == FlowPackage.Literals.COMPOSITE_PROCESSOR) {

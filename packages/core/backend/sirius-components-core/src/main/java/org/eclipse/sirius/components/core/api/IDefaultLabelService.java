@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,25 +16,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface of the default service interacting with domain objects.
+ * Interface of the default service interacting with label objects.
  *
- * @author arichard
+ * @author mcharfadi
  */
-public interface IDefaultObjectService {
-
-    String getId(Object object);
+public interface IDefaultLabelService {
 
     String getLabel(Object object);
-
-    String getKind(Object object);
 
     String getFullLabel(Object object);
 
     List<String> getImagePath(Object object);
-
-    Optional<Object> getObject(IEditingContext editingContext, String objectId);
-
-    List<Object> getContents(IEditingContext editingContext, String objectId);
 
     Optional<String> getLabelField(Object object);
 
@@ -43,22 +35,12 @@ public interface IDefaultObjectService {
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
-     * @author sbegaudeau
+     * @author mcharfadi
      */
-    class NoOp implements IDefaultObjectService {
-
-        @Override
-        public String getId(Object object) {
-            return "";
-        }
+    class NoOp implements IDefaultLabelService {
 
         @Override
         public String getLabel(Object object) {
-            return "";
-        }
-
-        @Override
-        public String getKind(Object object) {
             return "";
         }
 
@@ -69,16 +51,6 @@ public interface IDefaultObjectService {
 
         @Override
         public List<String> getImagePath(Object object) {
-            return List.of();
-        }
-
-        @Override
-        public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-            return Optional.empty();
-        }
-
-        @Override
-        public List<Object> getContents(IEditingContext editingContext, String objectId) {
             return List.of();
         }
 

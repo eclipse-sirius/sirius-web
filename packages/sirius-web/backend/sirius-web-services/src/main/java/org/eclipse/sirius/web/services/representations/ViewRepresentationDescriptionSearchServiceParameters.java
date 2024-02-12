@@ -14,8 +14,7 @@ package org.eclipse.sirius.web.services.representations;
 
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
@@ -41,17 +40,16 @@ public final class ViewRepresentationDescriptionSearchServiceParameters {
 
     private final IDeckIdProvider deckIdProvider;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public ViewRepresentationDescriptionSearchServiceParameters(EPackage.Registry ePackageRegistry, IURLParser urlParser, IObjectService objectService,
-            ViewRepresentationIdParameters representationIdParameters) {
+    public ViewRepresentationDescriptionSearchServiceParameters(IURLParser urlParser, IIdentityService identityService, ViewRepresentationIdParameters representationIdParameters) {
         Objects.requireNonNull(representationIdParameters);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.diagramIdProvider = Objects.requireNonNull(representationIdParameters.getDiagramIdProvider());
         this.formIdProvider = Objects.requireNonNull(representationIdParameters.getFormIdProvider());
         this.ganttIdProvider = Objects.requireNonNull(representationIdParameters.getGanttIdProvider());
         this.deckIdProvider = Objects.requireNonNull(representationIdParameters.getDeckIdProvider());
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     public IDiagramIdProvider getDiagramIdProvider() {
@@ -74,7 +72,7 @@ public final class ViewRepresentationDescriptionSearchServiceParameters {
         return this.deckIdProvider;
     }
 
-    public IObjectService getObjectService() {
-        return this.objectService;
+    public IIdentityService getIdentityService() {
+        return this.identityService;
     }
 }

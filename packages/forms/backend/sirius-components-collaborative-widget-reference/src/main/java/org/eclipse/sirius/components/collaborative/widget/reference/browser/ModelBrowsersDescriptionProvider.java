@@ -349,8 +349,6 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
 
         if (optionalEditingContext.isPresent()) {
-            IEditingContext editingContext = optionalEditingContext.get();
-
             String id = this.getTreeItemId(variableManager);
             if (expandedIds.contains(id)) {
                 Object self = variableManager.getVariables().get(VariableManager.SELF);
@@ -358,7 +356,7 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    List<Object> contents = this.objectService.getContents(editingContext, id);
+                    List<Object> contents = this.objectService.getContents(self);
                     result.addAll(contents);
                 }
             }

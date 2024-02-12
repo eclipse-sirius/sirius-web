@@ -37,14 +37,22 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.URLParser;
-import org.eclipse.sirius.components.core.api.IDefaultObjectService;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.services.ComposedObjectService;
-import org.eclipse.sirius.components.emf.services.DefaultObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.services.ComposedContentService;
+import org.eclipse.sirius.components.core.services.ComposedIdentityService;
+import org.eclipse.sirius.components.core.services.ComposedLabelService;
+import org.eclipse.sirius.components.core.services.ComposedObjectSearchService;
+import org.eclipse.sirius.components.core.services.ObjectService;
+import org.eclipse.sirius.components.emf.services.DefaultContentService;
+import org.eclipse.sirius.components.emf.services.DefaultIdentityService;
+import org.eclipse.sirius.components.emf.services.DefaultLabelService;
+import org.eclipse.sirius.components.emf.services.DefaultObjectSearchService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
@@ -71,6 +79,7 @@ import org.eclipse.sirius.components.view.emf.ViewPropertiesDescriptionRegistryC
 import org.eclipse.sirius.components.view.emf.configuration.ViewPropertiesDescriptionServiceConfiguration;
 import org.eclipse.sirius.components.view.form.util.FormAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewAdapterFactory;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
@@ -108,9 +117,15 @@ public class ViewDetailsRenderingIntegrationTests {
 
         this.view = this.loadFixture("ViewCompletionFixture.xmi");
 
+        ILabelService labelService = new ComposedLabelService(List.of(), new DefaultLabelService(new LabelFeatureProviderRegistry(), composedAdapterFactory));
+        IContentService contentService = new ComposedContentService(List.of(), new DefaultContentService(composedAdapterFactory));
+        IIdentityService iIdentityService = new ComposedIdentityService(List.of(), new DefaultIdentityService(new EMFKindService(new URLParser())));
+        IObjectSearchService iObjectServices = new ComposedObjectSearchService(List.of(), new DefaultObjectSearchService());
+
+        ObjectService objectService = new ObjectService(labelService, contentService, iIdentityService, iObjectServices);
+
         EMFKindService emfKindService = new EMFKindService(new URLParser());
-        IDefaultObjectService defaultObjectService = new DefaultObjectService(emfKindService, composedAdapterFactory, new LabelFeatureProviderRegistry());
-        IObjectService objectService = new ComposedObjectService(List.of(), defaultObjectService);
+
         ViewPropertiesDescriptionServiceConfiguration parameters = new ViewPropertiesDescriptionServiceConfiguration(objectService, emfKindService, new IFeedbackMessageService.NoOp());
 
         // @formatter:off

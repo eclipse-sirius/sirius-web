@@ -19,6 +19,7 @@
 - [ADR-131] Add more filtering capabilities on diagram
 - [ADR-132] Add support for filters in Explorer View
 - [ADR-133] Add Tree Widget to the View DSL
+- [ADR-134] Split IObjectService in multiples sub services
 
 === Breaking changes
 
@@ -37,6 +38,11 @@ As a result, all the APIs relying on this code have been deleted too such as the
 * `getNodeOrMinWidth` and `getNodeOrMinHeight` have been renamed `getDefaultOrMinWidth` and `getDefaultOrMinHeight`.
 * `computePreviousSize` no longer returns `{0,0}` when it's a new node but its default size.
 - https://github.com/eclipse-sirius/sirius-web/issues/2606[#2606] [diagram] Add the attributes `topGap` and `bottomGap` to graphql `ListLayoutStrategy`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3042[#3042] [core] IObjectService have been divided in smaller API IContentService, IObjectSearchService, IIdentityService and ILabelService.
+If you used the default implementation of `IObjectService` you can still use it to retrieve the default implementation of the new services.
+Yet we are recommending using each individual services since this aggregated one may be deprecated in the future.
+If you want to add your own custom behaviour, please use the new services, see the related ADR for more details.
+
 
 === Dependency update
 
@@ -70,6 +76,7 @@ image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3045[#3045] [deck] Make it possible to collapse lanes in the Deck representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/2841[#2841] [diagram] Add the support for read-only diagram.
 In read-only mode, the palette can not be displayed, some of the panel action are disabled, a node cannot be moved or be resized.
+- https://github.com/eclipse-sirius/sirius-web/issues/3042[#3042] [core] IObjectService have been divided in smaller services IContentService, IObjectSearchService, IIdentityService and ILabelService, see the related ADR for more details.
 
 === Improvements
 

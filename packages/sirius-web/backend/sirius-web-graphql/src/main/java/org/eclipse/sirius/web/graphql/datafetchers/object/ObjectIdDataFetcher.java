@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.graphql.datafetchers.object;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -37,16 +37,16 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "Object", field = "id")
 public class ObjectIdDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
-    public ObjectIdDataFetcher(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ObjectIdDataFetcher(IIdentityService identityService) {
+        this.identityService = Objects.requireNonNull(identityService);
     }
 
     @Override
     public String get(DataFetchingEnvironment environment) throws Exception {
         Object object = environment.getSource();
-        return this.objectService.getId(object);
+        return this.identityService.getId(object);
     }
 
 }

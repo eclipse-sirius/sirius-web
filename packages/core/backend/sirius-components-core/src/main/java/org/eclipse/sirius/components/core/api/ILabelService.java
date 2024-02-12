@@ -16,12 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface of that allow us to regroup several services.
+ * Interface of the service used to compute the label of the domain objects.
  *
- * @author mcharfadi
+ * @author sbegaudeau
  */
-public interface IObjectService {
-
+public interface ILabelService {
     String getLabel(Object object);
 
     String getFullLabel(Object object);
@@ -32,21 +31,12 @@ public interface IObjectService {
 
     List<String> getImagePath(Object object);
 
-    List<Object> getContents(Object object);
-
-    String getId(Object object);
-
-    String getKind(Object object);
-
-    Optional<Object> getObject(IEditingContext editingContext, String objectId);
-
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
-     * @author mcharfadi
+     * @author sbegaudeau
      */
-    class NoOp implements IObjectService {
-
+    class NoOp implements ILabelService {
         @Override
         public String getLabel(Object object) {
             return "";
@@ -71,26 +61,5 @@ public interface IObjectService {
         public List<String> getImagePath(Object object) {
             return List.of();
         }
-
-        @Override
-        public List<Object> getContents(Object object) {
-            return List.of();
-        }
-
-        @Override
-        public String getId(Object object) {
-            return "";
-        }
-
-        @Override
-        public String getKind(Object object) {
-            return "";
-        }
-
-        @Override
-        public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-            return Optional.empty();
-        }
     }
-
 }

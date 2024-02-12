@@ -21,8 +21,10 @@ import org.eclipse.sirius.components.collaborative.trees.api.IExpandAllTreePathP
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathSuccessPayload;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePath;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.Tree;
@@ -38,14 +40,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
+
+    private final IIdentityService identityService;
+
+    private final IContentService contentService;
 
     private final IRepresentationService representationService;
 
     private final IExplorerNavigationService explorerNavigationService;
 
-    public ExpandAllTreePathProvider(IObjectService objectService, IRepresentationService representationService, IExplorerNavigationService explorerNavigationService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ExpandAllTreePathProvider(IObjectSearchService objectSearchService, IIdentityService identityService, IContentService contentService, IRepresentationService representationService, IExplorerNavigationService explorerNavigationService) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.contentService = Objects.requireNonNull(contentService);
         this.representationService = Objects.requireNonNull(representationService);
         this.explorerNavigationService = Objects.requireNonNull(explorerNavigationService);
     }
@@ -60,7 +68,7 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
         int maxDepth = 0;
         String treeItemId = input.treeItemId();
         Set<String> treeItemIdsToExpand = new HashSet<>();
-        var object = this.objectService.getObject(editingContext, treeItemId);
+        var object = this.objectSearchService.getObject(editingContext, treeItemId);
         if (object.isPresent()) {
             // We need to get the current depth of the tree item
             var itemAncestors = this.explorerNavigationService.getAncestors(editingContext, treeItemId);
@@ -81,7 +89,7 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
                     if (!contents.isEmpty()) {
                         treeItemIdsToExpand.add(treeItemId);
                         for (var rootObject : contents) {
-                            var rootObjectId = this.objectService.getId(rootObject);
+                            var rootObjectId = this.identityService.getId(rootObject);
                             var rootObjectTreePathMaxDepth = 1;
                             rootObjectTreePathMaxDepth = this.addAllContents(editingContext, rootObjectId, rootObjectTreePathMaxDepth, treeItemIdsToExpand);
                             maxDepth = Math.max(maxDepth, rootObjectTreePathMaxDepth);
@@ -95,20 +103,23 @@ public class ExpandAllTreePathProvider implements IExpandAllTreePathProvider {
 
     private int addAllContents(IEditingContext editingContext, String treeItemId, int depth, Set<String> treeItemIdsToExpand) {
         var depthConsidered = depth;
-        var contents = this.objectService.getContents(editingContext, treeItemId);
-        if (!contents.isEmpty()) {
-            treeItemIdsToExpand.add(treeItemId);
+        Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, treeItemId);
+        if (optionalObject.isPresent()) {
+            var contents = this.contentService.getContents(optionalObject.get());
+            if (!contents.isEmpty()) {
+                treeItemIdsToExpand.add(treeItemId);
 
-            for (var child : contents) {
-                String childId = this.objectService.getId(child);
-                treeItemIdsToExpand.add(childId);
-                var childTreePathMaxDepth = depth + 1;
-                childTreePathMaxDepth = this.addAllContents(editingContext, childId, childTreePathMaxDepth, treeItemIdsToExpand);
-                depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
+                for (var child : contents) {
+                    String childId = this.identityService.getId(child);
+                    treeItemIdsToExpand.add(childId);
+                    var childTreePathMaxDepth = depth + 1;
+                    childTreePathMaxDepth = this.addAllContents(editingContext, childId, childTreePathMaxDepth, treeItemIdsToExpand);
+                    depthConsidered = Math.max(depthConsidered, childTreePathMaxDepth);
+                }
+            } else if (this.representationService.hasRepresentations(treeItemId)) {
+                treeItemIdsToExpand.add(treeItemId);
+                depthConsidered = Math.max(depthConsidered, depth + 1);
             }
-        } else if (this.representationService.hasRepresentations(treeItemId)) {
-            treeItemIdsToExpand.add(treeItemId);
-            depthConsidered = Math.max(depthConsidered, depth + 1);
         }
 
         return depthConsidered;

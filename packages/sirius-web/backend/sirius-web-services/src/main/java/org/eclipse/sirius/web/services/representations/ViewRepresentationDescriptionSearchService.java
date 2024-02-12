@@ -24,7 +24,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -66,13 +66,13 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private final IDeckIdProvider deckIdProvider;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     public ViewRepresentationDescriptionSearchService(ViewRepresentationDescriptionSearchServiceParameters parameters, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.urlParser = Objects.requireNonNull(parameters.getUrlParser());
         this.diagramIdProvider = Objects.requireNonNull(parameters.getDiagramIdProvider());
         this.formIdProvider = Objects.requireNonNull(parameters.getFormIdProvider());
-        this.objectService = Objects.requireNonNull(parameters.getObjectService());
+        this.identityService = Objects.requireNonNull(parameters.getIdentityService());
         this.ganttIdProvider = Objects.requireNonNull(parameters.getGanttIdProvider());
         this.deckIdProvider = Objects.requireNonNull(parameters.getDeckIdProvider());
         this.inMemoryViewRegistry = Objects.requireNonNull(inMemoryViewRegistry);
@@ -188,7 +188,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     }
 
     public Optional<NodeDescription> findNodeDescriptionById(DiagramDescription diagramDescription, String nodeDescriptionId) {
-        return this.findNodeDescription(nodeDesc -> Objects.equals(this.objectService.getId(nodeDesc), nodeDescriptionId), diagramDescription.getNodeDescriptions());
+        return this.findNodeDescription(nodeDesc -> Objects.equals(this.identityService.getId(nodeDesc), nodeDescriptionId), diagramDescription.getNodeDescriptions());
     }
 
     private Optional<NodeDescription> findNodeDescription(Predicate<NodeDescription> condition, List<NodeDescription> candidates) {
@@ -207,14 +207,16 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     }
 
     private Optional<EdgeDescription> findEdgeDescriptionById(DiagramDescription diagramDescription, String edgeDescriptionId) {
-        return diagramDescription.getEdgeDescriptions().stream().filter(edgeDescription -> this.objectService.getId(edgeDescription).equals(edgeDescriptionId)).findFirst();
+        return diagramDescription.getEdgeDescriptions().stream()
+                .filter(edgeDescription -> this.identityService.getId(edgeDescription).equals(edgeDescriptionId))
+                .findFirst();
     }
 
     private Optional<FormElementDescription> findFormElementDescriptionById(FormDescription formDescription, String formElementId) {
         TreeIterator<EObject> contentIterator = formDescription.eAllContents();
         while (contentIterator.hasNext()) {
             EObject eObject = contentIterator.next();
-            if (eObject instanceof FormElementDescription desc && this.objectService.getId(desc).equals(formElementId)) {
+            if (eObject instanceof FormElementDescription desc && this.identityService.getId(desc).equals(formElementId)) {
                 return Optional.of(desc);
             }
         }

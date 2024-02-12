@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.URI;
@@ -31,14 +32,16 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathSuccessPayload;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.eclipse.sirius.web.services.documents.EditingDomainFactory;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.explorer.api.IExplorerNavigationService;
 import org.junit.jupiter.api.Test;
 
@@ -50,10 +53,24 @@ import org.junit.jupiter.api.Test;
 class ExpandAllTreePathProviderTests {
 
     private EClass class1;
+    private EPackage ePackage;
+    private EPackage ePackage2;
 
     @Test
     void testExpandAllTreePathProvider() {
-        IObjectService objectService = new IObjectService.NoOp() {
+        var objectSearchService = new IObjectSearchService.NoOp() {
+            @Override
+            public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
+                return switch (objectId) {
+                    case "content1" -> Optional.of(ExpandAllTreePathProviderTests.this.class1);
+                    case "root1" -> Optional.of(ExpandAllTreePathProviderTests.this.ePackage);
+                    case "root2" -> Optional.of(ExpandAllTreePathProviderTests.this.ePackage2);
+                    default -> Optional.empty();
+                };
+            }
+        };
+
+        var identityService = new IIdentityService.NoOp() {
             @Override
             public String getId(Object object) {
                 if (object instanceof ENamedElement namedElement) {
@@ -61,18 +78,19 @@ class ExpandAllTreePathProviderTests {
                 }
                 return "";
             }
-
-            @Override
-            public List<Object> getContents(IEditingContext editingContext, String objectId) {
-                return switch (objectId) {
-                    case "root1" -> List.of(ExpandAllTreePathProviderTests.this.class1);
-                    default -> List.of();
-                };
-            }
-
         };
 
-        ExpandAllTreePathProvider expandAllTreePathProvider = new ExpandAllTreePathProvider(objectService, new IRepresentationService.NoOp(),
+        var contentService = new IContentService.NoOp() {
+            @Override
+            public List<Object> getContents(Object object) {
+                if (object instanceof EObject eObject) {
+                    return List.of(eObject.eContents());
+                }
+                return List.of();
+            }
+        };
+
+        ExpandAllTreePathProvider expandAllTreePathProvider = new ExpandAllTreePathProvider(objectSearchService, identityService, contentService, new IRepresentationService.NoOp(),
                 new IExplorerNavigationService.NoOp());
 
         assertThat(expandAllTreePathProvider.canHandle(null)).isFalse();
@@ -103,7 +121,7 @@ class ExpandAllTreePathProviderTests {
     private Resource createResourceWith4Elements() {
         Map<String, EObject> cache = new HashMap<>();
 
-        EPackage ePackage = EcoreFactory.eINSTANCE.createEPackage();
+        ePackage = EcoreFactory.eINSTANCE.createEPackage();
         ePackage.setName("root1");
         UUID ePackageUUID = UUID.nameUUIDFromBytes("ePackage".getBytes());
         ePackage.eAdapters().add(new IDAdapter(ePackageUUID));
@@ -117,7 +135,7 @@ class ExpandAllTreePathProviderTests {
 
         ePackage.getEClassifiers().add(this.class1);
 
-        EPackage ePackage2 = EcoreFactory.eINSTANCE.createEPackage();
+        ePackage2 = EcoreFactory.eINSTANCE.createEPackage();
         ePackage2.setName("root2");
         UUID ePackage2UUID = UUID.nameUUIDFromBytes("ePackage2".getBytes());
         ePackage2.eAdapters().add(new IDAdapter(ePackage2UUID));
