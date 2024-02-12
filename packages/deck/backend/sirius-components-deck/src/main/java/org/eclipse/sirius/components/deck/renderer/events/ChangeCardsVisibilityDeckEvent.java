@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.deck;
+package org.eclipse.sirius.components.deck.renderer.events;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
- * Change kind associated to the Deck representation.
+ * A Deck Event to handle the cards visibility state changes.
  *
  * @author fbarbin
  */
-public final class DeckChangeKind {
+public record ChangeCardsVisibilityDeckEvent(Map<String, Boolean> cardsVisibility) implements IDeckEvent {
 
-    public static final String DECK_REPRESENTATION_UPDATE = "DECK_REPRESENTATION_UPDATE";
-
-    private DeckChangeKind() {
-        // Prevent instantiation
+    public ChangeCardsVisibilityDeckEvent {
+        Objects.requireNonNull(cardsVisibility);
     }
 }

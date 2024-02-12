@@ -33,9 +33,9 @@ export interface DeckState {
   zoom: number;
 }
 export interface OnCardClickProps {
-  cardId: String;
+  cardId: string;
   metadata: any;
-  laneId: String;
+  laneId: string;
 }
 export interface DeckData {
   lanes: Lane[];
@@ -58,6 +58,7 @@ export interface Card {
   title: string;
   label: string;
   description: string;
+  visible: boolean;
   metadata?: CardMetadata;
   className?: string;
   editable?: boolean;

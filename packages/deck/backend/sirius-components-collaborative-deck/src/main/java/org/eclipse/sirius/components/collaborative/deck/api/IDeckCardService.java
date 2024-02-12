@@ -14,8 +14,8 @@ package org.eclipse.sirius.components.collaborative.deck.api;
 
 import org.eclipse.sirius.components.collaborative.deck.dto.input.CreateDeckCardInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeleteDeckCardInput;
-import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckCardInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckCardInput;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckCardInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.deck.Deck;

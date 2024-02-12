@@ -13,7 +13,9 @@
 package org.eclipse.sirius.components.collaborative.deck.service;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,6 +23,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckLaneService;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeCardsVisibilityInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeLaneCollapsedStateInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckLaneInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckLaneInput;
@@ -35,6 +38,7 @@ import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.Lane;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
+import org.eclipse.sirius.components.deck.renderer.events.ChangeCardsVisibilityDeckEvent;
 import org.eclipse.sirius.components.deck.renderer.events.ChangeLaneCollapseStateDeckEvent;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
@@ -145,4 +149,12 @@ public class DeckLaneService implements IDeckLaneService {
         return this.getPayload(changeLaneCollapsedStateInput.id());
     }
 
+    @Override
+    public IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, IDeckContext deckContext) {
+        Map<String, Boolean> cardsVisibility = new HashMap<>();
+        input.visibleCardsIds().forEach(cardId -> cardsVisibility.put(cardId, true));
+        input.hiddenCardsIds().forEach(cardId -> cardsVisibility.put(cardId, false));
+        deckContext.setDeckEvent(new ChangeCardsVisibilityDeckEvent(cardsVisibility));
+        return this.getPayload(input.id());
+    }
 }

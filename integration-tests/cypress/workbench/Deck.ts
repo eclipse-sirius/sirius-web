@@ -115,6 +115,18 @@ export class Deck {
     return this.getLane(laneName).findByTestId('lane-collapse-btn').click({ force: true });
   }
 
+  public changeVisibility(laneName: string, cardsName: string[], expectedVisibilityInitialState: boolean): void {
+    this.getLane(laneName).findByTestId(`lane-${laneName}-more`).click();
+    for (const cardName of cardsName) {
+      cy.getByTestId('lane-contextmenu')
+        .findByTestId(`hide-reveal-card-${cardName}`)
+        .findByTestId(`visibility-${expectedVisibilityInitialState ? 'on' : 'off'}`)
+        .should('exist')
+        .click();
+    }
+    cy.getByTestId('apply-card-visibility').click();
+  }
+
   public expandLane(laneName: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getLane(laneName).findByTestId('lane-expand-btn').click({ force: true });
   }

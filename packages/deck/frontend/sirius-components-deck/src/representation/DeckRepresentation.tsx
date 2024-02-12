@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ApolloError, useMutation, useSubscription } from '@apollo/client';
+import { useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   UseSelectionValue,
@@ -41,43 +41,8 @@ import {
   GQLLane,
 } from './deckSubscription.types';
 
-import {
-  GQLChangeLaneCollapsedStateData,
-  GQLChangeLaneCollapsedStateInput,
-  GQLChangeLaneCollapsedStateVariables,
-  GQLCreateCardData,
-  GQLCreateCardVariables,
-  GQLCreateDeckCardInput,
-  GQLCreateDeckCardPayload,
-  GQLDeleteCardData,
-  GQLDeleteCardVariables,
-  GQLDeleteDeckCardInput,
-  GQLDeleteDeckCardPayload,
-  GQLDropDeckCardData,
-  GQLDropDeckCardInput,
-  GQLDropDeckCardVariables,
-  GQLDropDeckLaneData,
-  GQLDropDeckLaneInput,
-  GQLDropDeckLaneVariables,
-  GQLEditCardData,
-  GQLEditCardVariables,
-  GQLEditDeckCardInput,
-  GQLEditDeckCardPayload,
-  GQLEditDeckLaneInput,
-  GQLEditLaneData,
-  GQLEditLaneVariables,
-  GQLSuccessPayload,
-} from './deckMutation.types';
+import { useDeckMutations } from './useDeckMutations';
 
-import {
-  changeLaneCollapsedStateMutation,
-  createCardMutation,
-  deleteCardMutation,
-  dropDeckCardMutation,
-  dropDeckLaneMutation,
-  editCardMutation,
-  editLaneMutation,
-} from './deckMutation';
 const useDeckRepresentationStyles = makeStyles(() => ({
   complete: {
     display: 'flex',
@@ -90,10 +55,6 @@ const isDeckRefreshedEventPayload = (payload: GQLDeckEventPayload): payload is G
   payload.__typename === 'DeckRefreshedEventPayload';
 const isErrorPayload = (payload: GQLDeckEventPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
-const isStandardErrorPayload = (field): field is GQLErrorPayload => field.__typename === 'ErrorPayload';
-const isSuccessPayload = (
-  payload: GQLDeleteDeckCardPayload | GQLEditDeckCardPayload | GQLCreateDeckCardPayload
-): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
 export const DeckRepresentation = ({ editingContextId, representationId }: RepresentationComponentProps) => {
   const theme: Theme = useTheme();
@@ -135,38 +96,8 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
     },
   });
 
-  //---------------------------------
-  // Mutations
-  const [deleteDeckCard, { loading: deleteDeckCardLoading, data: deleteDeckCardData, error: deleteDeckCardError }] =
-    useMutation<GQLDeleteCardData, GQLDeleteCardVariables>(deleteCardMutation);
-
-  const [editDeckCard, { loading: editCardLoading, data: editCardData, error: editCardError }] = useMutation<
-    GQLEditCardData,
-    GQLEditCardVariables
-  >(editCardMutation);
-
-  const [createCard, { loading: createCardLoading, data: createCardData, error: createCardError }] = useMutation<
-    GQLCreateCardData,
-    GQLCreateCardVariables
-  >(createCardMutation);
-
-  const [dropDeckCard, { loading: dropDeckCardLoading, data: dropDeckCardData, error: dropDeckCardError }] =
-    useMutation<GQLDropDeckCardData, GQLDropDeckCardVariables>(dropDeckCardMutation);
-
-  const [editDeckLane, { loading: editLaneLoading, data: editLaneData, error: editLaneError }] = useMutation<
-    GQLEditLaneData,
-    GQLEditLaneVariables
-  >(editLaneMutation);
-
-  const [dropDeckLane, { loading: dropDeckLaneLoading, data: dropDeckLaneData, error: dropDeckLaneError }] =
-    useMutation<GQLDropDeckLaneData, GQLDropDeckLaneVariables>(dropDeckLaneMutation);
-
-  const [
-    changeLaneCollapsedState,
-    { loading: changeLaneCollapsedLoading, data: changeLaneCollapsedData, error: changeLaneCollapsedError },
-  ] = useMutation<GQLChangeLaneCollapsedStateData, GQLChangeLaneCollapsedStateVariables>(
-    changeLaneCollapsedStateMutation
-  );
+  const { deleteCard, editDeckCard, createCard, dropDeckCard, editDeckLane, dropDeckLane, changeLaneCollapsedState } =
+    useDeckMutations(editingContextId, representationId);
 
   useEffect(() => {
     if (error) {
@@ -190,74 +121,8 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
       });
     }
   }, [selection]);
-  const handleError = (
-    loading: boolean,
-    data:
-      | GQLEditCardData
-      | GQLDeleteCardData
-      | GQLCreateCardData
-      | GQLDropDeckCardData
-      | GQLEditLaneData
-      | GQLDropDeckLaneData
-      | GQLChangeLaneCollapsedStateData
-      | null
-      | undefined,
-    error: ApolloError | undefined
-  ) => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage(error.message);
-      }
-      if (data) {
-        const keys = Object.keys(data);
-        if (keys.length > 0) {
-          const firstKey = keys[0];
-          if (firstKey) {
-            const firstField = data[firstKey];
-            if (isStandardErrorPayload(firstField) || isSuccessPayload(firstField)) {
-              const { messages } = firstField;
-              addMessages(messages);
-            }
-          }
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    handleError(deleteDeckCardLoading, deleteDeckCardData, deleteDeckCardError);
-  }, [deleteDeckCardLoading, deleteDeckCardData, deleteDeckCardError]);
-  useEffect(() => {
-    handleError(editCardLoading, editCardData, editCardError);
-  }, [editCardLoading, editCardData, editCardError]);
-  useEffect(() => {
-    handleError(createCardLoading, createCardData, createCardError);
-  }, [createCardLoading, createCardData, createCardError]);
-  useEffect(() => {
-    handleError(dropDeckCardLoading, dropDeckCardData, dropDeckCardError);
-  }, [dropDeckCardLoading, dropDeckCardData, dropDeckCardError]);
-  useEffect(() => {
-    handleError(dropDeckLaneLoading, dropDeckLaneData, dropDeckLaneError);
-  }, [dropDeckLaneLoading, dropDeckLaneData, dropDeckLaneError]);
-  useEffect(() => {
-    handleError(changeLaneCollapsedLoading, changeLaneCollapsedData, changeLaneCollapsedError);
-  }, [changeLaneCollapsedLoading, changeLaneCollapsedData, changeLaneCollapsedError]);
-
-  useEffect(() => {
-    handleError(editLaneLoading, editLaneData, editLaneError);
-  }, [editLaneLoading, editLaneData, editLaneError]);
 
   const handleEditCard = (_laneId: string, card: Card) => {
-    const input: GQLEditDeckCardInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      cardId: card.id,
-      newTitle: card.title,
-      newLabel: card.label,
-      newDescription: card.description,
-    };
-
     if (deck) {
       // to avoid blink because useMutation implies a re-render as the card value is the old one
       const updatedDeck = updateCard(deck, card);
@@ -265,18 +130,10 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         return { ...prevState, deck: updatedDeck };
       });
     }
-    editDeckCard({ variables: { input } });
+    editDeckCard(card);
   };
 
   const handleEditLane = (laneId: string, newValue: { title: string }) => {
-    const input: GQLEditDeckLaneInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      laneId,
-      newTitle: newValue.title,
-    };
-
     if (deck) {
       // to avoid blink because useMutation implies a re-render as the lane value is the old one
       const updatedDeck = updateLane(deck, laneId, newValue.title);
@@ -284,29 +141,7 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         return { ...prevState, deck: updatedDeck };
       });
     }
-    editDeckLane({ variables: { input } });
-  };
-
-  const handleDeleteCard = (cardId: string, _laneId: string) => {
-    const input: GQLDeleteDeckCardInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      cardId,
-    };
-    deleteDeckCard({ variables: { input } });
-  };
-  const handleCreateCard = (card: Card, laneId: string) => {
-    const input: GQLCreateDeckCardInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      currentLaneId: laneId,
-      title: card.title,
-      label: card.label,
-      description: card.description,
-    };
-    createCard({ variables: { input } });
+    editDeckLane(laneId, newValue);
   };
 
   const handleCardClicked = (_cardId: string, metadata: CardMetadata, _laneId: string) => {
@@ -317,21 +152,12 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
 
   const handleDropDeckCard = (oldLaneId: string, newLaneId: string, cardId: string, addedIndex: number) => {
     if (deck) {
-      const input: GQLDropDeckCardInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId,
-        oldLaneId,
-        newLaneId,
-        cardId,
-        addedIndex,
-      };
       const updatedDeck = moveCardInDeckLanes(deck, oldLaneId, newLaneId, cardId, addedIndex);
       setState((prevState) => {
         return { ...prevState, deck: updatedDeck };
       });
-      dropDeckCard({ variables: { input } });
     }
+    dropDeckCard(oldLaneId, newLaneId, cardId, addedIndex);
   };
 
   const handleLaneClicked = (laneId: string) => {
@@ -353,31 +179,12 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
 
   const handleLaneDragEnd = (oldIndex: number, newIndex: number, lane: Lane) => {
     if (deck) {
-      const input: GQLDropDeckLaneInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId,
-        laneId: lane.id,
-        newIndex,
-      };
       const updatedDeck = moveLaneInDeck(deck, oldIndex, newIndex);
       setState((prevState) => {
         return { ...prevState, deck: updatedDeck };
       });
-      dropDeckLane({ variables: { input } });
     }
-  };
-
-  const handleLaneCollapsedUpdate = (laneId: string, collapsed: boolean) => {
-    const input: GQLChangeLaneCollapsedStateInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      laneId,
-      collapsed,
-    };
-
-    changeLaneCollapsedState({ variables: { input } });
+    dropDeckLane(newIndex, lane);
   };
 
   let content: JSX.Element | null = null;
@@ -398,13 +205,13 @@ export const DeckRepresentation = ({ editingContextId, representationId }: Repre
         representationId={representationId}
         data={data}
         onCardClick={handleCardClicked}
-        onCardDelete={handleDeleteCard}
-        onCardAdd={handleCreateCard}
+        onCardDelete={deleteCard}
+        onCardAdd={createCard}
         onCardUpdate={handleEditCard}
         onCardMoveAcrossLanes={handleDropDeckCard}
         onLaneClick={handleLaneClicked}
         onLaneUpdate={handleEditLane}
-        onLaneCollapseUpdate={handleLaneCollapsedUpdate}
+        onLaneCollapseUpdate={changeLaneCollapsedState}
         handleLaneDragEnd={handleLaneDragEnd}
       />
     );

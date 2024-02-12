@@ -69,4 +69,5 @@ export interface GQLCard {
   title: string;
   label: string;
   description: string;
+  visible: boolean;
 }

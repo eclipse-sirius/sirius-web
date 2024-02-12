@@ -42,6 +42,7 @@ type Card {
   title: String!
   label: String!
   description: String!
+  visible: Boolean!
 }
 
 extend type Mutation {
@@ -52,6 +53,7 @@ extend type Mutation {
   editDeckLane(input: EditDeckLaneInput!): EditDeckLanePayload
   dropDeckLane(input: DropDeckLaneInput!): DropDeckLanePayload
   changeLaneCollapsedState(input: ChangeLaneCollapsedStateInput!): ChangeLaneCollapsedStatePayload
+  changeCardsVisibility(input: ChangeCardsVisibilityInput!): ChangeCardsVisibilityPayload
 }
 
 input CreateDeckCardInput {
@@ -125,3 +127,12 @@ input ChangeLaneCollapsedStateInput {
   collapsed: Boolean!
 }
 union ChangeLaneCollapsedStatePayload = SuccessPayload | ErrorPayload
+
+input ChangeCardsVisibilityInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  visibleCardsIds: [String!]!
+  hiddenCardsIds: [String!]!
+}
+union ChangeCardsVisibilityPayload = SuccessPayload | ErrorPayload
