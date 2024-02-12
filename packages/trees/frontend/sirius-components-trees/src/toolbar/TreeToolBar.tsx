@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { SwapHoriz as SwapHorizIcon } from '@material-ui/icons';
 import React from 'react';
+import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
 import { TreeToolBarProps } from './TreeToolBar.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
@@ -37,14 +38,21 @@ export const TreeToolBar = ({
   editingContextId,
   onSynchronizedClick,
   synchronized,
+  treeFilters,
+  onTreeFilterMenuItemClick,
   treeToolBarContributionComponents,
   readOnly,
 }: TreeToolBarProps) => {
   const classes = useTreeToolbarStyles();
 
-  const preferenceButtonSynchroniseTitle = synchronized
-    ? 'Disable synchronisation with representation'
-    : 'Enable synchronisation with representation';
+  let treeFiltersMenu: JSX.Element;
+  if (treeFilters.length > 0) {
+    treeFiltersMenu = <TreeFiltersMenu filters={treeFilters} onTreeFilterMenuItemClick={onTreeFilterMenuItemClick} />;
+  }
+
+  const preferenceButtonSynchronizeTitle = synchronized
+    ? 'Disable synchronization with representation'
+    : 'Enable synchronization with representation';
   return (
     <>
       <div className={classes.toolbar}>
@@ -57,13 +65,14 @@ export const TreeToolBar = ({
           const element = React.createElement(component, props);
           return element;
         })}
+        {treeFiltersMenu}
         <IconButton
           color="inherit"
           size="small"
-          aria-label={preferenceButtonSynchroniseTitle}
-          title={preferenceButtonSynchroniseTitle}
+          aria-label={preferenceButtonSynchronizeTitle}
+          title={preferenceButtonSynchronizeTitle}
           onClick={onSynchronizedClick}
-          data-testid="tree-synchronise">
+          data-testid="tree-synchronize">
           <SwapHorizIcon color={synchronized ? 'inherit' : 'disabled'} />
         </IconButton>
       </div>

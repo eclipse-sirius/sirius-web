@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.api.representations.ITransientRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 
 import graphql.execution.DataFetcherResult;
@@ -47,13 +48,16 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
 
     private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
 
-    private final IRepresentationService representationService;
-
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public EditingContextRepresentationDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IRepresentationService representationService) {
+    private final IRepresentationService representationService;
+
+    private final ITransientRepresentationMetadataSearchService transientRepresentationMetadataSearchService;
+
+    public EditingContextRepresentationDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IRepresentationService representationService, ITransientRepresentationMetadataSearchService transientRepresentationMetadataSearchService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
         this.representationService = Objects.requireNonNull(representationService);
+        this.transientRepresentationMetadataSearchService =  Objects.requireNonNull(transientRepresentationMetadataSearchService);
     }
 
     @Override
@@ -65,7 +69,6 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);
         // Search among the active representations first. They are already loaded in memory and include transient
         // representations.
-        // @formatter:off
         var representationMetadata = this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
                     .flatMap(editingContextEventProcessor -> editingContextEventProcessor.getRepresentationEventProcessors().stream())
                     .filter(editingContextEventProcessor -> editingContextEventProcessor.getRepresentation().getId().equals(representationId))
@@ -77,9 +80,9 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
                                                           representation.getDescriptionId());
                     })
                     .findFirst();
-        // @formatter:on
-
-        // @formatter:off
+        if (representationMetadata.isEmpty()) {
+            representationMetadata = this.transientRepresentationMetadataSearchService.findTransientRepresentationById(representationId);
+        }
         if (representationMetadata.isEmpty()) {
             representationMetadata = this.representationService.getRepresentationDescriptorForProjectId(editingContextId, representationId)
                     .map(RepresentationDescriptor::getRepresentation)
@@ -93,6 +96,5 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
                 .data(representationMetadata.orElse(null))
                 .localContext(localContext)
                 .build();
-        // @formatter:on
     }
 }

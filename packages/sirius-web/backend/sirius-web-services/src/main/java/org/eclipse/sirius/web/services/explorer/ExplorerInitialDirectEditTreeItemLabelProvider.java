@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.services.explorer;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.trees.api.IInitialDirectEditTreeItemLabelProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelInput;
@@ -32,15 +31,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExplorerInitialDirectEditTreeItemLabelProvider implements IInitialDirectEditTreeItemLabelProvider {
 
-    public static final String EXPLORER_DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
-
-    public static final String EXPLORER_DOCUMENT_KIND = "siriusComponents://representation?type=Tree";
-
-    public static final String EXPLORER_NAME = "Explorer";
-
     @Override
     public boolean canHandle(Tree tree) {
-        return tree.getId().startsWith("explorer://");
+        return tree.getId().startsWith(ExplorerDescriptionProvider.REPRESENTATION_ID);
     }
 
     @Override

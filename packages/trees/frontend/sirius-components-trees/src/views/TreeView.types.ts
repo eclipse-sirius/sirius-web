@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ export interface TreeViewComponentProps extends WorkbenchViewComponentProps {
   treeId: string;
   enableMultiSelection: boolean;
   synchronizedWithSelection: boolean;
+  activeFilterIds: string[];
   textToHighlight: string | null;
   textToFilter: string | null;
   markedItemIds?: string[];
@@ -33,6 +34,7 @@ export interface GQLTreeEventInput {
   treeId: string;
   editingContextId: string;
   expanded: string[];
+  activeFilterIds: string[];
 }
 
 export interface GQLTreeEventData {

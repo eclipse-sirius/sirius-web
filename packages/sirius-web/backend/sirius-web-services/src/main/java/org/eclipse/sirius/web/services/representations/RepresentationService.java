@@ -24,19 +24,22 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDeletionService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.api.representations.ITransientRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
-import org.eclipse.sirius.web.services.explorer.ExplorerInitialDirectEditTreeItemLabelProvider;
+import org.eclipse.sirius.web.services.explorer.ExplorerDescriptionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -50,7 +53,7 @@ import io.micrometer.core.instrument.Timer;
  * @author gcoutable
  */
 @Service
-public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IDanglingRepresentationDeletionService {
+public class RepresentationService implements IRepresentationService, IRepresentationPersistenceService, IDanglingRepresentationDeletionService, ITransientRepresentationMetadataSearchService {
 
     private static final String TIMER_NAME = "siriusweb_representation_save";
 
@@ -94,14 +97,12 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public List<RepresentationDescriptor> getRepresentationDescriptorsForProjectId(String projectId) {
-        // @formatter:off
         return new IDParser().parse(projectId)
                 .map(this.representationRepository::findAllByProjectId)
                 .orElseGet(List::of)
                 .stream()
                 .map(new RepresentationMapper(this.objectMapper)::toDTO)
                 .collect(Collectors.toUnmodifiableList());
-        // @formatter:on
     }
 
     @Override
@@ -149,10 +150,8 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public Optional<RepresentationDescriptor> getRepresentation(UUID representationId) {
-        // @formatter:off
         return this.representationRepository.findById(representationId)
                 .map(new RepresentationMapper(this.objectMapper)::toDTO);
-        // @formatter:off
     }
 
     @Override
@@ -183,8 +182,9 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
-        if (representationId.startsWith("explorer://")) {
-            return Optional.of(new RepresentationMetadata(ExplorerInitialDirectEditTreeItemLabelProvider.EXPLORER_DESCRIPTION_ID, ExplorerInitialDirectEditTreeItemLabelProvider.EXPLORER_DOCUMENT_KIND, ExplorerInitialDirectEditTreeItemLabelProvider.EXPLORER_NAME, representationId));
+        Optional<RepresentationMetadata> transientRepresentation = this.findTransientRepresentationById(representationId);
+        if (transientRepresentation.isPresent()) {
+            return transientRepresentation;
         }
         return new IDParser().parse(representationId)
                 .flatMap(this.representationRepository::findById)
@@ -202,12 +202,23 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     @Override
     public List<RepresentationMetadata> findAllByTargetObjectId(IEditingContext editingContext, String targetObjectId) {
-        // @formatter:off
         return this.representationRepository.findAllByTargetObjectId(targetObjectId).stream()
                 .map(new RepresentationMapper(this.objectMapper)::toDTO)
                 .map(RepresentationDescriptor::getRepresentation)
                 .map(representation -> this.findByRepresentation(representation).get())
                 .toList();
-        // @formatter:on
+    }
+
+    @Override
+    public Optional<RepresentationMetadata> findTransientRepresentationById(String representationId) {
+        Optional<RepresentationMetadata> representationMetadata = Optional.empty();
+        if (representationId.startsWith(ExplorerDescriptionProvider.REPRESENTATION_ID)) {
+            representationMetadata = Optional.of(new RepresentationMetadata(ExplorerDescriptionProvider.REPRESENTATION_ID, Tree.KIND, ExplorerDescriptionProvider.REPRESENTATION_NAME, ExplorerDescriptionProvider.DESCRIPTION_ID));
+        } else if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_CONTAINER_KIND)) {
+            representationMetadata = Optional.of(new RepresentationMetadata(ModelBrowsersDescriptionProvider.MODEL_BROWSER_CONTAINER_KIND, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.CONTAINER_DESCRIPTION_ID));
+        } else if (representationId.startsWith(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_KIND)) {
+            representationMetadata = Optional.of(new RepresentationMetadata(ModelBrowsersDescriptionProvider.MODEL_BROWSER_REFERENCE_KIND, Tree.KIND, ModelBrowsersDescriptionProvider.REPRESENTATION_NAME, ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID));
+        }
+        return representationMetadata;
     }
 }

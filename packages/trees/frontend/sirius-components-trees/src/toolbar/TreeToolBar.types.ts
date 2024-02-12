@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo and others.
+ * Copyright (c) 2023, 2024 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { TreeFilter } from '../views/ExplorerView.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
 
 export interface TreeToolBarProps {
+  editingContextId: string;
   synchronized: boolean;
   onSynchronizedClick: () => void;
-  editingContextId: string;
+  treeFilters: TreeFilter[];
+  onTreeFilterMenuItemClick: (filters: TreeFilter[]) => void;
   treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => JSX.Element)[];
   readOnly: boolean;
 }

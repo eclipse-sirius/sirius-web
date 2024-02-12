@@ -42,9 +42,9 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
+import org.eclipse.sirius.web.application.images.ImageConstants;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IRenameTreeItemHandler;
-import org.eclipse.sirius.web.application.images.ImageConstants;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +59,10 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     public static final String DESCRIPTION_ID = "explorer_tree_description";
 
     public static final String DOCUMENT_KIND = "siriusWeb://document";
+
+    public static final String REPRESENTATION_ID = "explorer://";
+
+    public static final String REPRESENTATION_NAME = "Explorer";
 
     private final IObjectService objectService;
 
@@ -87,11 +91,11 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         Predicate<VariableManager> canCreatePredicate = variableManager -> variableManager.get("treeId", String.class)
-                .map(treeId -> treeId.startsWith("explorer://"))
+                .map(treeId -> treeId.startsWith(REPRESENTATION_ID))
                 .orElse(false);
 
         var explorerTreeDescription = TreeDescription.newTreeDescription(DESCRIPTION_ID)
-                .label("Explorer")
+                .label(REPRESENTATION_NAME)
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)

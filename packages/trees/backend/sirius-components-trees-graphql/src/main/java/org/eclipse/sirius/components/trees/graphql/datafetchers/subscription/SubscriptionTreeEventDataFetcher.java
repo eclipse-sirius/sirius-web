@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class SubscriptionTreeEventDataFetcher implements IDataFetcherWithFieldCo
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, TreeEventInput.class);
-        var treeConfiguration = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded());
+        var treeConfiguration = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded(), input.activeFilterIds());
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());

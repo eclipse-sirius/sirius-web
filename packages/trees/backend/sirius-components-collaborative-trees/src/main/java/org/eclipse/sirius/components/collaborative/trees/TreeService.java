@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ public class TreeService implements ITreeService {
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, treeCreationParameters.getId());
         variableManager.put(IEditingContext.EDITING_CONTEXT, treeCreationParameters.getEditingContext());
         variableManager.put(TreeRenderer.EXPANDED, treeCreationParameters.getExpanded());
+        variableManager.put(TreeRenderer.ACTIVE_FILTER_IDS, treeCreationParameters.getActiveFilterIds());
 
         TreeRenderer treeRenderer = new TreeRenderer(variableManager, treeCreationParameters.getTreeDescription());
         return treeRenderer.render();

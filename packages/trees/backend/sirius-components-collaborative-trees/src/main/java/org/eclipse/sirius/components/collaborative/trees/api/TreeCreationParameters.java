@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public final class TreeCreationParameters {
 
     private TreeDescription treeDescription;
 
+    private List<String> activeFilterIds;
+
     private List<String> expanded;
 
     private IEditingContext editingContext;
@@ -47,6 +49,10 @@ public final class TreeCreationParameters {
         return this.treeDescription;
     }
 
+    public List<String> getActiveFilterIds() {
+        return this.activeFilterIds;
+    }
+
     public List<String> getExpanded() {
         return this.expanded;
     }
@@ -61,8 +67,8 @@ public final class TreeCreationParameters {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, treeDescriptionId: {2}, expanded: {3}'}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.treeDescription.getId(), this.expanded);
+        String pattern = "{0} '{'id: {1}, treeDescriptionId: {2}, activeFilterIds: {3}, expanded: {4}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.treeDescription.getId(), this.activeFilterIds, this.expanded);
     }
 
     /**
@@ -76,6 +82,8 @@ public final class TreeCreationParameters {
 
         private TreeDescription treeDescription;
 
+        private List<String> activeFilterIds;
+
         private List<String> expanded;
 
         private IEditingContext editingContext;
@@ -86,6 +94,11 @@ public final class TreeCreationParameters {
 
         public Builder treeDescription(TreeDescription treeDescription) {
             this.treeDescription = Objects.requireNonNull(treeDescription);
+            return this;
+        }
+
+        public Builder activeFilterIds(List<String> activeFilterIds) {
+            this.activeFilterIds = Objects.requireNonNull(activeFilterIds);
             return this;
         }
 
@@ -103,6 +116,7 @@ public final class TreeCreationParameters {
             TreeCreationParameters treeCreationParameters = new TreeCreationParameters();
             treeCreationParameters.id = Objects.requireNonNull(this.id);
             treeCreationParameters.treeDescription = Objects.requireNonNull(this.treeDescription);
+            treeCreationParameters.activeFilterIds = Objects.requireNonNull(this.activeFilterIds);
             treeCreationParameters.expanded = Objects.requireNonNull(this.expanded);
             treeCreationParameters.editingContext = Objects.requireNonNull(this.editingContext);
             return treeCreationParameters;

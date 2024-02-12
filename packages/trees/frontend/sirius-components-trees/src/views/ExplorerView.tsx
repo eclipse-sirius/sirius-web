@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,10 @@ import { TreeToolBar } from '../toolbar/TreeToolBar';
 import { TreeToolBarContext } from '../toolbar/TreeToolBarContext';
 import { TreeToolBarContextValue } from '../toolbar/TreeToolBarContext.types';
 import { FilterBar } from '../trees/FilterBar';
-import { ExplorerViewState } from './ExplorerView.types';
+import { ExplorerViewState, TreeFilter } from './ExplorerView.types';
 import { useExplorerViewConfiguration } from './ExplorerViewConfiguration';
 import { TreeView } from './TreeView';
+import { useTreeFilters } from './useTreeFilters';
 
 const useStyles = makeStyles((theme) => ({
   treeView: {
@@ -33,19 +34,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ExplorerView = (props: WorkbenchViewComponentProps) => {
+export const ExplorerView = ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
   const styles = useStyles();
   const { converter } = useExplorerViewConfiguration();
+
   const initialState: ExplorerViewState = {
     synchronizedWithSelection: true,
     filterBar: false,
     filterBarText: '',
     filterBarTreeFiltering: false,
+    treeFilters: [],
   };
   const [state, setState] = useState<ExplorerViewState>(initialState);
   const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
     (contribution) => contribution.props.component
   );
+
+  const { loading, treeFilters } = useTreeFilters(editingContextId, 'explorer://');
+
+  useEffect(() => {
+    if (!loading) {
+      const allFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
+        id: gqlTreeFilter.id,
+        label: gqlTreeFilter.label,
+        state: gqlTreeFilter.defaultState,
+      }));
+      setState((prevState) => ({ ...prevState, treeFilters: allFilters }));
+    }
+  }, [loading, treeFilters]);
 
   const treeElement = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -93,25 +109,37 @@ export const ExplorerView = (props: WorkbenchViewComponentProps) => {
       />
     );
   }
+
+  const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
+
   return (
     <div className={styles.treeView} ref={treeElement}>
       <TreeToolBar
-        {...props}
+        editingContextId={editingContextId}
+        readOnly={readOnly}
         onSynchronizedClick={() =>
           setState((prevState) => {
             return { ...prevState, synchronizedWithSelection: !state.synchronizedWithSelection };
           })
         }
         synchronized={state.synchronizedWithSelection}
+        treeFilters={state.treeFilters}
+        onTreeFilterMenuItemClick={(treeFilters) =>
+          setState((prevState) => {
+            return { ...prevState, treeFilters };
+          })
+        }
         treeToolBarContributionComponents={treeToolBarContributionComponents}
       />
       <div className={styles.treeContent}>
         {filterBar}
         <TreeView
-          {...props}
-          treeId="explorer://"
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          treeId={'explorer://'}
           enableMultiSelection={true}
           synchronizedWithSelection={state.synchronizedWithSelection}
+          activeFilterIds={activeTreeFilterIds}
           textToHighlight={state.filterBarText}
           textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
           converter={converter}
