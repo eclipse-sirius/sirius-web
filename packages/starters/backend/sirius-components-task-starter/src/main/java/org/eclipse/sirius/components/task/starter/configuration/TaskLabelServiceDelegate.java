@@ -14,30 +14,27 @@ package org.eclipse.sirius.components.task.starter.configuration;
 
 import java.util.Optional;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IObjectServiceDelegate;
-import org.eclipse.sirius.components.emf.services.DefaultObjectService;
+import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.emf.services.DefaultLabelService;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
-import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.ext.emf.edit.EditingDomainServices;
 import org.springframework.stereotype.Service;
 
 /**
- * This class allows to override {@link IObjectService} behavior.
+ * This class allows to override {@link IObjectSearchService} behavior.
  *
  * @author Laurent Fasani
  */
 @Service
-public class TaskObjectServiceDelegate extends DefaultObjectService implements IObjectServiceDelegate {
+public class TaskLabelServiceDelegate extends DefaultLabelService implements ILabelServiceDelegate {
 
     private EditingDomainServices editingDomainServices = new EditingDomainServices();
 
-    public TaskObjectServiceDelegate(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
-        super(emfKindService, composedAdapterFactory, labelFeatureProviderRegistry);
+    public TaskLabelServiceDelegate(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry) {
+        super(labelFeatureProviderRegistry, composedAdapterFactory);
     }
 
     @Override
@@ -46,14 +43,9 @@ public class TaskObjectServiceDelegate extends DefaultObjectService implements I
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext) {
-        return false;
-    }
-
-    @Override
     public String getLabel(Object object) {
         if (object instanceof TaskTag tag) {
-            return this.editingDomainServices.getLabelProviderText((EObject) object);
+            return this.editingDomainServices.getLabelProviderText(tag);
         } else {
             return super.getLabel(object);
         }
@@ -62,7 +54,7 @@ public class TaskObjectServiceDelegate extends DefaultObjectService implements I
     @Override
     public String getFullLabel(Object object) {
         if (object instanceof TaskTag tag) {
-            return this.editingDomainServices.getLabelProviderText((EObject) object);
+            return this.editingDomainServices.getLabelProviderText(tag);
         } else {
             return super.getFullLabel(object);
         }
@@ -71,7 +63,7 @@ public class TaskObjectServiceDelegate extends DefaultObjectService implements I
     @Override
     public Optional<String> getLabelField(Object object) {
         if (object instanceof TaskTag tag) {
-            return Optional.of(this.editingDomainServices.getLabelProviderText((EObject) object));
+            return Optional.of(this.editingDomainServices.getLabelProviderText(tag));
         } else {
             return super.getLabelField(object);
         }

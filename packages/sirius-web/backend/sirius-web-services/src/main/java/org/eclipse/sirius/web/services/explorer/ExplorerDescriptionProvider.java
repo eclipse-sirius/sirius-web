@@ -74,7 +74,7 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
     private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
 
     public ExplorerDescriptionProvider(IObjectService objectService, IURLParser urlParser, IRepresentationService representationService,
-            List<IRepresentationImageProvider> representationImageProviders, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
+                                       List<IRepresentationImageProvider> representationImageProviders, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
         this.objectService = Objects.requireNonNull(objectService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.representationService = Objects.requireNonNull(representationService);
@@ -269,7 +269,7 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
                     var representationMetadata = new ArrayList<>(this.representationService.findAllByTargetObjectId(editingContext, id));
                     representationMetadata.sort((metadata1, metadata2) -> metadata1.getLabel().compareTo(metadata2.getLabel()));
                     result.addAll(representationMetadata);
-                    List<Object> contents = this.objectService.getContents(editingContext, id);
+                    List<Object> contents = this.objectService.getContents(self);
                     result.addAll(contents);
                 }
             }

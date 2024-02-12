@@ -35,15 +35,23 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.components.core.URLParser;
-import org.eclipse.sirius.components.core.api.IDefaultObjectService;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.services.ComposedObjectService;
-import org.eclipse.sirius.components.emf.services.DefaultObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.services.ComposedContentService;
+import org.eclipse.sirius.components.core.services.ComposedIdentityService;
+import org.eclipse.sirius.components.core.services.ComposedLabelService;
+import org.eclipse.sirius.components.core.services.ComposedObjectSearchService;
+import org.eclipse.sirius.components.core.services.ObjectService;
+import org.eclipse.sirius.components.emf.services.DefaultContentService;
+import org.eclipse.sirius.components.emf.services.DefaultIdentityService;
+import org.eclipse.sirius.components.emf.services.DefaultLabelService;
+import org.eclipse.sirius.components.emf.services.DefaultObjectSearchService;
 import org.eclipse.sirius.components.emf.services.EMFKindService;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
@@ -67,6 +75,7 @@ import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.util.FormAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewAdapterFactory;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.StaticApplicationContext;
@@ -273,14 +282,22 @@ public class DynamicWidgetsTests {
         View wrapperView = ViewFactory.eINSTANCE.createView();
         wrapperView.getDescriptions().add(formDescription);
 
-        IDefaultObjectService defaultObjectService = new DefaultObjectService(new EMFKindService(new URLParser()), this.composedAdapterFactory, new LabelFeatureProviderRegistry());
-        IObjectService objectService = new ComposedObjectService(List.of(), defaultObjectService);
+        ILabelService labelService = new ComposedLabelService(List.of(), new DefaultLabelService(new LabelFeatureProviderRegistry(), this.composedAdapterFactory));
+        IContentService contentService = new ComposedContentService(List.of(), new DefaultContentService(this.composedAdapterFactory));
+        IIdentityService iIdentityService = new ComposedIdentityService(List.of(), new DefaultIdentityService(new EMFKindService(new URLParser())));
+        IObjectSearchService iObjectServices = new ComposedObjectSearchService(List.of(), new DefaultObjectSearchService());
+
+        ObjectService objectService = new ObjectService(labelService, contentService, iIdentityService, iObjectServices);
+
         IEditService.NoOp editService = new IEditService.NoOp();
         ViewFormDescriptionConverter formDescriptionConverter = new ViewFormDescriptionConverter(objectService, editService, new IFormIdProvider.NoOp(), List.of(), new IFeedbackMessageService.NoOp());
 
         var applicationContext = new StaticApplicationContext();
-        applicationContext.registerBean(DefaultObjectService.class, new EMFKindService(new URLParser()), this.composedAdapterFactory, new LabelFeatureProviderRegistry());
-        applicationContext.registerBean(ComposedObjectService.class, List.of(), defaultObjectService);
+        applicationContext.registerBean(DefaultLabelService.class);
+        applicationContext.registerBean(DefaultContentService.class);
+        applicationContext.registerBean(DefaultIdentityService.class);
+        applicationContext.registerBean(DefaultObjectSearchService.class);
+        applicationContext.registerBean(ObjectService.class, labelService, contentService, iIdentityService, iObjectServices);
         applicationContext.registerBean(editService.getClass());
 
         var viewConverter = new ViewConverter(List.of(), List.of(formDescriptionConverter), applicationContext, objectService);

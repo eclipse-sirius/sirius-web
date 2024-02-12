@@ -1,0 +1,76 @@
+= ADR-134 - Split IObjectService in multiples services.
+
+== Context
+
+Following `ADR-113 - Add support for multiple IObjectService`, we can define multiple `IObjectService` instances.
+
+In practice we could now have one specialized ObjectService for each semantic element. 
+The issue is that the interface `IObjectService` still assumes that we are working with eObject for methods like getContents and getObject.
+We want to be able to call these methods on other types of objects.
+
+The candHandle method used to choose which implementation we use should also have objectId as a parameter. See https://github.com/eclipse-sirius/sirius-web/issues/3036[IObjectServiceDelegate are not composable]
+
+Another issue is that when implementing a new ObjectService we must implement every method of the interface, we still offer a DefaultObjectService that can be extended to avoid this, but it would be even better if we could implement just the method we need.
+
+== Decisions
+
+We will add several interfaces that will allow us to implement the methods previously found in objectService.
+
+* Add a new `IObjectSearchService`.
+
+[source,java]
+----
+public interface IObjectSearchService {
+    Optional<Object> getObject(IEditingContext editingContext, String objectId);
+}
+----
+* Add a new `IContentService`.
+
+[source,java]
+----
+public interface IContentService {
+    List<Object> getContents(Object object);
+}
+----
+* Add a new `IIdentityService`.
+
+[source,java]
+----
+public interface IIdentityService {
+    String getId(Object object);
+    String getKind(Object object);
+}
+----
+* Add a new `ILabelService`.
+
+[source,java]
+----
+public interface ILabelService {
+    String getLabel(Object object);
+    String getFullLabel(Object object);
+    Optional<String> getLabelField(Object object);
+    boolean isLabelEditable(Object object);
+    List<String> getImagePath(Object object);
+}
+----
+
+We will also use the same mechanism used in ADR-113 :
+
+Each service will have a default implementation using IDefaultLabelService, IDefaultIdentityService, IDefaultContentService, IDefaultObjectSearchService.
+Each service will have a DelagateService that will be used to check if a custom implementation exists, if it does not exist we fallback to the default implementation. 
+
+== Status
+
+To be reviewed
+
+== Consequences
+
+Some existing code using IObjectService may be broken.
+We will add use `ObjectService` to aggregate all smaller services for now, that will allow us to keep the same behavior as before without modifying too much source code.
+
+[source,java]
+----
+public interface IObjectService {
+    // All methods from ILabelService, IContentService, IIdentityService, IObjectSearchService 
+}
+----

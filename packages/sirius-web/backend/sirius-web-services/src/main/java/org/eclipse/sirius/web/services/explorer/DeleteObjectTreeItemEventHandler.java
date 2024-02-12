@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -40,12 +40,12 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
 
     private final Logger logger = LoggerFactory.getLogger(DeleteObjectTreeItemEventHandler.class);
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IEditService editService;
 
-    public DeleteObjectTreeItemEventHandler(IObjectService objectService, IEditService editService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DeleteObjectTreeItemEventHandler(IObjectSearchService objectSearchService, IEditService editService) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.editService = Objects.requireNonNull(editService);
     }
 
@@ -56,7 +56,7 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
 
     @Override
     public IStatus handle(IEditingContext editingContext, TreeItem treeItem) {
-        Optional<Object> optionalObject = this.objectService.getObject(editingContext, treeItem.getId());
+        Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, treeItem.getId());
         if (optionalObject.isPresent()) {
             Object object = optionalObject.get();
             this.editService.delete(object);

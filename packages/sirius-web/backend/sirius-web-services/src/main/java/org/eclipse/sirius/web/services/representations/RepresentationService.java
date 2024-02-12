@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.api.IDanglingRepresentationDe
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.representations.ISemanticRepresentation;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
@@ -54,7 +54,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     private static final String TIMER_NAME = "siriusweb_representation_save";
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IProjectRepository projectRepository;
 
@@ -66,9 +66,8 @@ public class RepresentationService implements IRepresentationService, IRepresent
 
     private final Logger logger = LoggerFactory.getLogger(RepresentationService.class);
 
-    public RepresentationService(IObjectService objectService, IProjectRepository projectRepository, IRepresentationRepository representationRepository, ObjectMapper objectMapper,
-            MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public RepresentationService(IObjectSearchService objectSearchService, IProjectRepository projectRepository, IRepresentationRepository representationRepository, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.representationRepository = Objects.requireNonNull(representationRepository);
         this.objectMapper = Objects.requireNonNull(objectMapper);
@@ -171,7 +170,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
         if (representation instanceof ISemanticRepresentation) {
             ISemanticRepresentation semanticRepresentation = (ISemanticRepresentation) representation;
             String targetObjectId = semanticRepresentation.getTargetObjectId();
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, targetObjectId);
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, targetObjectId);
             return optionalObject.isEmpty();
         }
         return false;
