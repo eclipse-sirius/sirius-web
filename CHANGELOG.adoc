@@ -118,6 +118,7 @@ They still support returning an `java.time.Instant` object directly.
 - Facilitate the insertion of elements into a list node
 - Add support to filter elements on a diagram
 - Add filters on the explorer view
+- Add support for overflow label strategies
 
 === Architectural decision records
 
