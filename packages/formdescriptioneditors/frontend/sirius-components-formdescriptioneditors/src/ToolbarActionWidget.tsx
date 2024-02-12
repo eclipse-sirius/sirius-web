@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import {
   GQLMoveToolbarActionMutationVariables,
 } from './FormDescriptionEditorEventFragment.types';
 import { ToolbarActionProps, ToolbarActionState } from './ToolbarActionWidget.types';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
   style: {
@@ -109,13 +110,9 @@ const useStyles = makeStyles<Theme, ButtonStyleProps>((theme) => ({
 const isErrorPayload = (payload: GQLDeleteToolbarActionPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-export const ToolbarActionWidget = ({
-  editingContextId,
-  representationId,
-  toolbarActions,
-  containerId,
-  toolbarAction,
-}: ToolbarActionProps) => {
+export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction }: ToolbarActionProps) => {
+  const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
+  const noop = () => {};
   const initialState: ToolbarActionState = {
     buttonLabel: toolbarAction.buttonLabel,
     imageURL: toolbarAction.imageURL,
@@ -350,12 +347,16 @@ export const ToolbarActionWidget = ({
       <div
         data-testid={`ToolbarAction-DropArea-${toolbarAction.id}`}
         className={classes.placeholder}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        onDragEnter={readOnly ? noop : handleDragEnter}
+        onDragOver={readOnly ? noop : handleDragOver}
+        onDragLeave={readOnly ? noop : handleDragLeave}
+        onDrop={readOnly ? noop : handleDrop}
       />
-      <div onClick={handleClick} onKeyDown={handleDelete} draggable="true" onDragStart={handleDragStart}>
+      <div
+        onClick={readOnly ? noop : handleClick}
+        onKeyDown={readOnly ? noop : handleDelete}
+        draggable={!readOnly}
+        onDragStart={readOnly ? noop : handleDragStart}>
         <Button
           data-testid={toolbarAction.label}
           classes={state.selected ? { root: classes.selected } : { root: classes.style }}

@@ -63,6 +63,7 @@ import { GroupProps, GroupState } from './Group.types';
 import { ToolbarActions } from './ToolbarActions';
 import { WidgetEntry } from './WidgetEntry';
 import { isKind } from './WidgetOperations';
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const useGroupEntryStyles = makeStyles<Theme, GroupStyleProps>((theme) => ({
   group: {
@@ -149,7 +150,9 @@ const isErrorPayload = (
   payload: GQLAddWidgetPayload | GQLDeleteGroupPayload | GQLMoveGroupPayload | GQLMoveWidgetPayload
 ): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
-export const Group = ({ editingContextId, representationId, formDescriptionEditor, page, group }: GroupProps) => {
+export const Group = ({ page, group }: GroupProps) => {
+  const { editingContextId, representationId, readOnly } = useFormDescriptionEditor();
+  const noop = () => {};
   const classes = useGroupEntryStyles({
     borderStyle: group.borderStyle,
   });
@@ -453,9 +456,6 @@ export const Group = ({ editingContextId, representationId, formDescriptionEdito
   const toolbar = (
     <ToolbarActions
       data-testid={`Group-ToolbarActions-${group.id}`}
-      editingContextId={editingContextId}
-      representationId={representationId}
-      formDescriptionEditor={formDescriptionEditor}
       toolbarActions={group.toolbarActions}
       containerId={group.id}
     />
@@ -466,19 +466,19 @@ export const Group = ({ editingContextId, representationId, formDescriptionEdito
       <div
         data-testid={`Group-DropArea-${group.id}`}
         className={classes.placeholder}
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+        onDragEnter={readOnly ? noop : handleDragEnter}
+        onDragOver={readOnly ? noop : handleDragOver}
+        onDragLeave={readOnly ? noop : handleDragLeave}
+        onDrop={readOnly ? noop : handleDrop}
       />
       <GroupTooltip title={group.__typename} placement="top-end">
         <div
           data-testid={group.id}
           className={classes.group}
-          onClick={handleClick}
-          onKeyDown={handleDelete}
-          draggable="true"
-          onDragStart={handleDragStart}>
+          onClick={readOnly ? noop : handleClick}
+          onKeyDown={readOnly ? noop : handleDelete}
+          draggable={!readOnly}
+          onDragStart={readOnly ? noop : handleDragStart}>
           <div
             className={`${classes.labelAndToolbar} ${selected ? classes.selected : ''}`}
             onFocus={() =>
@@ -506,9 +506,6 @@ export const Group = ({ editingContextId, representationId, formDescriptionEdito
               .map((widget: GQLWidget) => (
                 <WidgetEntry
                   key={widget.id}
-                  editingContextId={editingContextId}
-                  representationId={representationId}
-                  formDescriptionEditor={formDescriptionEditor}
                   page={page}
                   container={group}
                   widget={widget}
@@ -520,10 +517,10 @@ export const Group = ({ editingContextId, representationId, formDescriptionEdito
           <div
             data-testid={`Group-Widgets-DropArea-${group.id}`}
             className={classes.bottomDropArea}
-            onDragEnter={handleDragEnter}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDropBottom}>
+            onDragEnter={readOnly ? noop : handleDragEnter}
+            onDragOver={readOnly ? noop : handleDragOver}
+            onDragLeave={readOnly ? noop : handleDragLeave}
+            onDrop={readOnly ? noop : handleDropBottom}>
             <Typography variant="body1">{'Drag and drop a widget here'}</Typography>
           </div>
         </div>

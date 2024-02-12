@@ -35,6 +35,7 @@ import {
   GQLSuccessPayload,
 } from '../FormDescriptionEditorEventFragment.types';
 import { WidgetEntry } from '../WidgetEntry';
+import { FormDescriptionEditorContext } from '../hooks/FormDescriptionEditorContext';
 import { DataTransfer } from './DataTransfer';
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
@@ -100,6 +101,24 @@ const emptySelection: Selection = {
 };
 
 const emptySetSelection = (_: Selection) => {};
+
+const TestContextProvider = ({ mocks, formDescriptionEditor, children }) => {
+  return (
+    <MockedProvider mocks={mocks}>
+      <FormDescriptionEditorContext.Provider
+        value={{
+          editingContextId: 'editingContextId',
+          representationId: 'formDescriptionEditorId',
+          formDescriptionEditor,
+          readOnly: false,
+        }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+          {children}
+        </SelectionContext.Provider>
+      </FormDescriptionEditorContext.Provider>
+    </MockedProvider>
+  );
+};
 
 test('should drop the Textfield in the drop area', async () => {
   const textfieldWidget: GQLTextfield = {
@@ -167,20 +186,9 @@ test('should drop the Textfield in the drop area', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [addWidgetSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-        <WidgetEntry
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          page={page}
-          container={group}
-          flexDirection={'row'}
-          flexGrow={0}
-          widget={textfieldWidget}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <WidgetEntry page={page} container={group} flexDirection={'row'} flexGrow={0} widget={textfieldWidget} />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId(`WidgetEntry-DropArea-${textfieldWidget.id}`);
@@ -264,25 +272,14 @@ test('should delete the Textfield from the drop area', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [deleteWidgetSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
       <ConfirmationDialogContext.Provider
         value={{
           showConfirmation,
         }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <WidgetEntry
-            editingContextId="editingContextId"
-            representationId="formDescriptionEditorId"
-            formDescriptionEditor={formDescriptionEditor}
-            page={page}
-            container={group}
-            flexDirection={'row'}
-            flexGrow={0}
-            widget={textfieldWidget}
-          />
-        </SelectionContext.Provider>
+        <WidgetEntry page={page} container={group} flexDirection={'row'} flexGrow={0} widget={textfieldWidget} />
       </ConfirmationDialogContext.Provider>
-    </MockedProvider>
+    </TestContextProvider>
   );
 
   const textfield1: HTMLElement = screen.getByTestId('Textfield1');
@@ -374,25 +371,14 @@ test('should delete the PieChart from the drop area', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [deleteWidgetSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
       <ConfirmationDialogContext.Provider
         value={{
           showConfirmation,
         }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <WidgetEntry
-            editingContextId="editingContextId"
-            representationId="formDescriptionEditorId"
-            formDescriptionEditor={formDescriptionEditor}
-            page={page}
-            container={group}
-            flexDirection={'row'}
-            flexGrow={0}
-            widget={pieChartWidget}
-          />
-        </SelectionContext.Provider>
+        <WidgetEntry page={page} container={group} flexDirection={'row'} flexGrow={0} widget={pieChartWidget} />
       </ConfirmationDialogContext.Provider>
-    </MockedProvider>
+    </TestContextProvider>
   );
 
   const pieChart1: HTMLElement = screen.getByTestId('PieChart1');
@@ -473,20 +459,9 @@ test('should move the existing Textfield from/into the drop area', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [moveWidgetSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-        <WidgetEntry
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-          page={page}
-          container={group}
-          flexDirection={'row'}
-          flexGrow={0}
-          widget={textfieldWidget}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <WidgetEntry page={page} container={group} flexDirection={'row'} flexGrow={0} widget={textfieldWidget} />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId(`WidgetEntry-DropArea-${textfieldWidget.id}`);

@@ -10,13 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLPage } from '@eclipse-sirius/sirius-components-forms/src';
 
-export interface PageProps {
-  page: GQLPage;
-}
+import { useContext } from 'react';
+import { FormDescriptionEditorContext } from './FormDescriptionEditorContext';
+import { FormDescriptionEditorContextValue } from './useFormDescriptionEditor.types';
 
-export interface PageState {
-  message: string | null;
-  selected: boolean;
-}
+export const useFormDescriptionEditor = (): FormDescriptionEditorContextValue => {
+  return useContext<FormDescriptionEditorContextValue>(FormDescriptionEditorContext);
+};

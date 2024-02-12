@@ -29,6 +29,7 @@ import {
   GQLSuccessPayload,
 } from '../FormDescriptionEditorEventFragment.types';
 import { PageList } from '../PageList';
+import { FormDescriptionEditorContext } from '../hooks/FormDescriptionEditorContext';
 import { DataTransfer } from './DataTransfer';
 
 crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
@@ -44,6 +45,29 @@ const emptySelection: Selection = {
 };
 
 const emptySetSelection = (_: Selection) => {};
+
+const TestContextProvider = ({ mocks, formDescriptionEditor, children }) => {
+  return (
+    <MockedProvider mocks={mocks}>
+      <ConfirmationDialogContext.Provider
+        value={{
+          showConfirmation,
+        }}>
+        <FormDescriptionEditorContext.Provider
+          value={{
+            editingContextId: 'editingContextId',
+            representationId: 'formDescriptionEditorId',
+            formDescriptionEditor,
+            readOnly: false,
+          }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            {children}
+          </SelectionContext.Provider>
+        </FormDescriptionEditorContext.Provider>
+      </ConfirmationDialogContext.Provider>
+    </MockedProvider>
+  );
+};
 
 const successPayload: GQLSuccessPayload = {
   __typename: 'SuccessPayload',
@@ -118,15 +142,9 @@ test('should drop the Page in the drop area', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [addPageSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-        <PageList
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <PageList />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId(`PageList-DropArea`);
@@ -172,20 +190,9 @@ test('should delete the Page', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [deletePageSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <ConfirmationDialogContext.Provider
-        value={{
-          showConfirmation,
-        }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <PageList
-            editingContextId="editingContextId"
-            representationId="formDescriptionEditorId"
-            formDescriptionEditor={formDescriptionEditor}
-          />
-        </SelectionContext.Provider>
-      </ConfirmationDialogContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <PageList />
+    </TestContextProvider>
   );
 
   const page1: HTMLElement = screen.getByTestId('Page-Page1');
@@ -236,15 +243,9 @@ test('should move the existing Page into the drop area', async () => {
   const mocks: MockedResponse<Record<string, any>>[] = [movePageSuccessMock];
 
   render(
-    <MockedProvider mocks={mocks}>
-      <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-        <PageList
-          editingContextId="editingContextId"
-          representationId="formDescriptionEditorId"
-          formDescriptionEditor={formDescriptionEditor}
-        />
-      </SelectionContext.Provider>
-    </MockedProvider>
+    <TestContextProvider mocks={mocks} formDescriptionEditor={formDescriptionEditor}>
+      <PageList />
+    </TestContextProvider>
   );
 
   const element: HTMLElement = screen.getByTestId(`Page-${page1.id}`);

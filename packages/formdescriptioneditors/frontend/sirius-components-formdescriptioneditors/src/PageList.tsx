@@ -34,9 +34,11 @@ import {
   GQLMovePagePayload,
 } from './FormDescriptionEditorEventFragment.types';
 import { Page } from './Page';
-import { PageListProps, PageListState } from './PageList.types';
+import { PageListState } from './PageList.types';
 import { ToolbarActions } from './ToolbarActions';
 import { isFlexboxContainer } from './WidgetOperations';
+
+import { useFormDescriptionEditor } from './hooks/useFormDescriptionEditor';
 
 const isErrorPayload = (payload: GQLAddPagePayload | GQLMovePagePayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -104,7 +106,9 @@ const a11yProps = (id: string) => {
   };
 };
 
-export const PageList = ({ editingContextId, representationId, formDescriptionEditor }: PageListProps) => {
+export const PageList = () => {
+  const { editingContextId, representationId, readOnly, formDescriptionEditor } = useFormDescriptionEditor();
+  const noop = () => {};
   const classes = usePageListStyles();
 
   const { pages } = formDescriptionEditor;
@@ -362,9 +366,6 @@ export const PageList = ({ editingContextId, representationId, formDescriptionEd
   const selectedPageToolbar = (
     <ToolbarActions
       data-testid={`Page-ToolbarActions-${state.selectedPage.id}`}
-      editingContextId={editingContextId}
-      representationId={representationId}
-      formDescriptionEditor={formDescriptionEditor}
       toolbarActions={state.selectedPage.toolbarActions}
       containerId={state.selectedPage.id}
     />
@@ -376,7 +377,7 @@ export const PageList = ({ editingContextId, representationId, formDescriptionEd
         <Tabs
           classes={{ root: classes.tabsRoot }}
           value={state.selectedPage.id}
-          onChange={onChangeTab}
+          onChange={readOnly ? noop : onChangeTab}
           variant="scrollable"
           scrollButtons="on"
           textColor="primary"
@@ -395,14 +396,14 @@ export const PageList = ({ editingContextId, representationId, formDescriptionEd
                   </div>
                 }
                 key={page.id}
-                onClick={handleClick}
-                onKeyDown={handleDelete}
-                draggable={true}
-                onDragStart={handleDragStart}
-                onDragEnter={handleDragEnter}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDropTab}
+                onClick={readOnly ? noop : handleClick}
+                onKeyDown={readOnly ? noop : handleDelete}
+                draggable={!readOnly}
+                onDragStart={readOnly ? noop : handleDragStart}
+                onDragEnter={readOnly ? noop : handleDragEnter}
+                onDragOver={readOnly ? noop : handleDragOver}
+                onDragLeave={readOnly ? noop : handleDragLeave}
+                onDrop={readOnly ? noop : handleDropTab}
               />
             );
           })}
@@ -410,20 +411,15 @@ export const PageList = ({ editingContextId, representationId, formDescriptionEd
         <div
           data-testid="PageList-DropArea"
           className={classes.rightDropArea}
-          onDragEnter={handleDragEnter}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDropArea}>
+          onDragEnter={readOnly ? noop : handleDragEnter}
+          onDragOver={readOnly ? noop : handleDragOver}
+          onDragLeave={readOnly ? noop : handleDragLeave}
+          onDrop={readOnly ? noop : handleDropArea}>
           <Typography variant="body1">{'Drag and drop a page here'}</Typography>
         </div>
         {selectedPageToolbar}
       </div>
-      <Page
-        editingContextId={editingContextId}
-        page={state.selectedPage}
-        formDescriptionEditor={formDescriptionEditor}
-        representationId={representationId}
-      />
+      <Page page={state.selectedPage} />
       <Toast
         message={message}
         open={!!message}
