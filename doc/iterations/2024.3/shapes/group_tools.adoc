@@ -1,0 +1,149 @@
+= Add initial support for tools working on groups of elements in diagrams
+
+== Problem
+
+The tools that can currently be defined in a diagram can only apply to one or two elements.
+
+* Most tools only apply to the element the user has selected and on which palette's the tool appears.
+* It is possible to have tools that take 2 elements as input using either the "edge creation tool" or by asking for an additional input element using a "Selection Description".
+Both these mechanisms are limited to 2 elements and each impose a very specific workflow/UI which is not adapted to many tools.
+
+== Key Result
+
+It should be possible for studio makers to specify tools that apply to groups of elements as a whole.
+As a concrete example, on a UML class diagram, the user should be able to select mutliple classes (or any kind of PackageElement) and be proposed with a tool "Wrap in new Package".
+
+== Solution
+
+The solution will involve two parts:
+
+1. First a new way to select a group of elements from the UI.
+2. Then the possibility for a specifier to define a new kind of tool which applies to such a group of elements.
+
+=== Group Selection
+
+We will add support for selecting multiple elements by (rectangular) zone.
+
+To select a zone, the user will need to:
+
+1. press the "Shift" key and while it is pressed:
+2. push the left mouse button to select the first corner of the zone;
+3. move the mouse (with the "Shift" key and left button still pressed) to the second corner;
+4. release the mouse button and then the Shift key.
+
+After this interaction, all the graphical elments on the diagram which are _completely inside_ the chosen zone are now selected.
+This includes nodes, edges, list items, border nodes.
+This implies that if e.g. a "class-like" container (container with compartements and individual list items inside) is selected, *all* the elements (the container, the compartments, and the list items) will be selected.
+It's up to the tool's implementation to decide how to react, for example to only apply to the container element in such a case.
+
+All the selected elements appear with the same visual style as when selected individually.
+
+If the selected zone only includes a single element, it is selected as if it had been clicked on normally and the "group tools" (all the rest of this document) do not apply.
+This means "group tools" can only be invoked on a set of at least 2 elements; specifiers who want to apply a similar behavior to individual elements can to so using plain tools as before.
+
+Once the zone selection is done, a palette appears at the current mouse location with all the tools applicable to the selection (see below for how these tools are defined and selected).
+If _no_ tool is compatible with the selection, no palette appears but an INFO-level message is displayed (with the usual user feedback mechanism) indicating "No group tool available for this selection".
+
+When group selection is active:
+
+* Clicking on one of the palette tools applies it; in the new version of the diagram received after the tool has been applied the selection is reset (empty).
+* Hitting "Esc" closes the palette but keeps the selection; hitting "Esc" a second time clears the selection.
+* Clicking on the diagram's background resets the selection and opens the diagram's palette.
+* Clicking on an individual diagram element (including one that is part of the selection) sets the selection to this specific element and only it (as usual) and opens the corresponding palette.
+
+When a group selection is active, the keyboard shortcuts likes F2 for direct edit and "Del" to invoke the element's _Delete_ tool are disabled.
+Specifiers who want to support group deletion need to define an explicit group tool for that, but it will not invokable from the keyboard.
+
+TODO: should we support "move" operations? Technically it's possible but I'm not sure our layout algorithms are ready/tested for this use case, and given the time available for this feature it does not seem reasonable to support it.
+
+=== Group Tools Definition
+
+Group tools are defined inside the palette of the diagram itself, as they can apply to selection of elements which are not all inside the same parent.
+They can only be defined at the top-level of the palette for the moment (not organised in sections).
+
+Note that GroupTools are ignored from the palette of single-selection elements, and conversely, when the selection includes multiple elements, *only* the `DiagramPalette.groupTools` are considered for the multi-selection's palette.
+
+[source]
+----
+class DiagramPalette {
+  // existing references
+  groupTools: GroupTool[*]
+}
+----
+
+[source]
+----
+class GroupTool extends Tool {
+  name : String;
+  iconURLsExpression: String;
+  selectionDescription: SelectionDescription;
+  preconditionExpression: String;
+  body: Operation;
+}
+----
+
+To determine if a particular `GroupTool` is applicable to a multi-selection, it's `preconditionExpression` is invoked with the following variables (in addition to the default ones like `editingContext` and `diagramContext`):
+- `selectedViews`: the list of selected Nodes/Edges;
+- `selectedElements`: the list of (resolved) semantic elements, in the same order as `selectedViews`.
+
+The two lists have the same size, and are "parallel".`
+The semantic element for the view at index `i` in `selectedViews` is also found at index `i` in `selectedElements`.
+
+Note that a given semantic element can appear multiple times in `selectedElements` at different indexes if the selection includes multiple graphical elements which refer to it.
+
+For example if the selection includes two nodes N1 (on element E1), N2 (on element E2) and B as a border node on N2 which targets E2 too, the lists are:
+
+- `selectedViews`: [N1, N2, B]
+- `selectedElements`: [E1, E2, E2]
+
+If the user decides to _invoke_ a compatible tool (whose `preconditionExpression` returned `true`), the tool's body is executed with the same variables.
+
+=== Group Tools Implementation
+
+The new _Group Tools_ will follow the same pattern as the existing `SingleClickOnDiagramElementTool` and `SingleClickOnTwoDiagramElementsTool`.
+
+[source]
+----
+type SingleClickOnGroupTool implements Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  selectionDescriptionId: String
+}
+----
+
+When a group selection is defined by the user, the frontent asks the backend which group tools to propose with a GraphQL Query similar to the existing `getPaletteQuery` but adapted to multi-selection.
+The query needs to take `$diagramElementIds: [ID!]!` instead of a single `$diagramElementId: ID!` as input:
+
+[source]
+----
+type DiagramDescription implements RepresentationDescription {
+  palette(diagramElementId: ID!): Palette!          // Existing query for single selection
+  groupPalette(diagramElementIds: [ID!]!): Palette! // New query for multi-selection
+}
+----
+
+For reference on how the existing query for single selection is used by the front and implemented on the back, see:
+
+* `getPaletteQuery` in `Palette.tsx` on the frontend side;
+* `DiagramDescriptionPaletteDataFetcher`, `GetPaletteInput` and `GetPaletteEventHandler` on the backend side.
+
+== Cutting Back
+
+* Add support for organizing `GroupTool`s inside `ToolSections` in the diagram's palette.
+* Add support for Ctrl-click (or Shift-single-click) fine-grained selection & de-selection of individual elements.
+Example scenario: use Shift-drag to select a whole rectangular zone, and then Ctrl-click to de-select specific elements.
+
+== Rabbit holes
+
+* Configuring/changing the default behavior of React Flow concerning Shift-drag & Ctrl-click to select zones or individual elements.
+For example, can we enable zone selection with shift-click from inside containers (and not just at the top-level)?
+* Behavior of the existing tools when multiple elements are selected.
+Should they be disabled?
+Enabled if "the same tool" (e.g. "Delete") is enabled on all selected elements, and invoked in sequence (which order? by the front or the back?) on every element?
+Same as above but only if the tool is declared "group-compatible"?
+* What should be the behavior of the existing diagram interactions when multiple elements are selected: move (incl. DnD), resize, delete, direct-edit...
+
+== No-gos
+
+* Support for a "for" loop in the ModelOperations. This means that for now most GroupTools implementation will need to delegate to Java.

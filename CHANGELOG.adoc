@@ -8,6 +8,7 @@
 - Facilitate the insertion of elements into a list node
 - Add support to filter elements on a diagram
 - Add filters on the explorer view
+- Add initial support for tools working on groups of elements in diagrams
 
 === Architectural decision records
 
