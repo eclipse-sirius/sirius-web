@@ -17,6 +17,7 @@ input TreeEventInput {
   treeId: String!
   editingContextId: ID!
   expanded: [String!]!
+  activeFilterIds: [String!]!
 }
 
 union TreeEventPayload = ErrorPayload | SubscribersUpdatedEventPayload | TreeRefreshedEventPayload
@@ -49,6 +50,13 @@ type TreeDescription implements RepresentationDescription {
   id: ID!
   label: String!
   initialDirectEditTreeItemLabel(treeItemId: ID!): String!
+  filters: [TreeFilter!]!
+}
+
+type TreeFilter {
+  id: ID!
+  label: String!
+  defaultState: Boolean!
 }
 
 extend type Mutation {

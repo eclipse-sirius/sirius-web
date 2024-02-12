@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,17 +29,24 @@ public class TreeConfiguration implements IRepresentationConfiguration {
 
     private final String treeId;
 
+    private final List<String> activeFilterIds;
+
     private final List<String> expanded;
 
-    public TreeConfiguration(String editingContextId, String treeId, List<String> expanded) {
-        String uniqueId = editingContextId + expanded.toString();
+    public TreeConfiguration(String editingContextId, String treeId, List<String> expanded, List<String> activeFilterIds) {
+        String uniqueId = editingContextId + expanded.toString() + activeFilterIds.toString();
         this.treeId = treeId + "&uniqueId=" + UUID.nameUUIDFromBytes(uniqueId.getBytes()).toString();
+        this.activeFilterIds = Objects.requireNonNull(activeFilterIds);
         this.expanded = Objects.requireNonNull(expanded);
     }
 
     @Override
     public String getId() {
         return this.treeId;
+    }
+
+    public List<String> getActiveFilterIds() {
+        return this.activeFilterIds;
     }
 
     public List<String> getExpanded() {

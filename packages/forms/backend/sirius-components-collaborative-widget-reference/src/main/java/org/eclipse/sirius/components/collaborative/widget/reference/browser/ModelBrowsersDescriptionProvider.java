@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -64,9 +65,15 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
 
     public static final String REFERENCE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_reference_tree_description".getBytes()).toString();
 
+    public static final String REPRESENTATION_NAME = "Model Browser";
+
     public static final String DOCUMENT_KIND = "siriusWeb://document";
 
     public static final String TREE_KIND = "modelBrowser://";
+
+    public static final String MODEL_BROWSER_CONTAINER_KIND = "modelBrowser://container";
+
+    public static final String MODEL_BROWSER_REFERENCE_KIND = "modelBrowser://reference";
 
     private final IObjectService objectService;
 
@@ -88,8 +95,8 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-        Predicate<VariableManager> containerDescriptionCanCreatePredicate = variableManager -> variableManager.get("treeId", String.class)
-                .map(treeId -> treeId.startsWith("modelBrowser://container"))
+        Predicate<VariableManager> containerDescriptionCanCreatePredicate = variableManager -> variableManager.get(TreeConfiguration.TREE_ID, String.class)
+                .map(treeId -> treeId.startsWith(MODEL_BROWSER_CONTAINER_KIND))
                 .orElse(false);
         Function<VariableManager, Boolean> containerDescriptionIsSelectableProvider = variableManager -> {
             EClass referenceKind = this.resolveReferenceEClass(variableManager).orElse(null);
@@ -97,8 +104,8 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
         };
         var containerDescription = this.getModelBrowserDescription(CONTAINER_DESCRIPTION_ID, containerDescriptionCanCreatePredicate, containerDescriptionIsSelectableProvider, this::getCreationScopeElements);
 
-        Predicate<VariableManager> referenceDescriptionCanCreatePredicate = variableManager -> variableManager.get("treeId", String.class)
-                .map(treeId -> treeId.startsWith("modelBrowser://reference"))
+        Predicate<VariableManager> referenceDescriptionCanCreatePredicate = variableManager -> variableManager.get(TreeConfiguration.TREE_ID, String.class)
+                .map(treeId -> treeId.startsWith(MODEL_BROWSER_REFERENCE_KIND))
                 .orElse(false);
         Function<VariableManager, Boolean> referenceDescriptionIsSelectableProvider = variableManager -> {
             EClass targetType = this.resolveTargetType(variableManager).orElse(null);
@@ -114,7 +121,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
             Function<VariableManager, List<?>> elementsProvider) {
 
         return TreeDescription.newTreeDescription(descriptionId)
-                .label("Model Browser")
+                .label(REPRESENTATION_NAME)
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)

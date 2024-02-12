@@ -58,7 +58,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-formdescriptioneditors-graphql", 50.0),
   new ModuleCoverage("sirius-components-trees", 81.0),
   new ModuleCoverage("sirius-components-collaborative-trees", 63.0),
-  new ModuleCoverage("sirius-components-trees-graphql", 45.0),
+  new ModuleCoverage("sirius-components-trees-graphql", 51.0),
   new ModuleCoverage("sirius-components-selection", 0.0),
   new ModuleCoverage("sirius-components-collaborative-selection", 6.0),
   new ModuleCoverage("sirius-components-selection-graphql", 20.0),
@@ -102,7 +102,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-web-customnodes", 12.0),
   new ModuleCoverage("sirius-web-customnodes-edit", 5.0),
   new ModuleCoverage("sirius-web-domain", 80.0),
-  new ModuleCoverage("sirius-web-application", 90.0),
+  new ModuleCoverage("sirius-web-application", 91.0),
   new ModuleCoverage("sirius-web-infrastructure", 85.0),
   new ModuleCoverage("sirius-web-starter", 98.0),
   new ModuleCoverage("sirius-web", 37.0)

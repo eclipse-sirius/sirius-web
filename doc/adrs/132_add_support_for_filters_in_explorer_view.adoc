@@ -39,6 +39,7 @@ type TreeDescription implements RepresentationDescription {
 type TreeFilter {
   id: ID!
   label: String!
+  defaultState: Boolean!
 }
 ```
 
@@ -69,40 +70,42 @@ Thanks to this propagation of the status of the filter, the backend will be able
 === Filtering tree items
 
 In order to filter tree items, we will need to make the description of the explorer extensible and customizable.
-For that, the `ExplorerDescriptionProvider` will need to be configured with a list of `ITreeContentProvider` and `ITreeItemContentProvider`.
-Those providers will replace the default behavior which creates an explorer showing the structure of the semantic data.
+For that, the `ExplorerDescriptionProvider` will need to be configured with a list of `IExplorerTreeAlteredContentProvider` and `IExplorerTreeItemAlteredContentProvider`.
+Those providers will allow to modify the default behavior which creates an explorer showing the structure of the semantic data.
 
 ```
 package org.eclipse.sirius.web.services.explorer.api;
 
-public interface IExplorerTreeContentProvider {
+public interface IExplorerTreeAlteredContentProvider {
   boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds);
 
-  List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds);
+  // computedElements are the elements computed by the default behavior
+  List<Object> apply(List<Object> computedElements, VariableManager variableManager);
 }
 ```
 
 ```
 package org.eclipse.sirius.web.services.explorer.api;
 
-public interface IExplorerTreeItemContentProvider {
+public interface IExplorerTreeItemAlteredContentProvider {
   boolean canHandle(Object object, List<String> activeFilterIds);
 
-  List<Object> getChildren(Object object, List<String> activeFilterIds);
+  // computedChildren are the children computed by the default behavior
+  List<Object> apply(List<Object> computedChildren, VariableManager variableManager);
 }
 ```
 
-Thanks to those two interfaces, one could contribute a new `IExplorerTreeContentProvider` to display conditionnaly some specific resources:
+Thanks to those two interfaces, one could contribute a new `IExplorerTreeAlteredContentProvider` to display conditionally some specific resources:
 
 ```
 @Service
-public class LibraryExplorerTreeContentProvider implements IExplorerTreeContentProvider {
+public class LibraryExplorerTreeContentProvider implements IExplorerTreeAlteredContentProvider {
   public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
     return // does the editing context supports what I want and is my filter active?
   }
 
-  public List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds) {
-    return // Filter some resources from the editing context and return only a subset of the resources
+  public List<Object> apply(List<Object> computedChildren, VariableManager variableManager) {
+    return // Filter some resources from the editing context and return only a subset of the resources or add new ones to the computedChildren
   }
 }
 ```
@@ -111,20 +114,18 @@ One could also filter the content of a tree item using the same approach:
 
 ```
 @Service
-public class HideSomeFeatureTreeItemContentProvider implements IExplorerTreeItemContentProvider {
+public class HideSomeFeatureTreeItemContentProvider implements IExplorerTreeItemAlteredContentProvider {
   public boolean canHandle(Object object, List<String> activeFilterIds) {
     return // is this object relevant for me and is my filter active?
   }
 
-  public List<Object> getChildren(Object object, List<String> activeFilterIds) {
+  public List<Object> apply(List<Object> computedChildren, VariableManager variableManager) {
     return // A custom subset of my containment relationships for example
   }
 }
 ```
 
-If at least one XxxContentProvider can handle the method `getElements` or `getChildren`, then we should not use the default behavior which is currently hardcoded in the `ExplorerDescriptionProvider` and which returns the structure of the semantic elements following containment relationships.
-If one specifier desire to customize the root elements and children of a specific level, we should not try to add anything more.
-
+All XxxContentProvider that can be applied will be applied with unpredicted order. Some combinations may lead to unwanted results, for example if the second provider adds elements that have been removed by the first one.
 
 == Consequences
 

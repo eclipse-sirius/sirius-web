@@ -19,8 +19,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
@@ -50,7 +52,8 @@ public class RepresentationApplicationService implements IRepresentationApplicat
     public Optional<RepresentationMetadata> findRepresentationMetadataById(String representationId) {
         return new UUIDParser().parse(representationId)
                 .flatMap(this.representationDataSearchService::findById)
-                .map(this::toRepresentationMetadata);
+                .map(this::toRepresentationMetadata)
+                .or(() -> this.findTransientRepresentationById(representationId));
     }
 
     @Override
@@ -82,5 +85,13 @@ public class RepresentationApplicationService implements IRepresentationApplicat
                 .flatMap(this.representationDataSearchService::findProjectByRepresentationId)
                 .map(AggregateReference::getId)
                 .map(UUID::toString);
+    }
+
+    private Optional<RepresentationMetadata> findTransientRepresentationById(String representationId) {
+        Optional<RepresentationMetadata> representationMetadata = Optional.empty();
+        if (representationId.startsWith(ExplorerDescriptionProvider.REPRESENTATION_ID)) {
+            representationMetadata = Optional.of(new RepresentationMetadata(ExplorerDescriptionProvider.REPRESENTATION_ID, Tree.KIND, ExplorerDescriptionProvider.REPRESENTATION_NAME, ExplorerDescriptionProvider.DESCRIPTION_ID));
+        }
+        return representationMetadata;
     }
 }

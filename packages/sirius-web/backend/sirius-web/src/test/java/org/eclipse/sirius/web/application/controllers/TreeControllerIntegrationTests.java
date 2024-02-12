@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -76,6 +78,26 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             mutation deleteTreeItem($input: DeleteTreeItemInput!) {
               deleteTreeItem(input: $input) {
                 __typename
+              }
+            }
+            """;
+
+    private static final String GET_TREE_FILTERS_QUERY = """
+            query getFilters($editingContextId: ID!, $representationId: ID!) {
+              viewer {
+                editingContext(editingContextId: $editingContextId) {
+                  representation(representationId: $representationId) {
+                    description {
+                      ... on TreeDescription {
+                        filters {
+                          id
+                          label
+                          defaultState
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
             """;
@@ -136,7 +158,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenWeSubscribeToTreeEventsOfItsExplorerThenTheTreeOfTheExplorerIsSent() {
-        var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), "explorer://", List.of());
+        var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.REPRESENTATION_ID, List.of(), List.of());
         var flux = this.graphQLRequestor.subscribe(GET_TREE_EVENT_SUBSCRIPTION, input);
 
         Predicate<Object> projectContentMatcher = object -> Optional.of(object)
@@ -158,7 +180,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenExplorerOfProjectWhenWeDeleteTreeItemsThenTheTreeIsRefreshed() {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
-        var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), "explorer://", expandedIds);
+        var input = new TreeEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(), ExplorerDescriptionProvider.REPRESENTATION_ID, expandedIds, List.of());
         var flux = this.graphQLRequestor.subscribe(GET_TREE_EVENT_SUBSCRIPTION, input);
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(rootDocumentIsNamedEcore, ePackageIsNamedSample, representationIsAPortal));
@@ -175,7 +197,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
                 .filter(tree -> tree.getChildren().isEmpty())
                 .isPresent();
 
-        var treeId = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded()).getId();
+        var treeId = new TreeConfiguration(input.editingContextId(), input.treeId(), input.expanded(), input.activeFilterIds()).getId();
 
         StepVerifier.create(flux)
                 .expectNextMatches(hasProjectContent)
@@ -236,5 +258,20 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             TestTransaction.end();
             TestTransaction.start();
         };
+    }
+
+    @Test
+    @DisplayName("Given a tree id, when we request its tree filters, then the list is returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenTreeIdWhenWeRequestItsTreeFiltersThenTheListIsReturned() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "representationId", ExplorerDescriptionProvider.REPRESENTATION_ID
+        );
+        var result = this.graphQLRequestor.execute(GET_TREE_FILTERS_QUERY, variables);
+
+        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.filters[*].id");
+        assertThat(treeFilterIds).hasSize(0);
     }
 }

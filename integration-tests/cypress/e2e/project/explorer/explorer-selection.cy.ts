@@ -35,9 +35,9 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     afterEach(() => cy.deleteProject(projectId));
 
     context('When we interact with the explorer', () => {
-      it('Then the synchronisation mode should not reveal the semantic element selected on a diagram but activating it will', () => {
-        // 1. Deactivate the synchronisation mode
-        cy.getByTestId('tree-synchronise').click();
+      it('Then the synchronization mode should not reveal the semantic element selected on a diagram but activating it will', () => {
+        // 1. Deactivate the synchronization mode
+        cy.getByTestId('tree-synchronize').click();
 
         // 2. On the diagram, click on the 'CaptureSubSystem'
         const diagram = new Diagram();
@@ -52,8 +52,8 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
         diagram.getNodes('diagram', 'DSP').click();
         explorer.getTreeItemByLabel('DSP').should('not.exist');
 
-        // 5. Activate the synchronisation mode
-        cy.getByTestId('tree-synchronise').click();
+        // 5. Activate the synchronization mode
+        cy.getByTestId('tree-synchronize').click();
 
         // 6. Check that the 'DSP' node is visible and selected
         explorer.getSelectedTreeItems().contains('DSP').should('exist');

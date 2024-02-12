@@ -36,6 +36,22 @@ describe('/projects/:projectId/edit - Tree toolbar', () => {
     afterEach(() => cy.deleteProject(projectId));
 
     context('When we interact with the explorer', () => {
+      it('Then we can enable/disable tree filters', () => {
+        cy.getByTestId('explorer://').contains('diagram');
+        cy.getByTestId('tree-filter-menu-icon').click();
+        cy.getByTestId('tree-filter-menu').should('be.visible');
+        cy.getByTestId('tree-filter-menu-checkbox-Hide Representations').click();
+        cy.getByTestId('explorer://').contains('diagram').should('not.exist');
+        cy.getByTestId('explorer://').contains('Robot').click();
+        cy.getByTestId('tree-filter-menu').should('not.exist');
+        cy.getByTestId('tree-filter-menu-icon').click();
+        cy.getByTestId('tree-filter-menu').should('be.visible');
+        cy.getByTestId('tree-filter-menu-checkbox-Hide Representations').click();
+        cy.getByTestId('explorer://').contains('Robot').click();
+        cy.getByTestId('tree-filter-menu').should('not.exist');
+        cy.getByTestId('explorer://').contains('diagram');
+      });
+
       it('Then we can open the new model modal', () => {
         cy.getByTestId('new-model').click();
 

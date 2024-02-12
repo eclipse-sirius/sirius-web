@@ -68,7 +68,7 @@ Having `Viewer` as a type did not bring any additional value and it created some
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Add `CoreImageConstants.DEFAULT_SVG` to retrieve the default svg image from `sirius-components-core` instead of the now deleted `ImageConstants.DEFAULT_SVG` from `sirius-components-compatibility`
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Move the `WidgetIdProvider` from `sirius-components-compatibility` to `sirius-components-forms` to remove unnecessary dependencies to the Sirius Desktop compatibility layer.
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Move the EMF based default description of the details view from `sirius-components-compatibility-emf` to `sirius-components-emf-forms` since there are no dependency between the default description of the details view and the Sirius Desktop compatibility layer.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3096[#3096] [tree] `TreeConfiguration` has a new parameter `List<String> activeFilterIds`.
 
 === Dependency update
 
@@ -129,6 +129,8 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3193[#3193] [form] Allow the use of custom variables in the `VariableManager` initialized by the FormDescription.
 - https://github.com/eclipse-sirius/sirius-web/issues/3193[#3193] [core] Added the methods `hasVariable(String name)` and `getParent()` in VariableManager to, respectively, detect if a variable manager defines a variable (it returns `false`, if the variable is defined by a parent `VariableManager`) and to navigate to a parent `VariableManager`.
 Thanks to this capability, a specifier can easily retrieve a variable overriden by a child `VariableManager`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3096[#3096] [tree] Tree representations can now support filters
+
 
 === Improvements
 
