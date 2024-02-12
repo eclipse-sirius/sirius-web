@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck.api;
 
+import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeCardsVisibilityInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeLaneCollapsedStateInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckLaneInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.EditDeckLaneInput;
@@ -32,6 +33,8 @@ public interface IDeckLaneService {
 
     IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput input, IEditingContext editingContext, IDeckContext deckContext);
 
+    IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, IDeckContext deckContext);
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -51,6 +54,11 @@ public interface IDeckLaneService {
 
         @Override
         public IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput input, IEditingContext editingContext, IDeckContext deckContext) {
+            return null;
+        }
+
+        @Override
+        public IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, IDeckContext deckContext) {
             return null;
         }
     }

@@ -93,4 +93,25 @@ describe('Verify the Deck Representation lanes selection and editing', () => {
       deck.getCard('Monday', 'Specification').should('exist');
     });
   });
+
+  it('We verify the card visibility with the lane context menu.', () => {
+    const deck = new Deck();
+    //We first verify if the hide works as expected
+    deck.getCard('Monday', 'Idea').should('exist');
+    deck.getCard('Monday', 'Specification').should('exist');
+    deck.changeVisibility('Monday', ['Idea', 'Specification'], true);
+    deck.getCard('Monday', 'Idea').should('not.exist');
+    deck.getCard('Monday', 'Specification').should('not.exist');
+
+    //We close and reopen the Deck representation to make sure that the hidden state is persisted.
+    deck.closeDeckRepresentation('New Daily Representation');
+    deck.getDeckRepresentation().should('not.exist');
+    new Explorer().getTreeItemByLabel('New Daily Representation').click();
+
+    deck.getCard('Monday', 'Idea').should('not.exist');
+    deck.getCard('Monday', 'Specification').should('not.exist');
+    deck.changeVisibility('Monday', ['Idea'], false);
+    deck.getCard('Monday', 'Idea').should('exist');
+    deck.getCard('Monday', 'Specification').should('not.exist');
+  });
 });

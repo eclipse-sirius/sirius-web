@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import React from 'react';
-import { Card } from '../Deck.types';
 import { DeckTagProps } from './DeckTag.types';
 
 export interface DeckCardProps {
@@ -20,7 +19,7 @@ export interface DeckCardProps {
   tagStyle: React.CSSProperties;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
   onDelete: () => void;
-  onChange: (card: Card) => void;
+  onChange: (updateCard: UpdateCardProps) => void;
   className: string;
   id: string;
   title: string;
@@ -30,4 +29,11 @@ export interface DeckCardProps {
   cardDraggable: boolean;
   editable: boolean;
   t: (value: string) => string; // the translate function passed by the Board to handle i18n
+}
+
+export interface UpdateCardProps {
+  id: string;
+  title: string;
+  label: string;
+  description: string;
 }

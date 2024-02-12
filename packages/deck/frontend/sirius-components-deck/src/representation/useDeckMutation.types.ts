@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { Card, Lane } from '../Deck.types';
 
 export interface GQLDeleteCardVariables {
   input: GQLDeleteDeckCardInput;
@@ -25,11 +26,7 @@ export interface GQLDeleteDeckCardInput {
 }
 
 export interface GQLDeleteCardData {
-  deleteDeckCard: GQLDeleteDeckCardPayload;
-}
-
-export interface GQLDeleteDeckCardPayload {
-  __typename: string;
+  deleteDeckCard: GQLPayload;
 }
 
 export interface GQLEditCardVariables {
@@ -47,11 +44,7 @@ export interface GQLEditDeckCardInput {
 }
 
 export interface GQLEditCardData {
-  editDeckCard: GQLEditDeckCardPayload;
-}
-
-export interface GQLEditDeckCardPayload {
-  __typename: string;
+  editDeckCard: GQLPayload;
 }
 
 export interface GQLCreateCardVariables {
@@ -69,11 +62,7 @@ export interface GQLCreateDeckCardInput {
 }
 
 export interface GQLCreateCardData {
-  createCard: GQLCreateDeckCardPayload;
-}
-
-export interface GQLCreateDeckCardPayload {
-  __typename: string;
+  createCard: GQLPayload;
 }
 
 export interface GQLDropDeckCardVariables {
@@ -90,11 +79,7 @@ export interface GQLDropDeckCardInput {
 }
 
 export interface GQLDropDeckCardData {
-  dropDeckCard: GQLDropDeckCardPayload;
-}
-
-export interface GQLDropDeckCardPayload {
-  __typename: string;
+  dropDeckCard: GQLPayload;
 }
 
 export interface GQLEditLaneVariables {
@@ -110,11 +95,7 @@ export interface GQLEditDeckLaneInput {
 }
 
 export interface GQLEditLaneData {
-  editDeckLane: GQLEditDeckLanePayload;
-}
-
-export interface GQLEditDeckLanePayload {
-  __typename: string;
+  editDeckLane: GQLPayload;
 }
 
 export interface GQLDropDeckLaneVariables {
@@ -129,11 +110,7 @@ export interface GQLDropDeckLaneInput {
 }
 
 export interface GQLDropDeckLaneData {
-  dropDeckLane: GQLDropDeckLanePayload;
-}
-
-export interface GQLDropDeckLanePayload {
-  __typename: string;
+  dropDeckLane: GQLPayload;
 }
 
 export interface GQLChangeLaneCollapsedStateVariables {
@@ -149,20 +126,37 @@ export interface GQLChangeLaneCollapsedStateInput {
 }
 
 export interface GQLChangeLaneCollapsedStateData {
-  changeLaneCollapsedState: GQLChangeLaneCollapsedStatePayload;
+  changeLaneCollapsedState: GQLPayload;
 }
 
-export interface GQLChangeLaneCollapsedStatePayload {
+export interface GQLChangeCardsVisibilityVariables {
+  input: GQLChangeCardsVisibilityInput;
+}
+
+export interface GQLChangeCardsVisibilityInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  visibleCardsIds: string[];
+  hiddenCardsIds: string[];
+}
+
+export interface GQLChangeCardsVisibilityData {
+  changeCardsVisibility: GQLPayload;
+}
+
+export interface GQLPayload {
   __typename: string;
+  messages: GQLMessage[];
 }
 
-export interface GQLSuccessPayload
-  extends GQLCreateDeckCardPayload,
-    GQLDeleteDeckCardPayload,
-    GQLEditDeckCardPayload,
-    GQLDropDeckCardPayload,
-    GQLEditDeckLanePayload,
-    GQLDropDeckLanePayload,
-    GQLChangeLaneCollapsedStatePayload {
-  messages: GQLMessage[];
+export interface UseDeckMutationsValue {
+  editDeckCard: (card: Card) => void;
+  createCard: (card: Card, laneId: string) => void;
+  deleteCard: (cardId: string) => void;
+  dropDeckCard: (oldLaneId: string, newLaneId: string, cardId: string, addedIndex: number) => void;
+  editDeckLane: (laneId: string, newValue: { title: string }) => void;
+  changeLaneCollapsedState: (laneId: string, collapsed: boolean) => void;
+  dropDeckLane: (newIndex: number, payload: Lane) => void;
+  changeCardsVisibility: (hiddenCardsIds: string[], visibleCardsIds: string[]) => void;
 }

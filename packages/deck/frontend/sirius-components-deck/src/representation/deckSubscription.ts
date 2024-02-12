@@ -47,6 +47,7 @@ export const deckEventSubscription = gql`
               title
               label
               description
+              visible
             }
           }
         }

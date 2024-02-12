@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.deck;
 
-/**
- * Change kind associated to the Deck representation.
- *
- * @author fbarbin
- */
-public final class DeckChangeKind {
+import React from 'react';
+import { DeckContextValue } from './DeckContext.types';
 
-    public static final String DECK_REPRESENTATION_UPDATE = "DECK_REPRESENTATION_UPDATE";
+const value: DeckContextValue = {
+  editingContextId: '',
+  deckId: '',
+};
 
-    private DeckChangeKind() {
-        // Prevent instantiation
-    }
-}
+export const DeckContext = React.createContext<DeckContextValue>(value);

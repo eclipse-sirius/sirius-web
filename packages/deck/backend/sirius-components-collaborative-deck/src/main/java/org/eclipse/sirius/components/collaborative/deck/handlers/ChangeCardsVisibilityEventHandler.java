@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckLaneService;
-import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeLaneCollapsedStateInput;
+import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeCardsVisibilityInput;
 import org.eclipse.sirius.components.collaborative.deck.message.ICollaborativeDeckMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -35,12 +35,12 @@ import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handle "Change Lane collapsed state" events.
+ * Handle "Change cards visibility" events.
  *
  * @author fbarbin
  */
 @Service
-public class ChangeLaneCollapsedStateEventHandler implements IDeckEventHandler {
+public class ChangeCardsVisibilityEventHandler implements IDeckEventHandler {
 
     private final IDeckLaneService deckLaneService;
 
@@ -48,7 +48,7 @@ public class ChangeLaneCollapsedStateEventHandler implements IDeckEventHandler {
 
     private final Counter counter;
 
-    public ChangeLaneCollapsedStateEventHandler(IDeckLaneService deckLaneService, ICollaborativeDeckMessageService messageService, MeterRegistry meterRegistry) {
+    public ChangeCardsVisibilityEventHandler(IDeckLaneService deckLaneService, ICollaborativeDeckMessageService messageService, MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
         this.deckLaneService = Objects.requireNonNull(deckLaneService);
 
@@ -59,19 +59,19 @@ public class ChangeLaneCollapsedStateEventHandler implements IDeckEventHandler {
 
     @Override
     public boolean canHandle(IDeckInput deckInput) {
-        return deckInput instanceof ChangeLaneCollapsedStateInput;
+        return deckInput instanceof ChangeCardsVisibilityInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDeckContext deckContext, IDeckInput deckInput) {
         this.counter.increment();
 
-        String message = this.messageService.invalidInput(deckInput.getClass().getSimpleName(), ChangeLaneCollapsedStateInput.class.getSimpleName());
+        String message = this.messageService.invalidInput(deckInput.getClass().getSimpleName(), ChangeCardsVisibilityInput.class.getSimpleName());
         IPayload payload = new ErrorPayload(deckInput.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, deckInput.representationId(), deckInput);
 
-        if (deckInput instanceof ChangeLaneCollapsedStateInput input) {
-            payload = this.deckLaneService.changeLaneCollapsedState(input, editingContext, deckContext);
+        if (deckInput instanceof ChangeCardsVisibilityInput input) {
+            payload = this.deckLaneService.changeCardsVisibility(input, editingContext, deckContext);
             changeDescription = new ChangeDescription(DeckChangeKind.DECK_REPRESENTATION_UPDATE, deckInput.representationId(), deckInput);
         }
 

@@ -18,10 +18,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.deck.Card;
 import org.eclipse.sirius.components.deck.Lane;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
 import org.eclipse.sirius.components.deck.renderer.elements.LaneElementProps;
 import org.eclipse.sirius.components.deck.renderer.events.ChangeLaneCollapseStateDeckEvent;
+import org.eclipse.sirius.components.deck.renderer.events.IDeckEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -70,7 +72,7 @@ public class LaneComponent implements IComponent {
 
         Optional<Lane> optionalPreviousLane = this.props.previousLanes().stream().filter(lane -> lane.targetObjectId().equals(targetObjectId)).findFirst();
         String laneId = optionalPreviousLane.map(Lane::id).orElse(UUID.randomUUID().toString());
-        List<Element> childrenElements = this.getChildren(childVariableManager, laneDescription, laneId);
+        List<Element> childrenElements = this.getChildren(childVariableManager, laneDescription, laneId, optionalPreviousLane);
 
         boolean collapsible = laneDescription.collapsibleProvider().apply(childVariableManager);
 
@@ -92,10 +94,14 @@ public class LaneComponent implements IComponent {
         return false;
     }
 
-    private List<Element> getChildren(VariableManager variableManager, LaneDescription laneDescription, String laneId) {
+    private List<Element> getChildren(VariableManager variableManager, LaneDescription laneDescription, String laneId, Optional<Lane> optionalPreviousLane) {
+
+        Optional<IDeckEvent> optionalDeckEvent = this.props.optionalDeckEvent();
+        List<Card> previousCards = optionalPreviousLane.map(Lane::cards).orElse(List.of());
+
         return laneDescription.cardDescriptions().stream()
                 .map(cardDescription -> {
-                    CardComponentProps cardComponentProps = new CardComponentProps(variableManager, cardDescription, laneId);
+                    CardComponentProps cardComponentProps = new CardComponentProps(variableManager, cardDescription, laneId, previousCards, optionalDeckEvent);
                     return new Element(CardComponent.class, cardComponentProps);
                 })
                 .toList();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,13 @@ package org.eclipse.sirius.components.deck.renderer.component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.components.deck.Card;
 import org.eclipse.sirius.components.deck.description.CardDescription;
 import org.eclipse.sirius.components.deck.renderer.elements.CardElementProps;
+import org.eclipse.sirius.components.deck.renderer.events.ChangeCardsVisibilityDeckEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -65,7 +68,22 @@ public class CardComponent implements IComponent {
         String label = cardDescription.labelProvider().apply(childVariableManager);
         String description = cardDescription.descriptionProvider().apply(childVariableManager);
 
-        CardElementProps cardElementProps = new CardElementProps(UUID.randomUUID().toString(), cardDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, title, label, description);
+        Optional<Card> optionalPreviousCard = this.props.previousCards().stream()
+                .filter(card -> card.targetObjectId().equals(targetObjectId))
+                .findFirst();
+        String cardId = optionalPreviousCard.map(Card::id).orElse(UUID.randomUUID().toString());
+        boolean visible = optionalPreviousCard.map(this::computeVisibility).orElse(true);
+
+        CardElementProps cardElementProps = new CardElementProps(cardId, cardDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, title, label, description, visible);
         return new Element(CardElementProps.TYPE, cardElementProps);
+    }
+
+    private boolean computeVisibility(Card previousCard) {
+        return this.props.optionalDeckEvent()
+                .filter(ChangeCardsVisibilityDeckEvent.class::isInstance)
+                .map(ChangeCardsVisibilityDeckEvent.class::cast)
+                .map(ChangeCardsVisibilityDeckEvent::cardsVisibility)
+                .map(cardsVisibility -> cardsVisibility.get(previousCard.id()))
+                .orElse(previousCard.visible());
     }
 }

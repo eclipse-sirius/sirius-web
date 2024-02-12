@@ -66,7 +66,7 @@ public class DeckElementFactory implements IElementFactory {
 
     private Card instantiateCard(CardElementProps props, List<Object> children) {
 
-        return new Card(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.description());
+        return new Card(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.description(), props.visible());
     }
 
 }

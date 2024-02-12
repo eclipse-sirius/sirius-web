@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.deck;
 
-/**
- * Change kind associated to the Deck representation.
- *
- * @author fbarbin
- */
-public final class DeckChangeKind {
+import { Card } from '../Deck.types';
 
-    public static final String DECK_REPRESENTATION_UPDATE = "DECK_REPRESENTATION_UPDATE";
-
-    private DeckChangeKind() {
-        // Prevent instantiation
-    }
+export interface LaneContextMenuProps {
+  menuAnchor: Element;
+  onClose: () => void;
+  onChangesApplied: (visibleCardsIds: string[]) => void;
+  laneId: string;
+  cards: Card[];
 }

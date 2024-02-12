@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.deck;
+package org.eclipse.sirius.components.collaborative.deck.dto.input;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
 
 /**
- * Change kind associated to the Deck representation.
+ * The input of the "Change cards visibility" mutation.
  *
  * @author fbarbin
  */
-public final class DeckChangeKind {
-
-    public static final String DECK_REPRESENTATION_UPDATE = "DECK_REPRESENTATION_UPDATE";
-
-    private DeckChangeKind() {
-        // Prevent instantiation
-    }
+public record ChangeCardsVisibilityInput(UUID id, String editingContextId, String representationId, List<String> visibleCardsIds, List<String> hiddenCardsIds)
+        implements IDeckInput {
 }

@@ -18,6 +18,7 @@ import { DeckCard } from './card/DeckCard';
 import { useZoom } from './hooks/useZoom';
 import { UseZoomValue } from './hooks/useZoom.types';
 import { DeckLaneHeader } from './laneHeader/DeckLaneHeader';
+import { DeckContext } from './representation/DeckContext';
 import { DeckToolbar } from './toolbar/DeckToolbar';
 
 const useDeckStyle = makeStyles((theme) => ({
@@ -81,36 +82,38 @@ export const Deck = ({
   };
 
   return (
-    <div ref={deckContainerRef} className={deckClasses.deckContainer}>
-      <DeckToolbar
-        editingContextId={editingContextId}
-        representationId={representationId}
-        onZoomIn={zoomIn}
-        onZoomOut={zoomOut}
-        onFitToScreen={fitToScreen}
-        onResetZoom={resetZoom}
-        fullscreenNode={deckContainerRef}
-      />
-
-      <div ref={boardContainerRef} className={deckClasses.boardContainer}>
-        <Board
-          data={data}
-          draggable={true}
-          onCardClick={onCardClick}
-          onLaneClick={onLaneClick}
-          components={components}
-          onCardDelete={onCardDelete}
-          onCardAdd={onCardAdd}
-          onCardUpdate={onCardUpdate}
-          onLaneUpdate={onLaneUpdate}
-          onLaneCollapseUpdate={onLaneCollapseUpdate}
-          onCardMoveAcrossLanes={onCardMoveAcrossLanes}
-          handleLaneDragEnd={handleLaneDragEnd}
-          getGhostParent={getGhostParent}
-          style={boardStyle}
-          data-testid={`deck-representation`}
+    <DeckContext.Provider value={{ editingContextId, deckId: representationId }}>
+      <div ref={deckContainerRef} className={deckClasses.deckContainer}>
+        <DeckToolbar
+          editingContextId={editingContextId}
+          representationId={representationId}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+          onFitToScreen={fitToScreen}
+          onResetZoom={resetZoom}
+          fullscreenNode={deckContainerRef}
         />
+
+        <div ref={boardContainerRef} className={deckClasses.boardContainer}>
+          <Board
+            data={data}
+            draggable={true}
+            onCardClick={onCardClick}
+            onLaneClick={onLaneClick}
+            components={components}
+            onCardDelete={onCardDelete}
+            onCardAdd={onCardAdd}
+            onCardUpdate={onCardUpdate}
+            onLaneUpdate={onLaneUpdate}
+            onLaneCollapseUpdate={onLaneCollapseUpdate}
+            onCardMoveAcrossLanes={onCardMoveAcrossLanes}
+            handleLaneDragEnd={handleLaneDragEnd}
+            getGhostParent={getGhostParent}
+            style={boardStyle}
+            data-testid={`deck-representation`}
+          />
+        </div>
       </div>
-    </div>
+    </DeckContext.Provider>
   );
 };

@@ -134,7 +134,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
      */
     private boolean shouldRefresh(ChangeDescription changeDescription) {
         String kind = changeDescription.getKind();
-        return ChangeKind.SEMANTIC_CHANGE.equals(kind) || DeckChangeKind.COLLAPSE_UPDATE.equals(kind);
+        return ChangeKind.SEMANTIC_CHANGE.equals(kind) || DeckChangeKind.DECK_REPRESENTATION_UPDATE.equals(kind);
     }
 
     @Override

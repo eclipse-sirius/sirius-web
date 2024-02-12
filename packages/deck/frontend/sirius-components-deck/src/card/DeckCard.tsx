@@ -13,7 +13,6 @@
 
 import { Theme, useTheme } from '@material-ui/core/styles';
 import { useRef } from 'react';
-import { Card } from '../Deck.types';
 import { DeckInput } from '../common/DeckInput';
 import {
   DeckCardHeader,
@@ -25,7 +24,7 @@ import {
   cardLabelFontStyle,
 } from '../styled/DeckCardStyledComponents';
 import { DeckTitle, titleFontStyle } from '../styled/DeckStyledComponents';
-import { DeckCardProps } from './DeckCard.types';
+import { DeckCardProps, UpdateCardProps } from './DeckCard.types';
 import { DeckDeleteButton } from './DeckDeleteButton';
 import { DeckTag } from './DeckTag';
 
@@ -49,8 +48,8 @@ export const DeckCard = ({
   editable,
   t: translate,
 }: DeckCardProps) => {
-  const updateCard = (card: Card) => {
-    onChange(card);
+  const updateCard = (updateCardValue: UpdateCardProps) => {
+    onChange(updateCardValue);
   };
 
   const handleOnDelete = (e) => {
