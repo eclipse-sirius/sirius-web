@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
-export interface DiagramPanelProps {
-  snapToGrid: boolean;
-  onSnapToGrid: (snapToGrid: boolean) => void;
-  helperLines: boolean;
-  onHelperLines: (helperLines: boolean) => void;
-  refreshEventPayloadId: string;
-}
-
-export interface DiagramPanelState {
-  dialogOpen: DiagramPanelDialog | null;
-}
-
-export type DiagramPanelDialog = 'Share';
+export type HelperLinesProps = {
+  horizontal: number | null;
+  vertical: number | null;
+};

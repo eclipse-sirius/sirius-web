@@ -115,6 +115,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3083[#3083] [forms] Add support for icons at the end of a tree item label.
 - https://github.com/eclipse-sirius/sirius-web/issues/3082[#3082] [forms] Add checkbox support for tree widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/3133[#3133] [deck] Add OKR and Kanban samples in the Task template and Deck view stereotype.
+- https://github.com/eclipse-sirius/sirius-web/issues/3145[#3145] [diagram] Add support for helper lines to facilitate the alignment of nodes with each other.
 
 === Improvements
 
