@@ -22,12 +22,6 @@ export interface DiagramRendererProps {
   diagramRefreshedEventPayload: GQLDiagramRefreshedEventPayload;
 }
 
-export interface DiagramPaletteState {
-  opened: boolean;
-  x: number;
-  y: number;
-}
-
 export interface Diagram {
   metadata: DiagramMetadata;
   nodes: Node<NodeData, DiagramNodeType>[];

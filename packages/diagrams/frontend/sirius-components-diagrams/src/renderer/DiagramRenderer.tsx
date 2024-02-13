@@ -51,6 +51,8 @@ import { edgeTypes } from './edge/EdgeTypes';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
+import { HelperLines } from './helper-lines/HelperLines';
+import { useHelperLines } from './helper-lines/useHelperLines';
 import { useNodeHover } from './hover/useNodeHover';
 import { useFilterReadOnlyChanges } from './layout-events/useFilterReadOnlyChanges';
 import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange';
@@ -65,11 +67,11 @@ import { useDiagramElementPalette } from './palette/useDiagramElementPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { DiagramPanel } from './panel/DiagramPanel';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
+import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useSnapToGrid } from './snap-to-grid/useSnapToGrid';
 
 import 'reactflow/dist/style.css';
-import { useResizeChange } from './resize/useResizeChange';
 
 const GRID_STEP: number = 10;
 
@@ -144,6 +146,14 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
   const { applyHandleChange } = useHandleChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange(diagramRefreshedEventPayload.id);
   const { filterReadOnlyChanges } = useFilterReadOnlyChanges();
+  const {
+    helperLinesEnabled,
+    setHelperLinesEnabled,
+    horizontalHelperLine,
+    verticalHelperLine,
+    applyHelperLines,
+    resetHelperLines,
+  } = useHelperLines();
 
   const handleNodesChange: OnNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -156,9 +166,11 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         setNodes((oldNodes) => applyNodeChanges(noReadOnlyChanges, oldNodes));
       } else {
         setNodes((oldNodes) => {
-          let transformedNodeChanges = transformBorderNodeChanges(noReadOnlyChanges);
+          resetHelperLines(changes);
+          let transformedNodeChanges: NodeChange[] = transformBorderNodeChanges(noReadOnlyChanges);
           transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
           transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
+          transformedNodeChanges = applyHelperLines(transformedNodeChanges);
 
           if (transformedNodeChanges.some((change) => change.type === 'position')) {
             hideDiagramElementPalette();
@@ -291,12 +303,15 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
       <DiagramPanel
         snapToGrid={snapToGrid}
         onSnapToGrid={onSnapToGrid}
+        helperLines={helperLinesEnabled}
+        onHelperLines={setHelperLinesEnabled}
         refreshEventPayloadId={diagramRefreshedEventPayload.id}
       />
 
       <DiagramPalette diagramElementId={diagramRefreshedEventPayload.diagram.id} />
       {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
       <ConnectorContextualMenu />
+      <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} />
     </ReactFlow>
   );
 };
