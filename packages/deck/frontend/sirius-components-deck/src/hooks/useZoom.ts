@@ -20,11 +20,15 @@ export const useZoom = (
   const [zoom, setZoom] = useState<number>(1);
 
   const zoomIn = useCallback(() => {
-    setZoom((prevZoom) => prevZoom + 0.1);
+    setZoom((prevZoom) => prevZoom * 1.25);
   }, []);
 
   const zoomOut = useCallback(() => {
-    setZoom((prevZoom) => prevZoom - 0.1);
+    setZoom((prevZoom) => prevZoom * 0.8);
+  }, []);
+
+  const resetZoom = useCallback(() => {
+    setZoom(() => 1);
   }, []);
 
   const fitToScreen = useCallback(() => {
@@ -46,5 +50,6 @@ export const useZoom = (
     zoomIn,
     zoomOut,
     fitToScreen,
+    resetZoom,
   };
 };

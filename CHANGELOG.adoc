@@ -72,7 +72,7 @@ This changes a core assumption from before where an element known to those servi
 Its body operations are now bind on set/add instead of click.
 - https://github.com/eclipse-sirius/sirius-web/issues/2942[#2942] [deck] Add the Card Drag and Drop capability in the Deck representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/3024[#3024] [sirius-web] Add a new Papaya example diagram `Deployment Diagram` that will allow us to test border nodes
-- https://github.com/eclipse-sirius/sirius-web/issues/3087[#3087] [deck] Add the Zoom, Full Screen and Fit to screen actions.
++
 .Deployment Diagram
 image:doc/screenshots/deploymenDiagram.png[Deployment Diagram,70%]
 - https://github.com/eclipse-sirius/sirius-web/issues/3015[#3015] [deck] Add the Lane Selection and Direct edit capability.
@@ -85,6 +85,7 @@ In read-only mode, the palette can not be displayed, some of the panel action ar
 - https://github.com/eclipse-sirius/sirius-web/issues/3089[#3089] [sirius-web] Add confirmation dialog on delete.
 +
 image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3087[#3087] [deck] Add the Zoom, Full Screen and Fit to screen actions.
 
 === Improvements
 

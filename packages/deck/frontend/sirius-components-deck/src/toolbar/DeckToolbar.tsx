@@ -12,10 +12,12 @@
  *******************************************************************************/
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+import SearchIcon from '@material-ui/icons/Search';
 import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
@@ -43,6 +45,7 @@ export const DeckToolbar = ({
   onZoomOut,
   onFitToScreen,
   fullscreenNode,
+  onResetZoom,
 }: ToolbarProps) => {
   const classes = useToolbarStyles();
   const [state, setState] = useState<ToolbarState>({ modal: null });
@@ -66,57 +69,64 @@ export const DeckToolbar = ({
     <>
       <div className={classes.toolbar}>
         {fullscreen ? (
-          <IconButton
-            size="small"
-            color="inherit"
-            aria-label="exit full screen mode"
-            title="Exit full screen mode"
-            onClick={() => setFullscreen(false)}>
-            <FullscreenExitIcon />
-          </IconButton>
+          <Tooltip title="Exit full screen mode">
+            <IconButton
+              size="small"
+              color="inherit"
+              aria-label="exit full screen mode"
+              onClick={() => setFullscreen(false)}>
+              <FullscreenExitIcon />
+            </IconButton>
+          </Tooltip>
         ) : (
-          <IconButton
-            size="small"
-            color="inherit"
-            aria-label="toggle full screen mode"
-            title="Toggle full screen mode"
-            onClick={() => setFullscreen(true)}>
-            <FullscreenIcon />
-          </IconButton>
+          <Tooltip title="Toggle full screen mode">
+            <IconButton
+              size="small"
+              color="inherit"
+              aria-label="toggle full screen mode"
+              onClick={() => setFullscreen(true)}>
+              <FullscreenIcon />
+            </IconButton>
+          </Tooltip>
         )}
         {!fullscreen ? (
           //We disable the Fit to Screen but in Full screen mode because of issues to compute the parent container size.
+          <Tooltip title="Fit to Screen">
+            <IconButton
+              size="small"
+              color="inherit"
+              aria-label="fit to screen"
+              onClick={onFitToScreen}
+              data-testid="fit-to-screen">
+              <AspectRatioIcon />
+            </IconButton>
+          </Tooltip>
+        ) : null}
+        <Tooltip title="Zoom In">
+          <IconButton size="small" color="inherit" aria-label="zoom in" onClick={onZoomIn} data-testid="zoomIn">
+            <ZoomInIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Zoom Out">
+          <IconButton size="small" color="inherit" aria-label="zoom out" onClick={onZoomOut} data-testid="zoomOut">
+            <ZoomOutIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Reset zoom">
           <IconButton
             size="small"
             color="inherit"
-            aria-label="fit to screen"
-            title="Fit to Screen"
-            onClick={onFitToScreen}
-            data-testid="fit-to-screen">
-            <AspectRatioIcon />
+            aria-label="reset zoom"
+            onClick={onResetZoom}
+            data-testid="resetZoom">
+            <SearchIcon />
           </IconButton>
-        ) : null}
-        <IconButton
-          size="small"
-          color="inherit"
-          aria-label="zoom in"
-          title="Zoom In"
-          onClick={onZoomIn}
-          data-testid="share">
-          <ZoomInIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          color="inherit"
-          aria-label="zoom out"
-          title="Zoom Out"
-          onClick={onZoomOut}
-          data-testid="share">
-          <ZoomOutIcon />
-        </IconButton>
-        <IconButton size="small" color="inherit" aria-label="share" title="Share" onClick={onShare} data-testid="share">
-          <ShareIcon />
-        </IconButton>
+        </Tooltip>
+        <Tooltip title="Share">
+          <IconButton size="small" color="inherit" aria-label="share" onClick={onShare} data-testid="share">
+            <ShareIcon />
+          </IconButton>
+        </Tooltip>
       </div>
       {modalElement}
     </>
