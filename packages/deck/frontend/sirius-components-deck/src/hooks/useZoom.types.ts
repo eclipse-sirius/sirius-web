@@ -16,4 +16,5 @@ export interface UseZoomValue {
   zoomIn: () => void;
   zoomOut: () => void;
   fitToScreen: () => void;
+  resetZoom: () => void;
 }

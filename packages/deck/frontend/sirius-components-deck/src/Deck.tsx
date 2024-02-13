@@ -20,6 +20,17 @@ import { UseZoomValue } from './hooks/useZoom.types';
 import { DeckLaneHeader } from './laneHeader/DeckLaneHeader';
 import { DeckToolbar } from './toolbar/DeckToolbar';
 
+const useDeckStyle = makeStyles((theme) => ({
+  boardContainer: {
+    //We need to make the board display flex to fit to screen when the deck is smaller than the representation container.
+    //Without that, the board div occupies the whole representation container width.
+    display: 'flex',
+  },
+  deckContainer: {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
+
 export const Deck = ({
   editingContextId,
   representationId,
@@ -39,18 +50,7 @@ export const Deck = ({
   const deckContainerRef = useRef<HTMLDivElement | null>(null);
   const representationContainerRef = useRef<HTMLDivElement | null>(null);
   const boardRef = useRef<HTMLDivElement | null>(null);
-  const { zoom, zoomIn, zoomOut, fitToScreen }: UseZoomValue = useZoom(boardRef, representationContainerRef);
-
-  const useDeckStyle = makeStyles((theme) => ({
-    boardContainer: {
-      //We need to make the board display flex to fit to screen when the deck is smaller than the representation container.
-      //Without that, the board div occupies the whole representation container width.
-      display: 'flex',
-    },
-    deckContainer: {
-      backgroundColor: theme.palette.background.default,
-    },
-  }));
+  const { zoom, zoomIn, zoomOut, fitToScreen, resetZoom }: UseZoomValue = useZoom(boardRef, representationContainerRef);
 
   const deckClasses = useDeckStyle();
 
@@ -66,13 +66,18 @@ export const Deck = ({
 
   const boardStyle: CSSProperties = {
     backgroundColor: theme.palette.background.default,
-    zoom: zoom,
+    transform: `scale(${zoom})`,
+    transformOrigin: '0 0',
     transitionDuration: '0.3s',
   };
 
   const components = {
     Card: DeckCard,
     LaneHeader: DeckLaneHeader,
+  };
+
+  const getGhostParent = (): HTMLDivElement | undefined => {
+    return boardContainerRef.current ? boardContainerRef.current : undefined;
   };
 
   return (
@@ -83,6 +88,7 @@ export const Deck = ({
         onZoomIn={zoomIn}
         onZoomOut={zoomOut}
         onFitToScreen={fitToScreen}
+        onResetZoom={resetZoom}
         fullscreenNode={deckContainerRef}
       />
 
@@ -100,8 +106,9 @@ export const Deck = ({
           onLaneCollapseUpdate={onLaneCollapseUpdate}
           onCardMoveAcrossLanes={onCardMoveAcrossLanes}
           handleLaneDragEnd={handleLaneDragEnd}
-          data-testid={`deck-representation`}
+          getGhostParent={getGhostParent}
           style={boardStyle}
+          data-testid={`deck-representation`}
         />
       </div>
     </div>
