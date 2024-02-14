@@ -54,6 +54,7 @@ It's current location is only there to simplify the transition to the new Sirius
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2783[#2783] [diagram] Remove our dependency to Sprotty and Snabbdom
+- https://github.com/eclipse-sirius/sirius-web/issues/3105[#3105] [deck] Move to @obeonetwork/react-trello 2.4.11 to avoid warnings because of react-redux depending on react 16.
 
 === Bug fixes
 
