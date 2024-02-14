@@ -101,6 +101,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3087[#3087] [deck] Add the Zoom, Full Screen and Fit to screen actions.
 - https://github.com/eclipse-sirius/sirius-web/issues/3101[#3101] [deck] Add a Lane context menu to hide/reveal cards in Deck
 - https://github.com/eclipse-sirius/sirius-web/issues/3081[#3081] [forms] TreeWidget has been added in forms model.
+- https://github.com/eclipse-sirius/sirius-web/issues/3083[#3083] [forms] Add support for icons at the end of a tree item label.
 
 === Improvements
 

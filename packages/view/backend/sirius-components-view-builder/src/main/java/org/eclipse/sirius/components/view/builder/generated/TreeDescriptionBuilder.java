@@ -97,5 +97,25 @@ public class TreeDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for TreeItemBeginIconExpression.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder treeItemBeginIconExpression(java.lang.String value) {
+        this.getTreeDescription().setTreeItemBeginIconExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for TreeItemEndIconsExpression.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder treeItemEndIconsExpression(java.lang.String value) {
+        this.getTreeDescription().setTreeItemEndIconsExpression(value);
+        return this;
+    }
+
 }
 

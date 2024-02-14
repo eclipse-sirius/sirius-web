@@ -131,6 +131,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/childExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/treeItemLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/isTreeItemSelectableExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/treeItemBeginIconExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/treeItemEndIconsExpression"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//PieChartDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//PieChartDescription/valuesExpression"/>

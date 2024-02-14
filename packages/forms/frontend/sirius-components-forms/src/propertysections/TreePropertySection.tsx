@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,10 +45,14 @@ const TreeItem = ({ node, nodes }: TreeItemProps) => {
       setSelection({ entries: [newSelection] });
     }
   };
+
   const label = (
     <div className={styles.label} onClick={handleClick}>
       <IconOverlay iconURL={node.iconURL} alt={node.label} />
       <Typography>{node.label}</Typography>
+      {node.iconEndURL.map((iconURL, index) => (
+        <IconOverlay iconURL={iconURL} alt={node.label} key={index} />
+      ))}
     </div>
   );
 
@@ -56,7 +60,7 @@ const TreeItem = ({ node, nodes }: TreeItemProps) => {
   return (
     <MuiTreeItem nodeId={node.id} label={label}>
       {childNodes.map((childNode) => (
-        <TreeItem node={childNode} nodes={nodes} key={childNode.id} />
+        <TreeItem node={childNode} nodes={nodes} key={childNode.id} aria-role="treeitem" />
       ))}
     </MuiTreeItem>
   );
@@ -74,12 +78,13 @@ export const TreePropertySection = ({ editingContextId, formId, widget, subscrib
         label: 'None',
         kind: 'siriusComponents://unknown',
         iconURL: [],
+        iconEndURL: [],
         selectable: false,
       },
     ];
   }
 
-  const rootNodes = nodes.filter((node) => node.parentId === null);
+  const rootNodes = nodes.filter((node) => !node.parentId);
   return (
     <div>
       <PropertySectionLabel
