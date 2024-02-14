@@ -20,6 +20,7 @@ import { DiagramElementPalette } from '../palette/DiagramElementPalette';
 import { IconLabelNodeData } from './IconsLabelNode.types';
 import { NodeContext } from './NodeContext';
 import { NodeContextValue } from './NodeContext.types';
+import { useDrop } from '../drop/useDrop';
 
 const iconlabelStyle = (
   style: React.CSSProperties,
@@ -42,8 +43,14 @@ const iconlabelStyle = (
 
 export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNodeData>) => {
   const theme = useTheme();
+  const { onDrop, onDragOver } = useDrop();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+
+  const handleOnDrop = (event: React.DragEvent) => {
+    onDrop(event, id);
+  };
+
   return (
     <div style={{ paddingLeft: '8px', paddingRight: '8px' }}>
       <div
@@ -51,6 +58,8 @@ export const IconLabelNode = memo(({ data, id, selected }: NodeProps<IconLabelNo
           ...iconlabelStyle(data.style, theme, selected, hoveredNode?.id === id, data.faded),
           ...dropFeedbackStyle,
         }}
+        onDragOver={onDragOver}
+        onDrop={handleOnDrop}
         data-testid={`IconLabel - ${data?.insideLabel?.text}`}>
         {data.insideLabel ? (
           <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
