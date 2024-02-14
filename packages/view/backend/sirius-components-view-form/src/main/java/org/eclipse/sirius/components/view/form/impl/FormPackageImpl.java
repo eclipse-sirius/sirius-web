@@ -1360,6 +1360,16 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
+    public EAttribute getTreeDescription_TreeItemEndIconsExpression() {
+        return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getPieChartDescription() {
         return this.pieChartDescriptionEClass;
     }
@@ -2490,6 +2500,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__IS_TREE_ITEM_SELECTABLE_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION);
+        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION);
 
         this.pieChartDescriptionEClass = this.createEClass(PIE_CHART_DESCRIPTION);
         this.createEAttribute(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__VALUES_EXPRESSION);
@@ -2896,6 +2907,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.initEAttribute(this.getTreeDescription_IsTreeItemSelectableExpression(), theViewPackage.getInterpretedExpression(), "isTreeItemSelectableExpression", null, 0, 1, TreeDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_TreeItemBeginIconExpression(), theViewPackage.getInterpretedExpression(), "treeItemBeginIconExpression", null, 0, 1, TreeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeDescription_TreeItemEndIconsExpression(), theViewPackage.getInterpretedExpression(), "treeItemEndIconsExpression", null, 0, 1, TreeDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.pieChartDescriptionEClass, PieChartDescription.class, "PieChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

@@ -17,9 +17,17 @@ input PropertiesEventInput {
   objectIds: [ID!]!
 }
 
-union FormEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
+union FormEventPayload =
+    ErrorPayload
+  | FormRefreshedEventPayload
+  | SubscribersUpdatedEventPayload
+  | WidgetSubscriptionsUpdatedEventPayload
 
-union PropertiesEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
+union PropertiesEventPayload =
+    ErrorPayload
+  | FormRefreshedEventPayload
+  | SubscribersUpdatedEventPayload
+  | WidgetSubscriptionsUpdatedEventPayload
 
 type WidgetSubscriptionsUpdatedEventPayload {
   id: ID!
@@ -367,6 +375,7 @@ type TreeNode {
   label: String!
   kind: String!
   iconURL: [String!]!
+  iconEndURL: [[String!]!]!
   selectable: Boolean!
 }
 
@@ -394,7 +403,11 @@ type RichText implements Widget {
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
-  completionProposals(widgetId: ID!, currentText: String!, cursorPosition: Int!): [CompletionProposal!]!
+  completionProposals(
+    widgetId: ID!
+    currentText: String!
+    cursorPosition: Int!
+  ): [CompletionProposal!]!
   helpText(widgetId: ID!): String
 }
 

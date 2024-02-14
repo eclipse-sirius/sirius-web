@@ -1352,13 +1352,22 @@ public interface FormPackage extends EPackage {
     int TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Tree Item End Icons Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Tree Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TREE_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int TREE_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Tree Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5274,6 +5283,18 @@ public interface FormPackage extends EPackage {
     EAttribute getTreeDescription_TreeItemBeginIconExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getTreeItemEndIconsExpression <em>Tree Item End
+     * Icons Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Tree Item End Icons Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.TreeDescription#getTreeItemEndIconsExpression()
+     * @see #getTreeDescription()
+     * @generated
+     */
+    EAttribute getTreeDescription_TreeItemEndIconsExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.PieChartDescription <em>Pie
      * Chart Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -7135,6 +7156,14 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EAttribute TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION = eINSTANCE.getTreeDescription_TreeItemBeginIconExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Tree Item End Icons Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION = eINSTANCE.getTreeDescription_TreeItemEndIconsExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.PieChartDescriptionImpl

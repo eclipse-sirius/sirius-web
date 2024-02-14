@@ -126,4 +126,28 @@ public interface TreeDescription extends WidgetDescription {
      */
     void setTreeItemBeginIconExpression(String value);
 
+    /**
+     * Returns the value of the '<em><b>Tree Item End Icons Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Tree Item End Icons Expression</em>' attribute.
+     * @see #setTreeItemEndIconsExpression(String)
+     * @see org.eclipse.sirius.components.view.form.FormPackage#getTreeDescription_TreeItemEndIconsExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getTreeItemEndIconsExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getTreeItemEndIconsExpression <em>Tree Item End
+     * Icons Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Tree Item End Icons Expression</em>' attribute.
+     * @see #getTreeItemEndIconsExpression()
+     * @generated
+     */
+    void setTreeItemEndIconsExpression(String value);
+
 } // TreeDescription

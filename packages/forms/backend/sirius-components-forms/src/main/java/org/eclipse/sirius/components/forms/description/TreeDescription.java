@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ public final class TreeDescription extends AbstractWidgetDescription {
     private Function<VariableManager, String> nodeKindProvider;
 
     private Function<VariableManager, List<String>> nodeIconURLProvider;
+
+    private Function<VariableManager, List<List<String>>> nodeIconEndURLProvider;
 
     private Function<VariableManager, Boolean> nodeSelectableProvider;
 
@@ -88,6 +90,10 @@ public final class TreeDescription extends AbstractWidgetDescription {
         return this.nodeIconURLProvider;
     }
 
+    public Function<VariableManager, List<List<String>>> getNodeIconEndURLProvider() {
+        return this.nodeIconEndURLProvider;
+    }
+
     public Function<VariableManager, Boolean> getNodeSelectableProvider() {
         return this.nodeSelectableProvider;
     }
@@ -111,16 +117,24 @@ public final class TreeDescription extends AbstractWidgetDescription {
     public static final class Builder {
 
         private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
+
         private final String id;
+
         private Function<VariableManager, String> idProvider;
+
         private Function<VariableManager, String> targetObjectIdProvider;
+
         private Function<VariableManager, String> labelProvider;
+
         private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
+
         private Function<VariableManager, List<?>> childrenProvider;
 
         private Function<VariableManager, String> nodeIdProvider;
 
         private Function<VariableManager, String> nodeLabelProvider;
+
+        private Function<VariableManager, List<List<String>>> nodeIconEndURLProvider;
 
         private Function<VariableManager, String> nodeKindProvider;
 
@@ -135,7 +149,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
-
+        
         private Function<VariableManager, String> helpTextProvider;
 
         private Builder(String id) {
@@ -187,6 +201,11 @@ public final class TreeDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder nodeIconEndURLProvider(Function<VariableManager, List<List<String>>> nodeIconEndURLProvider) {
+            this.nodeIconEndURLProvider = Objects.requireNonNull(nodeIconEndURLProvider);
+            return this;
+        }
+
         public Builder nodeSelectableProvider(Function<VariableManager, Boolean> nodeSelectableProvider) {
             this.nodeSelectableProvider = Objects.requireNonNull(nodeSelectableProvider);
             return this;
@@ -228,6 +247,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
             treeDescription.childrenProvider = Objects.requireNonNull(this.childrenProvider);
             treeDescription.nodeIdProvider = Objects.requireNonNull(this.nodeIdProvider);
             treeDescription.nodeLabelProvider = Objects.requireNonNull(this.nodeLabelProvider);
+            treeDescription.nodeIconEndURLProvider = Objects.requireNonNull(this.nodeIconEndURLProvider);
             treeDescription.nodeKindProvider = Objects.requireNonNull(this.nodeKindProvider);
             treeDescription.nodeIconURLProvider = Objects.requireNonNull(this.nodeIconURLProvider);
             treeDescription.nodeSelectableProvider = Objects.requireNonNull(this.nodeSelectableProvider);

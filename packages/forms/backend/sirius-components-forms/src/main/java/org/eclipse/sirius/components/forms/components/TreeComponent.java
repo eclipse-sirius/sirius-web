@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -118,12 +118,14 @@ public class TreeComponent implements IComponent {
         String nodeLabel = treeDescription.getNodeLabelProvider().apply(variableManager);
         String nodeKind = treeDescription.getNodeKindProvider().apply(variableManager);
         List<String> nodeIconURL = treeDescription.getNodeIconURLProvider().apply(variableManager);
+        List<List<String>> iconEndURL = treeDescription.getNodeIconEndURLProvider().apply(variableManager);
         boolean nodeSelectable = treeDescription.getNodeSelectableProvider().apply(variableManager);
         return TreeNode.newTreeNode(nodeId)
                 .parentId(parentId)
                 .label(nodeLabel)
                 .kind(nodeKind)
                 .iconURL(nodeIconURL)
+                .iconEndURL(iconEndURL)
                 .selectable(nodeSelectable)
                 .build();
     }

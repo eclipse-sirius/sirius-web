@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { Selection, SelectionContext, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { afterEach, expect, test } from 'vitest';
 import { GQLTree, GQLTreeNode } from '../../form/FormEventFragments.types';
 import { TreePropertySection } from '../TreePropertySection';
@@ -22,7 +23,15 @@ afterEach(() => cleanup());
 
 // Helper to make fixtures more readable
 function createNode(id: string, parentId: string, selectable: boolean = false): GQLTreeNode {
-  return { id, parentId, label: `Node-${id}`, kind: 'siriusComponents://testNode', imageURL: '/node.svg', selectable };
+  return {
+    id,
+    parentId,
+    label: `Node-${id}`,
+    kind: 'siriusComponents://testNode',
+    iconURL: [],
+    iconEndURL: [[]],
+    selectable,
+  };
 }
 
 const emptySelection: Selection = {
@@ -38,7 +47,8 @@ test('should render the tree', () => {
     label: 'Default Tree',
     iconURL: [],
     hasHelpText: false,
-    nodes: [createNode('root1', null)],
+    readOnly: false,
+    nodes: [createNode('root1', '')],
     expandedNodesIds: [],
     diagnostics: [],
   };
@@ -46,8 +56,7 @@ test('should render the tree', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <TreePropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -69,10 +78,11 @@ test('should render a multi-level tree correctly', () => {
     id: 'treeId',
     label: 'Deep Tree',
     iconURL: [],
+    readOnly: false,
     hasHelpText: false,
     nodes: [
-      createNode('1', null),
-      createNode('2', null),
+      createNode('1', ''),
+      createNode('2', ''),
       createNode('1.1', '1'),
       createNode('1.1.1', '1.1'),
       createNode('1.1.2', '1.1'),
@@ -89,8 +99,7 @@ test('should render a multi-level tree correctly', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <TreePropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -128,10 +137,11 @@ test('should correctly interpret the order of nodes with the same parent in the 
     id: 'treeId',
     label: 'Deep Tree',
     iconURL: [],
+    readOnly: false,
     hasHelpText: false,
     nodes: [
-      createNode('2', null),
-      createNode('1', null),
+      createNode('2', ''),
+      createNode('1', ''),
       createNode('1.3.1.1', '1.3.1'),
       createNode('1.3.1.2', '1.3.1'),
       createNode('1.1', '1'),
@@ -148,8 +158,7 @@ test('should correctly interpret the order of nodes with the same parent in the 
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <TreePropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -184,10 +193,11 @@ test('should only expand the specified nodes on initial render', () => {
     id: 'treeId',
     label: 'Deep Tree',
     iconURL: [],
+    readOnly: false,
     hasHelpText: false,
     nodes: [
-      createNode('1', null),
-      createNode('2', null),
+      createNode('1', ''),
+      createNode('2', ''),
       createNode('1.1', '1'),
       createNode('1.1.1', '1.1'),
       createNode('1.1.2', '1.1'),
@@ -204,8 +214,7 @@ test('should only expand the specified nodes on initial render', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <TreePropertySection
             editingContextId="editingContextId"
             formId="formId"
@@ -238,12 +247,13 @@ test('should change the selection when a selectable node is clicked', () => {
     id: 'treeId',
     label: 'Tree',
     iconURL: [],
+    readOnly: false,
     hasHelpText: false,
-    nodes: [createNode('1', null), createNode('2', null), createNode('1.1', '1', true), createNode('1.2', '1', false)],
+    nodes: [createNode('1', ''), createNode('2', ''), createNode('1.1', '1', true), createNode('1.2', '1', false)],
     expandedNodesIds: ['1', '2'],
     diagnostics: [],
   };
-  let selection: SelectionEntry = undefined;
+  let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -253,7 +263,6 @@ test('should change the selection when a selectable node is clicked', () => {
             setSelection: (newSelection: Selection) => {
               selection = newSelection.entries[0];
             },
-            selectedRepresentations: [],
           }}>
           <TreePropertySection
             editingContextId="editingContextId"
@@ -274,7 +283,11 @@ test('should change the selection when a selectable node is clicked', () => {
   ]);
   // 1.2 is not selectable => no change
   screen.getByText('Node-1.2').click();
-  expect(selection).not.toBeDefined();
+  expect(selection).toEqual({
+    id: 'undefined',
+    label: '',
+    kind: '',
+  });
   // 1.1 is selectable => should be the new selection
   screen.getByText('Node-1.1').click();
   expect(selection).toEqual({
@@ -290,12 +303,13 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     id: 'treeId',
     label: 'Tree',
     iconURL: [],
+    readOnly: false,
     hasHelpText: false,
-    nodes: [createNode('1', null), createNode('1.1', '1'), createNode('1.1.1', '1.1')],
+    nodes: [createNode('1', ''), createNode('1.1', '1'), createNode('1.1.1', '1.1')],
     expandedNodesIds: ['1', '1.1'],
     diagnostics: [],
   };
-  let selection: SelectionEntry = undefined;
+  let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
@@ -305,7 +319,6 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
             setSelection: (newSelection: Selection) => {
               selection = newSelection.entries[0];
             },
-            selectedRepresentations: [],
           }}>
           <TreePropertySection
             editingContextId="editingContextId"
@@ -323,7 +336,11 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     'Node-1.1',
     'Node-1.1.1',
   ]);
-  expect(selection).not.toBeDefined();
+  expect(selection).toEqual({
+    id: 'undefined',
+    label: '',
+    kind: '',
+  });
   expect(screen.getByText('Node-1.1.1')).toBeDefined();
 
   // Single-click on non-selectable Node-1.1 should make its child disappear
@@ -332,7 +349,11 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     await waitFor(() => {
-      expect(selection).not.toBeDefined();
+      expect(selection).toEqual({
+        id: 'undefined',
+        label: '',
+        kind: '',
+      });
       expect(screen.queryByText('Node-1.1.1')).toBeNull();
     });
   });
@@ -343,7 +364,11 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     await waitFor(() => {
-      expect(selection).not.toBeDefined();
+      expect(selection).toEqual({
+        id: 'undefined',
+        label: '',
+        kind: '',
+      });
       expect(screen.getByText('Node-1.1.1')).toBeDefined();
     });
   });
@@ -355,8 +380,9 @@ test('should render the tree with a help hint', () => {
     id: 'treeId',
     label: 'Default Tree',
     iconURL: [],
+    readOnly: false,
     hasHelpText: true,
-    nodes: [createNode('root1', null)],
+    nodes: [createNode('root1', '')],
     expandedNodesIds: [],
     diagnostics: [],
   };
@@ -364,8 +390,7 @@ test('should render the tree with a help hint', () => {
   const { container } = render(
     <MockedProvider>
       <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider
-          value={{ selection: emptySelection, setSelection: emptySetSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
           <TreePropertySection
             editingContextId="editingContextId"
             formId="formId"

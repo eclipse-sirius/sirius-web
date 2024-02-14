@@ -115,6 +115,26 @@ public class TreeDescriptionImpl extends WidgetDescriptionImpl implements TreeDe
     protected String treeItemBeginIconExpression = TREE_ITEM_BEGIN_ICON_EXPRESSION_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getTreeItemEndIconsExpression() <em>Tree Item End Icons Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTreeItemEndIconsExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String TREE_ITEM_END_ICONS_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getTreeItemEndIconsExpression() <em>Tree Item End Icons Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTreeItemEndIconsExpression()
+     * @generated
+     * @ordered
+     */
+    protected String treeItemEndIconsExpression = TREE_ITEM_END_ICONS_EXPRESSION_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -233,6 +253,29 @@ public class TreeDescriptionImpl extends WidgetDescriptionImpl implements TreeDe
      * @generated
      */
     @Override
+    public String getTreeItemEndIconsExpression() {
+        return this.treeItemEndIconsExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setTreeItemEndIconsExpression(String newTreeItemEndIconsExpression) {
+        String oldTreeItemEndIconsExpression = this.treeItemEndIconsExpression;
+        this.treeItemEndIconsExpression = newTreeItemEndIconsExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION, oldTreeItemEndIconsExpression, this.treeItemEndIconsExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case FormPackage.TREE_DESCRIPTION__CHILD_EXPRESSION:
@@ -243,6 +286,8 @@ public class TreeDescriptionImpl extends WidgetDescriptionImpl implements TreeDe
                 return this.getIsTreeItemSelectableExpression();
             case FormPackage.TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION:
                 return this.getTreeItemBeginIconExpression();
+            case FormPackage.TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION:
+                return this.getTreeItemEndIconsExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -266,6 +311,9 @@ public class TreeDescriptionImpl extends WidgetDescriptionImpl implements TreeDe
                 return;
             case FormPackage.TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION:
                 this.setTreeItemBeginIconExpression((String) newValue);
+                return;
+            case FormPackage.TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION:
+                this.setTreeItemEndIconsExpression((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -291,6 +339,9 @@ public class TreeDescriptionImpl extends WidgetDescriptionImpl implements TreeDe
             case FormPackage.TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION:
                 this.setTreeItemBeginIconExpression(TREE_ITEM_BEGIN_ICON_EXPRESSION_EDEFAULT);
                 return;
+            case FormPackage.TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION:
+                this.setTreeItemEndIconsExpression(TREE_ITEM_END_ICONS_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -312,6 +363,8 @@ public class TreeDescriptionImpl extends WidgetDescriptionImpl implements TreeDe
                         : !IS_TREE_ITEM_SELECTABLE_EXPRESSION_EDEFAULT.equals(this.isTreeItemSelectableExpression);
             case FormPackage.TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION:
                 return TREE_ITEM_BEGIN_ICON_EXPRESSION_EDEFAULT == null ? this.treeItemBeginIconExpression != null : !TREE_ITEM_BEGIN_ICON_EXPRESSION_EDEFAULT.equals(this.treeItemBeginIconExpression);
+            case FormPackage.TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION:
+                return TREE_ITEM_END_ICONS_EXPRESSION_EDEFAULT == null ? this.treeItemEndIconsExpression != null : !TREE_ITEM_END_ICONS_EXPRESSION_EDEFAULT.equals(this.treeItemEndIconsExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -335,6 +388,8 @@ public class TreeDescriptionImpl extends WidgetDescriptionImpl implements TreeDe
         result.append(this.isTreeItemSelectableExpression);
         result.append(", treeItemBeginIconExpression: ");
         result.append(this.treeItemBeginIconExpression);
+        result.append(", treeItemEndIconsExpression: ");
+        result.append(this.treeItemEndIconsExpression);
         result.append(')');
         return result.toString();
     }

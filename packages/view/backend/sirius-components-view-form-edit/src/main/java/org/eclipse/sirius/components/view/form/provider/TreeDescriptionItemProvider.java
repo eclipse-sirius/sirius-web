@@ -54,6 +54,7 @@ public class TreeDescriptionItemProvider extends WidgetDescriptionItemProvider {
             this.addTreeItemLabelExpressionPropertyDescriptor(object);
             this.addIsTreeItemSelectableExpressionPropertyDescriptor(object);
             this.addTreeItemBeginIconExpressionPropertyDescriptor(object);
+            this.addTreeItemEndIconsExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -110,6 +111,19 @@ public class TreeDescriptionItemProvider extends WidgetDescriptionItemProvider {
     }
 
     /**
+     * This adds a property descriptor for the Tree Item End Icons Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addTreeItemEndIconsExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TreeDescription_treeItemEndIconsExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeDescription_treeItemEndIconsExpression_feature", "_UI_TreeDescription_type"),
+                FormPackage.Literals.TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns TreeDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -156,6 +170,7 @@ public class TreeDescriptionItemProvider extends WidgetDescriptionItemProvider {
             case FormPackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION:
             case FormPackage.TREE_DESCRIPTION__IS_TREE_ITEM_SELECTABLE_EXPRESSION:
             case FormPackage.TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION:
+            case FormPackage.TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

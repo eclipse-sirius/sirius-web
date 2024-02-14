@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,8 @@ public final class TreeNode {
 
     private List<String> iconURL;
 
+    private List<List<String>> iconEndURL;
+
     private boolean selectable;
 
     private TreeNode() {
@@ -66,6 +68,10 @@ public final class TreeNode {
         return this.iconURL;
     }
 
+    public List<List<String>> getIconEndURL() {
+        return this.iconEndURL;
+    }
+
     public boolean isSelectable() {
         return this.selectable;
     }
@@ -94,6 +100,8 @@ public final class TreeNode {
 
         private List<String> iconURL;
 
+        private List<List<String>> iconEndURL;
+
         private boolean selectable;
 
         private Builder(String id) {
@@ -120,6 +128,11 @@ public final class TreeNode {
             return this;
         }
 
+        public Builder iconEndURL(List<List<String>> iconEndURL) {
+            this.iconEndURL = Objects.requireNonNull(iconEndURL);
+            return this;
+        }
+
         public Builder selectable(boolean selectable) {
             this.selectable = Objects.requireNonNull(selectable);
             return this;
@@ -133,6 +146,7 @@ public final class TreeNode {
             treeNode.kind = Objects.requireNonNull(this.kind);
             treeNode.selectable = Objects.requireNonNull(this.selectable);
             treeNode.iconURL = Objects.requireNonNull(this.iconURL);
+            treeNode.iconEndURL = Objects.requireNonNull(this.iconEndURL);
             return treeNode;
         }
     }

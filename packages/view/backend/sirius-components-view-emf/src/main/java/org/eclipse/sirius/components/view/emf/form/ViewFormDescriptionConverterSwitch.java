@@ -707,7 +707,8 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         StringValueProvider itemLabelProvider = this.getStringValueProvider(treeDescription.getTreeItemLabelExpression());
         Function<VariableManager, String> nodeIdProvider = this::getTreeItemId;
         Function<VariableManager, String> itemKindProvider = this::getTreeItemKind;
-        Function<VariableManager, List<String>> nodeIconURLProvider = this.getTreeValuesProvider(treeDescription.getTreeItemBeginIconExpression());
+        Function<VariableManager, List<String>> nodeIconURLProvider = this.getTreeBeginIconValue(treeDescription.getTreeItemBeginIconExpression());
+        Function<VariableManager, List<List<String>>> nodeIconEndURLProvider = this.getTreeEndIconValue(treeDescription.getTreeItemEndIconsExpression());
         Function<VariableManager, List<? extends Object>> childrenProvider = this.getMultiValueProvider(treeDescription.getChildExpression());
         Function<VariableManager, Boolean> nodeSelectableProvider = this.getBooleanValueProvider(treeDescription.getIsTreeItemSelectableExpression());
 
@@ -722,6 +723,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .nodeLabelProvider(itemLabelProvider)
                 .nodeKindProvider(itemKindProvider)
                 .nodeIconURLProvider(nodeIconURLProvider)
+                .nodeIconEndURLProvider(nodeIconEndURLProvider)
                 .nodeSelectableProvider(nodeSelectableProvider)
                 .expandedNodeIdsProvider(vm -> List.of())
                 .diagnosticsProvider(vm -> List.of())
@@ -739,7 +741,7 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         return this.objectService.getId(treeItem);
     }
 
-    private Function<VariableManager, List<String>> getTreeValuesProvider(String valueExpression) {
+    private Function<VariableManager, List<String>> getTreeBeginIconValue(String valueExpression) {
         String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return variableManager -> {
             List<String> values = new ArrayList<>();
@@ -747,6 +749,22 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression).asObjects();
                 if (optionalResult.isPresent()) {
                     values = optionalResult.get().stream().filter(String.class::isInstance).map(String.class::cast).toList();
+                }
+            }
+            return values;
+        };
+    }
+
+    private Function<VariableManager, List<List<String>>> getTreeEndIconValue(String valueExpression) {
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
+        return variableManager -> {
+            List<List<String>> values = new ArrayList<>(new ArrayList<>());
+            if (!safeValueExpression.isBlank()) {
+                Optional<List<Object>> optionalResult = this.interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression).asObjects();
+                if (optionalResult.isPresent()) {
+                    var list = optionalResult.get().stream().filter(List.class::isInstance).map(List.class::cast).toList();
+                    return list.stream().map(valuesList -> (List<String>) valuesList.stream().filter(String.class::isInstance).map(String.class::cast).toList())
+                            .toList();
                 }
             }
             return values;
