@@ -17,7 +17,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
     <changeSet id="01-initial-schema" author="sbegaudeau">
-        <sql dbms="PostgreSQL">
+        <sql dbms="postgresql">
             CREATE EXTENSION IF NOT EXISTS pgcrypto
         </sql>
 
