@@ -8,6 +8,10 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="laneDropTool" eType="#//LaneDropTool"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//DeckDescriptionStyle"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalDeckDescriptionStyle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LaneDescription" eSuperTypes="#//DeckElementDescription">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedCardDescriptions"
@@ -54,5 +58,19 @@
         defaultValueLiteral="aql:self"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//DeckElementDescriptionStyle"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
+        eType="#//ConditionalDeckElementDescriptionStyle" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeckDescriptionStyle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalDeckDescriptionStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//DeckDescriptionStyle"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DeckElementDescriptionStyle" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//LabelStyle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backgroundColor" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="color" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConditionalDeckElementDescriptionStyle"
+      eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Conditional #//DeckElementDescriptionStyle"/>
 </ecore:EPackage>

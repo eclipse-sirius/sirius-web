@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.deck.renderer.elements;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.deck.DeckStyle;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -23,7 +24,7 @@ import org.eclipse.sirius.components.representations.IProps;
  *
  * @author fbarbin
  */
-public record DeckElementProps(String id, String descriptionId, String targetObjectId, String label, List<Element> children) implements IProps {
+public record DeckElementProps(String id, String descriptionId, String targetObjectId, String label, DeckStyle style, List<Element> children) implements IProps {
 
     public static final String TYPE = "Deck";
 

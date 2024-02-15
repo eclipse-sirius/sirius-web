@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.deck.Deck;
+import org.eclipse.sirius.components.deck.DeckStyle;
 import org.eclipse.sirius.components.deck.Lane;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
 import org.eclipse.sirius.components.deck.renderer.elements.DeckElementProps;
@@ -49,6 +50,7 @@ public class DeckComponent implements IComponent {
         String deckId = optionalPreviousDeck.map(Deck::getId).orElseGet(() -> UUID.randomUUID().toString());
         String targetObjectId = deckDescription.targetObjectIdProvider().apply(variableManager);
         String label = optionalPreviousDeck.map(Deck::getLabel).orElseGet(() -> deckDescription.labelProvider().apply(variableManager));
+        DeckStyle deckStyle = deckDescription.deckStyleProvider().apply(variableManager);
 
         List<Element> children = deckDescription.laneDescriptions()//
                 .stream()//
@@ -58,7 +60,7 @@ public class DeckComponent implements IComponent {
                 })//
                 .toList();
 
-        DeckElementProps deckElementProps = new DeckElementProps(deckId, deckDescription.getId(), targetObjectId, label, children);
+        DeckElementProps deckElementProps = new DeckElementProps(deckId, deckDescription.getId(), targetObjectId, label, deckStyle, children);
         return new Element(DeckElementProps.TYPE, deckElementProps);
     }
 

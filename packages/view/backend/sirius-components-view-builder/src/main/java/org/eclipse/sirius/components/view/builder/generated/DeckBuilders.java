@@ -109,5 +109,45 @@ public class DeckBuilders {
         return new LaneDropToolBuilder();
     }
 
+    /**
+     * Instantiate a DeckDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DeckDescriptionStyleBuilder newDeckDescriptionStyle() {
+        return new DeckDescriptionStyleBuilder();
+    }
+
+    /**
+     * Instantiate a ConditionalDeckDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ConditionalDeckDescriptionStyleBuilder newConditionalDeckDescriptionStyle() {
+        return new ConditionalDeckDescriptionStyleBuilder();
+    }
+
+    /**
+     * Instantiate a DeckElementDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DeckElementDescriptionStyleBuilder newDeckElementDescriptionStyle() {
+        return new DeckElementDescriptionStyleBuilder();
+    }
+
+    /**
+     * Instantiate a ConditionalDeckElementDescriptionStyleBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public ConditionalDeckElementDescriptionStyleBuilder newConditionalDeckElementDescriptionStyle() {
+        return new ConditionalDeckElementDescriptionStyleBuilder();
+    }
+
 
 }

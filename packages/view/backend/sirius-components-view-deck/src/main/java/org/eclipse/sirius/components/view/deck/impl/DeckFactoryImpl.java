@@ -19,8 +19,12 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.deck.CardDescription;
 import org.eclipse.sirius.components.view.deck.CardDropTool;
+import org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle;
+import org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
+import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
+import org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.DeleteCardTool;
@@ -87,6 +91,14 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
                 return this.createCardDropTool();
             case DeckPackage.LANE_DROP_TOOL:
                 return this.createLaneDropTool();
+            case DeckPackage.DECK_DESCRIPTION_STYLE:
+                return this.createDeckDescriptionStyle();
+            case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE:
+                return this.createConditionalDeckDescriptionStyle();
+            case DeckPackage.DECK_ELEMENT_DESCRIPTION_STYLE:
+                return this.createDeckElementDescriptionStyle();
+            case DeckPackage.CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE:
+                return this.createConditionalDeckElementDescriptionStyle();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -189,6 +201,50 @@ public class DeckFactoryImpl extends EFactoryImpl implements DeckFactory {
     public LaneDropTool createLaneDropTool() {
         LaneDropToolImpl laneDropTool = new LaneDropToolImpl();
         return laneDropTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeckDescriptionStyle createDeckDescriptionStyle() {
+        DeckDescriptionStyleImpl deckDescriptionStyle = new DeckDescriptionStyleImpl();
+        return deckDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalDeckDescriptionStyle createConditionalDeckDescriptionStyle() {
+        ConditionalDeckDescriptionStyleImpl conditionalDeckDescriptionStyle = new ConditionalDeckDescriptionStyleImpl();
+        return conditionalDeckDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DeckElementDescriptionStyle createDeckElementDescriptionStyle() {
+        DeckElementDescriptionStyleImpl deckElementDescriptionStyle = new DeckElementDescriptionStyleImpl();
+        return deckElementDescriptionStyle;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ConditionalDeckElementDescriptionStyle createConditionalDeckElementDescriptionStyle() {
+        ConditionalDeckElementDescriptionStyleImpl conditionalDeckElementDescriptionStyle = new ConditionalDeckElementDescriptionStyleImpl();
+        return conditionalDeckElementDescriptionStyle;
     }
 
     /**

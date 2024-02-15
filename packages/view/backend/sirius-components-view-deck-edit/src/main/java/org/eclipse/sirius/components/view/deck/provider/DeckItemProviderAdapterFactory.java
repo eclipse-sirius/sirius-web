@@ -304,6 +304,103 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DeckDescriptionStyleItemProvider deckDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDeckDescriptionStyleAdapter() {
+        if (this.deckDescriptionStyleItemProvider == null) {
+            this.deckDescriptionStyleItemProvider = new DeckDescriptionStyleItemProvider(this);
+        }
+
+        return this.deckDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalDeckDescriptionStyleItemProvider conditionalDeckDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalDeckDescriptionStyleAdapter() {
+        if (this.conditionalDeckDescriptionStyleItemProvider == null) {
+            this.conditionalDeckDescriptionStyleItemProvider = new ConditionalDeckDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalDeckDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DeckElementDescriptionStyleItemProvider deckElementDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDeckElementDescriptionStyleAdapter() {
+        if (this.deckElementDescriptionStyleItemProvider == null) {
+            this.deckElementDescriptionStyleItemProvider = new DeckElementDescriptionStyleItemProvider(this);
+        }
+
+        return this.deckElementDescriptionStyleItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ConditionalDeckElementDescriptionStyleItemProvider conditionalDeckElementDescriptionStyleItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createConditionalDeckElementDescriptionStyleAdapter() {
+        if (this.conditionalDeckElementDescriptionStyleItemProvider == null) {
+            this.conditionalDeckElementDescriptionStyleItemProvider = new ConditionalDeckElementDescriptionStyleItemProvider(this);
+        }
+
+        return this.conditionalDeckElementDescriptionStyleItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -450,6 +547,14 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
             this.cardDropToolItemProvider.dispose();
         if (this.laneDropToolItemProvider != null)
             this.laneDropToolItemProvider.dispose();
+        if (this.deckDescriptionStyleItemProvider != null)
+            this.deckDescriptionStyleItemProvider.dispose();
+        if (this.conditionalDeckDescriptionStyleItemProvider != null)
+            this.conditionalDeckDescriptionStyleItemProvider.dispose();
+        if (this.deckElementDescriptionStyleItemProvider != null)
+            this.deckElementDescriptionStyleItemProvider.dispose();
+        if (this.conditionalDeckElementDescriptionStyleItemProvider != null)
+            this.conditionalDeckElementDescriptionStyleItemProvider.dispose();
     }
 
     /**

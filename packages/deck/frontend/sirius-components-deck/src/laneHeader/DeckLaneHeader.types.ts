@@ -22,6 +22,7 @@ export interface DeckLaneHeaderProps {
   title: string;
   t: (value: string) => string; // the translate function passed by the Board to handle i18n
   laneDraggable: boolean;
+  titleStyle?: React.CSSProperties;
 }
 
 export interface DeckLaneHeaderStateValue {

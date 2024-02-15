@@ -16,9 +16,9 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.view.emf.deck.IDeckIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
-import org.eclipse.sirius.components.view.emf.task.IDeckIdProvider;
 import org.eclipse.sirius.components.view.emf.task.IGanttIdProvider;
 import org.springframework.stereotype.Service;
 

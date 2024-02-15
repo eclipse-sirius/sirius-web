@@ -23,7 +23,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
+import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.LaneDescription;
 import org.eclipse.sirius.components.view.deck.LaneDropTool;
@@ -41,6 +43,9 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionImpl#getLaneDropTool <em>Lane Drop
  * Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionImpl#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionImpl#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @generated
@@ -75,6 +80,26 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
      * @ordered
      */
     protected LaneDropTool laneDropTool;
+
+    /**
+     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getStyle()
+     * @generated
+     * @ordered
+     */
+    protected DeckDescriptionStyle style;
+
+    /**
+     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getConditionalStyles()
+     * @generated
+     * @ordered
+     */
+    protected EList<ConditionalDeckDescriptionStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -210,6 +235,67 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
      * @generated
      */
     @Override
+    public DeckDescriptionStyle getStyle() {
+        return this.style;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetStyle(DeckDescriptionStyle newStyle, NotificationChain msgs) {
+        DeckDescriptionStyle oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DeckPackage.DECK_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStyle(DeckDescriptionStyle newStyle) {
+        if (newStyle != this.style) {
+            NotificationChain msgs = null;
+            if (this.style != null)
+                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DeckPackage.DECK_DESCRIPTION__STYLE, null, msgs);
+            if (newStyle != null)
+                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DeckPackage.DECK_DESCRIPTION__STYLE, null, msgs);
+            msgs = this.basicSetStyle(newStyle, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.DECK_DESCRIPTION__STYLE, newStyle, newStyle));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<ConditionalDeckDescriptionStyle> getConditionalStyles() {
+        if (this.conditionalStyles == null) {
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalDeckDescriptionStyle.class, this, DeckPackage.DECK_DESCRIPTION__CONDITIONAL_STYLES);
+        }
+        return this.conditionalStyles;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DeckPackage.DECK_DESCRIPTION__LANE_DESCRIPTIONS:
@@ -218,6 +304,10 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
                 return this.basicSetBackgroundColor(null, msgs);
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 return this.basicSetLaneDropTool(null, msgs);
+            case DeckPackage.DECK_DESCRIPTION__STYLE:
+                return this.basicSetStyle(null, msgs);
+            case DeckPackage.DECK_DESCRIPTION__CONDITIONAL_STYLES:
+                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -236,6 +326,10 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
                 return this.getBackgroundColor();
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 return this.getLaneDropTool();
+            case DeckPackage.DECK_DESCRIPTION__STYLE:
+                return this.getStyle();
+            case DeckPackage.DECK_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.getConditionalStyles();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -259,6 +353,13 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 this.setLaneDropTool((LaneDropTool) newValue);
                 return;
+            case DeckPackage.DECK_DESCRIPTION__STYLE:
+                this.setStyle((DeckDescriptionStyle) newValue);
+                return;
+            case DeckPackage.DECK_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                this.getConditionalStyles().addAll((Collection<? extends ConditionalDeckDescriptionStyle>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -280,6 +381,12 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 this.setLaneDropTool((LaneDropTool) null);
                 return;
+            case DeckPackage.DECK_DESCRIPTION__STYLE:
+                this.setStyle((DeckDescriptionStyle) null);
+                return;
+            case DeckPackage.DECK_DESCRIPTION__CONDITIONAL_STYLES:
+                this.getConditionalStyles().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -298,6 +405,10 @@ public class DeckDescriptionImpl extends RepresentationDescriptionImpl implement
                 return this.backgroundColor != null;
             case DeckPackage.DECK_DESCRIPTION__LANE_DROP_TOOL:
                 return this.laneDropTool != null;
+            case DeckPackage.DECK_DESCRIPTION__STYLE:
+                return this.style != null;
+            case DeckPackage.DECK_DESCRIPTION__CONDITIONAL_STYLES:
+                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
         }
         return super.eIsSet(featureID);
     }

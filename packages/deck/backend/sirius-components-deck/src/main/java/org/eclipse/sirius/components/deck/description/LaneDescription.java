@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.PublicApi;
+import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -30,7 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public record LaneDescription(String id, Function<VariableManager, String> targetObjectKindProvider, Function<VariableManager, String> targetObjectLabelProvider,
         Function<VariableManager, String> targetObjectIdProvider, Function<VariableManager, List<Object>> semanticElementsProvider, Function<VariableManager, String> titleProvider,
         Function<VariableManager, String> labelProvider, List<CardDescription> cardDescriptions, Consumer<VariableManager> editLaneProvider, Consumer<VariableManager> createCardProvider,
-        Consumer<VariableManager> dropCardProvider, Function<VariableManager, Boolean> collapsibleProvider) {
+        Consumer<VariableManager> dropCardProvider, Function<VariableManager, Boolean> collapsibleProvider, Function<VariableManager, DeckElementStyle> styleProvider) {
 
     public static final String OLD_LANE = "oldLane";
 
@@ -55,6 +56,7 @@ public record LaneDescription(String id, Function<VariableManager, String> targe
         Objects.requireNonNull(createCardProvider);
         Objects.requireNonNull(dropCardProvider);
         Objects.requireNonNull(collapsibleProvider);
+        Objects.requireNonNull(styleProvider);
     }
 
     @Override

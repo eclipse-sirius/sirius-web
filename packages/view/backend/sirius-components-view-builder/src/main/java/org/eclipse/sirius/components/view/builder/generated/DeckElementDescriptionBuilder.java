@@ -63,5 +63,27 @@ public abstract class DeckElementDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for Style.
+     *
+     * @generated
+     */
+    public DeckElementDescriptionBuilder style(org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle value) {
+        this.getDeckElementDescription().setStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalStyles.
+     *
+     * @generated
+     */
+    public DeckElementDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle value : values) {
+            this.getDeckElementDescription().getConditionalStyles().add(value);
+        }
+        return this;
+    }
+
 }
 

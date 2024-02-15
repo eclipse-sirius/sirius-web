@@ -19,7 +19,7 @@ import java.util.Objects;
  *
  * @author fbarbin
  */
-public record Card(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, String description, Boolean visible) {
+public record Card(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, String description, Boolean visible, DeckElementStyle style) {
 
     public Card {
         Objects.requireNonNull(id);

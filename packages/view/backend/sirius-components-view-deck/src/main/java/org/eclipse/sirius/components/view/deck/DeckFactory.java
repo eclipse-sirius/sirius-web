@@ -102,6 +102,40 @@ public interface DeckFactory extends EFactory {
     LaneDropTool createLaneDropTool();
 
     /**
+     * Returns a new object of class '<em>Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Description Style</em>'.
+     * @generated
+     */
+    DeckDescriptionStyle createDeckDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Deck Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Deck Description Style</em>'.
+     * @generated
+     */
+    ConditionalDeckDescriptionStyle createConditionalDeckDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Element Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Element Description Style</em>'.
+     * @generated
+     */
+    DeckElementDescriptionStyle createDeckElementDescriptionStyle();
+
+    /**
+     * Returns a new object of class '<em>Conditional Deck Element Description Style</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Conditional Deck Element Description Style</em>'.
+     * @generated
+     */
+    ConditionalDeckElementDescriptionStyle createConditionalDeckElementDescriptionStyle();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

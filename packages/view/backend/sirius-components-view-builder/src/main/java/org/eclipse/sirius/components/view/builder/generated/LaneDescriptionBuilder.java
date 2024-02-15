@@ -80,6 +80,28 @@ public class LaneDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for Style.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder style(org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle value) {
+        this.getLaneDescription().setStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalStyles.
+     *
+     * @generated
+     */
+    public LaneDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle value : values) {
+            this.getLaneDescription().getConditionalStyles().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for OwnedCardDescriptions.
      *
      * @generated

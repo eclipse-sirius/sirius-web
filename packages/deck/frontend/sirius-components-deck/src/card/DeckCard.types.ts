@@ -17,6 +17,7 @@ import { DeckTagProps } from './DeckTag.types';
 export interface DeckCardProps {
   style: React.CSSProperties;
   tagStyle: React.CSSProperties;
+  titleStyle: React.CSSProperties;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
   onDelete: () => void;
   onChange: (updateCard: UpdateCardProps) => void;

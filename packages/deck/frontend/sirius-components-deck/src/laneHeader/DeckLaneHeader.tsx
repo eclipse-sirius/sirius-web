@@ -42,6 +42,7 @@ export const DeckLaneHeader = ({
   laneDraggable,
   cards,
   id,
+  titleStyle = titleFontStyle,
 }: DeckLaneHeaderProps) => {
   const theme: Theme = useTheme();
   const titleInputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
@@ -68,14 +69,14 @@ export const DeckLaneHeader = ({
   return (
     <>
       <LaneHeader onKeyDown={handleKeyDown} tabIndex={0} ref={headerRef}>
-        <DeckTitle draggable={laneDraggable} style={titleFontStyle} theme={theme}>
+        <DeckTitle draggable={laneDraggable} style={titleStyle} theme={theme} data-testid={`lane-${title}-title`}>
           {editLaneTitle ? (
             <DeckInput
               ref={titleInputRef}
               value={title}
               placeholder={translate('placeholder.title')}
               onSave={updateTitle}
-              style={titleFontStyle}
+              style={titleStyle}
               data-testid={'lane-input-title'}
             />
           ) : (

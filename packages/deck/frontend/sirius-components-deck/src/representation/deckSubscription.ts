@@ -31,6 +31,9 @@ export const deckEventSubscription = gql`
             kind
             label
           }
+          style {
+            backgroundColor
+          }
           targetObjectId
           lanes {
             id
@@ -48,6 +51,24 @@ export const deckEventSubscription = gql`
               label
               description
               visible
+              style {
+                bold
+                color
+                fontSize
+                italic
+                strikeThrough
+                underline
+                backgroundColor
+              }
+            }
+            style {
+              bold
+              color
+              fontSize
+              italic
+              strikeThrough
+              underline
+              backgroundColor
             }
           }
         }

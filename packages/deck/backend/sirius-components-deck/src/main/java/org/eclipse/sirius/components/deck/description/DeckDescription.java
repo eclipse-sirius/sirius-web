@@ -20,6 +20,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.annotations.PublicApi;
+import org.eclipse.sirius.components.deck.DeckStyle;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -30,7 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @PublicApi
 public record DeckDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
-        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<LaneDescription> laneDescriptions, Consumer<VariableManager> dropLaneProvider)
+        Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<LaneDescription> laneDescriptions, Consumer<VariableManager> dropLaneProvider, Function<VariableManager, DeckStyle> deckStyleProvider)
         implements IRepresentationDescription {
 
     public static final String LABEL = "label";
@@ -54,6 +55,7 @@ public record DeckDescription(String id, String label, Function<VariableManager,
         Objects.requireNonNull(canCreatePredicate);
         Objects.requireNonNull(laneDescriptions);
         Objects.requireNonNull(dropLaneProvider);
+        Objects.requireNonNull(deckStyleProvider);
     }
 
     @Override

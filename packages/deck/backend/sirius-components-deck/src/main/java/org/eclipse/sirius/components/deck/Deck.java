@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.representations.ISemanticRepresentation;
  *
  * @author fbarbin
  */
-public record Deck(String id, String descriptionId, String targetObjectId, String label, List<Lane> lanes) implements IRepresentation, ISemanticRepresentation {
+public record Deck(String id, String descriptionId, String targetObjectId, String label, DeckStyle style, List<Lane> lanes) implements IRepresentation, ISemanticRepresentation {
 
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Deck";
 

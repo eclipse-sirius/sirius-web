@@ -10,41 +10,32 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import { Theme } from '@material-ui/core/styles';
 import { Card, DeckData, Lane } from '../Deck.types';
-import { GQLCard, GQLDeck, GQLLane } from '../representation/deckSubscription.types';
+import { GQLCard, GQLDeck, GQLDeckElementStyle, GQLLane } from '../representation/deckSubscription.types';
 
 export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: string[], theme: Theme): DeckData => {
+  const backgroundColor: string | undefined = deck.style?.backgroundColor
+    ? getCSSColor(deck.style.backgroundColor, theme)
+    : undefined;
   const data: DeckData = {
     lanes: [],
+    style: { backgroundColor },
   };
 
   for (const lane of deck.lanes) {
-    const cards: Card[] = lane.cards.map((card) => {
-      let editable: boolean = false;
-      const { targetObjectId, targetObjectLabel, targetObjectKind, ...otherCardProps } = card;
-      const metadata = {
-        selection: {
-          id: targetObjectId,
-          label: targetObjectLabel,
-          kind: targetObjectKind,
-        },
-      };
-      if (selectedElementIds.includes(card.targetObjectId)) {
-        editable = true;
-      }
-      return {
-        ...otherCardProps,
-        editable,
-        metadata,
-      };
-    });
+    const cards: Card[] = lane.cards.map((card) => convertGQLCard(card, selectedElementIds, theme));
 
-    const { id, label, title, targetObjectId, collapsed, collapsible } = lane;
+    const { id, label, title, targetObjectId, collapsed, collapsible, style } = lane;
     const selectedLane: boolean = selectedElementIds.includes(targetObjectId);
 
-    const style: React.CSSProperties = {
+    const cssStyleFromDescription: React.CSSProperties = style ? convertElementStyle(style, theme) : {};
+    const { backgroundColor, ...otherStyleProps } = cssStyleFromDescription;
+    const laneStyle: React.CSSProperties = {
       border: selectedLane ? `2px solid ${theme.palette.selected}` : undefined,
+      width: '280px',
+      backgroundColor,
     };
 
     const convertedLane: Lane = {
@@ -54,7 +45,8 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: strin
       editLaneTitle: selectedLane,
       editable: true,
       cards,
-      style,
+      style: laneStyle,
+      titleStyle: otherStyleProps,
       collapsible,
       collapsed,
       'data-testid': `lane-${lane.title}`,
@@ -62,6 +54,53 @@ export const convertToTrelloDeckData = (deck: GQLDeck, selectedElementIds: strin
     data.lanes.push(convertedLane);
   }
   return data;
+};
+
+const convertGQLCard = (card: GQLCard, selectedElementIds: string[], theme: Theme): Card => {
+  let editable: boolean = false;
+  const { targetObjectId, targetObjectLabel, targetObjectKind, style, ...otherCardProps } = card;
+  const metadata = {
+    selection: {
+      id: targetObjectId,
+      label: targetObjectLabel,
+      kind: targetObjectKind,
+    },
+  };
+  if (selectedElementIds.includes(card.targetObjectId)) {
+    editable = true;
+  }
+  const cssStyle: React.CSSProperties | undefined = style ? convertElementStyle(style, theme) : {};
+  const { backgroundColor, ...otherStyle } = cssStyle;
+  return {
+    ...otherCardProps,
+    editable,
+    metadata,
+    style: { backgroundColor },
+    titleStyle: otherStyle,
+  };
+};
+
+const convertElementStyle = (style: GQLDeckElementStyle, theme: Theme): React.CSSProperties => {
+  return {
+    backgroundColor: getCSSColor(style.backgroundColor, theme),
+    color: getCSSColor(style.color, theme),
+    fontSize: style.fontSize,
+    fontStyle: style.italic ? 'italic' : 'normal',
+    fontWeight: style.bold ? 'bold' : 'normal',
+    textDecoration: getTextDecoration(style),
+  };
+};
+
+const getTextDecoration = (style: GQLDeckElementStyle): string => {
+  let decoration: string = '';
+  if (style?.strikeThrough) {
+    decoration = decoration + 'line-through';
+  }
+  if (style?.underline) {
+    let separator: string = decoration.length > 0 ? ' ' : '';
+    decoration = decoration + separator + 'underline';
+  }
+  return decoration.length > 0 ? decoration : 'none';
 };
 
 export const moveCardInDeckLanes = (

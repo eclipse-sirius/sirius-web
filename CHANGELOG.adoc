@@ -143,6 +143,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [sirius-web] Improve the new architecture to let product builders reuse Sirius Web
 - https://github.com/eclipse-sirius/sirius-web/issues/3141[#3141] [portal] Make the header of embedded representations sticky so that it (and its icon) are always visible.
 - https://github.com/eclipse-sirius/sirius-web/issues/2713[#2713] [diagram] Enhances resize support for list nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/3120[#3120] [deck] Provide styles customization in the Deck representation
 
 == v2024.1.0
 
