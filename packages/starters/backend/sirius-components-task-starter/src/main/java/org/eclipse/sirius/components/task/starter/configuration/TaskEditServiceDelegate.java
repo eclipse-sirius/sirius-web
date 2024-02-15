@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.configuration;
 
+import java.util.Optional;
+
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditServiceDelegate;
@@ -33,9 +35,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskEditServiceDelegate extends DefaultEditService implements IEditServiceDelegate {
 
-    public TaskEditServiceDelegate(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider,
+    public TaskEditServiceDelegate(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, Optional<ISuggestedRootObjectTypesProvider> optionalSuggestedRootObjectsProvider,
             IObjectService objectService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
-        super(emfKindService, composedAdapterFactory, suggestedRootObjectsProvider, objectService, feedbackMessageService, messageService);
+        super(emfKindService, composedAdapterFactory, optionalSuggestedRootObjectsProvider, objectService, feedbackMessageService, messageService);
     }
 
     @Override

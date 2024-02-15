@@ -76,10 +76,10 @@ public class DefaultEditService implements IDefaultEditService {
 
     private final IEMFMessageService messageService;
 
-    public DefaultEditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, ISuggestedRootObjectTypesProvider suggestedRootObjectsProvider, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
+    public DefaultEditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, Optional<ISuggestedRootObjectTypesProvider> optionalSuggestedRootObjectsProvider, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.suggestedRootObjectTypesProvider = Objects.requireNonNull(suggestedRootObjectsProvider);
+        this.suggestedRootObjectTypesProvider = optionalSuggestedRootObjectsProvider.orElse(null);
         this.objectService = Objects.requireNonNull(objectService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -237,7 +237,7 @@ public class DefaultEditService implements IDefaultEditService {
             EPackage ePackage = ePackageRegistry.getEPackage(domainId);
             if (ePackage != null) {
                 List<EClass> classes;
-                if (suggested) {
+                if (suggested && this.suggestedRootObjectTypesProvider != null) {
                     classes = this.suggestedRootObjectTypesProvider.getSuggestedRootObjectTypes(ePackage);
                     if (classes.isEmpty()) {
                         classes = this.getConcreteClasses(ePackage);
