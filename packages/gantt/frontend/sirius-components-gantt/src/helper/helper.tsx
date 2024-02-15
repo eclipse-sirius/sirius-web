@@ -10,12 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task } from '@ObeoNetwork/gantt-task-react';
-import { TaskType } from '@ObeoNetwork/gantt-task-react/dist/types/public-types';
+import {
+  Column,
+  ColumnProps,
+  DateEndColumn,
+  DateStartColumn,
+  Dependency,
+  EmptyTask,
+  TaskOrEmpty,
+  TaskType,
+  TitleColumn,
+} from '@ObeoNetwork/gantt-task-react';
 import { GQLGantt, GQLTask, GQLTaskDetail, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
+import { TaskListColumnEnum } from '../representation/Gantt.types';
 
-export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): Task[] {
-  const tasks: Task[] = [];
+export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskOrEmpty[] {
+  const tasks: TaskOrEmpty[] = [];
   gQLTasks.forEach((gQLTask: GQLTask) => {
     let type: TaskType = 'task';
     const isProject = gQLTask.subTasks && gQLTask.subTasks.length > 0;
@@ -24,23 +34,36 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): Task[
     } else if (gQLTask.detail.startTime === gQLTask.detail.endTime) {
       type = 'milestone';
     }
-    const task: SelectableTask = {
-      id: gQLTask.id,
-      name: gQLTask.detail.name,
-      progress: gQLTask.detail.progress,
-      type,
-      dependencies: gQLTask.dependencyTaskIds,
-      project: parentId,
-      hideChildren: false,
-      targetObjectId: gQLTask.targetObjectId,
-      targetObjectKind: gQLTask.targetObjectKind,
-      targetObjectLabel: gQLTask.targetObjectLabel,
-    };
-    if (!!gQLTask.detail.startTime) {
-      task.start = new Date(gQLTask.detail.startTime);
-    }
-    if (!!gQLTask.detail.endTime) {
-      task.end = new Date(gQLTask.detail.endTime);
+    const dependencies: Dependency[] = gQLTask.dependencyTaskIds.map((dependencyTaskId) => {
+      return {
+        sourceId: dependencyTaskId,
+        sourceTarget: 'endOfTask',
+        ownTarget: 'startOfTask',
+      };
+    });
+    let task: SelectableTask | EmptyTask;
+    if (gQLTask.detail.startTime && gQLTask.detail.endTime) {
+      task = {
+        id: gQLTask.id,
+        name: gQLTask.detail.name,
+        start: new Date(gQLTask.detail.startTime),
+        end: new Date(gQLTask.detail.endTime),
+        progress: gQLTask.detail.progress,
+        type,
+        dependencies,
+        parent: parentId,
+        hideChildren: false,
+        targetObjectId: gQLTask.targetObjectId,
+        targetObjectKind: gQLTask.targetObjectKind,
+        targetObjectLabel: gQLTask.targetObjectLabel,
+      };
+    } else {
+      task = {
+        id: gQLTask.id,
+        name: gQLTask.detail.name,
+        parent: gQLTask.id,
+        type: 'empty',
+      };
     }
 
     tasks.push(task);
@@ -48,7 +71,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): Task[
       if (gQLTask.detail.computeStartEndDynamically) {
         task.isDisabled = true;
       }
-      const children: Task[] = getTaskFromGQLTask(gQLTask.subTasks, gQLTask.id);
+      const children: TaskOrEmpty[] = getTaskFromGQLTask(gQLTask.subTasks, gQLTask.id);
       tasks.push(...children);
     }
   });
@@ -75,4 +98,55 @@ const findTask = (tasks: GQLTask[], taskId: string): GQLTask | undefined => {
     return !foundTask;
   });
   return foundTask;
+};
+
+const ProgressColumn: React.FC<ColumnProps> = ({ data: { task } }) => {
+  if (task.type === 'project' || task.type === 'task') {
+    return <>{task.progress}%</>;
+  }
+
+  return null;
+};
+
+export const getAllColumns = () => {
+  const columnEnums = [
+    TaskListColumnEnum.NAME,
+    TaskListColumnEnum.FROM,
+    TaskListColumnEnum.TO,
+    TaskListColumnEnum.PROGRESS,
+  ];
+  const columns: Column[] = [];
+  columnEnums.forEach((columnType) => {
+    if (columnType === TaskListColumnEnum.NAME) {
+      columns.push({
+        component: TitleColumn,
+        width: 210,
+        title: 'Name',
+        id: TaskListColumnEnum.NAME,
+      });
+    } else if (columnType === TaskListColumnEnum.FROM) {
+      columns.push({
+        component: DateStartColumn,
+        width: 150,
+        title: 'Date of start',
+        id: TaskListColumnEnum.FROM,
+      });
+    } else if (columnType === TaskListColumnEnum.TO) {
+      columns.push({
+        component: DateEndColumn,
+        width: 150,
+        title: 'Date of end',
+        id: TaskListColumnEnum.TO,
+      });
+    } else if (columnType === TaskListColumnEnum.PROGRESS) {
+      columns.push({
+        component: ProgressColumn,
+        width: 40,
+        title: 'Progress',
+        id: TaskListColumnEnum.PROGRESS,
+      });
+    }
+  });
+
+  return columns;
 };

@@ -82,13 +82,15 @@ public class TaskExampleBuilder {
 
         Task idea = TaskFactory.eINSTANCE.createTask();
         idea.setName(IDEA);
-        idea.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
-        idea.setEndTime(Instant.parse(DATE_2023_12_11T17_30_00Z));
+        idea.setDescription("Description of the Idea");
+        idea.setStartTime(Instant.parse("2023-12-10T08:30:00Z"));
+        idea.setEndTime(Instant.parse("2023-12-11T17:30:00Z"));
         idea.setProgress(50);
         Task spec = TaskFactory.eINSTANCE.createTask();
         spec.setName(SPECIFICATION);
-        spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
-        spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
+        spec.setDescription("Description of the Specification");
+        spec.setStartTime(Instant.parse("2023-12-11T08:30:00Z"));
+        spec.setEndTime(Instant.parse("2023-12-12T17:30:00Z"));
         spec.setProgress(50);
         spec.getDependencies().add(idea);
 
@@ -97,12 +99,26 @@ public class TaskExampleBuilder {
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
         development.getDependencies().add(spec);
+        development.setComputeStartEndDynamically(true);
 
         Task codeDev = TaskFactory.eINSTANCE.createTask();
         codeDev.setName(CODE_DEVELOPMENT);
         codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
         codeDev.getAssignedPersons().add(peter);
+        codeDev.setComputeStartEndDynamically(false);
+        Task frontDev = TaskFactory.eINSTANCE.createTask();
+        frontDev.setName("Front");
+        frontDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
+        frontDev.setEndTime(Instant.parse("2023-12-14T17:30:00Z"));
+        frontDev.getAssignedPersons().add(peter);
+        Task backDev = TaskFactory.eINSTANCE.createTask();
+        backDev.setName("Back");
+        backDev.setStartTime(Instant.parse("2023-12-14T14:00:00Z"));
+        backDev.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
+        backDev.getAssignedPersons().add(paul);
+        codeDev.getSubTasks().addAll(List.of(frontDev, backDev));
+
         Task review = TaskFactory.eINSTANCE.createTask();
         review.setName(REVIEW);
         review.setStartTime(Instant.parse(DATE_2023_12_16T08_30_00Z));

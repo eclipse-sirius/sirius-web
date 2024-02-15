@@ -43,6 +43,16 @@ public class TaskDescriptionBuilder {
     }
 
     /**
+     * Setter for Name.
+     *
+     * @generated
+     */
+    public TaskDescriptionBuilder name(java.lang.String value) {
+        this.getTaskDescription().setName(value);
+        return this;
+    }
+
+    /**
      * Setter for SemanticCandidatesExpression.
      *
      * @generated

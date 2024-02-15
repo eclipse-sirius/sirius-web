@@ -12,10 +12,8 @@
  *******************************************************************************/
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import CloseIcon from '@material-ui/icons/Close';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import React from 'react';
+import { TaskIcon } from '../icons/TaskIcon';
 
 import { TaskContextualPaletteProps } from '@ObeoNetwork/gantt-task-react';
 import { ContextualPaletteProps } from './ContextualPalette.types';
@@ -23,7 +21,7 @@ import { ContextualPaletteProps } from './ContextualPalette.types';
 const useContextualPaletteStyle = makeStyles((theme) => ({
   buttonEntries: {
     display: 'grid',
-    gridTemplateColumns: `repeat(3, 36px)`,
+    gridTemplateColumns: `repeat(2, 28px)`,
     gridTemplateRows: '28px',
     gridAutoRows: '28px',
     placeItems: 'center',
@@ -40,7 +38,7 @@ const useContextualPaletteStyle = makeStyles((theme) => ({
 }));
 
 export const getContextalPalette = ({ onCreateTask, onDeleteTask }: ContextualPaletteProps) => {
-  const ContextualPalette: React.FC<TaskContextualPaletteProps> = ({ selectedTask, onClose }) => {
+  const ContextualPalette: React.FC<TaskContextualPaletteProps> = ({ selectedTask }) => {
     const classes = useContextualPaletteStyle();
     return (
       <div className={classes.buttonEntries}>
@@ -51,7 +49,7 @@ export const getContextalPalette = ({ onCreateTask, onDeleteTask }: ContextualPa
           title="Create task"
           onClick={() => onCreateTask(selectedTask)}
           data-testid="create-task">
-          <AddIcon fontSize="small" />
+          <TaskIcon fontSize="small" />
         </IconButton>
         <IconButton
           className={classes.toolIcon}
@@ -61,15 +59,6 @@ export const getContextalPalette = ({ onCreateTask, onDeleteTask }: ContextualPa
           onClick={() => onDeleteTask(selectedTask)}
           data-testid="delete-task">
           <DeleteForeverIcon fontSize="small" />
-        </IconButton>
-        <IconButton
-          className={classes.toolIcon}
-          size="small"
-          aria-label="Close toolbar"
-          title="Close toolbar"
-          onClick={onClose}
-          data-testid="close-toolbar">
-          <CloseIcon fontSize="small" />
         </IconButton>
       </div>
     );

@@ -40,6 +40,29 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface TaskDescription extends EObject {
     /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is <code>""</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @see #setName(String)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getTaskDescription_Name()
+     * @model default="" dataType="org.eclipse.sirius.components.view.Identifier" required="true"
+     * @generated
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.TaskDescription#getName <em>Name</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
+     * @see #getName()
+     * @generated
+     */
+    void setName(String value);
+
+    /**
      * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. The default value is
      * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

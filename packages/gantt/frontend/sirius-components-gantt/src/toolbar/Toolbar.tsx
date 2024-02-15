@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TaskListColumnEnum, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import { Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { ShareRepresentationModal } from '@eclipse-sirius/sirius-components-core';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
@@ -18,14 +18,19 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import { ViewColumn } from '@material-ui/icons';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import ShareIcon from '@material-ui/icons/Share';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import ZoomOutIcon from '@material-ui/icons/ZoomOut';
 import React, { useEffect, useState } from 'react';
+import { TaskListColumnEnum } from '../representation/Gantt.types';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
+import { useFullscreen } from './useFullScreen';
 
 const useToolbarStyles = makeStyles((theme) => ({
   toolbar: {
@@ -56,22 +61,35 @@ export const Toolbar = ({
   onChangeZoomLevel,
   onChangeDisplayColumns,
   onChangeColumns,
+  fullscreenNode,
 }: ToolbarProps) => {
   const [state, setState] = useState<ToolbarState>({ modal: null });
+  const { fullscreen, setFullscreen } = useFullscreen(fullscreenNode);
 
   const classes = useToolbarStyles();
 
   const onShare = () => setState((prevState) => ({ ...prevState, modal: 'share' }));
   const closeModal = () => setState((prevState) => ({ ...prevState, modal: null }));
-
+  const isTask = (task: TaskOrEmpty): task is Task => {
+    return task.type !== 'empty';
+  };
   const onFitToScreen = () => {
     const minTime = Math.min.apply(
       null,
-      tasks.filter((task) => Boolean(task.start)).map((task) => (task.start ? task.start.getTime() : 0))
+      tasks
+        .filter((t) => isTask(t))
+        .map((t) => t as Task)
+        .filter((task) => Boolean(task.start))
+        .map((task) => (task.start ? task.start.getTime() : 0))
     );
     const maxTime = Math.max.apply(
       null,
-      tasks.filter((task) => Boolean(task.end)).map((task) => (task.end ? task.end.getTime() : 0))
+
+      tasks
+        .filter((t) => isTask(t))
+        .map((t) => t as Task)
+        .filter((task) => Boolean(task.end))
+        .map((task) => (task.end ? task.end.getTime() : 0))
     );
 
     const fullTime: number = (maxTime - minTime) / 1000 / 3600;
@@ -144,12 +162,33 @@ export const Toolbar = ({
     { type: TaskListColumnEnum.NAME, name: 'Name' },
     { type: TaskListColumnEnum.FROM, name: 'From' },
     { type: TaskListColumnEnum.TO, name: 'To' },
-    { type: TaskListColumnEnum.ASSIGNEE, name: 'Assignee' },
+    { type: TaskListColumnEnum.PROGRESS, name: 'Progress' },
   ];
 
   return (
     <>
       <div className={classes.toolbar}>
+        {fullscreen ? (
+          <Tooltip title="Exit full screen mode">
+            <IconButton
+              size="small"
+              color="inherit"
+              aria-label="exit full screen mode"
+              onClick={() => setFullscreen(false)}>
+              <FullscreenExitIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Toggle full screen mode">
+            <IconButton
+              size="small"
+              color="inherit"
+              aria-label="toggle full screen mode"
+              onClick={() => setFullscreen(true)}>
+              <FullscreenIcon />
+            </IconButton>
+          </Tooltip>
+        )}
         <FormControl className={classes.selectFormControl}>
           <Select
             value={zoomLevel}
@@ -158,7 +197,9 @@ export const Toolbar = ({
             disableUnderline
             title="Zoom level"
             data-testid="zoom-level">
-            <MenuItem value={ViewMode.Hour}>Hour</MenuItem>
+            <MenuItem value={ViewMode.Hour} data-testid="zoom-level-Hour">
+              Hour
+            </MenuItem>
             <MenuItem value={ViewMode.QuarterDay}>Quarter Day</MenuItem>
             <MenuItem value={ViewMode.HalfDay}>Half Day</MenuItem>
             <MenuItem value={ViewMode.Day}>Day</MenuItem>
@@ -210,10 +251,11 @@ export const Toolbar = ({
             disableUnderline
             value={columns}
             onChange={handleChangeColumns}
-            renderValue={() => ''}>
+            renderValue={() => ''}
+            data-testid="columns-select">
             {allColumns.map((column) => (
-              <MenuItem key={column.type} value={column.type}>
-                <Checkbox checked={columns.indexOf(column.type) > -1} />
+              <MenuItem key={column.type} value={column.type} disabled={column.type == TaskListColumnEnum.NAME}>
+                <Checkbox checked={columns.indexOf(column.type) > -1} data-testid={`columnType-${column.type}`} />
                 <ListItemText primary={column.name} />
               </MenuItem>
             ))}

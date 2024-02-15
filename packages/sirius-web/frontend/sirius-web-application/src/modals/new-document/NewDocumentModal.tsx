@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -182,7 +182,13 @@ export const NewDocumentModal = ({ editingContextId, onClose }: NewDocumentModal
 
   return (
     <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
+      <Dialog
+        open={true}
+        onClose={onClose}
+        aria-labelledby="dialog-title"
+        maxWidth="xs"
+        fullWidth
+        data-testid="create-new-model">
         <DialogTitle id="dialog-title">Create a new model</DialogTitle>
         <DialogContent>
           <div className={classes.form}>

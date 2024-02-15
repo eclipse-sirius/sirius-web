@@ -111,4 +111,14 @@ export class Explorer {
   public dragTreeItem(treeItemLabel: string, dataTransfer: DataTransfer): void {
     this.getTreeItemByLabel(treeItemLabel).trigger('dragstart', { dataTransfer });
   }
+
+  public createNewModel(modelName: string, modelType:string): void {
+    cy.getByTestId('new-model').should('exist');
+    cy.getByTestId('tree-filter-menu-icon').should('exist'); // trick to avoid error if this menu is not render yet
+    cy.getByTestId('new-model').click();
+    cy.getByTestId('create-new-model').findByTestId('name-input').type(modelName);
+    cy.getByTestId('create-new-model').findByTestId('stereotype').click();
+    cy.get('li').filter(`:contains("${modelType}")`).click();
+    cy.getByTestId('create-new-model').findByTestId('create-document').click();
+  }
 }

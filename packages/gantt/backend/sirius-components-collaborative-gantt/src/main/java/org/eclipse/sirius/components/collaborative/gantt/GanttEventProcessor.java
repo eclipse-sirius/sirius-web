@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,8 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
-import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
@@ -56,8 +54,6 @@ public class GanttEventProcessor implements IGanttEventProcessor {
     private final ISubscriptionManager subscriptionManager;
 
     private final GanttCreationService ganttCreationService;
-
-    private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private final AtomicReference<Gantt> currentGantt = new AtomicReference<>();
 
@@ -134,24 +130,22 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        return Flux.merge(this.ganttEventFlux.getFlux(input), this.subscriptionManager.getFlux(input));
+        return Flux.merge(
+            this.ganttEventFlux.getFlux(input),
+            this.subscriptionManager.getFlux(input)
+        );
     }
 
     @Override
     public void dispose() {
-        String id = null;
-        if (this.currentGantt.get() != null) {
-            id = this.currentGantt.get().getId();
-        }
+        String id = Optional.ofNullable(this.currentGantt.get())
+                .map(Gantt::id)
+                .orElse(null);
+
         this.logger.trace("Disposing the gantt event processor {}", id);
 
         this.subscriptionManager.dispose();
 
-        EmitResult emitResult = this.sink.tryEmitComplete();
-        if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
-        }
+        this.ganttEventFlux.dispose();
     }
-
 }

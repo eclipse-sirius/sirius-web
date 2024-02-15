@@ -231,7 +231,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_SemanticCandidatesExpression() {
+    public EAttribute getTaskDescription_Name() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -241,7 +241,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_NameExpression() {
+    public EAttribute getTaskDescription_SemanticCandidatesExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -251,7 +251,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_DescriptionExpression() {
+    public EAttribute getTaskDescription_NameExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
@@ -261,7 +261,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_StartTimeExpression() {
+    public EAttribute getTaskDescription_DescriptionExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -271,7 +271,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_EndTimeExpression() {
+    public EAttribute getTaskDescription_StartTimeExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -281,7 +281,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_ProgressExpression() {
+    public EAttribute getTaskDescription_EndTimeExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
@@ -291,7 +291,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_ComputeStartEndDynamicallyExpression() {
+    public EAttribute getTaskDescription_ProgressExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
@@ -301,7 +301,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EAttribute getTaskDescription_DependenciesExpression() {
+    public EAttribute getTaskDescription_ComputeStartEndDynamicallyExpression() {
         return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(7);
     }
 
@@ -311,8 +311,8 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EReference getTaskDescription_Style() {
-        return (EReference) this.taskDescriptionEClass.getEStructuralFeatures().get(8);
+    public EAttribute getTaskDescription_DependenciesExpression() {
+        return (EAttribute) this.taskDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -321,7 +321,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EReference getTaskDescription_ConditionalStyles() {
+    public EReference getTaskDescription_Style() {
         return (EReference) this.taskDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
@@ -331,7 +331,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EReference getTaskDescription_SubTaskElementDescriptions() {
+    public EReference getTaskDescription_ConditionalStyles() {
         return (EReference) this.taskDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
@@ -341,8 +341,18 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
      * @generated
      */
     @Override
-    public EReference getTaskDescription_ReusedTaskElementDescriptions() {
+    public EReference getTaskDescription_SubTaskElementDescriptions() {
         return (EReference) this.taskDescriptionEClass.getEStructuralFeatures().get(11);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getTaskDescription_ReusedTaskElementDescriptions() {
+        return (EReference) this.taskDescriptionEClass.getEStructuralFeatures().get(12);
     }
 
     /**
@@ -512,6 +522,7 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
         this.createEReference(this.ganttDescriptionEClass, GANTT_DESCRIPTION__DELETE_TOOL);
 
         this.taskDescriptionEClass = this.createEClass(TASK_DESCRIPTION);
+        this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__NAME);
         this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
         this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__NAME_EXPRESSION);
         this.createEAttribute(this.taskDescriptionEClass, TASK_DESCRIPTION__DESCRIPTION_EXPRESSION);
@@ -597,6 +608,8 @@ public class GanttPackageImpl extends EPackageImpl implements GanttPackage {
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.taskDescriptionEClass, TaskDescription.class, "TaskDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getTaskDescription_Name(), theViewPackage.getIdentifier(), "name", "", 1, 1, TaskDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTaskDescription_SemanticCandidatesExpression(), theViewPackage.getInterpretedExpression(), "semanticCandidatesExpression", "aql:self", 1, 1, TaskDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTaskDescription_NameExpression(), theViewPackage.getInterpretedExpression(), "nameExpression", "aql:self.name", 0, 1, TaskDescription.class, !IS_TRANSIENT,
