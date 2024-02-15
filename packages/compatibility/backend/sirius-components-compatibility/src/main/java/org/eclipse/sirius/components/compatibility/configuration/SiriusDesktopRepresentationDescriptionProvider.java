@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,10 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.compatibility.services.api.ISiriusConfiguration;
+import org.eclipse.sirius.components.compatibility.services.api.ISiriusDesktopRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.compatibility.services.representations.ODesignReader;
-import org.eclipse.sirius.components.compatibility.services.representations.SiriusRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
@@ -37,33 +37,32 @@ import org.springframework.core.io.ClassPathResource;
  * @author hmarchadour
  */
 @Configuration
-public class SiriusRepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer, IPropertiesDescriptionRegistryConfigurer {
+public class SiriusDesktopRepresentationDescriptionProvider implements IEditingContextRepresentationDescriptionProvider, IPropertiesDescriptionRegistryConfigurer {
 
     private final List<ISiriusConfiguration> siriusConfigurations;
 
     private final ODesignReader oDesignReader;
 
-    private final SiriusRepresentationDescriptionProvider representationDescriptionProvider;
+    private final ISiriusDesktopRepresentationDescriptionConverter representationDescriptionConverter;
 
-    public SiriusRepresentationDescriptionRegistryConfigurer(List<ISiriusConfiguration> siriusConfigurations, ODesignReader oDesignReader,
-            SiriusRepresentationDescriptionProvider representationDescriptionProvider) {
+    public SiriusDesktopRepresentationDescriptionProvider(List<ISiriusConfiguration> siriusConfigurations, ODesignReader oDesignReader, ISiriusDesktopRepresentationDescriptionConverter representationDescriptionConverter) {
         this.siriusConfigurations = Objects.requireNonNull(siriusConfigurations);
         this.oDesignReader = Objects.requireNonNull(oDesignReader);
-        this.representationDescriptionProvider = Objects.requireNonNull(representationDescriptionProvider);
+        this.representationDescriptionConverter = Objects.requireNonNull(representationDescriptionConverter);
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         // We should probably not filter only diagram and selection representations but instead of
         // opening the floodgates, we will be conservative for now
 
-        this.siriusConfigurations.stream()
+        return this.siriusConfigurations.stream()
                 .map(ISiriusConfiguration::getODesignPaths)
                 .flatMap(List::stream)
                 .map(this::getRepresentationDescriptions)
                 .flatMap(List::stream)
                 .filter(description -> description instanceof DiagramDescription || description instanceof SelectionDescription)
-                .forEach(registry::add);
+                .toList();
     }
 
     @Override
@@ -82,7 +81,7 @@ public class SiriusRepresentationDescriptionRegistryConfigurer implements IRepre
 
     private List<IRepresentationDescription> getRepresentationDescriptions(String odesignPath) {
         return this.oDesignReader.read(new ClassPathResource(odesignPath))
-                .map(this.representationDescriptionProvider::getRepresentationDescriptions)
+                .map(this.representationDescriptionConverter::getRepresentationDescriptions)
                 .orElse(List.of());
     }
 }

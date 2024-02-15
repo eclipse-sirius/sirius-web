@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.compatibility.services.SelectModelElementVariableProvider;
+import org.eclipse.sirius.components.compatibility.services.api.ISiriusDesktopRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.compatibility.services.diagrams.api.IDiagramDescriptionConverter;
 import org.eclipse.sirius.components.compatibility.services.forms.api.IViewExtensionDescriptionConverter;
 import org.eclipse.sirius.components.compatibility.services.selection.api.ISelectModelElementVariableConverter;
@@ -42,7 +43,7 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
-public class SiriusRepresentationDescriptionProvider {
+public class SiriusDesktopRepresentationDescriptionConverter implements ISiriusDesktopRepresentationDescriptionConverter {
 
     private final IDiagramDescriptionConverter diagramDescriptionConverter;
 
@@ -50,13 +51,14 @@ public class SiriusRepresentationDescriptionProvider {
 
     private final ISelectModelElementVariableConverter selectModelElementVariableConverter;
 
-    public SiriusRepresentationDescriptionProvider(IDiagramDescriptionConverter diagramDescriptionConverter, IViewExtensionDescriptionConverter viewExtensionDescriptionConverter,
-            ISelectModelElementVariableConverter selectModelElementVariableConverter) {
+    public SiriusDesktopRepresentationDescriptionConverter(IDiagramDescriptionConverter diagramDescriptionConverter, IViewExtensionDescriptionConverter viewExtensionDescriptionConverter,
+                                                           ISelectModelElementVariableConverter selectModelElementVariableConverter) {
         this.diagramDescriptionConverter = Objects.requireNonNull(diagramDescriptionConverter);
         this.viewExtensionDescriptionConverter = Objects.requireNonNull(viewExtensionDescriptionConverter);
         this.selectModelElementVariableConverter = Objects.requireNonNull(selectModelElementVariableConverter);
     }
 
+    @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(Group group) {
         List<Viewpoint> viewpoints = group.getOwnedViewpoints();
 

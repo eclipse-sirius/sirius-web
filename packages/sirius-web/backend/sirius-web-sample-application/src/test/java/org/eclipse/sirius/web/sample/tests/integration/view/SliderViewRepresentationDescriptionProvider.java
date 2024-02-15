@@ -27,11 +27,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.emf.IViewConverter;
@@ -46,21 +47,21 @@ import org.springframework.core.io.ClassPathResource;
  * @author pcdavid
  */
 @Configuration
-public class SliderViewRepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
+public class SliderViewRepresentationDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
     private final IViewConverter viewConverter;
 
     private final EPackage.Registry ePackagesRegistry;
 
     private final IInMemoryViewRegistry inMemoryViewRegistry;
 
-    public SliderViewRepresentationDescriptionRegistryConfigurer(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
+    public SliderViewRepresentationDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.viewConverter = viewConverter;
         this.ePackagesRegistry = ePackagesRegistry;
         this.inMemoryViewRegistry = inMemoryViewRegistry;
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         Optional<View> optionalView = this.load(new ClassPathResource("Slider_Test_Form.view"), List.of(ViewPackage.eINSTANCE, FormPackage.eINSTANCE), View.class);
 
         if (optionalView.isPresent()) {
@@ -74,9 +75,9 @@ public class SliderViewRepresentationDescriptionRegistryConfigurer implements IR
 
             List<EPackage> staticEPackages = this.ePackagesRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast).collect(Collectors.toList());
 
-            var representationDescriptions = this.viewConverter.convert(List.of(view), staticEPackages);
-            representationDescriptions.forEach(registry::add);
+            return this.viewConverter.convert(List.of(view), staticEPackages);
         }
+        return List.of();
     }
 
     private <T> Optional<T> load(ClassPathResource classPathResource, List<EPackage> requiredEPackages, Class<T> rootElementType) {

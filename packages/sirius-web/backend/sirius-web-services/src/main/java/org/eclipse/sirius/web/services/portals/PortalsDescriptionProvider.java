@@ -12,14 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.portals;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.portals.description.PortalDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,7 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class PortalsDescriptionProvider implements IRepresentationDescriptionRegistryConfigurer {
+public class PortalsDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
     public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("portals_description".getBytes()).toString();
 
     private final IObjectService objectService;
@@ -39,13 +42,22 @@ public class PortalsDescriptionProvider implements IRepresentationDescriptionReg
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        registry.add(PortalDescription.newPortalDescription(DESCRIPTION_ID)
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
+        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get("name", String.class)
+                .orElse("Portal");
+
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .map(this.objectService::getId)
+                .orElse("");
+
+        var portalDescription = PortalDescription.newPortalDescription(DESCRIPTION_ID)
                 .label("Portal")
                 .idProvider(new GetOrCreateRandomIdProvider())
-                .labelProvider(variableManager -> variableManager.get("name", String.class).orElse("Portal"))
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(""))
+                .labelProvider(labelProvider)
+                .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> true)
-                .build());
+                .build();
+
+        return List.of(portalDescription);
     }
 }

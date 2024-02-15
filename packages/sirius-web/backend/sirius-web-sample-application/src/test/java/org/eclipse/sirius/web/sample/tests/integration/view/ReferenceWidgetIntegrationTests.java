@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ import reactor.test.StepVerifier;
 
 /**
  * Integration tests for the Slider custom widget. Depends on
- * {@link ReferenceViewRepresentationDescriptionRegistryConfigurer} to register the "Reference Widget Test" form description.
+ * {@link ReferenceViewRepresentationDescriptionProvider} to register the "Reference Widget Test" form description.
  *
  * @author pcdavid
  */

@@ -18,8 +18,8 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.flow.starter.helper.ColorProvider;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyUnsynchronizedViewDiagramDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyViewDiagramDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.FlowTopographyWithAutoLayoutViewDiagramDescriptionProvider;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.View;
@@ -36,31 +37,32 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 /**
  * Register the Flow diagram in the application.
  *
  * @author frouene
  */
-@Configuration
-public class FlowViewRegistryConfiguration implements IRepresentationDescriptionRegistryConfigurer {
+@Service
+public class FlowRepresentationDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     private static final String FLOW_VIEW_DIAGRAM_ID = "FlowDiagram";
+
     private final IViewConverter viewConverter;
 
     private final EPackage.Registry ePackagesRegistry;
+
     private final IInMemoryViewRegistry inMemoryViewRegistry;
 
-    public FlowViewRegistryConfiguration(IViewConverter viewConverter, EPackage.Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
+    public FlowRepresentationDescriptionProvider(IViewConverter viewConverter, EPackage.Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.viewConverter = Objects.requireNonNull(viewConverter);
         this.ePackagesRegistry = Objects.requireNonNull(ePackagesRegistry);
         this.inMemoryViewRegistry = Objects.requireNonNull(inMemoryViewRegistry);
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         ViewBuilder viewBuilder = new ViewBuilder();
         View view = viewBuilder.build();
         IColorProvider colorProvider = new ColorProvider(view);
@@ -85,15 +87,11 @@ public class FlowViewRegistryConfiguration implements IRepresentationDescription
 
         // Convert org.eclipse.sirius.components.view.RepresentationDescription to org.eclipse.sirius.components.representations.IRepresentationDescription
         List<EPackage> staticEPackages = this.ePackagesRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast).toList();
-        var representationDescriptions = this.viewConverter.convert(List.of(view), staticEPackages);
-
-        // Register org.eclipse.sirius.components.representations.IRepresentationDescription
-        representationDescriptions.forEach(registry::add);
+        return this.viewConverter.convert(List.of(view), staticEPackages);
     }
 
     private ColorPalette createColorPalette() {
         var colorPalette = ViewFactory.eINSTANCE.createColorPalette();
-
 
         colorPalette.getColors().add(this.createFixedColor("Flow_White", "#FFFFFF"));
         colorPalette.getColors().add(this.createFixedColor("Flow_Gray", "#B1BCBE"));
@@ -101,7 +99,6 @@ public class FlowViewRegistryConfiguration implements IRepresentationDescription
         colorPalette.getColors().add(this.createFixedColor("Flow_Red", "#DE1000"));
         colorPalette.getColors().add(this.createFixedColor("Flow_Black", "#002B3C"));
         colorPalette.getColors().add(this.createFixedColor("Flow_LightGray", "#F0F0F0"));
-
 
         return colorPalette;
     }
