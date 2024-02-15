@@ -12,12 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.description;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.text.MessageFormat;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -42,13 +44,19 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, List<String>> nodeIconURLProvider;
 
-    private Function<VariableManager, List<List<String>>> nodeIconEndURLProvider;
+    private Function<VariableManager, List<List<String>>> nodeEndIconsURLProvider;
 
     private Function<VariableManager, Boolean> nodeSelectableProvider;
 
     private Function<VariableManager, List<?>> childrenProvider;
 
     private Function<VariableManager, List<String>> expandedNodeIdsProvider;
+
+    private Function<VariableManager, Boolean> isCheckableProvider;
+
+    private Function<VariableManager, Boolean> checkedValueProvider;
+
+    private BiFunction<VariableManager, Boolean, IStatus> newCheckedValueHandler;
 
     private TreeDescription() {
         // Prevent instantiation
@@ -90,8 +98,20 @@ public final class TreeDescription extends AbstractWidgetDescription {
         return this.nodeIconURLProvider;
     }
 
-    public Function<VariableManager, List<List<String>>> getNodeIconEndURLProvider() {
-        return this.nodeIconEndURLProvider;
+    public Function<VariableManager, Boolean> getIsCheckableProvider() {
+        return this.isCheckableProvider;
+    }
+
+    public Function<VariableManager, Boolean> getCheckedValueProvider() {
+        return this.checkedValueProvider;
+    }
+
+    public BiFunction<VariableManager, Boolean, IStatus> getNewCheckedValueHandler() {
+        return this.newCheckedValueHandler;
+    }
+
+    public Function<VariableManager, List<List<String>>> getNodeEndIconsURLProvider() {
+        return this.nodeEndIconsURLProvider;
     }
 
     public Function<VariableManager, Boolean> getNodeSelectableProvider() {
@@ -116,7 +136,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> true;
+        private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
         private final String id;
 
@@ -134,7 +154,7 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> nodeLabelProvider;
 
-        private Function<VariableManager, List<List<String>>> nodeIconEndURLProvider;
+        private Function<VariableManager, List<List<String>>> nodeEndIconsURLProvider;
 
         private Function<VariableManager, String> nodeKindProvider;
 
@@ -143,6 +163,12 @@ public final class TreeDescription extends AbstractWidgetDescription {
         private Function<VariableManager, Boolean> nodeSelectableProvider;
 
         private Function<VariableManager, List<String>> expandedNodeIdsProvider;
+
+        private Function<VariableManager, Boolean> isCheckableProvider;
+
+        private Function<VariableManager, Boolean> checkedValueProvider;
+
+        private BiFunction<VariableManager, Boolean, IStatus> newCheckedValueHandler;
 
         private Function<VariableManager, List<?>> diagnosticsProvider;
 
@@ -201,8 +227,8 @@ public final class TreeDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder nodeIconEndURLProvider(Function<VariableManager, List<List<String>>> nodeIconEndURLProvider) {
-            this.nodeIconEndURLProvider = Objects.requireNonNull(nodeIconEndURLProvider);
+        public Builder nodeEndIconsURLProvider(Function<VariableManager, List<List<String>>> nodeEndIconsURLProvider) {
+            this.nodeEndIconsURLProvider = Objects.requireNonNull(nodeEndIconsURLProvider);
             return this;
         }
 
@@ -213,6 +239,21 @@ public final class TreeDescription extends AbstractWidgetDescription {
 
         public Builder expandedNodeIdsProvider(Function<VariableManager, List<String>> expandedNodeIdsProvider) {
             this.expandedNodeIdsProvider = Objects.requireNonNull(expandedNodeIdsProvider);
+            return this;
+        }
+
+        public Builder isCheckableProvider(Function<VariableManager, Boolean> isCheckableProvider) {
+            this.isCheckableProvider = Objects.requireNonNull(isCheckableProvider);
+            return this;
+        }
+
+        public Builder checkedValueProvider(Function<VariableManager, Boolean> checkedValueProvider) {
+            this.checkedValueProvider = Objects.requireNonNull(checkedValueProvider);
+            return this;
+        }
+
+        public Builder newCheckedValueHandler(BiFunction<VariableManager, Boolean, IStatus> newCheckedValueHandler) {
+            this.newCheckedValueHandler = Objects.requireNonNull(newCheckedValueHandler);
             return this;
         }
 
@@ -236,6 +277,11 @@ public final class TreeDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder isReadOnlyProvider(Function<VariableManager, Boolean> isReadOnlyProvider) {
+            this.isReadOnlyProvider = Objects.requireNonNull(isReadOnlyProvider);
+            return this;
+        }
+
         public TreeDescription build() {
             TreeDescription treeDescription = new TreeDescription();
             treeDescription.id = Objects.requireNonNull(this.id);
@@ -247,11 +293,14 @@ public final class TreeDescription extends AbstractWidgetDescription {
             treeDescription.childrenProvider = Objects.requireNonNull(this.childrenProvider);
             treeDescription.nodeIdProvider = Objects.requireNonNull(this.nodeIdProvider);
             treeDescription.nodeLabelProvider = Objects.requireNonNull(this.nodeLabelProvider);
-            treeDescription.nodeIconEndURLProvider = Objects.requireNonNull(this.nodeIconEndURLProvider);
+            treeDescription.nodeEndIconsURLProvider = Objects.requireNonNull(this.nodeEndIconsURLProvider);
             treeDescription.nodeKindProvider = Objects.requireNonNull(this.nodeKindProvider);
             treeDescription.nodeIconURLProvider = Objects.requireNonNull(this.nodeIconURLProvider);
             treeDescription.nodeSelectableProvider = Objects.requireNonNull(this.nodeSelectableProvider);
             treeDescription.expandedNodeIdsProvider = Objects.requireNonNull(this.expandedNodeIdsProvider);
+            treeDescription.isCheckableProvider = Objects.requireNonNull(this.isCheckableProvider);
+            treeDescription.checkedValueProvider = Objects.requireNonNull(this.checkedValueProvider);
+            treeDescription.newCheckedValueHandler = Objects.requireNonNull(this.newCheckedValueHandler);
             treeDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             treeDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             treeDescription.messageProvider = Objects.requireNonNull(this.messageProvider);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,72 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSubscriber, GQLTree, GQLTreeNode } from '../form/FormEventFragments.types';
+import { GQLMessage, GQLSubscriber, GQLTree, GQLTreeNode } from '../form/FormEventFragments.types';
 
 export interface TreePropertySectionProps {
   editingContextId: string;
   formId: string;
   widget: GQLTree;
   subscribers: GQLSubscriber[];
+  readOnly: boolean;
 }
 
 export interface TreeItemProps {
   node: GQLTreeNode;
   nodes: GQLTreeNode[];
+  readOnly: boolean;
+  editingContextId: string;
+  formId: string;
+  widgetId: string;
 }
+
+export interface GQLEditTreeCheckboxMutationData {
+  editTreeCheckbox: GQLEditTreeCheckboxPayload;
+}
+
+export interface GQLEditTreeCheckboxPayload {
+  __typename: string;
+}
+
+export interface GQLErrorPayload extends GQLEditTreeCheckboxPayload, GQLUpdateWidgetFocusPayload {
+  messages: GQLMessage[];
+}
+
+export interface GQLSuccessPayload extends GQLEditTreeCheckboxPayload {
+  messages: GQLMessage[];
+}
+
+export interface GQLUpdateWidgetFocusMutationData {
+  updateWidgetFocus: GQLUpdateWidgetFocusPayload;
+}
+
+export interface GQLUpdateWidgetFocusPayload {
+  __typename: string;
+}
+
+export interface GQLEditTreeCheckboxMutationVariables {
+  input: GQLEditTreeCheckboxInput;
+}
+
+export interface GQLEditTreeCheckboxInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  treeId: string;
+  checkboxId: string;
+  newValue: boolean;
+}
+
+export interface GQLUpdateWidgetFocusMutationVariables {
+  input: GQLUpdateWidgetFocusInput;
+}
+
+export interface GQLUpdateWidgetFocusInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  widgetId: string;
+  selected: boolean;
+}
+
+export interface GQLUpdateWidgetFocusSuccessPayload extends GQLUpdateWidgetFocusPayload {}

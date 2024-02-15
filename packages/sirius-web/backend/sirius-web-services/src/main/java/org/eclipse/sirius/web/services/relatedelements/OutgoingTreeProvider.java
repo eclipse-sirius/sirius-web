@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -83,11 +84,14 @@ public class OutgoingTreeProvider {
                 .nodeIdProvider(this::getNodeId)
                 .nodeLabelProvider(this::getNodeLabel)
                 .nodeIconURLProvider(this::getNodeImageURL)
-                .nodeIconEndURLProvider(variableManager -> List.of())
+                .nodeEndIconsURLProvider(variableManager -> List.of())
                 .nodeKindProvider(this::getNodeKind)
                 .nodeSelectableProvider(this::isNodeSelectable)
                 .childrenProvider(this::getOutgoingChildren)
                 .expandedNodeIdsProvider(this::collectAllNodeIds)
+                .isCheckableProvider(vm -> false)
+                .checkedValueProvider(vm -> false)
+                .newCheckedValueHandler((vm, newValue) -> new Success())
                 .build();
         // @formatter:on
     }

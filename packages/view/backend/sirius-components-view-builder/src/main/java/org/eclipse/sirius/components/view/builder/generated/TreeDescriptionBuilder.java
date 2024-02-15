@@ -70,12 +70,12 @@ public class TreeDescriptionBuilder {
         return this;
     }
     /**
-     * Setter for ChildExpression.
+     * Setter for ChildrenExpression.
      *
      * @generated
      */
-    public TreeDescriptionBuilder childExpression(java.lang.String value) {
-        this.getTreeDescription().setChildExpression(value);
+    public TreeDescriptionBuilder childrenExpression(java.lang.String value) {
+        this.getTreeDescription().setChildrenExpression(value);
         return this;
     }
     /**
@@ -96,7 +96,6 @@ public class TreeDescriptionBuilder {
         this.getTreeDescription().setIsTreeItemSelectableExpression(value);
         return this;
     }
-
     /**
      * Setter for TreeItemBeginIconExpression.
      *
@@ -106,7 +105,6 @@ public class TreeDescriptionBuilder {
         this.getTreeDescription().setTreeItemBeginIconExpression(value);
         return this;
     }
-
     /**
      * Setter for TreeItemEndIconsExpression.
      *
@@ -116,6 +114,45 @@ public class TreeDescriptionBuilder {
         this.getTreeDescription().setTreeItemEndIconsExpression(value);
         return this;
     }
+    /**
+     * Setter for IsCheckableExpression.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder isCheckableExpression(java.lang.String value) {
+        this.getTreeDescription().setIsCheckableExpression(value);
+        return this;
+    }
+    /**
+     * Setter for CheckedValueExpression.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder checkedValueExpression(java.lang.String value) {
+        this.getTreeDescription().setCheckedValueExpression(value);
+        return this;
+    }
+    /**
+     * Setter for IsEnabledExpression.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder isEnabledExpression(java.lang.String value) {
+        this.getTreeDescription().setIsEnabledExpression(value);
+        return this;
+    }
+    /**
+     * Setter for Body.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
+        for (org.eclipse.sirius.components.view.Operation value : values) {
+            this.getTreeDescription().getBody().add(value);
+        }
+        return this;
+    }
+
 
 }
 

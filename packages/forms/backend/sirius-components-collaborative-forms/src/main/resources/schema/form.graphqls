@@ -17,17 +17,9 @@ input PropertiesEventInput {
   objectIds: [ID!]!
 }
 
-union FormEventPayload =
-    ErrorPayload
-  | FormRefreshedEventPayload
-  | SubscribersUpdatedEventPayload
-  | WidgetSubscriptionsUpdatedEventPayload
+union FormEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
 
-union PropertiesEventPayload =
-    ErrorPayload
-  | FormRefreshedEventPayload
-  | SubscribersUpdatedEventPayload
-  | WidgetSubscriptionsUpdatedEventPayload
+union PropertiesEventPayload = ErrorPayload | FormRefreshedEventPayload | SubscribersUpdatedEventPayload | WidgetSubscriptionsUpdatedEventPayload
 
 type WidgetSubscriptionsUpdatedEventPayload {
   id: ID!
@@ -375,8 +367,10 @@ type TreeNode {
   label: String!
   kind: String!
   iconURL: [String!]!
-  iconEndURL: [[String!]!]!
+  endIconsURL: [[String!]!]!
   selectable: Boolean!
+  checkable: Boolean!
+  value: Boolean!
 }
 
 type Image implements Widget {
@@ -403,11 +397,7 @@ type RichText implements Widget {
 type FormDescription implements RepresentationDescription {
   id: ID!
   label: String!
-  completionProposals(
-    widgetId: ID!
-    currentText: String!
-    cursorPosition: Int!
-  ): [CompletionProposal!]!
+  completionProposals(widgetId: ID! currentText: String! cursorPosition: Int!): [CompletionProposal!]!
   helpText(widgetId: ID!): String
 }
 
@@ -419,6 +409,7 @@ type CompletionProposal {
 
 extend type Mutation {
   editCheckbox(input: EditCheckboxInput!): EditCheckboxPayload!
+  editTreeCheckbox(input: EditTreeCheckboxInput!): EditTreeCheckboxPayload!
   editMultiSelect(input: EditMultiSelectInput!): EditMultiSelectPayload!
   editRadio(input: EditRadioInput!): EditRadioPayload!
   editSelect(input: EditSelectInput!): EditSelectPayload!
@@ -439,6 +430,17 @@ input EditCheckboxInput {
 }
 
 union EditCheckboxPayload = ErrorPayload | SuccessPayload
+
+input EditTreeCheckboxInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  treeId: ID!
+  checkboxId: ID!
+  newValue: Boolean!
+}
+
+union EditTreeCheckboxPayload = ErrorPayload | SuccessPayload
 
 input EditMultiSelectInput {
   id: ID!

@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+import java.text.MessageFormat;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.representations.IStatus;
 
 /**
  * Represents a node (and its sub-nodes if it has any) inside a {@link TreeWidget}.
@@ -36,9 +38,15 @@ public final class TreeNode {
 
     private List<String> iconURL;
 
-    private List<List<String>> iconEndURL;
+    private List<List<String>> endIconsURL;
 
     private boolean selectable;
+
+    private boolean checkable;
+
+    private boolean value;
+
+    private Function<Boolean, IStatus> newValueHandler;
 
     private TreeNode() {
         // Prevent instantiation
@@ -68,12 +76,24 @@ public final class TreeNode {
         return this.iconURL;
     }
 
-    public List<List<String>> getIconEndURL() {
-        return this.iconEndURL;
+    public List<List<String>> getEndIconsURL() {
+        return this.endIconsURL;
     }
 
     public boolean isSelectable() {
         return this.selectable;
+    }
+
+    public boolean isCheckable() {
+        return this.checkable;
+    }
+
+    public boolean isValue() {
+        return this.value;
+    }
+
+    public Function<Boolean, IStatus> getNewValueHandler() {
+        return this.newValueHandler;
     }
 
     @Override
@@ -100,9 +120,16 @@ public final class TreeNode {
 
         private List<String> iconURL;
 
-        private List<List<String>> iconEndURL;
+        private List<List<String>> endIconsURL;
 
         private boolean selectable;
+
+        private boolean checkable;
+
+        private boolean value;
+
+        private Function<Boolean, IStatus> newValueHandler;
+
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -128,13 +155,28 @@ public final class TreeNode {
             return this;
         }
 
-        public Builder iconEndURL(List<List<String>> iconEndURL) {
-            this.iconEndURL = Objects.requireNonNull(iconEndURL);
+        public Builder endIconsURL(List<List<String>> endIconsURL) {
+            this.endIconsURL  = Objects.requireNonNull(endIconsURL);
             return this;
         }
 
         public Builder selectable(boolean selectable) {
-            this.selectable = Objects.requireNonNull(selectable);
+            this.selectable = selectable;
+            return this;
+        }
+
+        public Builder checkable(boolean checkable) {
+            this.checkable = checkable;
+            return this;
+        }
+
+        public Builder value(boolean value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder newValueHandler(Function<Boolean, IStatus> handler) {
+            this.newValueHandler = Objects.requireNonNull(handler);
             return this;
         }
 
@@ -144,9 +186,12 @@ public final class TreeNode {
             treeNode.parentId = this.parentId;
             treeNode.label = Objects.requireNonNull(this.label);
             treeNode.kind = Objects.requireNonNull(this.kind);
-            treeNode.selectable = Objects.requireNonNull(this.selectable);
+            treeNode.selectable = this.selectable;
             treeNode.iconURL = Objects.requireNonNull(this.iconURL);
-            treeNode.iconEndURL = Objects.requireNonNull(this.iconEndURL);
+            treeNode.endIconsURL = Objects.requireNonNull(this.endIconsURL);
+            treeNode.checkable = this.checkable;
+            treeNode.value = this.value;
+            treeNode.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             return treeNode;
         }
     }

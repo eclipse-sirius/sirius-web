@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,8 +69,6 @@ public final class TreeWidget extends AbstractWidget {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final boolean readOnly = true; // Read-only by nature
-
         private final String id;
 
         private String label;
@@ -84,6 +82,8 @@ public final class TreeWidget extends AbstractWidget {
         private List<Diagnostic> diagnostics;
 
         private Supplier<String> helpTextProvider;
+
+        private boolean readOnly;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -116,6 +116,11 @@ public final class TreeWidget extends AbstractWidget {
 
         public Builder helpTextProvider(Supplier<String> helpTextProvider) {
             this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
+            return this;
+        }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
             return this;
         }
 

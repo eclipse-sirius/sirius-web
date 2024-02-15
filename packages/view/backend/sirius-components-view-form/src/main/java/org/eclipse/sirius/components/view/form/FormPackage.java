@@ -1316,13 +1316,13 @@ public interface FormPackage extends EPackage {
     int TREE_DESCRIPTION__HELP_EXPRESSION = WIDGET_DESCRIPTION__HELP_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Child Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * The feature id for the '<em><b>Children Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TREE_DESCRIPTION__CHILD_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+    int TREE_DESCRIPTION__CHILDREN_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Tree Item Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1361,13 +1361,49 @@ public interface FormPackage extends EPackage {
     int TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Is Checkable Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__IS_CHECKABLE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Checked Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__CHECKED_VALUE_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__IS_ENABLED_EXPRESSION = WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__BODY = WIDGET_DESCRIPTION_FEATURE_COUNT + 8;
+
+    /**
      * The number of structural features of the '<em>Tree Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TREE_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int TREE_DESCRIPTION_FEATURE_COUNT = WIDGET_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Tree Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5236,15 +5272,15 @@ public interface FormPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getChildExpression <em>Child Expression</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getChildrenExpression <em>Children
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Child Expression</em>'.
-     * @see org.eclipse.sirius.components.view.form.TreeDescription#getChildExpression()
+     * @return the meta object for the attribute '<em>Children Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.TreeDescription#getChildrenExpression()
      * @see #getTreeDescription()
      * @generated
      */
-    EAttribute getTreeDescription_ChildExpression();
+    EAttribute getTreeDescription_ChildrenExpression();
 
     /**
      * Returns the meta object for the attribute
@@ -5293,6 +5329,54 @@ public interface FormPackage extends EPackage {
      * @generated
      */
     EAttribute getTreeDescription_TreeItemEndIconsExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getIsCheckableExpression <em>Is Checkable
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Checkable Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.TreeDescription#getIsCheckableExpression()
+     * @see #getTreeDescription()
+     * @generated
+     */
+    EAttribute getTreeDescription_IsCheckableExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getCheckedValueExpression <em>Checked Value
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Checked Value Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.TreeDescription#getCheckedValueExpression()
+     * @see #getTreeDescription()
+     * @generated
+     */
+    EAttribute getTreeDescription_CheckedValueExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getIsEnabledExpression <em>Is Enabled
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @see org.eclipse.sirius.components.view.form.TreeDescription#getIsEnabledExpression()
+     * @see #getTreeDescription()
+     * @generated
+     */
+    EAttribute getTreeDescription_IsEnabledExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.form.TreeDescription#getBody <em>Body</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.sirius.components.view.form.TreeDescription#getBody()
+     * @see #getTreeDescription()
+     * @generated
+     */
+    EReference getTreeDescription_Body();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.form.PieChartDescription <em>Pie
@@ -7126,12 +7210,12 @@ public interface FormPackage extends EPackage {
         EClass TREE_DESCRIPTION = eINSTANCE.getTreeDescription();
 
         /**
-         * The meta object literal for the '<em><b>Child Expression</b></em>' attribute feature. <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Children Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute TREE_DESCRIPTION__CHILD_EXPRESSION = eINSTANCE.getTreeDescription_ChildExpression();
+        EAttribute TREE_DESCRIPTION__CHILDREN_EXPRESSION = eINSTANCE.getTreeDescription_ChildrenExpression();
 
         /**
          * The meta object literal for the '<em><b>Tree Item Label Expression</b></em>' attribute feature. <!--
@@ -7164,6 +7248,38 @@ public interface FormPackage extends EPackage {
          * @generated
          */
         EAttribute TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION = eINSTANCE.getTreeDescription_TreeItemEndIconsExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Is Checkable Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TREE_DESCRIPTION__IS_CHECKABLE_EXPRESSION = eINSTANCE.getTreeDescription_IsCheckableExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Checked Value Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TREE_DESCRIPTION__CHECKED_VALUE_EXPRESSION = eINSTANCE.getTreeDescription_CheckedValueExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TREE_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getTreeDescription_IsEnabledExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TREE_DESCRIPTION__BODY = eINSTANCE.getTreeDescription_Body();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.form.impl.PieChartDescriptionImpl

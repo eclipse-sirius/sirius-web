@@ -1320,7 +1320,7 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
      * @generated
      */
     @Override
-    public EAttribute getTreeDescription_ChildExpression() {
+    public EAttribute getTreeDescription_ChildrenExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -1362,6 +1362,46 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
     @Override
     public EAttribute getTreeDescription_TreeItemEndIconsExpression() {
         return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeDescription_IsCheckableExpression() {
+        return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeDescription_CheckedValueExpression() {
+        return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeDescription_IsEnabledExpression() {
+        return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getTreeDescription_Body() {
+        return (EReference) this.treeDescriptionEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -2496,11 +2536,15 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
         this.createEAttribute(this.multiSelectDescriptionEClass, MULTI_SELECT_DESCRIPTION__IS_ENABLED_EXPRESSION);
 
         this.treeDescriptionEClass = this.createEClass(TREE_DESCRIPTION);
-        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__CHILD_EXPRESSION);
+        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__CHILDREN_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_LABEL_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__IS_TREE_ITEM_SELECTABLE_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_BEGIN_ICON_EXPRESSION);
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_END_ICONS_EXPRESSION);
+        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__IS_CHECKABLE_EXPRESSION);
+        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__CHECKED_VALUE_EXPRESSION);
+        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__IS_ENABLED_EXPRESSION);
+        this.createEReference(this.treeDescriptionEClass, TREE_DESCRIPTION__BODY);
 
         this.pieChartDescriptionEClass = this.createEClass(PIE_CHART_DESCRIPTION);
         this.createEAttribute(this.pieChartDescriptionEClass, PIE_CHART_DESCRIPTION__VALUES_EXPRESSION);
@@ -2900,8 +2944,8 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.treeDescriptionEClass, TreeDescription.class, "TreeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getTreeDescription_ChildExpression(), theViewPackage.getInterpretedExpression(), "childExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeDescription_ChildrenExpression(), theViewPackage.getInterpretedExpression(), "childrenExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_TreeItemLabelExpression(), theViewPackage.getInterpretedExpression(), "treeItemLabelExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_IsTreeItemSelectableExpression(), theViewPackage.getInterpretedExpression(), "isTreeItemSelectableExpression", null, 0, 1, TreeDescription.class,
@@ -2910,6 +2954,14 @@ public class FormPackageImpl extends EPackageImpl implements FormPackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeDescription_TreeItemEndIconsExpression(), theViewPackage.getInterpretedExpression(), "treeItemEndIconsExpression", null, 0, 1, TreeDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeDescription_IsCheckableExpression(), theViewPackage.getInterpretedExpression(), "isCheckableExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeDescription_CheckedValueExpression(), theViewPackage.getInterpretedExpression(), "checkedValueExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "IsEnabledExpression", null, 0, 1, TreeDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTreeDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, TreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.pieChartDescriptionEClass, PieChartDescription.class, "PieChartDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getPieChartDescription_ValuesExpression(), theViewPackage.getInterpretedExpression(), "valuesExpression", null, 0, 1, PieChartDescription.class, !IS_TRANSIENT,

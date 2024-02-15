@@ -709,26 +709,34 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
         Function<VariableManager, String> itemKindProvider = this::getTreeItemKind;
         Function<VariableManager, List<String>> nodeIconURLProvider = this.getTreeBeginIconValue(treeDescription.getTreeItemBeginIconExpression());
         Function<VariableManager, List<List<String>>> nodeIconEndURLProvider = this.getTreeEndIconValue(treeDescription.getTreeItemEndIconsExpression());
-        Function<VariableManager, List<? extends Object>> childrenProvider = this.getMultiValueProvider(treeDescription.getChildExpression());
+        Function<VariableManager, List<? extends Object>> childrenProvider = this.getMultiValueProvider(treeDescription.getChildrenExpression());
         Function<VariableManager, Boolean> nodeSelectableProvider = this.getBooleanValueProvider(treeDescription.getIsTreeItemSelectableExpression());
+        Function<VariableManager, Boolean> nodeCheckbableProvider = this.getBooleanValueProvider(treeDescription.getIsCheckableExpression());
+        String valueExpression = Optional.ofNullable(treeDescription.getCheckedValueExpression()).orElse("");
+        BooleanValueProvider valueProvider = new BooleanValueProvider(this.interpreter, valueExpression);
+        BiFunction<VariableManager, Boolean, IStatus> newValueHandler = this.getNewValueHandler(treeDescription.getBody());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(treeDescription.getIsEnabledExpression());
 
-        //isReadOnlyProvider is true by default in org.eclipse.sirius.components.forms.description.Builder
         var builder = TreeDescription.newTreeDescription(descriptionId)
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
-                .iconURLProvider(vm -> List.of())   // This is the icon of the name of the widget, not supported currently
+                .iconURLProvider(vm -> List.of())
                 .childrenProvider(childrenProvider)
                 .nodeIdProvider(nodeIdProvider)
                 .nodeLabelProvider(itemLabelProvider)
                 .nodeKindProvider(itemKindProvider)
                 .nodeIconURLProvider(nodeIconURLProvider)
-                .nodeIconEndURLProvider(nodeIconEndURLProvider)
+                .nodeEndIconsURLProvider(nodeIconEndURLProvider)
                 .nodeSelectableProvider(nodeSelectableProvider)
+                .isCheckableProvider(nodeCheckbableProvider)
+                .checkedValueProvider(valueProvider)
+                .newCheckedValueHandler(newValueHandler)
                 .expandedNodeIdsProvider(vm -> List.of())
                 .diagnosticsProvider(vm -> List.of())
                 .kindProvider(object -> "")
-                .messageProvider(object -> "");
+                .messageProvider(object -> "")
+                .isReadOnlyProvider(isReadOnlyProvider);
         if (treeDescription.getHelpExpression() != null && !treeDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(treeDescription.getHelpExpression()));
         }

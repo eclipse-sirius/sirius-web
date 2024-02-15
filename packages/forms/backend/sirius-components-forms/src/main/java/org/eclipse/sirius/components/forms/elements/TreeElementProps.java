@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.forms.elements;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.text.MessageFormat;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.TreeNode;
@@ -45,6 +45,8 @@ public final class TreeElementProps implements IProps {
     private List<String> expandedNodesIds;
 
     private List<Element> children;
+
+    private boolean readOnly;
 
     private TreeElementProps() {
         // Prevent instantiation
@@ -79,6 +81,10 @@ public final class TreeElementProps implements IProps {
         return this.children;
     }
 
+    public boolean isReadOnly() {
+        return this.readOnly;
+    }
+
     public Supplier<String> getHelpTextProvider() {
         return this.helpTextProvider;
     }
@@ -110,6 +116,8 @@ public final class TreeElementProps implements IProps {
         private List<String> expandedNodesIds;
 
         private List<Element> children;
+
+        private boolean readOnly;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -145,6 +153,11 @@ public final class TreeElementProps implements IProps {
             return this;
         }
 
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public TreeElementProps build() {
             TreeElementProps treeElementProps = new TreeElementProps();
             treeElementProps.id = Objects.requireNonNull(this.id);
@@ -154,6 +167,7 @@ public final class TreeElementProps implements IProps {
             treeElementProps.expandedNodesIds = Objects.requireNonNull(this.expandedNodesIds);
             treeElementProps.children = Objects.requireNonNull(this.children);
             treeElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            treeElementProps.readOnly = this.readOnly;
             return treeElementProps;
         }
     }
