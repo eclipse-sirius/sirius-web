@@ -47,7 +47,8 @@ If you want to add your own custom behaviour, please use the new services, see t
 This changes a core assumption from before where an element known to those services (i.e. an element for which `IIdentityService.getId` returned a non-null value) was a "semantic element" and thus *could not be* a representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/3021[#3021] [sirius-web] Remove the interfaces `IRepresentationDescriptionRegistry` and `IRepresentationDescriptionRegistryConfigurer` to replace them with `IEditingContextRepresentationDescriptionProvider` which provides the same feature but also gives access to the editing context for conditional registration of representation descriptions.
 This new interface will move in the near future from `sirius-components-core` to `sirius-web-application`.
-It's current location is only there to simplify the transition to the new Sirius Web architecture. 
+It's current location is only there to simplify the transition to the new Sirius Web architecture.
+- https://github.com/eclipse-sirius/sirius-web/issues/3021[#3021] [sirius-web] Make the `ISuggestedRootObjectTypesProvider` optional in `sirius-components-emf` in order to be able to reuse this maven module without the Sirius Desktop compatibility one.
 
 
 === Dependency update
