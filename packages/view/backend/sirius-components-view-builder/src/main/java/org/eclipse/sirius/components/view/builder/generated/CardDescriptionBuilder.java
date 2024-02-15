@@ -80,6 +80,28 @@ public class CardDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for Style.
+     *
+     * @generated
+     */
+    public CardDescriptionBuilder style(org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle value) {
+        this.getCardDescription().setStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalStyles.
+     *
+     * @generated
+     */
+    public CardDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle value : values) {
+            this.getCardDescription().getConditionalStyles().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for DescriptionExpression.
      *
      * @generated

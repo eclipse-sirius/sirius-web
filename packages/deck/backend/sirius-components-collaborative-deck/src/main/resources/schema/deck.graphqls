@@ -20,6 +20,11 @@ type Deck implements Representation {
   metadata: RepresentationMetadata!
   targetObjectId: ID!
   lanes: [Lane!]!
+  style: DeckStyle
+}
+
+type DeckStyle {
+  backgroundColor: String!
 }
 
 type Lane {
@@ -32,6 +37,7 @@ type Lane {
   collapsible: Boolean!
   collapsed: Boolean!
   cards: [Card!]!
+  style: DeckElementStyle
 }
 
 type Card {
@@ -43,6 +49,17 @@ type Card {
   label: String!
   description: String!
   visible: Boolean!
+  style: DeckElementStyle
+}
+
+type DeckElementStyle {
+  bold: Boolean!
+  color: String!
+  fontSize: Int!
+  italic: Boolean!
+  strikeThrough: Boolean!
+  underline: Boolean!
+  backgroundColor: String!
 }
 
 extend type Mutation {

@@ -52,7 +52,7 @@ public class DeckElementFactory implements IElementFactory {
                 .filter(Lane.class::isInstance)//
                 .map(Lane.class::cast)//
                 .toList();
-        return new Deck(props.id(), props.descriptionId(), props.targetObjectId(), props.label(), lanes);
+        return new Deck(props.id(), props.descriptionId(), props.targetObjectId(), props.label(), props.style(), lanes);
     }
 
     private Lane instantiateLane(LaneElementProps props, List<Object> children) {
@@ -61,12 +61,12 @@ public class DeckElementFactory implements IElementFactory {
                 .map(Card.class::cast)//
                 .toList();
         return new Lane(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.collapsible(),
-                props.collapsed(), cards);
+                props.collapsed(), cards, props.style());
     }
 
     private Card instantiateCard(CardElementProps props, List<Object> children) {
 
-        return new Card(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.description(), props.visible());
+        return new Card(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), props.title(), props.label(), props.description(), props.visible(), props.style());
     }
 
 }

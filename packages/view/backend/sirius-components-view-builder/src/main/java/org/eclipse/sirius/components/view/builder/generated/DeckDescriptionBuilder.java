@@ -110,5 +110,27 @@ public class DeckDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for Style.
+     *
+     * @generated
+     */
+    public DeckDescriptionBuilder style(org.eclipse.sirius.components.view.deck.DeckDescriptionStyle value) {
+        this.getDeckDescription().setStyle(value);
+        return this;
+    }
+
+    /**
+     * Setter for ConditionalStyles.
+     *
+     * @generated
+     */
+    public DeckDescriptionBuilder conditionalStyles(org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle ... values) {
+        for (org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle value : values) {
+            this.getDeckDescription().getConditionalStyles().add(value);
+        }
+        return this;
+    }
+
 }
 

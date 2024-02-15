@@ -16,12 +16,18 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.deck.CardDescription;
 import org.eclipse.sirius.components.view.deck.CardDropTool;
+import org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle;
+import org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
+import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckElementDescription;
+import org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.DeckTool;
 import org.eclipse.sirius.components.view.deck.DeleteCardTool;
@@ -137,8 +143,38 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseDeckDescriptionStyle(DeckDescriptionStyle object) {
+            return DeckAdapterFactory.this.createDeckDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalDeckDescriptionStyle(ConditionalDeckDescriptionStyle object) {
+            return DeckAdapterFactory.this.createConditionalDeckDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseDeckElementDescriptionStyle(DeckElementDescriptionStyle object) {
+            return DeckAdapterFactory.this.createDeckElementDescriptionStyleAdapter();
+        }
+
+        @Override
+        public Adapter caseConditionalDeckElementDescriptionStyle(ConditionalDeckElementDescriptionStyle object) {
+            return DeckAdapterFactory.this.createConditionalDeckElementDescriptionStyleAdapter();
+        }
+
+        @Override
         public Adapter caseRepresentationDescription(RepresentationDescription object) {
             return DeckAdapterFactory.this.createRepresentationDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseConditional(Conditional object) {
+            return DeckAdapterFactory.this.createConditionalAdapter();
+        }
+
+        @Override
+        public Adapter caseLabelStyle(LabelStyle object) {
+            return DeckAdapterFactory.this.createLabelStyleAdapter();
         }
 
         @Override
@@ -314,6 +350,63 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle
+     * <em>Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.DeckDescriptionStyle
+     * @generated
+     */
+    public Adapter createDeckDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle <em>Conditional Deck Description
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalDeckDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle <em>Element Description Style</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle
+     * @generated
+     */
+    public Adapter createDeckElementDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle <em>Conditional Deck
+     * Element Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle
+     * @generated
+     */
+    public Adapter createConditionalDeckElementDescriptionStyleAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RepresentationDescription
      * <em>Representation Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
@@ -324,6 +417,33 @@ public class DeckAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRepresentationDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Conditional
+     * <em>Conditional</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.Conditional
+     * @generated
+     */
+    public Adapter createConditionalAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label
+     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.LabelStyle
+     * @generated
+     */
+    public Adapter createLabelStyleAdapter() {
         return null;
     }
 

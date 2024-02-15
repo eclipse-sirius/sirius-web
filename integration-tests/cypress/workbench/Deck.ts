@@ -14,6 +14,8 @@
 import { Project } from '../pages/Project';
 import { Projects } from '../pages/Projects';
 import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
+import { ElementStyleProps } from './Deck types';
+import { Details } from './Details';
 import { Explorer } from './Explorer';
 
 export class Deck {
@@ -135,5 +137,41 @@ export class Deck {
     return expected
       ? this.getLane(laneName).findByTestId('lane-expand-btn').should('exist')
       : this.getLane(laneName).findByTestId('lane-collapse-btn').should('exist');
+  }
+
+  public createDeckElementStyle(
+    elementName: string,
+    { condition, backgroundColor, color, italic, bold, underline, strikeThrough, fontSize }: ElementStyleProps
+  ) {
+    const details = new Details();
+    const objectName = `${condition ? 'Conditional Styles Conditional Deck' : 'Style'} Element Description Style`;
+    cy.createChildObject(elementName, objectName);
+    details.openReferenceWidgetOptions('Background Color');
+    details.selectReferenceWidgetOption(backgroundColor);
+    details.openReferenceWidgetOptions('Color');
+    details.selectReferenceWidgetOption(color);
+    const italicCheckBox = details.getCheckBox('Italic');
+    italic ? italicCheckBox.check() : italicCheckBox.uncheck();
+    const boldCheckBox = details.getCheckBox('Bold');
+    bold ? boldCheckBox.check() : boldCheckBox.uncheck();
+    const underlineCheckBox = details.getCheckBox('Underline');
+    underline ? underlineCheckBox.check() : underlineCheckBox.uncheck();
+    const strikeThroughCheckBox = details.getCheckBox('Strike Through');
+    strikeThrough ? strikeThroughCheckBox.check() : strikeThroughCheckBox.uncheck();
+    if (condition) {
+      details.getTextField('Condition').type(`{selectAll}${condition}{Enter}`);
+    }
+    details.getTextField('Font Size').type(`{selectAll}${fontSize}{Enter}`);
+  }
+
+  public createDeckRepresentationtyle(elementName: string, backgroundColor: string, condition?: string) {
+    const details = new Details();
+    const objectName = `${condition ? 'Conditional Styles Conditional Deck' : 'Style'} Description Style`;
+    cy.createChildObject(elementName, objectName);
+    details.openReferenceWidgetOptions('Background Color');
+    details.selectReferenceWidgetOption(backgroundColor);
+    if (condition) {
+      details.getTextField('Condition').type(`{selectAll}${condition}{Enter}`);
+    }
   }
 }

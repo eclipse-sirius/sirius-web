@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.deck.Card;
+import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.deck.Lane;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
 import org.eclipse.sirius.components.deck.renderer.elements.LaneElementProps;
@@ -72,13 +73,14 @@ public class LaneComponent implements IComponent {
 
         Optional<Lane> optionalPreviousLane = this.props.previousLanes().stream().filter(lane -> lane.targetObjectId().equals(targetObjectId)).findFirst();
         String laneId = optionalPreviousLane.map(Lane::id).orElse(UUID.randomUUID().toString());
-        List<Element> childrenElements = this.getChildren(childVariableManager, laneDescription, laneId, optionalPreviousLane);
-
+        List<Card> previousCards = optionalPreviousLane.map(Lane::cards).orElse(List.of());
+        List<Element> childrenElements = this.getChildren(childVariableManager, laneDescription, laneId, previousCards);
         boolean collapsible = laneDescription.collapsibleProvider().apply(childVariableManager);
-
         boolean collapsed = this.computeCollapsed(optionalPreviousLane);
+        DeckElementStyle style = laneDescription.styleProvider().apply(childVariableManager);
+
         LaneElementProps laneElementProps = new LaneElementProps(laneId, laneDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, title, label, collapsible, collapsed,
-                childrenElements);
+                childrenElements, style);
         return new Element(LaneElementProps.TYPE, laneElementProps);
     }
 
@@ -94,18 +96,13 @@ public class LaneComponent implements IComponent {
         return false;
     }
 
-    private List<Element> getChildren(VariableManager variableManager, LaneDescription laneDescription, String laneId, Optional<Lane> optionalPreviousLane) {
-
+    private List<Element> getChildren(VariableManager variableManager, LaneDescription laneDescription, String laneId, List<Card> previousCards) {
         Optional<IDeckEvent> optionalDeckEvent = this.props.optionalDeckEvent();
-        List<Card> previousCards = optionalPreviousLane.map(Lane::cards).orElse(List.of());
-
         return laneDescription.cardDescriptions().stream()
                 .map(cardDescription -> {
                     CardComponentProps cardComponentProps = new CardComponentProps(variableManager, cardDescription, laneId, previousCards, optionalDeckEvent);
                     return new Element(CardComponent.class, cardComponentProps);
                 })
                 .toList();
-
     }
-
 }

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf.task;
+package org.eclipse.sirius.components.view.emf.deck;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +24,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.compatibility.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.deck.DeckElementStyle;
+import org.eclipse.sirius.components.deck.DeckStyle;
 import org.eclipse.sirius.components.deck.description.CardDescription;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -33,6 +35,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
+import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
+import org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionConverter;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.springframework.stereotype.Service;
@@ -87,10 +91,24 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
         Function<VariableManager, String> labelProvider = variableManager -> this.computeDeckLabel(viewDeckDescription, variableManager, interpreter);
         Predicate<VariableManager> canCreatePredicate = variableManager -> this.canCreate(viewDeckDescription.getDomainType(), viewDeckDescription.getPreconditionExpression(), variableManager,
                 interpreter);
-        Consumer<VariableManager> dropLaneProvider = Optional.ofNullable(viewDeckDescription.getLaneDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
-        });
+        Consumer<VariableManager> dropLaneProvider = Optional.ofNullable(viewDeckDescription.getLaneDropTool())
+                .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                .orElse(variable -> { });
 
-        return new org.eclipse.sirius.components.deck.description.DeckDescription(id, label, idProvider, labelProvider, this::getTargetObjectId, canCreatePredicate, laneDescriptions, dropLaneProvider);
+        Function<VariableManager, DeckStyle> styleProvider = variableManager -> {
+            var effectiveStyle = viewDeckDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(DeckDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewDeckDescription::getStyle);
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new DeckStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
+        return new org.eclipse.sirius.components.deck.description.DeckDescription(id, label, idProvider, labelProvider, this::getTargetObjectId, canCreatePredicate, laneDescriptions, dropLaneProvider,
+                styleProvider);
     }
 
     private Consumer<VariableManager> getOperationsHandler(List<Operation> operations, AQLInterpreter interpreter) {
@@ -120,8 +138,21 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
         List<CardDescription> cardDescriptions = viewLaneDescription.getOwnedCardDescriptions().stream()
                 .map(cardDescription -> this.convert(cardDescription, interpreter))
                 .toList();
+
+        Function<VariableManager, DeckElementStyle> styleProvider = variableManager -> {
+            var effectiveStyle = viewLaneDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(DeckElementDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewLaneDescription::getStyle);
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new DeckElementStyleProvider(effectiveStyle).apply(variableManager);
+        };
+
         return new LaneDescription(id, this.semanticTargetKindProvider, this.semanticTargetLabelProvider, this.semanticTargetIdProvider, semanticElementsProvider, titleProvider, labelProvider,
-                cardDescriptions, editLaneProvider, createCardProvider, dropCardProvider, collapsibleProvider);
+                cardDescriptions, editLaneProvider, createCardProvider, dropCardProvider, collapsibleProvider, styleProvider);
     }
 
     private CardDescription convert(org.eclipse.sirius.components.view.deck.CardDescription viewCardDescription, AQLInterpreter interpreter) {
@@ -132,13 +163,27 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
         Function<VariableManager, String> labelProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewCardDescription.getLabelExpression());
         Function<VariableManager, String> descriptionProvider = variableManager -> this.evaluateString(interpreter, variableManager, viewCardDescription.getDescriptionExpression());
 
-        Consumer<VariableManager> editCardProvider = Optional.ofNullable(viewCardDescription.getEditTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
-        });
-        Consumer<VariableManager> deleteCardProvider = Optional.ofNullable(viewCardDescription.getDeleteTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> {
-        });
+        Consumer<VariableManager> editCardProvider = Optional.ofNullable(viewCardDescription.getEditTool())
+                .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                .orElse(variable -> { });
+        Consumer<VariableManager> deleteCardProvider = Optional.ofNullable(viewCardDescription.getDeleteTool())
+                .map(tool -> this.getOperationsHandler(tool.getBody(), interpreter))
+                .orElse(variable -> { });
+
+        Function<VariableManager, DeckElementStyle> styleProvider = variableManager -> {
+            var effectiveStyle = viewCardDescription.getConditionalStyles().stream()
+                    .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
+                    .map(DeckElementDescriptionStyle.class::cast)
+                    .findFirst()
+                    .orElseGet(viewCardDescription::getStyle);
+            if (effectiveStyle == null) {
+                return null;
+            }
+            return new DeckElementStyleProvider(effectiveStyle).apply(variableManager);
+        };
 
         return new CardDescription(id, this.semanticTargetKindProvider, this.semanticTargetLabelProvider, this.semanticTargetIdProvider, semanticElementsProvider, titleProvider, labelProvider,
-                descriptionProvider, editCardProvider, deleteCardProvider);
+                descriptionProvider, editCardProvider, deleteCardProvider, styleProvider);
     }
 
     private List<Object> getSemanticElements(org.eclipse.sirius.components.view.deck.LaneDescription viewLaneDescription, VariableManager variableManager, AQLInterpreter interpreter) {
@@ -163,10 +208,14 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private boolean canCreate(String domainType, String preconditionExpression, VariableManager variableManager, AQLInterpreter interpreter) {
         boolean result = false;
-        Optional<EClass> optionalEClass = variableManager.get(VariableManager.SELF, EObject.class).map(EObject::eClass).filter(new DomainClassPredicate(domainType));
+        Optional<EClass> optionalEClass = variableManager.get(VariableManager.SELF, EObject.class)
+                .map(EObject::eClass)
+                .filter(new DomainClassPredicate(domainType));
         if (optionalEClass.isPresent()) {
             if (preconditionExpression != null && !preconditionExpression.isBlank()) {
-                result = interpreter.evaluateExpression(variableManager.getVariables(), preconditionExpression).asBoolean().orElse(false);
+                result = interpreter.evaluateExpression(variableManager.getVariables(), preconditionExpression)
+                        .asBoolean()
+                        .orElse(false);
             } else {
                 result = true;
             }
@@ -198,5 +247,9 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
 
     private Optional<Object> self(VariableManager variableManager) {
         return variableManager.get(VariableManager.SELF, Object.class);
+    }
+
+    private boolean matches(AQLInterpreter interpreter, String condition, VariableManager variableManager) {
+        return interpreter.evaluateExpression(variableManager.getVariables(), condition).asBoolean().orElse(Boolean.FALSE);
     }
 }

@@ -18,6 +18,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/laneDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/backgroundColor"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/laneDropTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescription/conditionalStyles"/>
     </genClasses>
     <genClasses ecoreClass="deck.ecore#//LaneDescription">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//LaneDescription/ownedCardDescriptions"/>
@@ -47,6 +49,17 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckElementDescription/semanticCandidatesExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckElementDescription/titleExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute deck.ecore#//DeckElementDescription/labelExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckElementDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference deck.ecore#//DeckElementDescription/conditionalStyles"/>
     </genClasses>
+    <genClasses ecoreClass="deck.ecore#//DeckDescriptionStyle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference deck.ecore#//DeckDescriptionStyle/backgroundColor"/>
+    </genClasses>
+    <genClasses ecoreClass="deck.ecore#//ConditionalDeckDescriptionStyle"/>
+    <genClasses ecoreClass="deck.ecore#//DeckElementDescriptionStyle">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference deck.ecore#//DeckElementDescriptionStyle/backgroundColor"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference deck.ecore#//DeckElementDescriptionStyle/color"/>
+    </genClasses>
+    <genClasses ecoreClass="deck.ecore#//ConditionalDeckElementDescriptionStyle"/>
   </genPackages>
 </genmodel:GenModel>

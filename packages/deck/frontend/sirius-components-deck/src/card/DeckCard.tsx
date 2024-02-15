@@ -35,6 +35,7 @@ import { DeckTag } from './DeckTag';
 export const DeckCard = ({
   style,
   tagStyle,
+  titleStyle = titleFontStyle,
   onClick,
   onDelete,
   onChange,
@@ -84,14 +85,14 @@ export const DeckCard = ({
       data-testid={`card-${title}`}
       onDragStart={(e) => e.preventDefault()}>
       <DeckCardHeader>
-        <DeckTitle draggable={cardDraggable} style={titleFontStyle} theme={theme}>
+        <DeckTitle draggable={cardDraggable} style={titleStyle} theme={theme} data-testid={`card-${title}-title`}>
           {editable ? (
             <DeckInput
               ref={titleInputRef}
               value={title}
               placeholder={translate('placeholder.title')}
               onSave={(value) => updateCard({ title: value, label, description, id })}
-              style={titleFontStyle}
+              style={titleStyle}
               data-testid={'card-input-title'}
             />
           ) : (

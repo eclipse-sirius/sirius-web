@@ -49,6 +49,11 @@ export interface GQLDeck {
   metadata: GQLRepresentationMetadata;
   targetObjectId: string;
   lanes: GQLLane[];
+  style?: GQLDeckStyle;
+}
+
+export interface GQLDeckStyle {
+  backgroundColor: string;
 }
 
 export interface GQLLane {
@@ -59,6 +64,7 @@ export interface GQLLane {
   targetObjectId: string;
   collapsible: boolean;
   collapsed: boolean;
+  style?: GQLDeckElementStyle;
 }
 
 export interface GQLCard {
@@ -70,4 +76,15 @@ export interface GQLCard {
   label: string;
   description: string;
   visible: boolean;
+  style?: GQLDeckElementStyle;
+}
+
+export interface GQLDeckElementStyle {
+  bold: boolean;
+  color: string;
+  fontSize: number;
+  italic: boolean;
+  strikeThrough: boolean;
+  underline: boolean;
+  backgroundColor: string;
 }

@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.deck.renderer.elements;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.representations.IProps;
 
 /**
@@ -22,8 +23,8 @@ import org.eclipse.sirius.components.representations.IProps;
  * @author fbarbin
  */
 
-public record CardElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, String description, Boolean visible)
-        implements IProps {
+public record CardElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, String title, String label, String description, Boolean visible,
+        DeckElementStyle style) implements IProps {
 
     public static final String TYPE = "Card";
 

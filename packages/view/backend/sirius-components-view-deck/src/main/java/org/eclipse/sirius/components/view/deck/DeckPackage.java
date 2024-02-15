@@ -134,13 +134,31 @@ public interface DeckPackage extends EPackage {
     int DECK_DESCRIPTION__LANE_DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_DESCRIPTION__STYLE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_DESCRIPTION__CONDITIONAL_STYLES = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int DECK_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 3;
+    int DECK_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -196,13 +214,31 @@ public interface DeckPackage extends EPackage {
     int DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = 3;
 
     /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION__STYLE = 4;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES = 5;
+
+    /**
      * The number of structural features of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT = 4;
+    int DECK_ELEMENT_DESCRIPTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -257,6 +293,24 @@ public interface DeckPackage extends EPackage {
      * @ordered
      */
     int LANE_DESCRIPTION__LABEL_EXPRESSION = DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DESCRIPTION__STYLE = DECK_ELEMENT_DESCRIPTION__STYLE;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LANE_DESCRIPTION__CONDITIONAL_STYLES = DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES;
 
     /**
      * The feature id for the '<em><b>Owned Card Descriptions</b></em>' containment reference list. <!-- begin-user-doc
@@ -364,6 +418,24 @@ public interface DeckPackage extends EPackage {
      * @ordered
      */
     int CARD_DESCRIPTION__LABEL_EXPRESSION = DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DESCRIPTION__STYLE = DECK_ELEMENT_DESCRIPTION__STYLE;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CARD_DESCRIPTION__CONDITIONAL_STYLES = DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES;
 
     /**
      * The feature id for the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -780,6 +852,267 @@ public interface DeckPackage extends EPackage {
     int LANE_DROP_TOOL_OPERATION_COUNT = DECK_TOOL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionStyleImpl
+     * <em>Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getDeckDescriptionStyle()
+     * @generated
+     */
+    int DECK_DESCRIPTION_STYLE = 11;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR = 0;
+
+    /**
+     * The number of structural features of the '<em>Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_DESCRIPTION_STYLE_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Description Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_DESCRIPTION_STYLE_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.deck.impl.ConditionalDeckDescriptionStyleImpl <em>Conditional Deck
+     * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.deck.impl.ConditionalDeckDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getConditionalDeckDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_DECK_DESCRIPTION_STYLE = 12;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_DESCRIPTION_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Conditional Deck Description Style</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Conditional Deck Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionStyleImpl
+     * <em>Element Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getDeckElementDescriptionStyle()
+     * @generated
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE = 13;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE__FONT_SIZE = ViewPackage.LABEL_STYLE__FONT_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE__ITALIC = ViewPackage.LABEL_STYLE__ITALIC;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE__BOLD = ViewPackage.LABEL_STYLE__BOLD;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE__UNDERLINE = ViewPackage.LABEL_STYLE__UNDERLINE;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE__STRIKE_THROUGH = ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE__COLOR = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Element Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.LABEL_STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The number of operations of the '<em>Element Description Style</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DECK_ELEMENT_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.LABEL_STYLE_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.deck.impl.ConditionalDeckElementDescriptionStyleImpl <em>Conditional
+     * Deck Element Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.deck.impl.ConditionalDeckElementDescriptionStyleImpl
+     * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getConditionalDeckElementDescriptionStyle()
+     * @generated
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE = 14;
+
+    /**
+     * The feature id for the '<em><b>Condition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__CONDITION = ViewPackage.CONDITIONAL__CONDITION;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__FONT_SIZE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__ITALIC = ViewPackage.CONDITIONAL_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__BOLD = ViewPackage.CONDITIONAL_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__UNDERLINE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__STRIKE_THROUGH = ViewPackage.CONDITIONAL_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Background Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__BACKGROUND_COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE__COLOR = ViewPackage.CONDITIONAL_FEATURE_COUNT + 6;
+
+    /**
+     * The number of structural features of the '<em>Conditional Deck Element Description Style</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Conditional Deck Element Description Style</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE_OPERATION_COUNT = ViewPackage.CONDITIONAL_OPERATION_COUNT + 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.DeckDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -824,6 +1157,30 @@ public interface DeckPackage extends EPackage {
      * @generated
      */
     EReference getDeckDescription_LaneDropTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getStyle <em>Style</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckDescription#getStyle()
+     * @see #getDeckDescription()
+     * @generated
+     */
+    EReference getDeckDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getConditionalStyles <em>Conditional
+     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckDescription#getConditionalStyles()
+     * @see #getDeckDescription()
+     * @generated
+     */
+    EReference getDeckDescription_ConditionalStyles();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.LaneDescription <em>Lane
@@ -1105,6 +1462,107 @@ public interface DeckPackage extends EPackage {
     EAttribute getDeckElementDescription_LabelExpression();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getStyle <em>Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription#getStyle()
+     * @see #getDeckElementDescription()
+     * @generated
+     */
+    EReference getDeckElementDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getConditionalStyles <em>Conditional
+     * Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescription#getConditionalStyles()
+     * @see #getDeckElementDescription()
+     * @generated
+     */
+    EReference getDeckElementDescription_ConditionalStyles();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle
+     * <em>Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckDescriptionStyle
+     * @generated
+     */
+    EClass getDeckDescriptionStyle();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle#getBackgroundColor <em>Background
+     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background Color</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckDescriptionStyle#getBackgroundColor()
+     * @see #getDeckDescriptionStyle()
+     * @generated
+     */
+    EReference getDeckDescriptionStyle_BackgroundColor();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle
+     * <em>Conditional Deck Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Deck Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle
+     * @generated
+     */
+    EClass getConditionalDeckDescriptionStyle();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle
+     * <em>Element Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Element Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle
+     * @generated
+     */
+    EClass getDeckElementDescriptionStyle();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle#getBackgroundColor <em>Background
+     * Color</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background Color</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle#getBackgroundColor()
+     * @see #getDeckElementDescriptionStyle()
+     * @generated
+     */
+    EReference getDeckElementDescriptionStyle_BackgroundColor();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle#getColor <em>Color</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Color</em>'.
+     * @see org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle#getColor()
+     * @see #getDeckElementDescriptionStyle()
+     * @generated
+     */
+    EReference getDeckElementDescriptionStyle_Color();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle <em>Conditional Deck
+     * Element Description Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Conditional Deck Element Description Style</em>'.
+     * @see org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle
+     * @generated
+     */
+    EClass getConditionalDeckElementDescriptionStyle();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -1159,6 +1617,22 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EReference DECK_DESCRIPTION__LANE_DROP_TOOL = eINSTANCE.getDeckDescription_LaneDropTool();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_DESCRIPTION__STYLE = eINSTANCE.getDeckDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getDeckDescription_ConditionalStyles();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.deck.impl.LaneDescriptionImpl
@@ -1380,6 +1854,89 @@ public interface DeckPackage extends EPackage {
          * @generated
          */
         EAttribute DECK_ELEMENT_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getDeckElementDescription_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_ELEMENT_DESCRIPTION__STYLE = eINSTANCE.getDeckElementDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_ELEMENT_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getDeckElementDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.deck.impl.DeckDescriptionStyleImpl
+         * <em>Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getDeckDescriptionStyle()
+         * @generated
+         */
+        EClass DECK_DESCRIPTION_STYLE = eINSTANCE.getDeckDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Background Color</b></em>' reference feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getDeckDescriptionStyle_BackgroundColor();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.deck.impl.ConditionalDeckDescriptionStyleImpl <em>Conditional Deck
+         * Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.deck.impl.ConditionalDeckDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getConditionalDeckDescriptionStyle()
+         * @generated
+         */
+        EClass CONDITIONAL_DECK_DESCRIPTION_STYLE = eINSTANCE.getConditionalDeckDescriptionStyle();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionStyleImpl <em>Element Description
+         * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckElementDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getDeckElementDescriptionStyle()
+         * @generated
+         */
+        EClass DECK_ELEMENT_DESCRIPTION_STYLE = eINSTANCE.getDeckElementDescriptionStyle();
+
+        /**
+         * The meta object literal for the '<em><b>Background Color</b></em>' reference feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_ELEMENT_DESCRIPTION_STYLE__BACKGROUND_COLOR = eINSTANCE.getDeckElementDescriptionStyle_BackgroundColor();
+
+        /**
+         * The meta object literal for the '<em><b>Color</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DECK_ELEMENT_DESCRIPTION_STYLE__COLOR = eINSTANCE.getDeckElementDescriptionStyle_Color();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.deck.impl.ConditionalDeckElementDescriptionStyleImpl
+         * <em>Conditional Deck Element Description Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.deck.impl.ConditionalDeckElementDescriptionStyleImpl
+         * @see org.eclipse.sirius.components.view.deck.impl.DeckPackageImpl#getConditionalDeckElementDescriptionStyle()
+         * @generated
+         */
+        EClass CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE = eINSTANCE.getConditionalDeckElementDescriptionStyle();
 
     }
 

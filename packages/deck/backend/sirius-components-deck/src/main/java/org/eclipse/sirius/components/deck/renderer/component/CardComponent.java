@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.deck.Card;
+import org.eclipse.sirius.components.deck.DeckElementStyle;
 import org.eclipse.sirius.components.deck.description.CardDescription;
 import org.eclipse.sirius.components.deck.renderer.elements.CardElementProps;
 import org.eclipse.sirius.components.deck.renderer.events.ChangeCardsVisibilityDeckEvent;
@@ -67,6 +68,7 @@ public class CardComponent implements IComponent {
         String title = cardDescription.titleProvider().apply(childVariableManager);
         String label = cardDescription.labelProvider().apply(childVariableManager);
         String description = cardDescription.descriptionProvider().apply(childVariableManager);
+        DeckElementStyle style = cardDescription.styleProvider().apply(childVariableManager);
 
         Optional<Card> optionalPreviousCard = this.props.previousCards().stream()
                 .filter(card -> card.targetObjectId().equals(targetObjectId))
@@ -74,7 +76,7 @@ public class CardComponent implements IComponent {
         String cardId = optionalPreviousCard.map(Card::id).orElse(UUID.randomUUID().toString());
         boolean visible = optionalPreviousCard.map(this::computeVisibility).orElse(true);
 
-        CardElementProps cardElementProps = new CardElementProps(cardId, cardDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, title, label, description, visible);
+        CardElementProps cardElementProps = new CardElementProps(cardId, cardDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, title, label, description, visible, style);
         return new Element(CardElementProps.TYPE, cardElementProps);
     }
 

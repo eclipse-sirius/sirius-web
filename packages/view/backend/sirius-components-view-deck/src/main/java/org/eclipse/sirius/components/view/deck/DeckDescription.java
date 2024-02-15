@@ -27,6 +27,9 @@ import org.eclipse.sirius.components.view.UserColor;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getBackgroundColor <em>Background Color</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getLaneDropTool <em>Lane Drop Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getStyle <em>Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.deck.DeckDescription#getConditionalStyles <em>Conditional
+ * Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckDescription()
@@ -91,5 +94,40 @@ public interface DeckDescription extends RepresentationDescription {
      * @generated
      */
     void setLaneDropTool(LaneDropTool value);
+
+    /**
+     * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Style</em>' containment reference.
+     * @see #setStyle(DeckDescriptionStyle)
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckDescription_Style()
+     * @model containment="true"
+     * @generated
+     */
+    DeckDescriptionStyle getStyle();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckDescription#getStyle <em>Style</em>}'
+     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Style</em>' containment reference.
+     * @see #getStyle()
+     * @generated
+     */
+    void setStyle(DeckDescriptionStyle value);
+
+    /**
+     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
+     * of type {@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle}. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckDescription_ConditionalStyles()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ConditionalDeckDescriptionStyle> getConditionalStyles();
 
 } // DeckDescription

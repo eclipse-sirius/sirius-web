@@ -15,12 +15,18 @@ package org.eclipse.sirius.components.view.deck.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.sirius.components.view.Conditional;
+import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.deck.CardDescription;
 import org.eclipse.sirius.components.view.deck.CardDropTool;
+import org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle;
+import org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.CreateCardTool;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
+import org.eclipse.sirius.components.view.deck.DeckDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckElementDescription;
+import org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
 import org.eclipse.sirius.components.view.deck.DeckTool;
 import org.eclipse.sirius.components.view.deck.DeleteCardTool;
@@ -171,6 +177,46 @@ public class DeckSwitch<T> extends Switch<T> {
             case DeckPackage.DECK_ELEMENT_DESCRIPTION: {
                 DeckElementDescription deckElementDescription = (DeckElementDescription) theEObject;
                 T result = this.caseDeckElementDescription(deckElementDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DeckPackage.DECK_DESCRIPTION_STYLE: {
+                DeckDescriptionStyle deckDescriptionStyle = (DeckDescriptionStyle) theEObject;
+                T result = this.caseDeckDescriptionStyle(deckDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE: {
+                ConditionalDeckDescriptionStyle conditionalDeckDescriptionStyle = (ConditionalDeckDescriptionStyle) theEObject;
+                T result = this.caseConditionalDeckDescriptionStyle(conditionalDeckDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalDeckDescriptionStyle);
+                if (result == null)
+                    result = this.caseDeckDescriptionStyle(conditionalDeckDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DeckPackage.DECK_ELEMENT_DESCRIPTION_STYLE: {
+                DeckElementDescriptionStyle deckElementDescriptionStyle = (DeckElementDescriptionStyle) theEObject;
+                T result = this.caseDeckElementDescriptionStyle(deckElementDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(deckElementDescriptionStyle);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DeckPackage.CONDITIONAL_DECK_ELEMENT_DESCRIPTION_STYLE: {
+                ConditionalDeckElementDescriptionStyle conditionalDeckElementDescriptionStyle = (ConditionalDeckElementDescriptionStyle) theEObject;
+                T result = this.caseConditionalDeckElementDescriptionStyle(conditionalDeckElementDescriptionStyle);
+                if (result == null)
+                    result = this.caseConditional(conditionalDeckElementDescriptionStyle);
+                if (result == null)
+                    result = this.caseDeckElementDescriptionStyle(conditionalDeckElementDescriptionStyle);
+                if (result == null)
+                    result = this.caseLabelStyle(conditionalDeckElementDescriptionStyle);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -344,6 +390,67 @@ public class DeckSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Description Style</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeckDescriptionStyle(DeckDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Deck Description Style</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Deck Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalDeckDescriptionStyle(ConditionalDeckDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element Description Style</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element Description Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDeckElementDescriptionStyle(DeckElementDescriptionStyle object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional Deck Element Description
+     * Style</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+     * the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional Deck Element Description
+     *         Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditionalDeckElementDescriptionStyle(ConditionalDeckElementDescriptionStyle object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Representation Description</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -355,6 +462,34 @@ public class DeckSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseRepresentationDescription(RepresentationDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Conditional</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Conditional</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseConditional(Conditional object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Label Style</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Label Style</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseLabelStyle(LabelStyle object) {
         return null;
     }
 

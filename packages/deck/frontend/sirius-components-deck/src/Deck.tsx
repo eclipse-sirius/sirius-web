@@ -64,9 +64,9 @@ export const Deck = ({
       representationContainerRef.current = representationContainer as HTMLDivElement;
     }
   }, [boardContainerRef, deckContainerRef]);
-
+  const backgroundColor = data.style?.backgroundColor;
   const boardStyle: CSSProperties = {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: backgroundColor ?? theme.palette.background.default,
     transform: `scale(${zoom})`,
     transformOrigin: '0 0',
     transitionDuration: '0.3s',

@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.deck.adapters.DeckColorAdapter;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.adapters.DiagramColorAdapter;
 import org.eclipse.sirius.components.view.form.FormPackage;
@@ -103,6 +104,7 @@ public class EditingDomainFactoryService implements IEditingDomainFactoryService
                 var colorPalettesView = optionalView.get();
                 resourceSet.eAdapters().add(new DiagramColorAdapter(colorPalettesView));
                 resourceSet.eAdapters().add(new FormColorAdapter(colorPalettesView));
+                resourceSet.eAdapters().add(new DeckColorAdapter(colorPalettesView));
             }
         }
         this.optionalResourceFactoryRegistry.ifPresent(resourceSet::setResourceFactoryRegistry);

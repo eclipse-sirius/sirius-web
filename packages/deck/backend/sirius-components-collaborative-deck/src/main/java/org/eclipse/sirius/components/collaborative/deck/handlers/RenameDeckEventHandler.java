@@ -83,7 +83,7 @@ public class RenameDeckEventHandler implements IDeckEventHandler {
             Optional<Deck> optionalDiagram = this.representationSearchService.findById(editingContext, representationId, Deck.class);
             if (optionalDiagram.isPresent()) {
                 Deck currentDeck = optionalDiagram.get();
-                Deck renamedDeck = new Deck(representationId, currentDeck.descriptionId(), currentDeck.targetObjectId(), newLabel, currentDeck.lanes());
+                Deck renamedDeck = new Deck(representationId, currentDeck.descriptionId(), currentDeck.targetObjectId(), newLabel, currentDeck.style(), currentDeck.lanes());
                 this.representationPersistenceService.save(editingContext, renamedDeck);
 
                 payload = new RenameRepresentationSuccessPayload(deckInput.id(), renamedDeck);

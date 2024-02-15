@@ -39,6 +39,7 @@ export interface OnCardClickProps {
 }
 export interface DeckData {
   lanes: Lane[];
+  style?: CSSProperties;
 }
 
 export interface Lane {
@@ -51,6 +52,7 @@ export interface Lane {
   collapsible?: boolean;
   collapsed?: boolean;
   style?: CSSProperties;
+  titleStyle?: CSSProperties;
   'data-testid': string;
 }
 export interface Card {
@@ -62,6 +64,8 @@ export interface Card {
   metadata?: CardMetadata;
   className?: string;
   editable?: boolean;
+  style?: CSSProperties;
+  titleStyle?: CSSProperties;
 }
 
 export interface CardMetadata {
