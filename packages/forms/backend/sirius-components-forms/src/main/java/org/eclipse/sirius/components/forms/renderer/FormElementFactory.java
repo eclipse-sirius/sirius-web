@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -594,6 +594,7 @@ public class FormElementFactory implements IElementFactory {
                 .iconURL(props.getIconURL())
                 .nodes(props.getNodes())
                 .expandedNodesIds(props.getExpandedNodesIds())
+                .readOnly(props.isReadOnly())
                 .diagnostics(diagnostics);
         // @formatter:on
         if (props.getHelpTextProvider() != null) {

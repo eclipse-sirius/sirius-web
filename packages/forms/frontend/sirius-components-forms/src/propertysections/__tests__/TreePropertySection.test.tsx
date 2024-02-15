@@ -10,27 +10,85 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { MockedProvider } from '@apollo/client/testing';
-import { Selection, SelectionContext, SelectionEntry, ServerContext } from '@eclipse-sirius/sirius-components-core';
+import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import {
+  MessageOptions,
+  Selection,
+  SelectionContext,
+  SelectionEntry,
+  ServerContext,
+  ToastContext,
+  ToastContextValue,
+} from '@eclipse-sirius/sirius-components-core';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { afterEach, expect, test } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import { GQLTree, GQLTreeNode } from '../../form/FormEventFragments.types';
-import { TreePropertySection } from '../TreePropertySection';
+import { TreePropertySection, updateWidgetFocusMutation } from '../TreePropertySection';
+import {
+  GQLErrorPayload,
+  GQLUpdateWidgetFocusMutationData,
+  GQLUpdateWidgetFocusMutationVariables,
+  GQLUpdateWidgetFocusSuccessPayload,
+} from '../TreePropertySection.types';
 
 afterEach(() => cleanup());
 
+const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
+
+const toastContextMock: ToastContextValue = {
+  enqueueSnackbar: mockEnqueue,
+};
+crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
+const updateWidgetFocusVariables: GQLUpdateWidgetFocusMutationVariables = {
+  input: {
+    id: '48be95fc-3422-45d3-b1f9-d590e847e9e1',
+    editingContextId: 'editingContextId',
+    representationId: 'formId',
+    widgetId: 'treeId',
+    selected: true,
+  },
+};
+
+const updateWidgetFocusSuccessPayload: GQLUpdateWidgetFocusSuccessPayload = {
+  __typename: 'UpdateWidgetFocusSuccessPayload',
+};
+const updateWidgetFocusSuccessData: GQLUpdateWidgetFocusMutationData = {
+  updateWidgetFocus: updateWidgetFocusSuccessPayload,
+};
+
+const updateWidgetFocusErrorPayload: GQLErrorPayload = {
+  __typename: 'ErrorPayload',
+  messages: [
+    {
+      body: 'An error has occurred, please refresh the page',
+      level: 'ERROR',
+    },
+  ],
+};
+const updateWidgetFocusErrorData: GQLUpdateWidgetFocusMutationData = {
+  updateWidgetFocus: updateWidgetFocusErrorPayload,
+};
+
 // Helper to make fixtures more readable
-function createNode(id: string, parentId: string, selectable: boolean = false): GQLTreeNode {
+function createNode(
+  id: string,
+  parentId: string,
+  selectable: boolean = false,
+  checkable: boolean = false,
+  value: boolean = false
+): GQLTreeNode {
   return {
     id,
     parentId,
     label: `Node-${id}`,
     kind: 'siriusComponents://testNode',
     iconURL: [],
-    iconEndURL: [[]],
+    endIconsURL: [[]],
     selectable,
+    checkable,
+    value,
   };
 }
 
@@ -55,16 +113,19 @@ test('should render the tree', () => {
 
   const { container } = render(
     <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <TreePropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={treeWidget}
-            subscribers={[]}
-          />
-        </SelectionContext.Provider>
-      </ServerContext.Provider>
+      <ToastContext.Provider value={toastContextMock}>
+        <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            <TreePropertySection
+              editingContextId="editingContextId"
+              formId="formId"
+              widget={treeWidget}
+              subscribers={[]}
+              readOnly={false}
+            />
+          </SelectionContext.Provider>
+        </ServerContext.Provider>
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -98,16 +159,19 @@ test('should render a multi-level tree correctly', () => {
   };
   const { container } = render(
     <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <TreePropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={treeWidget}
-            subscribers={[]}
-          />
-        </SelectionContext.Provider>
-      </ServerContext.Provider>
+      <ToastContext.Provider value={toastContextMock}>
+        <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            <TreePropertySection
+              editingContextId="editingContextId"
+              formId="formId"
+              widget={treeWidget}
+              subscribers={[]}
+              readOnly={false}
+            />
+          </SelectionContext.Provider>
+        </ServerContext.Provider>
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -157,16 +221,19 @@ test('should correctly interpret the order of nodes with the same parent in the 
   };
   const { container } = render(
     <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <TreePropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={treeWidget}
-            subscribers={[]}
-          />
-        </SelectionContext.Provider>
-      </ServerContext.Provider>
+      <ToastContext.Provider value={toastContextMock}>
+        <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            <TreePropertySection
+              editingContextId="editingContextId"
+              formId="formId"
+              widget={treeWidget}
+              subscribers={[]}
+              readOnly={false}
+            />
+          </SelectionContext.Provider>
+        </ServerContext.Provider>
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -213,16 +280,19 @@ test('should only expand the specified nodes on initial render', () => {
   };
   const { container } = render(
     <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <TreePropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={treeWidget}
-            subscribers={[]}
-          />
-        </SelectionContext.Provider>
-      </ServerContext.Provider>
+      <ToastContext.Provider value={toastContextMock}>
+        <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            <TreePropertySection
+              editingContextId="editingContextId"
+              formId="formId"
+              widget={treeWidget}
+              subscribers={[]}
+              readOnly={false}
+            />
+          </SelectionContext.Provider>
+        </ServerContext.Provider>
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -242,6 +312,20 @@ test('should only expand the specified nodes on initial render', () => {
 });
 
 test('should change the selection when a selectable node is clicked', () => {
+  let updateWidgetFocusCalled = false;
+  const updateWidgetFocusSuccessMock: MockedResponse<
+    GQLUpdateWidgetFocusMutationData,
+    GQLUpdateWidgetFocusMutationVariables
+  > = {
+    request: {
+      query: updateWidgetFocusMutation,
+      variables: updateWidgetFocusVariables,
+    },
+    result: () => {
+      updateWidgetFocusCalled = true;
+      return { data: updateWidgetFocusSuccessData };
+    },
+  };
   const treeWidget: GQLTree = {
     __typename: 'TreeWidget',
     id: 'treeId',
@@ -254,24 +338,29 @@ test('should change the selection when a selectable node is clicked', () => {
     diagnostics: [],
   };
   let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
+
+  const mocks = [updateWidgetFocusSuccessMock, updateWidgetFocusSuccessMock];
   const { container } = render(
-    <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider
-          value={{
-            selection: { entries: [selection] },
-            setSelection: (newSelection: Selection) => {
-              selection = newSelection.entries[0];
-            },
-          }}>
-          <TreePropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={treeWidget}
-            subscribers={[]}
-          />
-        </SelectionContext.Provider>
-      </ServerContext.Provider>
+    <MockedProvider mocks={mocks}>
+      <ToastContext.Provider value={toastContextMock}>
+        <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+          <SelectionContext.Provider
+            value={{
+              selection: { entries: [selection] },
+              setSelection: (newSelection: Selection) => {
+                selection = newSelection.entries[0];
+              },
+            }}>
+            <TreePropertySection
+              editingContextId="editingContextId"
+              formId="formId"
+              widget={treeWidget}
+              subscribers={[]}
+              readOnly={false}
+            />
+          </SelectionContext.Provider>
+        </ServerContext.Provider>
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -298,6 +387,21 @@ test('should change the selection when a selectable node is clicked', () => {
 });
 
 test('should collapse/expand a non-selectable node when clicked', async () => {
+  let updateWidgetFocusCalled = false;
+  const updateWidgetFocusSuccessMock: MockedResponse<
+    GQLUpdateWidgetFocusMutationData,
+    GQLUpdateWidgetFocusMutationVariables
+  > = {
+    request: {
+      query: updateWidgetFocusMutation,
+      variables: updateWidgetFocusVariables,
+    },
+    result: () => {
+      updateWidgetFocusCalled = true;
+      return { data: updateWidgetFocusSuccessData };
+    },
+  };
+
   const treeWidget: GQLTree = {
     __typename: 'TreeWidget',
     id: 'treeId',
@@ -310,24 +414,29 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     diagnostics: [],
   };
   let selection: SelectionEntry = { id: 'undefined', kind: '', label: '' };
+
+  const mocks = [updateWidgetFocusSuccessMock];
   const { container } = render(
-    <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider
-          value={{
-            selection: { entries: [selection] },
-            setSelection: (newSelection: Selection) => {
-              selection = newSelection.entries[0];
-            },
-          }}>
-          <TreePropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={treeWidget}
-            subscribers={[]}
-          />
-        </SelectionContext.Provider>
-      </ServerContext.Provider>
+    <MockedProvider mocks={mocks}>
+      <ToastContext.Provider value={toastContextMock}>
+        <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+          <SelectionContext.Provider
+            value={{
+              selection: { entries: [selection] },
+              setSelection: (newSelection: Selection) => {
+                selection = newSelection.entries[0];
+              },
+            }}>
+            <TreePropertySection
+              editingContextId="editingContextId"
+              formId="formId"
+              widget={treeWidget}
+              subscribers={[]}
+              readOnly={false}
+            />
+          </SelectionContext.Provider>
+        </ServerContext.Provider>
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();
@@ -349,6 +458,7 @@ test('should collapse/expand a non-selectable node when clicked', async () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     await waitFor(() => {
+      expect(updateWidgetFocusCalled).toBeTruthy();
       expect(selection).toEqual({
         id: 'undefined',
         label: '',
@@ -389,16 +499,19 @@ test('should render the tree with a help hint', () => {
 
   const { container } = render(
     <MockedProvider>
-      <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          <TreePropertySection
-            editingContextId="editingContextId"
-            formId="formId"
-            widget={treeWidget}
-            subscribers={[]}
-          />
-        </SelectionContext.Provider>
-      </ServerContext.Provider>
+      <ToastContext.Provider value={toastContextMock}>
+        <ServerContext.Provider value={{ httpOrigin: 'http://localhost' }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            <TreePropertySection
+              editingContextId="editingContextId"
+              formId="formId"
+              widget={treeWidget}
+              subscribers={[]}
+              readOnly={false}
+            />
+          </SelectionContext.Provider>
+        </ServerContext.Provider>
+      </ToastContext.Provider>
     </MockedProvider>
   );
   expect(container).toMatchSnapshot();

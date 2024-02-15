@@ -111,13 +111,16 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
                 .targetObjectIdProvider(vm -> "")
                 .childrenProvider(vm -> List.of())
                 .nodeIdProvider(vm -> "")
-                .nodeIconEndURLProvider(vm -> List.of())
+                .nodeEndIconsURLProvider(vm -> List.of())
                 .nodeSelectableProvider(vm -> false)
                 .helpTextProvider(vm -> "")
                 .nodeIconURLProvider(vm -> List.of())
                 .nodeKindProvider(object -> "")
                 .nodeLabelProvider(vm -> "")
                 .expandedNodeIdsProvider(vm -> List.of())
+                .isCheckableProvider(vm -> false)
+                .checkedValueProvider(vm -> false)
+                .newCheckedValueHandler((vm, newValue) -> new Success())
                 .iconURLProvider(vm -> List.of())
                 .build();
     }

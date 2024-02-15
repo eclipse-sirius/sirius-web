@@ -15,6 +15,8 @@ package org.eclipse.sirius.components.forms.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
@@ -23,6 +25,7 @@ import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponentProps;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -69,11 +72,14 @@ public class TreeComponent implements IComponent {
         expansionVariableManager.put(NODES_VARIABLE, nodes);
         List<String> expandedIds = treeDescription.getExpandedNodeIdsProvider().apply(expansionVariableManager);
 
+        Boolean readOnly = treeDescription.getIsReadOnlyProvider().apply(variableManager);
+
         TreeElementProps.Builder treeElementPropsBuilder = TreeElementProps.newTreeElementProps(id)
                 .label(label)
                 .iconURL(iconURL)
                 .children(children)
                 .nodes(nodes)
+                .readOnly(readOnly)
                 .expandedNodesIds(expandedIds);
 
         if (treeDescription.getHelpTextProvider() != null) {
@@ -118,15 +124,22 @@ public class TreeComponent implements IComponent {
         String nodeLabel = treeDescription.getNodeLabelProvider().apply(variableManager);
         String nodeKind = treeDescription.getNodeKindProvider().apply(variableManager);
         List<String> nodeIconURL = treeDescription.getNodeIconURLProvider().apply(variableManager);
-        List<List<String>> iconEndURL = treeDescription.getNodeIconEndURLProvider().apply(variableManager);
+        List<List<String>> nodeEndIconsURL = treeDescription.getNodeEndIconsURLProvider().apply(variableManager);
         boolean nodeSelectable = treeDescription.getNodeSelectableProvider().apply(variableManager);
+        boolean checkable = treeDescription.getIsCheckableProvider().apply(variableManager);
+        boolean value = treeDescription.getCheckedValueProvider().apply(variableManager);
+        BiFunction<VariableManager, Boolean, IStatus> genericHandler = treeDescription.getNewCheckedValueHandler();
+        Function<Boolean, IStatus> specializedHandler = newValue -> genericHandler.apply(variableManager, newValue);
         return TreeNode.newTreeNode(nodeId)
                 .parentId(parentId)
                 .label(nodeLabel)
                 .kind(nodeKind)
                 .iconURL(nodeIconURL)
-                .iconEndURL(iconEndURL)
+                .endIconsURL(nodeEndIconsURL)
                 .selectable(nodeSelectable)
+                .checkable(checkable)
+                .value(value)
+                .newValueHandler(specializedHandler)
                 .build();
     }
 }

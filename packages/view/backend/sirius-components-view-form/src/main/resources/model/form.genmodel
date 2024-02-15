@@ -128,11 +128,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//MultiSelectDescription/IsEnabledExpression"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//TreeDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/childExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/childrenExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/treeItemLabelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/isTreeItemSelectableExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/treeItemBeginIconExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/treeItemEndIconsExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/isCheckableExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/checkedValueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//TreeDescription/IsEnabledExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference form.ecore#//TreeDescription/body"/>
     </genClasses>
     <genClasses ecoreClass="form.ecore#//PieChartDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute form.ecore#//PieChartDescription/valuesExpression"/>

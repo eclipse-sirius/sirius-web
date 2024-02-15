@@ -286,8 +286,10 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
       label
       kind
       iconURL
-      iconEndURL
+      endIconsURL
       selectable
+      checkable
+      value
     }
   }
 

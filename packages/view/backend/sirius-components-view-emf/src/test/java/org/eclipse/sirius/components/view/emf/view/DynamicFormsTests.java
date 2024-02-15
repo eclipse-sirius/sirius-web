@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.view;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import java.util.Optional;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.context.support.StaticApplicationContext;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
@@ -62,6 +63,7 @@ import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.TextfieldStyle;
+import org.eclipse.sirius.components.forms.TreeWidget;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
 import org.eclipse.sirius.components.forms.renderer.FormRenderer;
@@ -120,8 +122,7 @@ import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
-import org.junit.jupiter.api.Test;
-import org.springframework.context.support.StaticApplicationContext;
+import org.eclipse.sirius.components.view.form.TreeDescription;
 
 /**
  * Tests for dynamically defined forms.
@@ -144,7 +145,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(14);
+        assertThat(group.getWidgets()).hasSize(15);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -159,6 +160,7 @@ public class DynamicFormsTests {
         Link link = (Link) group.getWidgets().get(11);
         org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
         Image image = (Image) group.getWidgets().get(13);
+        TreeWidget tree = (TreeWidget) group.getWidgets().get(14);
 
         this.checkTextfield(textfield, false, false);
         this.checkTextarea(textarea, false, false);
@@ -174,6 +176,7 @@ public class DynamicFormsTests {
         this.checkPieChart(chartWidgetWithPieChart, false, false);
         this.checkImage(image);
         this.checkFlexboxContainer(flexboxContainer, false, false);
+        this.checkTree(tree);
     }
 
     @Test
@@ -187,7 +190,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(14);
+        assertThat(group.getWidgets()).hasSize(15);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -229,7 +232,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(14);
+        assertThat(group.getWidgets()).hasSize(15);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -265,9 +268,9 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClasses[0]);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(14);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(15);
 
-        this.checkValuesEditing(this.eClasses[0], form);
+        this.checkValuesEditing(this.eClasses[0], this.eClasses[1], form);
     }
 
     @Test
@@ -504,6 +507,23 @@ public class DynamicFormsTests {
         assertThat(image.getMaxWidth()).isEqualTo("30%");
     }
 
+    private void checkTree(TreeWidget tree) {
+        assertThat(tree.getLabel()).isEqualTo("Tree for EClass Class1");
+        assertThat(tree.getNodes()).hasSize(2);
+        assertThat(tree.getNodes().get(0).isValue()).isFalse();
+        assertThat(tree.getNodes().get(0).getLabel()).isEqualTo("Tree for EClass Class2");
+        assertThat(tree.getNodes().get(1).getLabel()).isEqualTo("Tree for EClass Class3");
+        assertThat(tree.getNodes().get(0).isCheckable()).isTrue();
+        assertThat(tree.getNodes().get(0).isSelectable()).isTrue();
+        assertThat(tree.getNodes().get(0).getIconURL()).hasSize(1);
+        assertThat(tree.getNodes().get(0).getEndIconsURL()).hasSize(1);
+        assertThat(tree.getNodes().get(0).getEndIconsURL().get(0)).hasSize(1);
+        assertThat(tree.getNodes().get(0).getIconURL().get(0)).isEqualTo("icons/Class2.svg");
+        assertThat(tree.getNodes().get(0).getEndIconsURL().get(0).get(0)).isEqualTo("icons/Class2.svg");
+        assertThat(tree.getNodes().get(1).getIconURL().get(0)).isEqualTo("icons/Class3.svg");
+        assertThat(tree.getNodes().get(1).getEndIconsURL().get(0).get(0)).isEqualTo("icons/Class3.svg");
+    }
+
     private void checkFlexboxContainer(FlexboxContainer flexboxContainer, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container");
         List<AbstractWidget> children = flexboxContainer.getChildren();
@@ -534,9 +554,9 @@ public class DynamicFormsTests {
         }
     }
 
-    private void checkValuesEditing(EClass eClass, Form form) {
+    private void checkValuesEditing(EClass eClass, EClass eClass2, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(14);
+        assertThat(group.getWidgets()).hasSize(15);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1");
@@ -582,6 +602,13 @@ public class DynamicFormsTests {
 
         Button button = (Button) group.getWidgets().get(9);
         assertThat(button.getButtonLabel()).isEqualTo("Class1");
+
+        TreeWidget tree = (TreeWidget) group.getWidgets().get(14);
+        assertThat(tree.getNodes().get(0).isValue()).isFalse();
+        assertThat(eClass2.isAbstract()).isFalse();
+        tree.getNodes().get(0).getNewValueHandler().apply(true);
+        assertThat(eClass2.isAbstract()).isTrue();
+
     }
 
     private void renderOnEcoreFormWithStyleOnWidgetContainer(EClass eClass, Group group) {
@@ -641,6 +668,8 @@ public class DynamicFormsTests {
         groupDescription.getChildren().add(listDescription);
         ImageDescription imageDescription = this.createImage();
         groupDescription.getChildren().add(imageDescription);
+        TreeDescription treeDescription = this.createTreeDescription();
+        groupDescription.getChildren().add(treeDescription);
         return formDescription;
     }
 
@@ -991,6 +1020,27 @@ public class DynamicFormsTests {
         imageDescription.setUrlExpression("aql:'icons/' + self.name + '.svg'");
         imageDescription.setMaxWidthExpression("30%");
         return imageDescription;
+    }
+
+    private TreeDescription createTreeDescription() {
+        TreeDescription treeDescription = FormFactory.eINSTANCE.createTreeDescription();
+        treeDescription.setName("EClass Tree");
+        treeDescription.setLabelExpression("aql:'Tree for EClass ' + self.name");
+
+        treeDescription.setChildrenExpression("aql:self.eGenericSuperTypes.eRawType");
+
+        treeDescription.setTreeItemLabelExpression("aql:'Tree for EClass ' + self.name");
+        treeDescription.setIsCheckableExpression("aql:true");
+        treeDescription.setIsTreeItemSelectableExpression("aql:true");
+        treeDescription.setCheckedValueExpression("aql:self.abstract");
+        treeDescription.setTreeItemBeginIconExpression("aql:Sequence{'icons/' + self.name + '.svg'}");
+        treeDescription.setTreeItemEndIconsExpression("aql:Sequence{Sequence{'icons/' + self.name + '.svg'}}");
+
+        SetValue checkboxSetValue = ViewFactory.eINSTANCE.createSetValue();
+        checkboxSetValue.setFeatureName("abstract");
+        checkboxSetValue.setValueExpression("aql:newValue");
+        treeDescription.getBody().add(checkboxSetValue);
+        return treeDescription;
     }
 
     private void setFontStyle(LabelStyle labelStyle) {

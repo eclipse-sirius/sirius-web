@@ -392,8 +392,10 @@ export interface GQLTreeNode {
   label: string;
   kind: string;
   iconURL: string[];
-  iconEndURL: string[][];
-  selectable: Boolean;
+  endIconsURL: string[][];
+  selectable: boolean;
+  checkable: boolean;
+  value: boolean;
 }
 
 export interface GQLImage extends GQLWidget {
