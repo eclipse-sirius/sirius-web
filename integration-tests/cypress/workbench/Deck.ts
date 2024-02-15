@@ -74,11 +74,7 @@ export class Deck {
       if (isCreateProjectFromTemplateSuccessPayload(payload)) {
         const studioProjectId = payload.project.id;
         new Project().visit(studioProjectId);
-        cy.getByTestId('new-model').click();
-        cy.getByTestId('name-input').type('Deck Task Sample View');
-        cy.getByTestId('stereotype').click();
-        cy.get('li').filter(':contains("Deck Task Sample View")').click();
-        cy.getByTestId('create-document').click();
+        new Explorer().createNewModel('Deck Task Sample View', 'Deck Task Sample View');
         return cy.wrap(studioProjectId);
       }
       return cy.wrap('');

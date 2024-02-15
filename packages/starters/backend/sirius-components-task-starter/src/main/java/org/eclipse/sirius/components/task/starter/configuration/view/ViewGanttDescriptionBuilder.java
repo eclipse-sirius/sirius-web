@@ -65,6 +65,7 @@ public class ViewGanttDescriptionBuilder {
 
     private DeleteTaskTool createDeleteTaskTool() {
         return new GanttBuilders().newDeleteTaskTool()
+                .name("Delete Task")
                 .body(new DeleteElementBuilder()
                         .build())
                 .build();
@@ -72,6 +73,7 @@ public class ViewGanttDescriptionBuilder {
 
     private EditTaskTool createEditTaskTool() {
         return new GanttBuilders().newEditTaskTool()
+                .name("Edit Task")
                 .body(new ChangeContextBuilder()
                         .expression("aql:self.editTask(newName, newDescription, newStartTime, newEndTime, newProgress)")
                         .build())
@@ -80,6 +82,7 @@ public class ViewGanttDescriptionBuilder {
 
     private CreateTaskTool createCreateTaskTool() {
         return new GanttBuilders().newCreateTaskTool()
+                .name("Create Task After")
                 .body(new ChangeContextBuilder()
                         .expression("aql:self.createTask()")
                         .build())
@@ -90,6 +93,7 @@ public class ViewGanttDescriptionBuilder {
         TaskDescription taskDescriptionInTask = this.createTaskDescriptionInTask();
 
         return new GanttBuilders().newTaskDescription()
+                .name("Tasks In Project")
                 .semanticCandidatesExpression("aql:self.ownedTasks")
                 .nameExpression("aql:self.name")
                 .descriptionExpression("aql:self.description")
@@ -104,6 +108,7 @@ public class ViewGanttDescriptionBuilder {
 
     private TaskDescription createTaskDescriptionInTask() {
         TaskDescription taskDescription = new GanttBuilders().newTaskDescription()
+                .name("Sub Tasks")
                 .semanticCandidatesExpression("aql:self.subTasks")
                 .nameExpression("aql:self.name")
                 .descriptionExpression("aql:self.description")

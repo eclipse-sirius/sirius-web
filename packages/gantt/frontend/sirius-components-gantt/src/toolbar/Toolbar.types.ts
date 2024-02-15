@@ -10,17 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task, TaskListColumnEnum, ViewMode } from '@ObeoNetwork/gantt-task-react/dist/types/public-types';
+import { TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import { TaskListColumnEnum } from '../representation/Gantt.types';
 
 export interface ToolbarProps {
   editingContextId: string;
   representationId: string;
   zoomLevel: ViewMode;
   columns: TaskListColumnEnum[];
-  tasks: Task[];
+  tasks: TaskOrEmpty[];
   onChangeZoomLevel: (_: ViewMode) => any;
   onChangeDisplayColumns: () => any;
   onChangeColumns: (_: TaskListColumnEnum[]) => any;
+  fullscreenNode: React.RefObject<HTMLDivElement>;
 }
 
 export interface ToolbarState {

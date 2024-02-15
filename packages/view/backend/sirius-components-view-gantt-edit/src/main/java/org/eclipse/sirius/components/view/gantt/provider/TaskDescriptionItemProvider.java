@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.view.gantt.TaskDescription;
  * @generated
  */
 public class TaskDescriptionItemProvider extends ItemProviderAdapter
-implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -61,6 +61,7 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addNamePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addNameExpressionPropertyDescriptor(object);
             this.addDescriptionExpressionPropertyDescriptor(object);
@@ -72,6 +73,17 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
             this.addReusedTaskElementDescriptionsPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNamePropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TaskDescription_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_TaskDescription_name_feature", "_UI_TaskDescription_type"),
+                GanttPackage.Literals.TASK_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -249,7 +261,7 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
      */
     @Override
     public String getText(Object object) {
-        String label = ((TaskDescription) object).getNameExpression();
+        String label = ((TaskDescription) object).getName();
         return label == null || label.length() == 0 ? this.getString("_UI_TaskDescription_type") : this.getString("_UI_TaskDescription_type") + " " + label;
     }
 
@@ -265,6 +277,7 @@ implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItem
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(TaskDescription.class)) {
+            case GanttPackage.TASK_DESCRIPTION__NAME:
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
             case GanttPackage.TASK_DESCRIPTION__DESCRIPTION_EXPRESSION:

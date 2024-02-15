@@ -10,20 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  Gantt as GanttDiagram,
-  Task,
-  TaskListColumn,
-  TaskListColumnEnum,
-  ViewMode,
-} from '@ObeoNetwork/gantt-task-react';
+import '@ObeoNetwork/gantt-task-react';
+import { ColorStyles, Column, Gantt as GanttDiagram, Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import '@ObeoNetwork/gantt-task-react/dist/style.css';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { useRef, useState } from 'react';
 import { SelectableTask } from '../graphql/subscription/GanttSubscription.types';
+import { getAllColumns } from '../helper/helper';
 import { getContextalPalette } from '../palette/ContextualPalette';
 import { Toolbar } from '../toolbar/Toolbar';
-import { GanttProps, GanttState } from './Gantt.types';
+import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
+
+const useGanttStyle = makeStyles((theme) => ({
+  dragOver: {
+    color: theme.palette.primary.main,
+  },
+  ganttContainer: {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
 
 export const Gantt = ({
   editingContextId,
@@ -35,17 +41,20 @@ export const Gantt = ({
   onExpandCollapse,
   onDeleteTask,
 }: GanttProps) => {
-  const [{ zoomLevel, columns, displayColumns }, setState] = useState<GanttState>({
+  const [{ zoomLevel, selectedColumns, columns, displayColumns }, setState] = useState<GanttState>({
     zoomLevel: ViewMode.Day,
-    columns: [TaskListColumnEnum.NAME, TaskListColumnEnum.FROM, TaskListColumnEnum.TO, TaskListColumnEnum.ASSIGNEE],
+    selectedColumns: [
+      TaskListColumnEnum.NAME,
+      TaskListColumnEnum.FROM,
+      TaskListColumnEnum.TO,
+      TaskListColumnEnum.PROGRESS,
+    ],
+    columns: getAllColumns(),
     displayColumns: true,
   });
-  let columnWidth = 65;
-  if (zoomLevel === ViewMode.Month) {
-    columnWidth = 300;
-  } else if (zoomLevel === ViewMode.Week) {
-    columnWidth = 250;
-  }
+  const ganttContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const ganttClasses = useGanttStyle();
 
   const onwheel = (wheelEvent: WheelEvent) => {
     const deltaY = wheelEvent.deltaY;
@@ -69,7 +78,7 @@ export const Gantt = ({
     }
   };
 
-  const handleSelection = (task: Task) => {
+  const handleSelection = (task: TaskOrEmpty) => {
     const selectableTask = task as SelectableTask;
     const newSelection: Selection = {
       entries: [
@@ -84,16 +93,6 @@ export const Gantt = ({
     setSelection(newSelection);
   };
 
-  const allColumns: TaskListColumn[] = [
-    { columntype: TaskListColumnEnum.NAME, columnWidth: '120px' },
-    { columntype: TaskListColumnEnum.FROM, columnWidth: '155px' },
-    { columntype: TaskListColumnEnum.TO, columnWidth: '155px' },
-    { columntype: TaskListColumnEnum.ASSIGNEE, columnWidth: '80px' },
-  ];
-  const columnsToDisplay = allColumns.filter((column) => {
-    return columns.includes(column.columntype);
-  });
-
   const onChangeZoomLevel = (zoomLevel: ViewMode) => {
     setState((prevState) => {
       return { ...prevState, zoomLevel: zoomLevel };
@@ -106,37 +105,60 @@ export const Gantt = ({
   };
   const onChangeColumns = (columnTypes: TaskListColumnEnum[]) => {
     setState((prevState) => {
-      return { ...prevState, columns: columnTypes };
+      return { ...prevState, selectedColumns: columnTypes };
     });
   };
 
+  const handleDeleteTaskOnContextualPalette = (task: Task) => {
+    onDeleteTask([task]);
+  };
+
+  let tableColumns: Column[] = [];
+  if (displayColumns) {
+    tableColumns = columns.filter((col) => {
+      if (col.id != undefined) {
+        return selectedColumns.map((colEnum) => colEnum as string).includes(col.id);
+      }
+      return false;
+    });
+  }
+
+  const colors: Partial<ColorStyles> = {
+    taskDragColor: ganttClasses.dragOver,
+  };
+
   return (
-    <div>
+    <div ref={ganttContainerRef} className={ganttClasses.ganttContainer} data-testid={`gantt-representation`}>
       <Toolbar
         editingContextId={editingContextId}
         representationId={representationId}
         zoomLevel={zoomLevel}
-        columns={columns}
+        columns={selectedColumns}
         tasks={tasks}
         onChangeZoomLevel={onChangeZoomLevel}
         onChangeDisplayColumns={onChangeDisplayColumns}
         onChangeColumns={onChangeColumns}
+        fullscreenNode={ganttContainerRef}
       />
       <GanttDiagram
         tasks={tasks}
-        enableGridDrag={true}
-        displayTaskList={displayColumns}
-        columns={columnsToDisplay}
+        columns={tableColumns}
+        colors={colors}
         viewMode={zoomLevel}
         onDateChange={onEditTask}
         onProgressChange={onEditTask}
         onDelete={onDeleteTask}
         onDoubleClick={onExpandCollapse}
-        onSelect={handleSelection}
-        onExpanderClick={onExpandCollapse}
-        columnWidth={columnWidth}
+        onClick={handleSelection}
+        roundEndDate={(date: Date) => date}
+        roundStartDate={(date: Date) => date}
         onWheel={onwheel}
-        ContextualPalette={getContextalPalette({ onCreateTask, onDeleteTask, onEditTask })}
+        ContextualPalette={getContextalPalette({
+          onCreateTask,
+          onDeleteTask: handleDeleteTaskOnContextualPalette,
+          onEditTask,
+        })}
+        isMoveChildsWithParent={false}
       />
     </div>
   );

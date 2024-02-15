@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Task } from '@ObeoNetwork/gantt-task-react';
+import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { ApolloError, useMutation, useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
@@ -167,13 +167,13 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
     handleError(createTaskLoading, createTaskData, createTaskError);
   }, [createTaskLoading, createTaskData, createTaskError, handleError]);
 
-  const handleEditTask = (task: Task) => {
+  const handleEditTask = (task: TaskOrEmpty) => {
     const newDetail: GQLTaskDetail = {
       name: task.name,
       description: '',
-      startTime: task.start?.toISOString(),
-      endTime: task.end?.toISOString(),
-      progress: task.progress,
+      startTime: (task as Task)?.start?.toISOString(),
+      endTime: (task as Task)?.end?.toISOString(),
+      progress: (task as Task)?.progress,
       computeStartEndDynamically: task.isDisabled,
     };
     const input: GQLEditGanttTaskInput = {
@@ -188,14 +188,17 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
     updateTask(gantt, task.id, newDetail);
     editGanttTask({ variables: { input } });
   };
-  const handleDeleteTask = (task: Task) => {
-    const input: GQLDeleteGanttTaskInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      taskId: task.id,
-    };
-    deleteGanttTask({ variables: { input } });
+  const handleDeleteTask = (tasks: readonly TaskOrEmpty[]) => {
+    const taskId = tasks?.at(0)?.id;
+    if (taskId) {
+      const input: GQLDeleteGanttTaskInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId,
+        taskId,
+      };
+      deleteGanttTask({ variables: { input } });
+    }
   };
   const handleCreateTask = (task: Task) => {
     const input: GQLCreateGanttTaskInput = {

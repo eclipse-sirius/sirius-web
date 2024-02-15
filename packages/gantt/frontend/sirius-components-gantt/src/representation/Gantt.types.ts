@@ -11,21 +11,30 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { Task, TaskListColumnEnum, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import { Column, Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
+
+export enum TaskListColumnEnum {
+  NAME = 'Name',
+  FROM = 'From',
+  TO = 'To',
+  PROGRESS = 'Progress',
+  ASSIGNEE = 'Assignee',
+}
 
 export interface GanttState {
   zoomLevel: ViewMode;
-  columns: TaskListColumnEnum[];
+  selectedColumns: TaskListColumnEnum[];
+  columns: Column[];
   displayColumns: boolean;
 }
 
 export interface GanttProps {
   editingContextId: string;
   representationId: string;
-  tasks: Task[];
+  tasks: TaskOrEmpty[];
   setSelection: (selection: Selection) => void;
   onCreateTask: (Task: Task) => void;
-  onEditTask: (Task: Task) => void;
-  onDeleteTask: (Task: Task) => void;
+  onEditTask: (Task: TaskOrEmpty) => void;
+  onDeleteTask: (tasks: readonly TaskOrEmpty[]) => void;
   onExpandCollapse: (Task: Task) => void;
 }

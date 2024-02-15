@@ -51,6 +51,26 @@ import org.eclipse.sirius.components.view.gantt.TaskStyleDescription;
  */
 public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements TaskDescription {
     /**
+     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected static final String NAME_EDEFAULT = "";
+
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected String name = NAME_EDEFAULT;
+
+    /**
      * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -267,6 +287,29 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     @Override
     protected EClass eStaticClass() {
         return GanttPackage.Literals.TASK_DESCRIPTION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setName(String newName) {
+        String oldName = this.name;
+        this.name = newName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_DESCRIPTION__NAME, oldName, this.name));
     }
 
     /**
@@ -568,6 +611,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+            case GanttPackage.TASK_DESCRIPTION__NAME:
+                return this.getName();
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return this.getSemanticCandidatesExpression();
             case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
@@ -605,6 +650,9 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+            case GanttPackage.TASK_DESCRIPTION__NAME:
+                this.setName((String) newValue);
+                return;
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression((String) newValue);
                 return;
@@ -656,6 +704,9 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+            case GanttPackage.TASK_DESCRIPTION__NAME:
+                this.setName(NAME_EDEFAULT);
+                return;
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
                 return;
@@ -704,6 +755,8 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
+            case GanttPackage.TASK_DESCRIPTION__NAME:
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case GanttPackage.TASK_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case GanttPackage.TASK_DESCRIPTION__NAME_EXPRESSION:
@@ -718,7 +771,7 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
                 return PROGRESS_EXPRESSION_EDEFAULT == null ? this.progressExpression != null : !PROGRESS_EXPRESSION_EDEFAULT.equals(this.progressExpression);
             case GanttPackage.TASK_DESCRIPTION__COMPUTE_START_END_DYNAMICALLY_EXPRESSION:
                 return COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT == null ? this.computeStartEndDynamicallyExpression != null
-                : !COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT.equals(this.computeStartEndDynamicallyExpression);
+                        : !COMPUTE_START_END_DYNAMICALLY_EXPRESSION_EDEFAULT.equals(this.computeStartEndDynamicallyExpression);
             case GanttPackage.TASK_DESCRIPTION__DEPENDENCIES_EXPRESSION:
                 return DEPENDENCIES_EXPRESSION_EDEFAULT == null ? this.dependenciesExpression != null : !DEPENDENCIES_EXPRESSION_EDEFAULT.equals(this.dependenciesExpression);
             case GanttPackage.TASK_DESCRIPTION__STYLE:
@@ -744,7 +797,9 @@ public class TaskDescriptionImpl extends MinimalEObjectImpl.Container implements
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (semanticCandidatesExpression: ");
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", semanticCandidatesExpression: ");
         result.append(this.semanticCandidatesExpression);
         result.append(", nameExpression: ");
         result.append(this.nameExpression);
