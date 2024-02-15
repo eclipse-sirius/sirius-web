@@ -35,16 +35,16 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -58,7 +58,7 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class ModelBrowsersDescriptionProvider implements IRepresentationDescriptionRegistryConfigurer {
+public class ModelBrowsersDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     public static final String CONTAINER_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_container_tree_description".getBytes()).toString();
 
@@ -87,18 +87,27 @@ public class ModelBrowsersDescriptionProvider implements IRepresentationDescript
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        registry.add(this.getModelBrowserDescription(CONTAINER_DESCRIPTION_ID,
-                variableManager -> variableManager.get("treeId", String.class).map(treeId -> treeId.startsWith("modelBrowser://container")).orElse(false), variableManager -> {
-                    EClass referenceKind = this.resolveReferenceEClass(variableManager).orElse(null);
-                    return this.isContainerSelectable(variableManager, referenceKind);
-                }, this::getCreationScopeElements));
-        registry.add(this.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID,
-                variableManager -> variableManager.get("treeId", String.class).map(treeId -> treeId.startsWith("modelBrowser://reference")).orElse(false), variableManager -> {
-                    EClass targetType = this.resolveTargetType(variableManager).orElse(null);
-                    boolean isContainment = this.resolveIsContainment(variableManager);
-                    return this.isTypeSelectable(variableManager, targetType, isContainment);
-                }, this::getSearchScopeElements));
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
+        Predicate<VariableManager> containerDescriptionCanCreatePredicate = variableManager -> variableManager.get("treeId", String.class)
+                .map(treeId -> treeId.startsWith("modelBrowser://container"))
+                .orElse(false);
+        Function<VariableManager, Boolean> containerDescriptionIsSelectableProvider = variableManager -> {
+            EClass referenceKind = this.resolveReferenceEClass(variableManager).orElse(null);
+            return this.isContainerSelectable(variableManager, referenceKind);
+        };
+        var containerDescription = this.getModelBrowserDescription(CONTAINER_DESCRIPTION_ID, containerDescriptionCanCreatePredicate, containerDescriptionIsSelectableProvider, this::getCreationScopeElements);
+
+        Predicate<VariableManager> referenceDescriptionCanCreatePredicate = variableManager -> variableManager.get("treeId", String.class)
+                .map(treeId -> treeId.startsWith("modelBrowser://reference"))
+                .orElse(false);
+        Function<VariableManager, Boolean> referenceDescriptionIsSelectableProvider = variableManager -> {
+            EClass targetType = this.resolveTargetType(variableManager).orElse(null);
+            boolean isContainment = this.resolveIsContainment(variableManager);
+            return this.isTypeSelectable(variableManager, targetType, isContainment);
+        };
+        var referenceDescription = this.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID, referenceDescriptionCanCreatePredicate, referenceDescriptionIsSelectableProvider, this::getSearchScopeElements);
+
+        return List.of(containerDescription, referenceDescription);
     }
 
     public TreeDescription getModelBrowserDescription(String descriptionId, Predicate<VariableManager> canCreatePredicate, Function<VariableManager, Boolean> isSelectableProvider,

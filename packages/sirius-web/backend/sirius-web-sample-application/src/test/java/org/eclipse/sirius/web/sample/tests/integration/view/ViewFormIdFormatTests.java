@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,13 +23,13 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.forms.services.PropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.URLParser;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.web.sample.tests.integration.AbstractIntegrationTests;
-import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,20 +49,19 @@ public class ViewFormIdFormatTests extends AbstractIntegrationTests {
     private final URLParser urlParser = new URLParser();
 
     @Autowired
-    private List<IRepresentationDescriptionRegistryConfigurer> configurers;
+    private List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
 
     @Autowired
     private List<IPropertiesDescriptionRegistryConfigurer> propertyConfigurers;
 
     @Test
     public void checkRepresentationFormIdFormat() {
-        var registry = new RepresentationDescriptionRegistry();
-        this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
-
-        registry.getRepresentationDescriptions().stream()
-            .filter(FormDescription.class::isInstance)
-            .map(FormDescription.class::cast)
-            .forEach(this::checkIds);
+        this.representationDescriptionProviders.stream()
+                .map(representationDescriptionProvider -> representationDescriptionProvider.getRepresentationDescriptions(new IEditingContext.NoOp()))
+                .flatMap(List::stream)
+                .filter(FormDescription.class::isInstance)
+                .map(FormDescription.class::cast)
+                .forEach(this::checkIds);
     }
 
     @Test

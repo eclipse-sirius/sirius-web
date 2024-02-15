@@ -29,15 +29,15 @@ import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -55,7 +55,7 @@ import org.springframework.stereotype.Service;
  * @author hmarchadour
  */
 @Service
-public class ExplorerDescriptionProvider implements IRepresentationDescriptionRegistryConfigurer {
+public class ExplorerDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
@@ -84,8 +84,8 @@ public class ExplorerDescriptionProvider implements IRepresentationDescriptionRe
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        registry.add(this.getExplorerDescription());
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
+        return List.of(this.getExplorerDescription());
     }
 
     public TreeDescription getExplorerDescription() {

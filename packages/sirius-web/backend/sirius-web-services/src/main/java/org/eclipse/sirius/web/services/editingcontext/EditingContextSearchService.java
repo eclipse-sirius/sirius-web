@@ -27,8 +27,8 @@ import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -39,7 +39,6 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
-import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -65,18 +64,18 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final IEditingDomainFactoryService editingDomainFactoryService;
 
-    private final List<IRepresentationDescriptionRegistryConfigurer> configurers;
+    private final List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
 
     private final List<IEditingContextProcessor> editingContextProcessors;
 
     private final Timer timer;
 
     public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
-            List<IRepresentationDescriptionRegistryConfigurer> configurers, List<IEditingContextProcessor> editingContextProcessors, MeterRegistry meterRegistry) {
+                                       List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
-        this.configurers = Objects.requireNonNull(configurers);
+        this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
@@ -126,7 +125,10 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
         this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId);
 
-        this.computeRepresentationDescriptions(editingContext);
+        this.representationDescriptionProviders.forEach(representationDescriptionProvider -> {
+            var representationDescriptions = representationDescriptionProvider.getRepresentationDescriptions(editingContext);
+            representationDescriptions.forEach(representationDescription -> editingContext.getRepresentationDescriptions().put(representationDescription.getId(), representationDescription));
+        });
 
         this.editingContextProcessors.forEach(processor -> processor.postProcess(editingContext));
 
@@ -134,11 +136,5 @@ public class EditingContextSearchService implements IEditingContextSearchService
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
         return Optional.of(editingContext);
-    }
-
-    private void computeRepresentationDescriptions(EditingContext editingContext) {
-        var registry = new RepresentationDescriptionRegistry();
-        this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
-        registry.getRepresentationDescriptions().forEach(representationDescription -> editingContext.getRepresentationDescriptions().put(representationDescription.getId(), representationDescription));
     }
 }
