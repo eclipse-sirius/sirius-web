@@ -127,5 +127,15 @@ public class GanttDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for DropTool.
+     *
+     * @generated
+     */
+    public GanttDescriptionBuilder dropTool(org.eclipse.sirius.components.view.gantt.DropTaskTool value) {
+        this.getGanttDescription().setDropTool(value);
+        return this;
+    }
+
 }
 

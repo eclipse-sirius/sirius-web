@@ -64,6 +64,7 @@ extend type Mutation {
   createGanttTask(input: CreateGanttTaskInput!): CreateGanttTaskPayload
   deleteGanttTask(input: DeleteGanttTaskInput!): DeleteGanttTaskPayload
   editGanttTask(input: EditGanttTaskInput!): EditGanttTaskPayload
+  dropGanttTask(input: DropGanttTaskInput!): DropGanttTaskPayload
 }
 
 input CreateGanttTaskInput {
@@ -100,3 +101,13 @@ input EditGanttTaskInput {
   newDetail: EditGanttTaskDetailInput!
 }
 union EditGanttTaskPayload = SuccessPayload | ErrorPayload
+
+input DropGanttTaskInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  droppedTaskId: ID!
+  targetTaskId: ID
+  dropIndex: Int!
+}
+union DropGanttTaskPayload = SuccessPayload | ErrorPayload

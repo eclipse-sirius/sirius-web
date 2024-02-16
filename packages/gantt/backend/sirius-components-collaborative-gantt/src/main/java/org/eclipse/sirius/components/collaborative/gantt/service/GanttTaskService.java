@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttTaskService;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.DropGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -163,6 +164,34 @@ public class GanttTaskService implements IGanttTaskService {
 
     private Optional<GanttDescription> findGanttDescription(String ganttDescriptionId, IEditingContext editingContext) {
         return this.representationDescriptionSearchService.findById(editingContext, ganttDescriptionId).filter(GanttDescription.class::isInstance).map(GanttDescription.class::cast);
+    }
+
+    @Override
+    public IPayload dropTask(DropGanttTaskInput dropTaskInput, IEditingContext editingContext, Gantt gantt) {
+        IPayload payload = new ErrorPayload(dropTaskInput.id(), "Drop task failed");
+
+        Optional<Task> droppedTaskOpt = this.findTask(task -> Objects.equals(task.id(), dropTaskInput.droppedTaskId()), gantt.tasks());
+        Optional<Task> targetTaskOpt = this.findTask(task -> Objects.equals(task.id(), dropTaskInput.targetTaskId()), gantt.tasks());
+        Optional<GanttDescription> ganttDescriptionOpt = this.findGanttDescription(gantt.descriptionId(), editingContext);
+
+        if (droppedTaskOpt.isPresent() && ganttDescriptionOpt.isPresent()) {
+            String targetObjectId = targetTaskOpt.map(Task::targetObjectId).orElseGet(gantt::targetObjectId);
+            Optional<Object> draggedObjectOpt = this.objectService.getObject(editingContext, droppedTaskOpt.get().targetObjectId());
+            Optional<Object> targetObjectOpt = this.objectService.getObject(editingContext, targetObjectId);
+            if (draggedObjectOpt.isPresent() && targetObjectOpt.isPresent()) {
+                VariableManager variableManager = new VariableManager();
+                variableManager.put(VariableManager.SELF, draggedObjectOpt.get());
+                variableManager.put(GanttDescription.SOURCE_OBJECT, draggedObjectOpt.get());
+                variableManager.put(GanttDescription.TARGET_OBJECT, targetObjectOpt.get());
+                variableManager.put(GanttDescription.SOURCE_TASK, droppedTaskOpt.get());
+                variableManager.put(GanttDescription.TARGET_TASK_OR_GANTT, targetObjectOpt.get());
+                variableManager.put(GanttDescription.TARGET_DROP_INDEX, dropTaskInput.dropIndex());
+                ganttDescriptionOpt.get().dropTaskProvider().accept(variableManager);
+
+                payload = this.getPayload(dropTaskInput.id());
+            }
+        }
+        return payload;
     }
 
 }

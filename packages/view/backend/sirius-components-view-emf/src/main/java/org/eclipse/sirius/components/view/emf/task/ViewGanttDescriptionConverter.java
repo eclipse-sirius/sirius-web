@@ -96,6 +96,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .createTaskProvider(Optional.ofNullable(viewGanttDescription.getCreateTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
                 .editTaskProvider(Optional.ofNullable(viewGanttDescription.getEditTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
                 .deleteTaskProvider(Optional.ofNullable(viewGanttDescription.getDeleteTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
+                .dropTaskProvider(Optional.ofNullable(viewGanttDescription.getDropTool()).map(tool -> this.getOperationsHandler(tool.getBody(), interpreter)).orElse(variable -> { }))
                 .taskDescriptions(taskDescriptions)
                 .build();
     }

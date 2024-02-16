@@ -61,7 +61,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
       task = {
         id: gQLTask.id,
         name: gQLTask.detail.name,
-        parent: gQLTask.id,
+        parent: parentId,
         type: 'empty',
       };
     }
@@ -79,7 +79,7 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
 }
 
 export const updateTask = (gantt: GQLGantt | null, taskId: string, newDetail: GQLTaskDetail) => {
-  if (gantt) {
+  if (gantt?.tasks) {
     const task = findTask(gantt.tasks, taskId);
     if (!!task) {
       task.detail = newDetail;
@@ -89,14 +89,16 @@ export const updateTask = (gantt: GQLGantt | null, taskId: string, newDetail: GQ
 
 const findTask = (tasks: GQLTask[], taskId: string): GQLTask | undefined => {
   let foundTask: GQLTask | undefined = undefined;
-  tasks.every((value) => {
-    if (value.id === taskId) {
-      foundTask = value;
-    } else {
-      foundTask = findTask(value.subTasks, taskId);
-    }
-    return !foundTask;
-  });
+  if (tasks) {
+    tasks.every((value) => {
+      if (value.id === taskId) {
+        foundTask = value;
+      } else {
+        foundTask = findTask(value.subTasks, taskId);
+      }
+      return !foundTask;
+    });
+  }
   return foundTask;
 };
 

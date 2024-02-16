@@ -46,6 +46,42 @@ export class GanttTestHelper {
   public getColumnHeader(title: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getGanttRepresentation().findByTestId(`table-column-header-${title}`);
   }
+  public getTaskTitleCell(taskName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getGanttRepresentation().findByTestId(`title-table-cell-${taskName}`);
+  }
+  public getBeforeArea(taskName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getGanttRepresentation().findByTestId(`table-row-drop-before-${taskName}`);
+  }
+  public getAfterArea(taskName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    return this.getGanttRepresentation().findByTestId(`table-row-drop-after-${taskName}`);
+  }
+
+  public dragAndDrop(sourceTaskName: string, targetTaskName: string, position: 'before' | 'after' | 'inside') {
+    const dataTransfer = new DataTransfer();
+
+    this.getTaskTitleCell(sourceTaskName).trigger('dragstart', { dataTransfer });
+    if (position === 'before') {
+      this.getBeforeArea(targetTaskName).trigger('dragenter', 'center', { dataTransfer });
+      this.getBeforeArea(targetTaskName).trigger('dragover', 'center', { dataTransfer });
+      this.getBeforeArea(targetTaskName).trigger('drop', 'center', { dataTransfer });
+    } else if (position === 'after') {
+      this.getAfterArea(targetTaskName).trigger('dragenter', 'center', { dataTransfer });
+      this.getAfterArea(targetTaskName).trigger('dragover', 'center', { dataTransfer });
+      this.getAfterArea(targetTaskName).trigger('drop', 'center', { dataTransfer });
+    } else if (position === 'inside') {
+      this.getTaskTitleCell(targetTaskName).trigger('dragenter', 'center', { dataTransfer });
+      this.getTaskTitleCell(targetTaskName).trigger('dragover', 'center', { dataTransfer, force: true });
+      this.getTaskTitleCell(targetTaskName).trigger('drop', 'center', { dataTransfer, force: true });
+    }
+  }
+
+  public checkTaskPositionInTable(taskName: string, expectedPosition: number) {
+    this.getGanttRepresentation()
+      .get('[class*="taskListTableRow"]')
+      .eq(expectedPosition)
+      .find(`[data-testid="title-table-cell-${taskName}"]`)
+      .should('exist');
+  }
 
   public createGanttRepresentation(rootElementName: string, GanttRepresentationName) {
     const explorer = new Explorer();

@@ -11,6 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
+export interface UseGanttMutations {
+  editTask: (task: TaskOrEmpty) => void;
+  createTask: (task: Task) => void;
+  deleteTask: (tasks: readonly TaskOrEmpty[]) => void;
+  dropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
+}
+
 export interface GQLDeleteTaskVariables {
   input: GQLDeleteGanttTaskInput;
 }
@@ -21,10 +31,7 @@ export interface GQLDeleteGanttTaskInput {
   taskId: string;
 }
 export interface GQLDeleteTaskData {
-  deleteGanttTask: GQLDeleteGanttTaskPayload;
-}
-export interface GQLDeleteGanttTaskPayload {
-  __typename: string;
+  deleteGanttTask: GQLPayload;
 }
 
 export interface GQLEditTaskVariables {
@@ -45,10 +52,7 @@ export interface GQLEditGanttTaskInput {
   newDetail: GQLEditGanttTaskDetailInput;
 }
 export interface GQLEditTaskData {
-  editGanttTask: GQLEditGanttTaskPayload;
-}
-export interface GQLEditGanttTaskPayload {
-  __typename: string;
+  editGanttTask: GQLPayload;
 }
 
 export interface GQLCreateTaskVariables {
@@ -61,8 +65,26 @@ export interface GQLCreateGanttTaskInput {
   currentTaskId: string;
 }
 export interface GQLCreateTaskData {
-  createTask: GQLCreateGanttTaskPayload;
+  createTask: GQLPayload;
 }
-export interface GQLCreateGanttTaskPayload {
+
+export interface GQLDropTaskVariables {
+  input: GQLDropGanttTaskInput;
+}
+export interface GQLDropGanttTaskInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  droppedTaskId: string;
+  targetTaskId?: string;
+  dropIndex: number;
+}
+
+export interface GQLDropTaskData {
+  payload: GQLPayload;
+}
+
+export interface GQLPayload {
   __typename: string;
+  messages: GQLMessage[];
 }

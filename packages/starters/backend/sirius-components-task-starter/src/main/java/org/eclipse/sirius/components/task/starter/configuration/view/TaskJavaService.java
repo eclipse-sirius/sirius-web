@@ -15,10 +15,15 @@ package org.eclipse.sirius.components.task.starter.configuration.view;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.gantt.TaskDetail;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.task.AbstractTask;
 import org.eclipse.sirius.components.task.Project;
 import org.eclipse.sirius.components.task.Task;
@@ -33,6 +38,12 @@ import org.eclipse.sirius.components.task.TaskTag;
 public class TaskJavaService {
 
     private static final String NEW_TASK = "New Task";
+
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public TaskJavaService(IFeedbackMessageService feedbackMessageService) {
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+    }
 
     public TaskDetail getTaskDetail(Task task) {
 
@@ -94,8 +105,7 @@ public class TaskJavaService {
     public List<Task> getTasksWithTag(TaskTag tag) {
         return Optional.ofNullable(tag.eContainer())
                 .filter(Project.class::isInstance)
-                .map(Project.class::cast)
-                .stream()
+                .map(Project.class::cast).stream()
                 .map(Project::getOwnedTasks)
                 .flatMap(List::stream)
                 .filter(task -> task.getTags().contains(tag))
@@ -133,7 +143,6 @@ public class TaskJavaService {
         }
     }
 
-
     public void editCard(EObject eObject, String title, String description, String label) {
         if (eObject instanceof AbstractTask task) {
             if (title != null) {
@@ -141,6 +150,60 @@ public class TaskJavaService {
             }
             if (description != null) {
                 task.setDescription(description);
+            }
+        }
+    }
+
+    public void moveTaskIntoTarget(Task sourceTask, EObject target, int indexInTarget) {
+        if (target instanceof Task targetTask) {
+            // check that the target is not a child of the dropped task
+            boolean targetIsChildOfTheDroppedTask = false;
+            EObject container = target.eContainer();
+            while (container != null) {
+                if (container.equals(sourceTask)) {
+                    targetIsChildOfTheDroppedTask = true;
+                    break;
+                }
+                container = container.eContainer();
+            }
+            if (targetIsChildOfTheDroppedTask) {
+                this.feedbackMessageService.addFeedbackMessage(new Message("Moving a task inside a sub-task is not possible.", MessageLevel.WARNING));
+            } else {
+                this.moveTaskInSubTasks(sourceTask, indexInTarget, targetTask);
+            }
+        } else if (target instanceof Project project) {
+            EList<Task> ownedTasks = project.getOwnedTasks();
+            if (ownedTasks.contains(sourceTask)) {
+                int indexOfSource = ownedTasks.indexOf(sourceTask);
+                if (indexOfSource < indexInTarget) {
+                    ownedTasks.move(indexInTarget - 1, sourceTask);
+                } else {
+                    ownedTasks.move(indexInTarget, sourceTask);
+                }
+            } else {
+                project.getOwnedTasks().add(indexInTarget, sourceTask);
+            }
+        }
+    }
+
+    private void moveTaskInSubTasks(Task sourceTask, int indexInTarget, Task targetTask) {
+        List<Task> subTasks = targetTask.getSubTasks();
+        if (subTasks.contains(sourceTask)) {
+            if (indexInTarget >= 0 && indexInTarget <= subTasks.size()) {
+                int indexOfSource = subTasks.indexOf(sourceTask);
+                if (indexOfSource < indexInTarget) {
+                    targetTask.getSubTasks().move(indexInTarget - 1, sourceTask);
+                } else {
+                    targetTask.getSubTasks().move(indexInTarget, sourceTask);
+                }
+            } else {
+                targetTask.getSubTasks().move(subTasks.size() - 1, sourceTask);
+            }
+        } else {
+            if (indexInTarget >= 0 && indexInTarget <= targetTask.getSubTasks().size()) {
+                targetTask.getSubTasks().add(indexInTarget, sourceTask);
+            } else {
+                targetTask.getSubTasks().add(sourceTask);
             }
         }
     }
@@ -154,7 +217,8 @@ public class TaskJavaService {
                 int newIndex = this.computeIndexOfTaskToReplace(task, index, targetLaneTaskList, project);
                 // We move the current task before the taskToReplace in the project ownTasks list.
                 int oldIndex = project.getOwnedTasks().indexOf(task);
-                // If the moved task was located before the new location, the index after having remove the task is decremented.
+                // If the moved task was located before the new location, the index after having remove the task is
+                // decremented.
                 if (oldIndex < newIndex) {
                     newIndex--;
                 }
@@ -201,7 +265,8 @@ public class TaskJavaService {
             int newIndex = this.computeIndexOfTagToMove(movedTag, index, tagList, project);
             // We move the current tag before the tagToReplace in the project ownTags list.
             int oldIndex = project.getOwnedTags().indexOf(movedTag);
-            // If the moved tag was located before the new location, the index after having remove the tag is decremented.
+            // If the moved tag was located before the new location, the index after having remove the tag is
+            // decremented.
             if (oldIndex < newIndex) {
                 newIndex--;
             }

@@ -36,11 +36,11 @@ import io.micrometer.core.instrument.MeterRegistry;
 @Configuration
 public class ViewsStereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
 
-    private static final UUID GANTT_VIEW_ID = UUID.nameUUIDFromBytes("gantt_view".getBytes());
+    public static final UUID GANTT_VIEW_ID = UUID.nameUUIDFromBytes("gantt_view".getBytes());
+
+    public static final UUID DECK_VIEW_ID = UUID.nameUUIDFromBytes("deck_view".getBytes());
 
     private static final String GANTT_VIEW_LABEL = "Gantt Task Sample View";
-
-    private static final UUID DECK_VIEW_ID = UUID.nameUUIDFromBytes("deck_view".getBytes());
 
     private static final String DECK_VIEW_LABEL = "Deck Task Sample View";
 

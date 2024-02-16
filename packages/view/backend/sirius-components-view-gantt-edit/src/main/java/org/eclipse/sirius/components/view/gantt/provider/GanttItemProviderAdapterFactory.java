@@ -237,6 +237,29 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.gantt.DropTaskTool}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DropTaskToolItemProvider dropTaskToolItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.DropTaskTool}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDropTaskToolAdapter() {
+        if (this.dropTaskToolItemProvider == null) {
+            this.dropTaskToolItemProvider = new DropTaskToolItemProvider(this);
+        }
+
+        return this.dropTaskToolItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -377,6 +400,8 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
             this.editTaskToolItemProvider.dispose();
         if (this.deleteTaskToolItemProvider != null)
             this.deleteTaskToolItemProvider.dispose();
+        if (this.dropTaskToolItemProvider != null)
+            this.dropTaskToolItemProvider.dispose();
     }
 
     /**

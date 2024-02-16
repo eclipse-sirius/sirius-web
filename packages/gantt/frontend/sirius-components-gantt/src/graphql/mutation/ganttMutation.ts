@@ -22,6 +22,12 @@ export const deleteTaskMutation = gql`
           level
         }
       }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
     }
   }
 `;
@@ -36,6 +42,12 @@ export const editTaskMutation = gql`
           level
         }
       }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
     }
   }
 `;
@@ -45,6 +57,32 @@ export const createTaskMutation = gql`
     createGanttTask(input: $input) {
       __typename
       ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+export const dropTaskMutation = gql`
+  mutation dropGanttTask($input: DropGanttTaskInput!) {
+    dropGanttTask(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
         messages {
           body
           level

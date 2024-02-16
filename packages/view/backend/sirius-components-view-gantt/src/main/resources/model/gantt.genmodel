@@ -20,6 +20,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/createTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/editTool"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/deleteTool"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference gantt.ecore#//GanttDescription/dropTool"/>
     </genClasses>
     <genClasses ecoreClass="gantt.ecore#//TaskDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute gantt.ecore#//TaskDescription/name"/>
@@ -52,5 +53,6 @@
     <genClasses ecoreClass="gantt.ecore#//CreateTaskTool"/>
     <genClasses ecoreClass="gantt.ecore#//EditTaskTool"/>
     <genClasses ecoreClass="gantt.ecore#//DeleteTaskTool"/>
+    <genClasses ecoreClass="gantt.ecore#//DropTaskTool"/>
   </genPackages>
 </genmodel:GenModel>

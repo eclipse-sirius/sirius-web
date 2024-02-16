@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.sirius.components.view.gantt.ConditionalTaskStyle;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttFactory;
@@ -78,6 +79,8 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
                 return this.createEditTaskTool();
             case GanttPackage.DELETE_TASK_TOOL:
                 return this.createDeleteTaskTool();
+            case GanttPackage.DROP_TASK_TOOL:
+                return this.createDropTaskTool();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -147,6 +150,17 @@ public class GanttFactoryImpl extends EFactoryImpl implements GanttFactory {
     public DeleteTaskTool createDeleteTaskTool() {
         DeleteTaskToolImpl deleteTaskTool = new DeleteTaskToolImpl();
         return deleteTaskTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DropTaskTool createDropTaskTool() {
+        DropTaskToolImpl dropTaskTool = new DropTaskToolImpl();
+        return dropTaskTool;
     }
 
     /**

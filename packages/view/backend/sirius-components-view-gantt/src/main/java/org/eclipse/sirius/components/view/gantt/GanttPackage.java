@@ -152,13 +152,22 @@ public interface GanttPackage extends EPackage {
     int GANTT_DESCRIPTION__DELETE_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
+     * The feature id for the '<em><b>Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GANTT_DESCRIPTION__DROP_TOOL = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 5;
+    int GANTT_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -663,6 +672,59 @@ public interface GanttPackage extends EPackage {
     int DELETE_TASK_TOOL_OPERATION_COUNT = TASK_TOOL_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.gantt.impl.DropTaskToolImpl <em>Drop Task
+     * Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.gantt.impl.DropTaskToolImpl
+     * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getDropTaskTool()
+     * @generated
+     */
+    int DROP_TASK_TOOL = 8;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TASK_TOOL__NAME = TASK_TOOL__NAME;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TASK_TOOL__PRECONDITION_EXPRESSION = TASK_TOOL__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TASK_TOOL__BODY = TASK_TOOL__BODY;
+
+    /**
+     * The number of structural features of the '<em>Drop Task Tool</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TASK_TOOL_FEATURE_COUNT = TASK_TOOL_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Drop Task Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TASK_TOOL_OPERATION_COUNT = TASK_TOOL_OPERATION_COUNT + 0;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.GanttDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -731,6 +793,18 @@ public interface GanttPackage extends EPackage {
      * @generated
      */
     EReference getGanttDescription_DeleteTool();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDropTool <em>Drop Tool</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Drop Tool</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.GanttDescription#getDropTool()
+     * @see #getGanttDescription()
+     * @generated
+     */
+    EReference getGanttDescription_DropTool();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.TaskDescription <em>Task
@@ -1042,6 +1116,16 @@ public interface GanttPackage extends EPackage {
     EClass getDeleteTaskTool();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.gantt.DropTaskTool <em>Drop Task
+     * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Drop Task Tool</em>'.
+     * @see org.eclipse.sirius.components.view.gantt.DropTaskTool
+     * @generated
+     */
+    EClass getDropTaskTool();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -1112,6 +1196,14 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EReference GANTT_DESCRIPTION__DELETE_TOOL = eINSTANCE.getGanttDescription_DeleteTool();
+
+        /**
+         * The meta object literal for the '<em><b>Drop Tool</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference GANTT_DESCRIPTION__DROP_TOOL = eINSTANCE.getGanttDescription_DropTool();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.gantt.impl.TaskDescriptionImpl
@@ -1344,6 +1436,16 @@ public interface GanttPackage extends EPackage {
          * @generated
          */
         EClass DELETE_TASK_TOOL = eINSTANCE.getDeleteTaskTool();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.gantt.impl.DropTaskToolImpl
+         * <em>Drop Task Tool</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.gantt.impl.DropTaskToolImpl
+         * @see org.eclipse.sirius.components.view.gantt.impl.GanttPackageImpl#getDropTaskTool()
+         * @generated
+         */
+        EClass DROP_TASK_TOOL = eINSTANCE.getDropTaskTool();
 
     }
 
