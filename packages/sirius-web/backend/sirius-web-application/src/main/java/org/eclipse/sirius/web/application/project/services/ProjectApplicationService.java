@@ -20,12 +20,18 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
+import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.springframework.data.domain.Page;
@@ -44,11 +50,17 @@ public class ProjectApplicationService implements IProjectApplicationService {
 
     private final IProjectCreationService projectCreationService;
 
+    private final IProjectUpdateService projectUpdateService;
+
+    private final IProjectDeletionService projectDeletionService;
+
     private final IProjectMapper projectMapper;
 
-    public ProjectApplicationService(IProjectSearchService projectSearchService, IProjectCreationService projectCreationService, IProjectMapper projectMapper) {
+    public ProjectApplicationService(IProjectSearchService projectSearchService, IProjectCreationService projectCreationService, IProjectUpdateService projectUpdateService, IProjectDeletionService projectDeletionService, IProjectMapper projectMapper) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
         this.projectCreationService = Objects.requireNonNull(projectCreationService);
+        this.projectUpdateService = Objects.requireNonNull(projectUpdateService);
+        this.projectDeletionService = Objects.requireNonNull(projectDeletionService);
         this.projectMapper = Objects.requireNonNull(projectMapper);
     }
 
@@ -74,6 +86,34 @@ public class ProjectApplicationService implements IProjectApplicationService {
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<Project> success) {
             payload = new CreateProjectSuccessPayload(input.id(), this.projectMapper.toDTO(success.data()));
+        }
+        return payload;
+    }
+
+    @Override
+    @Transactional
+    public IPayload renameProject(RenameProjectInput input) {
+        var result = this.projectUpdateService.renameProject(input.projectId(), input.newName());
+
+        IPayload payload = null;
+        if (result instanceof Failure<Void> failure) {
+            payload = new ErrorPayload(input.id(), failure.message());
+        } else if (result instanceof Success<Void>) {
+            payload = new RenameProjectSuccessPayload(input.id());
+        }
+        return payload;
+    }
+
+    @Override
+    @Transactional
+    public IPayload deleteProject(DeleteProjectInput input) {
+        var result = this.projectDeletionService.deleteProject(input.projectId());
+
+        IPayload payload = null;
+        if (result instanceof Failure<Void> failure) {
+            payload = new ErrorPayload(input.id(), failure.message());
+        } else if (result instanceof Success<Void>) {
+            payload = new DeleteProjectSuccessPayload(input.id());
         }
         return payload;
     }

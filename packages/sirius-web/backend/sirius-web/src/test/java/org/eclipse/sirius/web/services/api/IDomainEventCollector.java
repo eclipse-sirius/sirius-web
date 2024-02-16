@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.services.api;
+
+import java.util.List;
+
+import org.eclipse.sirius.web.domain.events.IDomainEvent;
 
 /**
- * Used to compute internationalized messages.
+ * Used to collect domain events sent during integration tests.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
+public interface IDomainEventCollector {
+    List<IDomainEvent> getDomainEvents();
 
-    String notFound();
+    void clear();
 }

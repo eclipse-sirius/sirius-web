@@ -27,6 +27,8 @@ type DefaultViewer implements Viewer {
 
 extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
+  renameProject(input: RenameProjectInput!): RenameProjectPayload!
+  deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
 }
 
 input CreateProjectInput {
@@ -40,4 +42,27 @@ union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload
 type CreateProjectSuccessPayload {
   id: ID!
   project: Project!
+}
+
+input RenameProjectInput {
+  id: ID!
+  projectId: ID!
+  newName: String!
+}
+
+union RenameProjectPayload = ErrorPayload | RenameProjectSuccessPayload
+
+type RenameProjectSuccessPayload {
+  id: ID!
+}
+
+input DeleteProjectInput {
+  id: ID!
+  projectId: ID!
+}
+
+union DeleteProjectPayload = ErrorPayload | DeleteProjectSuccessPayload
+
+type DeleteProjectSuccessPayload {
+  id: ID!
 }

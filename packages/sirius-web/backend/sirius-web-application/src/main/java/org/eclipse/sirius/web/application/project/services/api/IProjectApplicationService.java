@@ -17,7 +17,9 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -32,4 +34,8 @@ public interface IProjectApplicationService {
     Page<ProjectDTO> findAll(Pageable pageable);
 
     IPayload createProject(CreateProjectInput input);
+
+    IPayload renameProject(RenameProjectInput input);
+
+    IPayload deleteProject(DeleteProjectInput input);
 }

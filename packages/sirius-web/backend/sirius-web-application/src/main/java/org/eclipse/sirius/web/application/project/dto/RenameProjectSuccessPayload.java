@@ -10,15 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.application.project.dto;
+
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to compute internationalized messages.
+ * Used to indicate that a project has been successfully renamed.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
-
-    String notFound();
+public record RenameProjectSuccessPayload(@NotNull UUID id) implements IPayload {
 }

@@ -10,15 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.project.events;
+
+import java.time.Instant;
+import java.util.UUID;
+
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to compute internationalized messages.
+ * Event fired when a project is deleted.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
-
-    String notFound();
+public record ProjectDeletedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull Project project) implements IProjectEvent {
 }

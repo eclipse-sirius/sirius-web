@@ -10,15 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.application.project.dto;
+
+import java.util.Objects;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to compute internationalized messages.
+ * Payload sent when a project is deleted.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
-
-    String notFound();
+public record DeleteProjectSuccessPayload(@NotNull  UUID id) implements IPayload {
+    public DeleteProjectSuccessPayload {
+        Objects.requireNonNull(id);
+    }
 }

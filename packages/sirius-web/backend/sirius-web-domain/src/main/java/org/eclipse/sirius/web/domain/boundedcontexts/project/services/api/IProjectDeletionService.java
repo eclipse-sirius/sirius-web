@@ -10,15 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
+
+import java.util.UUID;
+
+import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
- * Used to compute internationalized messages.
+ * Used to delete projects.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
-
-    String notFound();
+public interface IProjectDeletionService {
+    IResult<Void> deleteProject(UUID projectId);
 }

@@ -10,15 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.application.project.dto;
+
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IInput;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to compute internationalized messages.
+ * The input of the delete project mutation.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
-
-    String notFound();
+public record DeleteProjectInput(@NotNull UUID id, @NotNull UUID projectId) implements IInput {
 }

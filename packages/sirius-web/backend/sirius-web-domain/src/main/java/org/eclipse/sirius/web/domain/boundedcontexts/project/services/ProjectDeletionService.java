@@ -12,13 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectNameValidator;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
@@ -26,40 +24,35 @@ import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to create new projects.
+ * Used to delete projects.
  *
  * @author sbegaudeau
  */
 @Service
-public class ProjectCreationService implements IProjectCreationService {
+public class ProjectDeletionService implements IProjectDeletionService {
 
     private final IProjectRepository projectRepository;
 
-    private final IProjectNameValidator projectNameValidator;
-
     private final IMessageService messageService;
 
-    public ProjectCreationService(IProjectRepository projectRepository, IProjectNameValidator projectNameValidator, IMessageService messageService) {
+    public ProjectDeletionService(IProjectRepository projectRepository, IMessageService messageService) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
-        this.projectNameValidator = Objects.requireNonNull(projectNameValidator);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
-    public IResult<Project> createProject(String name, List<String> natures) {
-        IResult<Project> result = null;
+    public IResult<Void> deleteProject(UUID projectId) {
+        IResult<Void> result = null;
 
-        var projectName = this.projectNameValidator.sanitize(name);
-        if (!this.projectNameValidator.isValid(projectName)) {
-            result = new Failure<>(this.messageService.invalidName());
+        var optionalProject = this.projectRepository.findById(projectId);
+        if (optionalProject.isPresent()) {
+            var project = optionalProject.get();
+            project.dispose();
+
+            this.projectRepository.delete(project);
+            result = new Success<>(null);
         } else {
-            var project = Project.newProject()
-                    .name(name)
-                    .natures(natures)
-                    .build();
-            this.projectRepository.save(project);
-
-            result = new Success<>(project);
+            result = new Failure<>(this.messageService.notFound());
         }
 
         return result;
