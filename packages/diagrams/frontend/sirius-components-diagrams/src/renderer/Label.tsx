@@ -34,7 +34,7 @@ const labelStyle = (
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    whiteSpace: 'nowrap',
+    whiteSpace: 'pre-line',
     ...style,
     color: style.color ? getCSSColor(String(style.color), theme) : undefined,
   };

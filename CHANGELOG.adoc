@@ -69,7 +69,7 @@ It's current location is only there to simplify the transition to the new Sirius
 - https://github.com/eclipse-sirius/sirius-web/issues/3063[#3063] [selection] Ensure Selections are always refreshed using the _current_ version of their target element
 - https://github.com/eclipse-sirius/sirius-web/issues/2721[#2721] [diagram] Prevent labels to exceed their container
 - https://github.com/eclipse-sirius/sirius-web/issues/3100[#3100] [diagram] Add support for drop on `IconLabelNode`
-- 
+- https://github.com/eclipse-sirius/sirius-web/issues/3124[#3124] [diagram] Fix an issue that prevents manual line break in node label
 
 === New Features
 
