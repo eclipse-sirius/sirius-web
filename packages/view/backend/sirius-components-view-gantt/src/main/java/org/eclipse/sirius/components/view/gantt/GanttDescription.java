@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.UserColor;
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getCreateTool <em>Create Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getEditTool <em>Edit Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDeleteTool <em>Delete Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDropTool <em>Drop Tool</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription()
@@ -140,5 +141,28 @@ public interface GanttDescription extends RepresentationDescription {
      * @generated
      */
     void setDeleteTool(DeleteTaskTool value);
+
+    /**
+     * Returns the value of the '<em><b>Drop Tool</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Drop Tool</em>' containment reference.
+     * @see #setDropTool(DropTaskTool)
+     * @see org.eclipse.sirius.components.view.gantt.GanttPackage#getGanttDescription_DropTool()
+     * @model containment="true"
+     * @generated
+     */
+    DropTaskTool getDropTool();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.gantt.GanttDescription#getDropTool <em>Drop
+     * Tool</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Drop Tool</em>' containment reference.
+     * @see #getDropTool()
+     * @generated
+     */
+    void setDropTool(DropTaskTool value);
 
 } // GanttDescription

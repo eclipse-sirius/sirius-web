@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 @PublicApi
 public record GanttDescription(String id, String label, Function<VariableManager, String> idProvider, Function<VariableManager, String> labelProvider,
         Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions, Consumer<VariableManager> createTaskProvider,
-        Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider) implements IRepresentationDescription {
+        Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
 
@@ -44,6 +44,16 @@ public record GanttDescription(String id, String label, Function<VariableManager
     public static final String NEW_END_TIME = "newEndTime";
 
     public static final String NEW_PROGRESS = "newProgress";
+
+    public static final String SOURCE_OBJECT = "source";
+
+    public static final String TARGET_OBJECT = "target";
+
+    public static final String SOURCE_TASK = "sourceTask";
+
+    public static final String TARGET_TASK_OR_GANTT = "targetTaskOrGantt";
+
+    public static final String TARGET_DROP_INDEX = "indexInTarget";
 
     public GanttDescription {
         Objects.requireNonNull(id);
@@ -106,6 +116,8 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         private Consumer<VariableManager> createTaskProvider;
 
+        private Consumer<VariableManager> dropTaskProvider;
+
         private List<TaskDescription> taskDescriptions;
 
         private Builder(String id) {
@@ -137,6 +149,11 @@ public record GanttDescription(String id, String label, Function<VariableManager
             return this;
         }
 
+        public Builder dropTaskProvider(Consumer<VariableManager> dropTaskProvider) {
+            this.dropTaskProvider = dropTaskProvider;
+            return this;
+        }
+
         public Builder editTaskProvider(Consumer<VariableManager> editTaskProvider) {
             this.editTaskProvider = editTaskProvider;
             return this;
@@ -159,7 +176,7 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         public GanttDescription build() {
             GanttDescription ganttDescription = new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
-                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider);
+                    this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider);
             return ganttDescription;
         }
     }

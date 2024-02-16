@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.gantt.api;
 
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.DropGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -42,6 +43,13 @@ public interface IGanttTaskService {
     IPayload editTask(EditGanttTaskInput editGanttTaskInput, IEditingContext editingContext, Gantt gantt);
 
 
+
+    /**
+     * Drop a task on another one.
+     */
+    IPayload dropTask(DropGanttTaskInput input, IEditingContext editingContext, Gantt gantt);
+
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -63,7 +71,10 @@ public interface IGanttTaskService {
         public IPayload deleteTask(DeleteGanttTaskInput deleteGanttTaskInput, IEditingContext editingContext, Gantt gantt) {
             return null;
         }
+
+        @Override
+        public IPayload dropTask(DropGanttTaskInput input, IEditingContext editingContext, Gantt gantt) {
+            return null;
+        }
     }
-
-
 }

@@ -11,10 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import '@ObeoNetwork/gantt-task-react';
-import { ColorStyles, Column, Gantt as GanttDiagram, Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
+import {
+  ColorStyles,
+  Column,
+  Gantt as GanttDiagram,
+  OnMoveTaskBeforeAfter,
+  OnMoveTaskInside,
+  Task,
+  TaskOrEmpty,
+  ViewMode,
+} from '@ObeoNetwork/gantt-task-react';
 import '@ObeoNetwork/gantt-task-react/dist/style.css';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import { useRef, useState } from 'react';
 import { SelectableTask } from '../graphql/subscription/GanttSubscription.types';
 import { getAllColumns } from '../helper/helper';
@@ -23,9 +32,6 @@ import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
 
 const useGanttStyle = makeStyles((theme) => ({
-  dragOver: {
-    color: theme.palette.primary.main,
-  },
   ganttContainer: {
     backgroundColor: theme.palette.background.default,
   },
@@ -40,6 +46,7 @@ export const Gantt = ({
   onEditTask,
   onExpandCollapse,
   onDeleteTask,
+  onDropTask,
 }: GanttProps) => {
   const [{ zoomLevel, selectedColumns, columns, displayColumns }, setState] = useState<GanttState>({
     zoomLevel: ViewMode.Day,
@@ -55,6 +62,7 @@ export const Gantt = ({
   const ganttContainerRef = useRef<HTMLDivElement | null>(null);
 
   const ganttClasses = useGanttStyle();
+  const theme: Theme = useTheme();
 
   const onwheel = (wheelEvent: WheelEvent) => {
     const deltaY = wheelEvent.deltaY;
@@ -113,6 +121,24 @@ export const Gantt = ({
     onDeleteTask([task]);
   };
 
+  const handleMoveTaskAfter: OnMoveTaskBeforeAfter = (task, taskForMove) => {
+    const index = tasks.filter((t) => t.parent === task.parent).findIndex((t) => t.id === task.id);
+    const parent = tasks.find((t) => t.id === task.parent);
+    onDropTask(taskForMove, parent, index + 1);
+  };
+
+  const handleMoveTaskBefore: OnMoveTaskBeforeAfter = (task, taskForMove) => {
+    const index = tasks.filter((t) => t.parent === task.parent).findIndex((t) => t.id === task.id);
+    const parent = tasks.find((t) => t.id === task.parent);
+    onDropTask(taskForMove, parent, index);
+  };
+
+  const handleMoveTaskInside: OnMoveTaskInside = (parent: Task, childs: readonly TaskOrEmpty[]) => {
+    if (childs[0]) {
+      onDropTask(childs[0], parent, -1);
+    }
+  };
+
   let tableColumns: Column[] = [];
   if (displayColumns) {
     tableColumns = columns.filter((col) => {
@@ -124,7 +150,8 @@ export const Gantt = ({
   }
 
   const colors: Partial<ColorStyles> = {
-    taskDragColor: ganttClasses.dragOver,
+    taskDragColor: theme.palette.action.selected,
+    selectedTaskBackgroundColor: theme.palette.action.selected,
   };
 
   return (
@@ -159,6 +186,9 @@ export const Gantt = ({
           onEditTask,
         })}
         isMoveChildsWithParent={false}
+        onMoveTaskBefore={handleMoveTaskBefore}
+        onMoveTaskAfter={handleMoveTaskAfter}
+        onMoveTaskInside={handleMoveTaskInside}
       />
     </div>
   );

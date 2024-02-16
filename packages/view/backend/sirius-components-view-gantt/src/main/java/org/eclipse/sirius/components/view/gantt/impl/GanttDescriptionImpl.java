@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
@@ -46,6 +47,7 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getEditTool <em>Edit Tool</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDeleteTool <em>Delete
  * Tool</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.gantt.impl.GanttDescriptionImpl#getDropTool <em>Drop Tool</em>}</li>
  * </ul>
  *
  * @generated
@@ -100,6 +102,16 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @ordered
      */
     protected DeleteTaskTool deleteTool;
+
+    /**
+     * The cached value of the '{@link #getDropTool() <em>Drop Tool</em>}' containment reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getDropTool()
+     * @generated
+     * @ordered
+     */
+    protected DropTaskTool dropTool;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -331,6 +343,54 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
      * @generated
      */
     @Override
+    public DropTaskTool getDropTool() {
+        return this.dropTool;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetDropTool(DropTaskTool newDropTool, NotificationChain msgs) {
+        DropTaskTool oldDropTool = this.dropTool;
+        this.dropTool = newDropTool;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__DROP_TOOL, oldDropTool, newDropTool);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDropTool(DropTaskTool newDropTool) {
+        if (newDropTool != this.dropTool) {
+            NotificationChain msgs = null;
+            if (this.dropTool != null)
+                msgs = ((InternalEObject) this.dropTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__DROP_TOOL, null, msgs);
+            if (newDropTool != null)
+                msgs = ((InternalEObject) newDropTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - GanttPackage.GANTT_DESCRIPTION__DROP_TOOL, null, msgs);
+            msgs = this.basicSetDropTool(newDropTool, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.GANTT_DESCRIPTION__DROP_TOOL, newDropTool, newDropTool));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case GanttPackage.GANTT_DESCRIPTION__TASK_ELEMENT_DESCRIPTIONS:
@@ -343,6 +403,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.basicSetEditTool(null, msgs);
             case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
                 return this.basicSetDeleteTool(null, msgs);
+            case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
+                return this.basicSetDropTool(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -365,6 +427,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.getEditTool();
             case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
                 return this.getDeleteTool();
+            case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
+                return this.getDropTool();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -394,6 +458,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
                 this.setDeleteTool((DeleteTaskTool) newValue);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
+                this.setDropTool((DropTaskTool) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -421,6 +488,9 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
             case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
                 this.setDeleteTool((DeleteTaskTool) null);
                 return;
+            case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
+                this.setDropTool((DropTaskTool) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -443,6 +513,8 @@ public class GanttDescriptionImpl extends RepresentationDescriptionImpl implemen
                 return this.editTool != null;
             case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
                 return this.deleteTool != null;
+            case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
+                return this.dropTool != null;
         }
         return super.eIsSet(featureID);
     }

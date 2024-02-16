@@ -73,6 +73,7 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__CREATE_TOOL);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__EDIT_TOOL);
             this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__DELETE_TOOL);
+            this.childrenFeatures.add(GanttPackage.Literals.GANTT_DESCRIPTION__DROP_TOOL);
         }
         return this.childrenFeatures;
     }
@@ -138,6 +139,7 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
             case GanttPackage.GANTT_DESCRIPTION__CREATE_TOOL:
             case GanttPackage.GANTT_DESCRIPTION__EDIT_TOOL:
             case GanttPackage.GANTT_DESCRIPTION__DELETE_TOOL:
+            case GanttPackage.GANTT_DESCRIPTION__DROP_TOOL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -163,6 +165,8 @@ public class GanttDescriptionItemProvider extends RepresentationDescriptionItemP
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__EDIT_TOOL, GanttFactory.eINSTANCE.createEditTaskTool()));
 
         newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__DELETE_TOOL, GanttFactory.eINSTANCE.createDeleteTaskTool()));
+
+        newChildDescriptors.add(this.createChildParameter(GanttPackage.Literals.GANTT_DESCRIPTION__DROP_TOOL, GanttFactory.eINSTANCE.createDropTaskTool()));
     }
 
 }

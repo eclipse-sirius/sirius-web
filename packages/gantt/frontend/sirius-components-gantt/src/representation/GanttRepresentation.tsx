@@ -11,23 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
-import { ApolloError, useMutation, useSubscription } from '@apollo/client';
+import { useSubscription } from '@apollo/client';
 import { RepresentationComponentProps, useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { useCallback, useEffect, useState } from 'react';
-import {
-  GQLCreateGanttTaskInput,
-  GQLCreateTaskData,
-  GQLCreateTaskVariables,
-  GQLDeleteGanttTaskInput,
-  GQLDeleteTaskData,
-  GQLDeleteTaskVariables,
-  GQLEditGanttTaskInput,
-  GQLEditTaskData,
-  GQLEditTaskVariables,
-} from '../graphql/mutation/GanttMutation.types';
-import { createTaskMutation, deleteTaskMutation, editTaskMutation } from '../graphql/mutation/ganttMutation';
+import { useEffect, useState } from 'react';
+import { useGanttMutations } from '../graphql/mutation/useGanttMutations';
 import {
   GQLErrorPayload,
   GQLGanttEventPayload,
@@ -121,51 +110,7 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
 
   //---------------------------------
   // Mutations
-  const [deleteGanttTask, { loading: deleteGanttTaskLoading, data: deleteGanttTaskData, error: deleteGanttTaskError }] =
-    useMutation<GQLDeleteTaskData, GQLDeleteTaskVariables>(deleteTaskMutation);
-  const [editGanttTask, { loading: editTaskLoading, data: editTaskData, error: editTaskError }] = useMutation<
-    GQLEditTaskData,
-    GQLEditTaskVariables
-  >(editTaskMutation);
-  const [createTask, { loading: createTaskLoading, data: createTaskData, error: createTaskError }] = useMutation<
-    GQLCreateTaskData,
-    GQLCreateTaskVariables
-  >(createTaskMutation);
-
-  const isStandardErrorPayload = (field): field is GQLErrorPayload => field.__typename === 'ErrorPayload';
-  const handleError = useCallback(
-    (loading: boolean, data, error: ApolloError | undefined) => {
-      if (!loading) {
-        if (error) {
-          addErrorMessage(error.message);
-        }
-        if (data) {
-          const keys = Object.keys(data);
-          if (keys.length > 0) {
-            const firstKey = keys[0];
-            if (firstKey) {
-              const firstField = data[firstKey];
-              if (isStandardErrorPayload(firstField)) {
-                const { messages } = firstField;
-                addMessages(messages);
-              }
-            }
-          }
-        }
-      }
-    },
-    [addErrorMessage, addMessages]
-  );
-
-  useEffect(() => {
-    handleError(deleteGanttTaskLoading, deleteGanttTaskData, deleteGanttTaskError);
-  }, [deleteGanttTaskLoading, deleteGanttTaskData, deleteGanttTaskError, handleError]);
-  useEffect(() => {
-    handleError(editTaskLoading, editTaskData, editTaskError);
-  }, [editTaskLoading, editTaskData, editTaskError, handleError]);
-  useEffect(() => {
-    handleError(createTaskLoading, createTaskData, createTaskError);
-  }, [createTaskLoading, createTaskData, createTaskError, handleError]);
+  const { deleteTask, editTask, createTask, dropTask } = useGanttMutations(editingContextId, representationId);
 
   const handleEditTask = (task: TaskOrEmpty) => {
     const newDetail: GQLTaskDetail = {
@@ -176,39 +121,12 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
       progress: (task as Task)?.progress,
       computeStartEndDynamically: task.isDisabled,
     };
-    const input: GQLEditGanttTaskInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      taskId: task.id,
-      newDetail,
-    };
 
     // to avoid blink because useMutation implies a re-render as the task value is the old one
     updateTask(gantt, task.id, newDetail);
-    editGanttTask({ variables: { input } });
+    editTask(task);
   };
-  const handleDeleteTask = (tasks: readonly TaskOrEmpty[]) => {
-    const taskId = tasks?.at(0)?.id;
-    if (taskId) {
-      const input: GQLDeleteGanttTaskInput = {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId,
-        taskId,
-      };
-      deleteGanttTask({ variables: { input } });
-    }
-  };
-  const handleCreateTask = (task: Task) => {
-    const input: GQLCreateGanttTaskInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId,
-      currentTaskId: task.id,
-    };
-    createTask({ variables: { input } });
-  };
+
   const onExpandCollapse = () => {};
 
   let content: JSX.Element | null = null;
@@ -228,10 +146,11 @@ export const GanttRepresentation = ({ editingContextId, representationId }: Repr
         representationId={representationId}
         tasks={tasks}
         setSelection={setSelection}
-        onCreateTask={handleCreateTask}
+        onCreateTask={createTask}
         onEditTask={handleEditTask}
-        onDeleteTask={handleDeleteTask}
+        onDeleteTask={deleteTask}
         onExpandCollapse={onExpandCollapse}
+        onDropTask={dropTask}
       />
     );
   }

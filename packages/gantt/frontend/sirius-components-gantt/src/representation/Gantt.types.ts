@@ -33,8 +33,9 @@ export interface GanttProps {
   representationId: string;
   tasks: TaskOrEmpty[];
   setSelection: (selection: Selection) => void;
-  onCreateTask: (Task: Task) => void;
-  onEditTask: (Task: TaskOrEmpty) => void;
+  onCreateTask: (task: Task) => void;
+  onEditTask: (task: TaskOrEmpty) => void;
   onDeleteTask: (tasks: readonly TaskOrEmpty[]) => void;
-  onExpandCollapse: (Task: Task) => void;
+  onExpandCollapse: (task: Task) => void;
+  onDropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
 }

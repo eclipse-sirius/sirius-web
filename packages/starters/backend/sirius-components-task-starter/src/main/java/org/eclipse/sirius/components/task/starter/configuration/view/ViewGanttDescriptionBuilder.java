@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.view.builder.generated.DeleteElementBuilder
 import org.eclipse.sirius.components.view.builder.generated.GanttBuilders;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
+import org.eclipse.sirius.components.view.gantt.DropTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
@@ -49,6 +50,7 @@ public class ViewGanttDescriptionBuilder {
         CreateTaskTool createTaskTool = this.createCreateTaskTool();
         EditTaskTool editTaskTool = this.createEditTaskTool();
         DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
+        DropTaskTool dropTaskTool = this.createDropTaskTool();
 
         GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
                 .name(GANTT_REP_DESC_NAME)
@@ -58,9 +60,19 @@ public class ViewGanttDescriptionBuilder {
                 .createTool(createTaskTool)
                 .editTool(editTaskTool)
                 .deleteTool(deleteTaskTool)
+                .dropTool(dropTaskTool)
                 .build();
 
         return ganttDescription;
+    }
+
+    private DropTaskTool createDropTaskTool() {
+        return new GanttBuilders().newDropTaskTool()
+                .name("Drop Task")
+                .body(new ChangeContextBuilder()
+                        .expression("aql:source.moveTaskIntoTarget(target, indexInTarget)")
+                        .build())
+                .build();
     }
 
     private DeleteTaskTool createDeleteTaskTool() {

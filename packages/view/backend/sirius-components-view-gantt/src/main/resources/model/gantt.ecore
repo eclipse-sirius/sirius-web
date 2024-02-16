@@ -12,6 +12,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="deleteTool" eType="#//DeleteTaskTool"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dropTool" eType="#//DropTaskTool"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TaskDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
@@ -72,4 +74,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="CreateTaskTool" eSuperTypes="#//TaskTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="EditTaskTool" eSuperTypes="#//TaskTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="DeleteTaskTool" eSuperTypes="#//TaskTool"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DropTaskTool" eSuperTypes="#//TaskTool"/>
 </ecore:EPackage>

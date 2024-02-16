@@ -79,5 +79,15 @@ public class GanttBuilders {
         return new DeleteTaskToolBuilder();
     }
 
+    /**
+     * Instantiate a DropTaskToolBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public DropTaskToolBuilder newDropTaskTool() {
+        return new DropTaskToolBuilder();
+    }
+
 
 }
