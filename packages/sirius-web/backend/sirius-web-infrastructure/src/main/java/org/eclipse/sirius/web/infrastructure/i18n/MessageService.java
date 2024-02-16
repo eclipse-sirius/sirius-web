@@ -37,4 +37,9 @@ public class MessageService implements IMessageService {
     public String invalidName() {
         return this.messageSourceAccessor.getMessage("INVALID_NAME");
     }
+
+    @Override
+    public String notFound() {
+        return this.messageSourceAccessor.getMessage("NOT_FOUND");
+    }
 }

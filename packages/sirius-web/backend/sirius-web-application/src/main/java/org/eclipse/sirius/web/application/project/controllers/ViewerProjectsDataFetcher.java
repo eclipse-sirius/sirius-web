@@ -37,7 +37,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = "Viewer", field = "project")
+@QueryDataFetcher(type = "DefaultViewer", field = "projects")
 public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<ProjectDTO>> {
 
     private static final String PAGE_ARGUMENT = "page";

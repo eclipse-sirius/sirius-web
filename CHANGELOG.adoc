@@ -22,6 +22,12 @@
 - [ADR-134] Split IObjectService in multiples sub services
 - [ADR-135] Add support for representations in object related services
 
+=== Deprecation warning
+
+- The type `Viewer` may stop being an interface since it does bring some additional complexity without real benefits.
+- The field `ChangeKind.PROJECT_RENAMING` will be deleted since it does not make any sense in Sirius Components.
+- The type `RenameProjectSuccessPayload` and `DeletedProjectSuccessPayload` will be replaced by `SuccessPayload`.
+
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3010[#3010] [forms] Reference widget has been updated.

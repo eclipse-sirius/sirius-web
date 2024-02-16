@@ -10,15 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.project.services.api;
 
 /**
- * Used to compute internationalized messages.
+ * Used to validate the project name.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
-
-    String notFound();
+public interface IProjectNameValidator {
+    String sanitize(String name);
+    boolean isValid(String name);
 }

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNameUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNatureAddedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNatureRemovedEvent;
@@ -107,6 +108,10 @@ public class Project extends AbstractValidatingAggregateRoot<Project> implements
     @Override
     public boolean isNew() {
         return this.isNew;
+    }
+
+    public void dispose() {
+        this.registerEvent(new ProjectDeletedEvent(UUID.randomUUID(), Instant.now(), this));
     }
 
     public static Builder newProject() {

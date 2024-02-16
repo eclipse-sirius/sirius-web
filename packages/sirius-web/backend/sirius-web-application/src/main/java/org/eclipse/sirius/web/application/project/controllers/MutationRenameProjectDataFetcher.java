@@ -19,18 +19,18 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * Data fetcher for the field Mutation#createProject.
+ * Data fetcher for the field Mutation#renameProject.
  *
  * @author sbegaudeau
  */
-@MutationDataFetcher(type = "Mutation", field = "createProject")
-public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
+@MutationDataFetcher(type = "Mutation", field = "renameProject")
+public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -38,7 +38,7 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IProjectApplicationService projectApplicationService;
 
-    public MutationCreateProjectDataFetcher(ObjectMapper objectMapper, IProjectApplicationService projectApplicationService) {
+    public MutationRenameProjectDataFetcher(ObjectMapper objectMapper, IProjectApplicationService projectApplicationService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
     }
@@ -46,7 +46,7 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, CreateProjectInput.class);
-        return this.projectApplicationService.createProject(input);
+        var input = this.objectMapper.convertValue(argument, RenameProjectInput.class);
+        return this.projectApplicationService.renameProject(input);
     }
 }

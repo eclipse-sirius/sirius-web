@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.services.api;
+
+import java.util.Map;
+
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Used to compute internationalized messages.
+ * Interface used during the integration tests to simplify the execution of GraphQL requests.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
+public interface IGraphQLRequestor {
+    String execute(String query, Map<String, Object> variables);
 
-    String notFound();
+    String execute(String query, IInput input);
 }

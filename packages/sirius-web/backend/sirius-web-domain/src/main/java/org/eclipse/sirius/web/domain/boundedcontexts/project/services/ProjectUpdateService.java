@@ -12,13 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectNameValidator;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
@@ -26,12 +25,12 @@ import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to create new projects.
+ * Used to update projects.
  *
  * @author sbegaudeau
  */
 @Service
-public class ProjectCreationService implements IProjectCreationService {
+public class ProjectUpdateService implements IProjectUpdateService {
 
     private final IProjectRepository projectRepository;
 
@@ -39,28 +38,31 @@ public class ProjectCreationService implements IProjectCreationService {
 
     private final IMessageService messageService;
 
-    public ProjectCreationService(IProjectRepository projectRepository, IProjectNameValidator projectNameValidator, IMessageService messageService) {
+    public ProjectUpdateService(IProjectRepository projectRepository, IProjectNameValidator projectNameValidator, IMessageService messageService) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.projectNameValidator = Objects.requireNonNull(projectNameValidator);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
-    public IResult<Project> createProject(String name, List<String> natures) {
-        IResult<Project> result = null;
+    public IResult<Void> renameProject(UUID projectId, String newName) {
+        IResult<Void> result = null;
 
-        var projectName = this.projectNameValidator.sanitize(name);
+        var optionalProject = this.projectRepository.findById(projectId);
+        var projectName = this.projectNameValidator.sanitize(newName);
         if (!this.projectNameValidator.isValid(projectName)) {
             result = new Failure<>(this.messageService.invalidName());
+        } else if (optionalProject.isEmpty()) {
+            result = new Failure<>(this.messageService.notFound());
         } else {
-            var project = Project.newProject()
-                    .name(name)
-                    .natures(natures)
-                    .build();
-            this.projectRepository.save(project);
+            var project = optionalProject.get();
+            project.updateName(newName);
 
-            result = new Success<>(project);
+            this.projectRepository.save(project);
+            result = new Success<>(null);
         }
+
+
 
         return result;
     }
