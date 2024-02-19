@@ -137,6 +137,7 @@ export const NewRepresentationArea = ({
                     return (
                       <ListItem
                         className={classes.item}
+                        dense
                         disableGutters
                         button
                         key={representationDescription.id}

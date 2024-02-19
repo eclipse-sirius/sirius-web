@@ -27,6 +27,9 @@ const useRepresentationAreaStyles = makeStyles((theme) => ({
     overflowY: 'auto',
     maxHeight: theme.spacing(50),
   },
+  item: {
+    padding: 0,
+  },
 }));
 
 export const RepresentationsArea = ({ representations }: RepresentationAreaProps) => {
@@ -45,6 +48,8 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
             .map((representation) => {
               return (
                 <ListItem
+                  className={classes.item}
+                  dense
                   disableGutters
                   button
                   key={representation.id}
