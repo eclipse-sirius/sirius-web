@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-task-starter</artifactId>
-	<version>2024.1.3</version>
+	<version>2024.1.4</version>
 	<name>sirius-components-task-starter</name>
 	<description>Sirius Components Task Starter</description>
 
@@ -71,47 +71,47 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-deck</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-gantt</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-task</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-task-edit</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-builder</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-emf</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services-api</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-persistence</artifactId>
-			<version>2024.1.3</version>
+			<version>2024.1.4</version>
 		</dependency>
 	</dependencies>
 
