@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeTypeContextValue } from '../../../../../diagrams/frontend/sirius-components-diagrams/dist';
+import { NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
 import { DiagramRepresentationConfigurationProps } from './DiagramRepresentationConfiguration.types';
 
 export const defaultNodeTypeRegistry: NodeTypeContextValue = {
