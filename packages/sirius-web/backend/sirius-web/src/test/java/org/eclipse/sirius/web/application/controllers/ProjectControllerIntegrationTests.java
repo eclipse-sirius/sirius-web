@@ -156,7 +156,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     }
 
     @Test
-    @DisplayName("Given set of projects, when a query is performed, then the projects are returned")
+    @DisplayName("Given a set of projects, when a query is performed, then the projects are returned")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenSetOfProjectsWhenQueryIsPerformedThenTheProjectsAreReturned() {

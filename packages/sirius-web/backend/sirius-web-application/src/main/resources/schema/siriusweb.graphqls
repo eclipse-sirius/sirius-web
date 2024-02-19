@@ -1,20 +1,38 @@
 extend interface Viewer {
   project(projectId: ID!): Project
-  projects(page: Int!, limit: Int!): ViewerProjectConnection!
+  projects(page: Int!, limit: Int!): ViewerProjectsConnection!
+  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
 }
 
-type ViewerProjectConnection {
-  edges: [ViewerProjectEdge!]!
+
+type ViewerProjectsConnection {
+  edges: [ViewerProjectsEdge!]!
   pageInfo: PageInfo!
 }
 
-type ViewerProjectEdge {
+type ViewerProjectsEdge {
   node: Project!
 }
 
 type Project {
   id: ID!
   name: String!
+  currentEditingContext: EditingContext!
+}
+
+type ViewerProjectTemplatesConnection {
+  edges: [ViewerProjectTemplatesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ViewerProjectTemplatesEdge {
+  node: ProjectTemplate!
+}
+
+type ProjectTemplate {
+  id: ID!
+  label: String!
+  imageURL: String!
 }
 
 type DefaultViewer implements Viewer {
@@ -22,7 +40,8 @@ type DefaultViewer implements Viewer {
   username: String!
   editingContext(editingContextId: ID!): EditingContext
   project(projectId: ID!): Project
-  projects(page: Int!, limit: Int!): ViewerProjectConnection!
+  projects(page: Int!, limit: Int!): ViewerProjectsConnection!
+  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplatesConnection!
 }
 
 extend type Mutation {
