@@ -88,7 +88,6 @@ jobs:
           npm install -g vsce
           npx yalc add @eclipse-sirius/sirius-components-core
           npx yalc add @eclipse-sirius/sirius-components-diagrams
-          npx yalc add @eclipse-sirius/sirius-components-diagrams-reactflow
           npx yalc add @eclipse-sirius/sirius-components-forms
           npx yalc add @eclipse-sirius/sirius-components-selection
           npx yalc add @eclipse-sirius/sirius-components-charts
