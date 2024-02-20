@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,11 +38,11 @@ public class ViewsStereotypeDescriptionRegistryConfigurer implements IStereotype
 
     private static final UUID GANTT_VIEW_ID = UUID.nameUUIDFromBytes("gantt_view".getBytes());
 
-    private static final String GANTT_VIEW_LABEL = "Gantt View";
+    private static final String GANTT_VIEW_LABEL = "Gantt Task Sample View";
 
     private static final UUID DECK_VIEW_ID = UUID.nameUUIDFromBytes("deck_view".getBytes());
 
-    private static final String DECK_VIEW_LABEL = "Deck View";
+    private static final String DECK_VIEW_LABEL = "Deck Task Sample View";
 
     private static final String TIMER_NAME = "siriusweb_stereotype_load";
 
@@ -85,7 +85,7 @@ public class ViewsStereotypeDescriptionRegistryConfigurer implements IStereotype
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
 
         View view = ViewFactory.eINSTANCE.createView();
-        new ViewDeckDescriptionBuilder().addRepresentationDescription(view);
+        new ViewDeckDescriptionBuilder().addRepresentationDescriptions(view);
 
         return view;
     }
