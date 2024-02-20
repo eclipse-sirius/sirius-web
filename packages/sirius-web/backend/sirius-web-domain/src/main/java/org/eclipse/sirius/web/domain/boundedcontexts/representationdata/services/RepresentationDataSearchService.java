@@ -13,10 +13,12 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +29,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RepresentationDataSearchService implements IRepresentationDataSearchService {
+
+    private final IRepresentationDataRepository representationDataRepository;
+
+    public RepresentationDataSearchService(IRepresentationDataRepository representationDataRepository) {
+        this.representationDataRepository = Objects.requireNonNull(representationDataRepository);
+    }
+
     @Override
     public Optional<RepresentationData> findById(UUID id) {
-        return Optional.empty();
+        return this.representationDataRepository.findById(id);
     }
 
     @Override

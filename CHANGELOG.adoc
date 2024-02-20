@@ -125,6 +125,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - [portal] Use MUI tooltips for Portal toolbar elements
 - https://github.com/eclipse-sirius/sirius-web/issues/2480[#2480] [diagram] Merge the rectangle node and the image node into FreeFormNode.
 - https://github.com/eclipse-sirius/sirius-web/issues/3079[#3079] [deck] Add a name attribute on CardDescription and LaneDescription
+- https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [sirius-web] Improve the new architecture to let product builders reuse Sirius Web
 
 == v2024.1.0
 
