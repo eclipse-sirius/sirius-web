@@ -1,0 +1,51 @@
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.web.application.representation.services;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Used to interact with representations.
+ *
+ * @author sbegaudeau
+ */
+@Service
+public class RepresentationApplicationService implements IRepresentationApplicationService {
+
+    private final IRepresentationDataSearchService representationDataSearchService;
+
+    public RepresentationApplicationService(IRepresentationDataSearchService representationDataSearchService) {
+        this.representationDataSearchService = Objects.requireNonNull(representationDataSearchService);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<RepresentationMetadata> findRepresentationMetadataById(String representationId) {
+        return new UUIDParser().parse(representationId)
+                .flatMap(this.representationDataSearchService::findById)
+                .map(this::toRepresentationMetadata);
+    }
+
+    private RepresentationMetadata toRepresentationMetadata(RepresentationData representationData) {
+        return new RepresentationMetadata(representationData.getId().toString(), representationData.getKind(), representationData.getLabel(), representationData.getDescriptionId());
+    }
+}

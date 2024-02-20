@@ -38,7 +38,17 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EditingContextControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_CURRENT_EDITING_CONTEXT_ID = """
+    private static final String GET_EDITING_CONTEXT = """
+            query getEditingContext($editingContextId: ID!) {
+              viewer {
+                editingContext(editingContextId: $editingContextId) {
+                  id
+                }
+              }
+            }
+            """;
+
+    private static final String GET_CURRENT_EDITING_CONTEXT = """
             query getCurrentEditingContextId($projectId: ID!) {
               viewer {
                 project(projectId: $projectId) {
@@ -54,12 +64,24 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     private IGraphQLRequestor graphQLRequestor;
 
     @Test
+    @DisplayName("Given an editing context id, when a query is performed, then the editing context is returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenEditingContextIdWhenQueryIsPerformedThenTheEditingContextIsReturned() {
+        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var result = this.graphQLRequestor.execute(GET_EDITING_CONTEXT, variables);
+
+        String editingContextId = JsonPath.read(result, "$.data.viewer.editingContext.id");
+        assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+    }
+
+    @Test
     @DisplayName("Given a project, when a query is performed, then the editing context id is returned")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenProjectWhenQueryIsPerformedThenTheEditingContextIdIsReturned() {
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
-        var result = this.graphQLRequestor.execute(GET_CURRENT_EDITING_CONTEXT_ID, variables);
+        var result = this.graphQLRequestor.execute(GET_CURRENT_EDITING_CONTEXT, variables);
 
         String editingContextId = JsonPath.read(result, "$.data.viewer.project.currentEditingContext.id");
         assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());

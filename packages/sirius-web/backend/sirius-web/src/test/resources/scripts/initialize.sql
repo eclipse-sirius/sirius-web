@@ -83,3 +83,24 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+INSERT INTO representation_data (
+  id,
+  project_id,
+  target_object_id,
+  description_id,
+  label,
+  kind,
+  content,
+  created_on,
+  last_modified_on
+) VALUES (
+  'e81eec5c-42d6-491c-8bcc-9beb951356f8',
+  '99d336a2-3049-439a-8853-b104ffb22653',
+  '3237b215-ae23-48d7-861e-f542a4b9a4b8',
+  '69030a1b-0b5f-3c1d-8399-8ca260e4a672',
+  'Portal',
+  'siriusComponents://representation?type=Portal',
+  '{"id":"e81eec5c-42d6-491c-8bcc-9beb951356f8","kind":"siriusComponents://representation?type=Portal","descriptionId":"69030a1b-0b5f-3c1d-8399-8ca260e4a672","label":"Portal","targetObjectId":"3237b215-ae23-48d7-861e-f542a4b9a4b8","views":[],"layoutData":[]}',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
