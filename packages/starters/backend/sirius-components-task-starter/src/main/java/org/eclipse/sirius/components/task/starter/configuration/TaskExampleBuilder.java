@@ -35,9 +35,22 @@ import org.eclipse.sirius.components.task.Team;
  */
 public class TaskExampleBuilder {
 
-    private static final String DATE_2023_12_18T08_30_00Z = "2023-12-18T08:30:00Z";
-    private static final String DATE_2023_12_16T17_30_00Z = "2023-12-16T17:30:00Z";
+    private static final String KANBAN = "Kanban";
+    private static final String REVIEW = "Review";
+    private static final String DEVELOPMENT = "Development";
+    private static final String CODE_DEVELOPMENT = "Code Development";
+    private static final String RELEASE = "Release";
+    private static final String SPECIFICATION = "Specification";
+    private static final String IDEA = "Idea";
+    private static final String DATE_2023_12_10T08_30_00Z = "2023-12-10T08:30:00Z";
+    private static final String DATE_2023_12_16T08_30_00Z = "2023-12-16T08:30:00Z";
+    private static final String DATE_2023_12_11T08_30_00Z = "2023-12-11T08:30:00Z";
+    private static final String DATE_2023_12_12T17_30_00Z = "2023-12-12T17:30:00Z";
+    private static final String DATE_2023_12_15T17_30_00Z = "2023-12-15T17:30:00Z";
+    private static final String DATE_2023_12_11T17_30_00Z = "2023-12-11T17:30:00Z";
     private static final String DATE_2023_12_13T08_30_00Z = "2023-12-13T08:30:00Z";
+    private static final String DATE_2023_12_16T17_30_00Z = "2023-12-16T17:30:00Z";
+    private static final String DATE_2023_12_18T08_30_00Z = "2023-12-18T08:30:00Z";
 
     public EObject getContent() {
         Company company = TaskFactory.eINSTANCE.createCompany();
@@ -55,7 +68,9 @@ public class TaskExampleBuilder {
 
         Project devProject = this.createDevProject(paul, peter);
         Project dailyProject = this.createDailyProject(paul, peter);
-        company.getOwnedProjects().addAll(List.of(devProject, dailyProject));
+        Project okrProject = this.createOKRProject(paul, peter);
+        Project kanbanProject = this.createKanbanProject(paul, peter);
+        company.getOwnedProjects().addAll(List.of(devProject, dailyProject, okrProject, kanbanProject));
 
         return company;
     }
@@ -66,37 +81,37 @@ public class TaskExampleBuilder {
         devProject.setName("Project Dev");
 
         Task idea = TaskFactory.eINSTANCE.createTask();
-        idea.setName("Idea");
-        idea.setStartTime(Instant.parse("2023-12-10T08:30:00Z"));
-        idea.setEndTime(Instant.parse("2023-12-11T17:30:00Z"));
+        idea.setName(IDEA);
+        idea.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
+        idea.setEndTime(Instant.parse(DATE_2023_12_11T17_30_00Z));
         idea.setProgress(50);
         Task spec = TaskFactory.eINSTANCE.createTask();
-        spec.setName("Specification");
-        spec.setStartTime(Instant.parse("2023-12-11T08:30:00Z"));
-        spec.setEndTime(Instant.parse("2023-12-12T17:30:00Z"));
+        spec.setName(SPECIFICATION);
+        spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
+        spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
         spec.setProgress(50);
         spec.getDependencies().add(idea);
 
         Task development = TaskFactory.eINSTANCE.createTask();
-        development.setName("Development");
+        development.setName(DEVELOPMENT);
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
         development.getDependencies().add(spec);
 
         Task codeDev = TaskFactory.eINSTANCE.createTask();
-        codeDev.setName("Code Development");
+        codeDev.setName(CODE_DEVELOPMENT);
         codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
-        codeDev.setEndTime(Instant.parse("2023-12-15T17:30:00Z"));
+        codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
         codeDev.getAssignedPersons().add(peter);
         Task review = TaskFactory.eINSTANCE.createTask();
-        review.setName("Review");
-        review.setStartTime(Instant.parse("2023-12-16T08:30:00Z"));
+        review.setName(REVIEW);
+        review.setStartTime(Instant.parse(DATE_2023_12_16T08_30_00Z));
         review.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
         development.getSubTasks().addAll(List.of(codeDev, review));
         codeDev.getAssignedPersons().add(paul);
 
         Task release = TaskFactory.eINSTANCE.createTask();
-        release.setName("Release");
+        release.setName(RELEASE);
         release.setStartTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
         release.setEndTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
 
@@ -112,43 +127,43 @@ public class TaskExampleBuilder {
         dailyProject.getOwnedTags().addAll(dailyTags);
 
         Task idea = TaskFactory.eINSTANCE.createTask();
-        idea.setName("Idea");
-        idea.setStartTime(Instant.parse("2023-12-10T08:30:00Z"));
-        idea.setEndTime(Instant.parse("2023-12-11T17:30:00Z"));
+        idea.setName(IDEA);
+        idea.setStartTime(Instant.parse(DATE_2023_12_10T08_30_00Z));
+        idea.setEndTime(Instant.parse(DATE_2023_12_11T17_30_00Z));
         idea.setProgress(50);
         idea.getTags().add(dailyTags.get(0));
         Task spec = TaskFactory.eINSTANCE.createTask();
-        spec.setName("Specification");
-        spec.setStartTime(Instant.parse("2023-12-11T08:30:00Z"));
-        spec.setEndTime(Instant.parse("2023-12-12T17:30:00Z"));
+        spec.setName(SPECIFICATION);
+        spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
+        spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
         spec.setProgress(50);
         spec.getDependencies().add(idea);
         spec.getTags().add(dailyTags.get(0));
 
         Task development = TaskFactory.eINSTANCE.createTask();
-        development.setName("Development");
+        development.setName(DEVELOPMENT);
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
         development.getDependencies().add(spec);
         development.getTags().add(dailyTags.get(1));
 
         Task codeDev = TaskFactory.eINSTANCE.createTask();
-        codeDev.setName("Code Development");
+        codeDev.setName(CODE_DEVELOPMENT);
         codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
-        codeDev.setEndTime(Instant.parse("2023-12-15T17:30:00Z"));
+        codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
         codeDev.getAssignedPersons().add(peter);
         codeDev.getTags().add(dailyTags.get(2));
 
         Task review = TaskFactory.eINSTANCE.createTask();
-        review.setName("Review");
-        review.setStartTime(Instant.parse("2023-12-16T08:30:00Z"));
+        review.setName(REVIEW);
+        review.setStartTime(Instant.parse(DATE_2023_12_16T08_30_00Z));
         review.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
         development.getSubTasks().addAll(List.of(codeDev, review));
         codeDev.getAssignedPersons().add(paul);
         review.getTags().add(dailyTags.get(3));
 
         Task release = TaskFactory.eINSTANCE.createTask();
-        release.setName("Release");
+        release.setName(RELEASE);
         release.setStartTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
         release.setEndTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
         release.getTags().add(dailyTags.get(4));
@@ -156,6 +171,120 @@ public class TaskExampleBuilder {
 
         dailyProject.getOwnedTasks().addAll(List.of(idea, spec, development, release));
         return dailyProject;
+    }
+
+    private Project createKanbanProject(Person paul, Person peter) {
+        Project kanbanProject = TaskFactory.eINSTANCE.createProject();
+        kanbanProject.setName("Kanban Project Dev");
+
+        List<TaskTag> kanbanTags = this.createKanbanTags();
+        kanbanProject.getOwnedTags().addAll(kanbanTags);
+
+        Task idea = TaskFactory.eINSTANCE.createTask();
+        idea.setName(IDEA);
+        idea.setStartTime(Instant.parse(DATE_2023_12_10T08_30_00Z));
+        idea.setEndTime(Instant.parse(DATE_2023_12_11T17_30_00Z));
+        idea.setProgress(50);
+        //We add it in Done tag
+        idea.getTags().add(kanbanTags.get(2));
+        Task spec = TaskFactory.eINSTANCE.createTask();
+        spec.setName(SPECIFICATION);
+        spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
+        spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
+        spec.setProgress(50);
+        spec.getDependencies().add(idea);
+        //We add it in Done tag
+        spec.getTags().add(kanbanTags.get(2));
+
+        Task development = TaskFactory.eINSTANCE.createTask();
+        development.setName(DEVELOPMENT);
+        development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
+        development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
+        development.getDependencies().add(spec);
+        //We add it in Doing tag
+        development.getTags().add(kanbanTags.get(1));
+
+        Task codeDev = TaskFactory.eINSTANCE.createTask();
+        codeDev.setName(CODE_DEVELOPMENT);
+        codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
+        codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
+        codeDev.getAssignedPersons().add(peter);
+        //We add it in Doing tag
+        codeDev.getTags().add(kanbanTags.get(1));
+
+        Task review = TaskFactory.eINSTANCE.createTask();
+        review.setName(REVIEW);
+        review.setStartTime(Instant.parse(DATE_2023_12_16T08_30_00Z));
+        review.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
+        development.getSubTasks().addAll(List.of(codeDev, review));
+        codeDev.getAssignedPersons().add(paul);
+        //We add it in To Do tag
+        review.getTags().add(kanbanTags.get(0));
+
+        Task release = TaskFactory.eINSTANCE.createTask();
+        release.setName(RELEASE);
+        release.setStartTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
+        release.setEndTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
+        //We add it in To Do tag
+        release.getTags().add(kanbanTags.get(0));
+
+
+        kanbanProject.getOwnedTasks().addAll(List.of(idea, spec, development, release));
+        return kanbanProject;
+    }
+
+    private Project createOKRProject(Person paul, Person peter) {
+        Project okrProject = TaskFactory.eINSTANCE.createProject();
+        okrProject.setName("OKR Project Dev");
+
+        List<TaskTag> okrTags = this.createOKRTags();
+        okrProject.getOwnedTags().addAll(okrTags);
+
+        Task idea = TaskFactory.eINSTANCE.createTask();
+        idea.setName(IDEA);
+        idea.setStartTime(Instant.parse(DATE_2023_12_10T08_30_00Z));
+        idea.setEndTime(Instant.parse(DATE_2023_12_11T17_30_00Z));
+        idea.setProgress(50);
+        idea.getTags().add(okrTags.get(0));
+        Task spec = TaskFactory.eINSTANCE.createTask();
+        spec.setName(SPECIFICATION);
+        spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
+        spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
+        spec.setProgress(50);
+        spec.getDependencies().add(idea);
+        spec.getTags().add(okrTags.get(0));
+
+        Task development = TaskFactory.eINSTANCE.createTask();
+        development.setName(DEVELOPMENT);
+        development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
+        development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
+        development.getDependencies().add(spec);
+        development.getTags().add(okrTags.get(1));
+
+        Task codeDev = TaskFactory.eINSTANCE.createTask();
+        codeDev.setName(CODE_DEVELOPMENT);
+        codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
+        codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
+        codeDev.getAssignedPersons().add(peter);
+        codeDev.getTags().add(okrTags.get(2));
+
+        Task review = TaskFactory.eINSTANCE.createTask();
+        review.setName(REVIEW);
+        review.setStartTime(Instant.parse(DATE_2023_12_16T08_30_00Z));
+        review.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
+        development.getSubTasks().addAll(List.of(codeDev, review));
+        codeDev.getAssignedPersons().add(paul);
+        review.getTags().add(okrTags.get(3));
+
+        Task release = TaskFactory.eINSTANCE.createTask();
+        release.setName(RELEASE);
+        release.setStartTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
+        release.setEndTime(Instant.parse(DATE_2023_12_18T08_30_00Z));
+        release.getTags().add(okrTags.get(3));
+
+
+        okrProject.getOwnedTasks().addAll(List.of(idea, spec, development, release));
+        return okrProject;
     }
 
     private List<TaskTag> createDailyTags() {
@@ -166,6 +295,37 @@ public class TaskExampleBuilder {
             tag.setSuffix(dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
             tags.add(tag);
         }
+        return tags;
+    }
+
+    private List<TaskTag> createOKRTags() {
+        List<TaskTag> tags = new ArrayList<>();
+        for (int i = 0; i <= 4; i++) {
+            TaskTag tag = TaskFactory.eINSTANCE.createTaskTag();
+            tag.setPrefix("OKR");
+            tag.setSuffix(String.format("Objective #%s", i));
+            tags.add(tag);
+        }
+        return tags;
+    }
+
+    private List<TaskTag> createKanbanTags() {
+        List<TaskTag> tags = new ArrayList<>();
+        TaskTag tag = TaskFactory.eINSTANCE.createTaskTag();
+        tag.setPrefix(KANBAN);
+        tag.setSuffix("To Do");
+        tags.add(tag);
+
+        tag = TaskFactory.eINSTANCE.createTaskTag();
+        tag.setPrefix(KANBAN);
+        tag.setSuffix("Doing");
+        tags.add(tag);
+
+        tag = TaskFactory.eINSTANCE.createTaskTag();
+        tag.setPrefix(KANBAN);
+        tag.setSuffix("Done");
+        tags.add(tag);
+
         return tags;
     }
 }

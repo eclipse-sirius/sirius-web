@@ -39,8 +39,6 @@ import org.eclipse.sirius.components.view.deck.LaneDropTool;
  */
 public class ViewDeckDescriptionBuilder {
 
-    public static final String DECK_REP_DESC_NAME = "Deck Daily Representation";
-
     private static final String TAGS = "tags";
 
     private static final String NAME = "name";
@@ -56,9 +54,33 @@ public class ViewDeckDescriptionBuilder {
         this.viewBuilders = new ViewBuilders();
     }
 
-    public void addRepresentationDescription(View view) {
-        DeckDescription deckDescription = this.createDeckDescription();
-        LaneDescription laneDescription = this.createLaneDescription();
+    public void addRepresentationDescriptions(View view) {
+        this.createDailyDeckDescription(view);
+        this.createOKRDeckDescription(view);
+        this.createKanbanDeckDescription(view);
+    }
+
+    private void createDailyDeckDescription(View view) {
+        DeckDescription deckDescription = this.createDeckDescription("daily");
+        LaneDescription laneDescription = this.createLaneDescription("daily");
+        CardDescription cardDescription = this.createCardDescription();
+        deckDescription.getLaneDescriptions().add(laneDescription);
+        laneDescription.getOwnedCardDescriptions().add(cardDescription);
+        view.getDescriptions().add(deckDescription);
+    }
+
+    private void createOKRDeckDescription(View view) {
+        DeckDescription deckDescription = this.createDeckDescription("OKR");
+        LaneDescription laneDescription = this.createLaneDescription("OKR");
+        CardDescription cardDescription = this.createCardDescription();
+        deckDescription.getLaneDescriptions().add(laneDescription);
+        laneDescription.getOwnedCardDescriptions().add(cardDescription);
+        view.getDescriptions().add(deckDescription);
+    }
+
+    private void createKanbanDeckDescription(View view) {
+        DeckDescription deckDescription = this.createDeckDescription("Kanban");
+        LaneDescription laneDescription = this.createLaneDescription("Kanban");
         CardDescription cardDescription = this.createCardDescription();
         deckDescription.getLaneDescriptions().add(laneDescription);
         laneDescription.getOwnedCardDescriptions().add(cardDescription);
@@ -79,14 +101,16 @@ public class ViewDeckDescriptionBuilder {
                 .build();
     }
 
-    private LaneDescription createLaneDescription() {
+    private LaneDescription createLaneDescription(String prefix) {
         CreateCardTool createCardTool = this.createCardTool();
         CardDropTool cardDropTool = this.createCardDropTool();
         EditLaneTool editLaneTool = this.createEditLaneTool();
         return this.deckBuilders.newLaneDescription()
                 .name("Lane Description")
-                .semanticCandidatesExpression("aql:self.ownedTags->select(tag | tag.prefix == 'daily')")
-                .labelExpression("aql:self.getTasksWithTag()->size() + ' / ' + self.eContainer().oclAsType(task::Project).ownedTasks->select(task | task.tags->exists(tag | tag.prefix == 'daily'))->size()")
+                .semanticCandidatesExpression(String.format("aql:self.ownedTags->select(tag | tag.prefix == '%s')", prefix))
+                .labelExpression(String.format(
+                        "aql:self.getTasksWithTag()->size() + ' / ' + self.eContainer().oclAsType(task::Project).ownedTasks->select(task | task.tags->exists(tag | tag.prefix == '%s'))->size()",
+                        prefix))
                 .titleExpression("aql:self.suffix")
                 .createTool(createCardTool)
                 .cardDropTool(cardDropTool)
@@ -106,14 +130,13 @@ public class ViewDeckDescriptionBuilder {
                 .build();
     }
 
-    private DeckDescription createDeckDescription() {
-
+    private DeckDescription createDeckDescription(String prefix) {
         LaneDropTool laneDropTool = this.createLaneDropTool();
-
+        String representationTypeName = prefix.substring(0, 1).toUpperCase() + prefix.substring(1);
         return this.deckBuilders.newDeckDescription()
-                .name(DECK_REP_DESC_NAME)
+                .name(String.format("Deck %s Representation", representationTypeName))
                 .domainType("task::Project")
-                .titleExpression("New Daily Representation")
+                .titleExpression(String.format("New %s Representation", representationTypeName))
                 .laneDropTool(laneDropTool)
                 .build();
     }
