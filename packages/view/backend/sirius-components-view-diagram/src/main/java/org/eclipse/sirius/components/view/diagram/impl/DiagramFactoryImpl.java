@@ -44,8 +44,8 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
-import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LayoutDirection;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
@@ -125,8 +125,6 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createListLayoutStrategyDescription();
             case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION:
                 return this.createFreeFormLayoutStrategyDescription();
-            case DiagramPackage.LABEL_DESCRIPTION:
-                return this.createLabelDescription();
             case DiagramPackage.INSIDE_LABEL_DESCRIPTION:
                 return this.createInsideLabelDescription();
             case DiagramPackage.OUTSIDE_LABEL_DESCRIPTION:
@@ -212,6 +210,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createInsideLabelPositionFromString(eDataType, initialValue);
             case DiagramPackage.OUTSIDE_LABEL_POSITION:
                 return this.createOutsideLabelPositionFromString(eDataType, initialValue);
+            case DiagramPackage.LABEL_OVERFLOW_STRATEGY:
+                return this.createLabelOverflowStrategyFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -239,6 +239,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertInsideLabelPositionToString(eDataType, instanceValue);
             case DiagramPackage.OUTSIDE_LABEL_POSITION:
                 return this.convertOutsideLabelPositionToString(eDataType, instanceValue);
+            case DiagramPackage.LABEL_OVERFLOW_STRATEGY:
+                return this.convertLabelOverflowStrategyToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -297,17 +299,6 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public FreeFormLayoutStrategyDescription createFreeFormLayoutStrategyDescription() {
         FreeFormLayoutStrategyDescriptionImpl freeFormLayoutStrategyDescription = new FreeFormLayoutStrategyDescriptionImpl();
         return freeFormLayoutStrategyDescription;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public LabelDescription createLabelDescription() {
-        LabelDescriptionImpl labelDescription = new LabelDescriptionImpl();
-        return labelDescription;
     }
 
     /**
@@ -773,6 +764,27 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     public String convertOutsideLabelPositionToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public LabelOverflowStrategy createLabelOverflowStrategyFromString(EDataType eDataType, String initialValue) {
+        LabelOverflowStrategy result = LabelOverflowStrategy.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertLabelOverflowStrategyToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

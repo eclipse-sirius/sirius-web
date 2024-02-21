@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Size;
@@ -124,6 +125,7 @@ public class DiagramElementChangeVisibilityTests {
                 .isHeaderProvider(vm -> false)
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         NodeDescription nodeDescription = NodeDescription.newNodeDescription(id)
@@ -149,7 +151,7 @@ public class DiagramElementChangeVisibilityTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
 
             List<Element> sourceNodes = objectToNodes.get(sourceObjectId).stream()
-                    .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(sourceDescription.getId()))
+                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(sourceDescription.getId()))
                     .filter(Objects::nonNull)
                     .toList();
 
@@ -161,7 +163,7 @@ public class DiagramElementChangeVisibilityTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
 
             List<Element> targetNodes = objectToNodes.get(targetObjectId).stream()
-                    .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(targetDescription.getId()))
+                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(targetDescription.getId()))
                     .filter(Objects::nonNull)
                     .toList();
 

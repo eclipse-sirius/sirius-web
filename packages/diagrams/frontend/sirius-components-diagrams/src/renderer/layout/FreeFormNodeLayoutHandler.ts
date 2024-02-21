@@ -25,9 +25,10 @@ import {
   findNodeIndex,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
-  getHeaderFootprint,
+  getHeaderHeightFootprint,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
+  getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -94,21 +95,14 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
+      const headerHeightFootprint = getHeaderHeightFootprint(labelElement, withHeader, displayHeaderSeparator);
 
       if (!!createdNode) {
-        // WARN: this prevent the created to overlep the TOP header. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement
-          ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
-          : 0;
         child.position = createdNode.position;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
         }
       } else if (previousPosition) {
-        // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement
-          ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator)
-          : 0;
         child.position = previousPosition;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
@@ -117,22 +111,13 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
           child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
         }
       } else {
-        child.position = getChildNodePosition(
-          visibleNodes,
-          child,
-          labelElement,
-          withHeader,
-          displayHeaderSeparator,
-          borderWidth
-        );
+        child.position = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
           child.position = getChildNodePosition(
             visibleNodes,
             child,
-            labelElement,
-            withHeader,
-            displayHeaderSeparator,
+            headerHeightFootprint,
             borderWidth,
             previousSibling
           );
@@ -147,7 +132,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const labelOnlyWidth =
-      rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
+      rectangularNodePadding * 2 + getInsideLabelWidthConstraint(node.data.insideLabel, labelElement);
 
     const nodeMinComputeWidth =
       Math.max(
@@ -211,7 +196,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
     const nodeMinComputeWidth =
       rectangularNodePadding +
-      (labelElement?.getBoundingClientRect().width ?? 0) +
+      getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) +
       rectangularNodePadding +
       borderWidth * 2;
     const nodeMinComputeHeight =

@@ -25,9 +25,10 @@ import {
   getBorderNodeExtent,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
-  getHeaderFootprint,
+  getHeaderHeightFootprint,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
+  getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -64,17 +65,14 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
+      const headerHeightFootprint = labelElement ? getHeaderHeightFootprint(labelElement, false, false) : 0;
 
       if (!!createdNode) {
-        // WARN: this prevent the created to overlep the TOP header. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement ? getHeaderFootprint(labelElement, false, false) : 0;
         child.position = createdNode.position;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
         }
       } else if (previousPosition) {
-        // WARN: this prevent the moved node to overlep the TOP header or appear outside of its container. It is a quick fix but a proper solution should be implemented.
-        const headerHeightFootprint = labelElement ? getHeaderFootprint(labelElement, false, false) : 0;
         child.position = previousPosition;
         if (child.position.y < borderWidth + headerHeightFootprint) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
@@ -83,22 +81,13 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
           child.position = { ...child.position, x: borderWidth };
         }
       } else {
-        child.position = child.position = getChildNodePosition(
-          visibleNodes,
-          child,
-          labelElement,
-          false,
-          false,
-          borderWidth
-        );
+        child.position = child.position = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
           child.position = getChildNodePosition(
             visibleNodes,
             child,
-            labelElement,
-            false,
-            false,
+            headerHeightFootprint,
             borderWidth,
             previousSibling
           );
@@ -112,7 +101,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const labelOnlyWidth = labelElement?.getBoundingClientRect().width ?? 0;
+    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement);
 
     const nodeMinComputeWidth =
       Math.max(

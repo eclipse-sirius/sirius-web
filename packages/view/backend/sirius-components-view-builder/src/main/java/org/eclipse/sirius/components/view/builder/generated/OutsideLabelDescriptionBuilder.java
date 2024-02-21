@@ -56,6 +56,16 @@ public class OutsideLabelDescriptionBuilder {
     }
 
     /**
+     * Setter for OverflowStrategy.
+     *
+     * @generated
+     */
+    public OutsideLabelDescriptionBuilder overflowStrategy(org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy value) {
+        this.getOutsideLabelDescription().setOverflowStrategy(value);
+        return this;
+    }
+
+    /**
      * Setter for Position.
      *
      * @generated

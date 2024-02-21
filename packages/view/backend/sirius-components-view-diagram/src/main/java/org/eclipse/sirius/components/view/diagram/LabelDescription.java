@@ -40,10 +40,10 @@ public interface LabelDescription extends EObject {
      * <code>"aql:self.name"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Label Expression</em>' attribute.
-     * @see #setLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_LabelExpression()
      * @model default="aql:self.name" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
+     * @see #setLabelExpression(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_LabelExpression()
      */
     String getLabelExpression();
 
@@ -52,10 +52,36 @@ public interface LabelDescription extends EObject {
      * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Label Expression</em>' attribute.
-     * @see #getLabelExpression()
+     *         the new value of the '<em>Label Expression</em>' attribute.
      * @generated
+     * @see #getLabelExpression()
      */
     void setLabelExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Overflow Strategy</b></em>' attribute. The literals are from the enumeration
+     * {@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Overflow Strategy</em>' attribute.
+     * @model required="true"
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+     * @see #setOverflowStrategy(LabelOverflowStrategy)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_OverflowStrategy()
+     */
+    LabelOverflowStrategy getOverflowStrategy();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getOverflowStrategy
+     * <em>Overflow Strategy</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *         the new value of the '<em>Overflow Strategy</em>' attribute.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+     * @see #getOverflowStrategy()
+     */
+    void setOverflowStrategy(LabelOverflowStrategy value);
 
 } // LabelDescription

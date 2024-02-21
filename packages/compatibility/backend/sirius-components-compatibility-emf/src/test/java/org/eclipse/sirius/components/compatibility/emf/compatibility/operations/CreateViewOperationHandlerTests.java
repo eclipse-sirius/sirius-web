@@ -13,7 +13,7 @@
 package org.eclipse.sirius.components.compatibility.emf.compatibility.operations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -144,14 +145,14 @@ public class CreateViewOperationHandlerTests {
 
         IStatus handleResult = this.createViewOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertTrue(handleResult instanceof Success);
+        assertInstanceOf(Success.class, handleResult);
 
         // check that an empty variable name is a valid case
         this.createViewOperation.setVariableName("");
 
         handleResult = this.createViewOperationHandler.handle(this.operationTestContext.getVariables());
 
-        assertTrue(handleResult instanceof Success);
+        assertInstanceOf(Success.class, handleResult);
     }
 
     /**
@@ -189,7 +190,7 @@ public class CreateViewOperationHandlerTests {
         IStatus handleResult = this.createViewOperationHandler.handle(this.operationTestContext.getVariables());
 
         // check
-        assertTrue(handleResult instanceof Success);
+        assertInstanceOf(Success.class, handleResult);
         assertEquals(newName, renamedElement.getName());
     }
 
@@ -211,6 +212,7 @@ public class CreateViewOperationHandlerTests {
                 .isHeaderProvider(vm -> false)
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -225,7 +227,7 @@ public class CreateViewOperationHandlerTests {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return nodeDescriptionId + "__" +  object;
+                return nodeDescriptionId + "__" + object;
             }
             return null;
         };

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -182,6 +183,7 @@ public class DiagramRendererEdgeTests {
                 .isHeaderProvider(vm -> false)
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {
@@ -196,7 +198,7 @@ public class DiagramRendererEdgeTests {
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
             if (object instanceof String) {
-                return nodeDescriptionId + "__" +  object;
+                return nodeDescriptionId + "__" + object;
             }
             return null;
         };
@@ -224,7 +226,7 @@ public class DiagramRendererEdgeTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
 
             List<Element> sourceNodes = objectToNodes.get(FIRST_OBJECT_ID).stream()
-                    .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
+                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
                     .filter(Objects::nonNull)
                     .toList();
 
@@ -236,7 +238,7 @@ public class DiagramRendererEdgeTests {
             Map<Object, List<Element>> objectToNodes = optionalCache.map(DiagramRenderingCache::getObjectToNodes).orElse(new HashMap<>());
 
             List<Element> targetNodes = objectToNodes.get(SECOND_OBJECT_ID).stream()
-                    .filter(node-> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
+                    .filter(node -> ((NodeElementProps) node.getProps()).getDescriptionId().equals(nodeDescription.getId()))
                     .filter(Objects::nonNull)
                     .toList();
 

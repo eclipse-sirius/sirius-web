@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.LabelDescription;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Label Description</b></em>'. <!-- end-user-doc
@@ -35,27 +36,44 @@ import org.eclipse.sirius.components.view.diagram.LabelDescription;
  *
  * @generated
  */
-public class LabelDescriptionImpl extends MinimalEObjectImpl.Container implements LabelDescription {
+public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container implements LabelDescription {
 
     /**
      * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #getLabelExpression()
      * @generated
      * @ordered
+     * @see #getLabelExpression()
      */
     protected static final String LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
-
+    /**
+     * The default value of the '{@link #getOverflowStrategy() <em>Overflow Strategy</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getOverflowStrategy()
+     */
+    protected static final LabelOverflowStrategy OVERFLOW_STRATEGY_EDEFAULT = LabelOverflowStrategy.NONE;
     /**
      * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @see #getLabelExpression()
      * @generated
      * @ordered
+     * @see #getLabelExpression()
      */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+    /**
+     * The cached value of the '{@link #getOverflowStrategy() <em>Overflow Strategy</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getOverflowStrategy()
+     */
+    protected LabelOverflowStrategy overflowStrategy = OVERFLOW_STRATEGY_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -105,10 +123,35 @@ public class LabelDescriptionImpl extends MinimalEObjectImpl.Container implement
      * @generated
      */
     @Override
+    public LabelOverflowStrategy getOverflowStrategy() {
+        return this.overflowStrategy;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setOverflowStrategy(LabelOverflowStrategy newOverflowStrategy) {
+        LabelOverflowStrategy oldOverflowStrategy = this.overflowStrategy;
+        this.overflowStrategy = newOverflowStrategy == null ? OVERFLOW_STRATEGY_EDEFAULT : newOverflowStrategy;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY, oldOverflowStrategy, this.overflowStrategy));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
                 return this.getLabelExpression();
+            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+                return this.getOverflowStrategy();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -125,6 +168,9 @@ public class LabelDescriptionImpl extends MinimalEObjectImpl.Container implement
             case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression((String) newValue);
                 return;
+            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+                this.setOverflowStrategy((LabelOverflowStrategy) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -140,6 +186,9 @@ public class LabelDescriptionImpl extends MinimalEObjectImpl.Container implement
             case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
                 this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+                this.setOverflowStrategy(OVERFLOW_STRATEGY_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -154,6 +203,8 @@ public class LabelDescriptionImpl extends MinimalEObjectImpl.Container implement
         switch (featureID) {
             case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
                 return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
+            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+                return this.overflowStrategy != OVERFLOW_STRATEGY_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -168,11 +219,12 @@ public class LabelDescriptionImpl extends MinimalEObjectImpl.Container implement
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (labelExpression: ");
-        result.append(this.labelExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (labelExpression: " +
+                this.labelExpression +
+                ", overflowStrategy: " +
+                this.overflowStrategy +
+                ')';
+        return result;
     }
 
 } // LabelDescriptionImpl
