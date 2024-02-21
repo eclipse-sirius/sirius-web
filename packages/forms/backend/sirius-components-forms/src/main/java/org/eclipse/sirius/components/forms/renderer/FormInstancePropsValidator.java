@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.forms.elements.PageElementProps;
 import org.eclipse.sirius.components.forms.elements.RadioElementProps;
 import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
+import org.eclipse.sirius.components.forms.elements.SplitButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
 import org.eclipse.sirius.components.forms.elements.ToolbarActionElementProps;
@@ -85,6 +86,8 @@ public class FormInstancePropsValidator implements IInstancePropsValidator {
             checkValidProps = props instanceof LinkElementProps;
         } else if (ButtonElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof ButtonElementProps;
+        } else if (SplitButtonElementProps.TYPE.equals(type)) {
+            checkValidProps = props instanceof SplitButtonElementProps;
         } else if (LabelWidgetElementProps.TYPE.equals(type)) {
             checkValidProps = props instanceof LabelWidgetElementProps;
         } else if (ChartWidgetElementProps.TYPE.equals(type)) {

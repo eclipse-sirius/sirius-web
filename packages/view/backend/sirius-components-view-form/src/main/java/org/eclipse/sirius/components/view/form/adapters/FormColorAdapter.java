@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.form.RadioDescription;
 import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
@@ -83,6 +84,12 @@ public class FormColorAdapter extends EContentAdapter {
             this.formStyleSwitch.doSwitch(style);
         } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof WidgetDescription && notification.getNewValue() instanceof WidgetDescriptionStyle style) {
             this.formStyleSwitch.doSwitch(style);
+        } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof SplitButtonDescription && notification.getNewValue() instanceof WidgetDescription widget
+                && FormPackage.SPLIT_BUTTON_DESCRIPTION__ACTIONS == notification.getFeatureID(SplitButtonDescription.class)) {
+            WidgetDescriptionStyle style = this.getStyle(widget);
+            if (style != null) {
+                this.formStyleSwitch.doSwitch(style);
+            }
         }
     }
 

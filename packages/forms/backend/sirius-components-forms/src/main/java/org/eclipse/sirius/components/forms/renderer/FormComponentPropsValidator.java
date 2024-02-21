@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,6 +54,8 @@ import org.eclipse.sirius.components.forms.components.RichTextComponent;
 import org.eclipse.sirius.components.forms.components.RichTextComponentProps;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
 import org.eclipse.sirius.components.forms.components.SelectComponentProps;
+import org.eclipse.sirius.components.forms.components.SplitButtonComponent;
+import org.eclipse.sirius.components.forms.components.SplitButtonComponentProps;
 import org.eclipse.sirius.components.forms.components.TextareaComponent;
 import org.eclipse.sirius.components.forms.components.TextareaComponentProps;
 import org.eclipse.sirius.components.forms.components.TextfieldComponent;
@@ -118,6 +120,8 @@ public class FormComponentPropsValidator implements IComponentPropsValidator {
             checkValidProps = props instanceof LinkComponentProps;
         } else if (ButtonComponent.class.equals(componentType)) {
             checkValidProps = props instanceof ButtonComponentProps;
+        } else if (SplitButtonComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof SplitButtonComponentProps;
         } else if (LabelWidgetComponent.class.equals(componentType)) {
             checkValidProps = props instanceof LabelWidgetComponentProps;
         } else if (ChartWidgetComponent.class.equals(componentType)) {

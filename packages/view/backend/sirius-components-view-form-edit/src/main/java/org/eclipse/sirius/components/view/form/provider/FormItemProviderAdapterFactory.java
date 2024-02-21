@@ -194,6 +194,30 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
 
     /**
      * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.form.SplitButtonDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected SplitButtonDescriptionItemProvider splitButtonDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.form.SplitButtonDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSplitButtonDescriptionAdapter() {
+        if (this.splitButtonDescriptionItemProvider == null) {
+            this.splitButtonDescriptionItemProvider = new SplitButtonDescriptionItemProvider(this);
+        }
+
+        return this.splitButtonDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.form.ButtonDescription} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -1375,8 +1399,6 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.listDescriptionItemProvider.dispose();
         if (this.multiSelectDescriptionItemProvider != null)
             this.multiSelectDescriptionItemProvider.dispose();
-        if (this.treeDescriptionItemProvider != null)
-            this.treeDescriptionItemProvider.dispose();
         if (this.pieChartDescriptionItemProvider != null)
             this.pieChartDescriptionItemProvider.dispose();
         if (this.radioDescriptionItemProvider != null)
@@ -1385,10 +1407,14 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             this.richTextDescriptionItemProvider.dispose();
         if (this.selectDescriptionItemProvider != null)
             this.selectDescriptionItemProvider.dispose();
+        if (this.splitButtonDescriptionItemProvider != null)
+            this.splitButtonDescriptionItemProvider.dispose();
         if (this.textAreaDescriptionItemProvider != null)
             this.textAreaDescriptionItemProvider.dispose();
         if (this.textfieldDescriptionItemProvider != null)
             this.textfieldDescriptionItemProvider.dispose();
+        if (this.treeDescriptionItemProvider != null)
+            this.treeDescriptionItemProvider.dispose();
         if (this.barChartDescriptionStyleItemProvider != null)
             this.barChartDescriptionStyleItemProvider.dispose();
         if (this.conditionalBarChartDescriptionStyleItemProvider != null)

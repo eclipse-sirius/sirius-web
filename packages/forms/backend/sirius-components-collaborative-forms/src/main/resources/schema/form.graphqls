@@ -302,6 +302,16 @@ type Button implements Widget {
   style: ButtonStyle
 }
 
+type SplitButton implements Widget {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
+  readOnly: Boolean!
+  actions: [Button!]!
+}
+
 type ButtonStyle {
   backgroundColor: String
   foregroundColor: String

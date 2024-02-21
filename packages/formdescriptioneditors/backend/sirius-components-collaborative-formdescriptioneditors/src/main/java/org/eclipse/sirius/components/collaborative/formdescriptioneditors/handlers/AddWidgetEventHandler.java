@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
+import org.eclipse.sirius.components.view.form.ButtonDescription;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
@@ -42,6 +43,7 @@ import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.springframework.stereotype.Service;
 
@@ -134,6 +136,12 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
                     } else if (container instanceof FormElementIf formElementIf) {
                         formElementIf.getChildren().add(index, formElementDescription);
                         success = true;
+                    } else if (container instanceof SplitButtonDescription splitButtonDescription && newElement instanceof ButtonDescription buttonDescription) {
+                        splitButtonDescription.getActions().add(index, buttonDescription);
+                        success = true;
+                    }
+                    if (newElement instanceof SplitButtonDescription splitButtonDescription) {
+                        this.createButton(splitButtonDescription);
                     }
                 }
             }
@@ -141,6 +149,18 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         return success;
     }
 
+    private void createButton(SplitButtonDescription splitButtonDescription) {
+        EClassifier eClassifier = this.getWidgetDescriptionType("Button");
+        if (eClassifier instanceof EClass eClass) {
+            var newElement = EcoreUtil.create(eClass);
+            if (newElement instanceof WidgetDescription widgetDescription) {
+                this.createStyle(widgetDescription);
+                if (newElement instanceof ButtonDescription buttonDescription) {
+                    splitButtonDescription.getActions().add(0, buttonDescription);
+                }
+            }
+        }
+    }
 
     private EClassifier getWidgetDescriptionType(String kind) {
         for (IWidgetDescriptionProvider widgetDescriptionProvider : this.widgetDescriptionProviders) {
@@ -165,8 +185,8 @@ public class AddWidgetEventHandler implements IFormDescriptionEditorEventHandler
         EStructuralFeature styleFeature = widgetDescription.eClass().getEStructuralFeature("style");
         if (styleFeature instanceof EReference) {
             EClassifier eClassifier = styleFeature.getEType();
-            if (eClassifier instanceof EClass) {
-                var widgetDescriptionStyle = FormFactory.eINSTANCE.create((EClass) eClassifier);
+            if (eClassifier instanceof EClass eClass) {
+                var widgetDescriptionStyle = FormFactory.eINSTANCE.create(eClass);
                 if (eClassifier.isInstance(widgetDescriptionStyle)) {
                     widgetDescription.eSet(styleFeature, widgetDescriptionStyle);
                 }

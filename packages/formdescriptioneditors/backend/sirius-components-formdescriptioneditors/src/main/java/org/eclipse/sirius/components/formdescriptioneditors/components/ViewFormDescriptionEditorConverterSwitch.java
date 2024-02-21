@@ -53,6 +53,7 @@ import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.RichTextDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
+import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
@@ -381,6 +382,33 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         if (viewButtonDescription.getHelpExpression() != null && !viewButtonDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(vm -> this.getWidgetHelpText(viewButtonDescription));
         }
+        return builder.build();
+    }
+
+    @Override
+    public AbstractWidgetDescription caseSplitButtonDescription(org.eclipse.sirius.components.view.form.SplitButtonDescription splitButtonDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, splitButtonDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+
+        List<ButtonDescription> actions = splitButtonDescription.getActions().stream()
+                .map(ViewFormDescriptionEditorConverterSwitch.this::doSwitch)
+                .filter(ButtonDescription.class::isInstance)
+                .map(ButtonDescription.class::cast).toList();
+
+        SplitButtonDescription.Builder builder = SplitButtonDescription.newSplitButtonDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> id)
+                .targetObjectIdProvider(vm -> "")
+                .labelProvider(vm -> this.getWidgetLabel(splitButtonDescription, "SplitButton"))
+                .diagnosticsProvider(vm -> List.of())
+                .kindProvider(object -> "")
+                .actions(actions)
+                .messageProvider(object -> "");
+
+        if (splitButtonDescription.getHelpExpression() != null && !splitButtonDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(splitButtonDescription));
+        }
+
         return builder.build();
     }
 

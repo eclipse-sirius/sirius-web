@@ -66,6 +66,7 @@ import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
@@ -136,8 +137,6 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createListDescription();
             case FormPackage.MULTI_SELECT_DESCRIPTION:
                 return this.createMultiSelectDescription();
-            case FormPackage.TREE_DESCRIPTION:
-                return this.createTreeDescription();
             case FormPackage.PIE_CHART_DESCRIPTION:
                 return this.createPieChartDescription();
             case FormPackage.RADIO_DESCRIPTION:
@@ -146,10 +145,14 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
                 return this.createRichTextDescription();
             case FormPackage.SELECT_DESCRIPTION:
                 return this.createSelectDescription();
+            case FormPackage.SPLIT_BUTTON_DESCRIPTION:
+                return this.createSplitButtonDescription();
             case FormPackage.TEXT_AREA_DESCRIPTION:
                 return this.createTextAreaDescription();
             case FormPackage.TEXTFIELD_DESCRIPTION:
                 return this.createTextfieldDescription();
+            case FormPackage.TREE_DESCRIPTION:
+                return this.createTreeDescription();
             case FormPackage.BAR_CHART_DESCRIPTION_STYLE:
                 return this.createBarChartDescriptionStyle();
             case FormPackage.CONDITIONAL_BAR_CHART_DESCRIPTION_STYLE:
@@ -295,6 +298,17 @@ public class FormFactoryImpl extends EFactoryImpl implements FormFactory {
     public BarChartDescription createBarChartDescription() {
         BarChartDescriptionImpl barChartDescription = new BarChartDescriptionImpl();
         return barChartDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SplitButtonDescription createSplitButtonDescription() {
+        SplitButtonDescriptionImpl splitButtonDescription = new SplitButtonDescriptionImpl();
+        return splitButtonDescription;
     }
 
     /**

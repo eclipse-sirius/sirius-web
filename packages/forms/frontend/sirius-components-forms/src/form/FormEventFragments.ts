@@ -200,6 +200,14 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     }
   }
 
+  fragment splitButtonFields on SplitButton {
+    label
+    actions {
+      ...commonFields
+      ...buttonFields
+    }
+  }
+
   fragment toolbarActionFields on ToolbarAction {
     label
     buttonLabel
@@ -343,6 +351,9 @@ export const widgetFields = (contributions: Array<WidgetContribution>) => `
     }
     ... on Button {
       ...buttonFields
+    }
+    ... on SplitButton {
+      ...splitButtonFields
     }
     ... on ToolbarAction {
       ...toolbarActionFields

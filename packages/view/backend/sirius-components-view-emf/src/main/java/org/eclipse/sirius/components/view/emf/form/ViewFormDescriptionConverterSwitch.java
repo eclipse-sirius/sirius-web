@@ -64,6 +64,7 @@ import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
+import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
@@ -94,6 +95,8 @@ import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.form.util.FormSwitch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A switch to dispatch View Form Widget Descriptions conversion.
@@ -101,6 +104,8 @@ import org.eclipse.sirius.components.view.form.util.FormSwitch;
  * @author fbarbin
  */
 public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<AbstractControlDescription>> {
+
+    private final Logger logger = LoggerFactory.getLogger(ViewFormDescriptionConverterSwitch.class);
 
     private final AQLInterpreter interpreter;
 
@@ -523,6 +528,41 @@ public class ViewFormDescriptionConverterSwitch extends FormSwitch<Optional<Abst
                 .styleProvider(styleProvider);
         if (viewButtonDescription.getHelpExpression() != null && !viewButtonDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewButtonDescription.getHelpExpression()));
+        }
+        return Optional.of(builder.build());
+    }
+
+    @Override
+    public Optional<AbstractControlDescription> caseSplitButtonDescription(org.eclipse.sirius.components.view.form.SplitButtonDescription splitButtonDescription) {
+        String descriptionId = this.getDescriptionId(splitButtonDescription);
+        WidgetIdProvider idProvider = new WidgetIdProvider();
+        StringValueProvider labelProvider = this.getStringValueProvider(splitButtonDescription.getLabelExpression());
+        Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(splitButtonDescription.getIsEnabledExpression());
+
+        List<ButtonDescription> actions = splitButtonDescription.getActions().stream()
+                .map(ViewFormDescriptionConverterSwitch.this::doSwitch)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(ButtonDescription.class::isInstance)
+                .map(ButtonDescription.class::cast).toList();
+
+        if (actions.isEmpty()) {
+            this.logger.warn("Invalid empty Reference Actions on widget {}", splitButtonDescription.getName());
+            return Optional.empty();
+        }
+
+        SplitButtonDescription.Builder builder = SplitButtonDescription.newSplitButtonDescription(descriptionId)
+                .idProvider(idProvider)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
+                .labelProvider(labelProvider)
+                .isReadOnlyProvider(isReadOnlyProvider)
+                .diagnosticsProvider(variableManager -> List.of())
+                .actions(actions)
+                .kindProvider(diagnostic -> "")
+                .messageProvider(diagnostic -> "");
+
+        if (splitButtonDescription.getHelpExpression() != null && !splitButtonDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(splitButtonDescription.getHelpExpression()));
         }
         return Optional.of(builder.build());
     }

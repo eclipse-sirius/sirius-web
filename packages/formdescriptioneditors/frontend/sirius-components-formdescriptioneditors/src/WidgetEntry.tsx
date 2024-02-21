@@ -26,6 +26,7 @@ import {
   GQLRadio,
   GQLRichText,
   GQLSelect,
+  GQLSplitButton,
   GQLTextarea,
   GQLTextfield,
   GQLTree,
@@ -67,6 +68,7 @@ import { PieChartWidget } from './PieChartWidget';
 import { RadioWidget } from './RadioWidget';
 import { RichTextWidget } from './RichTextWidget';
 import { SelectWidget } from './SelectWidget';
+import { SplitButtonWidget } from './SplitButtonWidget';
 import { TextAreaWidget } from './TextAreaWidget';
 import { TextfieldWidget } from './TextfieldWidget';
 import { TreeWidget } from './TreeWidget';
@@ -314,6 +316,16 @@ export const WidgetEntry = ({
   let widgetElement: JSX.Element | null = null;
   if (widget.__typename === 'Button') {
     widgetElement = <ButtonWidget data-testid={widget.id} widget={widget as GQLButton} onDropBefore={onDropBefore} />;
+  } else if (widget.__typename === 'SplitButton') {
+    widgetElement = (
+      <SplitButtonWidget
+        data-testid={widget.id}
+        editingContextId={editingContextId}
+        representationId={representationId}
+        widget={widget as GQLSplitButton}
+        onDropBefore={onDropBefore}
+      />
+    );
   } else if (widget.__typename === 'Checkbox') {
     widgetElement = (
       <CheckboxWidget data-testid={widget.id} widget={widget as GQLCheckbox} onDropBefore={onDropBefore} />
