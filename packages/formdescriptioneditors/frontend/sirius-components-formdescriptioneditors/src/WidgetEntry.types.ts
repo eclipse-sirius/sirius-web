@@ -26,6 +26,7 @@ import {
   GQLRadio,
   GQLRichText,
   GQLSelect,
+  GQLSplitButton,
   GQLTextarea,
   GQLTextfield,
   GQLTree,
@@ -53,6 +54,11 @@ export interface WidgetProps<WidgetType extends GQLWidget> {
 export type BarChartWidgetProps = WidgetProps<GQLChartWidget>;
 export type ButtonWidgetProps = WidgetProps<GQLButton>;
 export type CheckboxWidgetProps = WidgetProps<GQLCheckbox>;
+
+export interface SplitButtonWidgetProps extends WidgetProps<GQLSplitButton> {
+  editingContextId: string;
+  representationId: string;
+}
 
 export interface FlexboxContainerWidgetProps {
   editingContextId: string;

@@ -411,6 +411,17 @@ export const FormDescriptionEditorRepresentation = ({
             </Typography>
           </div>
           <div
+            id="SplitButton"
+            data-testid="FormDescriptionEditor-SplitButton"
+            draggable="true"
+            className={classes.widgetKind}
+            onDragStart={handleDragStartWidget}>
+            <Button width={'24px'} height={'24px'} color={'secondary'} />
+            <Typography variant="caption" gutterBottom>
+              SplitButton
+            </Typography>
+          </div>
+          <div
             id="TextArea"
             data-testid="FormDescriptionEditor-TextArea"
             draggable="true"

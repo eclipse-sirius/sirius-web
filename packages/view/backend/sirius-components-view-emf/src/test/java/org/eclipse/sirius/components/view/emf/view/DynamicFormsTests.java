@@ -59,6 +59,7 @@ import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.RadioStyle;
 import org.eclipse.sirius.components.forms.Select;
 import org.eclipse.sirius.components.forms.SelectStyle;
+import org.eclipse.sirius.components.forms.SplitButton;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.forms.Textfield;
@@ -118,6 +119,7 @@ import org.eclipse.sirius.components.view.form.RadioDescription;
 import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
@@ -145,7 +147,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(15);
+        assertThat(group.getWidgets()).hasSize(16);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -161,6 +163,7 @@ public class DynamicFormsTests {
         org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
         Image image = (Image) group.getWidgets().get(13);
         TreeWidget tree = (TreeWidget) group.getWidgets().get(14);
+        SplitButton splitButton = (SplitButton) group.getWidgets().get(15);
 
         this.checkTextfield(textfield, false, false);
         this.checkTextarea(textarea, false, false);
@@ -177,6 +180,7 @@ public class DynamicFormsTests {
         this.checkImage(image);
         this.checkFlexboxContainer(flexboxContainer, false, false);
         this.checkTree(tree);
+        this.checkSplitButton(splitButton, false, false);
     }
 
     @Test
@@ -190,7 +194,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(15);
+        assertThat(group.getWidgets()).hasSize(16);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -204,6 +208,7 @@ public class DynamicFormsTests {
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
         Link link = (Link) group.getWidgets().get(11);
         org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
+        SplitButton splitButton = (SplitButton) group.getWidgets().get(15);
 
         this.checkTextfield(textfield, true, false);
         this.checkTextarea(textarea, true, false);
@@ -219,6 +224,7 @@ public class DynamicFormsTests {
         this.checkPieChart(chartWidgetWithPieChart, true, false);
         // image widget doesn't have style
         this.checkFlexboxContainer(flexboxContainer, true, false);
+        this.checkSplitButton(splitButton, true, false);
     }
 
     @Test
@@ -232,7 +238,7 @@ public class DynamicFormsTests {
         assertThat(result.getPages()).extracting(Page::getGroups).hasSize(1);
 
         Group group = result.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(15);
+        assertThat(group.getWidgets()).hasSize(16);
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         Textarea textarea = (Textarea) group.getWidgets().get(1);
         MultiSelect multiSelect = (MultiSelect) group.getWidgets().get(2);
@@ -246,6 +252,7 @@ public class DynamicFormsTests {
         LabelWidget labelWidget = (LabelWidget) group.getWidgets().get(10);
         Link link = (Link) group.getWidgets().get(11);
         org.eclipse.sirius.components.forms.List list = (org.eclipse.sirius.components.forms.List) group.getWidgets().get(12);
+        SplitButton splitButton = (SplitButton) group.getWidgets().get(15);
 
         this.checkTextfield(textfield, false, true);
         this.checkTextarea(textarea, false, true);
@@ -261,6 +268,7 @@ public class DynamicFormsTests {
         this.checkPieChart(chartWidgetWithPieChart, false, true);
         // image widget doesn't have conditional style
         this.checkFlexboxContainer(flexboxContainer, false, true);
+        this.checkSplitButton(splitButton, false, true);
     }
 
     @Test
@@ -268,7 +276,7 @@ public class DynamicFormsTests {
         this.buildFixture();
         FormDescription eClassFormDescription = this.createClassFormDescription(false, false);
         Form form = this.render(eClassFormDescription, this.eClasses[0]);
-        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(15);
+        assertThat(form.getPages()).flatExtracting(Page::getGroups).flatExtracting(Group::getWidgets).hasSize(16);
 
         this.checkValuesEditing(this.eClasses[0], this.eClasses[1], form);
     }
@@ -524,6 +532,13 @@ public class DynamicFormsTests {
         assertThat(tree.getNodes().get(1).getEndIconsURL().get(0).get(0)).isEqualTo("icons/Class3.svg");
     }
 
+    private void checkSplitButton(SplitButton splitButton, boolean checkStyle, boolean checkConditionalStyle) {
+        assertThat(splitButton.getLabel()).isEqualTo("SplitButton for EClass Class1");
+        assertThat(splitButton.getActions()).hasSize(2);
+        checkButton(splitButton.getActions().get(0), checkStyle, checkConditionalStyle);
+        checkButton(splitButton.getActions().get(1), checkStyle, checkConditionalStyle);
+    }
+
     private void checkFlexboxContainer(FlexboxContainer flexboxContainer, boolean checkStyle, boolean checkConditionalStyle) {
         assertThat(flexboxContainer.getLabel()).isEqualTo("A Widget Container");
         List<AbstractWidget> children = flexboxContainer.getChildren();
@@ -556,7 +571,7 @@ public class DynamicFormsTests {
 
     private void checkValuesEditing(EClass eClass, EClass eClass2, Form form) {
         Group group = form.getPages().get(0).getGroups().get(0);
-        assertThat(group.getWidgets()).hasSize(15);
+        assertThat(group.getWidgets()).hasSize(16);
 
         Textfield textfield = (Textfield) group.getWidgets().get(0);
         assertThat(textfield.getValue()).isEqualTo("Class1");
@@ -670,6 +685,8 @@ public class DynamicFormsTests {
         groupDescription.getChildren().add(imageDescription);
         TreeDescription treeDescription = this.createTreeDescription();
         groupDescription.getChildren().add(treeDescription);
+        SplitButtonDescription splitButtonDescription = this.createSplitButton(withStyle, withConditionalStyle);
+        groupDescription.getChildren().add(splitButtonDescription);
         return formDescription;
     }
 
@@ -1041,6 +1058,18 @@ public class DynamicFormsTests {
         checkboxSetValue.setValueExpression("aql:newValue");
         treeDescription.getBody().add(checkboxSetValue);
         return treeDescription;
+    }
+
+    private SplitButtonDescription createSplitButton(boolean withStyle, boolean withConditionalStyle) {
+        SplitButtonDescription splitButtonDescription = FormFactory.eINSTANCE.createSplitButtonDescription();
+        splitButtonDescription.setName("EClass SplitButton");
+        splitButtonDescription.setLabelExpression("aql:'SplitButton for EClass ' + self.name");
+
+        ButtonDescription buttonDescription = this.createButton(withStyle, withConditionalStyle);
+        ButtonDescription buttonDescription2 = this.createButton(withStyle, withConditionalStyle);
+
+        splitButtonDescription.getActions().addAll(List.of(buttonDescription, buttonDescription2));
+        return splitButtonDescription;
     }
 
     private void setFontStyle(LabelStyle labelStyle) {

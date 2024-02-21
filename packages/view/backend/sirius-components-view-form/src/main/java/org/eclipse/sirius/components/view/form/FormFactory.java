@@ -62,6 +62,14 @@ public interface FormFactory extends EFactory {
     BarChartDescription createBarChartDescription();
 
     /**
+     * Returns a new object of class '<em>Split Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Split Button Description</em>'.
+     * @generated
+     */
+    SplitButtonDescription createSplitButtonDescription();
+
+    /**
      * Returns a new object of class '<em>Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Button Description</em>'.

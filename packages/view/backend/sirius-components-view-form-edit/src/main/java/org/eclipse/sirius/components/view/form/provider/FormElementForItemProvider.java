@@ -194,8 +194,6 @@ public class FormElementForItemProvider extends FormElementDescriptionItemProvid
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createMultiSelectDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createTreeDescription()));
-
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createPieChartDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createRadioDescription()));
@@ -204,9 +202,13 @@ public class FormElementForItemProvider extends FormElementDescriptionItemProvid
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createSelectDescription()));
 
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createSplitButtonDescription()));
+
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createTextAreaDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createTextfieldDescription()));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createTreeDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, FormFactory.eINSTANCE.createFormElementFor()));
 

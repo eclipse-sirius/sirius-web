@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -251,6 +251,8 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         selectDescription.setStyle(FormFactory.eINSTANCE.createSelectDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, selectDescription));
 
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createSplitButtonDescription()));
+
         TextAreaDescription textareaDescription = FormFactory.eINSTANCE.createTextAreaDescription();
         textareaDescription.setStyle(FormFactory.eINSTANCE.createTextareaDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textareaDescription));
@@ -258,6 +260,8 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
         TextfieldDescription textfieldDescription = FormFactory.eINSTANCE.createTextfieldDescription();
         textfieldDescription.setStyle(FormFactory.eINSTANCE.createTextfieldDescriptionStyle());
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textfieldDescription));
+
+        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createTreeDescription()));
 
         newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE, FormFactory.eINSTANCE.createContainerBorderStyle()));
 

@@ -1,0 +1,590 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`should display the error received 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-34"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-35"
+        />
+      </div>
+      <div
+        aria-label="split button"
+        class="MuiButtonGroup-root MuiButtonGroup-contained"
+        role="group"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          data-testid="Label"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            ButtonLabel
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          aria-haspopup="menu"
+          aria-label="select button action"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          role="show-actions"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7 10l5 5 5-5z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should display the error received 2`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-34"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-35"
+        />
+      </div>
+      <div
+        aria-label="split button"
+        class="MuiButtonGroup-root MuiButtonGroup-contained"
+        role="group"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          data-testid="Label"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            ButtonLabel
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          aria-haspopup="menu"
+          aria-label="select button action"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-28 makeStyles-style-30 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          role="show-actions"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7 10l5 5 5-5z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render a readOnly button and his actions 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-16"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-17"
+      />
+    </div>
+    <div
+      aria-label="split button"
+      class="MuiButtonGroup-root MuiButtonGroup-contained"
+      role="group"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-10 makeStyles-style-12 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary Mui-disabled Mui-disabled"
+        data-testid="Label"
+        disabled=""
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+      </button>
+      <button
+        aria-haspopup="menu"
+        aria-label="select button action"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-10 makeStyles-style-12 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall Mui-disabled Mui-disabled"
+        disabled=""
+        role="show-actions"
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7 10l5 5 5-5z"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should render the button and his actions with style 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-43"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <div
+          class="makeStyles-subscribers-44"
+        />
+      </div>
+      <div
+        aria-label="split button"
+        class="MuiButtonGroup-root MuiButtonGroup-contained"
+        role="group"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-37 makeStyles-style-39 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          data-testid="Label"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            ButtonLabel
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          aria-controls="split-button-menu"
+          aria-expanded="true"
+          aria-haspopup="menu"
+          aria-label="select button action"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-37 makeStyles-style-39 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          role="show-actions"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7 10l5 5 5-5z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    role="tooltip"
+    style="position: absolute; top: 0px; left: 0px;"
+    x-placement="bottom"
+  >
+    <div
+      class="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
+      style="opacity: 1; transform: scale(1, 1); transform-origin: center top; transition: opacity 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,transform 0ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;"
+    >
+      <ul
+        class="MuiList-root MuiList-padding"
+        id="split-button-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        <li
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root makeStyles-style-37 makeStyles-style-39 Mui-selected MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button Mui-selected"
+          role="menuitem"
+          tabindex="0"
+        >
+          ButtonLabel
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </li>
+        <li
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiListItem-root MuiMenuItem-root makeStyles-style-37 makeStyles-style-41 MuiMenuItem-gutters MuiListItem-gutters MuiListItem-button"
+          role="menuitem"
+          tabindex="-1"
+        >
+          ButtonLabel
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the button with help hint 1`] = `
+<body>
+  <div>
+     
+    <div>
+      <div
+        class="makeStyles-propertySectionLabel-52"
+      >
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2"
+        >
+          Label
+        </h6>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-colorSecondary"
+          focusable="false"
+          style="margin-left: 8px; font-size: 16px;"
+          title=""
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"
+          />
+        </svg>
+        <div
+          class="makeStyles-subscribers-53"
+        />
+      </div>
+      <div
+        aria-label="split button"
+        class="MuiButtonGroup-root MuiButtonGroup-contained"
+        role="group"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-46 makeStyles-style-48 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+          data-testid="Label"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            ButtonLabel
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          aria-haspopup="menu"
+          aria-label="select button action"
+          class="MuiButtonBase-root MuiButton-root makeStyles-style-46 makeStyles-style-48 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+          role="show-actions"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7 10l5 5 5-5z"
+              />
+            </svg>
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`should render the split button and his actions 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-7"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-8"
+      />
+    </div>
+    <div
+      aria-label="split button"
+      class="MuiButtonGroup-root MuiButtonGroup-contained"
+      role="group"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-1 makeStyles-style-3 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+        data-testid="Label"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        aria-controls="split-button-menu"
+        aria-expanded="true"
+        aria-haspopup="menu"
+        aria-label="select button action"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-1 makeStyles-style-3 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+        role="show-actions"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7 10l5 5 5-5z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should send mutation when clicked 1`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-25"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-26"
+      />
+    </div>
+    <div
+      aria-label="split button"
+      class="MuiButtonGroup-root MuiButtonGroup-contained"
+      role="group"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+        data-testid="Label"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        aria-haspopup="menu"
+        aria-label="select button action"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+        role="show-actions"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7 10l5 5 5-5z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`should send mutation when clicked 2`] = `
+<div>
+  <div>
+    <div
+      class="makeStyles-propertySectionLabel-25"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2"
+      >
+        Label
+      </h6>
+      <div
+        class="makeStyles-subscribers-26"
+      />
+    </div>
+    <div
+      aria-label="split button"
+      class="MuiButtonGroup-root MuiButtonGroup-contained"
+      role="group"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary"
+        data-testid="Label"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          ButtonLabel
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        aria-haspopup="menu"
+        aria-label="select button action"
+        class="MuiButtonBase-root MuiButton-root makeStyles-style-19 makeStyles-style-21 MuiButton-contained MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedContained MuiButtonGroup-groupedContainedHorizontal MuiButtonGroup-groupedContainedPrimary MuiButton-containedPrimary MuiButton-containedSizeSmall MuiButton-sizeSmall"
+        role="show-actions"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7 10l5 5 5-5z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;

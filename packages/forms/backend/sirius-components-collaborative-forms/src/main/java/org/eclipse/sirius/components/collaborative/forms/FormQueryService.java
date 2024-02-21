@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,15 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.FlexboxContainer;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.Group;
+import org.eclipse.sirius.components.forms.SplitButton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 /**
  * Class used to manipulate forms.
@@ -59,12 +60,13 @@ public class FormQueryService implements IFormQueryService {
     }
 
     private List<AbstractWidget> getAllWidgets(Group group) {
-        List<AbstractWidget> widgets = new ArrayList<>();
-        group.getToolbarActions().forEach(widgets::add);
+        List<AbstractWidget> widgets = new ArrayList<>(group.getToolbarActions());
         group.getWidgets().forEach(widget -> {
             widgets.add(widget);
             if (widget instanceof FlexboxContainer flexboxContainer) {
                 widgets.addAll(this.getAllWidgets(flexboxContainer));
+            } else if (widget instanceof SplitButton splitButton) {
+                widgets.addAll(this.getAllWidgets(splitButton));
             }
         });
         return widgets;
@@ -79,5 +81,9 @@ public class FormQueryService implements IFormQueryService {
             }
         });
         return widgets;
+    }
+
+    private List<AbstractWidget> getAllWidgets(SplitButton splitButton) {
+        return splitButton.getActions().stream().map(AbstractWidget.class::cast).toList();
     }
 }

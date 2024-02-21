@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.forms.Page;
 import org.eclipse.sirius.components.forms.Radio;
 import org.eclipse.sirius.components.forms.RichText;
 import org.eclipse.sirius.components.forms.Select;
+import org.eclipse.sirius.components.forms.SplitButton;
 import org.eclipse.sirius.components.forms.Textarea;
 import org.eclipse.sirius.components.forms.Textfield;
 import org.eclipse.sirius.components.forms.ToolbarAction;
@@ -59,6 +60,7 @@ import org.eclipse.sirius.components.forms.elements.PageElementProps;
 import org.eclipse.sirius.components.forms.elements.RadioElementProps;
 import org.eclipse.sirius.components.forms.elements.RichTextElementProps;
 import org.eclipse.sirius.components.forms.elements.SelectElementProps;
+import org.eclipse.sirius.components.forms.elements.SplitButtonElementProps;
 import org.eclipse.sirius.components.forms.elements.TextareaElementProps;
 import org.eclipse.sirius.components.forms.elements.TextfieldElementProps;
 import org.eclipse.sirius.components.forms.elements.ToolbarActionElementProps;
@@ -110,6 +112,8 @@ public class FormElementFactory implements IElementFactory {
             object = this.instantiateLink((LinkElementProps) props, children);
         } else if (ButtonElementProps.TYPE.equals(type) && props instanceof ButtonElementProps) {
             object = this.instantiateButton((ButtonElementProps) props, children);
+        } else if (SplitButtonElementProps.TYPE.equals(type) && props instanceof SplitButtonElementProps) {
+            object = this.instantiateSplitButton((SplitButtonElementProps) props, children);
         } else if (LabelWidgetElementProps.TYPE.equals(type) && props instanceof LabelWidgetElementProps) {
             object = this.instantiateLabel((LabelWidgetElementProps) props, children);
         } else if (ChartWidgetElementProps.TYPE.equals(type) && props instanceof ChartWidgetElementProps) {
@@ -480,6 +484,26 @@ public class FormElementFactory implements IElementFactory {
         if (props.getStyle() != null) {
             buttonBuilder.style(props.getStyle());
         }
+        if (props.getHelpTextProvider() != null) {
+            buttonBuilder.helpTextProvider(props.getHelpTextProvider());
+        }
+        return buttonBuilder.build();
+    }
+
+    private SplitButton instantiateSplitButton(SplitButtonElementProps props, List<Object> children) {
+        List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
+        List<Button> actions = children.stream()
+                    .filter(Button.class::isInstance)
+                    .map(Button.class::cast)
+                    .toList();
+
+        SplitButton.Builder buttonBuilder = SplitButton.newSplitButton(props.getId())
+                .label(props.getLabel())
+                .iconURL(props.getIconURL())
+                .diagnostics(diagnostics)
+                .actions(actions)
+                .readOnly(props.isReadOnly());
+
         if (props.getHelpTextProvider() != null) {
             buttonBuilder.helpTextProvider(props.getHelpTextProvider());
         }

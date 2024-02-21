@@ -283,6 +283,10 @@ export interface GQLButton extends GQLWidget {
   style: GQLButtonStyle;
 }
 
+export interface GQLSplitButton extends GQLWidget {
+  actions: GQLButton[];
+}
+
 export interface GQLButtonStyle {
   backgroundColor: string | null;
   foregroundColor: string | null;

@@ -63,6 +63,7 @@ import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
@@ -193,11 +194,6 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseTreeDescription(TreeDescription object) {
-            return FormAdapterFactory.this.createTreeDescriptionAdapter();
-        }
-
-        @Override
         public Adapter casePieChartDescription(PieChartDescription object) {
             return FormAdapterFactory.this.createPieChartDescriptionAdapter();
         }
@@ -218,6 +214,11 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseSplitButtonDescription(SplitButtonDescription object) {
+            return FormAdapterFactory.this.createSplitButtonDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseTextAreaDescription(TextAreaDescription object) {
             return FormAdapterFactory.this.createTextAreaDescriptionAdapter();
         }
@@ -225,6 +226,11 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseTextfieldDescription(TextfieldDescription object) {
             return FormAdapterFactory.this.createTextfieldDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseTreeDescription(TreeDescription object) {
+            return FormAdapterFactory.this.createTreeDescriptionAdapter();
         }
 
         @Override
@@ -487,6 +493,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createBarChartDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.form.SplitButtonDescription <em>Split Button Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.form.SplitButtonDescription
+     * @generated
+     */
+    public Adapter createSplitButtonDescriptionAdapter() {
         return null;
     }
 

@@ -62,6 +62,7 @@ import org.eclipse.sirius.components.view.form.RadioDescriptionStyle;
 import org.eclipse.sirius.components.view.form.RichTextDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.SelectDescriptionStyle;
+import org.eclipse.sirius.components.view.form.SplitButtonDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextareaDescriptionStyle;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
@@ -259,17 +260,6 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
-            case FormPackage.TREE_DESCRIPTION: {
-                TreeDescription treeDescription = (TreeDescription) theEObject;
-                T result = this.caseTreeDescription(treeDescription);
-                if (result == null)
-                    result = this.caseWidgetDescription(treeDescription);
-                if (result == null)
-                    result = this.caseFormElementDescription(treeDescription);
-                if (result == null)
-                    result = this.defaultCase(theEObject);
-                return result;
-            }
             case FormPackage.PIE_CHART_DESCRIPTION: {
                 PieChartDescription pieChartDescription = (PieChartDescription) theEObject;
                 T result = this.casePieChartDescription(pieChartDescription);
@@ -314,6 +304,17 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case FormPackage.SPLIT_BUTTON_DESCRIPTION: {
+                SplitButtonDescription splitButtonDescription = (SplitButtonDescription) theEObject;
+                T result = this.caseSplitButtonDescription(splitButtonDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(splitButtonDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(splitButtonDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             case FormPackage.TEXT_AREA_DESCRIPTION: {
                 TextAreaDescription textAreaDescription = (TextAreaDescription) theEObject;
                 T result = this.caseTextAreaDescription(textAreaDescription);
@@ -332,6 +333,17 @@ public class FormSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescription(textfieldDescription);
                 if (result == null)
                     result = this.caseFormElementDescription(textfieldDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case FormPackage.TREE_DESCRIPTION: {
+                TreeDescription treeDescription = (TreeDescription) theEObject;
+                T result = this.caseTreeDescription(treeDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(treeDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(treeDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -778,6 +790,21 @@ public class FormSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseBarChartDescription(BarChartDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Split Button Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Split Button Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSplitButtonDescription(SplitButtonDescription object) {
         return null;
     }
 

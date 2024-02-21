@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.forms.description.MultiSelectDescription;
 import org.eclipse.sirius.components.forms.description.RadioDescription;
 import org.eclipse.sirius.components.forms.description.RichTextDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
+import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
@@ -86,6 +87,9 @@ public class WidgetComponent implements IComponent {
         } else if (widgetDescription instanceof ButtonDescription) {
             ButtonComponentProps buttonProps = new ButtonComponentProps(variableManager, (ButtonDescription) widgetDescription);
             element = new Element(ButtonComponent.class, buttonProps);
+        } else if (widgetDescription instanceof SplitButtonDescription) {
+            SplitButtonComponentProps splitButtonProps = new SplitButtonComponentProps(variableManager, (SplitButtonDescription) widgetDescription);
+            element = new Element(SplitButtonComponent.class, splitButtonProps);
         } else if (widgetDescription instanceof LabelDescription) {
             LabelWidgetComponentProps labelProps = new LabelWidgetComponentProps(variableManager, (LabelDescription) widgetDescription);
             element = new Element(LabelWidgetComponent.class, labelProps);

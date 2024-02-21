@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import graphql.schema.FieldCoordinates;
  */
 @QueryDataFetcher(type = "Widget", field = "hasHelpText")
 public class WidgetHasHelpTextDataFetcher  implements IDataFetcherWithFieldCoordinates<Boolean> {
-
+    
     private static final String HAS_HELP_TEXT_FIELD = "hasHelpText";
 
     private static final List<String> CORE_WIDGET_TYPES = List.of(
@@ -46,6 +46,7 @@ public class WidgetHasHelpTextDataFetcher  implements IDataFetcherWithFieldCoord
             "Radio",
             "RichText",
             "Select",
+            "SplitButton",
             "Textarea",
             "Textfield",
             "ToolbarAction",
