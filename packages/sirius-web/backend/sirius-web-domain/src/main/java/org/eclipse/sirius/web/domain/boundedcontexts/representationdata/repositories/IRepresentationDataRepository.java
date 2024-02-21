@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -26,4 +28,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IRepresentationDataRepository extends ListPagingAndSortingRepository<RepresentationData, UUID>, ListCrudRepository<RepresentationData, UUID> {
+    @Query("""
+        SELECT *
+        FROM representation_data representationData
+        WHERE representationData.project_id = :projectId
+        """)
+    List<RepresentationData> findAllByProjectId(UUID projectId);
 }
