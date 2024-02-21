@@ -62,8 +62,8 @@
 		<module>task/backend</module>
 		<module>tools/backend</module>
 		<module>starters/backend</module>
-		<module>releng/backend</module>
 		<module>sirius-web/backend</module>
+		<module>releng/backend</module>
 	</modules>
 
 	<profiles>
