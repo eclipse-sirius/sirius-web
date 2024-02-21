@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.IconLabelNodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -89,6 +90,7 @@ public class AbstractNodeMappingConverter {
                 .isHeaderProvider(isHeaderProvider)
                 .displayHeaderSeparatorProvider(isHeaderProvider)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> {

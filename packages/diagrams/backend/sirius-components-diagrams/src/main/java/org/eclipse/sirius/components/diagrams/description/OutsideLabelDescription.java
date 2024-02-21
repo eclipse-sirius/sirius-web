@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.representations.VariableManager;
 
@@ -49,6 +50,8 @@ public final class OutsideLabelDescription {
 
     private OutsideLabelLocation outsideLabelLocation;
 
+    private LabelOverflowStrategy overflowStrategy;
+
     private OutsideLabelDescription() {
         // Prevent instantiation
     }
@@ -77,6 +80,10 @@ public final class OutsideLabelDescription {
         return this.outsideLabelLocation;
     }
 
+    public LabelOverflowStrategy getOverflowStrategy() {
+        return this.overflowStrategy;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}'}'";
@@ -100,6 +107,8 @@ public final class OutsideLabelDescription {
         private Function<VariableManager, LabelStyleDescription> styleDescriptionProvider;
 
         private OutsideLabelLocation outsideLabelLocation;
+
+        private LabelOverflowStrategy overflowStrategy;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -125,6 +134,11 @@ public final class OutsideLabelDescription {
             return this;
         }
 
+        public Builder overflowStrategy(LabelOverflowStrategy overflowStrategy) {
+            this.overflowStrategy = Objects.requireNonNull(overflowStrategy);
+            return this;
+        }
+
         public OutsideLabelDescription build() {
             OutsideLabelDescription labelDescription = new OutsideLabelDescription();
             labelDescription.id = Objects.requireNonNull(this.id);
@@ -132,6 +146,7 @@ public final class OutsideLabelDescription {
             labelDescription.textProvider = Objects.requireNonNull(this.textProvider);
             labelDescription.styleDescriptionProvider = Objects.requireNonNull(this.styleDescriptionProvider);
             labelDescription.outsideLabelLocation = Objects.requireNonNull(this.outsideLabelLocation);
+            labelDescription.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             return labelDescription;
         }
     }

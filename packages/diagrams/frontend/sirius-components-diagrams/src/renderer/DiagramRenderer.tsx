@@ -346,6 +346,7 @@ export const DiagramRenderer = ({ diagramRefreshedEventPayload }: DiagramRendere
         helperLines={helperLinesEnabled}
         onHelperLines={setHelperLinesEnabled}
         refreshEventPayloadId={diagramRefreshedEventPayload.id}
+        reactFlowWrapper={ref}
       />
       <GroupPalette
         refreshEventPayloadId={diagramRefreshedEventPayload.id}

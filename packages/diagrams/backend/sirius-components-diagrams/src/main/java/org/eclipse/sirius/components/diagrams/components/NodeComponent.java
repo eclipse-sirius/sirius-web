@@ -25,15 +25,11 @@ import org.eclipse.sirius.components.diagrams.CustomizableProperties;
 import org.eclipse.sirius.components.diagrams.ILayoutStrategy;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.NodeType;
-import org.eclipse.sirius.components.diagrams.ParametricSVGNodeType;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
-import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps.Builder;
@@ -59,6 +55,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public class NodeComponent implements IComponent {
 
     public static final String COLLAPSING_STATE = "collapsingState";
+    
     public static final String IS_BORDER_NODE = "isBorderNode";
 
     public static final String SEMANTIC_ELEMENT_IDS = "semanticElementIds";
@@ -155,7 +152,6 @@ public class NodeComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
         boolean isBorderNode = containmentKind == NodeContainmentKind.BORDER_NODE;
-        INodeDescriptionRequestor nodeDescriptionRequestor = this.props.getNodeDescriptionRequestor();
 
         String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
 
@@ -184,12 +180,13 @@ public class NodeComponent implements IComponent {
             parentState = ViewModifier.Hidden;
         }
 
-        List<Element> nodeChildren = new ArrayList<>();
-
-        nodeChildren.addAll(this.getInsideLabel(nodeVariableManager, nodeDescription, nodeId));
-        nodeChildren.addAll(this.getOutsideLabel(nodeVariableManager, nodeDescription, nodeId));
-        nodeChildren.addAll(this.getBorderNodes(optionalPreviousNode, nodeVariableManager, nodeId, state, nodeDescriptionRequestor));
-        nodeChildren.addAll(this.getChildNodes(optionalPreviousNode, nodeVariableManager, nodeId, parentState, nodeDescriptionRequestor));
+        NodeChildrenComponentProps nodeChildrenComponentProps = NodeChildrenComponentProps.newNodeChildrenComponentProps()
+                .nodeComponentProps(this.props)
+                .variableManager(nodeVariableManager)
+                .parentState(parentState)
+                .state(state)
+                .build();
+        Element nodeChildren = new Element(NodeChildrenComponent.class, nodeChildrenComponentProps);
 
         Position position = optionalPreviousNode.map(Node::getPosition)
                 .orElse(Position.UNDEFINED);
@@ -226,7 +223,7 @@ public class NodeComponent implements IComponent {
                 .position(position)
                 .size(size)
                 .userResizable(nodeDescription.isUserResizable())
-                .children(nodeChildren)
+                .children(List.of(nodeChildren))
                 .customizableProperties(customizableProperties)
                 .modifiers(modifiers)
                 .state(state)
@@ -242,21 +239,6 @@ public class NodeComponent implements IComponent {
 
         return new Element(NodeElementProps.TYPE, nodeElementPropsBuilder.build());
     }
-
-    private LabelType getLabelType(NodeContainmentKind containmentKind, String type, INodeStyle style) {
-        LabelType dummyLabelType = LabelType.INSIDE_V_TOP_H_CENTER;
-        if (containmentKind == NodeContainmentKind.BORDER_NODE) {
-            dummyLabelType = LabelType.OUTSIDE;
-        } else if (NodeType.NODE_IMAGE.equals(type)) {
-            dummyLabelType = LabelType.OUTSIDE_CENTER;
-        } else if (NodeType.NODE_ICON_LABEL.equals(type)) {
-            dummyLabelType = LabelType.INSIDE_CENTER;
-        } else if (ParametricSVGNodeType.NODE_TYPE_PARAMETRIC_IMAGE.equals(type)) {
-            dummyLabelType = LabelType.INSIDE_CENTER;
-        }
-        return dummyLabelType;
-    }
-
 
     private CollapsingState computeCollapsingState(String nodeId, Optional<Node> optionalPreviousNode, List<IDiagramEvent> diagramEvents, boolean isCollapsedByDefault) {
         CollapsingState newCollapsingState = CollapsingState.EXPANDED;
@@ -408,100 +390,6 @@ public class NodeComponent implements IComponent {
         return size;
     }
 
-    private List<Element> getInsideLabel(VariableManager nodeVariableManager, NodeDescription nodeDescription, String nodeId) {
-        List<Element> nodeChildren = new ArrayList<>();
-        InsideLabelDescription labelDescription = nodeDescription.getInsideLabelDescription();
-        if (labelDescription != null) {
-            nodeVariableManager.put(InsideLabelDescription.OWNER_ID, nodeId);
-
-            InsideLabelComponentProps insideLabelComponentProps = new InsideLabelComponentProps(nodeVariableManager, labelDescription);
-            Element insideLabelElement = new Element(InsideLabelComponent.class, insideLabelComponentProps);
-            nodeChildren.add(insideLabelElement);
-        }
-        return nodeChildren;
-    }
-
-    private List<Element> getOutsideLabel(VariableManager nodeVariableManager, NodeDescription nodeDescription, String nodeId) {
-
-        return nodeDescription.getOutsideLabelDescriptions().stream().map(outsideLabelDescription -> {
-            nodeVariableManager.put(OutsideLabelDescription.OWNER_ID, nodeId);
-
-            OutsideLabelComponentProps outsideLabelComponentProps = new OutsideLabelComponentProps(nodeVariableManager, outsideLabelDescription);
-            return new Element(OutsideLabelComponent.class, outsideLabelComponentProps);
-        }).toList();
-
-    }
-
-    private List<Element> getBorderNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, ViewModifier state,
-            INodeDescriptionRequestor nodeDescriptionRequestor) {
-        NodeDescription nodeDescription = this.props.getNodeDescription();
-        DiagramRenderingCache cache = this.props.getCache();
-
-        var borderNodeDescriptions = new ArrayList<>(nodeDescription.getBorderNodeDescriptions());
-        nodeDescription.getReusedBorderNodeDescriptionIds().stream()
-                .map(nodeDescriptionRequestor::findById)
-                .flatMap(Optional::stream)
-                .forEach(borderNodeDescriptions::add);
-
-        return borderNodeDescriptions.stream().map(borderNodeDescription -> {
-            List<Node> previousBorderNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getBorderNodes(previousNode, borderNodeDescription))
-                    .orElse(List.of());
-            List<String> previousBorderNodesTargetObjectIds = previousBorderNodes.stream().map(Node::getTargetObjectId).toList();
-            INodesRequestor borderNodesRequestor = new NodesRequestor(previousBorderNodes);
-            var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(nodeVariableManager)
-                    .nodeDescription(borderNodeDescription)
-                    .nodesRequestor(borderNodesRequestor)
-                    .nodeDescriptionRequestor(nodeDescriptionRequestor)
-                    .containmentKind(NodeContainmentKind.BORDER_NODE)
-                    .cache(cache)
-                    .viewCreationRequests(this.props.getViewCreationRequests())
-                    .viewDeletionRequests(this.props.getViewDeletionRequests())
-                    .parentElementId(nodeId)
-                    .previousTargetObjectIds(previousBorderNodesTargetObjectIds)
-                    .diagramEvents(this.props.getDiagramEvents())
-                    .parentElementState(state)
-                    .operationValidator(this.props.getOperationValidator())
-                    .build();
-            return new Element(NodeComponent.class, nodeComponentProps);
-        }).toList();
-    }
-
-    private List<Element> getChildNodes(Optional<Node> optionalPreviousNode, VariableManager nodeVariableManager, String nodeId, ViewModifier state,
-            INodeDescriptionRequestor nodeDescriptionRequestor) {
-        NodeDescription nodeDescription = this.props.getNodeDescription();
-        DiagramRenderingCache cache = this.props.getCache();
-
-        var childNodeDescriptions = new ArrayList<>(nodeDescription.getChildNodeDescriptions());
-        nodeDescription.getReusedChildNodeDescriptionIds().stream()
-                .map(nodeDescriptionRequestor::findById)
-                .flatMap(Optional::stream)
-                .forEach(childNodeDescriptions::add);
-
-        return childNodeDescriptions.stream().map(childNodeDescription -> {
-            List<Node> previousChildNodes = optionalPreviousNode.map(previousNode -> new DiagramElementRequestor().getChildNodes(previousNode, childNodeDescription))
-                    .orElse(List.of());
-            List<String> previousChildNodesTargetObjectIds = previousChildNodes.stream().map(Node::getTargetObjectId).toList();
-            INodesRequestor childNodesRequestor = new NodesRequestor(previousChildNodes);
-            var nodeComponentProps = NodeComponentProps.newNodeComponentProps()
-                    .variableManager(nodeVariableManager)
-                    .nodeDescription(childNodeDescription)
-                    .nodesRequestor(childNodesRequestor)
-                    .nodeDescriptionRequestor(nodeDescriptionRequestor)
-                    .containmentKind(NodeContainmentKind.CHILD_NODE)
-                    .cache(cache)
-                    .viewCreationRequests(this.props.getViewCreationRequests())
-                    .viewDeletionRequests(this.props.getViewDeletionRequests())
-                    .parentElementId(nodeId)
-                    .previousTargetObjectIds(previousChildNodesTargetObjectIds)
-                    .diagramEvents(this.props.getDiagramEvents())
-                    .parentElementState(state)
-                    .operationValidator(this.props.getOperationValidator())
-                    .build();
-
-            return new Element(NodeComponent.class, nodeComponentProps);
-        }).toList();
-    }
 
     private String computeNodeId(String targetObjectId) {
         String parentElementId = this.props.getParentElementId();

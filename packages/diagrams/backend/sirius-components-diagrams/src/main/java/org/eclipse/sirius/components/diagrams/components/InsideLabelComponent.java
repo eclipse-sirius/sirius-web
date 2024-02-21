@@ -80,6 +80,7 @@ public class InsideLabelComponent implements IComponent {
                 .style(labelStyle)
                 .isHeader(isHeader)
                 .displayHeaderSeparator(displayHeaderSeparator)
+                .overflowStrategy(insideLabelDescription.getOverflowStrategy())
                 .build();
         return new Element(InsideLabelElementProps.TYPE, insideLabelElementProps);
     }

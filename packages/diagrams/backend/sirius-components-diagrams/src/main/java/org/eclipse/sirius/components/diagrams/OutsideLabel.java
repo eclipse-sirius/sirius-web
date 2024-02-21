@@ -12,11 +12,21 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams;
 
+import java.util.Objects;
+
 /**
  * The outside label.
  *
  * @author gcoutable
  */
-public record OutsideLabel(String id, String text, OutsideLabelLocation outsideLabelLocation, LabelStyle style) {
+public record OutsideLabel(String id, String text, OutsideLabelLocation outsideLabelLocation, LabelStyle style, LabelOverflowStrategy overflowStrategy) {
+
+    public OutsideLabel {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(text);
+        Objects.requireNonNull(outsideLabelLocation);
+        Objects.requireNonNull(style);
+        Objects.requireNonNull(overflowStrategy);
+    }
 
 }

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Box, Node, Rect, XYPosition, boxToRect, rectToBox } from 'reactflow';
-import { NodeData } from '../DiagramRenderer.types';
+import { NodeData, InsideLabel } from '../DiagramRenderer.types';
 import { RawDiagram } from './layout.types';
 import {
   getBorderNodeExtent,
@@ -78,9 +78,7 @@ export const getDefaultOrMinHeight = (minHeight: number | undefined, node: Node<
 export const getChildNodePosition = (
   allVisibleNodes: Node<NodeData>[],
   child: Node<NodeData>,
-  labelElement: HTMLElement | null,
-  withHeader: boolean,
-  displayHeaderSeparator: boolean,
+  headerHeightFootprint: number,
   borderWidth: number,
   previousSibling?: Node<NodeData>
 ): XYPosition => {
@@ -95,11 +93,9 @@ export const getChildNodePosition = (
     .reduce((a, b) => Math.max(a, b), 0);
 
   if (!previousSibling) {
-    const headerFootprint = labelElement ? getHeaderFootprint(labelElement, withHeader, displayHeaderSeparator) : 0;
-
     return {
       x: rectangularNodePadding + borderWidth + maxWestBorderNodeWidth,
-      y: borderWidth + headerFootprint + maxNorthBorderNodeHeight,
+      y: borderWidth + headerHeightFootprint + maxNorthBorderNodeHeight,
     };
   } else {
     const previousSiblingsMaxEastBorderNodeWidth = getChildren(previousSibling, allVisibleNodes)
@@ -119,23 +115,39 @@ export const getChildNodePosition = (
   }
 };
 
-export const getHeaderFootprint = (
-  labelElement: HTMLElement,
+export const getHeaderHeightFootprint = (
+  labelElement: HTMLElement | null,
   withHeader: boolean,
   displayHeaderSeparator: boolean
 ): number => {
-  let headerFootprint = 0;
+  let headerHeightFootprint = 0;
 
+  if (!labelElement) {
+    return headerHeightFootprint;
+  }
   if (withHeader) {
-    headerFootprint = labelElement.getBoundingClientRect().height;
+    headerHeightFootprint = labelElement.getBoundingClientRect().height;
     if (displayHeaderSeparator) {
-      headerFootprint += rectangularNodePadding;
+      headerHeightFootprint += rectangularNodePadding;
     }
   } else {
-    headerFootprint = rectangularNodePadding;
+    headerHeightFootprint = rectangularNodePadding;
   }
 
-  return headerFootprint;
+  return headerHeightFootprint;
+};
+
+export const getInsideLabelWidthConstraint = (
+  insideLabel: InsideLabel | null,
+  labelElement: HTMLElement | null
+): number => {
+  if (insideLabel && labelElement) {
+    // for other strategies, label width has no effect on node size
+    if (insideLabel.overflowStrategy === 'NONE') {
+      return labelElement?.getBoundingClientRect().width ?? 0;
+    }
+  }
+  return 0;
 };
 
 /**
