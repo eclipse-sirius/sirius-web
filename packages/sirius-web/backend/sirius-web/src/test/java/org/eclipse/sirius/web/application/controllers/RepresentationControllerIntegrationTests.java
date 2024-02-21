@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -52,6 +53,31 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             }
             """;
 
+    private static final String GET_ALL_REPRESENTATION_METADATA_QUERY = """
+            query getAllRepresentationMetadata($editingContextId: ID!) {
+              viewer {
+                editingContext(editingContextId: $editingContextId) {
+                  representations {
+                    edges {
+                      node {
+                        id
+                        label
+                        kind
+                      }
+                    }
+                    pageInfo {
+                      hasPreviousPage
+                      hasNextPage
+                      startCursor
+                      endCursor
+                      count
+                    }
+                  }
+                }
+              }
+            }
+            """;
+
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
@@ -74,5 +100,37 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
         assertThat(label).isEqualTo("Portal");
+    }
+
+    @Test
+    @DisplayName("Given an editing context id, when a query is performed, then all the representation metadata are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenEditingContextIdWhenQueryIsPerformedThenAllTheRepresentationMetadataAreReturned() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString()
+        );
+        var result = this.graphQLRequestor.execute(GET_ALL_REPRESENTATION_METADATA_QUERY, variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.startCursor");
+        assertThat(startCursor).isNotBlank();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.endCursor");
+        assertThat(endCursor).isNotBlank();
+
+        int count = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.count");
+        assertThat(count).isEqualTo(1);
+
+        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
+        assertThat(representationIds).hasSize(1);
+
+        var firstRepresentationId = representationIds.get(0);
+        assertThat(firstRepresentationId).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
     }
 }

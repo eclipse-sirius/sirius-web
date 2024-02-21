@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Used to find representation data.
@@ -25,6 +27,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
  */
 public interface IRepresentationDataSearchService {
     Optional<RepresentationData> findById(UUID id);
+
+    List<RepresentationData> findAllByProject(AggregateReference<Project, UUID> project);
 
     List<RepresentationData> findAllByTargetObjectId(String targetObjectId);
 }

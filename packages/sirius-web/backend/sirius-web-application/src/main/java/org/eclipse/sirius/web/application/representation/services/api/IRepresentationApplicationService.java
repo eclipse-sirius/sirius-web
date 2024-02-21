@@ -15,6 +15,8 @@ package org.eclipse.sirius.web.application.representation.services.api;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Used to interact with representations.
@@ -23,4 +25,6 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
  */
 public interface IRepresentationApplicationService {
     Optional<RepresentationMetadata> findRepresentationMetadataById(String representationId);
+
+    Page<RepresentationMetadata> findAllByEditingContextId(String editingContextId, Pageable pageable);
 }
