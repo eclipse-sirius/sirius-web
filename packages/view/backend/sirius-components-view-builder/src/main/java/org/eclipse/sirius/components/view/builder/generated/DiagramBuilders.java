@@ -71,16 +71,6 @@ public class DiagramBuilders {
     }
 
     /**
-     * Instantiate a LabelDescriptionBuilder .
-     *
-     * @author BuilderGenerator
-     * @generated
-     */
-    public LabelDescriptionBuilder newLabelDescription() {
-        return new LabelDescriptionBuilder();
-    }
-
-    /**
      * Instantiate a InsideLabelDescriptionBuilder .
      *
      * @author BuilderGenerator

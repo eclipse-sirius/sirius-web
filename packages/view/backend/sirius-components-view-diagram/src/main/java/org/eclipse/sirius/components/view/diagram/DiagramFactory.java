@@ -73,14 +73,6 @@ public interface DiagramFactory extends EFactory {
     FreeFormLayoutStrategyDescription createFreeFormLayoutStrategyDescription();
 
     /**
-     * Returns a new object of class '<em>Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Label Description</em>'.
-     * @generated
-     */
-    LabelDescription createLabelDescription();
-
-    /**
      * Returns a new object of class '<em>Inside Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return a new object of class '<em>Inside Label Description</em>'.

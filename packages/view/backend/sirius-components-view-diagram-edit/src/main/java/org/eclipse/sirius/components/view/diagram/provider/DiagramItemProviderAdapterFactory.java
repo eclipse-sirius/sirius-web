@@ -133,15 +133,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
 
     /**
      * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.diagram.LabelDescription} instances. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected LabelDescriptionItemProvider labelDescriptionItemProvider;
-
-    /**
-     * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -477,21 +468,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
         }
 
         return this.freeFormLayoutStrategyDescriptionItemProvider;
-    }
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.LabelDescription}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createLabelDescriptionAdapter() {
-        if (this.labelDescriptionItemProvider == null) {
-            this.labelDescriptionItemProvider = new LabelDescriptionItemProvider(this);
-        }
-
-        return this.labelDescriptionItemProvider;
     }
 
     /**
@@ -1068,8 +1044,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.listLayoutStrategyDescriptionItemProvider.dispose();
         if (this.freeFormLayoutStrategyDescriptionItemProvider != null)
             this.freeFormLayoutStrategyDescriptionItemProvider.dispose();
-        if (this.labelDescriptionItemProvider != null)
-            this.labelDescriptionItemProvider.dispose();
         if (this.insideLabelDescriptionItemProvider != null)
             this.insideLabelDescriptionItemProvider.dispose();
         if (this.outsideLabelDescriptionItemProvider != null)

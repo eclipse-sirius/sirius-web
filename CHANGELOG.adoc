@@ -105,7 +105,7 @@ image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70
 - https://github.com/eclipse-sirius/sirius-web/issues/2839[#2839] [gantt] Add support for persisting task expand/collapse state
 - https://github.com/eclipse-sirius/sirius-web/issues/3333[#3333] [emf] Add support for the migration of semantic data
 - https://github.com/eclipse-sirius/sirius-web/issues/3382[#3382] [diagram] Add a tool section in Node and Edge palettes with tools to hide/show/reset elements and their children.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3135[#3135] [diagram] Add new overflow strategies for node label : _wrap_ and _ellipsis_
 
 === Improvements
 

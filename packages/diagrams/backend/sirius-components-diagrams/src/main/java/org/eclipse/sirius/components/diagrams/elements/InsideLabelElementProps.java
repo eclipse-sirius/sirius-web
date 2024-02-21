@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.representations.IProps;
 
@@ -41,6 +42,8 @@ public final class InsideLabelElementProps implements IProps {
     private boolean isHeader;
 
     private boolean displayHeaderSeparator;
+
+    private LabelOverflowStrategy overflowStrategy;
 
     private InsideLabelElementProps() {
         // Prevent instantiation
@@ -74,6 +77,10 @@ public final class InsideLabelElementProps implements IProps {
         return this.displayHeaderSeparator;
     }
 
+    public LabelOverflowStrategy getOverflowStrategy() {
+        return this.overflowStrategy;
+    }
+
     @Override
     public String toString() {
         String pattern = "{0} '{'id: {1}, text: {2}'}'";
@@ -99,6 +106,8 @@ public final class InsideLabelElementProps implements IProps {
         private boolean isHeader;
 
         private boolean displayHeaderSeparator;
+
+        private LabelOverflowStrategy overflowStrategy;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -129,6 +138,11 @@ public final class InsideLabelElementProps implements IProps {
             return this;
         }
 
+        public Builder overflowStrategy(LabelOverflowStrategy overflowStrategy) {
+            this.overflowStrategy = Objects.requireNonNull(overflowStrategy);
+            return this;
+        }
+
         public InsideLabelElementProps build() {
             InsideLabelElementProps insideLabelElementProps = new InsideLabelElementProps();
             insideLabelElementProps.id = Objects.requireNonNull(this.id);
@@ -137,6 +151,7 @@ public final class InsideLabelElementProps implements IProps {
             insideLabelElementProps.style = Objects.requireNonNull(this.style);
             insideLabelElementProps.isHeader = this.isHeader;
             insideLabelElementProps.displayHeaderSeparator = this.displayHeaderSeparator;
+            insideLabelElementProps.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             return insideLabelElementProps;
         }
     }

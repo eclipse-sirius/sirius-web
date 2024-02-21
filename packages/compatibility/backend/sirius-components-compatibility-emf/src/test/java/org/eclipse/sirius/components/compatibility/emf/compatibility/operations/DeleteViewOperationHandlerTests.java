@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -103,6 +104,7 @@ public class DeleteViewOperationHandlerTests {
                         .style(LabelStyle.newLabelStyle().color("").fontSize(0).iconURL(List.of()).build())
                         .isHeader(false)
                         .displayHeaderSeparator(false)
+                        .overflowStrategy(LabelOverflowStrategy.NONE)
                         .build())
                 .style(ImageNodeStyle.newImageNodeStyle().imageURL("").scalingFactor(0).build())
                 .position(Position.at(0, 0))
@@ -185,6 +187,7 @@ public class DeleteViewOperationHandlerTests {
                 .isHeaderProvider(vm -> false)
                 .displayHeaderSeparatorProvider(vm -> false)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         Function<VariableManager, INodeStyle> nodeStyleProvider = variableManager -> {

@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLLabelStyle, GQLOutsideLabel, GQLInsideLabel } from '../graphql/subscription/labelFragment.types';
-import { OutsideLabel, OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
+import { OutsideLabels, InsideLabel, NodeData } from '../renderer/DiagramRenderer.types';
 import { AlignmentMap } from './convertDiagram.types';
 
 export const convertInsideLabel = (
@@ -39,6 +39,7 @@ export const convertInsideLabel = (
       ...convertLabelStyle(labelStyle),
     },
     iconURL: labelStyle.iconURL,
+    overflowStrategy: gqlInsideLabel.overflowStrategy,
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
@@ -65,8 +66,9 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
       text,
       style: labelStyle,
       style: { iconURL },
+      overflowStrategy,
     } = gqlOutsideLabel;
-    const outsideLabel: OutsideLabel = {
+    allOutsideLabels[gqlOutsideLabel.outsideLabelLocation] = {
       id,
       text,
       iconURL,
@@ -74,9 +76,8 @@ export const convertOutsideLabels = (gqlOutsideLabels: GQLOutsideLabel[]): Outsi
         justifyContent: 'center',
         ...convertLabelStyle(labelStyle),
       },
+      overflowStrategy,
     };
-
-    allOutsideLabels[gqlOutsideLabel.outsideLabelLocation] = outsideLabel;
 
     return allOutsideLabels;
   };

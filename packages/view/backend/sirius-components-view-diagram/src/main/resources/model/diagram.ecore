@@ -42,6 +42,11 @@
   <eClassifiers xsi:type="ecore:EEnum" name="OutsideLabelPosition">
     <eLiterals name="BOTTOM_CENTER"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LabelOverflowStrategy">
+    <eLiterals name="NONE"/>
+    <eLiterals name="WRAP" value="1"/>
+    <eLiterals name="ELLIPSIS" value="2"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -139,9 +144,11 @@
         eType="#//NodeDescription"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FreeFormLayoutStrategyDescription" eSuperTypes="#//LayoutStrategyDescription"/>
-  <eClassifiers xsi:type="ecore:EClass" name="LabelDescription">
+  <eClassifiers xsi:type="ecore:EClass" name="LabelDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
         defaultValueLiteral="aql:self.name"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="overflowStrategy" lowerBound="1"
+        eType="#//LabelOverflowStrategy"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InsideLabelDescription" eSuperTypes="#//LabelDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="position" lowerBound="1"

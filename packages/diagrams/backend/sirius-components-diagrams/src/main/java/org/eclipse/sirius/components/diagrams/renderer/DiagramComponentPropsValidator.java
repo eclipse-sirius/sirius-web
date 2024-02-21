@@ -20,6 +20,8 @@ import org.eclipse.sirius.components.diagrams.components.InsideLabelComponent;
 import org.eclipse.sirius.components.diagrams.components.InsideLabelComponentProps;
 import org.eclipse.sirius.components.diagrams.components.LabelComponent;
 import org.eclipse.sirius.components.diagrams.components.LabelComponentProps;
+import org.eclipse.sirius.components.diagrams.components.NodeChildrenComponent;
+import org.eclipse.sirius.components.diagrams.components.NodeChildrenComponentProps;
 import org.eclipse.sirius.components.diagrams.components.NodeComponent;
 import org.eclipse.sirius.components.diagrams.components.NodeComponentProps;
 import org.eclipse.sirius.components.diagrams.components.OutsideLabelComponent;
@@ -50,6 +52,8 @@ public class DiagramComponentPropsValidator implements IComponentPropsValidator 
             checkValidProps = props instanceof InsideLabelComponentProps;
         } else if (OutsideLabelComponent.class.equals(componentType)) {
             checkValidProps = props instanceof OutsideLabelComponentProps;
+        } else if (NodeChildrenComponent.class.equals(componentType)) {
+            checkValidProps = props instanceof NodeChildrenComponentProps;
         }
 
         return checkValidProps;

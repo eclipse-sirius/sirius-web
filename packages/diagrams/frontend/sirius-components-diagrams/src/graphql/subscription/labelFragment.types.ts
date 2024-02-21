@@ -24,15 +24,19 @@ export interface GQLInsideLabel {
   style: GQLLabelStyle;
   isHeader: boolean;
   displayHeaderSeparator: boolean;
+  overflowStrategy: GQLLabelOverflowStrategy;
 }
 
 export type GQLInsideLabelLocation = 'TOP_CENTER';
+
+export type GQLLabelOverflowStrategy = 'NONE' | 'WRAP' | 'ELLIPSIS';
 
 export interface GQLOutsideLabel {
   id: string;
   text: string;
   outsideLabelLocation: GQLOutsideLabelLocation;
   style: GQLLabelStyle;
+  overflowStrategy: GQLLabelOverflowStrategy;
 }
 
 export type GQLOutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';

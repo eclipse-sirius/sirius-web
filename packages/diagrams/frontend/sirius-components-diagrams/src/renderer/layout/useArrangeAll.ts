@@ -17,7 +17,7 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ListNodeData } from '../node/ListNode.types';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { headerVerticalOffset, labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
+import { labelVerticalPadding, labelHorizontalPadding } from './layoutParams';
 import { RawDiagram } from './layout.types';
 import { useLayout } from './useLayout';
 import { useSynchronizeLayoutData } from './useSynchronizeLayoutData';
@@ -50,22 +50,46 @@ const elkOptions = {
   'elk.layered.spacing.edgeNodeBetweenLayers': '40',
 };
 
-const computeLabels = (node, viewportZoom: number): ElkLabel[] => {
+const computeHeaderVerticalFootprint = (
+  node,
+  viewportZoom: number,
+  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
+): number => {
+  if (node && node.data.insideLabel?.isHeader) {
+    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
+      `[data-id="${node.data.insideLabel.id}-content"]`
+    );
+    if (label) {
+      return label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2;
+    }
+  }
+  return 0;
+};
+
+const computeLabels = (
+  node,
+  viewportZoom: number,
+  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
+): ElkLabel[] => {
   const labels: ElkLabel[] = [];
   if (node && node.data.insideLabel) {
-    const label = document.querySelector<HTMLDivElement>(`[data-id="${node.data.insideLabel.id}-content"]`);
+    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
+      `[data-id="${node.data.insideLabel.id}-content"]`
+    );
     if (label) {
       const elkLabel: ElkLabel = {
         id: node.data.insideLabel.id,
         width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
         height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
         text: node.data.insideLabel.text,
+        x: 0,
+        y: 0,
       };
       labels.push(elkLabel);
     }
   }
   if (node && node.data.outsideLabels.BOTTOM_MIDDLE) {
-    const label = document.querySelector<HTMLDivElement>(
+    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
       `[data-id="${node.data.outsideLabels.BOTTOM_MIDDLE.id}-content"]`
     );
     if (label) {
@@ -74,6 +98,8 @@ const computeLabels = (node, viewportZoom: number): ElkLabel[] => {
         width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
         height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
         text: node.data.outsideLabels.BOTTOM_MIDDLE.text,
+        x: 0,
+        y: node.height,
       };
       labels.push(elkLabel);
     }
@@ -81,7 +107,10 @@ const computeLabels = (node, viewportZoom: number): ElkLabel[] => {
   return labels;
 };
 
-export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue => {
+export const useArrangeAll = (
+  refreshEventPayloadId: string,
+  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
+): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<NodeData, EdgeData>();
   const viewport = useViewport();
   const { layout } = useLayout();
@@ -94,13 +123,13 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
     edges,
     options: LayoutOptions = {},
     parentNodeId: string,
-    withHeader: boolean
+    headerVerticalFootprint: number
   ): Promise<any> => {
     const graph: ElkNode = {
       id: parentNodeId,
       layoutOptions: options,
       children: nodes.map((node) => ({
-        labels: computeLabels(node, viewport.zoom),
+        labels: computeLabels(node, viewport.zoom, reactFlowWrapper),
         ...node,
       })),
       edges,
@@ -111,7 +140,7 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
         nodes:
           layoutedGraph?.children?.map((node_1) => ({
             ...node_1,
-            position: { x: node_1.x ?? 0, y: (node_1.y ?? 0) + (withHeader ? headerVerticalOffset : 0) },
+            position: { x: node_1.x ?? 0, y: (node_1.y ?? 0) + headerVerticalFootprint },
           })) ?? [],
         layoutReturn: layoutedGraph,
       };
@@ -134,7 +163,11 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
         layoutedAllNodes = [...layoutedAllNodes, ...nodes.reverse()];
         continue;
       }
-      const withHeader: boolean = parentNode?.data.insideLabel?.isHeader ?? false;
+      const headerVerticalFootprint: number = computeHeaderVerticalFootprint(
+        parentNode,
+        viewport.zoom,
+        reactFlowWrapper
+      );
       const subGroupNodes: Node<NodeData>[] = nodes
         .filter((node) => !node.data.isBorderNode)
         .map((node) => {
@@ -154,12 +187,12 @@ export const useArrangeAll = (refreshEventPayloadId: string): UseArrangeAllValue
           edge.source = parentNodeId;
         }
       });
-      await getELKLayout(subGroupNodes, subGroupEdges, elkOptions, parentNodeId, withHeader).then(
+      await getELKLayout(subGroupNodes, subGroupEdges, elkOptions, parentNodeId, headerVerticalFootprint).then(
         ({ nodes: layoutedSubNodes, layoutReturn }) => {
           const parentNode = allNodes.find((node) => node.id === parentNodeId);
           if (parentNode) {
             parentNode.width = layoutReturn.width;
-            parentNode.height = layoutReturn.height + (withHeader ? headerVerticalOffset : 0);
+            parentNode.height = layoutReturn.height + headerVerticalFootprint;
             parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
             parentNodeWithNewSize.push(parentNode);
           }

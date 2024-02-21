@@ -282,12 +282,12 @@ public class EdgeComponent implements IComponent {
 
 
         boolean isSourceHidden = diagramEvents.stream()
-            .filter(HideDiagramElementEvent.class::isInstance)
-            .map(HideDiagramElementEvent.class::cast)
-            .filter(hideDiagramElementEvent -> hideDiagramElementEvent.getElementIds().contains(sourceId))
-            .map(HideDiagramElementEvent::hideElement)
-            .reduce((a, b) -> b)
-            .orElse(sourceState == ViewModifier.Hidden);
+                .filter(HideDiagramElementEvent.class::isInstance)
+                .map(HideDiagramElementEvent.class::cast)
+                .filter(hideDiagramElementEvent -> hideDiagramElementEvent.getElementIds().contains(sourceId))
+                .map(HideDiagramElementEvent::hideElement)
+                .reduce((a, b) -> b)
+                .orElse(sourceState == ViewModifier.Hidden);
 
         boolean isTargetHidden = diagramEvents.stream()
                 .filter(HideDiagramElementEvent.class::isInstance)

@@ -56,6 +56,16 @@ public class InsideLabelDescriptionBuilder {
     }
 
     /**
+     * Setter for OverflowStrategy.
+     *
+     * @generated
+     */
+    public InsideLabelDescriptionBuilder overflowStrategy(org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy value) {
+        this.getInsideLabelDescription().setOverflowStrategy(value);
+        return this;
+    }
+
+    /**
      * Setter for Position.
      *
      * @generated

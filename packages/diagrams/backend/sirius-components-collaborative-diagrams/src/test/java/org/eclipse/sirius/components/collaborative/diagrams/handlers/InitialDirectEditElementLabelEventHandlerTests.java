@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
@@ -117,7 +118,8 @@ public class InitialDirectEditElementLabelEventHandlerTests {
                 .fontSize(16)
                 .iconURL(List.of())
                 .build();
-        Node node = new TestDiagramBuilder().getNodeWithOutsideLabels(UUID.randomUUID().toString(), false, List.of(new OutsideLabel(labelId, "text", OutsideLabelLocation.BOTTOM_MIDDLE, labelStyle)));
+        Node node = new TestDiagramBuilder().getNodeWithOutsideLabels(UUID.randomUUID().toString(), false, List.of(new OutsideLabel(labelId, "text", OutsideLabelLocation.BOTTOM_MIDDLE, labelStyle,
+                LabelOverflowStrategy.NONE)));
         Diagram diagram = Diagram.newDiagram(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString())).nodes(List.of(node)).build();
 
         var input = new InitialDirectEditElementLabelInput(UUID.randomUUID(), this.editingContextId.toString(), UUID.randomUUID().toString(), labelId);

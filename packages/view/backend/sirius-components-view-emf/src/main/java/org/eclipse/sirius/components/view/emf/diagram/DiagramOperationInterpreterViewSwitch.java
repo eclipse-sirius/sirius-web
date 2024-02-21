@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -181,6 +182,7 @@ public class DiagramOperationInterpreterViewSwitch extends DiagramSwitch<Optiona
                 .style(labelStyle)
                 .isHeader(false)
                 .displayHeaderSeparator(false)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
