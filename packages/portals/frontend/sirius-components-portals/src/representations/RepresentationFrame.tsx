@@ -38,10 +38,17 @@ const useFrameStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
   },
   title: {
     marginLeft: theme.spacing(1),
     flexGrow: 1,
+  },
+  removeIcon: {
+    position: 'sticky',
+    right: 0,
   },
 }));
 
@@ -71,6 +78,7 @@ export const RepresentationFrame = ({
           {portalMode === 'edit' ? (
             <IconButton
               aria-label="remove"
+              className={classes.removeIcon}
               onClick={(e) => {
                 e.preventDefault();
                 onDelete();
