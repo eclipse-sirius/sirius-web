@@ -126,6 +126,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/2480[#2480] [diagram] Merge the rectangle node and the image node into FreeFormNode.
 - https://github.com/eclipse-sirius/sirius-web/issues/3079[#3079] [deck] Add a name attribute on CardDescription and LaneDescription
 - https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [sirius-web] Improve the new architecture to let product builders reuse Sirius Web
+- https://github.com/eclipse-sirius/sirius-web/issues/3141[#3141] [portal] Make the header of embedded representations sticky so that it (and its icon) are always visible.
 
 == v2024.1.0
 
