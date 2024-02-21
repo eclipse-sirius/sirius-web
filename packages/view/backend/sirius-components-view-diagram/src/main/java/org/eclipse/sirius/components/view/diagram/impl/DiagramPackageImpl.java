@@ -50,6 +50,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LayoutDirection;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -443,6 +444,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EEnum outsideLabelPositionEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum labelOverflowStrategyEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -983,6 +991,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EAttribute getLabelDescription_LabelExpression() {
         return (EAttribute) this.labelDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getLabelDescription_OverflowStrategy() {
+        return (EAttribute) this.labelDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2081,6 +2099,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getLabelOverflowStrategy() {
+        return this.labelOverflowStrategyEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -2151,6 +2179,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.labelDescriptionEClass = this.createEClass(LABEL_DESCRIPTION);
         this.createEAttribute(this.labelDescriptionEClass, LABEL_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEAttribute(this.labelDescriptionEClass, LABEL_DESCRIPTION__OVERFLOW_STRATEGY);
 
         this.insideLabelDescriptionEClass = this.createEClass(INSIDE_LABEL_DESCRIPTION);
         this.createEAttribute(this.insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__POSITION);
@@ -2298,6 +2327,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
         this.insideLabelPositionEEnum = this.createEEnum(INSIDE_LABEL_POSITION);
         this.outsideLabelPositionEEnum = this.createEEnum(OUTSIDE_LABEL_POSITION);
+        this.labelOverflowStrategyEEnum = this.createEEnum(LABEL_OVERFLOW_STRATEGY);
     }
 
     /**
@@ -2453,9 +2483,11 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.freeFormLayoutStrategyDescriptionEClass, FreeFormLayoutStrategyDescription.class, "FreeFormLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
 
-        this.initEClass(this.labelDescriptionEClass, LabelDescription.class, "LabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEClass(this.labelDescriptionEClass, LabelDescription.class, "LabelDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getLabelDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", "aql:self.name", 0, 1, LabelDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getLabelDescription_OverflowStrategy(), this.getLabelOverflowStrategy(), "overflowStrategy", null, 1, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.insideLabelDescriptionEClass, InsideLabelDescription.class, "InsideLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getInsideLabelDescription_Position(), this.getInsideLabelPosition(), "position", null, 1, 1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -2702,6 +2734,11 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.initEEnum(this.outsideLabelPositionEEnum, OutsideLabelPosition.class, "OutsideLabelPosition");
         this.addEEnumLiteral(this.outsideLabelPositionEEnum, OutsideLabelPosition.BOTTOM_CENTER);
+
+        this.initEEnum(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.class, "LabelOverflowStrategy");
+        this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.NONE);
+        this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.WRAP);
+        this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.ELLIPSIS);
 
         // Create resource
         this.createResource(eNS_URI);

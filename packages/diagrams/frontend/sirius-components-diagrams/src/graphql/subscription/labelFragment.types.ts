@@ -24,9 +24,12 @@ export interface GQLInsideLabel {
   style: GQLLabelStyle;
   isHeader: boolean;
   displayHeaderSeparator: boolean;
+  overflowStrategy: GQLLabelOverflowStrategy;
 }
 
 export type GQLInsideLabelLocation = 'TOP_CENTER';
+
+export type GQLLabelOverflowStrategy = 'NONE' | 'WRAP' | 'ELLIPSIS';
 
 export interface GQLOutsideLabel {
   id: string;

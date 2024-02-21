@@ -72,12 +72,6 @@ export const prepareLayoutArea = (
   const visibleNodes = diagram.nodes.filter((node) => !node.hidden);
 
   // Render all label first
-  /**
-   * WARN: The height label computed in the hidden-container will be slightly different from the label rendered in the reactflow diagram.
-   * This difference is due to the line-height which is set in `variables.css` to 1.5 globaly but in `reset.css` the line-height is
-   * overridden to `normal` for element with [role=button] which seem to be the case for all reactflow nodes.
-   * That should not impact the node size since it is calculated with the higher value of line-height.
-   */
   const labelElements: JSX.Element[] = [];
   visibleNodes.forEach((node, index) => {
     if (hiddenContainer && node.data.insideLabel) {
@@ -94,6 +88,7 @@ export const prepareLayoutArea = (
         id: `${node.id}-label-${index}`,
         key: `${node.id}-label-${index}`,
         role: 'button', // role applied by react flow
+        style: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : { maxWidth: node.width },
         children,
       });
       labelElements.push(element);
@@ -113,6 +108,7 @@ export const prepareLayoutArea = (
         id: `${outsideLabel.id}-label`,
         key: `${outsideLabel.id}-label`,
         role: 'button', // role applied by react flow
+        style: { maxWidth: node.width },
         children,
       });
       labelElements.push(element);

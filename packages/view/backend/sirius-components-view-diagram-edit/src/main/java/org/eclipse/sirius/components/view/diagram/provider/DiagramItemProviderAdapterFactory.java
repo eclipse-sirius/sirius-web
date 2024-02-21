@@ -85,6 +85,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected Collection<Object> supportedTypes = new ArrayList<>();
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.DiagramDescription} instances. <!-- begin-user-doc --> <!--
@@ -93,6 +94,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected DiagramDescriptionItemProvider diagramDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.NodeDescription} instances. <!-- begin-user-doc --> <!--
@@ -101,6 +103,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected NodeDescriptionItemProvider nodeDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.EdgeDescription} instances. <!-- begin-user-doc --> <!--
@@ -109,6 +112,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected EdgeDescriptionItemProvider edgeDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription} instances. <!-- begin-user-doc
@@ -117,6 +121,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ListLayoutStrategyDescriptionItemProvider listLayoutStrategyDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription} instances. <!--
@@ -125,14 +130,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected FreeFormLayoutStrategyDescriptionItemProvider freeFormLayoutStrategyDescriptionItemProvider;
-    /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.diagram.LabelDescription} instances. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    protected LabelDescriptionItemProvider labelDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription} instances. <!-- begin-user-doc --> <!--
@@ -141,6 +139,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected InsideLabelDescriptionItemProvider insideLabelDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription} instances. <!-- begin-user-doc -->
@@ -149,6 +148,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected OutsideLabelDescriptionItemProvider outsideLabelDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.InsideLabelStyle} instances. <!-- begin-user-doc --> <!--
@@ -157,6 +157,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected InsideLabelStyleItemProvider insideLabelStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.OutsideLabelStyle} instances. <!-- begin-user-doc --> <!--
@@ -165,6 +166,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected OutsideLabelStyleItemProvider outsideLabelStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle} instances. <!-- begin-user-doc --> <!--
@@ -173,6 +175,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ConditionalNodeStyleItemProvider conditionalNodeStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle} instances. <!-- begin-user-doc -->
@@ -181,6 +184,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ConditionalInsideLabelStyleItemProvider conditionalInsideLabelStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle} instances. <!-- begin-user-doc
@@ -189,6 +193,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ConditionalOutsideLabelStyleItemProvider conditionalOutsideLabelStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription} instances. <!-- begin-user-doc
@@ -197,6 +202,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected RectangularNodeStyleDescriptionItemProvider rectangularNodeStyleDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription} instances. <!-- begin-user-doc -->
@@ -205,6 +211,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ImageNodeStyleDescriptionItemProvider imageNodeStyleDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription} instances. <!-- begin-user-doc
@@ -213,6 +220,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected IconLabelNodeStyleDescriptionItemProvider iconLabelNodeStyleDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.EdgeStyle}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -220,6 +228,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected EdgeStyleItemProvider edgeStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle} instances. <!-- begin-user-doc --> <!--
@@ -228,6 +237,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ConditionalEdgeStyleItemProvider conditionalEdgeStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.DiagramPalette} instances. <!-- begin-user-doc --> <!--
@@ -236,6 +246,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected DiagramPaletteItemProvider diagramPaletteItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.NodePalette}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -243,6 +254,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected NodePaletteItemProvider nodePaletteItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.EdgePalette}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -250,6 +262,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected EdgePaletteItemProvider edgePaletteItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.DeleteTool}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -257,6 +270,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected DeleteToolItemProvider deleteToolItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.DropTool}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -264,6 +278,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected DropToolItemProvider dropToolItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.EdgeTool}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -271,6 +286,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected EdgeToolItemProvider edgeToolItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.LabelEditTool}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -278,6 +294,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected LabelEditToolItemProvider labelEditToolItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.NodeTool}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -285,6 +302,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected NodeToolItemProvider nodeToolItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool} instances. <!-- begin-user-doc
@@ -293,6 +311,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected SourceEdgeEndReconnectionToolItemProvider sourceEdgeEndReconnectionToolItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool} instances. <!-- begin-user-doc
@@ -301,6 +320,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected TargetEdgeEndReconnectionToolItemProvider targetEdgeEndReconnectionToolItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.CreateView}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -308,6 +328,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected CreateViewItemProvider createViewItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.DeleteView}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -315,6 +336,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected DeleteViewItemProvider deleteViewItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.SelectionDescription} instances. <!-- begin-user-doc --> <!--
@@ -323,6 +345,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected SelectionDescriptionItemProvider selectionDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.DiagramToolSection} instances. <!-- begin-user-doc --> <!--
@@ -331,6 +354,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected DiagramToolSectionItemProvider diagramToolSectionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.NodeToolSection} instances. <!-- begin-user-doc --> <!--
@@ -339,6 +363,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected NodeToolSectionItemProvider nodeToolSectionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.EdgeToolSection} instances. <!-- begin-user-doc --> <!--
@@ -347,6 +372,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected EdgeToolSectionItemProvider edgeToolSectionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.DropNodeTool}
      * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -442,21 +468,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
         }
 
         return this.freeFormLayoutStrategyDescriptionItemProvider;
-    }
-
-    /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.LabelDescription}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createLabelDescriptionAdapter() {
-        if (this.labelDescriptionItemProvider == null) {
-            this.labelDescriptionItemProvider = new LabelDescriptionItemProvider(this);
-        }
-
-        return this.labelDescriptionItemProvider;
     }
 
     /**
@@ -1033,8 +1044,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.listLayoutStrategyDescriptionItemProvider.dispose();
         if (this.freeFormLayoutStrategyDescriptionItemProvider != null)
             this.freeFormLayoutStrategyDescriptionItemProvider.dispose();
-        if (this.labelDescriptionItemProvider != null)
-            this.labelDescriptionItemProvider.dispose();
         if (this.insideLabelDescriptionItemProvider != null)
             this.insideLabelDescriptionItemProvider.dispose();
         if (this.outsideLabelDescriptionItemProvider != null)

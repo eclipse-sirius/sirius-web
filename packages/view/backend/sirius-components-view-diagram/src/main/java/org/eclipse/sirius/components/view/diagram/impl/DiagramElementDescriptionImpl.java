@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -355,11 +357,11 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
+                return !Objects.equals(DOMAIN_TYPE_EDEFAULT, this.domainType);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
+                return !Objects.equals(PRECONDITION_EXPRESSION_EDEFAULT, this.preconditionExpression);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
         }
@@ -376,19 +378,18 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", domainType: ");
-        result.append(this.domainType);
-        result.append(", semanticCandidatesExpression: ");
-        result.append(this.semanticCandidatesExpression);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(", synchronizationPolicy: ");
-        result.append(this.synchronizationPolicy);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (name: " +
+                this.name +
+                ", domainType: " +
+                this.domainType +
+                ", semanticCandidatesExpression: " +
+                this.semanticCandidatesExpression +
+                ", preconditionExpression: " +
+                this.preconditionExpression +
+                ", synchronizationPolicy: " +
+                this.synchronizationPolicy +
+                ')';
+        return result;
     }
 
 } // DiagramElementDescriptionImpl

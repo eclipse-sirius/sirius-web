@@ -93,6 +93,7 @@ const toIconLabelNode = (
       iconURL: labelStyle.iconURL,
       isHeader: insideLabel.isHeader,
       displayHeaderSeparator: insideLabel.displayHeaderSeparator,
+      overflowStrategy: insideLabel.overflowStrategy,
     };
   }
 

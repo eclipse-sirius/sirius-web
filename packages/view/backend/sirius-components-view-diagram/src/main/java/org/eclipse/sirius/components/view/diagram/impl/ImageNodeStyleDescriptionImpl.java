@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -387,7 +389,7 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                this.setBorderColor((UserColor) null);
+                this.setBorderColor(null);
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
@@ -425,7 +427,7 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
-                return SHAPE_EDEFAULT == null ? this.shape != null : !SHAPE_EDEFAULT.equals(this.shape);
+                return !Objects.equals(SHAPE_EDEFAULT, this.shape);
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
                 return this.positionDependentRotation != POSITION_DEPENDENT_ROTATION_EDEFAULT;
         }
@@ -490,19 +492,18 @@ public class ImageNodeStyleDescriptionImpl extends StyleImpl implements ImageNod
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (borderRadius: ");
-        result.append(this.borderRadius);
-        result.append(", borderSize: ");
-        result.append(this.borderSize);
-        result.append(", borderLineStyle: ");
-        result.append(this.borderLineStyle);
-        result.append(", shape: ");
-        result.append(this.shape);
-        result.append(", positionDependentRotation: ");
-        result.append(this.positionDependentRotation);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (borderRadius: " +
+                this.borderRadius +
+                ", borderSize: " +
+                this.borderSize +
+                ", borderLineStyle: " +
+                this.borderLineStyle +
+                ", shape: " +
+                this.shape +
+                ", positionDependentRotation: " +
+                this.positionDependentRotation +
+                ')';
+        return result;
     }
 
 } // ImageNodeStyleDescriptionImpl

@@ -729,13 +729,22 @@ public interface DiagramPackage extends EPackage {
     int LABEL_DESCRIPTION__LABEL_EXPRESSION = 0;
 
     /**
+     * The feature id for the '<em><b>Overflow Strategy</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_DESCRIPTION__OVERFLOW_STRATEGY = 1;
+
+    /**
      * The number of structural features of the '<em>Label Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int LABEL_DESCRIPTION_FEATURE_COUNT = 1;
+    int LABEL_DESCRIPTION_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Label Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -763,6 +772,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int INSIDE_LABEL_DESCRIPTION__LABEL_EXPRESSION = LABEL_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Overflow Strategy</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int INSIDE_LABEL_DESCRIPTION__OVERFLOW_STRATEGY = LABEL_DESCRIPTION__OVERFLOW_STRATEGY;
 
     /**
      * The feature id for the '<em><b>Position</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -826,6 +844,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int OUTSIDE_LABEL_DESCRIPTION__LABEL_EXPRESSION = LABEL_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Overflow Strategy</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int OUTSIDE_LABEL_DESCRIPTION__OVERFLOW_STRATEGY = LABEL_DESCRIPTION__OVERFLOW_STRATEGY;
 
     /**
      * The feature id for the '<em><b>Position</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3023,12 +3050,6 @@ public interface DiagramPackage extends EPackage {
      */
     int DROP_NODE_TOOL__ACCEPTED_NODE_TYPES = TOOL_FEATURE_COUNT;
     /**
-     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
-    /**
      * The number of structural features of the '<em>Drop Node Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3106,6 +3127,21 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getOutsideLabelPosition()
      */
     int OUTSIDE_LABEL_POSITION = 50;
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy <em>Label
+     * Overflow Strategy</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelOverflowStrategy()
+     */
+    int LABEL_OVERFLOW_STRATEGY = 51;
+    /**
+     * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    DiagramPackage eINSTANCE = org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl.init();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -3656,6 +3692,18 @@ public interface DiagramPackage extends EPackage {
      * @see #getLabelDescription()
      */
     EAttribute getLabelDescription_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getOverflowStrategy <em>Overflow
+     * Strategy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Overflow Strategy</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelDescription#getOverflowStrategy()
+     * @see #getLabelDescription()
+     */
+    EAttribute getLabelDescription_OverflowStrategy();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription
@@ -4880,6 +4928,16 @@ public interface DiagramPackage extends EPackage {
     EEnum getOutsideLabelPosition();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+     * <em>Label Overflow Strategy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Label Overflow Strategy</em>'.
+     * @generated
+     * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+     */
+    EEnum getLabelOverflowStrategy();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -5297,6 +5355,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute LABEL_DESCRIPTION__LABEL_EXPRESSION = eINSTANCE.getLabelDescription_LabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Overflow Strategy</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute LABEL_DESCRIPTION__OVERFLOW_STRATEGY = eINSTANCE.getLabelDescription_OverflowStrategy();
 
         /**
          * The meta object literal for the
@@ -6269,6 +6335,16 @@ public interface DiagramPackage extends EPackage {
          * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getOutsideLabelPosition()
          */
         EEnum OUTSIDE_LABEL_POSITION = eINSTANCE.getOutsideLabelPosition();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+         * <em>Label Overflow Strategy</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelOverflowStrategy()
+         */
+        EEnum LABEL_OVERFLOW_STRATEGY = eINSTANCE.getLabelOverflowStrategy();
 
     }
 

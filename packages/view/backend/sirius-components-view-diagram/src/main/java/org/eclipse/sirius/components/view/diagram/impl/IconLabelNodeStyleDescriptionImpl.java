@@ -290,7 +290,7 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
     public void eUnset(int featureID) {
         switch (featureID) {
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                this.setBorderColor((UserColor) null);
+                this.setBorderColor(null);
                 return;
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
@@ -383,15 +383,14 @@ public class IconLabelNodeStyleDescriptionImpl extends StyleImpl implements Icon
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (borderRadius: ");
-        result.append(this.borderRadius);
-        result.append(", borderSize: ");
-        result.append(this.borderSize);
-        result.append(", borderLineStyle: ");
-        result.append(this.borderLineStyle);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (borderRadius: " +
+                this.borderRadius +
+                ", borderSize: " +
+                this.borderSize +
+                ", borderLineStyle: " +
+                this.borderLineStyle +
+                ')';
+        return result;
     }
 
 } // IconLabelNodeStyleDescriptionImpl

@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.diagram.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -797,13 +798,13 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setCollapsible(COLLAPSIBLE_EDEFAULT);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__PALETTE:
-                this.setPalette((NodePalette) null);
+                this.setPalette(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
-                this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
+                this.setChildrenLayoutStrategy(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__STYLE:
-                this.setStyle((NodeStyleDescription) null);
+                this.setStyle(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
@@ -833,7 +834,7 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setKeepAspectRatio(KEEP_ASPECT_RATIO_EDEFAULT);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
-                this.setInsideLabel((InsideLabelDescription) null);
+                this.setInsideLabel(null);
                 return;
             case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
                 this.getOutsideLabels().clear();
@@ -871,9 +872,9 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
                 return this.userResizable != USER_RESIZABLE_EDEFAULT;
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
-                return DEFAULT_WIDTH_EXPRESSION_EDEFAULT == null ? this.defaultWidthExpression != null : !DEFAULT_WIDTH_EXPRESSION_EDEFAULT.equals(this.defaultWidthExpression);
+                return !Objects.equals(DEFAULT_WIDTH_EXPRESSION_EDEFAULT, this.defaultWidthExpression);
             case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
-                return DEFAULT_HEIGHT_EXPRESSION_EDEFAULT == null ? this.defaultHeightExpression != null : !DEFAULT_HEIGHT_EXPRESSION_EDEFAULT.equals(this.defaultHeightExpression);
+                return !Objects.equals(DEFAULT_HEIGHT_EXPRESSION_EDEFAULT, this.defaultHeightExpression);
             case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
                 return this.keepAspectRatio != KEEP_ASPECT_RATIO_EDEFAULT;
             case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
@@ -894,19 +895,18 @@ public class NodeDescriptionImpl extends DiagramElementDescriptionImpl implement
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (collapsible: ");
-        result.append(this.collapsible);
-        result.append(", userResizable: ");
-        result.append(this.userResizable);
-        result.append(", defaultWidthExpression: ");
-        result.append(this.defaultWidthExpression);
-        result.append(", defaultHeightExpression: ");
-        result.append(this.defaultHeightExpression);
-        result.append(", keepAspectRatio: ");
-        result.append(this.keepAspectRatio);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (collapsible: " +
+                this.collapsible +
+                ", userResizable: " +
+                this.userResizable +
+                ", defaultWidthExpression: " +
+                this.defaultWidthExpression +
+                ", defaultHeightExpression: " +
+                this.defaultHeightExpression +
+                ", keepAspectRatio: " +
+                this.keepAspectRatio +
+                ')';
+        return result;
     }
 
 } // NodeDescriptionImpl

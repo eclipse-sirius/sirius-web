@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 @Immutable
 public final class InsideLabelDescription {
+
     /**
      * The name of the variable passed to an inside label id provider so that the inside label's own id can include the id of it's
      * owner/parent diagram element.
@@ -52,8 +54,14 @@ public final class InsideLabelDescription {
 
     private InsideLabelLocation insideLabelLocation;
 
+    private LabelOverflowStrategy overflowStrategy;
+
     private InsideLabelDescription() {
         // Prevent instantiation
+    }
+
+    public static Builder newInsideLabelDescription(String id) {
+        return new Builder(id);
     }
 
     public String getId() {
@@ -84,8 +92,8 @@ public final class InsideLabelDescription {
         return this.insideLabelLocation;
     }
 
-    public static Builder newInsideLabelDescription(String id) {
-        return new Builder(id);
+    public LabelOverflowStrategy getOverflowStrategy() {
+        return this.overflowStrategy;
     }
 
     @Override
@@ -101,7 +109,8 @@ public final class InsideLabelDescription {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+
+        private final String id;
 
         private Function<VariableManager, String> idProvider;
 
@@ -114,6 +123,8 @@ public final class InsideLabelDescription {
         private Function<VariableManager, Boolean> displayHeaderSeparatorProvider;
 
         private InsideLabelLocation insideLabelLocation;
+
+        private LabelOverflowStrategy overflowStrategy;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -149,6 +160,11 @@ public final class InsideLabelDescription {
             return this;
         }
 
+        public Builder overflowStrategy(LabelOverflowStrategy overflowStrategy) {
+            this.overflowStrategy = overflowStrategy;
+            return this;
+        }
+
         public InsideLabelDescription build() {
             InsideLabelDescription labelDescription = new InsideLabelDescription();
             labelDescription.id = Objects.requireNonNull(this.id);
@@ -158,6 +174,7 @@ public final class InsideLabelDescription {
             labelDescription.isHeaderProvider = Objects.requireNonNull(this.isHeaderProvider);
             labelDescription.insideLabelLocation = Objects.requireNonNull(this.insideLabelLocation);
             labelDescription.displayHeaderSeparatorProvider = Objects.requireNonNull(this.displayHeaderSeparatorProvider);
+            labelDescription.overflowStrategy = Objects.requireNonNull(this.overflowStrategy);
             return labelDescription;
         }
     }

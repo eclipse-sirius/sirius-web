@@ -13,6 +13,7 @@
 package org.eclipse.sirius.components.view.diagram.impl;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -631,7 +632,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setIsDomainBasedEdge(IS_DOMAIN_BASED_EDGE_EDEFAULT);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__PALETTE:
-                this.setPalette((EdgePalette) null);
+                this.setPalette(null);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODE_DESCRIPTIONS:
                 this.getSourceNodeDescriptions().clear();
@@ -646,7 +647,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setTargetNodesExpression(TARGET_NODES_EXPRESSION_EDEFAULT);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
-                this.setStyle((EdgeStyle) null);
+                this.setStyle(null);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
@@ -678,7 +679,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
             case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODE_DESCRIPTIONS:
                 return this.targetNodeDescriptions != null && !this.targetNodeDescriptions.isEmpty();
             case DiagramPackage.EDGE_DESCRIPTION__SOURCE_NODES_EXPRESSION:
-                return SOURCE_NODES_EXPRESSION_EDEFAULT == null ? this.sourceNodesExpression != null : !SOURCE_NODES_EXPRESSION_EDEFAULT.equals(this.sourceNodesExpression);
+                return !Objects.equals(SOURCE_NODES_EXPRESSION_EDEFAULT, this.sourceNodesExpression);
             case DiagramPackage.EDGE_DESCRIPTION__TARGET_NODES_EXPRESSION:
                 return TARGET_NODES_EXPRESSION_EDEFAULT == null ? this.targetNodesExpression != null : !TARGET_NODES_EXPRESSION_EDEFAULT.equals(this.targetNodesExpression);
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
@@ -699,21 +700,20 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
         if (this.eIsProxy())
             return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (beginLabelExpression: ");
-        result.append(this.beginLabelExpression);
-        result.append(", centerLabelExpression: ");
-        result.append(this.centerLabelExpression);
-        result.append(", endLabelExpression: ");
-        result.append(this.endLabelExpression);
-        result.append(", isDomainBasedEdge: ");
-        result.append(this.isDomainBasedEdge);
-        result.append(", sourceNodesExpression: ");
-        result.append(this.sourceNodesExpression);
-        result.append(", targetNodesExpression: ");
-        result.append(this.targetNodesExpression);
-        result.append(')');
-        return result.toString();
+        String result = super.toString() + " (beginLabelExpression: " +
+                this.beginLabelExpression +
+                ", centerLabelExpression: " +
+                this.centerLabelExpression +
+                ", endLabelExpression: " +
+                this.endLabelExpression +
+                ", isDomainBasedEdge: " +
+                this.isDomainBasedEdge +
+                ", sourceNodesExpression: " +
+                this.sourceNodesExpression +
+                ", targetNodesExpression: " +
+                this.targetNodesExpression +
+                ')';
+        return result;
     }
 
 } // EdgeDescriptionImpl

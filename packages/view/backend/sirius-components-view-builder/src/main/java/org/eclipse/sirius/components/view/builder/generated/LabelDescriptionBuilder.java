@@ -21,7 +21,7 @@ package org.eclipse.sirius.components.view.builder.generated;
 public class LabelDescriptionBuilder {
 
     /**
-     * Create instance org.eclipse.sirius.components.view.diagram.LabelDescription.
+     * Create instance org.eclipse.sirius.components.view.form.LabelDescription.
      *
      * @generated
      */
@@ -37,7 +37,7 @@ public class LabelDescriptionBuilder {
     }
 
     /**
-     * Return instance org.eclipse.sirius.components.view.diagram.LabelDescription.
+     * Return instance org.eclipse.sirius.components.view.form.LabelDescription.
      *
      * @generated
      */

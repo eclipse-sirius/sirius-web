@@ -38,6 +38,7 @@ export const convertInsideLabel = (
       ...convertLabelStyle(labelStyle),
     },
     iconURL: labelStyle.iconURL,
+    overflowStrategy: gqlInsideLabel.overflowStrategy,
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];

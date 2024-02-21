@@ -107,6 +107,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 In this first version, the only available positions _top_center_ for inside label en _bottom_center_ for outside label.
 +
 image:doc/screenshots/inside_outside_labels.png[Isinde outside label example, 70%]
+- https://github.com/eclipse-sirius/sirius-web/issues/3135[#3135] [diagram] Add new overflow strategies for node label : _wrap_ and _ellipsis_
 
 === Improvements
 

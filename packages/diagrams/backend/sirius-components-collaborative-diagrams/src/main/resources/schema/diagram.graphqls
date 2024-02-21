@@ -111,10 +111,17 @@ type InsideLabel {
   style: LabelStyle!
   isHeader: Boolean!
   displayHeaderSeparator: Boolean!
+  overflowStrategy: LabelOverflowStrategy!
 }
 
 enum InsideLabelLocation {
   TOP_CENTER
+}
+
+enum LabelOverflowStrategy {
+  NONE
+  WRAP
+  ELLIPSIS
 }
 
 type OutsideLabel {

@@ -89,7 +89,10 @@ export interface InsideLabel {
   style: React.CSSProperties;
   isHeader: boolean;
   displayHeaderSeparator: boolean;
+  overflowStrategy: LabelOverflowStrategy;
 }
+
+export type LabelOverflowStrategy = 'NONE' | 'WRAP' | 'ELLIPSIS';
 
 export interface EdgeLabel {
   id: string;

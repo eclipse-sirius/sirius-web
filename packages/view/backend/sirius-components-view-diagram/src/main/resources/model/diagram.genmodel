@@ -55,6 +55,11 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//OutsideLabelPosition">
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//OutsideLabelPosition/BOTTOM_CENTER"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//LabelOverflowStrategy">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelOverflowStrategy/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelOverflowStrategy/WRAP"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//LabelOverflowStrategy/ELLIPSIS"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/palette"/>
@@ -107,6 +112,7 @@
     <genClasses ecoreClass="diagram.ecore#//FreeFormLayoutStrategyDescription"/>
     <genClasses ecoreClass="diagram.ecore#//LabelDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//LabelDescription/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//LabelDescription/overflowStrategy"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//InsideLabelDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//InsideLabelDescription/position"/>

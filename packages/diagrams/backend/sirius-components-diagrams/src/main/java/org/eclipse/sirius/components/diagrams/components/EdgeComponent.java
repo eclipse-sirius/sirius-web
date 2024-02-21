@@ -275,13 +275,7 @@ public class EdgeComponent implements IComponent {
         ViewModifier targetState = this.getStateFromElement(targetNode);
 
         if (optionalDiagramEvent.isPresent() && optionalDiagramEvent.get() instanceof HideDiagramElementEvent diagramEvent) {
-            boolean isSourceHidden = (diagramEvent.getElementIds().contains(sourceId) && diagramEvent.hideElement())
-                    || (!diagramEvent.getElementIds().contains(sourceId) && sourceState == ViewModifier.Hidden);
-
-            boolean isTargetHidden = (diagramEvent.getElementIds().contains(targetId) && diagramEvent.hideElement())
-                    || (!diagramEvent.getElementIds().contains(targetId) && targetState == ViewModifier.Hidden);
-
-            if (isSourceHidden || isTargetHidden) {
+            if (this.isElementHidden(diagramEvent, sourceId, sourceState) || this.isElementHidden(diagramEvent, targetId, targetState)) {
                 state = ViewModifier.Hidden;
             }
         } else {
@@ -290,6 +284,11 @@ public class EdgeComponent implements IComponent {
             }
         }
         return state;
+    }
+
+    private boolean isElementHidden(HideDiagramElementEvent diagramEvent, String elementId, ViewModifier state) {
+        return (diagramEvent.getElementIds().contains(elementId) && diagramEvent.hideElement())
+                || (!diagramEvent.getElementIds().contains(elementId) && state == ViewModifier.Hidden);
     }
 
     /**

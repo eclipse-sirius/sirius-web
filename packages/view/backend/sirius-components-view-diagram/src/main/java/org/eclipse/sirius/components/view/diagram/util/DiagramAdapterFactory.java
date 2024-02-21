@@ -81,6 +81,7 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     protected static DiagramPackage modelPackage;
+
     /**
      * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
