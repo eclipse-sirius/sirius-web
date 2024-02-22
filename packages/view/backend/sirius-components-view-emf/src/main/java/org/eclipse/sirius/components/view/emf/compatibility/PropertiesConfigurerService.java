@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,8 @@ import java.util.function.Function;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -33,26 +33,21 @@ public class PropertiesConfigurerService implements IPropertiesConfigurerService
 
     private final IValidationService validationService;
 
-    private final Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
-
-    private final Function<VariableManager, String> semanticTargetIdProvider;
-
     private final IObjectService objectService;
 
     public PropertiesConfigurerService(IValidationService validationService, IObjectService objectService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.validationService = Objects.requireNonNull(validationService);
-        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
 
     @Override
     public Function<VariableManager, List<?>> getSemanticElementsProvider() {
-        return semanticElementsProvider;
+        return variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
     }
 
     @Override
     public Function<VariableManager, String> getSemanticTargetIdProvider() {
-        return semanticTargetIdProvider;
+        return variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
     }
     @Override
     public Function<VariableManager, List<?>> getDiagnosticsProvider(Object feature) {

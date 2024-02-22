@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.validation.api;
+package org.eclipse.sirius.components.core.api;
 
 import java.util.List;
-
-import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
  * Interface used to validate elements.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,8 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
@@ -60,8 +60,7 @@ public class FixedColorPropertiesConfigurer implements IPropertiesDescriptionReg
 
     private final Function<VariableManager, String> pageLabelProvider;
 
-    public FixedColorPropertiesConfigurer(IValidationService validationService,
-             IObjectService objectService) {
+    public FixedColorPropertiesConfigurer(IValidationService validationService, IObjectService objectService) {
         this.validationService = Objects.requireNonNull(validationService);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
         this.pageLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getLabel).orElse(null);
