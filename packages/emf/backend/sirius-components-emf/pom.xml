@@ -62,11 +62,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-collaborative-validation</artifactId>
-			<version>2024.1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-interpreter</artifactId>
 			<version>2024.1.4</version>
 		</dependency>

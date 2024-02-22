@@ -55,6 +55,9 @@ This changes a core assumption from before where an element known to those servi
 This new interface will move in the near future from `sirius-components-core` to `sirius-web-application`.
 It's current location is only there to simplify the transition to the new Sirius Web architecture.
 - https://github.com/eclipse-sirius/sirius-web/issues/3021[#3021] [sirius-web] Make the `ISuggestedRootObjectTypesProvider` optional in `sirius-components-emf` in order to be able to reuse this maven module without the Sirius Desktop compatibility one.
+- https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [emf] Remove the dependency from `sirius-components-emf` to the validation representation.
+Reusing the EMF compatibility layer will not add any dependency to specific representations.
+The EMF validation support will now be provided by `sirius-web-services`.
 
 
 === Dependency update

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationDescriptionProvider;
-import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
+import org.eclipse.sirius.components.core.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.validation.description.ValidationDescription;
