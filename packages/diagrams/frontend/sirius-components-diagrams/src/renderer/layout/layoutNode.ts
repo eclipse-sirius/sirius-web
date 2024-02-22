@@ -197,13 +197,47 @@ const spreadPositionedNodesFromNonPositionedNodes = (
   };
 };
 
+const getLowestSibling = (
+  siblings: Node<NodeData>[],
+  previousDiagram: RawDiagram | null
+): Node<NodeData> | undefined => {
+  return siblings
+    .map((borderNode) => (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === borderNode.id))
+    .reduce<Node<NodeData> | undefined>((lowestBorderNode, borderNode) => {
+      if (!borderNode) return lowestBorderNode;
+      if (!lowestBorderNode) return borderNode;
+
+      const borderNodeBottom = borderNode.position.y + (borderNode.height ?? 0);
+      const lowestBorderNodeBottom = lowestBorderNode.position.y + (lowestBorderNode.height ?? 0);
+
+      return borderNodeBottom > lowestBorderNodeBottom ? borderNode : lowestBorderNode;
+    }, undefined);
+};
+
+const getRightMostSibling = (
+  siblings: Node<NodeData>[],
+  previousDiagram: RawDiagram | null
+): Node<NodeData> | undefined => {
+  return siblings
+    .map((borderNode) => (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === borderNode.id))
+    .reduce<Node<NodeData> | undefined>((rightMostBorderNode, borderNode) => {
+      if (!borderNode) return rightMostBorderNode;
+      if (!rightMostBorderNode) return borderNode;
+
+      const borderNodeRight = borderNode.position.x + (borderNode.width ?? 0);
+      const rightMostBorderNodeRight = rightMostBorderNode.position.x + (rightMostBorderNode.width ?? 0);
+
+      return borderNodeRight > rightMostBorderNodeRight ? borderNode : rightMostBorderNode;
+    }, undefined);
+};
+
 export const setBorderNodesPosition = (
   borderNodes: Node<NodeData>[],
   nodeToLayout: Node<NodeData>,
   previousDiagram: RawDiagram | null
 ): void => {
   const borderNodesEast = borderNodes.filter(isEastBorderNode);
-  borderNodesEast.forEach((child, index) => {
+  borderNodesEast.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
       let newY = previousBorderNode.position.y;
@@ -216,7 +250,7 @@ export const setBorderNodesPosition = (
       };
     } else {
       child.position = { x: nodeToLayout.width ?? 0, y: defaultNodeMargin };
-      const previousSibling = borderNodesEast[index - 1];
+      const previousSibling = getLowestSibling(borderNodesEast, previousDiagram);
       if (previousSibling) {
         child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) + gap };
         child.extent = getBorderNodeExtent(nodeToLayout, child);
@@ -226,7 +260,7 @@ export const setBorderNodesPosition = (
   });
 
   const borderNodesWest = borderNodes.filter(isWestBorderNode);
-  borderNodesWest.forEach((child, index) => {
+  borderNodesWest.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
       let newY = previousBorderNode.position.y;
@@ -239,7 +273,7 @@ export const setBorderNodesPosition = (
       };
     } else {
       child.position = { x: 0 - (child.width ?? 0), y: defaultNodeMargin };
-      const previousSibling = borderNodesWest[index - 1];
+      const previousSibling = getLowestSibling(borderNodesWest, previousDiagram);
       if (previousSibling) {
         child.position = { ...child.position, y: previousSibling.position.y + (previousSibling.height ?? 0) + gap };
       }
@@ -248,7 +282,7 @@ export const setBorderNodesPosition = (
   });
 
   const borderNodesSouth = borderNodes.filter(isSouthBorderNode);
-  borderNodesSouth.forEach((child, index) => {
+  borderNodesSouth.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
       let newX = previousBorderNode.position.x;
@@ -261,7 +295,7 @@ export const setBorderNodesPosition = (
       };
     } else {
       child.position = { x: defaultNodeMargin, y: nodeToLayout.height ?? 0 };
-      const previousSibling = borderNodesSouth[index - 1];
+      const previousSibling = getRightMostSibling(borderNodesSouth, previousDiagram);
       if (previousSibling) {
         child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
         child.extent = getBorderNodeExtent(nodeToLayout, child);
@@ -271,7 +305,7 @@ export const setBorderNodesPosition = (
   });
 
   const borderNodesNorth = borderNodes.filter(isNorthBorderNode);
-  borderNodesNorth.forEach((child, index) => {
+  borderNodesNorth.forEach((child) => {
     const previousBorderNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === child.id);
     if (previousBorderNode) {
       let newX = previousBorderNode.position.x;
@@ -284,7 +318,7 @@ export const setBorderNodesPosition = (
       };
     } else {
       child.position = { x: defaultNodeMargin, y: 0 - (child.height ?? 0) };
-      const previousSibling = borderNodesNorth[index - 1];
+      const previousSibling = getRightMostSibling(borderNodesNorth, previousDiagram);
       if (previousSibling) {
         child.position = { ...child.position, x: previousSibling.position.x + (previousSibling.width ?? 0) + gap };
       }
