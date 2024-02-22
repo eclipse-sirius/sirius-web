@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,24 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api;
+package org.eclipse.sirius.web.application.project.services.api;
 
-import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
 
 /**
- * Interface used during the integration tests to simplify the execution of GraphQL requests.
+ * Used to publish or subscribe to project events.
  *
  * @author sbegaudeau
  */
-public interface IGraphQLRequestor {
-    String execute(String query, Map<String, Object> variables);
+public interface IProjectSubscriptions {
+    Optional<Flux<IPayload>> findProjectSubscriptionById(UUID projectId);
 
-    String execute(String query, IInput input);
+    void emit(UUID projectId, IPayload payload);
 
-    Flux<IPayload> subscribe(String query, IInput input);
+    void dispose(UUID projectId);
 }

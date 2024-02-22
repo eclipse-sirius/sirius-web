@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +28,8 @@ import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
+import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
@@ -42,7 +45,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import reactor.test.StepVerifier;
 
 /**
  * Integration tests of the project controllers.
@@ -50,6 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProjectControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -110,6 +117,16 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
             mutation deleteProject($input: DeleteProjectInput!) {
               deleteProject(input: $input) {
                 __typename
+              }
+            }
+            """;
+
+    private static final String GET_PROJECT_EVENT_SUBSCRIPTION = """
+            subscription projectEvent($input: ProjectEventInput!) {
+              projectEvent(input: $input) {
+                ... on ProjectRenamedEventPayload {
+                  newName
+                }
               }
             }
             """;
@@ -255,5 +272,56 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(0);
+    }
+
+    @Test
+    @DisplayName("Given a project, when the project is renamed, then a project event is emitted")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenProjectWhenTheProjectIsRenamedThenProjectEventIsEmitted() {
+        var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var flux = this.graphQLRequestor.subscribe(GET_PROJECT_EVENT_SUBSCRIPTION, projectEventInput);
+
+        var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, "New Name");
+        Runnable renameProjectTask = () -> {
+            var result = this.graphQLRequestor.execute(RENAME_PROJECT_MUTATION, input);
+            String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+            assertThat(typename).isEqualTo(RenameProjectSuccessPayload.class.getSimpleName());
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+        };
+        StepVerifier.create(flux)
+                .then(renameProjectTask)
+                .expectNextMatches(payload -> {
+                    boolean isValid = payload instanceof ProjectRenamedEventPayload;
+                    isValid = isValid && ((ProjectRenamedEventPayload) payload).newName().equals(input.newName());
+                    return isValid;
+                })
+                .thenCancel()
+                .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    @DisplayName("Given a project, when the project is deleted, then the project event is completed")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenProjectWhenTheProjectIsDeletedThenTheProjectEventIsCompleted() {
+        var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        var flux = this.graphQLRequestor.subscribe(GET_PROJECT_EVENT_SUBSCRIPTION, projectEventInput);
+
+        var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
+        Runnable deleteProjectTask = () -> {
+            var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
+            String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
+            assertThat(typename).isEqualTo(DeleteProjectSuccessPayload.class.getSimpleName());
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+        };
+        StepVerifier.create(flux)
+                .then(deleteProjectTask)
+                .expectComplete()
+                .verify(Duration.ofSeconds(5));
     }
 }

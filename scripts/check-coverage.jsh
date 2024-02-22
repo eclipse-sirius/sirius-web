@@ -52,14 +52,14 @@ double siriusComponentsViewEMF = checkCoverage("sirius-components-view-emf");
 double expectedGlobalCoverage = 49.0;
 double expectedSiriusComponentsDiagramsCoverage = 76.0;
 double expectedSiriusComponentsCollaborativeDiagramsCoverage = 66.0;
-double expectedSiriusComponentsFormsCoverage = 71.0;
-double expectedSiriusComponentsCollaborativeFormsCoverage = 78.0;
+double expectedSiriusComponentsFormsCoverage = 76.0;
+double expectedSiriusComponentsCollaborativeFormsCoverage = 79.0;
 double expectedSiriusComponentsViewDiagramCoverage = 53.0;
 double expectedSiriusComponentsViewFormCoverage = 42.0;
 double expectedSiriusComponentsViewEMFCoverage = 57.0;
 double expectedSiriusWebDomainCoverage = 48.0;
 double expectedSiriusWebInfrastructureCoverage = 83.0;
-double expectedSiriusWebApplicationCoverage = 74.0;
+double expectedSiriusWebApplicationCoverage = 78.0;
 double expectedSiriusWebStarterCoverage = 82.0;
 
 

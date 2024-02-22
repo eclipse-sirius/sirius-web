@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
+import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.eclipse.sirius.components.web.concurrent.DelegatingRequestContextExecutorService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -64,6 +65,12 @@ public class SiriusWebStarterConfiguration {
     @ConditionalOnMissingBean(ISubscriptionManagerFactory.class)
     public ISubscriptionManagerFactory subscriptionManagerFactory() {
         return SubscriptionManager::new;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IExceptionWrapper exceptionWrapper() {
+        return new ExceptionWrapper();
     }
 
     @Bean

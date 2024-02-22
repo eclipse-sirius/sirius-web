@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,24 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.services.api;
+package org.eclipse.sirius.web.application.project.dto;
 
-import java.util.Map;
+import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 
-import reactor.core.publisher.Flux;
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Interface used during the integration tests to simplify the execution of GraphQL requests.
+ * Payload used to indicate that project's name has been updated.
  *
- * @author sbegaudeau
+ * @author arichard
  */
-public interface IGraphQLRequestor {
-    String execute(String query, Map<String, Object> variables);
-
-    String execute(String query, IInput input);
-
-    Flux<IPayload> subscribe(String query, IInput input);
+public record ProjectRenamedEventPayload(@NotNull UUID id, @NotNull UUID projectId, @NotNull String newName) implements IPayload {
 }

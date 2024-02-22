@@ -23,11 +23,14 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.springframework.stereotype.Service;
 
 import graphql.ExecutionInput;
 import graphql.GraphQL;
+import graphql.execution.reactive.SubscriptionPublisher;
+import reactor.core.publisher.Flux;
 
 /**
  * Used to execute GraphQL requests.
@@ -67,5 +70,23 @@ public class GraphQLRequestor implements IGraphQLRequestor {
     public String execute(String query, IInput input) {
         Map<String, Object> variables = Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }));
         return this.execute(query, variables);
+    }
+
+    @Override
+    public Flux<IPayload> subscribe(String query, IInput input) {
+        Map<String, Object> variables = Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }));
+
+        var executionInput = ExecutionInput.newExecutionInput()
+                .query(query)
+                .variables(variables)
+                .build();
+
+        var executionResult = this.graphQL.execute(executionInput);
+        assertThat(executionResult.getErrors()).isEmpty();
+
+        SubscriptionPublisher result = executionResult.getData();
+        return Flux.from(result.getUpstreamPublisher())
+                .filter(IPayload.class::isInstance)
+                .map(IPayload.class::cast);
     }
 }
