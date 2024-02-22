@@ -60,6 +60,30 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
             }
             """;
 
+    private static final String GET_EDITING_CONTEXT_ACTIONS = """
+            query getEditingContextActions($editingContextId: ID!) {
+              viewer {
+                editingContext(editingContextId: $editingContextId) {
+                  actions {
+                    edges {
+                      node {
+                        id
+                        label
+                      }
+                    }
+                    pageInfo {
+                      hasPreviousPage
+                      hasNextPage
+                      startCursor
+                      endCursor
+                      count
+                    }
+                  }
+                }
+              }
+            }
+            """;
+
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
@@ -85,5 +109,29 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
 
         String editingContextId = JsonPath.read(result, "$.data.viewer.project.currentEditingContext.id");
         assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+    }
+
+    @Test
+    @DisplayName("Given an editing context id, when a query is performed, then its actions are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenEditingContextIdWhenQueryIsPerformedThenItsActionsAreReturned() {
+        Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString());
+        var result = this.graphQLRequestor.execute(GET_EDITING_CONTEXT_ACTIONS, variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.startCursor");
+        assertThat(startCursor).isNull();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.endCursor");
+        assertThat(endCursor).isNull();
+
+        int count = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.count");
+        assertThat(count).isZero();
     }
 }

@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RepresentationControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -63,6 +64,30 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
                         id
                         label
                         kind
+                      }
+                    }
+                    pageInfo {
+                      hasPreviousPage
+                      hasNextPage
+                      startCursor
+                      endCursor
+                      count
+                    }
+                  }
+                }
+              }
+            }
+            """;
+
+    private static final String GET_ALL_REPRESENTATION_DESCRIPTIONS_QUERY = """
+            query getAllRepresentationMetadata($editingContextId: ID!, $objectId: ID!) {
+              viewer {
+                editingContext(editingContextId: $editingContextId) {
+                  representationDescriptions(objectId: $objectId) {
+                    edges {
+                      node {
+                        id
+                        label
                       }
                     }
                     pageInfo {
@@ -133,4 +158,35 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         var firstRepresentationId = representationIds.get(0);
         assertThat(firstRepresentationId).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
     }
+
+    @Test
+    @DisplayName("Given an object id, when a query is performed, then all the representation descriptions are returned")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenObjectIdWhenQueryIsPerformedThenAllTheRepresentationDescriptionsAreReturned() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "objectId", TestIdentifiers.EPACKAGE_OBJECT.toString()
+        );
+        var result = this.graphQLRequestor.execute(GET_ALL_REPRESENTATION_DESCRIPTIONS_QUERY, variables);
+
+        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasPreviousPage");
+        assertThat(hasPreviousPage).isFalse();
+
+        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasNextPage");
+        assertThat(hasNextPage).isFalse();
+
+        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.startCursor");
+        assertThat(startCursor).isNull();
+
+        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.endCursor");
+        assertThat(endCursor).isNull();
+
+        int count = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.count");
+        assertThat(count).isEqualTo(0);
+
+        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.edges[*].node.id");
+        assertThat(representationIds).hasSize(0);
+    }
+
 }
