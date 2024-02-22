@@ -14,17 +14,17 @@ package org.eclipse.sirius.web;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Configuration of the application used during the integration tests.
  *
  * @author sbegaudeau
  */
-@SpringBootConfiguration
+@Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackages = { "org.eclipse.sirius.web "})
 public class IntegrationTestConfiguration {
