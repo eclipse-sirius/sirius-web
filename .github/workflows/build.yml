@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - "CHANGELOG.adoc"
+      - "README.adoc"
       - "doc/**"
     branches:
       - "**"
