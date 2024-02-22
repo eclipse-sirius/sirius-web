@@ -4,6 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - "CHANGELOG.adoc"
+      - "README.adoc"
       - "doc/**"
     types:
       [

@@ -91,7 +91,10 @@ For Windows users: Due to the Maximum Path Length Limitation of Windows, you may
 === GitHub Access Token
 
 The backend components of this repository depends on https://github.com/eclipse-sirius/sirius-emf-json[`sirius-emf-json`], which is published as Maven artifacts in _GitHub Packages_.
-To build `sirius-web` locally, you need a _GitHub Access Token_ so that Maven can download the `sirius-emf-json` and `Flow-Designer` artifacts.
+The frontend components of this repository depends on https://github.com/ObeoNetwork/react-trello[`@ObeoNetwork/react-trello`] and https://github.com/ObeoNetwork/gantt-task-react[`@ObeoNetwork/gantt-task-react`], which are published as Node artifacts in _GitHub Packages_.
+To build `sirius-web` locally, you need a _GitHub Access Token_ so that:
+* Maven can download the `sirius-emf-json` and `Flow-Designer` artifacts.
+* Node can download the `@ObeoNetwork/react-trello` and `@ObeoNetwork/gantt-task-react` artifacts.
 
 . Create a personal token with a scope of `read:package` by following https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token[the GitHub documentation] if you do not have one already.
 +
@@ -119,9 +122,19 @@ WARNING: Once generated, a token cannot be displayed anymore, so make sure to co
 </settings>
 ----
 +
-Be sure to replace `$GITHUB_USERNAME` with your GitHub user id, and `$GITHUB_ACCESS_TOKEN` with the value of your acess token.
+Be sure to replace `$GITHUB_USERNAME` with your GitHub user id, and `$GITHUB_ACCESS_TOKEN` with the value of your access token.
 +
 IMPORTANT: The `id` used in your `settings.xml` *must* be `github-sirius-emfjson` and `github-flow` to match what is used in the POMs.
+
+. Create or edit `$HOME/.npmrc` to tell Node to use this token when accessing the Github Node artifacts repository:
++
+[source,sh]
+----
+//npm.pkg.github.com/:_authToken=$GITHUB_ACCESS_TOKEN
+----
++
+Be sure to replace `$GITHUB_ACCESS_TOKEN` with the value of your access token.
+
 
 === Build the frontend & backend components and Sirius Web
 
