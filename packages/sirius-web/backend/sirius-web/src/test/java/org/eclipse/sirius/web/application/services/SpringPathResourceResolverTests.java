@@ -16,12 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.infrastructure.mvc.SpringPathResourceResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 /**
@@ -29,8 +31,9 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
  *
  * @author sbegaudeau
  */
+@Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SpringPathResourceResolverTests {
+public class SpringPathResourceResolverTests extends AbstractIntegrationTests {
 
     private final PathResourceResolver pathResourceResolver = new SpringPathResourceResolver("/api");
 
