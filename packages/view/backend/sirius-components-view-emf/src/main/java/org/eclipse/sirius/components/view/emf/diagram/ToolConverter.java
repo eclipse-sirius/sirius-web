@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementT
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
+import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
@@ -173,7 +174,7 @@ public class ToolConverter {
         String toolId = this.idProvider.apply(nodeTool).toString();
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(nodeTool.getName())
-                .iconURL(List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON))
+                .iconURL(this.toolIconURLProvider(nodeTool.getIconURLsExpression(), ViewToolImageProvider.NODE_CREATION_TOOL_ICON, converterContext.getInterpreter()))
                 .handler(variableManager -> {
                     VariableManager child = variableManager.createChild();
                     child.put(CONVERTED_NODES_VARIABLE, convertedNodes);
@@ -190,7 +191,7 @@ public class ToolConverter {
         String toolId = this.idProvider.apply(edgeTool).toString();
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(edgeTool.getName())
-                .iconURL(List.of(ViewToolImageProvider.EDGE_CREATION_TOOL_ICON))
+                .iconURL(this.toolIconURLProvider(edgeTool.getIconURLsExpression(), ViewToolImageProvider.EDGE_CREATION_TOOL_ICON, converterContext.getInterpreter()))
                 .candidates(List.of(SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                         .sources(List.of(convertedNodes.get(nodeDescription)))
                         .targets(edgeTool.getTargetElementDescriptions().stream().map(convertedNodes::get).toList())
@@ -210,5 +211,23 @@ public class ToolConverter {
         var operationInterpreter = new DiagramOperationInterpreter(converterContext.getInterpreter(), this.objectService, this.editService, diagramContext, convertedNodes,
                 this.feedbackMessageService);
         return operationInterpreter.executeTool(tool, variableManager);
+    }
+
+    private List<String> toolIconURLProvider(String iconURLsExpression, String defaultIconURL, AQLInterpreter interpreter) {
+        List<String> iconURL;
+        if (iconURLsExpression == null || iconURLsExpression.isBlank()) {
+            iconURL = List.of(defaultIconURL);
+        } else {
+            iconURL = this.evaluateListString(interpreter, new VariableManager(), iconURLsExpression);
+        }
+        return iconURL;
+    }
+
+    private List<String> evaluateListString(AQLInterpreter interpreter, VariableManager variableManager, String expression) {
+        List<Object> objects = interpreter.evaluateExpression(variableManager.getVariables(), expression).asObjects().orElse(List.of());
+        return objects.stream()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .toList();
     }
 }

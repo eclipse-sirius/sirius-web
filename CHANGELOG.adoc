@@ -78,6 +78,8 @@ It's current location is only there to simplify the transition to the new Sirius
 - https://github.com/eclipse-sirius/sirius-web/issues/3100[#3100] [diagram] Add support for drop on `IconLabelNode`
 - https://github.com/eclipse-sirius/sirius-web/issues/3124[#3124] [diagram] Fix an issue that prevents manual line break in node label
 - https://github.com/eclipse-sirius/sirius-web/issues/3127[#3127] [diagram] Fix an issue with handles position
+- https://github.com/eclipse-sirius/sirius-web/issues/3143[#3143] [diagram] Fix an issue where the default icon was consistently being used for EdgeTool
+The implemented fix does not allow to evaluate an AQL expression, but only to retrieve a static value.
 
 === New Features
 
