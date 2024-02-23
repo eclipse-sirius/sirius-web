@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.user;
+package org.eclipse.sirius.web.graphql.datafetchers.viewer;
 
 import java.util.Objects;
 
@@ -36,14 +36,14 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = "User", field = "project")
-public class UserProjectDataFetcher implements IDataFetcherWithFieldCoordinates<Project> {
+@QueryDataFetcher(type = "Viewer", field = "project")
+public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinates<Project> {
 
     private static final String PROJECT_ID_ARGUMENT = "projectId";
 
     private final IProjectService projectService;
 
-    public UserProjectDataFetcher(IProjectService projectService) {
+    public ViewerProjectDataFetcher(IProjectService projectService) {
         this.projectService = Objects.requireNonNull(projectService);
     }
 

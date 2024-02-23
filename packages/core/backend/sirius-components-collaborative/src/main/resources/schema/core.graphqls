@@ -5,9 +5,7 @@ type Query {
   viewer: Viewer!
 }
 
-interface Viewer {
-  id: ID!
-  username: String!
+type Viewer {
   editingContext(editingContextId: ID!): EditingContext
 }
 

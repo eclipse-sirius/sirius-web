@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.user;
+package org.eclipse.sirius.web.graphql.datafetchers.viewer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,15 +29,15 @@ import graphql.schema.DataFetchingEnvironment;
  * </p>
  *
  * <pre>
- * type User {
+ * type Viewer {
  *   editingContext(editingContextId: ID!): EditingContext
  * }
  * </pre>
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = "User", field = "editingContext")
-public class UserEditingContextDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<String>> {
+@QueryDataFetcher(type = "Viewer", field = "editingContext")
+public class ViewerEditingContextDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<String>> {
     private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
 
     @Override

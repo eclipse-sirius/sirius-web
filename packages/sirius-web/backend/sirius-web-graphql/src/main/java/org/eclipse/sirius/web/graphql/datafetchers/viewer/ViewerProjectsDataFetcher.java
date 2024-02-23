@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.user;
+package org.eclipse.sirius.web.graphql.datafetchers.viewer;
 
 import java.util.List;
 import java.util.Objects;
@@ -47,8 +47,8 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@QueryDataFetcher(type = "User", field = "projects")
-public class UserProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<Project>> {
+@QueryDataFetcher(type = "Viewer", field = "projects")
+public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<Project>> {
 
     private static final String PAGE_ARGUMENT = "page";
 
@@ -56,7 +56,7 @@ public class UserProjectsDataFetcher implements IDataFetcherWithFieldCoordinates
 
     private final IProjectService projectService;
 
-    public UserProjectsDataFetcher(IProjectService projectService) {
+    public ViewerProjectsDataFetcher(IProjectService projectService) {
         this.projectService = Objects.requireNonNull(projectService);
     }
 

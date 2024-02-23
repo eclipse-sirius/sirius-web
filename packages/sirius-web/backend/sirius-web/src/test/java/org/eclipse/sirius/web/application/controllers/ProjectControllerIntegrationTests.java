@@ -22,12 +22,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
-import org.eclipse.sirius.web.application.project.dto.DeleteProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
@@ -233,7 +233,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT);
         var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
         String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
-        assertThat(typename).isEqualTo(DeleteProjectSuccessPayload.class.getSimpleName());
+        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isFalse();
 
@@ -314,7 +314,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Runnable deleteProjectTask = () -> {
             var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
             String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
-            assertThat(typename).isEqualTo(DeleteProjectSuccessPayload.class.getSimpleName());
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
             TestTransaction.end();

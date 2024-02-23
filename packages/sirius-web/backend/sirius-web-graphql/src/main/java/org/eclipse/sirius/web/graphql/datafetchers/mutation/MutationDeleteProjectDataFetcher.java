@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,19 +13,17 @@
 package org.eclipse.sirius.web.graphql.datafetchers.mutation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.datafetchers.IViewerProvider;
 import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
 import org.eclipse.sirius.web.services.api.projects.DeleteProjectInput;
-import org.eclipse.sirius.web.services.api.projects.DeleteProjectSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
-import org.eclipse.sirius.web.services.api.viewer.IViewer;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -52,21 +50,15 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final ObjectMapper objectMapper;
 
-    private final IViewerProvider viewerProvider;
-
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
     private final IProjectService projectService;
 
-    private final IGraphQLMessageService messageService;
-
-    public MutationDeleteProjectDataFetcher(ObjectMapper objectMapper, IViewerProvider viewerProvider, IProjectService projectService,
+    public MutationDeleteProjectDataFetcher(ObjectMapper objectMapper, IProjectService projectService,
             IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IGraphQLMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.viewerProvider = Objects.requireNonNull(viewerProvider);
         this.projectService = Objects.requireNonNull(projectService);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
-        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -74,15 +66,8 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteProjectInput.class);
 
-        var optionalViewer = this.viewerProvider.getViewer(environment);
-        IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
-        if (optionalViewer.isPresent()) {
-            IViewer viewer = optionalViewer.get();
-            this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(input.projectId().toString());
-            this.projectService.delete(input.projectId());
-            payload = new DeleteProjectSuccessPayload(input.id(), viewer);
-        }
-
-        return payload;
+        this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(input.projectId().toString());
+        this.projectService.delete(input.projectId());
+        return new SuccessPayload(input.id());
     }
 }

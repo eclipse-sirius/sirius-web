@@ -18,10 +18,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
-import org.eclipse.sirius.web.application.project.dto.DeleteProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
@@ -113,7 +113,7 @@ public class ProjectApplicationService implements IProjectApplicationService {
         if (result instanceof Failure<Void> failure) {
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<Void>) {
-            payload = new DeleteProjectSuccessPayload(input.id());
+            payload = new SuccessPayload(input.id());
         }
         return payload;
     }

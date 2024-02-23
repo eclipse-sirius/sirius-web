@@ -65,7 +65,7 @@ export const useDeleteProject = (): UseDeleteProjectValue => {
     performProjectDeletion({ variables });
   };
 
-  const projectDeleted: boolean = data?.deleteProject.__typename === 'DeleteProjectSuccessPayload';
+  const projectDeleted: boolean = data?.deleteProject.__typename === 'SuccessPayload';
 
   return {
     deleteProject,

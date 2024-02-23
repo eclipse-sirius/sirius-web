@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.graphql.datafetchers.query;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.datafetchers.IViewerProvider;
-import org.eclipse.sirius.web.services.api.viewer.IViewer;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -36,16 +32,10 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "Query", field = "viewer")
-public class QueryViewerDataFetcher implements IDataFetcherWithFieldCoordinates<IViewer> {
-
-    private final IViewerProvider viewerProvider;
-
-    public QueryViewerDataFetcher(IViewerProvider viewerProvider) {
-        this.viewerProvider = Objects.requireNonNull(viewerProvider);
-    }
+public class QueryViewerDataFetcher implements IDataFetcherWithFieldCoordinates<Object> {
 
     @Override
-    public IViewer get(DataFetchingEnvironment environment) throws Exception {
-        return this.viewerProvider.getViewer(environment).orElse(null);
+    public Object get(DataFetchingEnvironment environment) throws Exception {
+        return new Object();
     }
 }
