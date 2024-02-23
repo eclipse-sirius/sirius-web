@@ -49,7 +49,7 @@ double siriusComponentsViewForm = checkCoverage("sirius-components-view-form");
 double siriusComponentsViewEMF = checkCoverage("sirius-components-view-emf");
 
 // Expected code coverage values
-double expectedGlobalCoverage = 49.0;
+double expectedGlobalCoverage = 50.0;
 double expectedSiriusComponentsDiagramsCoverage = 76.0;
 double expectedSiriusComponentsCollaborativeDiagramsCoverage = 66.0;
 double expectedSiriusComponentsFormsCoverage = 76.0;
@@ -57,10 +57,10 @@ double expectedSiriusComponentsCollaborativeFormsCoverage = 79.0;
 double expectedSiriusComponentsViewDiagramCoverage = 53.0;
 double expectedSiriusComponentsViewFormCoverage = 42.0;
 double expectedSiriusComponentsViewEMFCoverage = 57.0;
-double expectedSiriusWebDomainCoverage = 48.0;
+double expectedSiriusWebDomainCoverage = 59.0;
 double expectedSiriusWebInfrastructureCoverage = 83.0;
-double expectedSiriusWebApplicationCoverage = 78.0;
-double expectedSiriusWebStarterCoverage = 82.0;
+double expectedSiriusWebApplicationCoverage = 84.0;
+double expectedSiriusWebStarterCoverage = 95.0;
 
 
 void display(String module, double coverage, double expected) {
