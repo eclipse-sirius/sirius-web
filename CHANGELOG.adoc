@@ -24,8 +24,6 @@
 
 === Deprecation warning
 
-- The type `Viewer` may stop being an interface since it does bring some additional complexity without real benefits.
-- The field `ChangeKind.PROJECT_RENAMING` will be deleted since it does not make any sense in Sirius Components.
 - The type `RenameProjectSuccessPayload` and `DeletedProjectSuccessPayload` will be replaced by `SuccessPayload`.
 
 === Breaking changes
@@ -60,6 +58,7 @@ Reusing the EMF compatibility layer will not add any dependency to specific repr
 The EMF validation support will now be provided by `sirius-web-services`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3156[#3156] [core] In our GraphQL schema, `Viewer` is now a type instead of an interface.
 Having `Viewer` as a type did not bring any additional value and it created some overhead by having to create and keep updated an additional type without any benefit.
+- [sirius-web] The field `ChangeKind.PROJECT_RENAMING` has been deleted since it does not make any sense in Sirius Components.
 
 
 === Dependency update

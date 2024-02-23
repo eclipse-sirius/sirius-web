@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.services.api.projects.IProjectService;
@@ -61,9 +60,6 @@ public class RenameProjectEventHandlerTests {
         assertThat(handler.canHandle(editingContext, input)).isTrue();
         handler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         assertThat(hasBeenCalled.get()).isTrue();
-
-        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
-        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.PROJECT_RENAMING);
 
         IPayload payload = payloadSink.asMono().block();
         assertThat(payload).isInstanceOf(RenameProjectSuccessPayload.class);
