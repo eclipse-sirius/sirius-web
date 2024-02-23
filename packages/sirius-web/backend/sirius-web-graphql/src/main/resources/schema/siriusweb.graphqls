@@ -1,6 +1,7 @@
-extend interface Viewer {
+extend type Viewer {
   project(projectId: ID!): Project
   projects(page: Int!, limit: Int!): ViewerProjectConnection!
+  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplateConnection!
 }
 
 type ViewerProjectConnection {
@@ -48,10 +49,6 @@ type ProjectTemplate {
   imageURL: String!
 }
 
-extend interface Viewer {
-  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplateConnection!
-}
-
 type ViewerProjectTemplateConnection {
   edges: [ViewerProjectTemplateEdge!]!
   pageInfo: PageInfo!
@@ -59,15 +56,6 @@ type ViewerProjectTemplateConnection {
 
 type ViewerProjectTemplateEdge {
   node: ProjectTemplate!
-}
-
-type User implements Viewer {
-  id: ID!
-  username: String!
-  editingContext(editingContextId: ID!): EditingContext
-  project(projectId: ID!): Project
-  projects(page: Int!, limit: Int!): ViewerProjectConnection!
-  projectTemplates(page: Int!, limit: Int!): ViewerProjectTemplateConnection!
 }
 
 extend type Mutation {
@@ -118,12 +106,7 @@ input DeleteProjectInput {
   projectId: ID!
 }
 
-union DeleteProjectPayload = ErrorPayload | DeleteProjectSuccessPayload
-
-type DeleteProjectSuccessPayload {
-  id: ID!
-  viewer: Viewer!
-}
+union DeleteProjectPayload = ErrorPayload | SuccessPayload
 
 input RenameProjectInput {
   id: ID!

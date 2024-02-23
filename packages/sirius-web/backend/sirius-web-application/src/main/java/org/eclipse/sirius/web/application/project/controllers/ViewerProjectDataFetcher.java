@@ -27,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = "DefaultViewer", field = "project")
+@QueryDataFetcher(type = "Viewer", field = "project")
 public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinates<ProjectDTO> {
 
     private static final String PROJECT_ID_ARGUMENT = "projectId";

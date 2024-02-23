@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.graphql.datafetchers.user;
+package org.eclipse.sirius.web.graphql.datafetchers.viewer;
 
 import java.util.Comparator;
 import java.util.List;
@@ -39,15 +39,15 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@QueryDataFetcher(type = "User", field = "projectTemplates")
-public class UserProjectTemplatesDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<ProjectTemplate>> {
+@QueryDataFetcher(type = "Viewer", field = "projectTemplates")
+public class ViewerProjectTemplatesDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<ProjectTemplate>> {
     private static final String PAGE_ARGUMENT = "page";
 
     private static final String LIMIT_ARGUMENT = "limit";
 
     private final List<IProjectTemplateProvider> projectTemplateProviders;
 
-    public UserProjectTemplatesDataFetcher(List<IProjectTemplateProvider> projectTemplateProviders) {
+    public ViewerProjectTemplatesDataFetcher(List<IProjectTemplateProvider> projectTemplateProviders) {
         this.projectTemplateProviders = Objects.requireNonNull(projectTemplateProviders);
     }
 

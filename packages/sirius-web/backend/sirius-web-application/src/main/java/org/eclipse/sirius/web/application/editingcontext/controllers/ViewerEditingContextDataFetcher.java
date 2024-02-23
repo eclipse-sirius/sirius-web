@@ -29,7 +29,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = "DefaultViewer", field = "editingContext")
+@QueryDataFetcher(type = "Viewer", field = "editingContext")
 public class ViewerEditingContextDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<String>> {
 
     private static final String EDITING_CONTEXT_ID_ARGUMENT = "editingContextId";
