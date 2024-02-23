@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,7 +64,6 @@ public class RenameProjectEventHandler implements IEditingContextEventHandler {
             Optional<Project> optionalProject = this.projectService.renameProject(renameProjectInput.projectId(), renameProjectInput.newName());
             if (optionalProject.isPresent()) {
                 payload = new RenameProjectSuccessPayload(input.id(), optionalProject.get());
-                changeDescription = new ChangeDescription(ChangeKind.PROJECT_RENAMING, editingContext.getId(), input);
             }
         }
 

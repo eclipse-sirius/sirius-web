@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,6 @@ public final class ChangeKind {
     public static final String REPRESENTATION_DELETION = "REPRESENTATION_DELETION";
 
     public static final String REPRESENTATION_RENAMING = "REPRESENTATION_RENAMING";
-
-    public static final String PROJECT_RENAMING = "PROJECT_RENAMING";
 
     public static final String SEMANTIC_CHANGE = "SEMANTIC_CHANGE";
 
