@@ -249,6 +249,11 @@ describe('/projects/:projectId/edit - Robot Diagram', () => {
 
   it('semantic delete tool with confirmation dialog', () => {
     createFlowReactFlowDiagram();
+
+    // trick used to interact with the palette
+    cy.getByTestId('fit-to-screen').click();
+    cy.wait(4000);
+
     cy.getByTestId('rf__wrapper').findByTestId('FreeForm - Wifi').should('exist').click();
     cy.getByTestId('Delete from model - Tool').should('exist').click();
 
