@@ -39,14 +39,22 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       event.preventDefault();
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
-      let currentlyEditedLabelId: string | undefined | null = getNodes().find((node) => node.selected)?.data.insideLabel
-        ?.id;
-      let isLabelEditable: boolean = getNodes().find((node) => node.selected)?.data.labelEditable || false;
+
+      let currentlyEditedLabelId: string | undefined | null;
+      let isLabelEditable: boolean = false;
+      const nodeData: NodeData | undefined = getNodes().find((node) => node.selected)?.data;
+      if (nodeData) {
+        if (nodeData.insideLabel) {
+          currentlyEditedLabelId = nodeData.insideLabel.id;
+        } else if (nodeData.outsideLabels.BOTTOM_MIDDLE) {
+          currentlyEditedLabelId = nodeData.outsideLabels.BOTTOM_MIDDLE.id;
+        }
+        isLabelEditable = nodeData.labelEditable;
+      }
       if (!currentlyEditedLabelId) {
         currentlyEditedLabelId = getEdges().find((edge) => edge.selected)?.data?.label?.id;
         isLabelEditable = getEdges().find((edge) => edge.selected)?.data?.centerLabelEditable || false;
       }
-
       if (currentlyEditedLabelId && isLabelEditable) {
         if (validFirstInputChar) {
           setCurrentlyEditedLabelId('keyDown', currentlyEditedLabelId, key);
