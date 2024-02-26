@@ -164,7 +164,13 @@ export const DiagramRepresentation = ({
 
   return (
     <ReactFlowProvider>
-      <DiagramContext.Provider value={{ editingContextId, diagramId: representationId, readOnly }}>
+      <DiagramContext.Provider
+        value={{
+          editingContextId,
+          diagramId: representationId,
+          refreshEventPayloadId: state.diagramRefreshedEventPayload.id,
+          readOnly,
+        }}>
         <DiagramDescriptionContext.Provider value={{ diagramDescription }}>
           <DiagramDirectEditContextProvider>
             <DiagramPaletteContextProvider>

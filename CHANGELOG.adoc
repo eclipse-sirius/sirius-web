@@ -21,7 +21,7 @@
 - [ADR-133] Add Tree Widget to the View DSL
 - [ADR-134] Split IObjectService in multiples sub services
 - [ADR-135] Add support for representations in object related services
-- [ADR-136] Add variables to the view form dsl. 
+- [ADR-136] Add variables to the view form dsl.
 
 === Deprecation warning
 
@@ -130,7 +130,7 @@ image:doc/screenshots/showDeletionConfirmation.png[Deletion Confirmation Dialog,
 - https://github.com/eclipse-sirius/sirius-web/issues/3193[#3193] [core] Added the methods `hasVariable(String name)` and `getParent()` in VariableManager to, respectively, detect if a variable manager defines a variable (it returns `false`, if the variable is defined by a parent `VariableManager`) and to navigate to a parent `VariableManager`.
 Thanks to this capability, a specifier can easily retrieve a variable overriden by a child `VariableManager`.
 - https://github.com/eclipse-sirius/sirius-web/issues/3096[#3096] [tree] Tree representations can now support filters
-
+- https://github.com/eclipse-sirius/sirius-web/issues/3158[#3158] [diagram] Add a new tool to apply adjust-size on diagram node.
 
 === Improvements
 

@@ -17,6 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
+import AdjustIcon from '@material-ui/icons/Adjust';
 import TonalityIcon from '@material-ui/icons/Tonality';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
@@ -62,6 +63,7 @@ import {
   PaletteState,
 } from './Palette.types';
 import { ToolSection } from './tool-section/ToolSection';
+import { useAdjustSize } from '../adjust-size/useAdjustSize';
 
 const usePaletteStyle = makeStyles((theme) => ({
   palette: {
@@ -219,6 +221,7 @@ export const Palette = ({
 
   const { fadeDiagramElements } = useFadeDiagramElements();
   const { pinDiagramElements } = usePinDiagramElements();
+  const { adjustSize } = useAdjustSize();
   const { hideDiagramElements } = useHideDiagramElements();
   const { getNodes, getEdges } = useReactFlow<NodeData, EdgeData>();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
@@ -253,11 +256,12 @@ export const Palette = ({
           (toolSection) => toolSection.tools.filter(isSingleClickOnDiagramElementTool).length > 0
         ).length
       : 0) +
-    (hideableDiagramElement ? (node ? 3 : 2) : 0) +
+    (hideableDiagramElement ? (node ? 4 : 2) : 0) +
     diagramPaletteToolComponents.length;
   const classes = usePaletteStyle({ toolCount });
 
   let pinUnpinTool: JSX.Element | undefined;
+  let adjustSizeTool: JSX.Element | undefined;
   if (node) {
     pinUnpinTool = node.data.pinned ? (
       <Tooltip title="Unpin element">
@@ -279,6 +283,18 @@ export const Palette = ({
           onClick={() => pinDiagramElements([diagramElementId], true)}
           data-testid="Pin-element">
           <PinIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+    );
+    adjustSizeTool = (
+      <Tooltip title="Adjust size">
+        <IconButton
+          className={classes.toolIcon}
+          size="small"
+          aria-label="Adjust element"
+          onClick={() => adjustSize(diagramElementId)}
+          data-testid="adjust-element">
+          <AdjustIcon fontSize="small" />
         </IconButton>
       </Tooltip>
     );
@@ -487,6 +503,7 @@ export const Palette = ({
               </IconButton>
             </Tooltip>
             {pinUnpinTool}
+            {adjustSizeTool}
           </>
         ) : null}
       </div>
