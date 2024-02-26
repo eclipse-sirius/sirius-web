@@ -57,9 +57,9 @@ double expectedSiriusComponentsCollaborativeFormsCoverage = 79.0;
 double expectedSiriusComponentsViewDiagramCoverage = 53.0;
 double expectedSiriusComponentsViewFormCoverage = 42.0;
 double expectedSiriusComponentsViewEMFCoverage = 57.0;
-double expectedSiriusWebDomainCoverage = 59.0;
+double expectedSiriusWebDomainCoverage = 78.0;
 double expectedSiriusWebInfrastructureCoverage = 83.0;
-double expectedSiriusWebApplicationCoverage = 84.0;
+double expectedSiriusWebApplicationCoverage = 88.0;
 double expectedSiriusWebStarterCoverage = 95.0;
 
 
