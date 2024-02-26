@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,18 @@ public final class SpringWebMvcConfigurerConstants {
 
     /** Pattern used to match media resources from the front-end. */
     public static final String MEDIA_PATTERN = "/**/media/**";
+
+    /** Pattern used to match jpg images. */
+    public static final String JPG_PATTERN = "/**/*.jpg";
+
+    /** Pattern used to match jpeg images. */
+    public static final String JPEG_PATTERN = "/**/*.jpeg";
+
+    /** Pattern used to match png images. */
+    public static final String PNG_PATTERN = "/**/*.png";
+
+    /** Pattern used to match SVG images. */
+    public static final String SVG_PATTERN = "/**/*.svg";
 
     /** Pattern used to match the raw hostname with any specific path. */
     public static final String EMPTY_PATTERN = "";
