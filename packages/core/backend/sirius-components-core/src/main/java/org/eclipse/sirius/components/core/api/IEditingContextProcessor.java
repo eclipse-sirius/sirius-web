@@ -19,9 +19,13 @@ package org.eclipse.sirius.components.core.api;
  */
 public interface IEditingContextProcessor {
 
-    void preProcess(IEditingContext editingContext);
+    default void preProcess(IEditingContext editingContext) {
+        // Do nothing
+    }
 
-    void postProcess(IEditingContext editingContext);
+    default void postProcess(IEditingContext editingContext) {
+        // Do nothing
+    }
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.

@@ -12,21 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services.api;
 
+import java.util.UUID;
+
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
-import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
- * Used to interact with project templates.
+ * Used to initialize project from templates.
  *
  * @author sbegaudeau
  */
-public interface IProjectTemplateApplicationService {
-    Page<ProjectTemplateDTO> findAll(Pageable pageable);
-
-
-    IPayload createProjectFromTemplate(CreateProjectFromTemplateInput input);
-
+public interface ITemplateBasedProjectInitializer {
+    IPayload initializeProjectFromTemplate(CreateProjectFromTemplateInput input, UUID projectId, String templateId);
 }

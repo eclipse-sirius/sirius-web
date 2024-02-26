@@ -16,10 +16,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.time.Duration;
 import java.util.Map;
+import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
+import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionInput;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.application.studio.services.StudioEditingContextActionProvider;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +33,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import reactor.test.StepVerifier;
 
 /**
  * Integration tests of the editing context controllers.
@@ -84,6 +93,25 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
             }
             """;
 
+    private static final String INVOKE_EDITING_CONTEXT_ACTION = """
+            mutation invokeEditingContextAction($input: InvokeEditingContextActionInput!) {
+              invokeEditingContextAction(input: $input) {
+                __typename
+                ... on ErrorPayload {
+                  message
+                }
+              }
+            }
+            """;
+
+    private static final String GET_EDITING_CONTEXT_EVENT_SUBSCRIPTION = """
+            subscription editingContextEvent($input: EditingContextEventInput!) {
+              editingContextEvent(input: $input) {
+                __typename
+              }
+            }
+            """;
+
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
@@ -126,12 +154,37 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         assertThat(hasNextPage).isFalse();
 
         String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.startCursor");
-        assertThat(startCursor).isNull();
+        assertThat(startCursor).isNotBlank();
 
         String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.endCursor");
-        assertThat(endCursor).isNull();
+        assertThat(endCursor).isNotBlank();
 
         int count = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.count");
-        assertThat(count).isZero();
+        assertThat(count).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("Given a project, when an editing context action is invoked, then the editing context is modified")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenProjectWhenAnEditingContextActionIsInvokedThenTheEditingContextIsModified() {
+        var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString());
+        var flux = this.graphQLRequestor.subscribe(GET_EDITING_CONTEXT_EVENT_SUBSCRIPTION, editingContextEventInput);
+
+        var input = new InvokeEditingContextActionInput(UUID.randomUUID(), TestIdentifiers.STUDIO_PROJECT.toString(), StudioEditingContextActionProvider.EMPTY_DOMAIN_ID);
+        Runnable invokeEditingContextActionTask = () -> {
+            var result = this.graphQLRequestor.execute(INVOKE_EDITING_CONTEXT_ACTION, input);
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+
+            String typename = JsonPath.read(result, "$.data.invokeEditingContextAction.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        StepVerifier.create(flux)
+                .then(invokeEditingContextActionTask)
+                .thenCancel()
+                .verify(Duration.ofSeconds(5));
     }
 }

@@ -63,7 +63,7 @@ import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -72,7 +72,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  *
  * @author pcdavid
  */
-@Configuration
+@Service
 public class StudioProjectTemplatesInitializer implements IProjectTemplateInitializer {
 
     private static final String NAME_ATTRIBUTE = "name";

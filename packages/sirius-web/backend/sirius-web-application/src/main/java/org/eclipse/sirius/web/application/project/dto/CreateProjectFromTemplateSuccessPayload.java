@@ -10,23 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.services.api;
+package org.eclipse.sirius.web.application.project.dto;
 
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
-import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to interact with project templates.
+ * The payload of the create project from template mutation.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public interface IProjectTemplateApplicationService {
-    Page<ProjectTemplateDTO> findAll(Pageable pageable);
-
-
-    IPayload createProjectFromTemplate(CreateProjectFromTemplateInput input);
-
+public record CreateProjectFromTemplateSuccessPayload(@NotNull UUID id, @NotNull ProjectDTO project, RepresentationMetadata representationMetadata) implements IPayload {
 }

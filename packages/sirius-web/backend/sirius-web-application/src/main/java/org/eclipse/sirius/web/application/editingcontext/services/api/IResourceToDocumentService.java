@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.application.editingcontext.services.api;
 
-import java.util.UUID;
+import java.util.Optional;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 
 /**
- * Used to create the semantic data.
+ * Used to transform an EMF resource into a document.
  *
  * @author sbegaudeau
  */
-public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+public interface IResourceToDocumentService {
+    Optional<Document> toDocument(Resource resource);
 }

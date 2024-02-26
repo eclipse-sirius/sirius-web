@@ -10,18 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.application.studio.services.api;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
- * Used to create the semantic data.
+ * Provides the content of a default domain resource.
  *
  * @author sbegaudeau
  */
-public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+public interface IDefaultDomainResourceProvider {
+    Resource getResource(String domainName);
 }

@@ -10,18 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.application.project.dto;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.eclipse.sirius.components.core.api.IInput;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to create the semantic data.
+ * The input object of the create project from a template mutation.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+public record CreateProjectFromTemplateInput(@NotNull UUID id, @NotNull String templateId) implements IInput {
 }

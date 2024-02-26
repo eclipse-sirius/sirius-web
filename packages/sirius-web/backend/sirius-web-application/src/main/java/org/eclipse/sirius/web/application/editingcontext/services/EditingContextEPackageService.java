@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService
 import org.springframework.stereotype.Service;
 
 /**
- * A service used to retrieve all the EPackages accessible for a given editing context.
+ * Used to retrieve the EPackages of an editing context.
  *
  * @author sbegaudeau
  */

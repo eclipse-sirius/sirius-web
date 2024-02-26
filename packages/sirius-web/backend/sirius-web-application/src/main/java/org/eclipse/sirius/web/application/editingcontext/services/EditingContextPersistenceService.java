@@ -12,25 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
-import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
-import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +45,15 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
     private final ISemanticDataUpdateService semanticDataUpdateService;
 
+    private final IResourceToDocumentService resourceToDocumentService;
+
     private final Timer timer;
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextPersistenceService.class);
 
-    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, MeterRegistry meterRegistry) {
+    public EditingContextPersistenceService(ISemanticDataUpdateService semanticDataUpdateService, IResourceToDocumentService resourceToDocumentService, MeterRegistry meterRegistry) {
         this.semanticDataUpdateService = Objects.requireNonNull(semanticDataUpdateService);
+        this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
@@ -70,7 +66,7 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
                     .map(AggregateReference::<Project, UUID>to)
                     .ifPresent(project -> {
                         var documents = emfEditingContext.getDomain().getResourceSet().getResources().stream()
-                                .map(this::toDocument)
+                                .map(this.resourceToDocumentService::toDocument)
                                 .flatMap(Optional::stream)
                                 .collect(Collectors.toSet());
                         this.semanticDataUpdateService.updateDocuments(project, documents);
@@ -79,42 +75,5 @@ public class EditingContextPersistenceService implements IEditingContextPersiste
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
-    }
-
-    private Optional<Document> toDocument(Resource resource) {
-        HashMap<Object, Object> options = new HashMap<>();
-        options.put(JsonResource.OPTION_ID_MANAGER, new EObjectIDManager());
-        options.put(JsonResource.OPTION_SCHEMA_LOCATION, true);
-
-        Optional<Document> optionalDocument = Optional.empty();
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            resource.save(outputStream, options);
-
-            for (Resource.Diagnostic warning : resource.getWarnings()) {
-                this.logger.warn(warning.getMessage());
-            }
-            for (Resource.Diagnostic error : resource.getErrors()) {
-                this.logger.warn(error.getMessage());
-            }
-
-            var name = resource.eAdapters().stream()
-                    .filter(ResourceMetadataAdapter.class::isInstance)
-                    .map(ResourceMetadataAdapter.class::cast)
-                    .findFirst().map(ResourceMetadataAdapter::getName)
-                    .orElse("");
-            var content = outputStream.toString();
-
-            var resourceId = resource.getURI().path().substring(1);
-            var documentId = new UUIDParser().parse(resourceId).orElse(UUID.randomUUID());
-
-            var document = Document.newDocument(documentId)
-                    .name(name)
-                    .content(content)
-                    .build();
-            optionalDocument = Optional.of(document);
-        } catch (IllegalArgumentException | IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
-        }
-        return optionalDocument;
     }
 }

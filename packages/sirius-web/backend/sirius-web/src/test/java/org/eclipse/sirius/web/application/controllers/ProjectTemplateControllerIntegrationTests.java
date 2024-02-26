@@ -18,8 +18,14 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateInput;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectFromTemplateSuccessPayload;
+import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*" })
 public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrationTests {
 
     private static final String GET_PROJECT_TEMPLATES_QUERY = """
@@ -61,8 +68,27 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
             }
             """;
 
+    private static final String CREATE_PROJECT_FROM_TEMPLATE_MUTATION = """
+            mutation createProjectFromTemplate($input: CreateProjectFromTemplateInput!) {
+              createProjectFromTemplate(input: $input) {
+                __typename
+                ... on CreateProjectFromTemplateSuccessPayload {
+                  project {
+                    id
+                  }
+                  representationToOpen {
+                    id
+                  }
+                }
+              }
+            }
+            """;
+
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
 
     @Test
     @DisplayName("Given a set of project templates, when a query is performed, then the project templates are returned")
@@ -79,15 +105,42 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         assertThat(hasNextPage).isFalse();
 
         String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
-        assertThat(startCursor).isNull();
+        assertThat(startCursor).isNotBlank();
 
         String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
-        assertThat(endCursor).isNull();
+        assertThat(endCursor).isNotBlank();
 
         int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
-        assertThat(count).isZero();
+        assertThat(count).isGreaterThan(0);
 
         List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[*].node.id");
-        assertThat(projectTemplateIds).hasSize(0);
+        assertThat(projectTemplateIds).hasSizeGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("Given a project to create from a template, when the mutation is performed, then the project is created")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenProjectToCreateFromTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        var input = new CreateProjectFromTemplateInput(UUID.randomUUID(), StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID);
+        var result = this.graphQLRequestor.execute(CREATE_PROJECT_FROM_TEMPLATE_MUTATION, input);
+
+        String typename = JsonPath.read(result, "$.data.createProjectFromTemplate.__typename");
+        assertThat(typename).isEqualTo(CreateProjectFromTemplateSuccessPayload.class.getSimpleName());
+
+        String projectId = JsonPath.read(result, "$.data.createProjectFromTemplate.project.id");
+        assertThat(projectId).isNotBlank();
+
+        var optionalEditingContext = this.editingContextSearchService.findById(projectId);
+        assertThat(optionalEditingContext).isPresent();
+
+        var editingContext = optionalEditingContext.get();
+        assertThat(editingContext).isInstanceOf(IEMFEditingContext.class);
+
+        var emfEditingContext = (IEMFEditingContext) editingContext;
+        assertThat(emfEditingContext.getDomain().getResourceSet().getResources()).hasSize(2);
     }
 }
