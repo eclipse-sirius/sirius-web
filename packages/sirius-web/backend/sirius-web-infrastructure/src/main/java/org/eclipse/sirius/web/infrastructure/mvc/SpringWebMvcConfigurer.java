@@ -60,7 +60,11 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
                 SpringWebMvcConfigurerConstants.JSON_PATTERN,
                 SpringWebMvcConfigurerConstants.ICO_PATTERN,
                 SpringWebMvcConfigurerConstants.TTF_PATTERN,
-                SpringWebMvcConfigurerConstants.MEDIA_PATTERN
+                SpringWebMvcConfigurerConstants.MEDIA_PATTERN,
+                SpringWebMvcConfigurerConstants.JPG_PATTERN,
+                SpringWebMvcConfigurerConstants.JPEG_PATTERN,
+                SpringWebMvcConfigurerConstants.PNG_PATTERN,
+                SpringWebMvcConfigurerConstants.SVG_PATTERN
         ).addResourceLocations(SpringWebMvcConfigurerConstants.STATIC_ASSETS_PATH);
 
         // Make sure that all other requests are redirected to index.html, the React router will handle it
