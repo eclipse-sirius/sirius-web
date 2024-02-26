@@ -10,18 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.application.configurationproperties;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
- * Used to create the semantic data.
+ * The entry point of all the Sirius Web configuration properties.
  *
  * @author sbegaudeau
  */
-public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+@ConfigurationPropertiesScan
+@ConfigurationProperties(prefix = "sirius.web")
+public record SiriusWebProperties(
+        String enabled,
+        String disabled
+) {
+    public static final String EVERYTHING = "*";
+    public static final String STUDIO = "studio";
 }

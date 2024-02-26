@@ -27,6 +27,7 @@
 - The type `RenameProjectSuccessPayload` and `DeletedProjectSuccessPayload` will be replaced by `SuccessPayload`
 - The type `DeleteRepresentationSuccessPayload` will be replaced by `SuccessPayload`
 - The mutation `createRepresentation` and `deleteRepresentation` and their datafetcher will be entirely managed by Sirius Components
+- The interface `IEditingContextEPackageService` should be deleted since we now have access to editing context preprocessors which can be used to contribute packages to editing context and even more.
 
 === Breaking changes
 

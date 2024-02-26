@@ -231,7 +231,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(count).isEqualTo(1);
 
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.edges[*].node.id");
-        assertThat(representationIds).hasSize(1);
+        assertThat(representationIds).hasSize(2);
     }
 
     @Test

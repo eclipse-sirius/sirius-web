@@ -12,9 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EPackage;
@@ -23,12 +21,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,16 +35,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingDomainFactory implements IEditingDomainFactory {
 
-    private final Logger logger = LoggerFactory.getLogger(EditingDomainFactory.class);
-
-    private final IEditingContextEPackageService editingContextEPackageService;
-
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final EPackage.Registry globalEPackageRegistry;
 
-    public EditingDomainFactory(IEditingContextEPackageService editingContextEPackageService, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry) {
-        this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
+    public EditingDomainFactory(ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
     }
@@ -62,18 +52,13 @@ public class EditingDomainFactory implements IEditingDomainFactory {
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
-        List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(project.getId().toString());
+        var globalEPackages = this.globalEPackageRegistry.values().stream()
+                .filter(EPackage.class::isInstance)
+                .map(EPackage.class::cast);
+        globalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
 
-        Stream.concat(this.findGlobalEPackages(), additionalEPackages.stream())
-                .forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
         resourceSet.setPackageRegistry(ePackageRegistry);
 
         return editingDomain;
-    }
-
-    private Stream<EPackage> findGlobalEPackages() {
-        return this.globalEPackageRegistry.values().stream()
-                .filter(EPackage.class::isInstance)
-                .map(EPackage.class::cast);
     }
 }

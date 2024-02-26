@@ -10,18 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.application.studio.services.api;
 
-import java.util.UUID;
+import java.util.function.Predicate;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
- * Used to create the semantic data.
+ * Used to test if an editing context is capable of supporting a studio.
  *
  * @author sbegaudeau
  */
-public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+public interface IStudioCapableEditingContextPredicate extends Predicate<IEditingContext> {
 }

@@ -38,7 +38,7 @@ public class SemanticDataCreationService implements ISemanticDataCreationService
     }
 
     @Override
-    public void create(AggregateReference<Project, UUID> project) {
+    public void initialize(AggregateReference<Project, UUID> project) {
         var semanticData = SemanticData.newSemanticData()
                 .project(project)
                 .documents(Set.of())

@@ -10,18 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
-
-import java.util.UUID;
-
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+package org.eclipse.sirius.web.application.studio.services.api;
 
 /**
- * Used to create the semantic data.
+ * Used to provide a random name for new domains.
  *
- * @author sbegaudeau
+ * @author pcdavid
  */
-public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+public interface IDomainNameProvider {
+    String getSampleDomainName();
 }

@@ -10,18 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.application.images.services;
 
-import java.util.UUID;
+import java.util.List;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.eclipse.sirius.components.core.api.IImagePathService;
+import org.springframework.stereotype.Service;
 
 /**
- * Used to create the semantic data.
+ * Used to allow the access to project template images.
  *
  * @author sbegaudeau
  */
-public interface ISemanticDataCreationService {
-    void initialize(AggregateReference<Project, UUID> project);
+@Service
+public class ProjectTemplateImagePathService implements IImagePathService {
+    @Override
+    public List<String> getPaths() {
+        return List.of("/project-templates");
+    }
 }

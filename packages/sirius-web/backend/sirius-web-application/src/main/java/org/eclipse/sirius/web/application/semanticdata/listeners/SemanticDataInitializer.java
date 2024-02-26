@@ -38,6 +38,6 @@ public class SemanticDataInitializer {
     @Transactional
     @TransactionalEventListener
     public void onProjectCreatedEvent(ProjectCreatedEvent event) {
-        this.semanticDataCreationService.create(AggregateReference.to(event.project().getId()));
+        this.semanticDataCreationService.initialize(AggregateReference.to(event.project().getId()));
     }
 }

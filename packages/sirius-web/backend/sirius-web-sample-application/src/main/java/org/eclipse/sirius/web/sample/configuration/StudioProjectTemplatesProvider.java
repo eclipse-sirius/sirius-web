@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,14 +17,14 @@ import java.util.List;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
 import org.eclipse.sirius.web.services.api.projects.Nature;
 import org.eclipse.sirius.web.services.api.projects.ProjectTemplate;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 /**
  * Provides Studio-specific project templates.
  *
  * @author pcdavid
  */
-@Configuration
+@Service
 public class StudioProjectTemplatesProvider implements IProjectTemplateProvider {
 
     public static final String STUDIO_TEMPLATE_ID = "studio-template";

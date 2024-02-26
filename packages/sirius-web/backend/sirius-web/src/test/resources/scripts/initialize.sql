@@ -1,3 +1,34 @@
+-- Sample empty studio project
+INSERT INTO project (
+  id,
+  name,
+  created_on,
+  last_modified_on
+) VALUES (
+  '250cabc0-a211-438c-8015-2d2aa136eb81',
+  'Studio',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+INSERT INTO nature (
+  project_id,
+  name
+) VALUES (
+  '250cabc0-a211-438c-8015-2d2aa136eb81',
+  'siriusComponents://nature?kind=studio'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  'bd3017e3-d95f-4535-8701-af6ba982619f',
+  '250cabc0-a211-438c-8015-2d2aa136eb81',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
+);
+
 -- Sample empty UML project
 INSERT INTO project (
   id,
@@ -16,6 +47,17 @@ INSERT INTO nature (
 ) VALUES (
   '7ba7bda7-13b9-422a-838b-e45a3597e952',
   'uml'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '503a1f9b-13f7-4394-94df-ddbf32840a31',
+  '7ba7bda7-13b9-422a-838b-e45a3597e952',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
 );
 
 -- Sample empty SysML project
@@ -36,6 +78,17 @@ INSERT INTO nature (
 ) VALUES (
   '4164c661-e0cb-4071-b25d-8516440bb8e8',
   'sysml'
+);
+INSERT INTO semantic_data (
+  id,
+  project_id,
+  created_on,
+  last_modified_on
+) VALUES (
+  '86fa5d90-a602-4083-b3c1-65912b93b673',
+  '4164c661-e0cb-4071-b25d-8516440bb8e8',
+  '2024-01-01 9:42:0.000',
+  '2024-01-02 9:42:0.000'
 );
 
 -- Sample Ecore project

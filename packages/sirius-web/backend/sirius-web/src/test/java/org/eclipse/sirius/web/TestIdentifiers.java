@@ -22,6 +22,7 @@ import java.util.UUID;
 public interface TestIdentifiers {
 
     UUID INVALID_PROJECT = UUID.fromString("a2bed581-9661-41bf-9217-2870a9dce67c");
+    UUID STUDIO_PROJECT = UUID.fromString("250cabc0-a211-438c-8015-2d2aa136eb81");
     UUID UML_SAMPLE_PROJECT = UUID.fromString("7ba7bda7-13b9-422a-838b-e45a3597e952");
     UUID SYSML_SAMPLE_PROJECT = UUID.fromString("4164c661-e0cb-4071-b25d-8516440bb8e8");
     UUID ECORE_SAMPLE_PROJECT = UUID.fromString("99d336a2-3049-439a-8853-b104ffb22653");

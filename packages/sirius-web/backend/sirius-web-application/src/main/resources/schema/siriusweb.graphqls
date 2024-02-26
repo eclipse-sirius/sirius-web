@@ -36,6 +36,7 @@ type ProjectTemplate {
 
 extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
+  createProjectFromTemplate(input: CreateProjectFromTemplateInput!): CreateProjectFromTemplatePayload!
   renameProject(input: RenameProjectInput!): RenameProjectPayload!
   deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
   deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
@@ -52,6 +53,19 @@ union CreateProjectPayload = ErrorPayload | CreateProjectSuccessPayload
 type CreateProjectSuccessPayload {
   id: ID!
   project: Project!
+}
+
+input CreateProjectFromTemplateInput {
+  id: ID!
+  templateId: ID!
+}
+
+union CreateProjectFromTemplatePayload = ErrorPayload | CreateProjectFromTemplateSuccessPayload
+
+type CreateProjectFromTemplateSuccessPayload {
+  id: ID!
+  project: Project!
+  representationToOpen: RepresentationMetadata
 }
 
 input RenameProjectInput {
