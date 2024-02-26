@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api;
 
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+import org.eclipse.sirius.web.domain.services.IResult;
+
 /**
  * Used to create new representation data.
  *
  * @author sbegaudeau
  */
 public interface IRepresentationDataCreationService {
+    IResult<RepresentationData> create(RepresentationData representationData);
 }

@@ -74,4 +74,13 @@ public class RepresentationApplicationService implements IRepresentationApplicat
     private RepresentationMetadata toRepresentationMetadata(RepresentationData representationData) {
         return new RepresentationMetadata(representationData.getId().toString(), representationData.getKind(), representationData.getLabel(), representationData.getDescriptionId());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<String> findEditingContextIdFromRepresentationId(String representationId) {
+        return new UUIDParser().parse(representationId)
+                .flatMap(this.representationDataSearchService::findProjectByRepresentationId)
+                .map(AggregateReference::getId)
+                .map(UUID::toString);
+    }
 }

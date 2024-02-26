@@ -26,9 +26,14 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  * @author sbegaudeau
  */
 public interface IRepresentationDataSearchService {
+
+    boolean existsById(UUID id);
+
     Optional<RepresentationData> findById(UUID id);
 
     List<RepresentationData> findAllByProject(AggregateReference<Project, UUID> project);
 
     List<RepresentationData> findAllByTargetObjectId(String targetObjectId);
+
+    Optional<AggregateReference<Project, UUID>> findProjectByRepresentationId(UUID representationId);
 }

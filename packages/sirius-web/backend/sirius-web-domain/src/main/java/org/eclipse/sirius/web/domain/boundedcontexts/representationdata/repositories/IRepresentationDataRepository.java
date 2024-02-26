@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
@@ -34,4 +35,11 @@ public interface IRepresentationDataRepository extends ListPagingAndSortingRepos
         WHERE representationData.project_id = :projectId
         """)
     List<RepresentationData> findAllByProjectId(UUID projectId);
+
+    @Query("""
+        SELECT representationData.project_id
+        FROM representation_data representationData
+        WHERE representationData.id = :representationId
+        """)
+    Optional<UUID> findProjectIdFromRepresentationId(UUID representationId);
 }

@@ -24,7 +24,9 @@
 
 === Deprecation warning
 
-- The type `RenameProjectSuccessPayload` and `DeletedProjectSuccessPayload` will be replaced by `SuccessPayload`.
+- The type `RenameProjectSuccessPayload` and `DeletedProjectSuccessPayload` will be replaced by `SuccessPayload`
+- The type `DeleteRepresentationSuccessPayload` will be replaced by `SuccessPayload`
+- The mutation `createRepresentation` and `deleteRepresentation` and their datafetcher will be entirely managed by Sirius Components
 
 === Breaking changes
 

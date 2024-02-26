@@ -42,4 +42,9 @@ public class MessageService implements IMessageService {
     public String notFound() {
         return this.messageSourceAccessor.getMessage("NOT_FOUND");
     }
+
+    @Override
+    public String unexpectedError() {
+        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR");
+    }
 }

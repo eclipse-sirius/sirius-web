@@ -17,8 +17,8 @@ import java.util.List;
 
 import org.eclipse.sirius.web.domain.events.IDomainEvent;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * Used to collect domain events sent during the integration tests.
@@ -30,7 +30,7 @@ public class DomainEventCollector implements IDomainEventCollector {
 
     private final List<IDomainEvent> domainEvents = new ArrayList<>();
 
-    @EventListener
+    @TransactionalEventListener
     public void onDomainEvent(IDomainEvent domainEvent) {
         this.domainEvents.add(domainEvent);
     }

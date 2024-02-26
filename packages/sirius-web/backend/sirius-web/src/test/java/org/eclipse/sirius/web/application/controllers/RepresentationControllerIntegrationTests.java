@@ -18,16 +18,29 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
+import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationSuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.TestIdentifiers;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationDataSearchService;
+import org.eclipse.sirius.web.services.TestRepresentation;
+import org.eclipse.sirius.web.services.TestRepresentationDescription;
+import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -103,8 +116,40 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             }
             """;
 
+    private static final String CREATE_REPRESENTATION_MUTATION = """
+            mutation createRepresentation($input: CreateRepresentationInput!) {
+              createRepresentation(input: $input) {
+                __typename
+                ... on CreateRepresentationSuccessPayload {
+                  representation {
+                    id
+                  }
+                }
+              }
+            }
+            """;
+
+    private static final String DELETE_REPRESENTATION_MUTATION = """
+            mutation deleteRepresentation($input: DeleteRepresentationInput!) {
+              deleteRepresentation(input: $input) {
+                __typename
+              }
+            }
+            """;
+
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
+
+    @Autowired
+    private IRepresentationDataSearchService representationDataSearchService;
+
+    @Autowired
+    private IDomainEventCollector domainEventCollector;
+
+    @AfterEach
+    public void afterEach() {
+        this.domainEventCollector.clear();
+    }
 
     @Test
     @DisplayName("Given a representation id, when a query is performed, then the representation metadata are returned")
@@ -177,16 +222,94 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         assertThat(hasNextPage).isFalse();
 
         String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.startCursor");
-        assertThat(startCursor).isNull();
+        assertThat(startCursor).isNotBlank();
 
         String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.endCursor");
-        assertThat(endCursor).isNull();
+        assertThat(endCursor).isNotBlank();
 
         int count = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.count");
-        assertThat(count).isEqualTo(0);
+        assertThat(count).isEqualTo(1);
 
         List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.edges[*].node.id");
-        assertThat(representationIds).hasSize(0);
+        assertThat(representationIds).hasSize(1);
     }
 
+    @Test
+    @DisplayName("Given a representation to create, when the mutation is performed, then the representation has been created")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenRepresentationToCreateWhenMutationIsPerformedThenTheRepresentationHasBeenCreated() {
+        this.commitInitializeStateBeforeThreadSwitching();
+
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                new TestRepresentationDescription().getId(),
+                TestIdentifiers.EPACKAGE_OBJECT.toString(),
+                "Test representation"
+        );
+        var result = this.graphQLRequestor.execute(CREATE_REPRESENTATION_MUTATION, input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        assertThat(typename).isEqualTo(CreateRepresentationSuccessPayload.class.getSimpleName());
+
+        String representationId = JsonPath.read(result, "$.data.createRepresentation.representation.id");
+        assertThat(representationId).isNotNull();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
+        var event = this.domainEventCollector.getDomainEvents().get(0);
+        assertThat(event).isInstanceOf(RepresentationDataCreatedEvent.class);
+
+        Map<String, Object> variables = Map.of(
+                "editingContextId", TestIdentifiers.ECORE_SAMPLE_PROJECT.toString(),
+                "representationId", representationId
+        );
+        var getRepresentationMetadataResult = this.graphQLRequestor.execute(GET_REPRESENTATION_METADATA_QUERY, variables);
+        String kind = JsonPath.read(getRepresentationMetadataResult, "$.data.viewer.editingContext.representation.kind");
+        assertThat(kind).isEqualTo(new TestRepresentation().getKind());
+    }
+
+    @Test
+    @DisplayName("Given a representation to delete, when the mutation is performed, then the representation has been deleted")
+    @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenRepresentationToDeleteWhenMutationIsPerformedThenTheRepresentationHasBeenDeleted() {
+        this.commitInitializeStateBeforeThreadSwitching();
+
+        assertThat(this.representationDataSearchService.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isPresent();
+
+        var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
+        var result = this.graphQLRequestor.execute(DELETE_REPRESENTATION_MUTATION, input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        String typename = JsonPath.read(result, "$.data.deleteRepresentation.__typename");
+        assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
+
+        assertThat(this.representationDataSearchService.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isEmpty();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
+        var event = this.domainEventCollector.getDomainEvents().get(0);
+        assertThat(event).isInstanceOf(RepresentationDataDeletedEvent.class);
+    }
+
+    /**
+     * Used to commit the state of the transaction after its initialization by the @Sql annotation
+     * in order to make the state persisted in the database. Without this, the initialized state
+     * will not be visible by the various repositories when the test will switch threads to use
+     * the thread of the editing context.
+     *
+     * This should not be used every single time but only in the couple integrations tests that are
+     * required to interact with repositories while inside an editing context event handler or a
+     * representation event handler for example.
+     */
+    private void commitInitializeStateBeforeThreadSwitching() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+    }
 }

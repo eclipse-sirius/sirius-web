@@ -18,7 +18,9 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataContentUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationDataDeletedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
@@ -93,13 +95,26 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         return this.lastModifiedOn;
     }
 
+    public void updateContent(String newContent) {
+        this.content = newContent;
+
+        var now = Instant.now();
+        this.lastModifiedOn = now;
+
+        this.registerEvent(new RepresentationDataContentUpdatedEvent(UUID.randomUUID(), now, this));
+    }
+
+    public void dispose() {
+        this.registerEvent(new RepresentationDataDeletedEvent(UUID.randomUUID(), Instant.now(), this));
+    }
+
     @Override
     public boolean isNew() {
         return this.isNew;
     }
 
-    public static Builder newRepresentationData() {
-        return new Builder();
+    public static Builder newRepresentationData(UUID id) {
+        return new Builder(id);
     }
 
     /**
@@ -109,6 +124,9 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
+
+        private UUID id;
+
         private AggregateReference<Project, UUID> project;
 
         private String targetObjectId;
@@ -120,6 +138,15 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         private String kind;
 
         private String content;
+
+        public Builder(UUID id) {
+            this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder project(AggregateReference<Project, UUID> project) {
+            this.project = Objects.requireNonNull(project);
+            return this;
+        }
 
         public Builder targetObjectId(String targetObjectId) {
             this.targetObjectId = Objects.requireNonNull(targetObjectId);
@@ -149,7 +176,7 @@ public class RepresentationData extends AbstractValidatingAggregateRoot<Represen
         public RepresentationData build() {
             var representationData = new RepresentationData();
             representationData.isNew = true;
-            representationData.id = UUID.randomUUID();
+            representationData.id = Objects.requireNonNull(id);
             representationData.project = Objects.requireNonNull(this.project);
             representationData.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             representationData.descriptionId = Objects.requireNonNull(this.descriptionId);

@@ -38,6 +38,7 @@ extend type Mutation {
   createProject(input: CreateProjectInput!): CreateProjectPayload!
   renameProject(input: RenameProjectInput!): RenameProjectPayload!
   deleteProject(input: DeleteProjectInput!): DeleteProjectPayload!
+  deleteRepresentation(input: DeleteRepresentationInput!): DeleteRepresentationPayload!
 }
 
 input CreateProjectInput {
@@ -87,4 +88,16 @@ type ProjectRenamedEventPayload {
   id: ID!
   projectId: ID!
   newName: String!
+}
+
+input DeleteRepresentationInput {
+  id: ID!
+  representationId: ID!
+}
+
+union DeleteRepresentationPayload = ErrorPayload | DeleteRepresentationSuccessPayload
+
+type DeleteRepresentationSuccessPayload {
+  id: ID!
+  representationId: ID!
 }
