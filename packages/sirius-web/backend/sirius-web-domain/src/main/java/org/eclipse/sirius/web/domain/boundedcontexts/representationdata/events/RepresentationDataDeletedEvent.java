@@ -20,11 +20,11 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Event fired when some representation data are updated.
+ * Event fired when the representation data are deleted.
  *
  * @author sbegaudeau
  */
-public record RepresentationDataUpdatedEvent(
+public record RepresentationDataDeletedEvent(
         @NotNull UUID id,
         @NotNull Instant createdOn,
         @NotNull RepresentationData representationData) implements IRepresentationDataEvent {

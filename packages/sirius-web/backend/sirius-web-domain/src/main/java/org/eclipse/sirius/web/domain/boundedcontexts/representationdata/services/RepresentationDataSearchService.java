@@ -39,6 +39,11 @@ public class RepresentationDataSearchService implements IRepresentationDataSearc
     }
 
     @Override
+    public boolean existsById(UUID id) {
+        return this.representationDataRepository.existsById(id);
+    }
+
+    @Override
     public Optional<RepresentationData> findById(UUID id) {
         return this.representationDataRepository.findById(id);
     }
@@ -51,5 +56,11 @@ public class RepresentationDataSearchService implements IRepresentationDataSearc
     @Override
     public List<RepresentationData> findAllByTargetObjectId(String targetObjectId) {
         return List.of();
+    }
+
+    @Override
+    public Optional<AggregateReference<Project, UUID>> findProjectByRepresentationId(UUID representationId) {
+        return this.representationDataRepository.findProjectIdFromRepresentationId(representationId)
+                .map(AggregateReference::to);
     }
 }

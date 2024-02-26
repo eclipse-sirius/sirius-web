@@ -10,17 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events;
+
+import java.time.Instant;
+import java.util.UUID;
+
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationData;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to compute internationalized messages.
+ * Event fired when the content of the representation data are updated.
  *
  * @author sbegaudeau
  */
-public interface IMessageService {
-    String invalidName();
-
-    String notFound();
-
-    String unexpectedError();
+public record RepresentationDataContentUpdatedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull RepresentationData representationData) implements IRepresentationDataEvent {
 }

@@ -35,6 +35,7 @@ import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayloa
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
 import org.junit.jupiter.api.AfterEach;
@@ -43,6 +44,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.transaction.TestTransaction;
@@ -138,6 +140,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     private IProjectSearchService projectSearchService;
 
     @Autowired
+    private ISemanticDataSearchService semanticDataSearchService;
+
+    @Autowired
     private IDomainEventCollector domainEventCollector;
 
     @AfterEach
@@ -209,6 +214,9 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
         var result = this.graphQLRequestor.execute(CREATE_PROJECT_MUTATION, input);
 
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
         String typename = JsonPath.read(result, "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
@@ -224,6 +232,29 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     }
 
     @Test
+    @DisplayName("Given a valid project to create, when the mutation is performed, then the semantic data are created")
+    @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    public void givenValidProjectToCreateWhenMutationIsPerformedThenTheSemanticDataAreCreated() {
+        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", List.of());
+        var result = this.graphQLRequestor.execute(CREATE_PROJECT_MUTATION, input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
+        var event = this.domainEventCollector.getDomainEvents().get(0);
+        assertThat(event).isInstanceOf(ProjectCreatedEvent.class);
+
+        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
+
+        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+
+        var existsByProject = this.semanticDataSearchService.existsByProject(AggregateReference.to(UUID.fromString(projectId)));
+        assertThat(existsByProject).isTrue();
+    }
+
+    @Test
     @DisplayName("Given an existing project to delete, when the mutation is performed, then the project is deleted")
     @Sql(scripts = {"/scripts/initialize.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"/scripts/cleanup.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -232,6 +263,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT);
         var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
         String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
@@ -268,10 +303,14 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     public void givenAnInvalidProjectToDeleteWhenMutationIsPerformedThenErrorIsReturned() {
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.INVALID_PROJECT);
         var result = this.graphQLRequestor.execute(DELETE_PROJECT_MUTATION, input);
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
         String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(0);
+        assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
     }
 
     @Test

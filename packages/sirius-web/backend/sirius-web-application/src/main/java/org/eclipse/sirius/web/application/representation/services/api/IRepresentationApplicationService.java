@@ -24,7 +24,10 @@ import org.springframework.data.domain.Pageable;
  * @author sbegaudeau
  */
 public interface IRepresentationApplicationService {
+
     Optional<RepresentationMetadata> findRepresentationMetadataById(String representationId);
 
     Page<RepresentationMetadata> findAllByEditingContextId(String editingContextId, Pageable pageable);
+
+    Optional<String> findEditingContextIdFromRepresentationId(String representationId);
 }
