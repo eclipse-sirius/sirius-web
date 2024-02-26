@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React from 'react';
-import { DiagramContextValue } from './DiagramContext.types';
 
-const value: DiagramContextValue = {
-  editingContextId: '',
-  diagramId: '',
-  refreshEventPayloadId: '',
-  readOnly: false,
-};
-
-export const DiagramContext = React.createContext<DiagramContextValue>(value);
+export interface UseAdjustSizeValue {
+  adjustSize: (nodeId: string) => void;
+}
