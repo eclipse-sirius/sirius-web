@@ -94,6 +94,16 @@ export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNode
 
   useRefreshConnectionHandles(id, data.connectionHandles);
 
+  const getLabelId = (data: FreeFormNodeData): string | null => {
+    let labelId: string | null = null;
+    if (data.insideLabel) {
+      labelId = data.insideLabel.id;
+    } else if (data.outsideLabels.BOTTOM_MIDDLE) {
+      labelId = data.outsideLabels.BOTTOM_MIDDLE.id;
+    }
+    return labelId;
+  };
+
   return (
     <>
       <Resizer data={data} selected={selected} />
@@ -107,9 +117,7 @@ export const FreeFormNode = memo(({ data, id, selected }: NodeProps<FreeFormNode
         onDrop={handleOnDrop}
         data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
         {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />}
-        {selected ? (
-          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
-        ) : null}
+        {selected ? <DiagramElementPalette diagramElementId={id} labelId={getLabelId(data)} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
