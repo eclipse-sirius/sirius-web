@@ -33,7 +33,7 @@ import org.eclipse.sirius.web.services.TestRepresentation;
 import org.eclipse.sirius.web.services.TestRepresentationDescription;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,8 +146,8 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @Autowired
     private IDomainEventCollector domainEventCollector;
 
-    @AfterEach
-    public void afterEach() {
+    @BeforeEach
+    public void beforeEach() {
         this.domainEventCollector.clear();
     }
 
