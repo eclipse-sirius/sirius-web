@@ -204,7 +204,10 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, onClose }: Diagram
         onKeyDown={onFinishEditing}
         onBlur={onBlur}
         autoFocus
+        spellCheck={false}
+        fullWidth
         data-testid="name-edit"
+        className="nodrag"
       />
     </>
   );

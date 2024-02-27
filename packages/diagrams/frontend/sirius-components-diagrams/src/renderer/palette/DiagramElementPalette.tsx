@@ -23,7 +23,7 @@ import { useDiagramElementPalette } from './useDiagramElementPalette';
 export const DiagramElementPalette = memo(({ diagramElementId, labelId }: DiagramElementPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x, y } = useDiagramElementPalette();
-  const { setCurrentlyEditedLabelId } = useDiagramDirectEdit();
+  const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
 
   if (readOnly) {
     return null;
@@ -34,7 +34,7 @@ export const DiagramElementPalette = memo(({ diagramElementId, labelId }: Diagra
       setCurrentlyEditedLabelId('palette', labelId, null);
     }
   };
-  return isOpened && x && y ? (
+  return isOpened && x && y && !currentlyEditedLabelId ? (
     <PalettePortal>
       <Palette
         x={x}

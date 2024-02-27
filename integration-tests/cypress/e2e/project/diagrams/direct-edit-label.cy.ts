@@ -152,6 +152,25 @@ describe('Diagram - Direct edit label', () => {
         cy.getByTestId('Label - Edge center').trigger('keydown', { altKey: true, keyCode: 113, which: 113 }); // key code for F2
         cy.getByTestId('name-edit').should('exist');
       });
+
+      it('Then during the direct edition, the palette is hidden', () => {
+        const explorer = new Explorer();
+        explorer.createObject('Root', 'Entity2s Entity2');
+        explorer.getTreeItemByLabel('Entity2').click();
+
+        const details = new Details();
+        details.getTextField('Name').type('Entity2{Enter}');
+
+        const diagram = new Diagram();
+        diagram.fitToScreen();
+        diagram.getNodes('diagram', 'Entity2').click();
+        diagram.getPalette().should('exist');
+        cy.getByTestId('Edit - Tool').should('exist').click();
+        cy.getByTestId('name-edit').should('exist');
+        diagram.getPalette().should('not.exist');
+        cy.getByTestId('name-edit').type('Entity Entity2{enter}');
+        cy.getByTestId('name-edit').should('not.exist');
+      });
     });
   });
   context('Given a view without direct edit tool', () => {
