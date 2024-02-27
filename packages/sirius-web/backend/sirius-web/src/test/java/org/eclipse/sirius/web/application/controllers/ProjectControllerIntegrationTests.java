@@ -38,7 +38,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProje
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.services.api.IGraphQLRequestor;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,8 +145,8 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @Autowired
     private IDomainEventCollector domainEventCollector;
 
-    @AfterEach
-    public void afterEach() {
+    @BeforeEach
+    public void beforeEach() {
         this.domainEventCollector.clear();
     }
 
