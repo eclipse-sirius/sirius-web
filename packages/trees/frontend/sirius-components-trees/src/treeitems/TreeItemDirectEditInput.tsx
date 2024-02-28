@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,25 +51,27 @@ const initialDirectEditElementLabeQuery = gql`
   }
 `;
 
+const isErrorPayload = (payload: GQLRenameTreeItemPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLRenameTreeItemPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
+
 export const TreeItemDirectEditInput = ({
   editingContextId,
   treeId,
   treeItemId,
-  editingkey,
+  editingKey,
   onClose,
 }: TreeItemDirectEditInputProps) => {
+  const initialLabel = editingKey === null || editingKey === '' ? '' : editingKey;
   const [state, setState] = useState<TreeItemDirectEditInputState>({
-    newLabel: editingkey,
+    newLabel: initialLabel,
   });
 
   const { addErrorMessage } = useMultiToast();
 
-  const isErrorPayload = (payload: GQLRenameTreeItemPayload): payload is GQLErrorPayload =>
-    payload.__typename === 'ErrorPayload';
-  const isSuccessPayload = (payload: GQLRenameTreeItemPayload): payload is GQLSuccessPayload =>
-    payload.__typename === 'SuccessPayload';
-
-  const textInput = useRef(null);
+  const textInput = useRef<HTMLInputElement | null>(null);
+  const editionFinished = useRef<boolean>(false);
 
   const { data: initialLabelTreeItemItemData, error: initialLabelTreeItemItemError } = useQuery<
     GQLInitialDirectEditElementLabelData,
@@ -90,7 +92,7 @@ export const TreeItemDirectEditInput = ({
     if (initialLabelTreeItemItemData?.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel) {
       const initialLabel =
         initialLabelTreeItemItemData?.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel;
-      if (!editingkey) {
+      if (!editingKey) {
         setState((prevState) => {
           return { ...prevState, newLabel: initialLabel };
         });
@@ -136,28 +138,32 @@ export const TreeItemDirectEditInput = ({
     });
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const newLabel = event.target.value;
     setState((prevState) => {
       return { ...prevState, newLabel: newLabel };
     });
   };
 
-  const onFinishEditing = (event) => {
+  const onFinishEditing = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const { key } = event;
-    if (key === 'Enter') {
+    if (key === 'Enter' && !event.shiftKey) {
+      editionFinished.current = true;
+      event.preventDefault();
       doRename();
     } else if (key === 'Escape') {
+      editionFinished.current = true;
       onClose();
     }
   };
 
-  const onFocusIn = (event) => event.target.select();
+  const onFocusIn = (event: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => event.target.select();
 
-  useEffect(() => {
-    document.addEventListener('mousedown', doRename);
-    return () => document.removeEventListener('mousedown', doRename);
-  });
+  const onBlur = () => {
+    if (!editionFinished.current) {
+      doRename();
+    }
+  };
 
   return (
     <>
@@ -170,7 +176,9 @@ export const TreeItemDirectEditInput = ({
         onChange={handleChange}
         onFocus={onFocusIn}
         onKeyDown={onFinishEditing}
+        onBlur={onBlur}
         autoFocus
+        spellCheck={false}
         data-testid="name-edit"
       />
     </>

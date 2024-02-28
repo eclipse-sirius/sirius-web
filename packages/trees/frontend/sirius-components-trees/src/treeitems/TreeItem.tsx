@@ -24,7 +24,7 @@ import CropDinIcon from '@material-ui/icons/CropDin';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { TreeItemProps } from './TreeItem.types';
+import { TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemArrow } from './TreeItemArrow';
 import { TreeItemContextMenu, TreeItemContextMenuContext } from './TreeItemContextMenu';
 import { TreeItemContextMenuContextValue } from './TreeItemContextMenu.types';
@@ -132,30 +132,33 @@ export const TreeItem = ({
     .filter((contribution) => contribution.props.canHandle(treeId, item))
     .map((contribution) => contribution.props.component);
 
-  const initialState = {
+  const initialState: TreeItemState = {
     showContextMenu: false,
     menuAnchor: null,
     editingMode: false,
     label: item.label,
     prevSelectionId: null,
-    editingkey: '',
+    editingKey: null,
+    isHovered: false,
   };
 
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState<TreeItemState>(initialState);
   const { showContextMenu, menuAnchor, editingMode } = state;
 
   const refDom = useRef() as any;
 
   const { selection, setSelection } = useSelection();
 
-  const [isHovered, setIsHovered] = useState(false);
-
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    setState((prevState) => {
+      return { ...prevState, isHovered: true };
+    });
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    setState((prevState) => {
+      return { ...prevState, isHovered: false };
+    });
   };
   // Context menu handling
   const openContextMenu = (event) => {
@@ -166,9 +169,10 @@ export const TreeItem = ({
           showContextMenu: true,
           menuAnchor: currentTarget,
           editingMode: false,
-          editingkey: prevState.editingkey,
+          editingKey: prevState.editingKey,
           label: item.label,
           prevSelectionId: prevState.prevSelectionId,
+          isHovered: prevState.isHovered,
         };
       });
     }
@@ -183,9 +187,10 @@ export const TreeItem = ({
           showContextMenu: false,
           menuAnchor: null,
           editingMode: false,
-          editingkey: prevState.editingkey,
+          editingKey: prevState.editingKey,
           label: item.label,
           prevSelectionId: prevState.prevSelectionId,
+          isHovered: prevState.isHovered,
         };
       });
     };
@@ -196,9 +201,10 @@ export const TreeItem = ({
           showContextMenu: false,
           menuAnchor: null,
           editingMode: true,
-          editingkey: prevState.editingkey,
+          editingKey: null,
           label: item.label,
           prevSelectionId: prevState.prevSelectionId,
+          isHovered: prevState.isHovered,
         };
       });
     };
@@ -255,7 +261,7 @@ export const TreeItem = ({
     className = `${className} ${classes.selected}`;
     dataTestid = 'selected';
   }
-  if (isHovered && item.selectable) {
+  if (state.isHovered && item.selectable) {
     className = `${className} ${classes.treeItemHover}`;
   }
   useEffect(() => {
@@ -273,7 +279,7 @@ export const TreeItem = ({
   if (item.iconURL?.length > 0) {
     image = <IconOverlay iconURL={item.iconURL} alt={item.kind} />;
   }
-  let text;
+  let text: JSX.Element | null = null;
   const onCloseEditingMode = () => {
     setState((prevState) => {
       return { ...prevState, editingMode: false };
@@ -288,7 +294,7 @@ export const TreeItem = ({
         editingContextId={editingContextId}
         treeId={treeId}
         treeItemId={item.id}
-        editingkey={state.editingkey}
+        editingKey={state.editingKey}
         onClose={onCloseEditingMode}></TreeItemDirectEditInput>
     );
   } else {
@@ -367,7 +373,7 @@ export const TreeItem = ({
       !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
     if (validFirstInputChar) {
       setState((prevState) => {
-        return { ...prevState, editingMode: true, editingkey: key };
+        return { ...prevState, editingMode: true, editingKey: key };
       });
     }
   };
@@ -452,7 +458,7 @@ export const TreeItem = ({
               ) : null}
             </div>
           </div>
-          {!shouldDisplayMoreButton && isHovered && item.hasChildren && (
+          {!shouldDisplayMoreButton && state.isHovered && item.hasChildren && (
             <IconButton
               className={classes.expandIcon}
               size="small"
