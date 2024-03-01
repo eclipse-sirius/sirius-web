@@ -18,6 +18,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreat
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -35,7 +36,7 @@ public class SemanticDataInitializer {
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void onProjectCreatedEvent(ProjectCreatedEvent event) {
         this.semanticDataCreationService.initialize(AggregateReference.to(event.project().getId()));
