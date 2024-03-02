@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.services.api;
 import java.util.Map;
 
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IPayload;
 
 import reactor.core.publisher.Flux;
 
@@ -29,5 +28,5 @@ public interface IGraphQLRequestor {
 
     String execute(String query, IInput input);
 
-    Flux<IPayload> subscribe(String query, IInput input);
+    Flux<Object> subscribe(String query, IInput input);
 }

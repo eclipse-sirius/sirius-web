@@ -14,12 +14,20 @@ package org.eclipse.sirius.web.starter;
 
 import java.util.concurrent.Executors;
 
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationConfiguration;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
+import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.eclipse.sirius.components.web.concurrent.DelegatingRequestContextExecutorService;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +35,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import reactor.core.publisher.Flux;
 
 /**
  * AutoConfiguration of the Sirius Web application.
@@ -40,6 +50,7 @@ import org.springframework.web.socket.WebSocketSession;
     "org.eclipse.sirius.components.emf",
     "org.eclipse.sirius.components.graphql",
     "org.eclipse.sirius.components.web",
+    "org.eclipse.sirius.components.portals",
     "org.eclipse.sirius.web.domain",
     "org.eclipse.sirius.web.application",
     "org.eclipse.sirius.web.infrastructure",
@@ -93,5 +104,25 @@ public class SiriusWebStarterConfiguration {
                 // Do nothing
             }
         };
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+        return new IEventProcessorSubscriptionProvider() {
+            @Override
+            public <T extends IRepresentationEventProcessor> Flux<IPayload> getSubscription(String editingContextId, Class<T> representationEventProcessorClass, IRepresentationConfiguration representationConfiguration, IInput input) {
+                return editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
+                        .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationEventProcessorClass, representationConfiguration, input))
+                        .map(representationEventProcessor -> representationEventProcessor.getOutputEvents(input))
+                        .orElse(Flux.empty());
+            }
+        };
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public IEditingContextDispatcher editingContextDispatcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IMessageService messageService) {
+        return new EditingContextDispatcher(editingContextEventProcessorRegistry, messageService);
     }
 }
