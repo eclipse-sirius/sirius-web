@@ -28,4 +28,6 @@ public record SiriusWebProperties(
 ) {
     public static final String EVERYTHING = "*";
     public static final String STUDIO = "studio";
+
+    public static final String PORTAL = "portal";
 }
