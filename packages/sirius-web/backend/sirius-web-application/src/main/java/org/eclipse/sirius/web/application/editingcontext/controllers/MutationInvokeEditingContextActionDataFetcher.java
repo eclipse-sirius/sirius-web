@@ -18,12 +18,10 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionInput;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -39,14 +37,11 @@ public class MutationInvokeEditingContextActionDataFetcher implements IDataFetch
 
     private final ObjectMapper objectMapper;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    private final IMessageService messageService;
-
-    public MutationInvokeEditingContextActionDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IMessageService messageService) {
+    public MutationInvokeEditingContextActionDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
-        this.messageService = Objects.requireNonNull(messageService);
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -54,8 +49,6 @@ public class MutationInvokeEditingContextActionDataFetcher implements IDataFetch
         Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, InvokeEditingContextActionInput.class);
 
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
-                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
-                .toFuture();
+        return this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input).toFuture();
     }
 }
