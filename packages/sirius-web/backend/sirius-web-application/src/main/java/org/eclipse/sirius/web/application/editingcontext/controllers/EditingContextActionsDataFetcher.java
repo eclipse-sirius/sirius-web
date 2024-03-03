@@ -18,11 +18,11 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextAction;
 import org.eclipse.sirius.components.collaborative.dto.GetEditingContextActionsInput;
 import org.eclipse.sirius.components.collaborative.dto.GetEditingContextActionsSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.web.application.dto.PageInfoWithCount;
 
 import graphql.relay.Connection;
@@ -45,10 +45,10 @@ import reactor.core.publisher.Mono;
 @QueryDataFetcher(type = "EditingContext", field = "actions")
 public class EditingContextActionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Connection<EditingContextAction>>> {
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private final IEditingContextDispatcher editingContextDispatcher;
 
-    public EditingContextActionsDataFetcher(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+    public EditingContextActionsDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class EditingContextActionsDataFetcher implements IDataFetcherWithFieldCo
         String editingContextId = environment.getSource();
         GetEditingContextActionsInput input = new GetEditingContextActionsInput(UUID.randomUUID(), editingContextId);
 
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+        return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                 .filter(GetEditingContextActionsSuccessPayload.class::isInstance)
                 .map(GetEditingContextActionsSuccessPayload.class::cast)
                 .map(this::toConnection)
