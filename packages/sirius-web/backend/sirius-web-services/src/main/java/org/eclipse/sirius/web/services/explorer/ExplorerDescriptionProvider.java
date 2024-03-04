@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescr
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Failure;
@@ -196,7 +197,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     private List<String> getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
 
-        List<String> imageURL = List.of(ImageConstants.DEFAULT_SVG);
+        List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof RepresentationMetadata representationMetadata) {

@@ -28,7 +28,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.compatibility.services.ImageConstants;
+import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -180,7 +180,7 @@ public class OutgoingTreeProvider {
     }
 
     private List<String> getNodeImageURL(VariableManager variableManager) {
-        List<String> result = List.of(ImageConstants.DEFAULT_SVG);
+        List<String> result = List.of(CoreImageConstants.DEFAULT_SVG);
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof EReference) {
             result = List.of(OUTGOING_REFERENCE_ICON_URL);

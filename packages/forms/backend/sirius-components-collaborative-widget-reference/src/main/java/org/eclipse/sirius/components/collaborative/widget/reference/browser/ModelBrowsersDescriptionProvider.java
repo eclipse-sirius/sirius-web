@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
+import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
@@ -285,7 +286,7 @@ public class ModelBrowsersDescriptionProvider implements IEditingContextRepresen
 
     private List<String> getImageURL(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        List<String> imageURL = List.of(ImageConstants.DEFAULT_SVG);
+        List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
             imageURL = this.objectService.getImagePath(self);
         } else if (self instanceof Resource) {
