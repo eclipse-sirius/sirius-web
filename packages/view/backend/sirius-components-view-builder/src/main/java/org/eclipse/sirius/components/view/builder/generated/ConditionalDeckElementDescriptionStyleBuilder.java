@@ -106,5 +106,15 @@ public class ConditionalDeckElementDescriptionStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for Color.
+     *
+     * @generated
+     */
+    public ConditionalDeckElementDescriptionStyleBuilder color(org.eclipse.sirius.components.view.UserColor value) {
+        this.getConditionalDeckElementDescriptionStyle().setColor(value);
+        return this;
+    }
+
 }
 
