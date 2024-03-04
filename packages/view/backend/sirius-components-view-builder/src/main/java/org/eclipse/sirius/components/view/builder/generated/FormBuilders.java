@@ -190,6 +190,16 @@ public class FormBuilders {
     }
 
     /**
+     * Instantiate a SplitButtonDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public SplitButtonDescriptionBuilder newSplitButtonDescription() {
+        return new SplitButtonDescriptionBuilder();
+    }
+
+    /**
      * Instantiate a TextAreaDescriptionBuilder .
      *
      * @author BuilderGenerator

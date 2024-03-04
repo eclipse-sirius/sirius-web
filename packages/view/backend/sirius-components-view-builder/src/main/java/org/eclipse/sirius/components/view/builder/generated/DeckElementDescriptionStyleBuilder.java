@@ -97,5 +97,15 @@ public class DeckElementDescriptionStyleBuilder {
         return this;
     }
 
+    /**
+     * Setter for Color.
+     *
+     * @generated
+     */
+    public DeckElementDescriptionStyleBuilder color(org.eclipse.sirius.components.view.UserColor value) {
+        this.getDeckElementDescriptionStyle().setColor(value);
+        return this;
+    }
+
 }
 
