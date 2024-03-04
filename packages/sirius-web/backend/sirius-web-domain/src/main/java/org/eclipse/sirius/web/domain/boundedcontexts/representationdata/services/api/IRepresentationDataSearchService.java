@@ -33,6 +33,8 @@ public interface IRepresentationDataSearchService {
 
     List<RepresentationData> findAllByProject(AggregateReference<Project, UUID> project);
 
+    boolean existAnyRepresentationForTargetObjectId(String targetObjectId);
+
     List<RepresentationData> findAllByTargetObjectId(String targetObjectId);
 
     Optional<AggregateReference<Project, UUID>> findProjectByRepresentationId(UUID representationId);
