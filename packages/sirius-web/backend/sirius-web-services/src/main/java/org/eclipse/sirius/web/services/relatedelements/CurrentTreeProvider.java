@@ -29,7 +29,7 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.compatibility.services.ImageConstants;
+import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -208,7 +208,7 @@ public class CurrentTreeProvider {
     }
 
     private List<String> getNodeImageURL(VariableManager variableManager) {
-        List<String> result = List.of(ImageConstants.DEFAULT_SVG);
+        List<String> result = List.of(CoreImageConstants.DEFAULT_SVG);
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof String) {
             result = List.of(FOLDER_ICON_URL);

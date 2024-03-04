@@ -29,6 +29,7 @@
 - The type `DeleteRepresentationSuccessPayload` will be replaced by `SuccessPayload`
 - The mutation `createRepresentation` and `deleteRepresentation` and their datafetcher will be entirely managed by Sirius Components
 - The interface `IEditingContextEPackageService` should be deleted since we now have access to editing context preprocessors which can be used to contribute packages to editing context and even more.
+- Remove the image for resources from `sirius-components-compatibility` and `org.eclipse.sirius.components.compatibility.services.ImageConstants`.
 
 === Breaking changes
 
@@ -64,6 +65,7 @@ The EMF validation support will now be provided by `sirius-web-services`.
 Having `Viewer` as a type did not bring any additional value and it created some overhead by having to create and keep updated an additional type without any benefit.
 - [sirius-web] The field `ChangeKind.PROJECT_RENAMING` has been deleted since it does not make any sense in Sirius Components.
 - https://github.com/eclipse-sirius/sirius-web/issues/2713[#2713] [diagram] Add the attribute `growableNodeIds` to graphql `ListLayoutStrategy`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3019[#3019] [core] Add `CoreImageConstants.DEFAULT_SVG` to retrieve the default svg image from `sirius-components-core` instead of the now deleted `ImageConstants.DEFAULT_SVG` from `sirius-components-compatibility`
 
 === Dependency update
 

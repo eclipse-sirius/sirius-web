@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvi
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.forms.api.IRepresentationsDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.compatibility.services.ImageConstants;
+import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -167,7 +167,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
                         .flatMap(Optional::stream)
                         .toList();
             }
-            return List.of(ImageConstants.DEFAULT_SVG);
+            return List.of(CoreImageConstants.DEFAULT_SVG);
         };
     }
 
