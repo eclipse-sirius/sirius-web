@@ -82,6 +82,9 @@ jobs:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
         run: mvn -U -B -e clean verify -f packages/pom.xml --settings settings.xml
+        
+      - name: Check if all files have been commited
+        run: node scripts/check-gitdiff.js
 
       - name: Build the vscode extension
         run: |
